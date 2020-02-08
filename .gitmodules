@@ -1,0 +1,3 @@
+[submodule "gir-files"]
+	path = gir-files
+	url = https://github.com/Gir-Core/gir-files.git

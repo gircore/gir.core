@@ -1,0 +1,21 @@
+<#@ template debug="false" language="C#" visibility="internal" #>
+<#@ output extension=".cs" #>
+
+using System;
+
+namespace <#= Namespace.Name #>
+{
+    <#
+        foreach(var del in Delegates)
+        {
+            try
+            {
+                WriteLine($"public delegate {del.ReturnType} {del.Name}({del.Parameters.Write()});");
+            }
+            catch(Exception ex)
+            {
+                Console.Error.WriteLine($"Delegates: Could not create delegate {del.Name}: {ex.Message}");
+            }
+        }    
+    #>
+}

@@ -1,0 +1,25 @@
+<#@ template debug="false" language="C#" visibility="internal" #>
+<#@ output extension=".cs" #>
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace <#= Namespace.Name #>
+{
+    public partial class <#= Class.Name #>
+    {
+    <#
+        foreach(var method in Class.Methods)
+        {
+            try
+            {
+                WriteLine(method.Write());
+            }
+            catch(Exception ex)
+            {
+                Console.Error.WriteLine($"Class {Class.Name}: Could not create method {method.Name}: {ex.Message}");
+            }
+        }    
+    #>
+    }
+}

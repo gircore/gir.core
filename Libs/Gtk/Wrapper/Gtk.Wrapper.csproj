@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Gdk\Wrapper\Gdk.Wrapper.csproj" />
+    <ProjectReference Include="..\..\Gio\Wrapper\Gio.Wrapper.csproj" />
+    <ProjectReference Include="..\..\Xlib\Wrapper\Xlib.Wrapper.csproj" />
+    <ProjectReference Include="..\..\GObject\Wrapper\GObject.Wrapper.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+      <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

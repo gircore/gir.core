@@ -1,0 +1,25 @@
+<#@ template debug="false" language="C#" visibility="internal" #>
+<#@ output extension=".cs" #>
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace <#= Namespace.Name #>
+{
+    public static class Methods
+    {
+    <#
+        foreach(var method in Methods)
+        {
+            try
+            {
+                WriteLine(method.Write());
+            }
+            catch(Exception ex)
+            {
+                Console.Error.WriteLine($"Methods: Could not create method {method.Name}: {ex.Message}");
+            }
+        }    
+    #>
+    }
+}

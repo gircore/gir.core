@@ -1,0 +1,19 @@
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+
+*.nupkg
+**/packages/*
+**/Generated/*
+
+#.vscode/
+global.json
+coverage.*
+
+*.Generated.cs
+*~
+
+#meson
+build
