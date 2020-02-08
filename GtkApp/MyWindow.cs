@@ -19,6 +19,7 @@ namespace GtkApp
         private GRevealer revealer;
 
         private SimpleCommand action;
+        private GTextCombobox textCombobox;
 
         public MyWindow(Gtk.Core.GApplication application) : base(application, "ui.glade") 
         { 
@@ -37,9 +38,13 @@ namespace GtkApp
             r.UseMarkup.Value = true;
             r.UseUnderline.Value = true;
 
+            textCombobox = new GTextCombobox("combobox.glade");
+            textCombobox.AppendText("t3", "Test 3");
+            textCombobox.AppendText("t4", "Test 4");
+
             revealer = new GRevealer();
             revealer.TransitionType.Value = RevealerTransitionType.Crossfade;
-            revealer.Add(new GLabel("rev test"));
+            revealer.Add(textCombobox);
             Box.Add(revealer);
 
             r.Add(new GLabel("test"));
