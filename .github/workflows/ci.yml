@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: 'develop'
+    - name: Checkout submodules
+      shell: bash
+      run: git submodule update --init --recursive
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.100
+    - name: Prepare build
+      run: dotnet build
+      working-directory: ./Build
+    - name: Run build
+      run: dotnet run
+      working-directory: ./Build
