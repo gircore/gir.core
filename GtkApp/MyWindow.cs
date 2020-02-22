@@ -20,6 +20,7 @@ namespace GtkApp
 
         private SimpleCommand action;
         private GTextCombobox textCombobox;
+        private GCheckButton checkButton;
 
         public MyWindow(Gtk.Core.GApplication application) : base(application, "ui.glade") 
         { 
@@ -33,6 +34,10 @@ namespace GtkApp
             Box.Add(button);
             Box.Add(innerBox);
             Box.Add((GWidget)image);
+
+            checkButton = new GCheckButton("Check");
+            checkButton.Toggled += (s, o) => Console.WriteLine("Toggled");
+            Box.Add(checkButton);
 
             r = new TextLabelExpander("<span fgcolor='red'>Te_st</span>");
             r.UseMarkup.Value = true;

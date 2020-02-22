@@ -32,9 +32,15 @@ namespace GtkApp
         {
             if(sender is GApplication app)
             {
+                var headerBar = new GHeaderBar();
+                headerBar.Title.Value = "Title";
+                headerBar.Subtitle.Value = "Subtitle";
+                headerBar.ShowCloseButton.Value = true;
+
                 var w = new MyWindow(app);
                 w.DefaultHeight.Value = 800;
                 w.DefaultWidth.Value = 400;
+                w.SetTitlebar(headerBar);
                 w.ShowAll();
             }
         }
