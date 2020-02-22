@@ -56,5 +56,6 @@ namespace Gtk.Core
         }
 
         public void SetDefaultSize(int width, int height) => Gtk.Window.set_default_size(this, width, height);
+        public void SetTitlebar(GWidget widget) => Gtk.Window.set_titlebar(this, widget);
     }
 }
