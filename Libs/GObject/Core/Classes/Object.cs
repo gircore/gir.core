@@ -96,11 +96,20 @@ namespace GObject.Core
 
         internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) => RegisterEvent($"notify::{propertyName}", callback);
 
+        internal protected void RegisterEvent(string eventName, ActionRef<global::GObject.Value[]> callback)
+        {
+            ThrowIfDisposed();
+            RegisterEvent(eventName, new GClosure(this, callback));
+        }
+
         internal protected void RegisterEvent(string eventName, Action callback)
         {
             ThrowIfDisposed();
+            RegisterEvent(eventName, new GClosure(this, callback));
+        }
 
-            var closure = new GClosure(this, callback);
+        private void RegisterEvent(string eventName, GClosure closure)
+        {
             var ret = global::GObject.Methods.signal_connect_closure(handle, eventName, closure, false);
 
             if(ret == 0)

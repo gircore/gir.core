@@ -20,18 +20,25 @@ namespace Gir
                 _ => throw new NotSupportedException("Type is missing supported Type information")
             };
 
-            if(type.Array is {})
+            if(type.Array is {} && ret != "IntPtr")
             {
-               if(ret == "string")
+                if(ret == "string")
+                {
                     return "ref IntPtr";
-                else if(ret == "IntPtr")
-                    ret = "ref " + ret;
+                }
                 else
+                {
                     ret = ret + "[]"; 
+
+                    if(isParameter)
+                        ret = GetMarshal(type.Array) + " " + ret;
+                }
             }
 
             return ret;    
         }
+
+        private string GetMarshal(GArray array) => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={array.Length})]";
 
         private string GetReturn(GType gtype, bool isParameter)
         {
