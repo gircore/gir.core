@@ -15,7 +15,7 @@ namespace GObject.Core
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool dispsing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!Disposed)
             {
