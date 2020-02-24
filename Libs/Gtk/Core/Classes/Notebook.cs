@@ -11,8 +11,10 @@ namespace Gtk.Core
         public event EventHandler<EventArgs>? PageAdded;
         public event EventHandler<EventArgs>? PageRemoved;
 
+        public Property<bool> Scrollable { get; }
         public Property<int> Page { get; }
         public Property<bool> ShowTabs { get; }
+        public Property<bool> ShowBorder { get; }
 
         public GNotebook() : this(Gtk.Notebook.@new()){ }
         internal GNotebook(IntPtr handle) : base(handle) 
@@ -29,6 +31,16 @@ namespace Gtk.Core
                 set: Set
             );
 
+            Scrollable = Property<bool>("scrollable",
+                get: GetBool,
+                set: Set
+            );
+
+            ShowBorder = Property<bool>("show-border",
+                get: GetBool,
+                set: Set
+            );
+
             RegisterEvent("page-added", OnPageAdded);
             RegisterEvent("page-removed", OnPageRemoved);
         }
@@ -40,9 +52,32 @@ namespace Gtk.Core
 
             Gtk.Notebook.insert_page(this, child, tabLabel, position);
         }
-        public void GetPageCount() => Gtk.Notebook.get_n_pages(this);
+
+        public void RemovePage(GWidget child)
+        {
+            if(!data.ContainsKey(child))
+                throw new Exception("Not inside this notebook");
+
+            data.Remove(child);
+            var index = GetPageNum(child);
+            RemovePage(index);
+        }
+
+        protected void RemovePage(int page) => Gtk.Notebook.remove_page(this, page);
+
+        public int GetPageNum(GWidget child) => Gtk.Notebook.page_num(this, child);
+
+        public int GetPageCount() => Gtk.Notebook.get_n_pages(this);
 
         protected void OnPageAdded() => PageAdded?.Invoke(this, EventArgs.Empty);
         protected void OnPageRemoved() => PageRemoved?.Invoke(this, EventArgs.Empty);
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if(disposing)
+                data.Clear();
+        }
     }
 }
