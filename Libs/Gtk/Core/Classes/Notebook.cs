@@ -8,8 +8,8 @@ namespace Gtk.Core
     {
         private Dictionary<GWidget, GWidget> data;
 
-        public event EventHandler<EventArgs>? PageAdded;
-        public event EventHandler<EventArgs>? PageRemoved;
+        public event EventHandler<PageChangedEventArgs>? PageAdded;
+        public event EventHandler<PageChangedEventArgs>? PageRemoved;
 
         public Property<bool> Scrollable { get; }
         public Property<int> Page { get; }
@@ -69,8 +69,26 @@ namespace Gtk.Core
 
         public int GetPageCount() => Gtk.Notebook.get_n_pages(this);
 
-        protected void OnPageAdded() => PageAdded?.Invoke(this, EventArgs.Empty);
-        protected void OnPageRemoved() => PageRemoved?.Invoke(this, EventArgs.Empty);
+        private void GetChildAndPage(ref GObject.Value[] values, out GWidget child, out uint pageNum)
+        {
+            child = (GWidget)(GObject.Core.GObject)(IntPtr)values[1];
+            pageNum = (uint)values[2];
+        }
+
+        private void OnPageRemoved(ref GObject.Value[] values)
+        {
+            GetChildAndPage(ref values, out var child, out var pageNum);
+            OnPageRemoved(child, pageNum);
+        }
+
+        private void OnPageAdded(ref GObject.Value[] values)
+        {
+            GetChildAndPage(ref values, out var child, out var pageNum);
+            OnPageAdded(child, pageNum);
+        }
+
+        protected void OnPageAdded(GWidget child, uint pageNum) => PageAdded?.Invoke(this, new PageChangedEventArgs(child, pageNum));
+        protected void OnPageRemoved(GWidget child, uint pageNum) => PageRemoved?.Invoke(this, new PageChangedEventArgs(child, pageNum));
 
         protected override void Dispose(bool disposing)
         {

@@ -3,22 +3,22 @@ using System.Runtime.InteropServices;
 
 namespace GObject.Core
 {
-    public delegate void ActionRef<T>(ref T item);
+    public delegate void ActionRefValues(ref Value[] items);
 
     public partial class GClosure
     {
         private IntPtr handle;
         private readonly Action? callback;
-        private ActionRef<global::GObject.Value[]>? complexCallback;
+        private ActionRefValues? callbackRefValues;
 
         public GClosure(GObject obj, Action callback) : this(obj)
         {
             this.callback = callback ?? throw new ArgumentNullException(nameof(callback));
         }
 
-        public GClosure(GObject obj, ActionRef<global::GObject.Value[]> callback) : this(obj)
+        public GClosure(GObject obj, ActionRefValues callbackRefValues) : this(obj)
         {
-            this.complexCallback = callback ?? throw new ArgumentNullException(nameof(callback));
+            this.callbackRefValues = callbackRefValues ?? throw new ArgumentNullException(nameof(callbackRefValues));
         }
 
         private GClosure(GObject obj)
@@ -32,8 +32,8 @@ namespace GObject.Core
             if(callback is {})
                 callback();
             
-            if(complexCallback is {})
-                complexCallback(ref param_values);
+            if(callbackRefValues is {})
+                callbackRefValues(ref param_values);
         }
 
         public static implicit operator IntPtr (GClosure closure) => closure.handle;
