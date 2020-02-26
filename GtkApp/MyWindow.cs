@@ -36,12 +36,7 @@ namespace GtkApp
 
             notebook.InsertPage("Image", (GWidget)image, 0);
             notebook.InsertPage("Box", innerBox, 1);
-
             Box.Add(notebook);
-
-            checkButton = new GCheckButton("Check");
-            checkButton.Toggled += (s, o) => Console.WriteLine("Toggled");
-            Box.Add(checkButton);
 
             checkButton = new GCheckButton("Check");
             checkButton.Toggled += (s, o) => Console.WriteLine("Toggled");
