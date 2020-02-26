@@ -43,6 +43,10 @@ namespace GtkApp
             checkButton.Toggled += (s, o) => Console.WriteLine("Toggled");
             Box.Add(checkButton);
 
+            checkButton = new GCheckButton("Check");
+            checkButton.Toggled += (s, o) => Console.WriteLine("Toggled");
+            Box.Add(checkButton);
+
             r = new TextLabelExpander("<span fgcolor='red'>Te_st</span>");
             r.UseMarkup.Value = true;
             r.UseUnderline.Value = true;
