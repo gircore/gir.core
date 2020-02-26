@@ -7,6 +7,8 @@ namespace GObject.Core
 {
     public partial class GObject : Object
     {
+        private static Dictionary<IntPtr, GObject> objects = new Dictionary<IntPtr, GObject>();
+
         private IntPtr handle;
 
         private HashSet<GClosure> closures;
@@ -15,6 +17,8 @@ namespace GObject.Core
 // private Property<string> MyProperty{get; set;}?
         protected GObject(IntPtr handle, bool isInitiallyUnowned = false)
         {
+            objects.Add(handle, this);
+            
             if(isInitiallyUnowned)
                 this.handle = global::GObject.Object.ref_sink(handle);
             else
@@ -96,11 +100,20 @@ namespace GObject.Core
 
         internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) => RegisterEvent($"notify::{propertyName}", callback);
 
+        internal protected void RegisterEvent(string eventName, ActionRefValues callback)
+        {
+            ThrowIfDisposed();
+            RegisterEvent(eventName, new GClosure(this, callback));
+        }
+
         internal protected void RegisterEvent(string eventName, Action callback)
         {
             ThrowIfDisposed();
+            RegisterEvent(eventName, new GClosure(this, callback));
+        }
 
-            var closure = new GClosure(this, callback);
+        private void RegisterEvent(string eventName, GClosure closure)
+        {
             var ret = global::GObject.Methods.signal_connect_closure(handle, eventName, closure, false);
 
             if(ret == 0)
@@ -122,5 +135,11 @@ namespace GObject.Core
         }
 
         public static implicit operator IntPtr (GObject val) => val.handle;
+
+        public static implicit operator GObject (IntPtr val)
+        {
+            objects.TryGetValue(val, out var ret);
+            return ret;
+        }
     }
 }

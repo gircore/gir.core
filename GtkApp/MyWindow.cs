@@ -21,9 +21,12 @@ namespace GtkApp
         private SimpleCommand action;
         private GTextCombobox textCombobox;
         private GCheckButton checkButton;
+        private GNotebook notebook;
 
         public MyWindow(Gtk.Core.GApplication application) : base(application, "ui.glade") 
         { 
+            notebook = new GNotebook();
+
             button = new GButton("Test");
 
             button.Text.Value = "NEW TEXT";
@@ -31,9 +34,9 @@ namespace GtkApp
 
             image = new StockImage("folder", IconSize.Button);
 
-            Box.Add(button);
-            Box.Add(innerBox);
-            Box.Add((GWidget)image);
+            notebook.InsertPage("Image", (GWidget)image, 0);
+            notebook.InsertPage("Box", innerBox, 1);
+            Box.Add(notebook);
 
             checkButton = new GCheckButton("Check");
             checkButton.Toggled += (s, o) => Console.WriteLine("Toggled");

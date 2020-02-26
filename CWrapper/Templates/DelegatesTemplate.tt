@@ -2,6 +2,7 @@
 <#@ output extension=".cs" #>
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace <#= Namespace.Name #>
 {
