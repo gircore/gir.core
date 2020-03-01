@@ -9,6 +9,7 @@
     <ProjectReference Include="..\Wrapper\WebKitGTK.Wrapper.csproj" />
     <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
     <ProjectReference Include="..\..\Gio\Core\Gio.Core.csproj" />
+    <ProjectReference Include="..\..\Gtk\Core\Gtk.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
