@@ -20,6 +20,7 @@ class Program
             GenerateProject(GOBJECT_WRAPPER);
             GenerateProject(GDK_PIXBUF_WRAPPER);
             GenerateProject(GTK_WRAPPER);
+            GenerateProject(JAVASCRIPT_CORE_WRAPPER);
             GenerateProject(WEBKITGTK_WRAPPER);
         });
 
