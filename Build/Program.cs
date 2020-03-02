@@ -27,7 +27,7 @@ class Program
             Run(dotnet, $"{build} {GTK_CORE}");
         });
 
-         Target(build_webkitgtk_core, DependsOn(generate_projects), () => {
+        Target(build_webkitgtk_core, DependsOn(generate_projects), () => {
             Run(dotnet, $"{build} {WEBKITGTK_CORE}");
         });
 
@@ -38,7 +38,7 @@ class Program
     private static void GenerateProject(string path)
     {
         path += "Generate/";
-        
+
         Run(dotnet, $"{build} {path}");
         Run(dotnet, $"{run} {path}", path);
     }
