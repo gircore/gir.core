@@ -1,5 +1,6 @@
 using System;
 using Gtk.Core;
+using WebKitGTK.Core;
 
 namespace GtkApp
 {
@@ -22,6 +23,7 @@ namespace GtkApp
         private GTextCombobox textCombobox;
         private GCheckButton checkButton;
         private GNotebook notebook;
+        private WebView webView;
 
         public MyWindow(Gtk.Core.GApplication application) : base(application, "ui.glade") 
         { 
@@ -36,6 +38,12 @@ namespace GtkApp
 
             notebook.InsertPage("Image", (GWidget)image, 0);
             notebook.InsertPage("Box", innerBox, 1);
+            
+            webView = new WebView();
+            webView.LoadUri("https://google.com/");
+            webView.HeightRequest.Value = 500;
+            webView.WidthRequest.Value = 500;
+            notebook.InsertPage("WebKit", webView, 2);
             Box.Add(notebook);
 
             checkButton = new GCheckButton("Check");
