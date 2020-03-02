@@ -6,7 +6,11 @@ static class Projects
     public const string GTK_WRAPPER = GTK + "Wrapper/";
     public const string GTK_CORE = GTK + "Core/";
 
-    public const string WEBKITGTK_WRAPPER = "../Libs/WebKitGTK/Wrapper/";
+    private const string WEBKITGTK = "../Libs/WebKitGTK/";
+    public const string WEBKITGTK_WRAPPER = WEBKITGTK + "Wrapper/";
+    public const string WEBKITGTK_CORE = WEBKITGTK + "Core/";
+
+    public const string JAVASCRIPT_CORE_WRAPPER = "../Libs/JavascriptCore/Wrapper/";
     public const string GLIB_WRAPPER = "../Libs/GLib/Wrapper/";
     public const string CAIRO_WRAPPER = "../Libs/Cairo/Wrapper/";
     public const string GDK_WRAPPER = "../Libs/Gdk/Wrapper/";

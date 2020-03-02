@@ -79,14 +79,14 @@ namespace Gir
 
             var t when t.In("gdouble", "long double") => ("double", true),
             var t when t.In("gint","gint32") => ("int", true),
-            var t when t.In("guint", "guint32", "GQuark", "gunichar") => ("uint", true),
+            var t when t.In("guint", "guint32", "GLib.Quark", "GQuark", "gunichar") => ("uint", true),
             var t when t.In("guint8", "gint8", "gchar") => ("byte", true),
             var t when t.In("glong", "gssize", "gint64") => ("long", true),
             var t when t.In("gsize", "guint64", "gulong", "xlib.Window") => ("ulong", true),
 
-            "IConv" => throw new NotSupportedException($"{type} is not supported"),
-            "TokenValue" => throw new NotSupportedException($"{type} is not supported"),
+            var t when t.In("TokenValue", "IConv") => throw new NotSupportedException($"{type} is not supported"),
             var t when t.StartsWith("Atk.") => throw new NotSupportedException($"{type} is not supported"),
+            var t when t.StartsWith("JavaScriptCore") || t.StartsWith("JS") => throw new NotSupportedException($"{type} is not supported"),
 
             _ => (type, false)
         };

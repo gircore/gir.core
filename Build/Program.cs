@@ -23,15 +23,15 @@ class Program
             GenerateProject(WEBKITGTK_WRAPPER);
         });
 
-        Target(build_gtk_wrapper, DependsOn(generate_projects), () => {
-            Run(dotnet, $"{build} {GTK_WRAPPER}");
-        });
-
-        Target(build_gtk_core, DependsOn(build_gtk_wrapper), () => {
+        Target(build_gtk_core, DependsOn(generate_projects), () => {
             Run(dotnet, $"{build} {GTK_CORE}");
         });
 
-        Target("default", DependsOn(build_gtk_core));
+        Target(build_webkitgtk_core, DependsOn(generate_projects), () => {
+            Run(dotnet, $"{build} {WEBKITGTK_CORE}");
+        });
+
+        Target("default", DependsOn(build_gtk_core, build_webkitgtk_core));
         RunTargetsAndExit(args);
     }
 
