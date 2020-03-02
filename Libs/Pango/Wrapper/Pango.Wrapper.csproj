@@ -10,5 +10,9 @@
     <LangVersion>8.0</LangVersion>
     <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
   </PropertyGroup>
-
+  
+  <PropertyGroup>
+      <Nullable>enable</Nullable>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
 </Project>

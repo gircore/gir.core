@@ -7,10 +7,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Nullable>enable</Nullable>
+      <Nullable>enable</Nullable>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
- <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Gio\Wrapper\Gio.Wrapper.csproj" />
   </ItemGroup>
 
