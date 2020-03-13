@@ -9,7 +9,7 @@ class Program
 
     static void Main(string[] args)
     {
-        Target(generate_projects, () => {
+        Target(generate_wrapper, () => {
             GenerateProject(CWRAPPER);
             GenerateProject(GLIB_WRAPPER);
             GenerateProject(CAIRO_WRAPPER);
@@ -21,17 +21,22 @@ class Program
             GenerateProject(GDK_PIXBUF_WRAPPER);
             GenerateProject(GTK_WRAPPER);
             GenerateProject(WEBKITGTK_WRAPPER);
+            GenerateProject(WEBKIT2WEBEXTENSION_WRAPPER);
         });
 
-        Target(build_gtk_core, DependsOn(generate_projects), () => {
+        Target(build_gtk_core, DependsOn(generate_wrapper), () => {
             Run(dotnet, $"{build} {GTK_CORE}");
         });
 
-        Target(build_webkitgtk_core, DependsOn(generate_projects), () => {
+        Target(build_webkitgtk_core, DependsOn(generate_wrapper), () => {
             Run(dotnet, $"{build} {WEBKITGTK_CORE}");
         });
 
-        Target("default", DependsOn(build_gtk_core, build_webkitgtk_core));
+        Target(build_webkit2webextensions_core, DependsOn(generate_wrapper), () => {
+            Run(dotnet, $"{build} {WEBKIT2WEBEXTENSION_CORE}");
+        });
+
+        Target("default", DependsOn(build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
         RunTargetsAndExit(args);
     }
 
