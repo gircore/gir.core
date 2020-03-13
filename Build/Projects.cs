@@ -10,6 +10,10 @@ static class Projects
     public const string WEBKITGTK_WRAPPER = WEBKITGTK + "Wrapper/";
     public const string WEBKITGTK_CORE = WEBKITGTK + "Core/";
 
+    private const string WEBKIT2WEBEXTENSION = "../Libs/WebKit2WebExtension/";
+    public const string WEBKIT2WEBEXTENSION_WRAPPER = WEBKIT2WEBEXTENSION + "Wrapper/";
+    public const string WEBKIT2WEBEXTENSION_CORE = WEBKIT2WEBEXTENSION + "Core/";
+
     public const string JAVASCRIPT_CORE_WRAPPER = "../Libs/JavascriptCore/Wrapper/";
     public const string GLIB_WRAPPER = "../Libs/GLib/Wrapper/";
     public const string CAIRO_WRAPPER = "../Libs/Cairo/Wrapper/";
