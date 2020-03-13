@@ -39,7 +39,9 @@ namespace GtkApp
             notebook.InsertPage("Image", (GWidget)image, 0);
             notebook.InsertPage("Box", innerBox, 1);
             
-            webView = new WebView();
+            var context = new WebContext();
+            context.InitializeWebExtensions += (s, args) =>Console.WriteLine("INIT WEBEX");
+            webView = new WebView(context);
             webView.LoadUri("https://google.com/");
             webView.HeightRequest.Value = 500;
             webView.WidthRequest.Value = 500;
