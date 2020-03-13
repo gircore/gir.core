@@ -6,6 +6,7 @@
   </PropertyGroup>
 
    <ItemGroup>
+    <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
