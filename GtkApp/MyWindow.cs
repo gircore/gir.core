@@ -39,6 +39,7 @@ namespace GtkApp
             notebook.InsertPage("Image", (GWidget)image, 0);
             notebook.InsertPage("Box", innerBox, 1);
             
+            var context = new WebContext();
             webView = new WebView();
             webView.LoadUri("https://google.com/");
             webView.HeightRequest.Value = 500;
@@ -74,6 +75,9 @@ namespace GtkApp
         {
             revealer.Reveal.Value = !revealer.Reveal.Value;
             action.SetCanExecute(!action.CanExecute(default));
+
+            if(webView.Context.Value is {})
+                webView.Context.Value.ClearCache();
         } 
 
     }
