@@ -6,8 +6,6 @@ namespace Gtk.Core
 {
     public class GWindow : GContainer
     {
-        private GApplication? application;
-
         #region Properties
         public Property<int> DefaultHeight { get; private set;} = default!;
         public Property<int> DefaultWidth { get; private set; } = default!;
@@ -42,17 +40,9 @@ namespace Gtk.Core
             );
 
             Application = Property<GApplication?>("application",
-                get : GetApplication,
-                set: SetApplication
+                get : GetObject<GApplication?>,
+                set: Set
             );
-        }
-
-        private GApplication? GetApplication(string propertyName) => application;
-        
-        private void SetApplication(GApplication? application, string propertyName)
-        {
-            this.application = application;
-            Set(application ?? IntPtr.Zero, propertyName);
         }
 
         public void SetDefaultSize(int width, int height) => Gtk.Window.set_default_size(this, width, height);
