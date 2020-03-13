@@ -39,7 +39,7 @@ namespace GObject.Core
             value.Dispose();
         }
 
-        protected void Set(IntPtr value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
+        protected void Set(GObject? value, [CallerMemberName] string? propertyName = null) => SetProperty((IntPtr)value, propertyName);
         protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum => SetProperty((long)(object)e, propertyName);
         protected void Set(bool value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
         protected void Set(uint value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
@@ -95,6 +95,17 @@ namespace GObject.Core
             return (IntPtr) v;
         }
 
+        ///<summary>
+        ///May return null!
+        ///</sumamry>
+        protected T GetObject<T>([CallerMemberName] string? propertyName = null) where T : GObject?
+        {
+            using var v = GetProperty(propertyName);
+            #pragma warning disable CS8601, CS8603
+            return (T)(IntPtr) v;
+            #pragma warning restore CS8601, CS8603
+        }
+
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
         private void RegisterOnFinalized() => global::GObject.Object.weak_ref(this, this.OnFinalized, IntPtr.Zero);
 
@@ -134,9 +145,9 @@ namespace GObject.Core
                 throw new GException(error);
         }
 
-        public static implicit operator IntPtr (GObject val) => val.handle;
+        public static implicit operator IntPtr (GObject? val) => val?.handle ?? IntPtr.Zero;
 
-        public static implicit operator GObject (IntPtr val)
+        public static implicit operator GObject? (IntPtr val)
         {
             objects.TryGetValue(val, out var ret);
             return ret;

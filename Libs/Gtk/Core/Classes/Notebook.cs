@@ -71,7 +71,7 @@ namespace Gtk.Core
 
         private void GetChildAndPage(ref GObject.Value[] values, out GWidget child, out uint pageNum)
         {
-            child = (GWidget)(GObject.Core.GObject)(IntPtr)values[1];
+            child = ((GWidget?)(GObject.Core.GObject?)(IntPtr)values[1])!;
             pageNum = (uint)values[2];
         }
 
