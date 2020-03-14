@@ -19,7 +19,7 @@ namespace WebKit2WebExtension.Core
             RegisterEvent("page-created", OnPageCreated);
         }
 
-        private WebPage GetPage(ref GObject.Value[] values) => (WebPage)(GObject.Core.GObject)(IntPtr)values[1]!;
+        private WebPage GetPage(ref GObject.Value[] values) => ((WebPage?)(GObject.Core.GObject?)(IntPtr)values[1])!;
         protected void OnPageCreated(ref GObject.Value[] values) => PageCreated?.Invoke(this, new PageCreatedEventArgs(GetPage(ref values)));
     }
 }
