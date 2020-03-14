@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Gio\Wrapper\Gio.Wrapper.csproj" />
     <ProjectReference Include="..\..\GLib\Wrapper\GLib.Wrapper.csproj" />
+    <ProjectReference Include="..\..\JavascriptCore\Wrapper\JavascriptCore.Wrapper.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

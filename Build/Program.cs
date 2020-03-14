@@ -28,20 +28,21 @@ class Program
 
         Target(build_webkitgtk_core, DependsOn(generate_wrapper), () => {
             GenerateProject(WEBKITGTK_WRAPPER);
+            GenerateProject(JAVASCRIPT_CORE_WRAPPER);
+            
             Run(dotnet, $"{build} {WEBKITGTK_CORE}");
         });
 
         Target(build_webkit2webextensions_core, () => {
             GenerateProject(WEBKIT2WEBEXTENSION_WRAPPER);
             Run(dotnet, $"{build} {WEBKIT2WEBEXTENSION_CORE}");
-
-            Run(valac, $"--pkg webkit2gtk-web-extension-4.0 --library=WebExtension --gir=WebExtensionAdapter-1.0.gir WebExtensionAdapter.vala  -X -fPIC -X -shared -o webextension.so -X -w", WEBKIT2WEBEXTENSIONADAPTER_VALA);
-
-            GenerateProject(WEBKIT2WEBEXTENSIONADAPTER_WRAPPER);
-            Run(dotnet, $"{build} {WEBKIT2WEBEXTENSIONADAPTER_CORE}");
         });
 
-        Target("default", DependsOn(build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
+        Target(build_javascriptcore_core, () => {
+            
+        });
+
+        Target("default", DependsOn(build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core, build_javascriptcore_core));
         RunTargetsAndExit(args);
     }
 

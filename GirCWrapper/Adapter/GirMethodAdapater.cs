@@ -25,7 +25,7 @@ namespace Gir
         }
         public string Import { get; }
 
-        public string EntryPoint => method.Identifier;
+        public string? EntryPoint => method.Identifier;
 
         public string? Summary => method.Doc?.Text;
 
