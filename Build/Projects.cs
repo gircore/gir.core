@@ -15,9 +15,9 @@ static class Projects
     public const string WEBKIT2WEBEXTENSION_CORE = WEBKIT2WEBEXTENSION + "Core/";
 
     private const string WEBKIT2WEBEXTENSIONADAPTER = "../Libs/WebKit2WebExtensionAdapter/";
-    public const string WEBKIT2WEBEXTENSIONADAPTER_WRAPPER = WEBKIT2WEBEXTENSION + "Wrapper/";
-    public const string WEBKIT2WEBEXTENSIONADAPTER_VALA = WEBKIT2WEBEXTENSION + "C/";
-    public const string WEBKIT2WEBEXTENSIONADAPTER_CORE = WEBKIT2WEBEXTENSION + "Core/";
+    public const string WEBKIT2WEBEXTENSIONADAPTER_WRAPPER = WEBKIT2WEBEXTENSIONADAPTER + "Wrapper/";
+    public const string WEBKIT2WEBEXTENSIONADAPTER_VALA = WEBKIT2WEBEXTENSIONADAPTER + "C/";
+    public const string WEBKIT2WEBEXTENSIONADAPTER_CORE = WEBKIT2WEBEXTENSIONADAPTER + "Core/";
 
     public const string JAVASCRIPT_CORE_WRAPPER = "../Libs/JavascriptCore/Wrapper/";
     public const string GLIB_WRAPPER = "../Libs/GLib/Wrapper/";
