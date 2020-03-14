@@ -34,6 +34,8 @@ class Program
 
         Target(build_webkit2webextensions_core, DependsOn(generate_wrapper), () => {
             Run(dotnet, $"{build} {WEBKIT2WEBEXTENSION_CORE}");
+
+            Run(valac, $"--pkg webkit2gtk-web-extension-4.0 --library=WebExtension --gir=WebExtensionAdapter-1.0.gir WebExtensionAdapter.vala  -X -fPIC -X -shared -o webextension.so -X -w", WEBKIT2WEBEXTENSIONADAPTER_VALA);
         });
 
         Target("default", DependsOn(build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));

@@ -17,3 +17,7 @@ coverage.*
 
 #meson
 build
+
+#Linux
+*.so
+*.vapi
