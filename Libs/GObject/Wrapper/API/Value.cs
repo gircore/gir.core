@@ -29,6 +29,11 @@ namespace GObject
         public Value(long value) : this(Type.Long) => Value.set_long(ref this, value);
         public Value(string value) : this(Type.String) => Value.set_string(ref this, value);
 
+        //TODO: Explicite / Implicite operatoren entfernen?
+        public IntPtr GetPtr() => Value.get_pointer(ref this);
+        public IntPtr GetBoxed() => Value.get_boxed(ref this);
+        public IntPtr GetObject() => Value.get_object(ref this);
+
         public static explicit operator IntPtr (Value value) => Value.get_object(ref value);
         public static explicit operator bool (Value value) => Value.get_boolean(ref value);
         public static explicit operator uint (Value value) => Value.get_uint(ref value);

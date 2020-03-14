@@ -1,7 +1,6 @@
 using System;
 using Gtk.Core;
 using WebKitGTK.Core;
-using WebKit2WebExtension.Core;
 
 namespace GtkApp
 {
@@ -50,7 +49,7 @@ namespace GtkApp
             settings.EnableDeveloperExtras.Value = true;
 
             var ucm = webView.GetUserContentManager();
-            var ret = ucm.RegisterScriptMessageHandler("foobar");
+            var ret = ucm.RegisterScriptMessageHandler("foobar", (value) => Console.WriteLine(value.GetString()));
 
             Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
             webView.LoadUri("file:///mnt/daten/Programmierung/test.html");
