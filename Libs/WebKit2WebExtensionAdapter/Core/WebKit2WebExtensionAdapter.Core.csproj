@@ -7,6 +7,8 @@
 
    <ItemGroup>
     <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
+    <ProjectReference Include="..\..\WebKit2WebExtension\Core\WebKit2WebExtension.Core.csproj" />
+    <ProjectReference Include="..\Wrapper\WebKit2WebExtensionAdapter.Wrapper.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

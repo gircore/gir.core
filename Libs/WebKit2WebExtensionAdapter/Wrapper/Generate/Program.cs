@@ -6,7 +6,7 @@ namespace Generate
     {
         static void Main(string[] args)
         {
-            var girWrapper = new GirCWrapper("../../C/WebExtensionAdapter-1.0.gir", "../Generated/", "\"WEBEXTENSIONADAPTER\"");
+            var girWrapper = new GirCWrapper("../../C/WebExtensionAdapter-1.0.gir", "../Generated/", "\"webextension.so\"");
             girWrapper.CreateClasses();
             girWrapper.CreateInterfaces();
             girWrapper.CreateEnums();
