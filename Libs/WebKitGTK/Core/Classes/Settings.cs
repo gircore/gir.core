@@ -9,7 +9,8 @@ namespace WebKitGTK.Core
         public Property<bool> AllowUniversalAccessFromFileUrls { get; }
         public Property<bool> AllowModalDialogs { get; }
         public Property<bool> EnableDeveloperExtras { get; }
-        internal Settings(IntPtr handle) : base(handle)
+
+        internal Settings(IntPtr handle, bool isInitiallyUnowned = false) : base(handle, isInitiallyUnowned)
         {
             AllowFileAccessFromFileUrls = Property<bool>("allow-file-access-from-file-urls",
                 get : GetBool,

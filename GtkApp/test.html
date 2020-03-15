@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>abc</title><meta charset="utf-8"/>
+</head>
+<body>
+    
+    Halloaa
+
+    <input id="clickMe" type="button" value="clickme" />
+    <input id="clickMe2" type="button" value="clickme222" />
+
+    <script>
+        document.getElementById("clickMe").onclick = function () {     window.webkit.messageHandlers["foobar"].postMessage("HalloWelt");};
+
+        document.getElementById("clickMe2").onclick = function () {     window.webkit.messageHandlers["foobar2"].postMessage("HalloWelt2");};
+
+    </script>
+</body>
+</html>
