@@ -38,11 +38,7 @@ class Program
             Run(dotnet, $"{build} {WEBKIT2WEBEXTENSION_CORE}");
         });
 
-        Target(build_javascriptcore_core, () => {
-            
-        });
-
-        Target("default", DependsOn(build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core, build_javascriptcore_core));
+        Target("default", DependsOn(build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
         RunTargetsAndExit(args);
     }
 

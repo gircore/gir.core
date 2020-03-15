@@ -5,5 +5,4 @@ static class Targets
     public const string build_gtk_core = "build-gtk-core";
     public const string build_webkitgtk_core = "build-webkitgtk-core";
     public const string build_webkit2webextensions_core = "build-webkit2webextensions-core";
-    public const string build_javascriptcore_core = "build-javascriptcore-core";
 }

@@ -88,7 +88,6 @@ namespace Gir
 
             var t when t.typeName.In("TokenValue", "IConv", "GType") => throw new NotSupportedException($"{typeName} is not supported"),
             var t when t.typeName.StartsWith("Atk.") => throw new NotSupportedException($"{typeName} is not supported"),
-            //var t when t.StartsWith("JavaScriptCore") || t.StartsWith("JS") => throw new NotSupportedException($"{type} is not supported"),
 
             _ => (typeName, false)
         };
