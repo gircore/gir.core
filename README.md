@@ -11,7 +11,7 @@ The long term goal is to create libraries which allow to easily convert C# MVVM 
 Supported libraries
 * [GTK] (wip): UI-Toolkit
 * [WebKitGTK] (wip): Browser-Engine
-* [JavaScriptCore] (planned): Javascript integration for [WebKitGTK]
+* [JavaScriptCore] (wip): Javascript integration for [WebKitGTK]
 * [libhandy] (planned): Convergent UI-Widgets for [GTK] to support mobile phones
 
 [GObject]: https://developer.gnome.org/gobject/stable/
