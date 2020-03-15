@@ -24,6 +24,7 @@ namespace GtkApp
         private GCheckButton checkButton;
         private GNotebook notebook;
         private WebView webView;
+        private WebContext context;
 
         public MyWindow(Gtk.Core.GApplication application) : base(application, "ui.glade") 
         { 
@@ -39,11 +40,23 @@ namespace GtkApp
             notebook.InsertPage("Image", (GWidget)image, 0);
             notebook.InsertPage("Box", innerBox, 1);
             
-            var context = new WebContext();
-            webView = new WebView();
-            webView.LoadUri("https://google.com/");
+            context = new WebContext();
+            context.InitializeWebExtensions += OnInitializeWebExtension;
+            webView = new WebView(context);
+            
+            var settings = webView.GetSettings();
+            settings.AllowModalDialogs.Value = true;
+            settings.EnableDeveloperExtras.Value = true;
+
+            var ucm = webView.GetUserContentManager();
+            var ret = ucm.RegisterScriptMessageHandler("foobar", (value) => Console.WriteLine(value.GetString()));
+
+            Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
+            webView.LoadUri("file:///mnt/daten/Programmierung/test.html");
             webView.HeightRequest.Value = 500;
             webView.WidthRequest.Value = 500;
+
+
             notebook.InsertPage("WebKit", webView, 2);
             Box.Add(notebook);
 
@@ -71,13 +84,19 @@ namespace GtkApp
             application.AddAction("do", action);
         }
 
+        private void OnInitializeWebExtension(object? sender, EventArgs args)
+        {
+            Console.WriteLine("INIT");
+            Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
+        }
+
         private void button_clicked(object obj, EventArgs args)
         {
             revealer.Reveal.Value = !revealer.Reveal.Value;
             action.SetCanExecute(!action.CanExecute(default));
 
-            if(webView.Context.Value is {})
-                webView.Context.Value.ClearCache();
+            var inspector = webView.GetInspector();
+            inspector.Show();
         } 
 
     }

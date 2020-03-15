@@ -6,7 +6,7 @@ namespace Generate
     {
         static void Main(string[] args)
         {
-            var girWrapper = new GirCWrapper("../../../../gir-files/JavaScriptCore-4.0.gir", "../Generated/", "\"javascriptcoregtk-4.0.so\"");
+            var girWrapper = new GirCWrapper("../../../../gir-files/WebKit2WebExtension-4.0.gir", "../Generated/", "\"WEBEXTENSION\"", "../../../../gir-files/GLib-2.0.gir");
             girWrapper.CreateClasses();
             girWrapper.CreateInterfaces();
             girWrapper.CreateEnums();

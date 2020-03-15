@@ -45,50 +45,51 @@ namespace Gir
             if (gtype.Type.In("va_list", "GType", "gpointer", "gconstpointer"))
                 return "IntPtr";
 
-            var type = gtype.Name;
+            var typeName = gtype.Name;
+            var cType = gtype.Type;
 
             if (resolver != null && gtype.Type is {} && resolver.TryGet(gtype.Type, out string resolvedType))
-                type = resolvedType;
+                typeName = resolvedType;
 
             var isPointer = gtype.Type?.EndsWith("*") ?? false;
             bool isPrimitive;
-            (type, isPrimitive) = ResolveGType(type);
+            (typeName, isPrimitive) = ResolveGType(typeName, cType);
 
-            if(type == "string" && isParameter)
-                return type; //string stays string for parameter values, they are marshalled automatically
+            if(typeName == "string" && isParameter)
+                return typeName; //string stays string for parameter values, they are marshalled automatically
             else if(isPointer && isPrimitive)
-                return "ref " + type;
+                return "ref " + typeName;
             else if(isPointer && !isPrimitive)
                 return "IntPtr";
             else
-                return type;
+                return typeName;
         }
 
-        private static (string Type, bool IsPrimitive) ResolveGType(string type) => type switch
+        private static (string Type, bool IsPrimitive) ResolveGType(string typeName, string cType) => (typeName, cType) switch
         {
-            "none" => ("void", true),
-            "gboolean" => ("bool", true),
-            "gint16" => ("short", true),
-            "guint16" => ("ushort", true),
-            "gfloat" => ("float", true),
-            "utf8" => ("string", false),
-            "filename" => ("string", false),
-            "Callback" => ("Delegate", false), // Signature of a callback is determined by the context in which it is used
+            ("none", _) => ("void", true),
+            ("gboolean", _) => ("bool", true),
+            ("gint16", _) => ("short", true),
+            ("guint16", _) => ("ushort", true),
+            ("gfloat", _) => ("float", true),
+            ("utf8", _) => ("string", false),
+            ("filename", _) => ("string", false),
+            ("Callback", _) => ("Delegate", false), // Signature of a callback is determined by the context in which it is used
 
-            "Value" => ("GObject.Value", true),
+            ("Value", "JSCValue*") => ("IntPtr", false),
+            ("Value", _) => ("GObject.Value", true),
 
-            var t when t.In("gdouble", "long double") => ("double", true),
-            var t when t.In("gint","gint32") => ("int", true),
-            var t when t.In("guint", "guint32", "GLib.Quark", "GQuark", "gunichar") => ("uint", true),
-            var t when t.In("guint8", "gint8", "gchar") => ("byte", true),
-            var t when t.In("glong", "gssize", "gint64") => ("long", true),
-            var t when t.In("gsize", "guint64", "gulong", "xlib.Window") => ("ulong", true),
+            var t when t.typeName.In("gdouble", "long double") => ("double", true),
+            var t when t.typeName.In("gint","gint32") => ("int", true),
+            var t when t.typeName.In("guint", "guint32", "GLib.Quark", "GQuark", "gunichar") => ("uint", true),
+            var t when t.typeName.In("guint8", "gint8", "gchar") => ("byte", true),
+            var t when t.typeName.In("glong", "gssize", "gint64") => ("long", true),
+            var t when t.typeName.In("gsize", "guint64", "gulong", "xlib.Window") => ("ulong", true),
 
-            var t when t.In("TokenValue", "IConv") => throw new NotSupportedException($"{type} is not supported"),
-            var t when t.StartsWith("Atk.") => throw new NotSupportedException($"{type} is not supported"),
-            var t when t.StartsWith("JavaScriptCore") || t.StartsWith("JS") => throw new NotSupportedException($"{type} is not supported"),
+            var t when t.typeName.In("TokenValue", "IConv", "GType") => throw new NotSupportedException($"{typeName} is not supported"),
+            var t when t.typeName.StartsWith("Atk.") => throw new NotSupportedException($"{typeName} is not supported"),
 
-            _ => (type, false)
+            _ => (typeName, false)
         };
     }
 

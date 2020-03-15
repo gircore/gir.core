@@ -6,9 +6,8 @@
   </PropertyGroup>
 
    <ItemGroup>
-    <ProjectReference Include="..\Wrapper\WebKitGTK.Wrapper.csproj" />
-    <ProjectReference Include="..\..\Gtk\Core\Gtk.Core.csproj" />
-    <ProjectReference Include="..\..\JavascriptCore\Core\JavascriptCore.Core.csproj" />
+    <ProjectReference Include="..\Wrapper\JavascriptCore.Wrapper.csproj" />
+    <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -25,7 +25,11 @@ namespace CWrapper
                 sb.AppendLine($"[Obsolete{text}]");
             }
 
-            sb.AppendLine($"[DllImport({method.Import}, EntryPoint = \"{method.EntryPoint}\")]");
+            var entryPoint = string.Empty;
+            if(!string.IsNullOrEmpty(method.EntryPoint))
+                entryPoint = $", EntryPoint = \"{method.EntryPoint}\"";
+
+            sb.AppendLine($"[DllImport({method.Import}{entryPoint})]");
             sb.AppendLine($"public static extern {method.ReturnType} {method.Name}({method.Parameters.Write()});");
 
             return sb.ToString();
