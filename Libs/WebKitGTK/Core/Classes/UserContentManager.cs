@@ -27,6 +27,11 @@ namespace WebKitGTK.Core
             return ret;
         }
 
-        public void AddScript(UserScript script) => WebKit2.UserContentManager.add_script(this, script.WebKitScript);
+        public void AddScript(UserScript script)
+        { 
+             var zero = IntPtr.Zero;
+             var webkitScript = WebKit2.UserScript.@new(script.Script, UserContentInjectedFrames.all_frames, UserScriptInjectionTime.end, ref zero, ref zero);
+            WebKit2.UserContentManager.add_script(this, webkitScript);
+        }
     }
 }
