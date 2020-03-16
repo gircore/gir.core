@@ -51,6 +51,16 @@ namespace GtkApp
             var ucm = webView.GetUserContentManager();
             var ret = ucm.RegisterScriptMessageHandler("foobar", (value) => Console.WriteLine(value.GetString()));
 
+            if(ret)
+            {
+                var code = @"
+                    document.getElementById(""clickMe"").onclick = function () 
+                    {
+                        window.webkit.messageHandlers[""foobar""].postMessage(""HalloWelt"");
+                    };";
+                ucm.AddScript(new StringUserScript(code));
+            }
+
             Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
             webView.LoadUri("file:///mnt/daten/Programmierung/test.html");
             webView.HeightRequest.Value = 500;
