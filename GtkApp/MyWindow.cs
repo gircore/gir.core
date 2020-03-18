@@ -1,5 +1,6 @@
 using System;
 using Gtk.Core;
+using Handy.Core;
 using WebKitGTK.Core;
 
 namespace GtkApp
@@ -25,6 +26,8 @@ namespace GtkApp
         private GNotebook notebook;
         private WebView webView;
         private WebContext context;
+        private GPaginator paginator;
+        private GLabel b;
 
         public MyWindow(Gtk.Core.GApplication application) : base(application, "ui.glade") 
         { 
@@ -66,8 +69,13 @@ namespace GtkApp
             webView.HeightRequest.Value = 500;
             webView.WidthRequest.Value = 500;
 
+            paginator = new GPaginator();
+            paginator.Append(webView);
 
-            notebook.InsertPage("WebKit", webView, 2);
+            b = new GLabel("label");
+            paginator.Append(b);
+
+            notebook.InsertPage("Paginator", paginator, 2);
             Box.Add(notebook);
 
             checkButton = new GCheckButton("Check");

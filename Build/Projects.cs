@@ -6,6 +6,10 @@ static class Projects
     public const string GTK_WRAPPER = GTK + "Wrapper/";
     public const string GTK_CORE = GTK + "Core/";
 
+    private const string HANDY = "../Libs/Handy/";
+    public const string HANDY_WRAPPER = HANDY + "Wrapper/";
+    public const string HANDY_CORE = HANDY + "Core/";
+
     private const string WEBKITGTK = "../Libs/WebKitGTK/";
     public const string WEBKITGTK_WRAPPER = WEBKITGTK + "Wrapper/";
     public const string WEBKITGTK_CORE = WEBKITGTK + "Core/";
