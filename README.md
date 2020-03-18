@@ -12,7 +12,8 @@ Supported libraries
 * [GTK] (wip): UI-Toolkit
 * [WebKitGTK] (wip): Browser-Engine
 * [JavaScriptCore] (wip): Javascript integration for [WebKitGTK]
-* [libhandy] (planned): Convergent UI-Widgets for [GTK] to support mobile phones
+* [libhandy] (wip): Convergent UI-Widgets for [GTK] to support mobile phones
+* [dbus] (planned): Library for inter-process communication
 
 ## How is it done?
 The API is split in two layers. The lower layer just wraps all the methods (like `Gtk.HeaderBar.@new()`) and is completely generated.
@@ -62,3 +63,4 @@ Anyone who wants to help is very welcome. Just create a pull request for new cod
 [libhandy]: https://source.puri.sm/Librem5/libhandy
 [WebKitGTK]: https://webkitgtk.org/
 [JavaScriptCore]: https://webkitgtk.org/reference/jsc-glib/stable/index.html
+[dbus]: https://www.freedesktop.org/wiki/Software/dbus/
