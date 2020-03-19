@@ -4,10 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-      <Nullable>enable</Nullable>
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <PackageId>Gir.Wrapper.CS.Xlib</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Marcel Tiede</Authors>
+    <Company>GirCore</Company>
   </PropertyGroup>
 </Project>
