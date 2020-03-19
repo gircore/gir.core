@@ -1,19 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>8.0</LangVersion>
-  </PropertyGroup>
-
-   <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Gtk\Core\Gtk.Core.csproj" />
     <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
     <ProjectReference Include="..\Wrapper\Handy.Wrapper.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-      <Nullable>enable</Nullable>
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>8.0</LangVersion>
 
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <PackageId>Gir.Core.CS.Handy</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Marcel Tiede</Authors>
+    <Company>GirCore</Company>
+  </PropertyGroup>
 </Project>
