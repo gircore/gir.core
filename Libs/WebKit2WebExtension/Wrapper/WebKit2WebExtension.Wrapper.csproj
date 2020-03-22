@@ -1,16 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>8.0</LangVersion>
     <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
-
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
     <PackageId>Gir.Wrapper.CS.WebKit2WebExtension</PackageId>
-    <Version>0.1.0</Version>
-    <Authors>Marcel Tiede</Authors>
-    <Company>GirCore</Company>
   </PropertyGroup>
 </Project>
