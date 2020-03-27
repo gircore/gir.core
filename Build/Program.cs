@@ -3,13 +3,16 @@ using static SimpleExec.Command;
 using static Targets;
 using static Commands;
 using static Projects;
+using System;
 
 class Program
 {
-
     static void Main(string[] args)
     {
-        var GITHUB_TOKEN = args[0];
+        Environment.SetEnvironmentVariable("MSBUILDSINGLELOADCONTEXT", "1");
+
+        var TOKEN = args[0];
+        var bullseyeArgs = args[1..];
 
         Target(generate_wrapper, 
             ForEach(
@@ -49,17 +52,28 @@ class Program
 
         Target(build_core_projects, DependsOn(build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
 
-        Target(publish_alpha, DependsOn(build_core_projects), () => {
+        Target(publish_alpha, DependsOn(build_core_projects),
+            ForEach(
+                GLIB_WRAPPER,
+                CAIRO_WRAPPER,
+                XLIB_WRAPPER,
+                PANGO_WRAPPER,
+                GDK_WRAPPER,
+                GIO_WRAPPER,
+                GOBJECT_WRAPPER,
+                GDK_PIXBUF_WRAPPER,
+                GTK_WRAPPER), 
+            (project) => {
 
-            var configuration = "--configuration Release";
-            var pushParameter = $@"""bin/Release/*.nupkg"" -s ""github"" -k {GITHUB_TOKEN}";
+                var configuration = "--configuration Release";
+                var pushParameter = $@"""bin/Release/*.nupkg"" -s ""github"" -k {TOKEN}";
 
-            Run(dotnet, $"{pack} {configuration}");
-            //Run(dotnet, $"{nuget} {push} {pushParameter}");
+                Run(dotnet, $"{pack} {configuration}", project);
+                Run(dotnet, $"{nuget} {push} {pushParameter}");
         });
 
         Target("default", DependsOn(build_core_projects));
-        RunTargetsAndExit(args);
+        RunTargetsAndExit(bullseyeArgs);
     }
 
     private static void GenerateProject(string path)
