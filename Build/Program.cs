@@ -9,25 +9,29 @@ class Program
 
     static void Main(string[] args)
     {
-        Target(generate_wrapper, () => {
-            GenerateProject(CWRAPPER);
-            GenerateProject(GLIB_WRAPPER);
-            GenerateProject(CAIRO_WRAPPER);
-            GenerateProject(XLIB_WRAPPER);
-            GenerateProject(PANGO_WRAPPER);
-            GenerateProject(GDK_WRAPPER);
-            GenerateProject(GIO_WRAPPER);
-            GenerateProject(GOBJECT_WRAPPER);
-            GenerateProject(GDK_PIXBUF_WRAPPER);
-            GenerateProject(GTK_WRAPPER);
-            GenerateProject(HANDY_WRAPPER);
-        });
+        var GITHUB_TOKEN = args[0];
+
+        Target(generate_wrapper, 
+            ForEach(
+                CWRAPPER, 
+                GLIB_WRAPPER,
+                CAIRO_WRAPPER,
+                XLIB_WRAPPER,
+                PANGO_WRAPPER,
+                GDK_WRAPPER,
+                GIO_WRAPPER,
+                GOBJECT_WRAPPER,
+                GDK_PIXBUF_WRAPPER,
+                GTK_WRAPPER),
+            project => GenerateProject(project)
+        );
 
         Target(build_gtk_core, DependsOn(generate_wrapper), () => {
             Run(dotnet, $"{build} {GTK_CORE}");
         });
 
         Target(build_handy_core, DependsOn(build_gtk_core), () => {
+            GenerateProject(HANDY_WRAPPER);
             Run(dotnet, $"{build} {HANDY_CORE}");
         });
 
@@ -43,7 +47,18 @@ class Program
             Run(dotnet, $"{build} {WEBKIT2WEBEXTENSION_CORE}");
         });
 
-        Target("default", DependsOn(build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
+        Target(build_core_projects, DependsOn(build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
+
+        Target(publish_alpha, DependsOn(build_core_projects), () => {
+
+            var configuration = "--configuration Release";
+            var pushParameter = $@"""bin/Release/*.nupkg"" -s ""github"" -k {GITHUB_TOKEN}";
+
+            Run(dotnet, $"{pack} {configuration}");
+            //Run(dotnet, $"{nuget} {push} {pushParameter}");
+        });
+
+        Target("default", DependsOn(build_core_projects));
         RunTargetsAndExit(args);
     }
 

@@ -26,3 +26,7 @@ jobs:
     - name: Run build
       run: dotnet run
       working-directory: ./Build
+    - name: Publish alpha release to github
+      run: |
+        dotnet pack --configuration Release
+        dotnet nuget push "bin/Release/*.nupkg" -s "github" -k ${{ secrets.GITHUB_TOKEN }}
