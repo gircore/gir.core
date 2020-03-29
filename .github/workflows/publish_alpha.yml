@@ -1,9 +1,14 @@
-name: CI
+name: PublishAlpha
 
 on:
-  pull_request:
-    branches:
-      - develop
+  push:
+    tags:
+    - 'v*'
+
+#on:
+#  push:
+#    branches:
+#      - develop
 
 jobs:
   build:
@@ -12,7 +17,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull_request.head.sha }}
+        ref: 'develop'
+        fetch-depth: '0'
     - name: Checkout submodules
       shell: bash
       run: git submodule update --init --recursive
@@ -22,6 +28,8 @@ jobs:
     - name: Prepare build
       run: dotnet build
       working-directory: ./Build
-    - name: Build core projects
-      run: dotnet run -- build-core-projects
+    - name: Build and publish alpha release to nuget
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: dotnet run -- publish
       working-directory: ./Build

@@ -10,11 +10,17 @@
     <Company>GirCore</Company>
     <owners>badcel</owners>
 
-    <Version>0.1.0</Version>
-
-    <PackageProjectUrl>https://github.com/GirCore/gir.core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/GirCore/gir.core</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitVersionTask" Version="5.2.4" Condition="'$(Configuration)' == 'Release' ">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>
