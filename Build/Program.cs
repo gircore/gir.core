@@ -7,12 +7,18 @@ using System;
 
 class Program
 {
+    private static string configuration = "Debug";
+    private static string? NUGET_API_KEY = "";
+    private const string release = "Release";
+
     static void Main(string[] args)
     {
         Environment.SetEnvironmentVariable("MSBUILDSINGLELOADCONTEXT", "1");
+        NUGET_API_KEY = Environment.GetEnvironmentVariable("NUGET_API_KEY");
 
-        var TOKEN = args[0];
-        var bullseyeArgs = args[1..];
+        Target(use_release_configuration, () =>{
+            configuration = release;
+        });
 
         Target(generate_wrapper, 
             ForEach(
@@ -29,30 +35,28 @@ class Program
             project => GenerateProject(project)
         );
 
-        Target(build_gtk_core, DependsOn(generate_wrapper), () => {
-            Run(dotnet, $"{build} {GTK_CORE}");
-        });
+        Target(build_gtk_core, DependsOn(generate_wrapper), () => DotNetBuild(GTK_CORE));
 
         Target(build_handy_core, DependsOn(build_gtk_core), () => {
             GenerateProject(HANDY_WRAPPER);
-            Run(dotnet, $"{build} {HANDY_CORE}");
+            DotNetBuild(HANDY_CORE);
         });
 
         Target(build_webkitgtk_core, DependsOn(generate_wrapper), () => {
             GenerateProject(WEBKITGTK_WRAPPER);
             GenerateProject(JAVASCRIPT_CORE_WRAPPER);
             
-            Run(dotnet, $"{build} {WEBKITGTK_CORE}");
+            DotNetBuild(WEBKITGTK_CORE);
         });
 
         Target(build_webkit2webextensions_core, () => {
             GenerateProject(WEBKIT2WEBEXTENSION_WRAPPER);
-            Run(dotnet, $"{build} {WEBKIT2WEBEXTENSION_CORE}");
+            DotNetBuild(WEBKIT2WEBEXTENSION_CORE);
         });
 
         Target(build_core_projects, DependsOn(build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
 
-        Target(publish_alpha, DependsOn(build_core_projects),
+        Target(publish, DependsOn(use_release_configuration, build_core_projects),
             ForEach(
                 GLIB_WRAPPER,
                 CAIRO_WRAPPER,
@@ -62,25 +66,42 @@ class Program
                 GIO_WRAPPER,
                 GOBJECT_WRAPPER,
                 GDK_PIXBUF_WRAPPER,
-                GTK_WRAPPER), 
+                GTK_WRAPPER,
+                GOBJECT_CORE,
+                GLIB_CORE,
+                GIO_CORE,
+                GTK_CORE,
+                HANDY_CORE,
+                WEBKITGTK_CORE,
+                JAVASCRIPT_CORE_CORE), 
             (project) => {
-
-                var configuration = "--configuration Release";
-                var pushParameter = $@"""bin/Release/*.nupkg"" -s ""github"" -k {TOKEN}";
-
-                Run(dotnet, $"{pack} {configuration}", project);
-                Run(dotnet, $"{nuget} {push} {pushParameter}");
+                DotnetPack(project);
+                DotNetNugetPush(project);
         });
 
         Target("default", DependsOn(build_core_projects));
-        RunTargetsAndExit(bullseyeArgs);
+        RunTargetsAndExit(args);
     }
+
+    private static string GetDisableParallel() => configuration switch
+    {
+        release => " --disable-parallel",
+        _ => ""
+    };
+
+    private static void DotNetNugetPush(string project) => Run(dotnet, $@"{nuget} {push} ""bin/{configuration}/*.nupkg"" -s https://api.nuget.org/v3/index.json -k {NUGET_API_KEY} --skip-duplicate", project);
+    private static void DotnetPack(string project) => Run(dotnet, $"{pack} --nologo -c {configuration}", project);
+    private static void DotNetBuild(string project) {
+        Run(dotnet,$"{restore}{GetDisableParallel()} {project}");
+        Run(dotnet, $"{build} --no-restore --nologo -c {configuration}{GetDisableParallel()} {project}");
+    } 
+    private static void DotNetRun(string project) => Run(dotnet, $"{run} -c {configuration} {project}", project);
 
     private static void GenerateProject(string path)
     {
         path += "Generate/";
 
-        Run(dotnet, $"{build} {path}");
-        Run(dotnet, $"{run} {path}", path);
+        DotNetBuild(path);
+        DotNetRun(path);
     }
 }

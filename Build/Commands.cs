@@ -6,4 +6,5 @@ static class Commands
     public const string pack = "pack";
     public const string nuget = "nuget";
     public const string push = "push";
+    public const string restore = "restore";
 }
