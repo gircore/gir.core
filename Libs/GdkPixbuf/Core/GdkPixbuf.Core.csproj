@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Wrapper\GdkPixbufWrapper.csproj" />
-    <ProjectReference Include="..\..\GObject\Core\GObjectCore.csproj" />
+    <ProjectReference Include="..\Wrapper\GdkPixbuf.Wrapper.csproj" />
+    <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

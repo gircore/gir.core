@@ -37,9 +37,12 @@ static class Projects
     public const string JAVASCRIPT_CORE_WRAPPER = JAVASCRIPT_CORE + WRAPPER;
     public const string JAVASCRIPT_CORE_CORE = JAVASCRIPT_CORE + CORE;
     
+    public const string GDK_PIXBUF = "../Libs/GdkPixbuf/";
+    public const string GDK_PIXBUF_WRAPPER = GDK_PIXBUF + WRAPPER;
+    public const string GDK_PIXBUF_CORE = GDK_PIXBUF + CORE;
+
     public const string CAIRO_WRAPPER = "../Libs/Cairo/Wrapper/";
     public const string GDK_WRAPPER = "../Libs/Gdk/Wrapper/";
-    public const string GDK_PIXBUF_WRAPPER = "../Libs/GdkPixbuf/Wrapper/";
     public const string PANGO_WRAPPER = "../Libs/Pango/Wrapper/";
     public const string XLIB_WRAPPER = "../Libs/Xlib/Wrapper/";
 }

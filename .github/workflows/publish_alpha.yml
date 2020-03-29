@@ -2,13 +2,8 @@ name: PublishAlpha
 
 on:
   push:
-    tags:
-    - 'v*'
-
-#on:
-#  push:
-#    branches:
-#      - develop
+    branches:
+      - develop
 
 jobs:
   build:
