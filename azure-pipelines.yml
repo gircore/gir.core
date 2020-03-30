@@ -1,19 +1,56 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+
+variables:
+  versionbase: 0.1
+  increment: $[counter(variables['versionbase'], 1)]
+  version: $(versionbase).$(increment)
 
 trigger:
-- master
+  branches:
+    include:
+    - master
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: echo "##vso[build.updatebuildnumber]$(version)"
+  displayName: 'Set Build Number'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- checkout: self
+  displayName: 'Checkout with submodules'
+  submodules: true
+
+- task: UseDotNet@2
+  displayName: 'Prepare dotnet core'
+  inputs:
+    packageType: 'sdk'
+    version: '3.1.x'
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: 'build'
+    projects: 'Build/*.csproj'
+    arguments: '-c Release'
+    workingDirectory: 'Build'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'run'
+    projects: 'Build/*.csproj'
+    arguments: '-- release'
+    workingDirectory: 'Build'
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Binaries Artifact
+  inputs:
+    pathtoPublish: Output/Binaries
+    artifactName: Binaries
+    publishLocation: container
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish NuGet Artifact
+  inputs:
+    pathtoPublish: Output/Nuget
+    artifactName: NuGet
+    publishLocation: container
