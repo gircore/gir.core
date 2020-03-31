@@ -3,6 +3,7 @@ using static Targets;
 using static DotNet;
 using static Projects;
 using Gir;
+using System.Collections.Generic;
 
 class Program
 {
@@ -12,41 +13,33 @@ class Program
 
     static void Main(string[] args)
     {
-        Target<(string project, string girFile, string import)>(generate_wrapper, 
+        Target(generate_cwrapper, () =>{
+            Run(CWRAPPER + "Generate/", configuration);
+            Build(CWRAPPER, configuration);
+        });
+        Target<(string project, string girFile, string import, bool addAlias)>(generate_wrapper, 
+            DependsOn(generate_cwrapper),
             ForEach(
-                (CWRAPPER, "", ""), 
-                (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0"),
-                (CAIRO_WRAPPER, "cairo-1.0.gir", "TODO"),
-                (XLIB_WRAPPER, "xlib-2.0.gir", "TODO"),
-                (PANGO_WRAPPER, "Pango-1.0.gir", "TODO"),
-                (GDK_WRAPPER, "Gdk-3.0.gir", "TODO"),
-                (GIO_WRAPPER, "Gio-2.0.gir", "libgio-2.0.so.0"),
-                (GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0"),
-                (GDK_PIXBUF_WRAPPER, "GdkPixbuf-2.0.gir", "libgdk_pixbuf-2.0.so.0"),
-                (GTK_WRAPPER, "Gtk-3.0.gir", "libgtk-3.so.0")),
-            (x) => GenerateAndBuildProject(x.project, x.girFile, x.import)
+                (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false),
+                (CAIRO_WRAPPER, "cairo-1.0.gir", "TODO", false),
+                (XLIB_WRAPPER, "xlib-2.0.gir", "TODO", false),
+                (PANGO_WRAPPER, "Pango-1.0.gir", "TODO", false),
+                (GDK_WRAPPER, "Gdk-3.0.gir", "TODO", true),
+                (GIO_WRAPPER, "Gio-2.0.gir", "libgio-2.0.so.0", true),
+                (GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
+                (GDK_PIXBUF_WRAPPER, "GdkPixbuf-2.0.gir", "libgdk_pixbuf-2.0.so.0", true),
+                (GTK_WRAPPER, "Gtk-3.0.gir", "libgtk-3.so.0", true),
+                (JAVASCRIPT_CORE_WRAPPER, "JavaScriptCore-4.0.gir", "javascriptcoregtk-4.0.so", false), (HANDY_WRAPPER, "Handy-0.0.gir", "libhandy-0.0.so.0", false),
+                (WEBKITGTK_WRAPPER, "WebKit2-4.0.gir", "libwebkit2gtk-4.0.so.37", true),
+                (WEBKIT2WEBEXTENSION_WRAPPER, "WebKit2WebExtension-4.0.gir", "WEBEXTENSION", true)),
+            (x) => GenerateAndBuildProject(x.project, x.girFile, x.import, x.addAlias)
         );
 
         Target(build_gdkpixbuf_core, DependsOn(generate_wrapper), () => Build(GDK_PIXBUF_CORE, configuration));
-
         Target(build_gtk_core, DependsOn(generate_wrapper), () => Build(GTK_CORE, configuration));
-
-        Target(build_handy_core, DependsOn(build_gtk_core), () => {
-            GenerateAndBuildProject(HANDY_WRAPPER);
-            Build(HANDY_CORE, configuration);
-        });
-
-        Target(build_webkitgtk_core, DependsOn(generate_wrapper), () => {
-            GenerateAndBuildProject(WEBKITGTK_WRAPPER);
-            GenerateAndBuildProject(JAVASCRIPT_CORE_WRAPPER);
-            
-            Build(WEBKITGTK_CORE, configuration);
-        });
-
-        Target(build_webkit2webextensions_core, () => {
-            GenerateAndBuildProject(WEBKIT2WEBEXTENSION_WRAPPER);
-            Build(WEBKIT2WEBEXTENSION_CORE, configuration);
-        });
+        Target(build_handy_core, DependsOn(build_gtk_core), () => Build(HANDY_CORE, configuration));
+        Target(build_webkitgtk_core, DependsOn(generate_wrapper), () => Build(WEBKITGTK_CORE, configuration));
+        Target(build_webkit2webextensions_core, DependsOn(generate_wrapper), () => Build(WEBKIT2WEBEXTENSION_CORE, configuration));
 
         Target(Targets.build, DependsOn(build_gdkpixbuf_core, build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
 
@@ -76,18 +69,22 @@ class Program
         RunTargetsAndExit(args);
     }
 
-    private static void GenerateAndBuildProject(string project, string girFile, string import)
+    private static void GenerateAndBuildProject(string project, string girFile, string import, bool addGlibAliases)
     {
         var girPath = $"../gir-files/{girFile}";
         var outputDir = project + "Generated";
 
-        GenerateProject(outputDir, girPath, import);
+        GenerateProject(outputDir, girPath, import, addGlibAliases);
         Build(project, configuration);
     }
 
-    private static void GenerateProject(string outputDir, string girFile, string import)
+    private static void GenerateProject(string outputDir, string girFile, string import, bool addGlibAliases)
     {
-        var girWrapper = new GirCWrapper(girFile, outputDir, $"\"{import}\"", "../gir-files/GLib-2.0.gir");
+        var list = new List<string>();
+        if(addGlibAliases)
+            list.Add("../gir-files/GLib-2.0.gir");
+
+        var girWrapper = new GirCWrapper(girFile, outputDir, $"\"{import}\"", list.ToArray());
         girWrapper.CreateClasses();
         girWrapper.CreateInterfaces();
         girWrapper.CreateEnums();

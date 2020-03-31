@@ -7,12 +7,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
     <PackageId>Gir.Wrapper.CS.Gtk</PackageId>
   </PropertyGroup>
-
-  <PropertyGroup>
-      
-  </PropertyGroup>
-
 </Project>

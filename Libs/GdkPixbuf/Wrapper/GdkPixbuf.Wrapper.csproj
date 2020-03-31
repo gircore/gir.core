@@ -5,7 +5,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
     <PackageId>Gir.Wrapper.CS.GdkPixbuf</PackageId>
   </PropertyGroup>
 </Project>

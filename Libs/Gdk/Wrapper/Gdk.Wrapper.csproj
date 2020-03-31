@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
     <ProjectReference Include="..\..\Pango\Wrapper\Pango.Wrapper.csproj" />
     <ProjectReference Include="..\..\Cairo\Wrapper\Cairo.Wrapper.csproj" />
@@ -7,7 +6,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
     <PackageId>Gir.Wrapper.CS.Gdk</PackageId>
   </PropertyGroup>
 </Project>
