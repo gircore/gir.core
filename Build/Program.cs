@@ -65,7 +65,6 @@ class Program
         Target(build_webkit2webextensions_core, DependsOn(generate_wrapper), () => Build(WEBKIT2WEBEXTENSION_CORE, configuration));
 
         Target(Targets.build, DependsOn(build_gdkpixbuf_core, build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
-        Target(Targets.pack, DependsOn(Targets.build), ForEach(allProjects), (project) => Pack(project, configuration));
         Target(Targets.clean, ForEach(allProjects), (project) => Clean(project, configuration));
         
         Target(Targets.release, () => configuration = confRelease);

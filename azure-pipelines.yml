@@ -7,6 +7,7 @@ trigger:
   branches:
     include:
     - master
+    - develop
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -38,11 +39,4 @@ steps:
   inputs:
     pathtoPublish: Output/Release/Binaries
     artifactName: Binaries
-    publishLocation: container
-
-- task: PublishBuildArtifacts@1
-  displayName: Publish NuGet Artifact
-  inputs:
-    pathtoPublish: Output/Release/Nuget
-    artifactName: NuGet
     publishLocation: container
