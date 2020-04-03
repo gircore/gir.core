@@ -11,12 +11,35 @@ class Program
     private const string confRelease = "Release";
     private const string confDebug = "Debug";
 
+    private static string[] allProjects = {
+        GLIB_WRAPPER,
+        CAIRO_WRAPPER,
+        XLIB_WRAPPER,
+        PANGO_WRAPPER,
+        GDK_WRAPPER,
+        GIO_WRAPPER,
+        GOBJECT_WRAPPER,
+        GDK_PIXBUF_WRAPPER,
+        GTK_WRAPPER,
+        WEBKIT2WEBEXTENSION_WRAPPER,
+        GOBJECT_CORE,
+        GDK_PIXBUF_CORE,
+        GLIB_CORE,
+        GIO_CORE,
+        GTK_CORE,
+        HANDY_CORE,
+        WEBKITGTK_CORE,
+        JAVASCRIPT_CORE_CORE,
+        WEBKIT2WEBEXTENSION_CORE
+    };
+
     static void Main(string[] args)
     {
         Target(generate_cwrapper, () =>{
             Run(CWRAPPER + "Generate/", configuration);
             Build(CWRAPPER, configuration);
         });
+        
         Target<(string project, string girFile, string import, bool addAlias)>(generate_wrapper, 
             DependsOn(generate_cwrapper),
             ForEach(
@@ -42,28 +65,11 @@ class Program
         Target(build_webkit2webextensions_core, DependsOn(generate_wrapper), () => Build(WEBKIT2WEBEXTENSION_CORE, configuration));
 
         Target(Targets.build, DependsOn(build_gdkpixbuf_core, build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
-
-        Target(clean, ForEach(GLIB_WRAPPER,
-                CAIRO_WRAPPER,
-                XLIB_WRAPPER,
-                PANGO_WRAPPER,
-                GDK_WRAPPER,
-                GIO_WRAPPER,
-                GOBJECT_WRAPPER,
-                GDK_PIXBUF_WRAPPER,
-                GTK_WRAPPER,
-                GOBJECT_CORE,
-                GDK_PIXBUF_CORE,
-                GLIB_CORE,
-                GIO_CORE,
-                GTK_CORE,
-                HANDY_CORE,
-                WEBKITGTK_CORE,
-                JAVASCRIPT_CORE_CORE),
-            (project) => Clean(project, configuration));
+        Target(Targets.pack, DependsOn(Targets.build), ForEach(allProjects), (project) => Pack(project, configuration));
+        Target(Targets.clean, ForEach(allProjects), (project) => Clean(project, configuration));
         
-        Target(release, () => configuration = confRelease);
-        Target(debug, () => configuration = confDebug);
+        Target(Targets.release, () => configuration = confRelease);
+        Target(Targets.debug, () => configuration = confDebug);
 
         Target("default", DependsOn(Targets.build));
         RunTargetsAndExit(args);

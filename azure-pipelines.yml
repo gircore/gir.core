@@ -1,6 +1,5 @@
-
 variables:
-  versionbase: 0.1
+  versionbase: 0.1.1
   increment: $[counter(variables['versionbase'], 1)]
   version: $(versionbase).$(increment)
 
@@ -27,30 +26,23 @@ steps:
     version: '3.1.x'
 
 - task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    command: 'build'
-    projects: 'Build/*.csproj'
-    arguments: '-c Release'
-    workingDirectory: 'Build'
-
-- task: DotNetCoreCLI@2
+  displayName: Run release build
   inputs:
     command: 'run'
     projects: 'Build/*.csproj'
-    arguments: '-- release'
+    arguments: '-- release build'
     workingDirectory: 'Build'
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Binaries Artifact
   inputs:
-    pathtoPublish: Output/Binaries
+    pathtoPublish: Output/Release/Binaries
     artifactName: Binaries
     publishLocation: container
 
 - task: PublishBuildArtifacts@1
   displayName: Publish NuGet Artifact
   inputs:
-    pathtoPublish: Output/Nuget
+    pathtoPublish: Output/Release/Nuget
     artifactName: NuGet
     publishLocation: container

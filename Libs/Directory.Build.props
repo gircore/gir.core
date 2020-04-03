@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RuntimeIdentifier>linux</RuntimeIdentifier>
     <LangVersion>8.0</LangVersion>
 
     <Nullable>enable</Nullable>
@@ -18,10 +19,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>..\..\Output\Debug</OutputPath>
+    <OutputPath>..\..\..\Output\Debug\Binaries</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>..\..\Output\Release</OutputPath>
+    <OutputPath>..\..\..\Output\Release\Binaries</OutputPath>
   </PropertyGroup>
 </Project>
