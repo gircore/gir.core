@@ -6,7 +6,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
     <PackageId>Gir.Wrapper.CS.WebKitGTK</PackageId>
   </PropertyGroup>
 </Project>

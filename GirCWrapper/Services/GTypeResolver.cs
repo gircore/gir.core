@@ -69,8 +69,6 @@ namespace Gir
         {
             ("none", _) => ("void", true),
             ("gboolean", _) => ("bool", true),
-            ("gint16", _) => ("short", true),
-            ("guint16", _) => ("ushort", true),
             ("gfloat", _) => ("float", true),
             ("utf8", _) => ("string", false),
             ("filename", _) => ("string", false),
@@ -79,6 +77,8 @@ namespace Gir
             ("Value", "JSCValue*") => ("IntPtr", false),
             ("Value", _) => ("GObject.Value", true),
 
+            var t when t.typeName.In("guint16", "gushort") => ("ushort", true),
+            var t when t.typeName.In("gint16", "gshort") => ("short", true),
             var t when t.typeName.In("gdouble", "long double") => ("double", true),
             var t when t.typeName.In("gint","gint32") => ("int", true),
             var t when t.typeName.In("guint", "guint32", "GLib.Quark", "GQuark", "gunichar") => ("uint", true),

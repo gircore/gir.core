@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
     <PackageId>Gir.Wrapper.CS.GLib</PackageId>
   </PropertyGroup>
 </Project>

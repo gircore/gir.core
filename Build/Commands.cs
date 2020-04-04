@@ -7,4 +7,5 @@ static class Commands
     public const string nuget = "nuget";
     public const string push = "push";
     public const string restore = "restore";
+    public const string clean = "clean";
 }

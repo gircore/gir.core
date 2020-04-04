@@ -4,7 +4,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);Generate\**</DefaultItemExcludes>
     <PackageId>Gir.Wrapper.CS.JavascriptCore</PackageId>
   </PropertyGroup>
 </Project>

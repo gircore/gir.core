@@ -1,132 +1,94 @@
 ﻿using static Bullseye.Targets;
-using static SimpleExec.Command;
 using static Targets;
-using static Commands;
+using static DotNet;
 using static Projects;
-using System;
+using Gir;
+using System.Collections.Generic;
 
 class Program
 {
-    private static string configuration = "Debug";
-    private static string? NUGET_API_KEY = "";
-    private const string release = "Release";
+    private static string configuration = confDebug;
+    private const string confRelease = "Release";
+    private const string confDebug = "Debug";
+
+    private static string[] allProjects = {
+        GLIB_WRAPPER,
+        CAIRO_WRAPPER,
+        XLIB_WRAPPER,
+        PANGO_WRAPPER,
+        GDK_WRAPPER,
+        GIO_WRAPPER,
+        GOBJECT_WRAPPER,
+        GDK_PIXBUF_WRAPPER,
+        GTK_WRAPPER,
+        WEBKIT2WEBEXTENSION_WRAPPER,
+        GOBJECT_CORE,
+        GDK_PIXBUF_CORE,
+        GLIB_CORE,
+        GIO_CORE,
+        GTK_CORE,
+        HANDY_CORE,
+        WEBKITGTK_CORE,
+        JAVASCRIPT_CORE_CORE,
+        WEBKIT2WEBEXTENSION_CORE
+    };
 
     static void Main(string[] args)
-    {
-        Environment.SetEnvironmentVariable("MSBUILDSINGLELOADCONTEXT", "1");
-        NUGET_API_KEY = Environment.GetEnvironmentVariable("NUGET_API_KEY");
-
-        Target(use_release_configuration, () =>{
-            configuration = release;
-        });
-
-        Target(generate_wrapper, 
+    {        
+        Target<(string project, string girFile, string import, bool addAlias)>(generate_wrapper, 
             ForEach(
-                CWRAPPER, 
-                GLIB_WRAPPER,
-                CAIRO_WRAPPER,
-                XLIB_WRAPPER,
-                PANGO_WRAPPER,
-                GDK_WRAPPER,
-                GIO_WRAPPER,
-                GOBJECT_WRAPPER,
-                GDK_PIXBUF_WRAPPER,
-                GTK_WRAPPER),
-            project => GenerateProject(project)
+                (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false),
+                (GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
+                (GIO_WRAPPER, "Gio-2.0.gir", "libgio-2.0.so.0", true),
+                (CAIRO_WRAPPER, "cairo-1.0.gir", "TODO", false),
+                (XLIB_WRAPPER, "xlib-2.0.gir", "TODO", false),
+                (PANGO_WRAPPER, "Pango-1.0.gir", "TODO", false),
+                (GDK_WRAPPER, "Gdk-3.0.gir", "TODO", true),
+                (GDK_PIXBUF_WRAPPER, "GdkPixbuf-2.0.gir", "libgdk_pixbuf-2.0.so.0", true),
+                (GTK_WRAPPER, "Gtk-3.0.gir", "libgtk-3.so.0", true),
+                (JAVASCRIPT_CORE_WRAPPER, "JavaScriptCore-4.0.gir", "javascriptcoregtk-4.0.so", false), (HANDY_WRAPPER, "Handy-0.0.gir", "libhandy-0.0.so.0", false),
+                (WEBKITGTK_WRAPPER, "WebKit2-4.0.gir", "libwebkit2gtk-4.0.so.37", true),
+                (WEBKIT2WEBEXTENSION_WRAPPER, "WebKit2WebExtension-4.0.gir", "WEBEXTENSION", true)),
+            (x) => GenerateAndBuildProject(x.project, x.girFile, x.import, x.addAlias)
         );
 
-        Target(build_gdkpixbuf_core, DependsOn(generate_wrapper), () => DotNetBuild(GDK_PIXBUF_CORE));
+        Target(build_gdkpixbuf_core, DependsOn(generate_wrapper), () => Build(GDK_PIXBUF_CORE, configuration));
+        Target(build_gtk_core, DependsOn(generate_wrapper), () => Build(GTK_CORE, configuration));
+        Target(build_handy_core, DependsOn(build_gtk_core), () => Build(HANDY_CORE, configuration));
+        Target(build_webkitgtk_core, DependsOn(generate_wrapper), () => Build(WEBKITGTK_CORE, configuration));
+        Target(build_webkit2webextensions_core, DependsOn(generate_wrapper), () => Build(WEBKIT2WEBEXTENSION_CORE, configuration));
 
-        Target(build_gtk_core, DependsOn(generate_wrapper), () => DotNetBuild(GTK_CORE));
+        Target(Targets.build, DependsOn(build_gdkpixbuf_core, build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
+        Target(Targets.clean, ForEach(allProjects), (project) => Clean(project, configuration));
+        
+        Target(Targets.release, () => configuration = confRelease);
+        Target(Targets.debug, () => configuration = confDebug);
 
-        Target(build_handy_core, DependsOn(build_gtk_core), () => {
-            GenerateProject(HANDY_WRAPPER);
-            DotNetBuild(HANDY_CORE);
-        });
-
-        Target(build_webkitgtk_core, DependsOn(generate_wrapper), () => {
-            GenerateProject(WEBKITGTK_WRAPPER);
-            GenerateProject(JAVASCRIPT_CORE_WRAPPER);
-            
-            DotNetBuild(WEBKITGTK_CORE);
-        });
-
-        Target(build_webkit2webextensions_core, () => {
-            GenerateProject(WEBKIT2WEBEXTENSION_WRAPPER);
-            DotNetBuild(WEBKIT2WEBEXTENSION_CORE);
-        });
-
-        Target(build_core_projects, DependsOn(build_gdkpixbuf_core, build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
-
-        Target(publish, DependsOn(use_release_configuration, build_core_projects),
-            ForEach(
-                GLIB_WRAPPER,
-                CAIRO_WRAPPER,
-                XLIB_WRAPPER,
-                PANGO_WRAPPER,
-                GDK_WRAPPER,
-                GIO_WRAPPER,
-                GOBJECT_WRAPPER,
-                GDK_PIXBUF_WRAPPER,
-                GTK_WRAPPER,
-                GOBJECT_CORE,
-                GDK_PIXBUF_CORE,
-                GLIB_CORE,
-                GIO_CORE,
-                GTK_CORE,
-                HANDY_CORE,
-                WEBKITGTK_CORE,
-                JAVASCRIPT_CORE_CORE), 
-            (project) => {
-                DotnetPack(project);
-                DotNetNugetPush(project);
-        });
-
-        Target(clean, ForEach(GLIB_WRAPPER,
-                CAIRO_WRAPPER,
-                XLIB_WRAPPER,
-                PANGO_WRAPPER,
-                GDK_WRAPPER,
-                GIO_WRAPPER,
-                GOBJECT_WRAPPER,
-                GDK_PIXBUF_WRAPPER,
-                GTK_WRAPPER,
-                GOBJECT_CORE,
-                GDK_PIXBUF_CORE,
-                GLIB_CORE,
-                GIO_CORE,
-                GTK_CORE,
-                HANDY_CORE,
-                WEBKITGTK_CORE,
-                JAVASCRIPT_CORE_CORE),
-            (project) => DotNetClean(project));
-
-        Target(clean_release, DependsOn(use_release_configuration, clean));
-
-        Target("default", DependsOn(build_core_projects));
+        Target("default", DependsOn(Targets.build));
         RunTargetsAndExit(args);
     }
 
-    private static string GetDisableParallel() => configuration switch
+    private static void GenerateAndBuildProject(string project, string girFile, string import, bool addGlibAliases)
     {
-        release => " --disable-parallel",
-        _ => ""
-    };
+        var girPath = $"../gir-files/{girFile}";
+        var outputDir = project + "Generated";
 
-    private static void DotNetNugetPush(string project) => Run(dotnet, $@"{nuget} {push} ""bin/{configuration}/*.nupkg"" -s https://api.nuget.org/v3/index.json -k {NUGET_API_KEY} --skip-duplicate", project);
-    private static void DotnetPack(string project) => Run(dotnet, $"{pack} --nologo --no-build -c {configuration}", project);
-    private static void DotNetBuild(string project) {
-        Run(dotnet,$"{restore}{GetDisableParallel()} {project}");
-        Run(dotnet, $"{build} --no-restore --nologo -c {configuration}{GetDisableParallel()} {project}");
-    } 
-    private static void DotNetRun(string project) => Run(dotnet, $"{run} -c {configuration} {project}", project);
-    private static void DotNetClean(string project) => Run(dotnet, $"{clean} --nologo -c {configuration}", project);
+        GenerateProject(outputDir, girPath, import, addGlibAliases);
+        Build(project, configuration);
+    }
 
-    private static void GenerateProject(string path)
+    private static void GenerateProject(string outputDir, string girFile, string import, bool addGlibAliases)
     {
-        path += "Generate/";
+        var list = new List<string>();
+        if(addGlibAliases)
+            list.Add("../gir-files/GLib-2.0.gir");
 
-        DotNetBuild(path);
-        DotNetRun(path);
+        var girWrapper = new GirCWrapper(girFile, outputDir, $"\"{import}\"", list.ToArray());
+        girWrapper.CreateClasses();
+        girWrapper.CreateInterfaces();
+        girWrapper.CreateEnums();
+        girWrapper.CreateStructs();
+        girWrapper.CreateDelegates();
+        girWrapper.CreateMethods();
     }
 }
