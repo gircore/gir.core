@@ -1,6 +1,5 @@
 static class Targets
 {
-    public const string generate_cwrapper = "generate-cwrapper";
     public const string generate_wrapper = "generate-wrapper";
     public const string build_gtk_core = "build-gtk-core";
     public const string build_handy_core = "build-handy-core";

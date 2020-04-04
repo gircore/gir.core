@@ -34,14 +34,8 @@ class Program
     };
 
     static void Main(string[] args)
-    {
-        Target(generate_cwrapper, () =>{
-            Run(CWRAPPER + "Generate/", configuration);
-            Build(CWRAPPER, configuration);
-        });
-        
+    {        
         Target<(string project, string girFile, string import, bool addAlias)>(generate_wrapper, 
-            DependsOn(generate_cwrapper),
             ForEach(
                 (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false),
                 (CAIRO_WRAPPER, "cairo-1.0.gir", "TODO", false),
