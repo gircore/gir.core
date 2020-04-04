@@ -35,6 +35,7 @@ steps:
     workingDirectory: 'Build'
 
 - task: PublishBuildArtifacts@1
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   displayName: Publish Binaries Artifact
   inputs:
     pathtoPublish: Output/Release/Binaries
