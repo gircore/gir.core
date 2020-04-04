@@ -13,8 +13,6 @@
 
     <RepositoryUrl>https://github.com/GirCore/gir.core</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <IncludeSymbols>true</IncludeSymbols>
-    <IncludeSource>true</IncludeSource>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 </Project>

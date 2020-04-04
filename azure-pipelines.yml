@@ -34,10 +34,19 @@ steps:
     arguments: '-- release build'
     workingDirectory: 'Build'
 
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'Libs'
+    includeRootFolder: false
+    archiveType: 'tar'
+    tarCompression: 'gz'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).tar.gz'
+    replaceExistingArchive: true
+
 - task: PublishBuildArtifacts@1
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   displayName: Publish source and binaries
   inputs:
-    pathtoPublish: Libs
-    artifactName: Libs
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: LibsArchive
     publishLocation: container
