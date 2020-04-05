@@ -14,6 +14,7 @@ Supported libraries
 * [JavaScriptCore] (wip): Javascript integration for [WebKitGTK]
 * [libhandy] (wip): Convergent UI-Widgets for [GTK] to support mobile phones
 * [dbus] (planned): Library for inter-process communication
+* [libchamplain] (planned): Library to display maps
 
 ## How is it done?
 The API is split in two layers. The lower layer just wraps all the methods (like `Gtk.HeaderBar.@new()`) and is completely generated.
@@ -64,3 +65,4 @@ Anyone who wants to help is very welcome. Just create a pull request for new cod
 [WebKitGTK]: https://webkitgtk.org/
 [JavaScriptCore]: https://webkitgtk.org/reference/jsc-glib/stable/index.html
 [dbus]: https://www.freedesktop.org/wiki/Software/dbus/
+[libchamplain]: https://wiki.gnome.org/Projects/libchamplain
