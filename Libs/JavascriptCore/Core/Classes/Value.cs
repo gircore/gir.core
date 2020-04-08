@@ -28,14 +28,19 @@ namespace JavaScriptCore.Core
         public bool IsUndefined() => JavaScriptCore.Value.is_undefined(this);
         public bool IsBool() => JavaScriptCore.Value.is_boolean(this);
         public bool IsObject() => JavaScriptCore.Value.is_object(this);
+        public bool IsFunction() => JavaScriptCore.Value.is_function(this);
+        public bool IsArray() => JavaScriptCore.Value.is_array(this);
 
         public bool HasProperty(string name) => JavaScriptCore.Value.object_has_property(this, name);
-        public void InvokeMethod(string name)
+        public Value InvokeMethod(string name)
         {
             var array = new GObject.Value[0];
-            JavaScriptCore.Value.object_invoke_methodv(this, name, 0, array);
+            var ret = JavaScriptCore.Value.object_invoke_methodv(this, name, 0, array);
+
+            return new Value(ret);
         }
 
         public Value GetProperty(string name) => new Value(JavaScriptCore.Value.object_get_property(this, name));
+        public Value GetPropertyAtIndex(uint index) => new Value(JavaScriptCore.Value.object_get_property_at_index(this, index));
     }
 }

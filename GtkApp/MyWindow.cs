@@ -52,15 +52,21 @@ namespace GtkApp
             settings.EnableDeveloperExtras.Value = true;
 
             var ucm = webView.GetUserContentManager();
-            var ret = ucm.RegisterScriptMessageHandler("foobar", (value) => Console.WriteLine(value.GetString()));
+            var ret = ucm.RegisterScriptMessageHandler("foobar", JsCallback);
 
             if(ret)
             {
-                var code = @"
-                    document.getElementById(""clickMe"").onclick = function () 
-                    {
-                        window.webkit.messageHandlers[""foobar""].postMessage(""HalloWelt"");
-                    };";
+                var code = @"                    
+                    (function(globalContext) {
+                        globalContext.document.getElementById(""clickMe"").onclick = function () 
+                        {
+                            var message = {
+                                myProp : ""5"",
+                            };
+                            window.webkit.messageHandlers[""foobar""].postMessage(message);
+                        };
+                    })(this)
+                    ";
                 ucm.AddScript(new StringUserScript(code));
             }
 
@@ -100,6 +106,22 @@ namespace GtkApp
 
             action = new SimpleCommand((o) => Console.WriteLine("Do it!"));
             application.AddAction("do", action);
+        }
+
+        private void JsCallback(JavaScriptCore.Core.Value value)
+        {
+            if(value.IsString())
+            {
+                Console.WriteLine(value.GetString());
+            }
+            if(value.IsObject())
+            {
+                //var tet = value.InvokeMethod("Test");
+                //Console.WriteLine(tet.GetString());
+
+                var p = value.GetProperty("myProp");
+                Console.WriteLine(p.GetString());
+            }
         }
 
         private void OnInitializeWebExtension(object? sender, EventArgs args)
