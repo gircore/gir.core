@@ -1,5 +1,8 @@
 namespace Gtk.Core
 {
+    ///<summary>
+    /// In sync with Gtk.RevealerTransitionType
+    ///</summary>
     public enum RevealerTransitionType : long
     {
         None = 0,
