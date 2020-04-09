@@ -17,11 +17,9 @@ namespace Gtk.Core
                 set: Set
             );
 
-            TransitionType = Property<RevealerTransitionType, Gtk.RevealerTransitionType>("transition-type",
-                get : GetEnum<Gtk.RevealerTransitionType>,
-                set : SetEnum<Gtk.RevealerTransitionType>,
-                to: RevealerTransitionTypeConverter.ToGtk,
-                from: RevealerTransitionTypeConverter.FromGtk
+            TransitionType = Property<RevealerTransitionType>("transition-type",
+                get : GetEnum<RevealerTransitionType>,
+                set : SetEnum<RevealerTransitionType>
             );
 
             Reveal = Property<bool>("reveal-child",
