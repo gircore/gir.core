@@ -40,7 +40,16 @@ namespace JavaScriptCore.Core
             return new Value(ret);
         }
 
-        public Value GetProperty(string name) => new Value(JavaScriptCore.Value.object_get_property(this, name));
-        public Value GetPropertyAtIndex(uint index) => new Value(JavaScriptCore.Value.object_get_property_at_index(this, index));
+        public Value GetProperty(string name) => GetProperty(JavaScriptCore.Value.object_get_property(this, name));
+
+        public Value GetPropertyAtIndex(uint index) => GetProperty(JavaScriptCore.Value.object_get_property_at_index(this, index));
+
+        private Value GetProperty(IntPtr ptr)
+        {
+            if(TryGetObject(ptr, out var obj))
+                return (Value) obj!;
+            else
+                return new Value(ptr);
+        }
     }
 }

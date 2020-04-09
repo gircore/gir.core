@@ -84,5 +84,7 @@ namespace GObject.Core
             objects.TryGetValue(val, out var ret);
             return ret;
         }
+
+        protected bool TryGetObject(IntPtr handle, out GObject? obj) => objects.TryGetValue(handle, out obj);
     }
 }
