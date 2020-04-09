@@ -1,5 +1,8 @@
 namespace Gtk.Core
 {
+    ///<summary>
+    /// In sync with Gtk.IconSize
+    ///</summary>
     public enum IconSize : long
     {
         Invalid = 0,

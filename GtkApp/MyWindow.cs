@@ -70,7 +70,9 @@ namespace GtkApp
             webView.WidthRequest.Value = 500;
 
             paginator = new GPaginator();
+            paginator.AllowMouseDrag.Value = true;
             paginator.Append(webView);
+            paginator.IndicatorStyle.Value = PaginatorIndicatorStyle.Lines;
 
             b = new GLabel("label");
             paginator.Append(b);

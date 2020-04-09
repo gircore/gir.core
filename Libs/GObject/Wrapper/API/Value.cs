@@ -39,6 +39,7 @@ namespace GObject
         public static explicit operator uint (Value value) => Value.get_uint(ref value);
         public static explicit operator int (Value value) => Value.get_int(ref value);
         public static explicit operator long (Value value) => Value.get_long(ref value);
+        public static explicit operator double (Value value) => Value.get_double(ref value);
         public static explicit operator string (Value value) 
         {
             var ptr = Value.get_string(ref value);

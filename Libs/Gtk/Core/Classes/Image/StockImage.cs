@@ -8,7 +8,7 @@ namespace Gtk.Core
         public Property<int> PixelSize { get; }
         public Property<string> Name { get; } 
 
-        public StockImage(string name, IconSize size) : this(Gtk.Image.new_from_icon_name(name, size.ToGtk())) {}
+        public StockImage(string name, IconSize size) : this(Gtk.Image.new_from_icon_name(name, (Gtk.IconSize)size)) {}
         internal StockImage(IntPtr handle) : base(handle)
         {
             Name = Property<string>("icon-name",

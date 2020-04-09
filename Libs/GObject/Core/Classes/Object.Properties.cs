@@ -53,6 +53,11 @@ namespace GObject.Core
             using var v = GetProperty(propertyName);
             return (bool) v;
         }
+        protected double GetDouble([CallerMemberName] string? propertyName = null)
+        {
+            using var v = GetProperty(propertyName);
+            return (double) v;
+        }
 
         protected uint GetUInt([CallerMemberName] string? propertyName = null)
         {
