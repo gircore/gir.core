@@ -118,9 +118,6 @@ namespace GtkApp
             }
             if(value.IsObject())
             {
-                //var tet = value.InvokeMethod("Test");
-                //Console.WriteLine(tet.GetString());
-
                 var p = value.GetProperty("myProp");
                 Console.WriteLine(p.GetString());
             }
@@ -140,6 +137,5 @@ namespace GtkApp
             var inspector = webView.GetInspector();
             inspector.Show();
         } 
-
     }
 }
