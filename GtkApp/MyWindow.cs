@@ -66,6 +66,8 @@ namespace GtkApp
                             window.webkit.messageHandlers[""foobar""].postMessage(message);
                         };
                     })(this)
+
+                    function test() { return 'test' }
                     ";
                 ucm.AddScript(new StringUserScript(code));
             }
@@ -136,6 +138,8 @@ namespace GtkApp
 
             var inspector = webView.GetInspector();
             inspector.Show();
+
+            webView.RunJavascript("test()", (value) => Console.WriteLine(value.GetString()));
         } 
     }
 }
