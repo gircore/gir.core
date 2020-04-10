@@ -85,6 +85,12 @@ namespace GObject.Core
             return ret;
         }
 
-        protected bool TryGetObject(IntPtr handle, out GObject? obj) => objects.TryGetValue(handle, out obj);
+        protected bool TryGetObject<T>(IntPtr handle, out T? obj) where T: GObject
+        { 
+            var result = objects.TryGetValue(handle, out var ret);
+            obj = (T) ret;
+            
+            return result;
+        }
     }
 }
