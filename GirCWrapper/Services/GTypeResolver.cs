@@ -88,6 +88,7 @@ namespace Gir
 
             var t when t.typeName.In("TokenValue", "IConv", "GType") => throw new NotSupportedException($"{typeName} is not supported"),
             var t when t.typeName.StartsWith("Atk.") => throw new NotSupportedException($"{typeName} is not supported"),
+            var t when t.typeName.StartsWith("Clutter") => throw new NotSupportedException($"{typeName} is not supported"),
 
             _ => (typeName, false)
         };

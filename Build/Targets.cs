@@ -6,6 +6,7 @@ static class Targets
     public const string build_webkitgtk_core = "build-webkitgtk-core";
     public const string build_gdkpixbuf_core = "build-gdkpixbuf-core";
     public const string build_webkit2webextensions_core = "build-webkit2webextensions-core";
+    public const string build_gtkchamplain_core = "build-champlain-core";
     public const string build = "build";
     public const string clean = "clean";
     public const string debug = "debug";
