@@ -21,25 +21,10 @@ namespace Gtk.Core
         {
             data = new Dictionary<GWidget, GWidget>();
 
-            Page = Property<int>("page",
-                get: GetInt,
-                set: Set
-            );
-
-            ShowTabs = Property<bool>("show-tabs",
-                get: GetBool,
-                set: Set
-            );
-
-            Scrollable = Property<bool>("scrollable",
-                get: GetBool,
-                set: Set
-            );
-
-            ShowBorder = Property<bool>("show-border",
-                get: GetBool,
-                set: Set
-            );
+            Page = PropertyOfInt("page");
+            ShowTabs = PropertyOfBool("show-tabs");
+            Scrollable = PropertyOfBool("scrollable");
+            ShowBorder = PropertyOfBool("show-border");
 
             RegisterEvent("page-added", OnPageAdded);
             RegisterEvent("page-removed", OnPageRemoved);
