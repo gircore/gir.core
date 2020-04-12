@@ -53,8 +53,10 @@ class Program
                 (JAVASCRIPT_CORE_WRAPPER, "JavaScriptCore-4.0.gir", "javascriptcoregtk-4.0.so", false), (HANDY_WRAPPER, "Handy-0.0.gir", "libhandy-0.0.so.0", false),
                 (WEBKITGTK_WRAPPER, "WebKit2-4.0.gir", "libwebkit2gtk-4.0.so.37", true),
                 (WEBKIT2WEBEXTENSION_WRAPPER, "WebKit2WebExtension-4.0.gir", "WEBEXTENSION", true),
+                (CLUTTER_WRAPPER, "Clutter-1.0.gir", "libclutter-1.0.so", false),
+                (GTKCLUTTER_WRAPPER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so", false),
                 (CHAMPLAIN_WRAPPER, "Champlain-0.12.gir", "libchamplain-0.12", false),
-                (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so", false)),
+                (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false)),
             (x) => GenerateAndBuildProject(x.project, x.girFile, x.import, x.addAlias)
         );
 
@@ -63,9 +65,10 @@ class Program
         Target(build_handy_core, DependsOn(build_gtk_core), () => Build(HANDY_CORE, configuration));
         Target(build_webkitgtk_core, DependsOn(generate_wrapper), () => Build(WEBKITGTK_CORE, configuration));
         Target(build_webkit2webextensions_core, DependsOn(generate_wrapper), () => Build(WEBKIT2WEBEXTENSION_CORE, configuration));
-        //Target(build_gtkchamplain_core, DependsOn(generate_wrapper), () => Build(CHAMPLAIN_CORE, configuration));
+        Target(build_gtkclutter_core, DependsOn(generate_wrapper), () => Build(GTKCLUTTER_CORE, configuration));
+        Target(build_gtkchamplain_core, DependsOn(generate_wrapper), () => Build(GTKCHAMPLAIN_CORE, configuration));
 
-        Target(Targets.build, DependsOn(build_gdkpixbuf_core, build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core));
+        Target(Targets.build, DependsOn(build_gdkpixbuf_core, build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core, build_gtkclutter_core, build_gtkchamplain_core));
         Target(Targets.clean, ForEach(allProjects), (project) => Clean(project, configuration));
         
         Target(Targets.release, () => configuration = confRelease);

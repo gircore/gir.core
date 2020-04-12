@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Wrapper\GtkClutter.Wrapper.csproj" />
+    <ProjectReference Include="..\..\Gtk\Core\Gtk.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.Core.CS.GtkClutter</PackageId>
+  </PropertyGroup>
+</Project>

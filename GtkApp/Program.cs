@@ -1,5 +1,6 @@
 ﻿using System;
 using Gtk.Core;
+using GtkClutter.Core;
 
 namespace GtkApp
 {
@@ -14,6 +15,7 @@ namespace GtkApp
         public Program()
         {
             var app = new GApplication("org.GtkApp");
+            app.InitClutter();
             app.Activate += OnActivate;
             app.Startup += OnStartup;
             app.Run();

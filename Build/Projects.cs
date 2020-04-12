@@ -49,6 +49,15 @@ static class Projects
     public const string GTKCHAMPLAIN_WRAPPER = GTKCHAMPLAIN + WRAPPER;
     public const string GTKCHAMPLAIN_CORE = GTKCHAMPLAIN + CORE;
 
+
+    private const string CLUTTER = "../Libs/Clutter/";
+    public const string CLUTTER_WRAPPER = CLUTTER + WRAPPER;
+    public const string CLUTTER_CORE = CLUTTER + CORE;
+
+    private const string GTKCLUTTER = "../Libs/GtkClutter/";
+    public const string GTKCLUTTER_WRAPPER = GTKCLUTTER + WRAPPER;
+    public const string GTKCLUTTER_CORE = GTKCLUTTER + CORE;
+
     public const string CAIRO_WRAPPER = "../Libs/Cairo/Wrapper/";
     public const string GDK_WRAPPER = "../Libs/Gdk/Wrapper/";
     public const string PANGO_WRAPPER = "../Libs/Pango/Wrapper/";

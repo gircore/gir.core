@@ -2,6 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Wrapper\GtkChamplain.Wrapper.csproj" />
     <ProjectReference Include="..\..\Gtk\Core\Gtk.Core.csproj" />
+    <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

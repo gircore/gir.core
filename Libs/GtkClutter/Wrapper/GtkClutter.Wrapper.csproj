@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\..\Pango\Wrapper\Pango.Wrapper.csproj" />
+    <ProjectReference Include="..\..\Gtk\Wrapper\Gtk.Wrapper.csproj" />
     <ProjectReference Include="..\..\Clutter\Wrapper\Clutter.Wrapper.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.Wrapper.CS.Champlain</PackageId>
+    <PackageId>Gir.Wrapper.CS.GtkClutter</PackageId>
   </PropertyGroup>
 </Project>

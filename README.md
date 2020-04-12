@@ -2,11 +2,9 @@
 
 Gir.Core is a project which aims to provide C# wrapper for different [GObject] based libraries like [GTK] for user interfaces.
 
-The foucs is not to just wrap the libraries:
-* Create a simple and streamlined C# API on top of the low level C API
-* Provide an online documentation for the C# API
+For the [GObject] system there are a lot of libraries which allow to write complete applications with deep system integration on linux. Unfortunately there are only bindings for [GtkSharp] which are well maintained and they just wrap the low level C-API.
 
-The long term goal is to create libraries which allow to easily convert C# MVVM applications from Windows to Linux.
+This project aims to provide an API which feels natural to C# developers and thus greatly simplifies the C-API.
 
 Supported libraries
 * [GTK] (wip): UI-Toolkit
@@ -14,7 +12,7 @@ Supported libraries
 * [JavaScriptCore] (wip): Javascript integration for [WebKitGTK]
 * [libhandy] (wip): Convergent UI-Widgets for [GTK] to support mobile phones
 * [dbus] (planned): Library for inter-process communication
-* [libchamplain] (planned): Library to display maps
+* [libchamplain] (wip): Library to display maps
 
 ## How is it done?
 The API is split in two layers. The lower layer just wraps all the methods (like `Gtk.HeaderBar.@new()`) and is completely generated.
@@ -66,3 +64,4 @@ Anyone who wants to help is very welcome. Just create a pull request for new cod
 [JavaScriptCore]: https://webkitgtk.org/reference/jsc-glib/stable/index.html
 [dbus]: https://www.freedesktop.org/wiki/Software/dbus/
 [libchamplain]: https://wiki.gnome.org/Projects/libchamplain
+[GtkSharp]: https://github.com/GtkSharp/GtkSharp

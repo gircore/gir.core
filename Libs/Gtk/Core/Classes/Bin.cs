@@ -6,6 +6,6 @@ namespace Gtk.Core
     public class GBin : GContainer
     {
         internal GBin(string template, string obj, Assembly assembly) : base(template, obj, assembly){}
-        internal GBin(IntPtr handle) : base(handle) { }
+        internal protected GBin(IntPtr handle) : base(handle) { }
     }
 }
