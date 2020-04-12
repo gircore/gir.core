@@ -29,15 +29,8 @@ namespace Gtk.Core
 
         private void InitProperties()
         {
-            DefaultHeight = Property<int>("default-height",
-                get: GetInt,
-                set: Set
-            );
-
-            DefaultWidth = Property<int>("default-width",
-                get: GetInt,
-                set: Set
-            );
+            DefaultHeight = PropertyOfInt("default-height");
+            DefaultWidth = PropertyOfInt("default-width");
 
             Application = Property<GApplication?>("application",
                 get : GetObject<GApplication?>,

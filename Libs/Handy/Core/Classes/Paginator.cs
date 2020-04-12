@@ -24,44 +24,14 @@ namespace Handy.Core
 
         internal GPaginator(IntPtr handle) : base(handle) 
         { 
-            AnimationDuration = Property<uint>("animation-duration",
-                get : GetUInt,
-                set : Set
-            );
-
-            Pages = Property<uint>("n-pages",
-                get : GetUInt,
-                set : Set
-            );
-
-            AllowMouseDrag = Property<bool>("allow-mouse-drag",
-                get : GetBool,
-                set : Set
-            );
-
-            Position = ReadOnlyProperty<double>("position",
-                get : GetDouble
-            );
-
-            Spacing = Property<uint>("spacing",
-                get : GetUInt,
-                set : Set 
-            );
-
-            Interactive = Property<bool>("interactive",
-                get : GetBool,
-                set : Set
-            );
-
-            IndicatorSpacing = Property<uint>("indicator-spacing",
-                get : GetUInt,
-                set : Set
-            );
-
-            CenterContent = Property<bool>("center-content",
-                get : GetBool,
-                set : Set
-            );
+            AnimationDuration = PropertyOfUint("animation-duration");
+            Pages = PropertyOfUint("n-pages");
+            AllowMouseDrag = PropertyOfBool("allow-mouse-drag");
+            Position = ReadOnlyPropertyOfDouble("position");
+            Spacing = PropertyOfUint("spacing");
+            Interactive = PropertyOfBool("interactive");
+            IndicatorSpacing = PropertyOfUint("indicator-spacing");
+            CenterContent = PropertyOfBool("center-content");
 
             IndicatorStyle = Property<PaginatorIndicatorStyle>("indicator-style",
                 get : GetEnum<PaginatorIndicatorStyle>,

@@ -13,10 +13,7 @@ namespace Gtk.Core
 
         internal GToggleButton(IntPtr handle) : base(handle)
         {
-            Active = Property<bool>("active",
-                get: GetBool, 
-                set: Set
-            );
+            Active = PropertyOfBool("active");
 
             RegisterEvent("toggled", OnToggled);
         }

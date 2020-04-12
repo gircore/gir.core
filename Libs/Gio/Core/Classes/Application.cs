@@ -17,10 +17,7 @@ namespace Gio.Core
         {
             actions = new Dictionary<string, GCommandAction>();
 
-            ApplicationId = Property<string>("application-id",
-                get : GetStr,
-                set : Set
-            );
+            ApplicationId = PropertyOfString("application-id");
 
             RegisterEvent("activate", OnActivated);
             RegisterEvent("startup", OnStartup);

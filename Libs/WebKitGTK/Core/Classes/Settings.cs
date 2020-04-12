@@ -12,25 +12,10 @@ namespace WebKitGTK.Core
 
         internal Settings(IntPtr handle, bool isInitiallyUnowned = false) : base(handle, isInitiallyUnowned)
         {
-            AllowFileAccessFromFileUrls = Property<bool>("allow-file-access-from-file-urls",
-                get : GetBool,
-                set: Set
-            );
-
-            AllowUniversalAccessFromFileUrls = Property<bool>("allow-universal-access-from-file-urls",
-                get : GetBool,
-                set : Set
-            );
-
-            AllowModalDialogs = Property<bool>("allow-modal-dialogs",
-                get : GetBool,
-                set : Set
-            );
-
-            EnableDeveloperExtras = Property<bool>("enable-developer-extras",
-                get : GetBool,
-                set : Set
-            );
+            AllowFileAccessFromFileUrls = PropertyOfBool("allow-file-access-from-file-urls");
+            AllowUniversalAccessFromFileUrls = PropertyOfBool("allow-universal-access-from-file-urls");
+            AllowModalDialogs = PropertyOfBool("allow-modal-dialogs");
+            EnableDeveloperExtras = PropertyOfBool("enable-developer-extras");
         }
     }
 }

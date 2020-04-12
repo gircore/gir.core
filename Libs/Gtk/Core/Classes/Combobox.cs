@@ -19,10 +19,7 @@ namespace Gtk.Core
 
         private void InitProperties()
         {
-            ActiveId = Property<string>("active-id",
-                get : GetStr,
-                set: Set
-            );
+            ActiveId = PropertyOfString("active-id");
         }
     }
 }

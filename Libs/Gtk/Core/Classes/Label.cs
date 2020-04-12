@@ -10,10 +10,7 @@ namespace Gtk.Core
         public GLabel(string text) : this(Gtk.Label.@new(text)) { }
         internal GLabel(IntPtr handle) : base(handle) 
         {
-            Text = Property<string>("label",
-                get: GetStr,
-                set: Set
-            );
+            Text = PropertyOfString("label");
         }
     }
 }

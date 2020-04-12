@@ -30,10 +30,7 @@ namespace Gtk.Core
         {
             objects = new Dictionary<IntPtr, GWidget>();
 
-            TranslationDomain = Property<string>("translation-domain",
-                get: GetStr,
-                set: Set
-            );
+            TranslationDomain = PropertyOfString("translation-domain");
         }
 
         private uint AddFromString(string template)

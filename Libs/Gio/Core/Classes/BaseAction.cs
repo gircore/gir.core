@@ -11,15 +11,8 @@ namespace Gio.Core
         public GBaseAction(string name) : this(Gio.SimpleAction.@new(name, IntPtr.Zero)) { }
         internal GBaseAction(IntPtr handle) : base(handle)
         {
-            Enabled = Property<bool>("enabled",
-                get : GetBool,
-                set : Set
-            );
-
-            Name = Property<string>("name",
-                get : GetStr,
-                set : Set
-            );
+            Enabled = PropertyOfBool("enabled");
+            Name = PropertyOfString("name");
 
             RegisterEvent("activate", OnActivate);
         }

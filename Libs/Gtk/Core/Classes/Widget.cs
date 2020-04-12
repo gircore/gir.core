@@ -21,15 +21,8 @@ namespace Gtk.Core
 
         internal GWidget(IntPtr handle) : base(handle, true) 
         {
-            WidthRequest = Property<int>("width-request",
-                get : GetInt,
-                set : Set
-            );
-
-            HeightRequest = Property<int>("height-request",
-                get : GetInt,
-                set : Set
-            );
+            WidthRequest = PropertyOfInt("width-request");
+            HeightRequest = PropertyOfInt("height-request");
         }
 
         public void Show() => Gtk.Widget.show(this);

@@ -12,20 +12,9 @@ namespace Gtk.Core
         public TextLabelExpander(string label) : this(Gtk.Expander.@new(label)) { }
         internal TextLabelExpander(IntPtr handle) : base(handle)
         {
-            Label = Property<string>("label",
-                get: GetStr,
-                set: Set
-            );
-
-            UseMarkup = Property<bool>("use-markup",
-                get: GetBool,
-                set: Set
-            );
-
-            UseUnderline = Property<bool>("use-underline",
-                get: GetBool,
-                set: Set
-            );
+            Label = PropertyOfString("label");
+            UseMarkup = PropertyOfBool("use-markup");
+            UseUnderline = PropertyOfBool("use-underline");
         }
     }
 }

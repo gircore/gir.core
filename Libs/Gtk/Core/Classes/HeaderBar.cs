@@ -12,20 +12,9 @@ namespace Gtk.Core
         public GHeaderBar() : this(Gtk.HeaderBar.@new()){}
         internal GHeaderBar(IntPtr handle) : base(handle) 
         {
-            Title = Property<string>("title",
-                get: GetStr, 
-                set: Set
-            );
-
-            Subtitle = Property<string>("subtitle",
-                get: GetStr, 
-                set: Set
-            );
-
-            ShowCloseButton = Property<bool>("show-close-button",
-                get: GetBool,
-                set: Set
-            );
+            Title = PropertyOfString("title");
+            Subtitle = PropertyOfString("subtitle");
+            ShowCloseButton = PropertyOfBool("show-close-button");
         }
     }
 }

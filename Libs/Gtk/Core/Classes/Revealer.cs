@@ -12,20 +12,12 @@ namespace Gtk.Core
         public GRevealer() : this (Gtk.Revealer.@new()) { }
         internal GRevealer(IntPtr handle) : base(handle) 
         { 
-            TransitionDuration = Property<uint>("transition-duration",
-                get: GetUInt,
-                set: Set
-            );
-
+            TransitionDuration = PropertyOfUint("transition-duration");
             TransitionType = Property<RevealerTransitionType>("transition-type",
                 get : GetEnum<RevealerTransitionType>,
                 set : SetEnum<RevealerTransitionType>
             );
-
-            Reveal = Property<bool>("reveal-child",
-                get: GetBool,
-                set: Set
-            );
+            Reveal = PropertyOfBool("reveal-child");
         }
     }
 }

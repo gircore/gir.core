@@ -12,10 +12,7 @@ namespace Gtk.Core
         public GButton(string text) : this(Gtk.Button.new_with_label(text)) {}
         internal GButton(IntPtr handle) : base(handle) 
         {
-            Text = Property<string>("label",
-                get: GetStr, 
-                set: Set
-            );
+            Text = PropertyOfString("label");
 
             RegisterEvent("clicked", OnClicked);
         }

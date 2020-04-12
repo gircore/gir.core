@@ -11,20 +11,9 @@ namespace Gtk.Core
 
         internal GExpander(IntPtr handle) : base(handle)
         {
-            Expanded = Property<bool>("expanded",
-                get: GetBool,
-                set: Set
-            );
-
-            ResizeToplevel = Property<bool>("resize-toplevel",
-                get: GetBool,
-                set: Set
-            );
-
-            LabelFill = Property<bool>("label-fill",
-                get: GetBool,
-                set: Set
-            );
+            Expanded = PropertyOfBool("expanded");
+            ResizeToplevel = PropertyOfBool("resize-toplevel");
+            LabelFill = PropertyOfBool("label-fill");
         }
     }
 }
