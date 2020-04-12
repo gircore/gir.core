@@ -37,9 +37,26 @@ static class Projects
     public const string JAVASCRIPT_CORE_WRAPPER = JAVASCRIPT_CORE + WRAPPER;
     public const string JAVASCRIPT_CORE_CORE = JAVASCRIPT_CORE + CORE;
     
-    public const string GDK_PIXBUF = "../Libs/GdkPixbuf/";
+    private const string GDK_PIXBUF = "../Libs/GdkPixbuf/";
     public const string GDK_PIXBUF_WRAPPER = GDK_PIXBUF + WRAPPER;
     public const string GDK_PIXBUF_CORE = GDK_PIXBUF + CORE;
+
+    private const string CHAMPLAIN = "../Libs/Champlain/";
+    public const string CHAMPLAIN_WRAPPER = CHAMPLAIN + WRAPPER;
+    public const string CHAMPLAIN_CORE = CHAMPLAIN + CORE;
+
+    private const string GTKCHAMPLAIN = "../Libs/GtkChamplain/";
+    public const string GTKCHAMPLAIN_WRAPPER = GTKCHAMPLAIN + WRAPPER;
+    public const string GTKCHAMPLAIN_CORE = GTKCHAMPLAIN + CORE;
+
+
+    private const string CLUTTER = "../Libs/Clutter/";
+    public const string CLUTTER_WRAPPER = CLUTTER + WRAPPER;
+    public const string CLUTTER_CORE = CLUTTER + CORE;
+
+    private const string GTKCLUTTER = "../Libs/GtkClutter/";
+    public const string GTKCLUTTER_WRAPPER = GTKCLUTTER + WRAPPER;
+    public const string GTKCLUTTER_CORE = GTKCLUTTER + CORE;
 
     public const string CAIRO_WRAPPER = "../Libs/Cairo/Wrapper/";
     public const string GDK_WRAPPER = "../Libs/Gdk/Wrapper/";

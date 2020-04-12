@@ -6,6 +6,8 @@
     <ProjectReference Include="..\Libs\Handy\Core\Handy.Core.csproj" />
     <ProjectReference Include="..\Libs\GObject\Core\GObject.Core.csproj" />
     <ProjectReference Include="..\Libs\JavascriptCore\Core\JavascriptCore.Core.csproj" />
+    <ProjectReference Include="..\Libs\GtkClutter\Core\GtkClutter.Core.csproj" />
+    <ProjectReference Include="..\Libs\GtkChamplain\Core\GtkChamplain.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Gir.Wrapper.CS.GtkChamplain</PackageId>
+  </PropertyGroup>
+</Project>

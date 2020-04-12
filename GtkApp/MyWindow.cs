@@ -29,6 +29,8 @@ namespace GtkApp
         private GPaginator paginator;
         private GLabel b;
 
+        private GtkChamplain.Core.Embed map;
+
         public MyWindow(Gtk.Core.GApplication application) : base(application, "ui.glade") 
         { 
             notebook = new GNotebook();
@@ -84,6 +86,11 @@ namespace GtkApp
 
             b = new GLabel("label");
             paginator.Append(b);
+
+            map = new GtkChamplain.Core.Embed();
+            map.WidthRequest.Value = 500;
+            map.HeightRequest.Value = 500;
+            paginator.Append(map);
 
             notebook.InsertPage("Paginator", paginator, 2);
             Box.Add(notebook);
