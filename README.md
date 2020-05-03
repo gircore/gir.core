@@ -2,6 +2,8 @@
 
 Gir.Core is a project which aims to provide C# wrapper for different [GObject] based libraries like [GTK] for user interfaces.
 
+If you want to get started with the library head over to http://gircore.tiede.org. If you want to get into more technical details just continue reading.
+
 For the [GObject] system there are a lot of libraries which allow to write complete applications with deep system integration on linux. Unfortunately there are only bindings for [GtkSharp] which are well maintained and they just wrap the low level C-API.
 
 This project aims to provide:
