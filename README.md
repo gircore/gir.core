@@ -4,7 +4,9 @@ Gir.Core is a project which aims to provide C# wrapper for different [GObject] b
 
 For the [GObject] system there are a lot of libraries which allow to write complete applications with deep system integration on linux. Unfortunately there are only bindings for [GtkSharp] which are well maintained and they just wrap the low level C-API.
 
-This project aims to provide an API which feels natural to C# developers and thus greatly simplifies the C-API.
+This project aims to provide:
+* An API which feels more natural to C# developers and thus greatly simplifies the C-API.
+* A more complete API surface to integrate deeply with linux via supporting more libraries
 
 Supported libraries
 * [GTK] (wip): UI-Toolkit
