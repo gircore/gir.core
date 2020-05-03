@@ -18,39 +18,6 @@ Supported libraries
 * [dbus] (planned): Library for inter-process communication
 * [libchamplain] (wip): Library to display maps
 
-## How is it done?
-The API is split in two layers. The lower layer just wraps all the methods (like `Gtk.HeaderBar.@new()`) and is completely generated.
-
-The high level API is currently handcrafted to be able to provide the flexiblity for an easy to use API surface. For example the binding code for the GTK HeaderBar looks like:
-
-```cs
- public class GHeaderBar : GContainer
-  {
-      public Property<string> Title { get; }
-      public Property<bool> ShowCloseButton { get; }
-
-      public GHeaderBar() : this(Gtk.HeaderBar.@new()){}
-      internal GHeaderBar(IntPtr handle) : base(handle) 
-      {
-          Title = PropertyOfString("title");
-          ShowCloseButton = PropertyOfBool("show-close-button");
-      }
-  }
-```
-
-
-## Code structure
-The folder structure in this repository is organized like:
-* **Build:** Run the project to generate the libraries. Everything works automatically.
-* **CWrapper:** Generic code generator to create the lower API layer
-* **GirCWrapper:** Adapter to map GIR data to the *CWrapper*
-* **GtkApp:** Example app
-* **Libs:** Contains the libraries
-
-Each library has a folder called *Wrapper*, which contains the project to generate and build the low level API. These projects do very seldom contain code.
-
-If there is a *Core* folder it contains the high level code.
-
 ## Build & Use
 To build the project locally follow these steps:
 
@@ -72,6 +39,39 @@ To use the newly build libraries in your project just add a reference to the csp
 
 ## How to help
 Anyone who wants to help is very welcome. Just create a pull request for new code or create an issue to get in contact.
+
+## Code structure
+The folder structure in this repository is organized like:
+* **Build:** Run the project to generate the libraries. Everything works automatically.
+* **CWrapper:** Generic code generator to create the lower API layer
+* **GirCWrapper:** Adapter to map GIR data to the *CWrapper*
+* **GtkApp:** Example app
+* **Libs:** Contains the libraries
+
+Each library has a folder called *Wrapper*, which contains the project to generate and build the low level API. These projects do very seldom contain code.
+
+If there is a *Core* folder it contains the high level code.
+
+## How is it done?
+The API is split in two layers. The lower layer just wraps all the methods (like `Gtk.HeaderBar.@new()`) and is completely generated.
+
+The high level API is currently handcrafted to be able to provide the flexiblity for an easy to use API surface. For example the binding code for the GTK HeaderBar looks like:
+
+```cs
+ public class GHeaderBar : GContainer
+  {
+      public Property<string> Title { get; }
+      public Property<bool> ShowCloseButton { get; }
+
+      public GHeaderBar() : this(Gtk.HeaderBar.@new()){}
+      internal GHeaderBar(IntPtr handle) : base(handle) 
+      {
+          Title = PropertyOfString("title");
+          ShowCloseButton = PropertyOfBool("show-close-button");
+      }
+  }
+```
+
 
 [GObject]: https://developer.gnome.org/gobject/stable/
 [GTK]: https://gtk.org/
