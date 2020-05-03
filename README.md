@@ -51,7 +51,7 @@ Each library has a folder called *Wrapper*, which contains the project to genera
 
 If there is a *Core* folder it contains the high level code.
 
-## Build
+## Build & Use
 To build the project locally follow these steps:
 
     $ git clone https://github.com/gircore/gir.core.git
@@ -65,6 +65,10 @@ If you want to create a debug build just run
 If you want to clean your debug build just run
 
     $ dotnet run -- debug clean
+    
+To use the newly build libraries in your project just add a reference to the csproj file of the project you want to use, e.g:
+
+    $ dotnet add reference [RepoPath]/Libs/Gtk/Core/Gtk.Core.csproj
 
 ## How to help
 Anyone who wants to help is very welcome. Just create a pull request for new code or create an issue to get in contact.
