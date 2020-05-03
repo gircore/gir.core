@@ -9,6 +9,7 @@ namespace WebKitGTK.Core
         public Property<bool> AllowUniversalAccessFromFileUrls { get; }
         public Property<bool> AllowModalDialogs { get; }
         public Property<bool> EnableDeveloperExtras { get; }
+        public Property<string> UserAgent { get; }
 
         internal Settings(IntPtr handle, bool isInitiallyUnowned = false) : base(handle, isInitiallyUnowned)
         {
@@ -16,6 +17,7 @@ namespace WebKitGTK.Core
             AllowUniversalAccessFromFileUrls = PropertyOfBool("allow-universal-access-from-file-urls");
             AllowModalDialogs = PropertyOfBool("allow-modal-dialogs");
             EnableDeveloperExtras = PropertyOfBool("enable-developer-extras");
+            UserAgent = PropertyOfString("user-agent");
         }
     }
 }

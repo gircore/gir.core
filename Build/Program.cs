@@ -57,8 +57,8 @@ class Program
                 (JAVASCRIPT_CORE_WRAPPER, "JavaScriptCore-4.0.gir", "javascriptcoregtk-4.0.so", false), (HANDY_WRAPPER, "Handy-0.0.gir", "libhandy-0.0.so.0", false),
                 (WEBKITGTK_WRAPPER, "WebKit2-4.0.gir", "libwebkit2gtk-4.0.so.37", true),
                 (WEBKIT2WEBEXTENSION_WRAPPER, "WebKit2WebExtension-4.0.gir", "WEBEXTENSION", true),
-                (CLUTTER_WRAPPER, "Clutter-1.0.gir", "libclutter-1.0.so", false),
-                (GTKCLUTTER_WRAPPER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so", false),
+                (CLUTTER_WRAPPER, "Clutter-1.0.gir", "libclutter-1.0.so.0", false),
+                (GTKCLUTTER_WRAPPER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
                 (CHAMPLAIN_WRAPPER, "Champlain-0.12.gir", "libchamplain-0.12", false),
                 (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false)),
             (x) => GenerateAndBuildProject(x.project, x.girFile, x.import, x.addAlias)
