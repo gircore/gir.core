@@ -32,15 +32,8 @@ The high level API is currently handcrafted to be able to provide the flexiblity
       public GHeaderBar() : this(Gtk.HeaderBar.@new()){}
       internal GHeaderBar(IntPtr handle) : base(handle) 
       {
-          Title = Property<string>("title",
-              get: GetStr, 
-              set: Set
-          );
-
-          ShowCloseButton = Property<bool>("show-close-button",
-              get: GetBool,
-              set: Set
-          );
+          Title = PropertyOfString("title");
+          ShowCloseButton = PropertyOfBool("show-close-button");
       }
   }
 ```
@@ -57,6 +50,21 @@ The folder structure in this repository is organized like:
 Each library has a folder called *Wrapper*, which contains the project to generate and build the low level API. These projects do very seldom contain code.
 
 If there is a *Core* folder it contains the high level code.
+
+## Build
+To build the project locally follow these steps:
+
+    $ git clone https://github.com/gircore/gir.core.git
+    $ cd Build
+    $ dotnet run -- release build
+
+If you want to create a debug build just run
+
+    $ dotnet run -- debug build
+    
+If you want to clean your debug build just run
+
+    $ dotnet run -- debug clean
 
 ## How to help
 Anyone who wants to help is very welcome. Just create a pull request for new code or create an issue to get in contact.
