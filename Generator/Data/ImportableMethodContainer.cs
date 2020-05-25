@@ -4,9 +4,9 @@ namespace Generator
 {
     public class ImportableMethodContainer
     {
-        string @Namespace { get; }
-        string Name { get; }
-        IEnumerable<ImportableMethod> Methods { get; }
+        public string @Namespace { get; }
+        public string Name { get; }
+        public IEnumerable<ImportableMethod> Methods { get; }
 
         public ImportableMethodContainer(string @namespace, string name, IEnumerable<ImportableMethod> methods)
         {

@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using Gir;
+using Scriban;
+using Scriban.Runtime;
 
 namespace Generator
 {
@@ -46,6 +48,18 @@ namespace Generator
                     Console.Error.WriteLine($"Could not create class {cls.Name}: {ex.Message}");
                 }
             }
+        }
+
+        private void WriteImportableMethodContainer(string templateFile, ImportableMethodContainer container)
+        {
+            var scriptObject = new ScriptObject();
+            scriptObject.Import(container);
+
+            var context = new TemplateContext();
+            context.PushGlobal(scriptObject);
+
+            var template = Template.Parse(File.ReadAllText(templateFile));
+            Write(container.Name, template.Render(context));
         }
 
         private void Write(string name, string content)

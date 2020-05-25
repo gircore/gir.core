@@ -1,0 +1,12 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace {{ container.namespace }}
+{
+    public partial class {{ container.name }}
+    {
+        {{ for method in container.methods
+            include importable_method method
+         end }}
+    }
+}

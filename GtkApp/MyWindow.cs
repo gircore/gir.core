@@ -75,7 +75,7 @@ namespace GtkApp
             }
 
             Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
-            webView.LoadUri("file:///mnt/daten/Programmierung/test.html");
+            webView.LoadUri("file:///home/marcel/Programmieren/csharp/gircore/gir.core/GtkApp/test.html");
             webView.HeightRequest.Value = 500;
             webView.WidthRequest.Value = 500;
 
