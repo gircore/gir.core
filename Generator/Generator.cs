@@ -23,7 +23,7 @@ namespace Generator
             Directory.CreateDirectory(outputDir);
         }
 
-        public void GenerateClasses()
+        public void Generate()
         {
             if(repository.Namespace is null)
             {
@@ -31,35 +31,31 @@ namespace Generator
                 return;
             }
 
-            foreach(var cls in repository.Namespace.Classes)
+            if(repository.Namespace.Name is null)
             {
-                try
-                {
-                    if(cls.Type is null)
-                    {
-                        Console.WriteLine($"Can not create {cls.Name}, type is missing.");
-                        continue;
-                    }
-
-                    Write(cls.Type, "");
-                }
-                catch(Exception ex)
-                {
-                    Console.Error.WriteLine($"Could not create class {cls.Name}: {ex.Message}");
-                }
+                Console.WriteLine($"Could not create classes for {girFile}. Namespace is missing a name.");
+                return;
             }
+
+            foreach(var cls in repository.Namespace.Classes)
+                if(cls.Name is {})
+                    Generate("../Generator/Templates/class.sbntxt", cls.Name, repository.Namespace.Name, cls);
+                else
+                    Console.WriteLine("Could not generate class, name is missing");
         }
 
-        private void WriteImportableMethodContainer(string templateFile, ImportableMethodContainer container)
+        private void Generate(string templateFile, string fileName, string ns, object obj)
         {
             var scriptObject = new ScriptObject();
-            scriptObject.Import(container);
+            scriptObject.Import(obj);
+            scriptObject.Add("namespace", ns);
 
             var context = new TemplateContext();
+            context.TemplateLoader = new TemplateLoader();
             context.PushGlobal(scriptObject);
 
             var template = Template.Parse(File.ReadAllText(templateFile));
-            Write(container.Name, template.Render(context));
+            Write(fileName, template.Render(context));
         }
 
         private void Write(string name, string content)

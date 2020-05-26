@@ -1,11 +1,11 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace {{ container.namespace }}
+namespace {{ namespace }}
 {
-    public partial class {{ container.name }}
+    public partial class {{ name }}
     {
-        {{ for method in container.methods
+        {{ for method in methods
             include importable_method method
          end }}
     }

@@ -64,6 +64,12 @@ class Program
             (x) => GenerateAndBuildProject(x.project, x.girFile, x.import, x.addAlias)
         );
 
+        Target("Generate", () => {
+            var girPath = $"../gir-files/GObject-2.0.gir";
+            var g = new Generator.Generator(girPath, "Test");
+            g.Generate();
+        });
+
         Target(build_gdkpixbuf_core, DependsOn(generate_wrapper), () => Build(GDK_PIXBUF_CORE, configuration));
         Target(build_gtk_core, DependsOn(generate_wrapper), () => Build(GTK_CORE, configuration));
         Target(build_handy_core, DependsOn(build_gtk_core), () => Build(HANDY_CORE, configuration));
