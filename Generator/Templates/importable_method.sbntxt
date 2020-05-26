@@ -1,8 +1,8 @@
 ///<summary>
-{{ summary | comment_line_by_line }}
+{{ #summary }}
 ///</summary>
-{{ if obsolete }}
-[Obsolete({{ obsolete_summary | to_single_line }})]
-{{ end }}
-[DllImport({{ import }}{{ entry_point | to_entrypoint}})]
-public static extern {{ return_type }} {{ name }}({{parameters | to_parameterlist}});
+{{ #if obsolete }}
+[Obsolete({{ #obsolete_summary }})]
+{{ #end }}
+[DllImport({{ #import }}{{ #entry_point }})]
+public static extern {{ #return_type }} {{ #name }}({{ #parameters }});

@@ -6,7 +6,7 @@ namespace {{ namespace }}
     public partial class {{ name }}
     {
         {{ for method in methods
-            include importable_method method
+            include 'importable_method.sbntxt' method
          end }}
     }
 }
