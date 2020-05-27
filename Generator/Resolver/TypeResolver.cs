@@ -41,6 +41,14 @@ namespace Generator
             return ret;    
         }
 
+        private string GetReturn(string typeName, string cType)
+        {
+            if (cType.In("va_list", "GType", "gpointer", "gconstpointer"))
+                return "IntPtr";
+
+
+        }
+
         private string GetMarshal(GArray array) 
             => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={array.Length})]";
 
@@ -49,13 +57,10 @@ namespace Generator
             if (gtype.Type.In("va_list", "GType", "gpointer", "gconstpointer"))
                 return "IntPtr";
 
-            if(gtype.Name is null || gtype.Type is null)
-                throw new Exception("Incomplete type");
+            var typeName = gtype.Name;
+            var cType = gtype.Type;
 
-            string typeName = gtype.Name;
-            string cType = gtype.Type;
-
-            if (resolver.TryGet(cType, out var resolvedType))
+            if (cType is {} && resolver.TryGetForCType(cType, out var resolvedType))
                 typeName = resolvedType;
 
             var isPointer = cType.EndsWith("*");

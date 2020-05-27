@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/Build/bin/Debug/netcoreapp3.1/Build.dll",
-            "args": ["Generate"],
+            "args": [""],
             "cwd": "${workspaceFolder}/Build",
             "stopAtEntry": false,
             "console": "internalConsole"

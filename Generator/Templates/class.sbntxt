@@ -5,10 +5,6 @@ namespace {{ namespace }}
 {
     public partial class {{ name }}
     {
-        {{~ for constructor in constructors
-            include 'method.sbntxt' constructor
-        end ~}}
-
         {{~ for method in methods
             include 'method.sbntxt' method
         end ~}}

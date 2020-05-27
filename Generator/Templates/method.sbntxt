@@ -1,3 +1,10 @@
+{{-
+func parameters
+    if $1 && $1.parameters
+        include 'parameters.sbntxt' $1.parameters
+    end
+end
+-}}
 ///<summary>
 {{~ $1.doc.text | comment_line_by_line ~}}
 ///</summary>
@@ -5,4 +12,4 @@
 [Obsolete("{{ $1.doc_deprecated.text | make_single_line | escape_quotes }}")]
 {{~ end ~}}
 [DllImport("{{ dll_import }}", EntryPoint = "{{ $1.identifier }}")]
-public static extern {{ $1.return_value | resolve_type }} {{ $1.name | fix_identifier }}({{ include 'parameters.sbntxt' $1.parameters }});
+public static extern {{ $1.return_value | resolve_type }} {{ $1.name | fix_identifier }}({{parameters $1}});

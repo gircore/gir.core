@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -14,9 +15,12 @@ namespace Generator
             this.aliases = aliases ?? throw new System.ArgumentNullException(nameof(aliases));
         }
 
-        public bool TryGet(string type, [NotNullWhen(returnValue: true)] out string? t)
+        public bool TryGetForCType(string cType, [NotNullWhen(returnValue: true)] out string? t)
+            => TryGet(cType, (a, t) => a.Type == t, out t);
+
+        private bool TryGet(string typeName, Func<GAlias, string, bool> predicate, [NotNullWhen(returnValue: true)] out string? t)
         {
-            var matching = aliases.FirstOrDefault(x => x.Type == type);
+            var matching = aliases.FirstOrDefault(x => predicate(x, typeName));
 
             if(matching is null || matching.For?.Name is null)
             {

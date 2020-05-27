@@ -46,13 +46,27 @@ namespace Generator
                 return;
             }
 
-            foreach (var cls in repository.Namespace.Classes)
+            var ns = repository.Namespace.Name;
+            GenerateClasses(repository.Namespace.Classes, ns);
+            GenerateInterfaces(repository.Namespace.Interfaces, ns);            
+        }
+
+        private void GenerateClasses(IEnumerable<GClass> classes, string ns)
+        {
+            foreach (var cls in classes)
+                cls.Methods.InsertRange(0, cls.Constructors);
+
+            GenerateInterfaces(classes, ns);
+        }
+
+        private void GenerateInterfaces(IEnumerable<GInterface> classes, string ns)
+        {
+            foreach (var cls in classes)
             {
                 RemoveVarArgsMethods(cls.Methods);
-                RemoveVarArgsMethods(cls.Constructors);
                 
                 if (cls.Name is { })
-                    Generate("../Generator/Templates/class.sbntxt", cls.Name, repository.Namespace.Name, cls);
+                    Generate("../Generator/Templates/class.sbntxt", cls.Name, ns, cls);
                 else
                     Console.WriteLine("Could not generate class, name is missing");
             }

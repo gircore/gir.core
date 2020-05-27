@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="Bullseye" Version="3.0.0" />
     <PackageReference Include="SimpleExec" Version="6.1.0" />
-    <ProjectReference Include="..\GirCWrapper\GirCWrapper.csproj" />
     <ProjectReference Include="..\Generator\Generator.csproj" />
   </ItemGroup>
 
