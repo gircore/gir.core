@@ -1,8 +1,8 @@
 ///<summary>
-{{ #summary }}
+{{~ $1.doc.text | comment_line_by_line ~}}
 ///</summary>
-{{ #if obsolete }}
-[Obsolete({{ #obsolete_summary }})]
-{{ #end }}
-[DllImport({{ #import }}{{ #entry_point }})]
-public static extern {{ #return_type }} {{ #name }}({{ #parameters }});
+{{~ if $1.deprecated ~}}
+[Obsolete("{{ $1.doc_deprecated.text | make_single_line | escape_quotes }}")]
+{{~ end ~}}
+[DllImport("{{ dll_import }}", EntryPoint = "{{ $1.identifier }}")]
+public static extern {{ #$1.return_value. }} {{ $1.name }}({{ #parameters }});

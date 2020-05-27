@@ -5,8 +5,12 @@ namespace {{ namespace }}
 {
     public partial class {{ name }}
     {
-        {{ for method in methods
-            include 'importable_method.sbntxt' method
-         end }}
+        {{~ for constructor in constructors
+        include 'importable_method.sbntxt' constructor
+        end ~}}
+
+        {{~ for method in methods
+        include 'importable_method.sbntxt' method
+        end ~}}
     }
 }

@@ -66,7 +66,7 @@ class Program
 
         Target("Generate", () => {
             var girPath = $"../gir-files/GObject-2.0.gir";
-            var g = new Generator.Generator(girPath, "Test");
+            var g = new Generator.Generator(girPath, "Test", "GObject.so");
             g.Generate();
         });
 
