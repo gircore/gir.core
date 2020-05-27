@@ -1,0 +1,16 @@
+{{
+    func execute_if_true
+        if $0
+            $$
+        end
+    end
+}}
+
+{{ ##wrap execute_if_true $0.instance_parameter
+    $0.instance_parameter | resolve_type; $0.instance_parameter.name
+end ##}}
+
+{{ #$1.instance_parameter | resolve_type }} {{ #$1.instance_parameter.name }}
+{{ #for parameter in $1.parameters }}
+{{ #parameter | resolve_type}} {{ #parameter.name}}
+{{ #end }}

@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Gir
 {
-    public class GParameter
+    public class GParameter : IType
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

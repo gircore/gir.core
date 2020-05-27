@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Gir
 {
-    public class GReturnValue
+    public class GReturnValue : IType
     {
         [XmlAttribute("transfer-ownership")]
         public string? TransferOwnership { get; set; }

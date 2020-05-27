@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Gir;
 using Scriban;
 using Scriban.Runtime;
@@ -13,6 +14,8 @@ namespace Generator
         private GRepository repository;
         private readonly string dllImport;
 
+        private readonly TypeResolver typeResolver;
+
         public Generator(string girFile, string outputDir, string dllImport)
         {
             this.dllImport = dllImport ?? throw new ArgumentNullException(nameof(dllImport));
@@ -21,6 +24,9 @@ namespace Generator
 
             var reader = new GirReader();
             repository = reader.ReadRepository(girFile);
+
+            var aliasResolver = new AliasResolver(repository?.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+            typeResolver = new TypeResolver(aliasResolver);
 
             Directory.CreateDirectory(outputDir);
         }
@@ -48,15 +54,19 @@ namespace Generator
 
         private void Generate(string templateFile, string fileName, string ns, object obj)
         {
-            var commentLineByLine = new Func<string, string>((string s) => s.CommentLineByLine());
-            var makeSingleLine = new Func<string, string>((string s) => s.MakeSingleLine());
-            var escapeQuotes = new Func<string, string>((string s) => s.EscapeQuotes());
+            var resolveType = new Func<IType, string>((t) => typeResolver.GetType(t));
+            var commentLineByLine = new Func<string, string>((s) => s.CommentLineByLine());
+            var makeSingleLine = new Func<string, string>((s) => s.MakeSingleLine());
+            var escapeQuotes = new Func<string, string>((s) => s.EscapeQuotes());
+            var fixIdentifier = new Func<string, string>((s) => s.FixIdentifier());
 
             var scriptObject = new ScriptObject();
             scriptObject.Import(obj);
             scriptObject.Import("comment_line_by_line", commentLineByLine);
             scriptObject.Import("make_single_line", makeSingleLine);
             scriptObject.Import("escape_quotes", escapeQuotes);
+            scriptObject.Import("fix_identifier", fixIdentifier);
+            scriptObject.Import("resolve_type", resolveType);
             scriptObject.Add("namespace", ns);
             scriptObject.Add("dll_import", dllImport);
 
