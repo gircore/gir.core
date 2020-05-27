@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Gir;
@@ -46,10 +47,21 @@ namespace Generator
             }
 
             foreach (var cls in repository.Namespace.Classes)
+            {
+                RemoveVarArgsMethods(cls.Methods);
+                RemoveVarArgsMethods(cls.Constructors);
+                
                 if (cls.Name is { })
                     Generate("../Generator/Templates/class.sbntxt", cls.Name, repository.Namespace.Name, cls);
                 else
                     Console.WriteLine("Could not generate class, name is missing");
+            }
+        }
+
+        private void RemoveVarArgsMethods(List<GMethod> methods)
+        {
+            Func<GParameter, bool> isVariadic = (p) => p.VarArgs is {};
+            methods.RemoveAll((x) => x.Parameters?.Parameters.Any(isVariadic) ?? false);
         }
 
         private void Generate(string templateFile, string fileName, string ns, object obj)

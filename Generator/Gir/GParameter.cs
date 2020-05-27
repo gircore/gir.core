@@ -21,5 +21,8 @@ namespace Gir
 
         [XmlElement("array")]
         public GArray? Array { get; set; }
+
+        [XmlElement("varargs")]
+        public GVarArgs? VarArgs { get; set; }
     }
 }

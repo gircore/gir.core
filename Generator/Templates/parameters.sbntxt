@@ -1,16 +1,15 @@
-{{
-    func execute_if_true
-        if $0
-            $$
-        end
-    end
-}}
+{{-
+func to_string 
+    ret ($0 | resolve_type) + " " + $0.name
+end
 
-{{ ##wrap execute_if_true $0.instance_parameter
-    $0.instance_parameter | resolve_type; $0.instance_parameter.name
-end ##}}
+if $1.instance_parameter
+    ps = [ ($1.instance_parameter | to_string)]
+end
 
-{{ #$1.instance_parameter | resolve_type }} {{ #$1.instance_parameter.name }}
-{{ #for parameter in $1.parameters }}
-{{ #parameter | resolve_type}} {{ #parameter.name}}
-{{ #end }}
+for parameter in $1.parameters 
+    ps = array.add ps (parameter | to_string)
+end 
+
+array.join ps ", "
+-}}
