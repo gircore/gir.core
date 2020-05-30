@@ -8,6 +8,6 @@ namespace Gir
         public string? Name { get; set; }
 
         [XmlAttribute("type", Namespace="http://www.gtk.org/introspection/c/1.0")]
-        public string? Type { get; set; }
+        public string? CType { get; set; }
     }
 }

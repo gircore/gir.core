@@ -22,13 +22,13 @@ namespace Generator
         {
             var matching = aliases.FirstOrDefault(x => predicate(x, typeName));
 
-            if(matching is null || matching.For?.Name is null)
+            if(matching is null || matching.For?.CType is null)
             {
                 t = default;
                 return false;
             }
 
-            t = matching.For.Name;
+            t = matching.For.CType;
             return true;
         }
     }

@@ -80,7 +80,7 @@ namespace Generator
 
         private void Generate(string templateFile, string fileName, string ns, object obj)
         {
-            var resolveType = new Func<IType, string>((t) => typeResolver.GetType(t));
+            var resolveType = new Func<IType, string>((t) => typeResolver.Resolve(t));
             var commentLineByLine = new Func<string, string>((s) => s.CommentLineByLine());
             var makeSingleLine = new Func<string, string>((s) => s.MakeSingleLine());
             var escapeQuotes = new Func<string, string>((s) => s.EscapeQuotes());
@@ -100,8 +100,16 @@ namespace Generator
             context.TemplateLoader = new TemplateLoader();
             context.PushGlobal(scriptObject);
 
-            var template = Template.Parse(File.ReadAllText(templateFile));
-            Write(fileName, template.Render(context));
+            try
+            {
+                var template = Template.Parse(File.ReadAllText(templateFile));
+                var content = template.Render(context);
+                Write(fileName, content);
+            }
+            catch(Exception ex)
+            {
+                Console.Error.WriteLine($"Could not create Wrapper for {fileName}: {ex.Message}");
+            }
         }
 
         private void Write(string name, string content)

@@ -11,7 +11,7 @@ namespace Gir
         public bool ZeroTerminated { get; set; }
 
         [XmlAttribute("type", Namespace="http://www.gtk.org/introspection/c/1.0")]
-        public string? ArrayType { get; set; }
+        public string? CType { get; set; }
 
         [XmlElement("type")]
         public GType? Type { get; set; }
