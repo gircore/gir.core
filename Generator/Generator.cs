@@ -48,27 +48,52 @@ namespace Generator
 
             var ns = repository.Namespace.Name;
             GenerateClasses(repository.Namespace.Classes, ns);
-            GenerateInterfaces(repository.Namespace.Interfaces, ns);            
+            GenerateInterfaces(repository.Namespace.Interfaces, ns);
+            GenerateRecords(repository.Namespace.Records, ns);
+            GenerateEnums(repository.Namespace.Bitfields, ns, true);
+            GenerateEnums(repository.Namespace.Enumerations, ns, false);
         }
 
-        private void GenerateClasses(IEnumerable<GClass> classes, string ns)
+        private void GenerateRecords(IEnumerable<GRecord> records, string ns)
+        {
+            foreach(var record in records)
+                record.Methods.InsertRange(0, record.Functions);
+
+            GenerateClasses(records, ns, "struct");
+        }
+
+        private void GenerateClasses(IEnumerable<GClass> classes, string ns, string template = "class")
         {
             foreach (var cls in classes)
                 cls.Methods.InsertRange(0, cls.Constructors);
 
-            GenerateInterfaces(classes, ns);
+            GenerateInterfaces(classes, ns, template);
         }
 
-        private void GenerateInterfaces(IEnumerable<GInterface> classes, string ns)
+        private void GenerateInterfaces(IEnumerable<GInterface> classes, string ns, string template = "class")
         {
             foreach (var cls in classes)
             {
                 RemoveVarArgsMethods(cls.Methods);
                 
                 if (cls.Name is { })
-                    Generate("../Generator/Templates/class.sbntxt", cls.Name, ns, cls);
+                    Generate(template, cls.Name, ns, cls);
                 else
                     Console.WriteLine("Could not generate class, name is missing");
+            }
+        }
+
+        private void GenerateEnums(IEnumerable<GEnumeration> enums, string ns, bool hasFlags)
+        {
+            foreach (var e in enums)
+            {
+                var scriptObject = new ScriptObject();
+                scriptObject.Add("has_flags", hasFlags);
+
+                if (e.Name is { })
+                    Generate("enum", e.Name, ns, e, scriptObject);
+                else
+                    Console.WriteLine("Could not generate enum, name is missing");
             }
         }
 
@@ -79,14 +104,17 @@ namespace Generator
         }
 
         private void Generate(string templateFile, string fileName, string ns, object obj)
+            => Generate(templateFile, fileName, ns, obj, new ScriptObject());
+
+        private void Generate(string templateFile, string fileName, string ns, object obj, ScriptObject scriptObject)
         {
+            templateFile = $"../Generator/Templates/{templateFile}.sbntxt";
             var resolveType = new Func<IType, string>((t) => typeResolver.Resolve(t));
             var commentLineByLine = new Func<string, string>((s) => s.CommentLineByLine());
             var makeSingleLine = new Func<string, string>((s) => s.MakeSingleLine());
             var escapeQuotes = new Func<string, string>((s) => s.EscapeQuotes());
             var fixIdentifier = new Func<string, string>((s) => s.FixIdentifier());
 
-            var scriptObject = new ScriptObject();
             scriptObject.Import(obj);
             scriptObject.Import("comment_line_by_line", commentLineByLine);
             scriptObject.Import("make_single_line", makeSingleLine);

@@ -101,8 +101,10 @@ namespace Generator
             "gconstpointer" => IntPtr(),
             "va_list" => IntPtr(),
             "gpointer" => IntPtr(),
+            "gpointer*" => IntPtr(),
             "GType" => IntPtr(),
             "JSCValue*" => IntPtr(),
+            "guint8*" => IntPtr(),
 
             "GValue*" => Value(),
             "const GValue*" => Value(),
