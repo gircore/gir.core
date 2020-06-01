@@ -27,7 +27,7 @@ namespace Gir
         public List<GInterface> Interfaces { get; set; } = default!;
 
         [XmlElement("bitfield")]
-        public List<GEnumeration> Bitfields { get; set;}
+        public List<GEnumeration> Bitfields { get; set;} = default!;
 
         [XmlElement("enumeration")]
         public List<GEnumeration> Enumerations { get; set;} = default!;
