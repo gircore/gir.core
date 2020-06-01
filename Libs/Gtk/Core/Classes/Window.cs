@@ -7,32 +7,37 @@ namespace Gtk.Core
     public class GWindow : GContainer
     {
         #region Properties
-        public Property<int> DefaultHeight { get; private set;} = default!;
-        public Property<int> DefaultWidth { get; private set; } = default!;
-        public Property<GApplication?> Application {get; private set; } = default!;
+        private Property<int> defaultHeight;
+        public Property<int> DefaultHeight => defaultHeight;
+
+        private Property<int> defaultWith;
+        public Property<int> DefaultWidth => defaultWith;
+
+        private Property<GApplication?> application;
+        public Property<GApplication?> Application => application;
 
         #endregion Properties
 
         public GWindow() : this(Gtk.Window.@new(Gtk.WindowType.toplevel)) {}
         public GWindow(string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly()) 
         {
-            InitProperties();
+            InitProperties(out defaultHeight, out defaultWith, out application);
         }
         internal GWindow(string template, string obj, Assembly assembly) : base(template, obj, assembly) 
         {
-            InitProperties();
+            InitProperties(out defaultHeight, out defaultWith, out application);
         }
         internal GWindow(IntPtr handle) : base(handle) 
         {
-            InitProperties();
+            InitProperties(out defaultHeight, out defaultWith, out application);
         }
 
-        private void InitProperties()
+        private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<GApplication?> application)
         {
-            DefaultHeight = PropertyOfInt("default-height");
-            DefaultWidth = PropertyOfInt("default-width");
+            defaultHeight = PropertyOfInt("default-height");
+            defaultWidth = PropertyOfInt("default-width");
 
-            Application = Property<GApplication?>("application",
+            application = Property<GApplication?>("application",
                 get : GetObject<GApplication?>,
                 set: Set
             );

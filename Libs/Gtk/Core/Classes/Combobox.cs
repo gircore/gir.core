@@ -6,20 +6,22 @@ namespace Gtk.Core
 {
     public class GCombobox : GBin
     {
-        public Property<string> ActiveId { get; private set; } = default!;
+        private Property<string> activeId;
+        public Property<string> ActiveId => activeId;
 
         internal GCombobox(string template, string obj, Assembly assembly) : base(template, obj, assembly)
         {
-            InitProperties();
+            InitProperties(out activeId);
         }
         internal GCombobox(IntPtr handle) : base(handle) 
         { 
-            InitProperties();
+            InitProperties(out activeId);
         }
 
-        private void InitProperties()
+        //Workaround for: https://github.com/dotnet/roslyn/issues/32358
+        private void InitProperties(out Property<string> activeId)
         {
-            ActiveId = PropertyOfString("active-id");
+            activeId = PropertyOfString("active-id");
         }
     }
 }
