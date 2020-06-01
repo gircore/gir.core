@@ -25,7 +25,7 @@ namespace Gtk.Core
         }
         internal GWindow(string template, string obj, Assembly assembly) : base(template, obj, assembly) 
         {
-             InitProperties(out defaultHeight, out defaultWith, out application);
+            InitProperties(out defaultHeight, out defaultWith, out application);
         }
         internal GWindow(IntPtr handle) : base(handle) 
         {
