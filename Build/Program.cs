@@ -45,22 +45,23 @@ class Program
     {        
         Target<(string project, string girFile, string import, bool addAlias)>(generate_wrapper, 
             ForEach(
-                (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false),
-                (GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
-                (GIO_WRAPPER, "Gio-2.0.gir", "libgio-2.0.so.0", true),
-                (CAIRO_WRAPPER, "cairo-1.0.gir", "TODO", false),
-                (XLIB_WRAPPER, "xlib-2.0.gir", "TODO", false),
-                (PANGO_WRAPPER, "Pango-1.0.gir", "TODO", false),
-                (GDK_WRAPPER, "Gdk-3.0.gir", "TODO", true),
-                (GDK_PIXBUF_WRAPPER, "GdkPixbuf-2.0.gir", "libgdk_pixbuf-2.0.so.0", true),
-                (GTK_WRAPPER, "Gtk-3.0.gir", "libgtk-3.so.0", true),
-                (JAVASCRIPT_CORE_WRAPPER, "JavaScriptCore-4.0.gir", "javascriptcoregtk-4.0.so", false), (HANDY_WRAPPER, "Handy-0.0.gir", "libhandy-0.0.so.0", false),
-                (WEBKITGTK_WRAPPER, "WebKit2-4.0.gir", "libwebkit2gtk-4.0.so.37", true),
-                (WEBKIT2WEBEXTENSION_WRAPPER, "WebKit2WebExtension-4.0.gir", "WEBEXTENSION", true),
-                (CLUTTER_WRAPPER, "Clutter-1.0.gir", "libclutter-1.0.so", false),
-                (GTKCLUTTER_WRAPPER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so", false),
-                (CHAMPLAIN_WRAPPER, "Champlain-0.12.gir", "libchamplain-0.12", false),
-                (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false)),
+                (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false)
+                //(GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
+                //(GIO_WRAPPER, "Gio-2.0.gir", "libgio-2.0.so.0", true),
+                //(CAIRO_WRAPPER, "cairo-1.0.gir", "TODO", false),
+                //(XLIB_WRAPPER, "xlib-2.0.gir", "TODO", false),
+                //(PANGO_WRAPPER, "Pango-1.0.gir", "TODO", false),
+                //(GDK_WRAPPER, "Gdk-3.0.gir", "TODO", true),
+                //(GDK_PIXBUF_WRAPPER, "GdkPixbuf-2.0.gir", "libgdk_pixbuf-2.0.so.0", true),
+                //(GTK_WRAPPER, "Gtk-3.0.gir", "libgtk-3.so.0", true),
+                //(JAVASCRIPT_CORE_WRAPPER, "JavaScriptCore-4.0.gir", "javascriptcoregtk-4.0.so", false), (HANDY_WRAPPER, "Handy-0.0.gir", "libhandy-0.0.so.0", false),
+                //(WEBKITGTK_WRAPPER, "WebKit2-4.0.gir", "libwebkit2gtk-4.0.so.37", true),
+                //(WEBKIT2WEBEXTENSION_WRAPPER, "WebKit2WebExtension-4.0.gir", "WEBEXTENSION", true),
+                //(CLUTTER_WRAPPER, "Clutter-1.0.gir", "libclutter-1.0.so", false),
+                //(GTKCLUTTER_WRAPPER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so", false),
+                //(CHAMPLAIN_WRAPPER, "Champlain-0.12.gir", "libchamplain-0.12", false),
+                //(GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false)
+                ),
             (x) => GenerateAndBuildProject(x.project, x.girFile, x.import, x.addAlias)
         );
 
@@ -88,7 +89,7 @@ class Program
         var outputDir = project + "Generated";
 
         GenerateProject(outputDir, girPath, import, addGlibAliases);
-        //Build(project, configuration);
+        Build(project, configuration);
     }
 
     private static void GenerateProject(string outputDir, string girFile, string import, bool addGlibAliases)
