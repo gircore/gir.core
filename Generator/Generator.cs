@@ -114,6 +114,7 @@ namespace Generator
             var makeSingleLine = new Func<string, string>((s) => s.MakeSingleLine());
             var escapeQuotes = new Func<string, string>((s) => s.EscapeQuotes());
             var fixIdentifier = new Func<string, string>((s) => s.FixIdentifier());
+            var debug = new Action<string>((s) => Console.WriteLine(s));
 
             scriptObject.Import(obj);
             scriptObject.Import("comment_line_by_line", commentLineByLine);
@@ -121,6 +122,7 @@ namespace Generator
             scriptObject.Import("escape_quotes", escapeQuotes);
             scriptObject.Import("fix_identifier", fixIdentifier);
             scriptObject.Import("resolve_type", resolveType);
+            scriptObject.Import("debug", debug);
             scriptObject.Add("namespace", ns);
             scriptObject.Add("dll_import", dllImport);
 

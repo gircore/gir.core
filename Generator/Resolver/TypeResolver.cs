@@ -18,11 +18,12 @@ namespace Generator
         {
             this.aliasResolver = resolver;
         }
-
+        
         public string Resolve(IType typeInfo) => typeInfo switch
         {
             { Type: {} gtype} => ResolveGType(gtype, typeInfo is GParameter),
-            { Array: { Length : {} length, Type: {} gtype}} => ResolveArrayType(gtype, typeInfo is GParameter, length),
+            { Array: { Length : {} length, Type: { CType: {}} gtype}} => ResolveArrayType(gtype, typeInfo is GParameter, length),
+            { Array: {}} => "IntPtr",
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
 
@@ -136,6 +137,7 @@ namespace Generator
             "gssize" => Long(),
             "gint64" => Long(),
             "goffset" => Long(),
+            "time_t" => Long(),
 
             "gsize" => ULong(),
             "guint64" => ULong(),
