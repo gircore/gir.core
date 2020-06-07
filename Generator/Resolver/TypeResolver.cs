@@ -145,9 +145,6 @@ namespace Generator
             "gulong" => ULong(),
             "Window" => ULong(),
 
-            "TokenValue" => NotSupported(cType),
-            "IConv" => NotSupported(cType),
-
             var t when t.StartsWith("Atk") => NotSupported(t),
             var t when t.StartsWith("Cogl") => NotSupported(t),
 
