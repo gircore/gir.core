@@ -50,6 +50,7 @@ namespace Generator
             GenerateClasses(repository.Namespace.Classes, ns);
             GenerateInterfaces(repository.Namespace.Interfaces, ns);
             GenerateRecords(repository.Namespace.Records, ns);
+            GenerateRecords(repository.Namespace.Unions, ns);
             GenerateEnums(repository.Namespace.Bitfields, ns, true);
             GenerateEnums(repository.Namespace.Enumerations, ns, false);
         }

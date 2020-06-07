@@ -43,5 +43,8 @@ namespace Gir
 
         [XmlElement("function")]
         public List<GMethod> Functions { get; set; } = default!;
+
+        [XmlElement("union")]
+        public List<GRecord> Unions { get; set; } = default!;
     }
 }
