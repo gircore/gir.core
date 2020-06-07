@@ -53,6 +53,7 @@ namespace Generator
             GenerateRecords(repository.Namespace.Unions, ns);
             GenerateEnums(repository.Namespace.Bitfields, ns, true);
             GenerateEnums(repository.Namespace.Enumerations, ns, false);
+            GenerateDelegates(repository.Namespace.Callbacks, ns);
         }
 
         private void GenerateRecords(IEnumerable<GRecord> records, string ns)
@@ -84,6 +85,13 @@ namespace Generator
             }
         }
 
+        private void GenerateDelegates(IEnumerable<GCallback> delegates, string ns)
+        {
+            var scriptObject = new ScriptObject();
+            scriptObject.Add("delegates", delegates);
+            Generate("delegates", "Delegates", ns, scriptObject);
+        }
+
         private void GenerateEnums(IEnumerable<GEnumeration> enums, string ns, bool hasFlags)
         {
             foreach (var e in enums)
@@ -92,7 +100,7 @@ namespace Generator
                 scriptObject.Add("has_flags", hasFlags);
 
                 if (e.Name is { })
-                    Generate("enum", e.Name, ns, e, scriptObject);
+                    Generate("enum", e.Name, ns, scriptObject, e);
                 else
                     Console.WriteLine("Could not generate enum, name is missing");
             }
@@ -104,10 +112,10 @@ namespace Generator
             methods.RemoveAll((x) => x.Parameters?.Parameters.Any(isVariadic) ?? false);
         }
 
-        private void Generate(string templateFile, string fileName, string ns, object obj)
-            => Generate(templateFile, fileName, ns, obj, new ScriptObject());
+        private void Generate(string templateFile, string fileName, string ns, object? obj = null)
+            => Generate(templateFile, fileName, ns, new ScriptObject(), obj);
 
-        private void Generate(string templateFile, string fileName, string ns, object obj, ScriptObject scriptObject)
+        private void Generate(string templateFile, string fileName, string ns, ScriptObject scriptObject, object? obj = null)
         {
             templateFile = $"../Generator/Templates/{templateFile}.sbntxt";
             var resolveType = new Func<IType, string>((t) => typeResolver.Resolve(t));
@@ -117,7 +125,10 @@ namespace Generator
             var fixIdentifier = new Func<string, string>((s) => s.FixIdentifier());
             var debug = new Action<string>((s) => Console.WriteLine(s));
 
-            scriptObject.Import(obj);
+            if(obj is {})
+            {
+                scriptObject.Import(obj);
+            }
             scriptObject.Import("comment_line_by_line", commentLineByLine);
             scriptObject.Import("make_single_line", makeSingleLine);
             scriptObject.Import("escape_quotes", escapeQuotes);

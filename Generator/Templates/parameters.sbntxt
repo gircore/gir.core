@@ -1,6 +1,8 @@
 {{-
+ps = []
+
 func to_string 
-    ret ($0 | resolve_type) + " " + $0.name
+    ret ($0 | resolve_type) + " " + ($0.name | fix_identifier)
 end
 
 if $1.instance_parameter
