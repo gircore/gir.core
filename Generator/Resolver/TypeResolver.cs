@@ -119,6 +119,7 @@ namespace Generator
             "gdouble" => Double(),
             "long double" => Double(),
 
+            "int" => Int(), //Workaround: There are aliases which do not return "g datatypes" but the native ones. In this case the type resolver would return "not found" and the native type would not be used!
             "gint" => Int(),
             "gint32" => Int(),
             
