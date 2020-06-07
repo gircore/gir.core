@@ -45,8 +45,8 @@ class Program
     {        
         Target<(string project, string girFile, string import, bool addAlias)>(generate_wrapper, 
             ForEach(
-                (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false)
-                //(GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
+                (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false),
+                (GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true)
                 //(GIO_WRAPPER, "Gio-2.0.gir", "libgio-2.0.so.0", true),
                 //(CAIRO_WRAPPER, "cairo-1.0.gir", "TODO", false),
                 //(XLIB_WRAPPER, "xlib-2.0.gir", "TODO", false),
