@@ -5,8 +5,8 @@ if (string.size $1.name) == 0
 end
 
 func parameters
-    if $1 && $1.parameters
-        include 'parameters.sbntxt' $1.parameters
+    if $0 && $0.parameters
+        include 'parameters.sbntxt' $0.parameters
     end
 end
 -}}

@@ -7,7 +7,7 @@ namespace Generator
     {
         Found = 0,
         NotFound = 1,
-        NotSupported = 2        
+        NotSupported = 2
     }
 
     public class TypeResolver
@@ -18,12 +18,12 @@ namespace Generator
         {
             this.aliasResolver = resolver;
         }
-        
+
         public string Resolve(IType typeInfo) => typeInfo switch
         {
-            { Type: {} gtype} => ResolveGType(gtype, typeInfo is GParameter),
-            { Array: { Length : {} length, Type: { CType: {}} gtype}} => ResolveArrayType(gtype, typeInfo is GParameter, length),
-            { Array: {}} => "IntPtr",
+            { Type: { } gtype } => ResolveGType(gtype, typeInfo is GParameter),
+            { Array: { Length: { } length, Type: { CType: { } } gtype } } => ResolveArrayType(gtype, typeInfo is GParameter, length),
+            { Array: { } } => "IntPtr",
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
 
@@ -31,17 +31,17 @@ namespace Generator
         {
             var type = ResolveGType(arrayType, isParameter);
 
-            if(type == "string")
+            if (type == "string")
             {
                 return "ref IntPtr";
             }
-            else if(type != "IntPtr")
+            else if (type != "IntPtr")
             {
-                if(length > 0)
+                if (length > 0)
                 {
                     type = type + "[]";
 
-                    if(isParameter)
+                    if (isParameter)
                         type = GetMarshal(length) + " " + type;
                 }
                 else
@@ -50,12 +50,12 @@ namespace Generator
                 }
             }
 
-            return type;    
+            return type;
         }
 
         private string ResolveGType(GType gtype, bool isParameter)
         {
-            if(gtype.CType is null)
+            if (gtype.CType is null)
                 throw new Exception("GType is missing CType");
 
             var ctype = gtype.CType;
@@ -63,8 +63,7 @@ namespace Generator
             if (aliasResolver.TryGetForCType(ctype, out var resolvedCType))
                 ctype = resolvedCType;
 
-            (var result, var typeName, var isPrimitive) = ResolveCType(ctype);
-            var isPointer = ctype.EndsWith("*");
+            (var result, var typeName, var isPrimitive, var isPointer) = ResolveCType(ctype);
 
             return result switch
             {
@@ -74,86 +73,97 @@ namespace Generator
             };
         }
 
-        private string FixTypeName(string typeName, bool isParameter, bool isPointer, bool isPrimitive) 
+        private string FixTypeName(string typeName, bool isParameter, bool isPointer, bool isPrimitive)
             => (typeName, isParameter, isPointer, isPrimitive) switch
-        {
-            ("string", true, _, _) => typeName, //string stays string for parameter values, they are marshalled automatically
-            (_, _, true, true) => "ref " + typeName,
-            (_, _, true, false) => "IntPtr",
-            _ => typeName
-        };
+            {
+                ("string", true, _, _) => typeName, //string stays string for parameter values, they are marshalled automatically
+                (_, _, true, true) => "ref " + typeName,
+                (_, _, true, false) => "IntPtr",
+                _ => typeName
+            };
 
         private string GetMarshal(int arrayLength)
             => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={arrayLength})]";
 
-        private (ResolverResult result, string Type, bool IsPrimitive) ResolveCType(string cType) => cType switch
+        private (ResolverResult result, string Type, bool IsPrimitive, bool IsPointer) ResolveCType(string cType)
         {
-            "void" => Primitive("void"),
-            "gboolean" => Primitive("bool"),
-            "gfloat" => Primitive("float"),
+            var isPointer = cType.EndsWith("*");
+            cType = cType.Replace("*", "");
 
-            "GCallback" => Complex("Delegate"), // Signature of a callback is determined by the context in which it is used
+            var result = cType switch
+            {
+                var t when isPointer && t == "void" => IntPtr(),
+                var t when isPointer && t == "JSCValue" => IntPtr(),
 
-            "guchar*" => String(),
-            "gchar*" => String(),
-            "const gchar*" => String(),
-            "const char*" => String(),
+                "void" => Primitive("void"),
+                "gboolean" => Primitive("bool"),
+                "gfloat" => Primitive("float"),
 
-            "gconstpointer" => IntPtr(),
-            "va_list" => IntPtr(),
-            "gpointer" => IntPtr(),
-            "gpointer*" => IntPtr(),
-            "GType" => IntPtr(),
-            "JSCValue*" => IntPtr(),
-            "guint8*" => IntPtr(),
+                "GCallback" => Complex("Delegate"), // Signature of a callback is determined by the context in which it is used
 
-            "GValue*" => Value(),
-            "const GValue*" => Value(),
+                var t when isPointer && t == "guchar" => String(),
+                var t when isPointer && t == "gchar" => String(),
+                var t when isPointer && t == "const gchar" => String(),
+                var t when isPointer && t == "const char" => String(),
 
-            "guint16" => UShort(),
-            "gushort" => UShort(),
+                "gconstpointer" => IntPtr(),
+                "va_list" => IntPtr(),
+                "gpointer" => IntPtr(),
+                "GType" => IntPtr(),
+                "tm" => IntPtr(),
 
-            "gint16" => Short(),
-            "gshort" => Short(),
+                "GValue" => Value(),
+                "const GValue" => Value(),
 
-            "gdouble" => Double(),
-            "long double" => Double(),
+                "guint16" => UShort(),
+                "gushort" => UShort(),
 
-            "int" => Int(), //Workaround: There are aliases which do not return "g datatypes" but the native ones. In this case the type resolver would return "not found" and the native type would not be used!
-            "gint" => Int(),
-            "gint32" => Int(),
-            
-            "guint" => UInt(),
-            "guint32" => UInt(),
-            "GQuark" => UInt(),
-            "gunichar" =>UInt(),
-            "const gunichar*" => UInt(),
+                "gint16" => Short(),
+                "gshort" => Short(),
 
-            "guint8" => Byte(),
-            "gint8" => Byte(),
-            "gchar" => Byte(),
-            "guchar" => Byte(),
+                "gdouble" => Double(),
+                "long double" => Double(),
 
-            "glong" => Long(),
-            "gssize" => Long(),
-            "gint64" => Long(),
-            "goffset" => Long(),
-            "time_t" => Long(),
+                "int" => Int(), //Workaround: There are aliases which do not return "g datatypes" but the native ones. In this case the type resolver would return "not found" and the native type would not be used!
+                "gint" => Int(),
+                "gint32" => Int(),
 
-            "gsize" => ULong(),
-            "guint64" => ULong(),
-            "gulong" => ULong(),
-            "Window" => ULong(),
+                "guint" => UInt(),
+                "guint32" => UInt(),
+                var t when isPointer && t == "const guint32" => UInt(),
+                "GQuark" => UInt(),
+                "gunichar" => UInt(),
+                "const gunichar" => UInt(),
 
-            var t when t.StartsWith("Atk") => NotSupported(t),
-            var t when t.StartsWith("Cogl") => NotSupported(t),
+                "guint8" => Byte(),
+                "gint8" => Byte(),
+                "gchar" => Byte(),
+                "guchar" => Byte(),
+                var t when isPointer && t == "const guint8" => Byte(),
 
-            _ => NotFound()
-        };
+                "glong" => Long(),
+                "gssize" => Long(),
+                "gint64" => Long(),
+                "goffset" => Long(),
+                "time_t" => Long(),
 
-        private (ResolverResult reslt, string Type, bool IsPrimitive) String() 
+                "gsize" => ULong(),
+                "guint64" => ULong(),
+                "gulong" => ULong(),
+                "Window" => ULong(),
+
+                var t when t.StartsWith("Atk") => NotSupported(t),
+                var t when t.StartsWith("Cogl") => NotSupported(t),
+
+                _ => NotFound()
+            };
+
+            return (result.reslt, result.Type, result.IsPrimitive, isPointer);
+        }
+
+        private (ResolverResult reslt, string Type, bool IsPrimitive) String()
             => Complex("string");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) IntPtr() 
+        private (ResolverResult reslt, string Type, bool IsPrimitive) IntPtr()
             => Complex("IntPtr");
         private (ResolverResult reslt, string Type, bool IsPrimitive) Value()
             => Primitive("GObject.Value");
@@ -174,9 +184,9 @@ namespace Generator
         private (ResolverResult reslt, string Type, bool IsPrimitive) ULong()
             => Primitive("ulong");
 
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Primitive(string str) 
+        private (ResolverResult reslt, string Type, bool IsPrimitive) Primitive(string str)
             => (ResolverResult.Found, str, true);
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Complex(string str) 
+        private (ResolverResult reslt, string Type, bool IsPrimitive) Complex(string str)
             => (ResolverResult.Found, str, false);
 
         private (ResolverResult reslt, string Type, bool IsPrimitive) NotSupported(string str)
