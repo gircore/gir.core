@@ -60,6 +60,9 @@ namespace Generator
 
             var ctype = gtype.CType;
 
+            if (ctype.In("va_list", "GType", "gpointer", "gconstpointer"))
+                return "IntPtr";
+
             if (aliasResolver.TryGetForCType(ctype, out var resolvedCType))
                 ctype = resolvedCType;
 
@@ -105,6 +108,7 @@ namespace Generator
                 var t when isPointer && t == "gchar" => String(),
                 var t when isPointer && t == "const gchar" => String(),
                 var t when isPointer && t == "const char" => String(),
+                var t when isPointer && t == "char" => String(),
 
                 "gconstpointer" => IntPtr(),
                 "va_list" => IntPtr(),
