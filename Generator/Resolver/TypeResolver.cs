@@ -3,11 +3,20 @@ using Gir;
 
 namespace Generator
 {
-    internal enum ResolverResult
+    internal class MyType
     {
-        Found = 0,
-        NotFound = 1,
-        NotSupported = 2
+        public int? ArrayLength { get; set;}
+        public bool IsArray { get; set; }
+        public string Type { get; set; }
+        public bool IsPointer { get; set; }
+        public bool IsValueType { get; set; }
+        public bool IsParameter { get; set; }
+
+        public MyType(string type)
+        {
+            Type = type;
+        }
+
     }
 
     public class TypeResolver
@@ -21,103 +30,75 @@ namespace Generator
 
         public string Resolve(IType typeInfo) => typeInfo switch
         {
-            { Type: { } gtype } => ResolveGType(gtype, typeInfo is GParameter),
-            { Array: { Length: { } length, Type: { CType: { } } gtype } } => ResolveArrayType(gtype, typeInfo is GParameter, length),
+            { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter)),
+            { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),
             { Array: { } } => "IntPtr",
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
 
-        private string ResolveArrayType(GType arrayType, bool isParameter, int length)
+        private MyType ResolveArrayType(GType arrayType, bool isParameter, int length)
         {
-            var type = ResolveGType(arrayType, isParameter);
-
-            if (type == "string")
-            {
-                return "ref IntPtr";
-            }
-            else if (type != "IntPtr")
-            {
-                if (length > 0)
-                {
-                    type = type + "[]";
-
-                    if (isParameter)
-                        type = GetMarshal(length) + " " + type;
-                }
-                else
-                {
-                    return "IntPtr";
-                }
-            }
+            var type = ConvertGType(arrayType, isParameter);
+            type.IsArray = true;
 
             return type;
         }
 
-        private string ResolveGType(GType gtype, bool isParameter)
+        private MyType ConvertGType(GType gtype, bool isParameter)
         {
             if (gtype.CType is null)
                 throw new Exception("GType is missing CType");
 
             var ctype = gtype.CType;
 
-            if (ctype.In("va_list", "GType", "gpointer", "gconstpointer"))
-                return "IntPtr";
-
             if (aliasResolver.TryGetForCType(ctype, out var resolvedCType))
                 ctype = resolvedCType;
 
-            (var result, var typeName, var isPrimitive, var isPointer) = ResolveCType(ctype);
+            var result = ResolveCType(ctype);
+            result.IsParameter = isParameter;
 
-            return result switch
-            {
-                ResolverResult.NotFound => gtype.Name ?? throw new Exception($"GType {ctype} is missing a name"),
-                ResolverResult.Found => FixTypeName(typeName, isParameter, isPointer, isPrimitive),
-                _ => throw new Exception($"{ctype} is not supported")
-            };
+            return result;
         }
 
-        private string FixTypeName(string typeName, bool isParameter, bool isPointer, bool isPrimitive)
-            => (typeName, isParameter, isPointer, isPrimitive) switch
+        private string GetTypeName(MyType type)
+            => type switch
             {
-                ("string", true, _, _) => typeName, //string stays string for parameter values, they are marshalled automatically
-                (_, _, true, true) => "ref " + typeName,
-                (_, _, true, false) => "IntPtr",
-                _ => typeName
+                { Type: "void", IsPointer: true } => "IntPtr",
+                { Type: "byte", IsPointer: true, IsArray: true } => "ref IntPtr", //string array
+                { Type: "byte", IsPointer: true, IsParameter: true} => "string",  //string in parameters are marshalled automatically
+                { IsPointer: true, IsValueType: true } => "ref " + type.Type,
+                { IsPointer: true, IsValueType: false} => "IntPtr",
+                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLength: {} l} =>GetMarshal(l) + type.Type + "[]",
+                { IsArray: true, IsValueType: true, ArrayLength: {}} => type.Type + "[]",
+                {IsArray: true, IsValueType: true, ArrayLength: null} => "IntPtr",
+                _ => type.Type
             };
 
         private string GetMarshal(int arrayLength)
             => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={arrayLength})]";
 
-        private (ResolverResult result, string Type, bool IsPrimitive, bool IsPointer) ResolveCType(string cType)
+        private MyType ResolveCType(string cType)
         {
             var isPointer = cType.EndsWith("*");
-            cType = cType.Replace("*", "");
+            cType = cType.Replace("*", "").Replace("const ", "");
 
             var result = cType switch
             {
-                var t when isPointer && t == "void" => IntPtr(),
-                var t when isPointer && t == "JSCValue" => IntPtr(),
+                "void" => ValueType("void"),
+                "gboolean" => ValueType("bool"),
+                "gfloat" => ValueType("float"),
 
-                "void" => Primitive("void"),
-                "gboolean" => Primitive("bool"),
-                "gfloat" => Primitive("float"),
-
-                "GCallback" => Complex("Delegate"), // Signature of a callback is determined by the context in which it is used
-
-                var t when isPointer && t == "guchar" => String(),
-                var t when isPointer && t == "gchar" => String(),
-                var t when isPointer && t == "const gchar" => String(),
-                var t when isPointer && t == "const char" => String(),
-                var t when isPointer && t == "char" => String(),
+                "GCallback" => ReferenceType("Delegate"), // Signature of a callback is determined by the context in which it is used               
 
                 "gconstpointer" => IntPtr(),
                 "va_list" => IntPtr(),
                 "gpointer" => IntPtr(),
                 "GType" => IntPtr(),
                 "tm" => IntPtr(),
+                var t when t.StartsWith("Atk") => IntPtr(),
+                var t when t.StartsWith("Cogl") => IntPtr(),
 
                 "GValue" => Value(),
-                "const GValue" => Value(),
 
                 "guint16" => UShort(),
                 "gushort" => UShort(),
@@ -128,22 +109,19 @@ namespace Generator
                 "gdouble" => Double(),
                 "long double" => Double(),
 
-                "int" => Int(), //Workaround: There are aliases which do not return "g datatypes" but the native ones. In this case the type resolver would return "not found" and the native type would not be used!
                 "gint" => Int(),
                 "gint32" => Int(),
 
                 "guint" => UInt(),
                 "guint32" => UInt(),
-                var t when isPointer && t == "const guint32" => UInt(),
                 "GQuark" => UInt(),
                 "gunichar" => UInt(),
-                "const gunichar" => UInt(),
 
+                "guchar" => Byte(),
+                "gchar" => Byte(),
+                "char" => Byte(),
                 "guint8" => Byte(),
                 "gint8" => Byte(),
-                "gchar" => Byte(),
-                "guchar" => Byte(),
-                var t when isPointer && t == "const guint8" => Byte(),
 
                 "glong" => Long(),
                 "gssize" => Long(),
@@ -156,47 +134,26 @@ namespace Generator
                 "gulong" => ULong(),
                 "Window" => ULong(),
 
-                var t when t.StartsWith("Atk") => NotSupported(t),
-                var t when t.StartsWith("Cogl") => NotSupported(t),
-
-                _ => NotFound()
+                _ => ReferenceType(cType)
             };
+            result.IsPointer = isPointer;
 
-            return (result.reslt, result.Type, result.IsPrimitive, isPointer);
+            return result;
         }
 
-        private (ResolverResult reslt, string Type, bool IsPrimitive) String()
-            => Complex("string");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) IntPtr()
-            => Complex("IntPtr");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Value()
-            => Primitive("GObject.Value");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) UShort()
-            => Primitive("ushort");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Short()
-            => Primitive("short");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Double()
-            => Primitive("double");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Int()
-            => Primitive("int");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) UInt()
-            => Primitive("uint");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Byte()
-            => Primitive("byte");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Long()
-            => Primitive("long");
-        private (ResolverResult reslt, string Type, bool IsPrimitive) ULong()
-            => Primitive("ulong");
+        private MyType String() => ReferenceType("string");
+        private MyType IntPtr() => ReferenceType("IntPtr");
+        private MyType Value() => ValueType("GObject.Value");
+        private MyType UShort() => ValueType("ushort");
+        private MyType Short() => ValueType("short");
+        private MyType Double() => ValueType("double");
+        private MyType Int() => ValueType("int");
+        private MyType UInt() => ValueType("uint");
+        private MyType Byte() => ValueType("byte");
+        private MyType Long() => ValueType("long");
+        private MyType ULong() => ValueType("ulong");
 
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Primitive(string str)
-            => (ResolverResult.Found, str, true);
-        private (ResolverResult reslt, string Type, bool IsPrimitive) Complex(string str)
-            => (ResolverResult.Found, str, false);
-
-        private (ResolverResult reslt, string Type, bool IsPrimitive) NotSupported(string str)
-            => (ResolverResult.NotSupported, "", false);
-        private (ResolverResult reslt, string Type, bool IsPrimitive) NotFound()
-            => (ResolverResult.NotFound, "", false);
-
+        private MyType ValueType(string str) => new MyType(str){IsValueType = true};
+        private MyType ReferenceType(string str) => new MyType(str);
     }
 }
