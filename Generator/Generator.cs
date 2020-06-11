@@ -17,7 +17,7 @@ namespace Generator
 
         private readonly TypeResolver typeResolver;
 
-        public Generator(string girFile, string outputDir, string dllImport)
+        public Generator(string girFile, string outputDir, string dllImport, IEnumerable<string> aliasFiles)
         {
             this.dllImport = dllImport ?? throw new ArgumentNullException(nameof(dllImport));
             this.girFile = girFile ?? throw new System.ArgumentNullException(nameof(girFile));
@@ -26,7 +26,15 @@ namespace Generator
             var reader = new GirReader();
             repository = reader.ReadRepository(girFile);
 
-            var aliasResolver = new AliasResolver(repository?.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+            var aliases = new List<GAlias>();
+            aliases.AddRange(repository?.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+            foreach(var aliasGir in aliasFiles)
+            {
+                var repo = reader.ReadRepository(aliasGir);
+                aliases.AddRange(repo.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+            }
+
+            var aliasResolver = new AliasResolver(aliases);
             typeResolver = new TypeResolver(aliasResolver);
 
             Directory.CreateDirectory(outputDir);

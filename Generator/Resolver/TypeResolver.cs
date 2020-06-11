@@ -116,11 +116,13 @@ namespace Generator
                 "int" => Int(),
                 "gint" => Int(),
                 "gint32" => Int(),
+                "pid_t" => Int(),
 
                 "guint" => UInt(),
                 "guint32" => UInt(),
                 "GQuark" => UInt(),
                 "gunichar" => UInt(),
+                "uid_t" => UInt(),
 
                 "guchar" => Byte(),
                 "gchar" => Byte(),
