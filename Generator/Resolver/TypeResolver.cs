@@ -57,6 +57,9 @@ namespace Generator
             var result = ResolveCType(ctype);
             result.IsParameter = isParameter;
 
+            if(!result.IsValueType && gtype.Name is {})
+                result.Type = gtype.Name;
+
             return result;
         }
 
@@ -70,7 +73,7 @@ namespace Generator
                 { IsPointer: true, IsValueType: false} => "IntPtr",
                 { IsArray: true, IsValueType: true, IsParameter: true, ArrayLength: {} l} =>GetMarshal(l) + type.Type + "[]",
                 { IsArray: true, IsValueType: true, ArrayLength: {}} => type.Type + "[]",
-                {IsArray: true, IsValueType: true, ArrayLength: null} => "IntPtr",
+                { IsArray: true, IsValueType: true, ArrayLength: null} => "IntPtr",
                 _ => type.Type
             };
 
@@ -88,7 +91,7 @@ namespace Generator
                 "gboolean" => ValueType("bool"),
                 "gfloat" => ValueType("float"),
 
-                "GCallback" => ReferenceType("Delegate"), // Signature of a callback is determined by the context in which it is used               
+                //"GCallback" => ReferenceType("Delegate"), // Signature of a callback is determined by the context in which it is used               
 
                 "gconstpointer" => IntPtr(),
                 "va_list" => IntPtr(),
@@ -109,6 +112,7 @@ namespace Generator
                 "gdouble" => Double(),
                 "long double" => Double(),
 
+                "int" => Int(),
                 "gint" => Int(),
                 "gint32" => Int(),
 
@@ -142,7 +146,7 @@ namespace Generator
         }
 
         private MyType String() => ReferenceType("string");
-        private MyType IntPtr() => ReferenceType("IntPtr");
+        private MyType IntPtr() => ValueType("IntPtr");
         private MyType Value() => ValueType("GObject.Value");
         private MyType UShort() => ValueType("ushort");
         private MyType Short() => ValueType("short");
