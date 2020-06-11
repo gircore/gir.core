@@ -40,6 +40,7 @@ namespace Generator
         {
             var type = ConvertGType(arrayType, isParameter);
             type.IsArray = true;
+            type.ArrayLength = length;
 
             return type;
         }
