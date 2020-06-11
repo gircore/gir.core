@@ -90,7 +90,8 @@ namespace Generator
             {
                 "void" => ValueType("void"),
                 "gboolean" => ValueType("bool"),
-                "gfloat" => ValueType("float"),
+                "gfloat" => Float(),
+                "float" => Float(),
 
                 //"GCallback" => ReferenceType("Delegate"), // Signature of a callback is determined by the context in which it is used               
 
@@ -110,14 +111,17 @@ namespace Generator
                 "gint16" => Short(),
                 "gshort" => Short(),
 
+                "double" => Double(),
                 "gdouble" => Double(),
                 "long double" => Double(),
 
+                "cairo_format_t" => Int(),//Workaround
                 "int" => Int(),
                 "gint" => Int(),
                 "gint32" => Int(),
                 "pid_t" => Int(),
 
+                "unsigned" => UInt(),//Workaround
                 "guint" => UInt(),
                 "guint32" => UInt(),
                 "GQuark" => UInt(),
@@ -159,6 +163,7 @@ namespace Generator
         private MyType Byte() => ValueType("byte");
         private MyType Long() => ValueType("long");
         private MyType ULong() => ValueType("ulong");
+        private MyType Float() => ValueType("float");
 
         private MyType ValueType(string str) => new MyType(str){IsValueType = true};
         private MyType ReferenceType(string str) => new MyType(str);

@@ -1,4 +1,9 @@
 {{-
+if (string.size $1.identifier) == 0
+    debug "Ignoring method of " + name + " because it has no identifier"
+    ret
+end
+
 if (string.size $1.name) == 0
     debug "Ignoring method of " + name + " with identifier " + $1.identifier + " because it has no name"
     ret
