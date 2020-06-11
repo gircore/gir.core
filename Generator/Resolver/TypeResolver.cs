@@ -68,12 +68,13 @@ namespace Generator
             {
                 { Type: "void", IsPointer: true } => "IntPtr",
                 { Type: "byte", IsPointer: true, IsArray: true } => "ref IntPtr", //string array
-                { Type: "byte", IsPointer: true, IsParameter: true} => "string",  //string in parameters are marshalled automatically
+                { Type: "byte", IsPointer: true, IsParameter: true } => "string",  //string in parameters are marshalled automatically
+                { Type: "byte", IsPointer: true, IsParameter: false } => "IntPtr",
                 { IsPointer: true, IsValueType: true } => "ref " + type.Type,
-                { IsPointer: true, IsValueType: false} => "IntPtr",
-                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLength: {} l} =>GetMarshal(l) + type.Type + "[]",
-                { IsArray: true, IsValueType: true, ArrayLength: {}} => type.Type + "[]",
-                { IsArray: true, IsValueType: true, ArrayLength: null} => "IntPtr",
+                { IsPointer: true, IsValueType: false } => "IntPtr",
+                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLength: {} l } =>GetMarshal(l) + type.Type + "[]",
+                { IsArray: true, IsValueType: true, ArrayLength: {} } => type.Type + "[]",
+                { IsArray: true, IsValueType: true, ArrayLength: null } => "IntPtr",
                 _ => type.Type
             };
 
