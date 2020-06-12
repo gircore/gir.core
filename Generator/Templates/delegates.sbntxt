@@ -1,0 +1,9 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace {{ namespace }}
+{
+    {{~ for delegate in delegates
+        include 'delegate.sbntxt' delegate
+    end ~}}
+}

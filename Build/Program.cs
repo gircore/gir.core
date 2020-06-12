@@ -2,7 +2,6 @@
 using static Targets;
 using static DotNet;
 using static Projects;
-using Gir;
 using System.Collections.Generic;
 
 class Program
@@ -54,13 +53,15 @@ class Program
                 (GDK_WRAPPER, "Gdk-3.0.gir", "TODO", true),
                 (GDK_PIXBUF_WRAPPER, "GdkPixbuf-2.0.gir", "libgdk_pixbuf-2.0.so.0", true),
                 (GTK_WRAPPER, "Gtk-3.0.gir", "libgtk-3.so.0", true),
-                (JAVASCRIPT_CORE_WRAPPER, "JavaScriptCore-4.0.gir", "javascriptcoregtk-4.0.so", false), (HANDY_WRAPPER, "Handy-0.0.gir", "libhandy-0.0.so.0", false),
+                (JAVASCRIPT_CORE_WRAPPER, "JavaScriptCore-4.0.gir", "javascriptcoregtk-4.0.so", false),
+                (HANDY_WRAPPER, "Handy-0.0.gir", "libhandy-0.0.so.0", false),
                 (WEBKITGTK_WRAPPER, "WebKit2-4.0.gir", "libwebkit2gtk-4.0.so.37", true),
                 (WEBKIT2WEBEXTENSION_WRAPPER, "WebKit2WebExtension-4.0.gir", "WEBEXTENSION", true),
                 (CLUTTER_WRAPPER, "Clutter-1.0.gir", "libclutter-1.0.so.0", false),
                 (GTKCLUTTER_WRAPPER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
                 (CHAMPLAIN_WRAPPER, "Champlain-0.12.gir", "libchamplain-0.12", false),
-                (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false)),
+                (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false)
+                ),
             (x) => GenerateAndBuildProject(x.project, x.girFile, x.import, x.addAlias)
         );
 
@@ -97,12 +98,7 @@ class Program
         if(addGlibAliases)
             list.Add("../gir-files/GLib-2.0.gir");
 
-        var girWrapper = new GirCWrapper(girFile, outputDir, $"\"{import}\"", list.ToArray());
-        girWrapper.CreateClasses();
-        girWrapper.CreateInterfaces();
-        girWrapper.CreateEnums();
-        girWrapper.CreateStructs();
-        girWrapper.CreateDelegates();
-        girWrapper.CreateMethods();
+        var g = new Generator.Generator(girFile, outputDir, import, list);
+        g.Generate();
     }
 }

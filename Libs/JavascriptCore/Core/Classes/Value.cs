@@ -34,8 +34,8 @@ namespace JavaScriptCore.Core
         public bool HasProperty(string name) => JavaScriptCore.Value.object_has_property(this, name);
         public Value InvokeMethod(string name)
         {
-            var array = new GObject.Value[0];
-            var ret = JavaScriptCore.Value.object_invoke_methodv(this, name, 0, array);
+            var ptr = IntPtr.Zero;
+            var ret = JavaScriptCore.Value.object_invoke_methodv(this, name, 0, ref ptr);
 
             return new Value(ret);
         }

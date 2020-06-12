@@ -7,34 +7,34 @@ namespace GObject
     public struct Type
     {
         [FieldOffset(0)]
-        private IntPtr value;
+        private ulong value;
 
         #region Statics
-        public static readonly Type Invalid = new Type ((IntPtr) Types.Invalid);
-        public static readonly Type None = new Type ((IntPtr) Types.None);
-        public static readonly Type Interface = new Type ((IntPtr) Types.Interface);
-        public static readonly Type Char = new Type ((IntPtr) Types.Char);
-        public static readonly Type UChar = new Type ((IntPtr) Types.UChar);
-        public static readonly Type Boolean = new Type ((IntPtr) Types.Boolean);
-        public static readonly Type Int = new Type ((IntPtr) Types.Int);
-        public static readonly Type UInt = new Type ((IntPtr) Types.UInt);
-        public static readonly Type Long = new Type ((IntPtr) Types.Long);
-        public static readonly Type ULong = new Type ((IntPtr) Types.ULong);
-        public static readonly Type Int64 = new Type ((IntPtr) Types.Int64);
-        public static readonly Type UInt64 = new Type ((IntPtr) Types.UInt64);
-        public static readonly Type Enum = new Type ((IntPtr) Types.Enum);
-        public static readonly Type Flags = new Type ((IntPtr) Types.Flags);
-        public static readonly Type Float = new Type ((IntPtr) Types.Float);
-        public static readonly Type Double = new Type ((IntPtr) Types.Double);
-        public static readonly Type String = new Type ((IntPtr) Types.String);
-        public static readonly Type Pointer = new Type ((IntPtr) Types.Pointer);
-        public static readonly Type Boxed = new Type ((IntPtr) Types.Boxed);
-        public static readonly Type Param = new Type ((IntPtr) Types.Param);
-        public static readonly Type Object = new Type ((IntPtr) Types.Object);
-        public static readonly Type Variant = new Type ((IntPtr) Types.Variant);
+        public static readonly Type Invalid = new Type ((ulong)Types.Invalid);
+        public static readonly Type None = new Type ((ulong)Types.None);
+        public static readonly Type Interface = new Type ((ulong) Types.Interface);
+        public static readonly Type Char = new Type ((ulong) Types.Char);
+        public static readonly Type UChar = new Type ((ulong) Types.UChar);
+        public static readonly Type Boolean = new Type ((ulong) Types.Boolean);
+        public static readonly Type Int = new Type ((ulong) Types.Int);
+        public static readonly Type UInt = new Type ((ulong) Types.UInt);
+        public static readonly Type Long = new Type ((ulong) Types.Long);
+        public static readonly Type ULong = new Type ((ulong) Types.ULong);
+        public static readonly Type Int64 = new Type ((ulong) Types.Int64);
+        public static readonly Type UInt64 = new Type ((ulong) Types.UInt64);
+        public static readonly Type Enum = new Type ((ulong) Types.Enum);
+        public static readonly Type Flags = new Type ((ulong) Types.Flags);
+        public static readonly Type Float = new Type ((ulong) Types.Float);
+        public static readonly Type Double = new Type ((ulong) Types.Double);
+        public static readonly Type String = new Type ((ulong) Types.String);
+        public static readonly Type Pointer = new Type ((ulong) Types.Pointer);
+        public static readonly Type Boxed = new Type ((ulong) Types.Boxed);
+        public static readonly Type Param = new Type ((ulong) Types.Param);
+        public static readonly Type Object = new Type ((ulong) Types.Object);
+        public static readonly Type Variant = new Type ((ulong) Types.Variant);
         #endregion Statics
 
-        internal Type(IntPtr value)
+        internal Type(ulong value)
         {
             this.value = value;
         }
@@ -49,7 +49,7 @@ namespace GObject
             return ptr;
         }*/
 
-        public static implicit operator IntPtr (Type type) => type.value;
+        public static implicit operator ulong (Type type) => type.value;
 		
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
         private enum Types 

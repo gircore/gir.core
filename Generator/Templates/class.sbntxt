@@ -1,0 +1,12 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace {{ namespace }}
+{
+    public partial class {{ name }}
+    {
+        {{~ for method in methods
+            include 'method.sbntxt' method
+        end ~}}
+    }
+}

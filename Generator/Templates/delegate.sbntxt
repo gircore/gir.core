@@ -1,0 +1,13 @@
+{{-
+func parameters
+    if $0 && $0.parameters
+        include 'parameters.sbntxt' $0.parameters
+    end
+end
+-}}
+{{~ if $1.doc && $1.doc.text ~}}
+///<summary>
+{{~ $1.doc.text | comment_line_by_line ~}}
+///</summary>
+{{~ end ~}}
+public delegate {{ $1.return_value | resolve_type }} {{ $1.name | fix_identifier }}({{ parameters $1 }});
