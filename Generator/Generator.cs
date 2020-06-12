@@ -102,7 +102,7 @@ namespace Generator
         }
 
         private void GenerateMethods(List<GMethod> methods, string ns)
-        {Console.WriteLine(methods.Count()+ "----");
+        {
             var scriptObject = new ScriptObject();
             RemoveVarArgsMethods(methods);
             scriptObject.Add("methods", methods);

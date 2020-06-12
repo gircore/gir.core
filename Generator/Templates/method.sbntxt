@@ -10,9 +10,19 @@ if (string.size $1.name) == 0
 end
 
 func parameters
-    if $0 && $0.parameters
-        include 'parameters.sbntxt' $0.parameters
+    if $0
+        if $0.parameters
+            include 'parameters.sbntxt' $0.parameters
+        end
+
+        if $0.throws
+            if $0.parameters
+                ", "
+            end
+            "out IntPtr error"
+        end
     end
+
 end
 -}}
 {{ if $1.doc && $1.doc.text }}
