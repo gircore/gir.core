@@ -30,9 +30,10 @@ namespace Generator
 
         public string Resolve(IType typeInfo) => typeInfo switch
         {
+            { Array: { CType:{} n }} when n.EndsWith("**") => "ref IntPtr",
             { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter)),
             { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),
-            { Array: { } } => "IntPtr",
+            { Array: { }} => "IntPtr",
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
 
