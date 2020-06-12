@@ -52,14 +52,19 @@ namespace Generator
 
             var ctype = gtype.CType;
 
-            if (aliasResolver.TryGetForCType(ctype, out var resolvedCType))
+            if (aliasResolver.TryGetForCType(ctype, out var resolvedCType, out var resolvedName))
                 ctype = resolvedCType;
 
             var result = ResolveCType(ctype);
             result.IsParameter = isParameter;
 
             if(!result.IsValueType && gtype.Name is {})
-                result.Type = gtype.Name;
+            {
+                if(resolvedName is {})
+                    result.Type = resolvedName;
+                else
+                    result.Type = gtype.Name;
+            }
 
             return result;
         }

@@ -62,6 +62,7 @@ namespace Generator
             GenerateEnums(repository.Namespace.Bitfields, ns, true);
             GenerateEnums(repository.Namespace.Enumerations, ns, false);
             GenerateDelegates(repository.Namespace.Callbacks, ns);
+            GenerateMethods(repository.Namespace.Functions, ns);
         }
 
         private void GenerateRecords(IEnumerable<GRecord> records, string ns)
@@ -98,6 +99,14 @@ namespace Generator
             var scriptObject = new ScriptObject();
             scriptObject.Add("delegates", delegates);
             Generate("delegates", "Delegates", ns, scriptObject);
+        }
+
+        private void GenerateMethods(List<GMethod> methods, string ns)
+        {Console.WriteLine(methods.Count()+ "----");
+            var scriptObject = new ScriptObject();
+            RemoveVarArgsMethods(methods);
+            scriptObject.Add("methods", methods);
+            Generate("methods", "Methods", ns, scriptObject);
         }
 
         private void GenerateEnums(IEnumerable<GEnumeration> enums, string ns, bool hasFlags)
