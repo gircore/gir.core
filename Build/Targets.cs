@@ -1,6 +1,6 @@
 static class Targets
 {
-    public const string generate_wrapper = "generate-wrapper";
+    public const string generate = "generate";
     public const string build = "build";
     public const string clean = "clean";
     public const string debug = "debug";

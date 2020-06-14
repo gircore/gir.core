@@ -42,7 +42,7 @@ class Program
 
     static void Main(string[] args)
     {        
-        Target<(string project, string girFile, string import, bool addAlias)>(generate_wrapper, 
+        Target<(string project, string girFile, string import, bool addAlias)>(generate, 
             ForEach(
                 (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false),
                 (GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
@@ -62,10 +62,10 @@ class Program
                 (CHAMPLAIN_WRAPPER, "Champlain-0.12.gir", "libchamplain-0.12", false),
                 (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false)
                 ),
-            (x) => GenerateProject(x.project, x.girFile, x.import, x.addAlias)
+            (x) => Generate(x.project, x.girFile, x.import, x.addAlias)
         );
 
-        Target<string>(Targets.build, DependsOn(generate_wrapper),
+        Target<string>(Targets.build, DependsOn(generate),
             ForEach(allProjects),
             (project) => Build(project, configuration)
         );
@@ -82,9 +82,9 @@ class Program
         RunTargetsAndExit(args);
     }
 
-    private static void GenerateProject(string project, string girFile, string import, bool addGlibAliases)
+    private static void Generate(string project, string girFile, string import, bool addGlibAliases)
     {
-        var girPath = $"../gir-files/{girFile}";
+        girFile = $"../gir-files/{girFile}";
         var outputDir = project + "Generated";
 
         var list = new List<string>();
