@@ -42,7 +42,7 @@ class Program
 
     static void Main(string[] args)
     {        
-        Target<(string project, string girFile, string import, bool addAlias)>(generate_wrapper, 
+        Target<(string project, string girFile, string import, bool addAlias)>(generate, 
             ForEach(
                 (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false),
                 (GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
@@ -62,19 +62,18 @@ class Program
                 (CHAMPLAIN_WRAPPER, "Champlain-0.12.gir", "libchamplain-0.12", false),
                 (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false)
                 ),
-            (x) => GenerateAndBuildProject(x.project, x.girFile, x.import, x.addAlias)
+            (x) => Generate(x.project, x.girFile, x.import, x.addAlias)
         );
 
-        Target(build_gdkpixbuf_core, DependsOn(generate_wrapper), () => Build(GDK_PIXBUF_CORE, configuration));
-        Target(build_gtk_core, DependsOn(generate_wrapper), () => Build(GTK_CORE, configuration));
-        Target(build_handy_core, DependsOn(build_gtk_core), () => Build(HANDY_CORE, configuration));
-        Target(build_webkitgtk_core, DependsOn(generate_wrapper), () => Build(WEBKITGTK_CORE, configuration));
-        Target(build_webkit2webextensions_core, DependsOn(generate_wrapper), () => Build(WEBKIT2WEBEXTENSION_CORE, configuration));
-        Target(build_gtkclutter_core, DependsOn(generate_wrapper), () => Build(GTKCLUTTER_CORE, configuration));
-        Target(build_gtkchamplain_core, DependsOn(generate_wrapper), () => Build(GTKCHAMPLAIN_CORE, configuration));
+        Target<string>(Targets.build, DependsOn(generate),
+            ForEach(allProjects),
+            (project) => Build(project, configuration)
+        );
 
-        Target(Targets.build, DependsOn(build_gdkpixbuf_core, build_handy_core, build_gtk_core, build_webkitgtk_core, build_webkit2webextensions_core, build_gtkclutter_core, build_gtkchamplain_core));
-        Target(Targets.clean, ForEach(allProjects), (project) => Clean(project, configuration));
+        Target(Targets.clean, 
+            ForEach(allProjects), 
+            (project) => Clean(project, configuration)
+        );
         
         Target(Targets.release, () => configuration = confRelease);
         Target(Targets.debug, () => configuration = confDebug);
@@ -83,17 +82,11 @@ class Program
         RunTargetsAndExit(args);
     }
 
-    private static void GenerateAndBuildProject(string project, string girFile, string import, bool addGlibAliases)
+    private static void Generate(string project, string girFile, string import, bool addGlibAliases)
     {
-        var girPath = $"../gir-files/{girFile}";
+        girFile = $"../gir-files/{girFile}";
         var outputDir = project + "Generated";
 
-        GenerateProject(outputDir, girPath, import, addGlibAliases);
-        Build(project, configuration);
-    }
-
-    private static void GenerateProject(string outputDir, string girFile, string import, bool addGlibAliases)
-    {
         var list = new List<string>();
         if(addGlibAliases)
             list.Add("../gir-files/GLib-2.0.gir");
