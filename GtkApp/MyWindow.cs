@@ -147,9 +147,8 @@ namespace GtkApp
             var inspector = webView.GetInspector();
             inspector.Show();
             var c = Connection.Get(BusType.Session);
-            //using var ret = c.Call("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
 
-            var ret = await c.CallAsync("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
+            using var ret = await c.CallAsync("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
 
             Console.WriteLine(ret.Print(true));
 
