@@ -9,8 +9,8 @@ namespace Gio.Core.DBus
             var handle = Methods.bus_get_sync((Gio.BusType)busType, IntPtr.Zero, out var error);
             HandleError(error);
 
-            if(TryGetObject<Connection>(handle, out var obj))
-                return obj!;
+            if(TryGetObject(handle, out Connection obj))
+                return obj;
             else
                 return new Connection(handle);
         }
