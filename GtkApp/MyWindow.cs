@@ -139,7 +139,7 @@ namespace GtkApp
             Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
         }
 
-        private void button_clicked(object obj, EventArgs args)
+        private async void button_clicked(object obj, EventArgs args)
         {
             revealer.Reveal.Value = !revealer.Reveal.Value;
             action.SetCanExecute(!action.CanExecute(default));
@@ -147,10 +147,14 @@ namespace GtkApp
             var inspector = webView.GetInspector();
             inspector.Show();
             var c = Connection.Get(BusType.Session);
-            using var ret = c.Call("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
+            //using var ret = c.Call("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
+
+            var ret = await c.CallAsync("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
+
             Console.WriteLine(ret.Print(true));
 
-            webView.RunJavascript("test()", (value) => Console.WriteLine(value.GetString()));
+            var value = await webView.RunJavascriptAsync("test()");
+            Console.WriteLine(value.GetString());
         } 
     }
 }

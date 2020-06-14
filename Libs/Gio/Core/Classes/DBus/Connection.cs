@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using GLib.Core;
 using GObject.Core;
 
@@ -20,6 +21,23 @@ namespace Gio.Core.DBus
         {
             Address = PropertyOfString("address");
             Closed = ReadOnlyPropertyOfBool("closed");
+        }
+
+        public Task<GVariant> CallAsync(string busName, string objectPath, string interfaceName, string methodName)
+        {
+            var tcs = new TaskCompletionSource<GVariant>();
+
+            AsyncReadyCallback cb = (sourceObject, res, userData) =>
+            {
+                var ret = DBusConnection.call_finish(sourceObject, res, out var error);
+                HandleError(error);
+
+                tcs.SetResult(new GVariant(ret));
+            };
+
+            DBusConnection.call(this, busName, objectPath, interfaceName, methodName, IntPtr.Zero, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, cb, IntPtr.Zero);
+
+            return tcs.Task;
         }
 
         public GVariant Call(string busName, string objectPath, string interfaceName, string methodName)
