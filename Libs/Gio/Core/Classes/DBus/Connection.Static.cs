@@ -2,7 +2,7 @@ using System;
 
 namespace Gio.Core.DBus
 {
-    public partial class Connection : GObject.Core.GObject
+    public partial class Connection
     {
         public static Connection Get(BusType busType)
         {

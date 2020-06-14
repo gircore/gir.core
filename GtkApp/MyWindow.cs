@@ -2,6 +2,7 @@ using System;
 using Gtk.Core;
 using Handy.Core;
 using WebKitGTK.Core;
+using Gio.Core.DBus;
 
 namespace GtkApp
 {
@@ -145,6 +146,9 @@ namespace GtkApp
 
             var inspector = webView.GetInspector();
             inspector.Show();
+            var c = Connection.Get(BusType.Session);
+            using var ret = c.Call("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
+            Console.WriteLine(ret.Print(true));
 
             webView.RunJavascript("test()", (value) => Console.WriteLine(value.GetString()));
         } 

@@ -22,7 +22,10 @@ namespace GObject.Core
                 disposedValue = true;
 
                 if(handle != IntPtr.Zero)
+                {
                     global::GObject.Object.unref(handle);
+                    objects.Remove(handle);
+                }
 
                 handle = IntPtr.Zero;
 

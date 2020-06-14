@@ -1,4 +1,5 @@
 using System;
+using GLib.Core;
 using GObject.Core;
 
 namespace Gio.Core.DBus
@@ -19,6 +20,15 @@ namespace Gio.Core.DBus
         {
             Address = PropertyOfString("address");
             Closed = ReadOnlyPropertyOfBool("closed");
+        }
+
+        public GVariant Call(string busName, string objectPath, string interfaceName, string methodName)
+        {
+            var ret = DBusConnection.call_sync(this, busName, objectPath, interfaceName, methodName, IntPtr.Zero, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, out var error);
+
+            HandleError(error);
+
+            return new GVariant(ret);
         }
     }
 }
