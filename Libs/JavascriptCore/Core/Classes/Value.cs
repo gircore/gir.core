@@ -46,8 +46,8 @@ namespace JavaScriptCore.Core
 
         private Value GetProperty(IntPtr ptr)
         {
-            if(TryGetObject(ptr, out Value? obj))
-                return obj!;
+            if(TryGetObject(ptr, out Value obj))
+                return obj;
             else
                 return new Value(ptr);
         }

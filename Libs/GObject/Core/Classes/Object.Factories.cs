@@ -13,5 +13,6 @@ namespace GObject.Core
         protected Property<string> PropertyOfString(string name) => Property<string>(name, GetStr, Set);
         protected Property<int> PropertyOfInt(string name) => Property<int>(name, GetInt, Set);
         protected ReadOnlyProperty<double> ReadOnlyPropertyOfDouble(string name) => ReadOnlyProperty<double>(name, GetDouble);
+        protected ReadOnlyProperty<bool> ReadOnlyPropertyOfBool(string name) => ReadOnlyProperty<bool>(name, GetBool);
     }
 }

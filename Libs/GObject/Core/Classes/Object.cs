@@ -71,7 +71,7 @@ namespace GObject.Core
                 throw new Exception("Object is disposed");
         }
 
-        protected void HandleError(IntPtr error)
+        protected static void HandleError(IntPtr error)
         {
             if(error != IntPtr.Zero)
                 throw new GException(error);
@@ -85,7 +85,7 @@ namespace GObject.Core
             return ret;
         }
 
-        protected bool TryGetObject<T>(IntPtr handle, out T? obj) where T: GObject
+        protected static bool TryGetObject<T>(IntPtr handle, out T obj) where T: GObject
         { 
             var result = objects.TryGetValue(handle, out var ret);
             obj = (T) ret;

@@ -2,6 +2,7 @@ using System;
 using Gtk.Core;
 using Handy.Core;
 using WebKitGTK.Core;
+using Gio.Core.DBus;
 
 namespace GtkApp
 {
@@ -138,15 +139,21 @@ namespace GtkApp
             Console.WriteLine(System.IO.Directory.GetCurrentDirectory());
         }
 
-        private void button_clicked(object obj, EventArgs args)
+        private async void button_clicked(object obj, EventArgs args)
         {
             revealer.Reveal.Value = !revealer.Reveal.Value;
             action.SetCanExecute(!action.CanExecute(default));
 
             var inspector = webView.GetInspector();
             inspector.Show();
+            var c = Connection.Get(BusType.Session);
 
-            webView.RunJavascript("test()", (value) => Console.WriteLine(value.GetString()));
+            using var ret = await c.CallAsync("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
+
+            Console.WriteLine(ret.Print(true));
+
+            var value = await webView.RunJavascriptAsync("test()");
+            Console.WriteLine(value.GetString());
         } 
     }
 }

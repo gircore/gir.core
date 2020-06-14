@@ -7,7 +7,7 @@ If you want to get started with the library head over to http://gircore.tiede.or
 For the [GObject] system there are a lot of libraries which allow to write complete applications with deep system integration on linux. Unfortunately there are only bindings for [GtkSharp] which are well maintained and they just wrap the low level C-API.
 
 This project aims to provide:
-* An API which feels more natural to C# developers and thus greatly simplifies the C-API.
+* An API which feels more natural to C# developers and thus greatly simplifies the C-API (including the async/await feature).
 * A more complete API surface to integrate deeply with linux via supporting more libraries
 
 Supported libraries
@@ -15,8 +15,9 @@ Supported libraries
 * [WebKitGTK] (wip): Browser-Engine
 * [JavaScriptCore] (wip): Javascript integration for [WebKitGTK]
 * [libhandy] (wip): Convergent UI-Widgets for [GTK] to support mobile phones
-* [dbus] (planned): Library for inter-process communication
+* [dbus] (wip): Library for inter-process communication via [GIO]
 * [libchamplain] (wip): Library to display maps
+* [gstreamer] (planned): Multimedia Framework
 
 ## Build & Use
 To build the project locally follow these steps:
@@ -72,7 +73,8 @@ The high level API is currently handcrafted to be able to provide the flexiblity
   }
 ```
 
-
+[gstreamer]: https://gstreamer.freedesktop.org/
+[GIO]: https://developer.gnome.org/gio/stable/
 [GObject]: https://developer.gnome.org/gobject/stable/
 [GTK]: https://gtk.org/
 [libhandy]: https://source.puri.sm/Librem5/libhandy

@@ -3,11 +3,11 @@ using System.Runtime.InteropServices;
 
 namespace GLib.Core
 {
-    public class GVariant
+    public partial class GVariant
     {
         private readonly IntPtr handle;
 
-        internal GVariant(IntPtr handle)
+        public GVariant(IntPtr handle)
         {
             this.handle = handle;
         }
@@ -20,5 +20,8 @@ namespace GLib.Core
             var text = Marshal.PtrToStringAuto(strPtr);
             return text;
         }
+
+        public string Print(bool typeAnnotate)
+            => Marshal.PtrToStringAuto(GLib.Variant.print(handle, typeAnnotate));
     }
 }
