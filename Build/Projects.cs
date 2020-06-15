@@ -58,6 +58,10 @@ static class Projects
     public const string GTKCLUTTER_WRAPPER = GTKCLUTTER + WRAPPER;
     public const string GTKCLUTTER_CORE = GTKCLUTTER + CORE;
 
+    private const string GST = "../Libs/Gst/";
+    public const string GST_WRAPPER = GST + WRAPPER;
+    public const string GST_CORE = GST + CORE;
+
     public const string CAIRO_WRAPPER = "../Libs/Cairo/Wrapper/";
     public const string GDK_WRAPPER = "../Libs/Gdk/Wrapper/";
     public const string PANGO_WRAPPER = "../Libs/Pango/Wrapper/";

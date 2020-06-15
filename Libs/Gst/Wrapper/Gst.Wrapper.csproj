@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\GObject\Wrapper\GObject.Wrapper.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PackageId>Gir.Wrapper.CS.Gst</PackageId>
+  </PropertyGroup>
+</Project>
