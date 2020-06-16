@@ -4,7 +4,7 @@ namespace Gir.Core.Gst
 {
     public class Bus : GObject.Core.GObject
     {
-        protected Bus(IntPtr handle) : base(handle, true)
+        protected internal Bus(IntPtr handle) : base(handle, true)
         {
         }
 

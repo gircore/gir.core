@@ -152,11 +152,6 @@ namespace GtkApp
             //using var ret = await c.CallAsync("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
             //Console.WriteLine(ret.Print(true));
 
-            var ret = Parse.Launch("playbin uri=http://download.blender.org/durian/trailer/sintel_trailer-1080p.mp4");
-            ret.SetState(State.Playing);
-            var bus = ret.Bus.Value;
-            ret.SetState(State.Null);
-
             var value = await webView.RunJavascriptAsync("test()");
             Console.WriteLine(value.GetString());
         } 

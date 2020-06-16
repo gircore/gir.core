@@ -4,15 +4,18 @@ using GObject.Core;
 namespace Gir.Core.Gst
 {
     public class Element : GObject.Core.GObject
-    {
-        public Property<Bus> Bus { get; }
-        
+    {        
         internal Element(IntPtr handle) : base(handle, true)
         {
-            Bus = Property<Bus>("bus",
-                get: GetObject<Bus>,
-                set: Set
-            );
+        }
+
+        public Bus GetBus()
+        {
+            var ret = global::Gst.Element.get_bus(this);
+            if(TryGetObject(ret, out Bus obj))
+                return obj;
+            else
+                return new Bus(ret);
         }
 
         public void SetState(State state) 

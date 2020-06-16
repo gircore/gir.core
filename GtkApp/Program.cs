@@ -1,4 +1,5 @@
 ﻿using System;
+using Gir.Core.Gst;
 using Gtk.Core;
 using GtkClutter.Core;
 
@@ -14,11 +15,18 @@ namespace GtkApp
 
         public Program()
         {
-            var app = new GApplication("org.GtkApp");
+            /*var app = new GApplication("org.GtkApp");
             app.InitClutter();
             app.Activate += OnActivate;
             app.Startup += OnStartup;
-            app.Run();
+            app.Run();*/
+
+            Gir.Core.Gst.Application.Init();
+            var ret = Parse.Launch("playbin uri=playbin uri=http://download.blender.org/durian/trailer/sintel_trailer-1080p.mp4");
+            ret.SetState(State.Playing);
+            var bus = ret.GetBus();
+            bus.TimedPopFiltered(18446744073709551615);
+            ret.SetState(State.Null);
         }
 
         private void OnStartup(object? sender, EventArgs args)
