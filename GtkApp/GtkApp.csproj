@@ -8,6 +8,7 @@
     <ProjectReference Include="..\Libs\JavascriptCore\Core\JavascriptCore.Core.csproj" />
     <ProjectReference Include="..\Libs\GtkClutter\Core\GtkClutter.Core.csproj" />
     <ProjectReference Include="..\Libs\GtkChamplain\Core\GtkChamplain.Core.csproj" />
+    <ProjectReference Include="..\Libs\Gst\Core\Gst.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

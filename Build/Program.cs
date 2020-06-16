@@ -63,7 +63,7 @@ class Program
                 (GTKCLUTTER_WRAPPER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
                 (CHAMPLAIN_WRAPPER, "Champlain-0.12.gir", "libchamplain-0.12", false),
                 (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),
-                (GST_WRAPPER, "Gst-1.0.gir", "TODO", true)
+                (GST_WRAPPER, "Gst-1.0.gir", "libgstreamer-1.0.so.0", true)
                 ),
             (x) => Generate(x.project, x.girFile, x.import, x.addAlias)
         );
