@@ -46,5 +46,8 @@ namespace Gir
 
         [XmlElement("union")]
         public List<GRecord> Unions { get; set; } = default!;
+
+        [XmlElement("constant")]
+        public List<GConstant> Constants { get; set; } = default!;
     }
 }

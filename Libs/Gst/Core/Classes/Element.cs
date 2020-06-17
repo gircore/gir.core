@@ -1,5 +1,4 @@
 using System;
-using GObject.Core;
 
 namespace Gir.Core.Gst
 {

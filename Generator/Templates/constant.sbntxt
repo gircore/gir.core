@@ -1,0 +1,1 @@
+public static {{ get_type $1.type }} {{ $1.name | fix_identifier }} = {{ $1.value }};

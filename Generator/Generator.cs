@@ -63,6 +63,14 @@ namespace Generator
             GenerateEnums(repository.Namespace.Enumerations, ns, false);
             GenerateDelegates(repository.Namespace.Callbacks, ns);
             GenerateMethods(repository.Namespace.Functions, ns);
+            GenerateConstants(repository.Namespace.Constants, ns);
+        }
+
+        private void GenerateConstants(IEnumerable<GConstant> constants, string ns)
+        {
+            var scriptObject = new ScriptObject();
+            scriptObject.Add("constants", constants);
+            Generate("constants", "Constants", ns, scriptObject);
         }
 
         private void GenerateRecords(IEnumerable<GRecord> records, string ns)
@@ -141,6 +149,7 @@ namespace Generator
             var escapeQuotes = new Func<string, string>((s) => s.EscapeQuotes());
             var fixIdentifier = new Func<string, string>((s) => s.FixIdentifier());
             var debug = new Action<string>((s) => Console.WriteLine(s));
+            var getType = new Func<GType, string>((t) => typeResolver.GetTypeString(t));
 
             if(obj is {})
             {
@@ -154,6 +163,7 @@ namespace Generator
             scriptObject.Import("debug", debug);
             scriptObject.Add("namespace", ns);
             scriptObject.Add("dll_import", dllImport);
+            scriptObject.Add("get_type", getType);
 
             var context = new TemplateContext();
             context.TemplateLoader = new TemplateLoader();
