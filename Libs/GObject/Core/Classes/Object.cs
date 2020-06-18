@@ -10,11 +10,8 @@ namespace GObject.Core
         private static Dictionary<IntPtr, GObject> objects = new Dictionary<IntPtr, GObject>();
 
         private IntPtr handle;
-
         private HashSet<GClosure> closures;
 
-//TODO: Register new Properties via a generic class? 
-// private Property<string> MyProperty{get; set;}?
         protected GObject(IntPtr handle, bool isInitiallyUnowned = false)
         {
             objects.Add(handle, this);
@@ -31,7 +28,8 @@ namespace GObject.Core
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
         private void RegisterOnFinalized() => global::GObject.Object.weak_ref(this, this.OnFinalized, IntPtr.Zero);
 
-        internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) => RegisterEvent($"notify::{propertyName}", callback);
+        internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) 
+            => RegisterEvent($"notify::{propertyName}", callback);
 
         internal protected void RegisterEvent(string eventName, ActionRefValues callback)
         {
@@ -55,14 +53,12 @@ namespace GObject.Core
             closures.Add(closure);
         }
 
-        protected T Convert<T>(IntPtr handle, Func<IntPtr, T> factory) where T : GObject?
+        public static T Convert<T>(IntPtr handle, Func<IntPtr, T> factory) where T : GObject
         {
-            var obj = (GObject?)handle;
-
-            if(obj is null)
-                return factory(handle);
+            if(TryGetObject(handle, out T obj))
+                return obj;
             else
-                return (T) obj;
+                return factory(handle);
         }
 
         private void ThrowIfDisposed()
@@ -79,6 +75,7 @@ namespace GObject.Core
 
         public static implicit operator IntPtr (GObject? val) => val?.handle ?? IntPtr.Zero;
 
+        //TODO: Remove implicit cast
         public static implicit operator GObject? (IntPtr val)
         {
             objects.TryGetValue(val, out var ret);

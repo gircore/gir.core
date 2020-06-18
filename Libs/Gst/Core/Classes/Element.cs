@@ -11,10 +11,7 @@ namespace Gir.Core.Gst
         public Bus GetBus()
         {
             var ret = global::Gst.Element.get_bus(this);
-            if(TryGetObject(ret, out Bus obj))
-                return obj;
-            else
-                return new Bus(ret);
+            return GObject.Core.GObject.Convert(ret, (r) => new Bus(r));
         }
 
         public void SetState(State state) 
