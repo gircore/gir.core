@@ -85,7 +85,7 @@ namespace GObject.Core
             return ret;
         }
 
-        protected static bool TryGetObject<T>(IntPtr handle, out T obj) where T: GObject
+        public static bool TryGetObject<T>(IntPtr handle, out T obj) where T: GObject
         { 
             var result = objects.TryGetValue(handle, out var ret);
             obj = (T) ret;

@@ -3,6 +3,7 @@ using static Targets;
 using static DotNet;
 using static Projects;
 using System.Collections.Generic;
+using System.IO;
 
 class Program
 {
@@ -25,6 +26,7 @@ class Program
         GTKCLUTTER_WRAPPER,
         CHAMPLAIN_WRAPPER,
         GTKCHAMPLAIN_WRAPPER,
+        GST_WRAPPER,
         GOBJECT_CORE,
         GDK_PIXBUF_CORE,
         GLIB_CORE,
@@ -37,7 +39,8 @@ class Program
         CLUTTER_CORE,
         GTKCLUTTER_CORE,
         CHAMPLAIN_CORE,
-        GTKCHAMPLAIN_CORE
+        GTKCHAMPLAIN_CORE,
+        GST_CORE
     };
 
     static void Main(string[] args)
@@ -60,7 +63,8 @@ class Program
                 (CLUTTER_WRAPPER, "Clutter-1.0.gir", "libclutter-1.0.so.0", false),
                 (GTKCLUTTER_WRAPPER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
                 (CHAMPLAIN_WRAPPER, "Champlain-0.12.gir", "libchamplain-0.12", false),
-                (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false)
+                (GTKCHAMPLAIN_WRAPPER, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),
+                (GST_WRAPPER, "Gst-1.0.gir", "libgstreamer-1.0.so.0", true)
                 ),
             (x) => Generate(x.project, x.girFile, x.import, x.addAlias)
         );
@@ -72,7 +76,7 @@ class Program
 
         Target(Targets.clean, 
             ForEach(allProjects), 
-            (project) => Clean(project, configuration)
+            (project) => CleanUp(project, configuration)
         );
         
         Target(Targets.release, () => configuration = confRelease);
@@ -80,6 +84,14 @@ class Program
 
         Target("default", DependsOn(Targets.build));
         RunTargetsAndExit(args);
+    }
+
+    private static void CleanUp(string project, string configuration)
+    {
+        if(project.EndsWith("Wrapper/"))
+            Directory.Delete(project + "Generated", true);
+
+        Clean(project, configuration);
     }
 
     private static void Generate(string project, string girFile, string import, bool addGlibAliases)

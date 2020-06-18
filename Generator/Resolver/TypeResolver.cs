@@ -37,6 +37,9 @@ namespace Generator
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
 
+        public string GetTypeString(GType type)
+            => GetTypeName(ConvertGType(type, true));
+
         private MyType ResolveArrayType(GType arrayType, bool isParameter, int length)
         {
             var type = ConvertGType(arrayType, isParameter);

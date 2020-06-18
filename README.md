@@ -17,7 +17,7 @@ Supported libraries
 * [libhandy] (wip): Convergent UI-Widgets for [GTK] to support mobile phones
 * [dbus] (wip): Library for inter-process communication via [GIO]
 * [libchamplain] (wip): Library to display maps
-* [gstreamer] (planned): Multimedia Framework
+* [gstreamer] (wip): Multimedia Framework
 
 ## Build & Use
 To build the project locally follow these steps:
@@ -44,9 +44,8 @@ Anyone who wants to help is very welcome. Just create a pull request for new cod
 ## Code structure
 The folder structure in this repository is organized like:
 * **Build:** Run the project to generate the libraries. Everything works automatically.
-* **CWrapper:** Generic code generator to create the lower API layer
-* **GirCWrapper:** Adapter to map GIR data to the *CWrapper*
-* **GtkApp:** Example app
+* **Generator:** Code generator to create the lower API layer
+* **Samples:** Example apps for GTK, gstreamer, ...
 * **Libs:** Contains the libraries
 
 Each library has a folder called *Wrapper*, which contains the project to generate and build the low level API. These projects do very seldom contain code.

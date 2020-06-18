@@ -1,0 +1,16 @@
+{{~
+    type = $1.type | type_to_string
+
+    func get_value
+        if type == "string" 
+            "\"" + $0 + "\""
+        else if type | string.ends_with "Flags"
+            "(" + type + ")" + $0
+        else if type == "byte" && $0 == "-128"
+            255
+        else
+            $0
+        end 
+    end
+~}}
+public static {{ type }} {{ $1.name | fix_identifier }} = {{ $1.value | get_value }};
