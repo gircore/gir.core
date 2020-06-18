@@ -22,7 +22,7 @@ Supported libraries
 ## Build & Use
 To build the project locally follow these steps:
 
-    $ git clone https://github.com/gircore/gir.core.git
+    $ git clone --recursive https://github.com/gircore/gir.core.git
     $ cd Build
     $ dotnet run -- release build
 
