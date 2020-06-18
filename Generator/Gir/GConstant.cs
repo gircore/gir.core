@@ -7,7 +7,7 @@ namespace Gir
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
-        [XmlElement("value")]
+        [XmlAttribute("value")]
         public string? Value { get; set; }
 
         [XmlElement("type")]

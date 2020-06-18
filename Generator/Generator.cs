@@ -161,9 +161,10 @@ namespace Generator
             scriptObject.Import("fix_identifier", fixIdentifier);
             scriptObject.Import("resolve_type", resolveType);
             scriptObject.Import("debug", debug);
+            scriptObject.Import("type_to_string", getType);
+
             scriptObject.Add("namespace", ns);
             scriptObject.Add("dll_import", dllImport);
-            scriptObject.Add("get_type", getType);
 
             var context = new TemplateContext();
             context.TemplateLoader = new TemplateLoader();

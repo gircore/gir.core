@@ -38,7 +38,7 @@ namespace Generator
         };
 
         public string GetTypeString(GType type)
-            => GetTypeName(ConvertGType(type, false));
+            => GetTypeName(ConvertGType(type, true));
 
         private MyType ResolveArrayType(GType arrayType, bool isParameter, int length)
         {

@@ -1,16 +1,16 @@
 using Gir.Core.Gst;
 
-namespace Sample.Gst
+namespace Sample
 {
-    public class Play
+    public class Gst
     {
-        public static void Start()
+        public static void Play()
         {
             Application.Init();
             var ret = Parse.Launch("playbin uri=playbin uri=http://ftp.halifax.rwth-aachen.de/blender/demo/movies/ToS/tears_of_steel_720p.mov");
             ret.SetState(State.Playing);
             var bus = ret.GetBus();
-            bus.TimedPopFiltered(18446744073709551615);
+            bus.WaitForEndOrError();
             ret.SetState(State.Null);
         }
     }

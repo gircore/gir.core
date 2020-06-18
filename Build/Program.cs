@@ -3,6 +3,7 @@ using static Targets;
 using static DotNet;
 using static Projects;
 using System.Collections.Generic;
+using System.IO;
 
 class Program
 {
@@ -75,7 +76,7 @@ class Program
 
         Target(Targets.clean, 
             ForEach(allProjects), 
-            (project) => Clean(project, configuration)
+            (project) => CleanUp(project, configuration)
         );
         
         Target(Targets.release, () => configuration = confRelease);
@@ -83,6 +84,14 @@ class Program
 
         Target("default", DependsOn(Targets.build));
         RunTargetsAndExit(args);
+    }
+
+    private static void CleanUp(string project, string configuration)
+    {
+        if(project.EndsWith("Wrapper/"))
+            Directory.Delete(project + "Generated", true);
+
+        Clean(project, configuration);
     }
 
     private static void Generate(string project, string girFile, string import, bool addGlibAliases)

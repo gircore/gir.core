@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Sample.Gst.Play.Start();
+            Sample.Gst.Play();
         }
     }
 }

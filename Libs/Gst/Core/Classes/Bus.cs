@@ -8,6 +8,8 @@ namespace Gir.Core.Gst
         {
         }
 
+        public void WaitForEndOrError()
+            => TimedPopFiltered(global::Gst.Constants.CLOCK_TIME_NONE);
         public void TimedPopFiltered(ulong timeout)
             => global::Gst.Bus.timed_pop_filtered(this, timeout, (global::Gst.MessageType) (MessageType.EOS | MessageType.Error));
     }
