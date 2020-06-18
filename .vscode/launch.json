@@ -20,9 +20,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/GtkApp/bin/Debug/netcoreapp3.1/GtkApp.dll",
+            "program": "${workspaceFolder}/Samples/Gtk/GtkApp/bin/Debug/netcoreapp3.1/GtkApp.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/GtkApp",
+            "cwd": "${workspaceFolder}/Samples/Gtk/GtkApp",
             "console": "internalConsole",
             "stopAtEntry": false
         },
