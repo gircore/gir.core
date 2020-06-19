@@ -10,7 +10,6 @@ namespace Gtk.Core
 {
     internal partial class GBuilder : GObject.Core.GObject
     {
-        private Dictionary<IntPtr, GWidget> objects; 
         public Property<string> TranslationDomain { get; }
         
         internal GBuilder(string template, Assembly assembly) : this(Gtk.Builder.@new())
@@ -28,8 +27,6 @@ namespace Gtk.Core
 
         internal GBuilder(IntPtr handle) : base(handle)
         {
-            objects = new Dictionary<IntPtr, GWidget>();
-
             TranslationDomain = PropertyOfString("translation-domain");
         }
 
@@ -54,8 +51,6 @@ namespace Gtk.Core
 
         public void Connect(GWidget connector)
         {
-            AddKnownWidget(connector);
-
             ConnectFields(connector);
             ConnectSignals(connector);
         }
@@ -68,11 +63,7 @@ namespace Gtk.Core
         private void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name, IntPtr connect_object, GObject.ConnectFlags flags, IntPtr user_data)
         {
             //TODO Errorhandling
-            
-            var signalsender = GetKnownWidget(@object);
-            var connector = GetKnownWidget(connect_object);
-
-            if(signalsender is null || connector is null)
+            if(!TryGetObject(@object, out GWidget signalsender) || !TryGetObject(connect_object, out GWidget connector))
                 return;
 
             var eventFlags = BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public;
@@ -119,22 +110,7 @@ namespace Gtk.Core
 
                 var newElement = constructor.Invoke(new object[] {ptr});
                 field.SetValue(obj, newElement);
-
-                AddKnownWidget((GWidget)newElement);
             }
-        }
-
-        private void AddKnownWidget(GWidget widget)
-        {
-            objects[widget] = widget;
-        }
-
-        private GWidget? GetKnownWidget(IntPtr ptr)
-        {
-            if(objects.TryGetValue(ptr, out var ret))
-                return ret;
-            else
-                return default;
         }
 
         private bool CheckConstructor(ConstructorInfo constructorInfo)
