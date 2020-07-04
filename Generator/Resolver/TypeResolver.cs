@@ -5,7 +5,7 @@ namespace Generator
 {
     internal class MyType
     {
-        public int? ArrayLength { get; set;}
+        public int? ArrayLengthParameter { get; set;}
         public bool IsArray { get; set; }
         public string Type { get; set; }
         public bool IsPointer { get; set; }
@@ -44,7 +44,7 @@ namespace Generator
         {
             var type = ConvertGType(arrayType, isParameter);
             type.IsArray = true;
-            type.ArrayLength = length;
+            type.ArrayLengthParameter = length;
 
             return type;
         }
@@ -80,11 +80,12 @@ namespace Generator
                 { Type: "byte", IsPointer: true, IsArray: true } => "ref IntPtr", //string array
                 { Type: "byte", IsPointer: true, IsParameter: true } => "string",  //string in parameters are marshalled automatically
                 { Type: "byte", IsPointer: true, IsParameter: false } => "IntPtr",
-                { IsPointer: true, IsValueType: true } => "ref " + type.Type,
-                { IsPointer: true, IsValueType: false } => "IntPtr",
-                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLength: {} l } =>GetMarshal(l) + type.Type + "[]",
-                { IsArray: true, IsValueType: true, ArrayLength: {} } => type.Type + "[]",
-                { IsArray: true, IsValueType: true, ArrayLength: null } => "IntPtr",
+                { IsArray: false, IsPointer: true, IsValueType: true } => "ref " + type.Type,
+                { IsArray: false, IsPointer: true, IsValueType: false } => "IntPtr",
+                { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: {} l } => GetMarshal(l) + "IntPtr[]",
+                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: {} l } => GetMarshal(l) + type.Type + "[]",
+                { IsArray: true, IsValueType: true, ArrayLengthParameter: {} } => type.Type + "[]",
+                { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => "IntPtr",
                 _ => type.Type
             };
 
