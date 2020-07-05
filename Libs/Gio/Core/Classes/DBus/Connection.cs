@@ -24,6 +24,12 @@ namespace Gio.Core.DBus
         }
 
         public Task<GVariant> CallAsync(string busName, string objectPath, string interfaceName, string methodName)
+            => CallAsyncInternal(busName, objectPath, interfaceName, methodName, null);
+
+        public Task<GVariant> CallAsync(string busName, string objectPath, string interfaceName, string methodName, GVariant parameters)
+            => CallAsyncInternal(busName, objectPath, interfaceName, methodName, parameters);
+
+        private Task<GVariant> CallAsyncInternal(string busName, string objectPath, string interfaceName, string methodName, GVariant? parameters)
         {
             var tcs = new TaskCompletionSource<GVariant>();
 
@@ -35,7 +41,8 @@ namespace Gio.Core.DBus
                 tcs.SetResult(new GVariant(ret));
             };
 
-            DBusConnection.call(this, busName, objectPath, interfaceName, methodName, IntPtr.Zero, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, cb, IntPtr.Zero);
+            var @params = parameters?.Handle ?? IntPtr.Zero;
+            DBusConnection.call(this, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, cb, IntPtr.Zero);
 
             return tcs.Task;
         }

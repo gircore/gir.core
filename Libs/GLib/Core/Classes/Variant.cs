@@ -6,7 +6,7 @@ namespace GLib.Core
     public partial class GVariant
     {
         private readonly IntPtr handle;
-        internal IntPtr Handle => handle;
+        public IntPtr Handle => handle;
 
         public GVariant(int i) : this(GLib.Variant.new_int32(i)) { }
         public GVariant(uint ui) : this(GLib.Variant.new_uint32(ui)){ }
