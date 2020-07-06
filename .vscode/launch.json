@@ -16,13 +16,24 @@
             "console": "internalConsole"
         },
         {
-            "name": ".NET Core Launch (console)",
+            "name": "GtkApp",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/Samples/Gtk/GtkApp/bin/Debug/netcoreapp3.1/GtkApp.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Samples/Gtk/GtkApp",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "DBUS",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Samples/DBus/bin/Debug/netcoreapp3.1/DBus.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Samples/DBus",
             "console": "internalConsole",
             "stopAtEntry": false
         },

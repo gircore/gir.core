@@ -5,7 +5,7 @@ namespace Gir
     public class GArray
     {
         [XmlAttribute("length")]
-        public int Length { get; set; }
+        public string? Length { get; set; }
 
         [XmlAttribute("zero-terminated")]
         public bool ZeroTerminated { get; set; }

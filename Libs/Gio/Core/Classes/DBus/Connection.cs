@@ -23,6 +23,15 @@ namespace Gio.Core.DBus
             Closed = ReadOnlyPropertyOfBool("closed");
         }
 
+        public GVariant Call(string busName, string objectPath, string interfaceName, string methodName, GVariant parameters)
+        {
+            var ret = DBusConnection.call_sync(this, busName, objectPath, interfaceName, methodName, parameters.Handle, IntPtr.Zero, DBusCallFlags.none, 9999, IntPtr.Zero, out var error);
+
+            HandleError(error);
+
+            return new GVariant(ret);
+        }
+
         public Task<GVariant> CallAsync(string busName, string objectPath, string interfaceName, string methodName)
             => CallAsyncInternal(busName, objectPath, interfaceName, methodName, null);
 
