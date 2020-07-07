@@ -9,7 +9,7 @@ namespace Sample
         public static void SendNotification()
         {
             Console.WriteLine("Press enter to send notification...");
-            //Console.ReadLine();
+            Console.ReadLine();
 
             //Notification spec: https://developer.gnome.org/notification-spec/
 
@@ -24,6 +24,7 @@ namespace Sample
                 GVariant.CreateEmptyDictionary(GVariantType.String, GVariantType.Variant),//hints
                 new GVariant(999)
             );
+
             using var ret2 = bus.Call("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", "Notify", parameters);
         }
     }

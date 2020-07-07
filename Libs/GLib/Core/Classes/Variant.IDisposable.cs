@@ -10,6 +10,10 @@ namespace GLib.Core
         {
             if (!disposedValue)
             {
+                foreach(var child in children)
+                    if(child is IDisposable disposable)
+                        disposable.Dispose();
+
                 Variant.unref(handle);
                 disposedValue = true;
             }

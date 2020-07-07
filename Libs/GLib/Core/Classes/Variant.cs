@@ -6,10 +6,12 @@ namespace GLib.Core
 {
     public partial class GVariant
     {
+        private GVariant[] children;
+
+        #region Properties
         private readonly IntPtr handle;
         public IntPtr Handle => handle;
-
-        private GVariant[] children = default;
+        #endregion Properties
 
         public GVariant(int i) : this(GLib.Variant.new_int32(i)) { }
         public GVariant(uint ui) : this(GLib.Variant.new_uint32(ui)){ }
@@ -18,12 +20,8 @@ namespace GLib.Core
 
         public GVariant(params GVariant[] children)
         {
+            this.children = children;
             Init(out this.handle, children);
-        }
-        public GVariant(IntPtr handle)
-        {
-            this.handle = handle;
-            GLib.Variant.ref_sink(handle);
         }
 
         public GVariant(IDictionary<string, GVariant> dictionary)
@@ -36,7 +34,15 @@ namespace GLib.Core
                 data[counter] = e;
                 counter++;
             }
+            this.children = data;
             Init(out this.handle, data);
+        }
+
+        public GVariant(IntPtr handle)
+        {
+            children = new GVariant[0];
+            this.handle = handle;
+            GLib.Variant.ref_sink(handle);
         }
 
         public static GVariant CreateEmptyDictionary(GVariantType key, GVariantType value)
@@ -47,14 +53,16 @@ namespace GLib.Core
 
         private void Init(out IntPtr handle, params GVariant[] children)
         {
-            var count = children.LongLength;
+            this.children = children;
+
+            var count = children.Length;
             var ptrs = new IntPtr[count];
+
             for(int i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle;
             
             handle = GLib.Variant.new_tuple(ptrs, (ulong) count);
-
-            this.children = children;
+            GLib.Variant.ref_sink(handle);
         }
 
         public string GetString()
