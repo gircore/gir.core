@@ -23,22 +23,19 @@ namespace Gio.Core.DBus
             Closed = ReadOnlyPropertyOfBool("closed");
         }
 
-        public GVariant Call(string busName, string objectPath, string interfaceName, string methodName, GVariant parameters)
+        public GVariant Call(string busName, string objectPath, string interfaceName, string methodName, GVariant? parameters = null)
         {
-            var ret = DBusConnection.call_sync(this, busName, objectPath, interfaceName, methodName, parameters.Handle, IntPtr.Zero, DBusCallFlags.none, 9999, IntPtr.Zero, out var error);
+            var @params = parameters?.Handle ?? IntPtr.Zero;
+
+            var ret = DBusConnection.call_sync(this, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.none, 9999, IntPtr.Zero, out var error);
 
             HandleError(error);
 
             return new GVariant(ret);
         }
 
-        public Task<GVariant> CallAsync(string busName, string objectPath, string interfaceName, string methodName)
-            => CallAsyncInternal(busName, objectPath, interfaceName, methodName, null);
 
-        public Task<GVariant> CallAsync(string busName, string objectPath, string interfaceName, string methodName, GVariant parameters)
-            => CallAsyncInternal(busName, objectPath, interfaceName, methodName, parameters);
-
-        private Task<GVariant> CallAsyncInternal(string busName, string objectPath, string interfaceName, string methodName, GVariant? parameters)
+        public Task<GVariant> CallAsync(string busName, string objectPath, string interfaceName, string methodName, GVariant? parameters = null)
         {
             var tcs = new TaskCompletionSource<GVariant>();
 
@@ -54,15 +51,6 @@ namespace Gio.Core.DBus
             DBusConnection.call(this, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, cb, IntPtr.Zero);
 
             return tcs.Task;
-        }
-
-        public GVariant Call(string busName, string objectPath, string interfaceName, string methodName)
-        {
-            var ret = DBusConnection.call_sync(this, busName, objectPath, interfaceName, methodName, IntPtr.Zero, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, out var error);
-
-            HandleError(error);
-
-            return new GVariant(ret);
         }
     }
 }
