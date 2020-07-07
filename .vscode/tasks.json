@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/GtkApp/GtkApp.csproj",
+                "${workspaceFolder}/Samples/Gtk/GtkApp/GtkApp.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

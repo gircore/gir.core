@@ -6,7 +6,8 @@ namespace Samples
     {
         static void Main(string[] args)
         {
-            Sample.DBus.ExecuteDBusCall();
+            Sample.DBus.ShowApplicationsAsync();
+            Sample.DBus.SendNotification();
         }
     }
 }

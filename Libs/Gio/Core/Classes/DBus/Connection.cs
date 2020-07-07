@@ -23,7 +23,19 @@ namespace Gio.Core.DBus
             Closed = ReadOnlyPropertyOfBool("closed");
         }
 
-        public Task<GVariant> CallAsync(string busName, string objectPath, string interfaceName, string methodName)
+        public GVariant Call(string busName, string objectPath, string interfaceName, string methodName, GVariant? parameters = null)
+        {
+            var @params = parameters?.Handle ?? IntPtr.Zero;
+
+            var ret = DBusConnection.call_sync(this, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.none, 9999, IntPtr.Zero, out var error);
+
+            HandleError(error);
+
+            return new GVariant(ret);
+        }
+
+
+        public Task<GVariant> CallAsync(string busName, string objectPath, string interfaceName, string methodName, GVariant? parameters = null)
         {
             var tcs = new TaskCompletionSource<GVariant>();
 
@@ -35,18 +47,10 @@ namespace Gio.Core.DBus
                 tcs.SetResult(new GVariant(ret));
             };
 
-            DBusConnection.call(this, busName, objectPath, interfaceName, methodName, IntPtr.Zero, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, cb, IntPtr.Zero);
+            var @params = parameters?.Handle ?? IntPtr.Zero;
+            DBusConnection.call(this, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, cb, IntPtr.Zero);
 
             return tcs.Task;
-        }
-
-        public GVariant Call(string busName, string objectPath, string interfaceName, string methodName)
-        {
-            var ret = DBusConnection.call_sync(this, busName, objectPath, interfaceName, methodName, IntPtr.Zero, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, out var error);
-
-            HandleError(error);
-
-            return new GVariant(ret);
         }
     }
 }

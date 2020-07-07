@@ -5,7 +5,7 @@ namespace Generator
 {
     internal class MyType
     {
-        public int? ArrayLength { get; set;}
+        public string? ArrayLengthParameter { get; set;}
         public bool IsArray { get; set; }
         public string Type { get; set; }
         public bool IsPointer { get; set; }
@@ -33,18 +33,21 @@ namespace Generator
             { Array: { CType:{} n }} when n.EndsWith("**") => "ref IntPtr",
             { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter)),
             { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),
+            { Array: { Length: { } length, Type: { Name: "utf8" } name } } => GetTypeName(StringArray(length, typeInfo is GParameter)),
             { Array: { }} => "IntPtr",
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
 
+        private MyType StringArray(string length, bool isParameter) => new MyType("byte"){ IsArray = true, ArrayLengthParameter = length, IsPointer = true, IsValueType = false, IsParameter = isParameter};
+
         public string GetTypeString(GType type)
             => GetTypeName(ConvertGType(type, true));
 
-        private MyType ResolveArrayType(GType arrayType, bool isParameter, int length)
+        private MyType ResolveArrayType(GType arrayType, bool isParameter, string? length)
         {
             var type = ConvertGType(arrayType, isParameter);
             type.IsArray = true;
-            type.ArrayLength = length;
+            type.ArrayLengthParameter = length;
 
             return type;
         }
@@ -76,19 +79,21 @@ namespace Generator
         private string GetTypeName(MyType type)
             => type switch
             {
-                { Type: "void", IsPointer: true } => "IntPtr",
-                { Type: "byte", IsPointer: true, IsArray: true } => "ref IntPtr", //string array
-                { Type: "byte", IsPointer: true, IsParameter: true } => "string",  //string in parameters are marshalled automatically
-                { Type: "byte", IsPointer: true, IsParameter: false } => "IntPtr",
-                { IsPointer: true, IsValueType: true } => "ref " + type.Type,
-                { IsPointer: true, IsValueType: false } => "IntPtr",
-                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLength: {} l } =>GetMarshal(l) + type.Type + "[]",
-                { IsArray: true, IsValueType: true, ArrayLength: {} } => type.Type + "[]",
-                { IsArray: true, IsValueType: true, ArrayLength: null } => "IntPtr",
+                { IsArray: false, Type: "void", IsPointer: true } => "IntPtr",
+                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => "string",  //string in parameters are marshalled automatically
+                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => "IntPtr",
+                { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: {} l } => GetMarshal(l) + "string[]",
+                { IsArray: false, IsPointer: true, IsValueType: true } => "ref " + type.Type,
+                { IsArray: false, IsPointer: true, IsValueType: false } => "IntPtr",
+                { IsArray: true, Type: "byte", IsPointer: true } => "ref IntPtr", //string array
+                { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: {} l } => GetMarshal(l) + "IntPtr[]",
+                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: {} l } => GetMarshal(l) + type.Type + "[]",
+                { IsArray: true, IsValueType: true, ArrayLengthParameter: {} } => type.Type + "[]",
+                { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => "IntPtr",
                 _ => type.Type
             };
 
-        private string GetMarshal(int arrayLength)
+        private string GetMarshal(string arrayLength)
             => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={arrayLength})]";
 
         private MyType ResolveCType(string cType)
