@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\Wrapper\GtkClutter.Wrapper.csproj" />
-    <ProjectReference Include="..\..\Gtk\Core\Gtk.Core.csproj" />
+    <ProjectReference Include="..\..\Gtk3\Core\Gtk3.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

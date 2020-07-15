@@ -5,9 +5,9 @@ static class Projects
 
     public const string CWRAPPER = "../CWrapper/";
 
-    private const string GTK = "../Libs/Gtk/";
-    public const string GTK_WRAPPER = GTK + WRAPPER;
-    public const string GTK_CORE = GTK + CORE;
+    private const string GTK3 = "../Libs/Gtk3/";
+    public const string GTK3_WRAPPER = GTK3 + WRAPPER;
+    public const string GTK3_CORE = GTK3 + CORE;
 
     private const string HANDY = "../Libs/Handy/";
     public const string HANDY_WRAPPER = HANDY + WRAPPER;
