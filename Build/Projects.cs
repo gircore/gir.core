@@ -70,7 +70,8 @@ static class Projects
     public const string GST_CORE = GST + CORE;
 
     public const string CAIRO_WRAPPER = "../Libs/Cairo/Wrapper/";
-    public const string GDK_WRAPPER = "../Libs/Gdk/Wrapper/";
+    public const string GDK3_WRAPPER = "../Libs/Gdk3/Wrapper/";
+    public const string GDK4_WRAPPER = "../Libs/Gdk4/Wrapper/";
     public const string PANGO_WRAPPER = "../Libs/Pango/Wrapper/";
     public const string XLIB_WRAPPER = "../Libs/Xlib/Wrapper/";
 }

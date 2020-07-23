@@ -6,6 +6,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.Wrapper.CS.Gdk</PackageId>
+    <PackageId>Gir.Wrapper.CS.Gdk3</PackageId>
   </PropertyGroup>
 </Project>

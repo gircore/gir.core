@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\..\Gdk\Wrapper\Gdk.Wrapper.csproj" />
+    <ProjectReference Include="..\..\Gdk4\Wrapper\Gdk4.Wrapper.csproj" />
+    <ProjectReference Include="..\..\Gdk3\Wrapper\Gdk3.Wrapper.csproj" />
     <ProjectReference Include="..\..\Gio\Wrapper\Gio.Wrapper.csproj" />
     <ProjectReference Include="..\..\Xlib\Wrapper\Xlib.Wrapper.csproj" />
     <ProjectReference Include="..\..\GObject\Wrapper\GObject.Wrapper.csproj" />
