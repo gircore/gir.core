@@ -9,6 +9,13 @@ static class Projects
     public const string GTK3_WRAPPER = GTK3 + WRAPPER;
     public const string GTK3_CORE = GTK3 + CORE;
 
+    private const string GTK4 = "../Libs/Gtk4/";
+    public const string GTK4_WRAPPER = GTK4 + WRAPPER;
+    public const string GTK4_CORE = GTK4 + CORE;
+
+    private const string GSK4 = "../Libs/Gsk4/";
+    public const string GSK4_WRAPPER = GSK4 + WRAPPER;
+
     private const string HANDY = "../Libs/Handy/";
     public const string HANDY_WRAPPER = HANDY + WRAPPER;
     public const string HANDY_CORE = HANDY + CORE;

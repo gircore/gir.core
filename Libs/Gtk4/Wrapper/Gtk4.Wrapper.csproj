@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\Gdk\Wrapper\Gdk.Wrapper.csproj" />
+    <ProjectReference Include="..\..\Gio\Wrapper\Gio.Wrapper.csproj" />
+    <ProjectReference Include="..\..\Xlib\Wrapper\Xlib.Wrapper.csproj" />
+    <ProjectReference Include="..\..\GObject\Wrapper\GObject.Wrapper.csproj" />
+    <ProjectReference Include="..\..\Gsk4\Wrapper\Gsk4.Wrapper.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.Wrapper.CS.Gtk4</PackageId>
+  </PropertyGroup>
+</Project>
