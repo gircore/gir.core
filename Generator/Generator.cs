@@ -18,17 +18,35 @@ namespace Generator
 
         private readonly TypeResolver typeResolver;
 
-        // Converts shared library to dll to work on windows
+        // Determines the dll name from the shared library (based on msys2 gtk binaries)
+        // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
         private string ConvertLibName(string sharedLibrary)
         {
             bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
             if (!isWindows)
                 return sharedLibrary;
+
+            string dllName;
             
-            // TODO: Make this more reliable
-            // We need to choose a standard dll naming scheme (eg. msys2 vs vcpkg)
-            string dllName = sharedLibrary.Split(".so")[0] + ".dll";
+            if (sharedLibrary.Contains(".so."))
+            {
+                // We have a version number at the end
+                // e.g. libcairo-gobject.so.2
+                string[] components = sharedLibrary.Split(".so.");
+                string name = components[0];
+                string version = components[1];
+
+                dllName = $"{name}-{version}.dll";
+            }
+            else
+            {
+                // There is no version number at the end
+                // Simply add ".dll"
+                string name = sharedLibrary.Split(".so")[0];
+                dllName = $"{name}.dll";
+            }
+
             Console.WriteLine($"Renaming {sharedLibrary} to {dllName}");
             return dllName;
         }
