@@ -5,9 +5,16 @@ static class Projects
 
     public const string CWRAPPER = "../CWrapper/";
 
-    private const string GTK = "../Libs/Gtk/";
-    public const string GTK_WRAPPER = GTK + WRAPPER;
-    public const string GTK_CORE = GTK + CORE;
+    private const string GTK3 = "../Libs/Gtk3/";
+    public const string GTK3_WRAPPER = GTK3 + WRAPPER;
+    public const string GTK3_CORE = GTK3 + CORE;
+
+    private const string GTK4 = "../Libs/Gtk4/";
+    public const string GTK4_WRAPPER = GTK4 + WRAPPER;
+    public const string GTK4_CORE = GTK4 + CORE;
+
+    private const string GSK4 = "../Libs/Gsk4/";
+    public const string GSK4_WRAPPER = GSK4 + WRAPPER;
 
     private const string HANDY = "../Libs/Handy/";
     public const string HANDY_WRAPPER = HANDY + WRAPPER;
@@ -63,7 +70,8 @@ static class Projects
     public const string GST_CORE = GST + CORE;
 
     public const string CAIRO_WRAPPER = "../Libs/Cairo/Wrapper/";
-    public const string GDK_WRAPPER = "../Libs/Gdk/Wrapper/";
+    public const string GDK3_WRAPPER = "../Libs/Gdk3/Wrapper/";
+    public const string GDK4_WRAPPER = "../Libs/Gdk4/Wrapper/";
     public const string PANGO_WRAPPER = "../Libs/Pango/Wrapper/";
     public const string XLIB_WRAPPER = "../Libs/Xlib/Wrapper/";
 }

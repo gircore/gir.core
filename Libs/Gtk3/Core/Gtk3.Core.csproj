@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\Wrapper\Gtk.Wrapper.csproj" />
+    <ProjectReference Include="..\Wrapper\Gtk3.Wrapper.csproj" />
     <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
     <ProjectReference Include="..\..\Gio\Core\Gio.Core.csproj" />
   </ItemGroup>
