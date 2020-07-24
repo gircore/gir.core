@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Gir;
 using Scriban;
 using Scriban.Runtime;
@@ -17,9 +18,24 @@ namespace Generator
 
         private readonly TypeResolver typeResolver;
 
+        // Converts shared library to dll to work on windows
+        private string ConvertLibName(string sharedLibrary)
+        {
+            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+            if (!isWindows)
+                return sharedLibrary;
+            
+            // TODO: Make this more reliable
+            // We need to choose a standard dll naming scheme (eg. msys2 vs vcpkg)
+            string dllName = sharedLibrary.Split(".so")[0] + ".dll";
+            Console.WriteLine($"Renaming {sharedLibrary} to {dllName}");
+            return dllName;
+        }
+
         public Generator(string girFile, string outputDir, string dllImport, IEnumerable<string> aliasFiles)
         {
-            this.dllImport = dllImport ?? throw new ArgumentNullException(nameof(dllImport));
+            this.dllImport = ConvertLibName(dllImport) ?? throw new ArgumentNullException(nameof(dllImport));
             this.girFile = girFile ?? throw new System.ArgumentNullException(nameof(girFile));
             this.outputDir = outputDir ?? throw new System.ArgumentNullException(nameof(outputDir));
 
