@@ -27,6 +27,17 @@
             "stopAtEntry": false
         },
         {
+            "name": "GtkMinimal",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Samples/Gtk/GtkMinimal/bin/Debug/netcoreapp3.1/GtkMinimal.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Samples/Gtk/GtkMinimal",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": "DBUS",
             "type": "coreclr",
             "request": "launch",
