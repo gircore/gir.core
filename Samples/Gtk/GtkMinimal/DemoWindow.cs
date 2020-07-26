@@ -13,7 +13,7 @@ namespace GtkDemo
 
         private GNotebook notebook;
 
-        public DemoWindow(GApplication application) : base(application, "ui.glade")
+        public DemoWindow(GApplication application) : base(application, "demo_window.glade")
         {
             // Connect Button
             Button.Clicked += Button_Clicked;
@@ -40,11 +40,8 @@ namespace GtkDemo
 
         private void OpenDialog(object? sender, EventArgs args)
         {
-            // TODO: This doesn't seem to work?
+            // TODO: Investigate adding widgets to GDialog
             GDialog dialog = new GDialog();
-            GContainer contentArea = dialog.ContentArea;
-            GLabel label = new GLabel("Boo!");
-            contentArea.Add(label);
             dialog.Run();
         }
     }
