@@ -34,8 +34,8 @@ namespace Generator
                 // We have a version number at the end
                 // e.g. libcairo-gobject.so.2
                 string[] components = sharedLibrary.Split(".so.");
-                string name = components[0];
-                string version = components[1];
+                var name = components[0];
+                var version = components[1];
 
                 dllName = $"{name}-{version}.dll";
             }
