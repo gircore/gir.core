@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Gir;
 using Scriban;
 using Scriban.Runtime;
@@ -17,9 +18,42 @@ namespace Generator
 
         private readonly TypeResolver typeResolver;
 
+        // Determines the dll name from the shared library (based on msys2 gtk binaries)
+        // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
+        private string ConvertLibName(string sharedLibrary)
+        {
+            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+            if (!isWindows)
+                return sharedLibrary;
+
+            string dllName;
+            
+            if (sharedLibrary.Contains(".so."))
+            {
+                // We have a version number at the end
+                // e.g. libcairo-gobject.so.2
+                string[] components = sharedLibrary.Split(".so.");
+                var name = components[0];
+                var version = components[1];
+
+                dllName = $"{name}-{version}.dll";
+            }
+            else
+            {
+                // There is no version number at the end
+                // Simply add ".dll"
+                string name = sharedLibrary.Split(".so")[0];
+                dllName = $"{name}.dll";
+            }
+
+            Console.WriteLine($"Renaming {sharedLibrary} to {dllName}");
+            return dllName;
+        }
+
         public Generator(string girFile, string outputDir, string dllImport, IEnumerable<string> aliasFiles)
         {
-            this.dllImport = dllImport ?? throw new ArgumentNullException(nameof(dllImport));
+            this.dllImport = ConvertLibName(dllImport) ?? throw new ArgumentNullException(nameof(dllImport));
             this.girFile = girFile ?? throw new System.ArgumentNullException(nameof(girFile));
             this.outputDir = outputDir ?? throw new System.ArgumentNullException(nameof(outputDir));
 
