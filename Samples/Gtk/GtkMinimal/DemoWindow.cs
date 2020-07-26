@@ -22,13 +22,13 @@ namespace GtkDemo
             notebook = new GNotebook();
             Box.PackStart(notebook, true, true, 0);
 
-            FileImage image = new FileImage("data/gtk.png");
+            var image = new FileImage("data/gtk.png");
             notebook.InsertPage("Image", image, 0);
 
-            GLabel label = new GLabel("Gtk and C# - Very exciting isn't it?");
+            var label = new GLabel("Gtk and C# - Very exciting isn't it?");
             notebook.InsertPage("Label", label, 1);
 
-            GButton button = new GButton("Open!");
+            var button = new GButton("Open!");
             notebook.InsertPage("Dialogue", button, 2);
             button.Clicked += OpenDialog;
         }
@@ -41,7 +41,7 @@ namespace GtkDemo
         private void OpenDialog(object? sender, EventArgs args)
         {
             // TODO: Investigate adding widgets to GDialog
-            GDialog dialog = new GDialog();
+            var dialog = new GDialog();
             dialog.Run();
         }
     }
