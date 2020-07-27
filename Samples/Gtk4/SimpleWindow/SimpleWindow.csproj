@@ -2,6 +2,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libs\Gtk4\Core\Gtk4.Core.csproj" />
     <ProjectReference Include="..\..\..\Libs\GObject\Core\GObject.Core.csproj" />
+    <ProjectReference Include="..\..\..\Libs\Gio\Core\Gio.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

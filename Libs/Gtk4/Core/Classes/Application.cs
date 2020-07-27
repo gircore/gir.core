@@ -1,3 +1,5 @@
+using Gio;
+
 namespace Gtk.Core
 {
     public partial class GApplication : Gio.Core.GApplication

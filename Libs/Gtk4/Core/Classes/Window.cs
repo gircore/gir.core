@@ -4,7 +4,7 @@ using GObject.Core;
 
 namespace Gtk.Core
 {
-    public class GWindow : GContainer
+    public class GWindow : GWidget
     {
         #region Properties
         private Property<int> defaultHeight;
@@ -18,15 +18,7 @@ namespace Gtk.Core
 
         #endregion Properties
 
-        public GWindow() : this(Gtk.Window.@new(Gtk.WindowType.toplevel)) {}
-        public GWindow(string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly()) 
-        {
-            InitProperties(out defaultHeight, out defaultWith, out application);
-        }
-        internal GWindow(string template, string obj, Assembly assembly) : base(template, obj, assembly) 
-        {
-            InitProperties(out defaultHeight, out defaultWith, out application);
-        }
+        public GWindow() : this(Gtk.Window.@new()) {}
         internal GWindow(IntPtr handle) : base(handle) 
         {
             InitProperties(out defaultHeight, out defaultWith, out application);
@@ -45,5 +37,6 @@ namespace Gtk.Core
 
         public void SetDefaultSize(int width, int height) => Gtk.Window.set_default_size(this, width, height);
         public void SetTitlebar(GWidget widget) => Gtk.Window.set_titlebar(this, widget);
+        public void SetChild(GWidget child) => Gtk.Window.set_child(this, child);
     }
 }

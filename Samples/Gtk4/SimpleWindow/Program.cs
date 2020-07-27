@@ -24,7 +24,15 @@ namespace Gtk4Demo
                 var w = new GApplicationWindow(app);
                 w.DefaultHeight.Value = 600;
                 w.DefaultWidth.Value = 800;
-                w.ShowAll();
+
+                var box = new GBox();
+                w.SetChild(box);
+                
+                var button = new GButton("Hello Gtk4");
+                button.Clicked += (e, args) => Console.WriteLine("Hello dear user");
+                
+                box.Append(button);
+                w.Show();
             }
         }
     }
