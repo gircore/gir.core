@@ -16,3 +16,6 @@ coverage.*
 
 #meson
 build
+
+#Rider
+*.idea
