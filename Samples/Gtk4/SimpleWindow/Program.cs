@@ -29,7 +29,7 @@ namespace Gtk4Demo
                 w.SetChild(box);
                 
                 var button = new GButton("Hello Gtk4");
-                button.Clicked += (e, args) => Console.WriteLine("Hello dear user");
+                button.Clicked += (sender, args) => Console.WriteLine("Hello dear user");
                 
                 box.Append(button);
                 w.Show();

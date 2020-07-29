@@ -10,8 +10,8 @@ namespace Gtk.Core
         private Property<int> defaultHeight;
         public Property<int> DefaultHeight => defaultHeight;
 
-        private Property<int> defaultWith;
-        public Property<int> DefaultWidth => defaultWith;
+        private Property<int> defaultWidth;
+        public Property<int> DefaultWidth => defaultWidth;
 
         private Property<GApplication?> application;
         public Property<GApplication?> Application => application;
@@ -21,7 +21,7 @@ namespace Gtk.Core
         public GWindow() : this(Gtk.Window.@new()) {}
         internal GWindow(IntPtr handle) : base(handle) 
         {
-            InitProperties(out defaultHeight, out defaultWith, out application);
+            InitProperties(out defaultHeight, out defaultWidth, out application);
         }
 
         private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<GApplication?> application)
