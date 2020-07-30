@@ -1,8 +1,8 @@
 using System;
 
-namespace GObject.Core
+namespace GObject
 {
-    public class GProperty<T> : GPropertyBase<T>, Property<T>
+    public class GProperty<T> : NamedProperty<T>, Property<T>
     {
         protected readonly Action<T, string> set;
         protected readonly Func<string, T> get;
@@ -13,7 +13,7 @@ namespace GObject.Core
             set => set(value, name); 
         }
 
-        public GProperty(GObject obj, string name, Func<string, T> get, Action<T, string> set) : base(obj, name)
+        public GProperty(Object obj, string name, Func<string, T> get, Action<T, string> set) : base(obj, name)
         {
             this.get = get ?? throw new ArgumentNullException(nameof(get));
             this.set = set ?? throw new ArgumentNullException(nameof(set));

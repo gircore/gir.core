@@ -1,6 +1,6 @@
 using System;
 
-namespace GObject.Core
+namespace GObject
 {
     public class ChangedArgs<T> : EventArgs
     {

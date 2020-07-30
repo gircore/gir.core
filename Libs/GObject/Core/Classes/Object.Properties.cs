@@ -1,37 +1,37 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace GObject.Core
+namespace GObject
 {
-    public partial class GObject
+    public partial class Object
     {
-        private void SetProperty(Value value, string? propertyName)
+        private void SetProperty(Sys.Value value, string? propertyName)
         {
             ThrowIfDisposed();
 
             if(propertyName is null)
                 return;
 
-            global::GObject.Object.set_property(handle, propertyName, ref value);
+            Sys.Object.set_property(handle, propertyName, ref value);
             value.Dispose();
         }
 
-        protected void Set(GObject? value, [CallerMemberName] string? propertyName = null) => SetProperty((IntPtr)value, propertyName);
+        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) => SetProperty((IntPtr)value, propertyName);
         protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum => SetProperty((long)(object)e, propertyName);
         protected void Set(bool value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
         protected void Set(uint value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
         protected void Set(int value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
         protected void Set(string value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
 
-        private Value GetProperty(string? propertyName)
+        private Sys.Value GetProperty(string? propertyName)
         {
             ThrowIfDisposed();
 
             if(propertyName is null)
                 return default;
 
-            var value = new global::GObject.Value();
-            global::GObject.Object.get_property(handle, propertyName, ref value);
+            var value = new Sys.Value();
+            Sys.Object.get_property(handle, propertyName, ref value);
 
             return value;
         }
@@ -80,7 +80,7 @@ namespace GObject.Core
         ///<summary>
         ///May return null!
         ///</sumamry>
-        protected T GetObject<T>([CallerMemberName] string? propertyName = null) where T : GObject?
+        protected T GetObject<T>([CallerMemberName] string? propertyName = null) where T : Object?
         {
             using var v = GetProperty(propertyName);
             #pragma warning disable CS8601, CS8603

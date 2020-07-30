@@ -1,8 +1,8 @@
 using System;
 
-namespace GObject.Core
+namespace GObject
 {
-    public partial class GObject
+    public partial class Object
     {
         protected Property<T> Property<T>(string name, Func<string, T> get, Action<T, string> set) => new GProperty<T>(this, name, get, set);
         protected ReadOnlyProperty<T> ReadOnlyProperty<T>(string name, Func<string, T> get) => new GReadOnlyProperty<T>(this, name, get);

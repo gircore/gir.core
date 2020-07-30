@@ -1,13 +1,13 @@
 using System;
 
-namespace GObject.Core
+namespace GObject
 {
-    public abstract class GPropertyBase<T> : CanChange<T>
+    public abstract class NamedProperty<T> : CanChange<T>
     {
         public event EventHandler<ChangedArgs<T>>? Changed;
         protected readonly string name;
 
-        public GPropertyBase(GObject obj, string name)
+        public NamedProperty(Object obj, string name)
         {
             this.name = name ?? throw new ArgumentNullException(nameof(name));
         }

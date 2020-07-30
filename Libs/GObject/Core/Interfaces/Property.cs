@@ -1,4 +1,4 @@
-namespace GObject.Core
+namespace GObject
 {
     public interface Property<T> : CanChange<T>
     {

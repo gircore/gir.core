@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace GObject
+namespace GObject.Sys
 {
     [StructLayout(LayoutKind.Explicit, Size=8)]
     public struct Type
