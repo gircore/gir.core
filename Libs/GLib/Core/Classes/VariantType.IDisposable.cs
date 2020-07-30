@@ -1,8 +1,8 @@
 using System;
 
-namespace GLib.Core
+namespace GLib
 {
-    public partial class GVariantType : IDisposable
+    public partial class VariantType : IDisposable
     {
         private bool disposedValue;
 
@@ -10,12 +10,12 @@ namespace GLib.Core
         {
             if (!disposedValue)
             {
-                VariantType.free(handle);
+                Sys.VariantType.free(handle);
                 disposedValue = true;
             }
         }
 
-         ~GVariantType() => Dispose(false);
+         ~VariantType() => Dispose(false);
 
         public void Dispose()
         {

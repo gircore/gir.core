@@ -2,35 +2,35 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace GLib.Core
+namespace GLib
 {
-    public partial class GVariant
+    public partial class Variant
     {
-        private GVariant[] children;
+        private Variant[] children;
 
         #region Properties
         private readonly IntPtr handle;
         public IntPtr Handle => handle;
         #endregion Properties
 
-        public GVariant(int i) : this(GLib.Variant.new_int32(i)) { }
-        public GVariant(uint ui) : this(GLib.Variant.new_uint32(ui)){ }
-        public GVariant(string str) : this(GLib.Variant.new_string(str)) { }
-        public GVariant(params string[] strs) : this(GLib.Variant.new_strv(strs, strs.Length)) { }
+        public Variant(int i) : this(Sys.Variant.new_int32(i)) { }
+        public Variant(uint ui) : this(Sys.Variant.new_uint32(ui)){ }
+        public Variant(string str) : this(Sys.Variant.new_string(str)) { }
+        public Variant(params string[] strs) : this(Sys.Variant.new_strv(strs, strs.Length)) { }
 
-        public GVariant(params GVariant[] children)
+        public Variant(params Variant[] children)
         {
             this.children = children;
             Init(out this.handle, children);
         }
 
-        public GVariant(IDictionary<string, GVariant> dictionary)
+        public Variant(IDictionary<string, Variant> dictionary)
         {
-            var data = new GVariant[dictionary.Count];
+            var data = new Variant[dictionary.Count];
             var counter = 0;
             foreach(var entry in dictionary)
             {
-                var e = new GVariant(GLib.Variant.new_dict_entry(new GVariant(entry.Key).Handle, entry.Value.handle));
+                var e = new Variant(Sys.Variant.new_dict_entry(new Variant(entry.Key).Handle, entry.Value.handle));
                 data[counter] = e;
                 counter++;
             }
@@ -38,20 +38,20 @@ namespace GLib.Core
             Init(out this.handle, data);
         }
 
-        public GVariant(IntPtr handle)
+        public Variant(IntPtr handle)
         {
-            children = new GVariant[0];
+            children = new Variant[0];
             this.handle = handle;
-            GLib.Variant.ref_sink(handle);
+            Sys.Variant.ref_sink(handle);
         }
 
-        public static GVariant CreateEmptyDictionary(GVariantType key, GVariantType value)
+        public static Variant CreateEmptyDictionary(VariantType key, VariantType value)
         {
-            var childType = GLib.VariantType.new_dict_entry(key.Handle, value.Handle);
-            return new GVariant(GLib.Variant.new_array(childType, new IntPtr[0], 0));
+            var childType = Sys.VariantType.new_dict_entry(key.Handle, value.Handle);
+            return new Variant(Sys.Variant.new_array(childType, new IntPtr[0], 0));
         }
 
-        private void Init(out IntPtr handle, params GVariant[] children)
+        private void Init(out IntPtr handle, params Variant[] children)
         {
             this.children = children;
 
@@ -61,20 +61,20 @@ namespace GLib.Core
             for(int i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle;
             
-            handle = GLib.Variant.new_tuple(ptrs, (ulong) count);
-            GLib.Variant.ref_sink(handle);
+            handle = Sys.Variant.new_tuple(ptrs, (ulong) count);
+            Sys.Variant.ref_sink(handle);
         }
 
         public string GetString()
         {
             ulong length = 0;
-            var strPtr = GLib.Variant.get_string(handle, ref length);
+            var strPtr = Sys.Variant.get_string(handle, ref length);
 
             var text = Marshal.PtrToStringAuto(strPtr);
             return text;
         }
 
         public string Print(bool typeAnnotate)
-            => Marshal.PtrToStringAuto(GLib.Variant.print(handle, typeAnnotate));
+            => Marshal.PtrToStringAuto(Sys.Variant.print(handle, typeAnnotate));
     }
 }

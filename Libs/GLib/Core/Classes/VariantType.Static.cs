@@ -1,11 +1,11 @@
 using System;
 
-namespace GLib.Core
+namespace GLib
 {
-    public partial class GVariantType
+    public partial class VariantType
     {
-        public static GVariantType String = new GVariantType("s");
-        public static GVariantType Variant = new GVariantType("v");
+        public static VariantType String = new VariantType("s");
+        public static VariantType Variant = new VariantType("v");
        
     }
 }
