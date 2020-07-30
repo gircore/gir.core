@@ -35,6 +35,7 @@ class Program
         GLIB_CORE,
         GIO_CORE,
         GTK3_CORE,
+        GTK4_CORE,
         HANDY_CORE,
         WEBKITGTK_CORE,
         JAVASCRIPT_CORE_CORE,

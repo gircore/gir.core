@@ -11,7 +11,7 @@ This project aims to provide:
 * A more complete API surface to integrate deeply with linux via supporting more libraries
 
 Supported libraries
-* [GTK] (wip): UI-Toolkit
+* [GTK] (wip): UI-Toolkit (GTK3 + experimental GTK4)
 * [WebKitGTK] (wip): Browser-Engine
 * [JavaScriptCore] (wip): Javascript integration for [WebKitGTK]
 * [libhandy] (wip): Convergent UI-Widgets for [GTK] to support mobile phones

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Wrapper\Gtk4.Wrapper.csproj" />
+    <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
+    <ProjectReference Include="..\..\Gio\Core\Gio.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.Core.CS.Gtk4</PackageId>
+  </PropertyGroup>
+</Project>
