@@ -13,7 +13,7 @@ namespace Generator
     {
         private readonly string girFile;
         private readonly string outputDir;
-        private GRepository repository;
+        private readonly GRepository repository;
         private readonly string dllImport;
 
         private readonly TypeResolver typeResolver;
@@ -54,8 +54,8 @@ namespace Generator
         public Generator(string girFile, string outputDir, string dllImport, IEnumerable<string> aliasFiles)
         {
             this.dllImport = ConvertLibName(dllImport) ?? throw new ArgumentNullException(nameof(dllImport));
-            this.girFile = girFile ?? throw new System.ArgumentNullException(nameof(girFile));
-            this.outputDir = outputDir ?? throw new System.ArgumentNullException(nameof(outputDir));
+            this.girFile = girFile ?? throw new ArgumentNullException(nameof(girFile));
+            this.outputDir = outputDir ?? throw new ArgumentNullException(nameof(outputDir));
 
             var reader = new GirReader();
             repository = reader.ReadRepository(girFile);
@@ -167,8 +167,8 @@ namespace Generator
 
         private void RemoveVarArgsMethods(List<GMethod> methods)
         {
-            Func<GParameter, bool> isVariadic = (p) => p.VarArgs is {};
-            methods.RemoveAll((x) => x.Parameters?.Parameters.Any(isVariadic) ?? false);
+            bool IsVariadic(GParameter p) => p.VarArgs is {};
+            methods.RemoveAll((x) => x.Parameters?.Parameters.Any(IsVariadic) ?? false);
         }
 
         private void Generate(string templateFile, string fileName, string ns, object? obj = null)
@@ -176,14 +176,19 @@ namespace Generator
 
         private void Generate(string templateFile, string fileName, string ns, ScriptObject scriptObject, object? obj = null)
         {
+            var subnamespace = "Sys";
             templateFile = $"../Generator/Templates/{templateFile}.sbntxt";
-            var resolveType = new Func<IType, string>((t) => typeResolver.Resolve(t));
+            var resolveType = new Func<IType, string>((t) =>
+            {
+                var resolvedType =  typeResolver.Resolve(t);
+                return resolvedType.Attribute + resolvedType.Type.Replace(".", $".{subnamespace}.");
+            });
             var commentLineByLine = new Func<string, string>((s) => s.CommentLineByLine());
             var makeSingleLine = new Func<string, string>((s) => s.MakeSingleLine());
             var escapeQuotes = new Func<string, string>((s) => s.EscapeQuotes());
             var fixIdentifier = new Func<string, string>((s) => s.FixIdentifier());
-            var debug = new Action<string>((s) => Console.WriteLine(s));
-            var getType = new Func<GType, string>((t) => typeResolver.GetTypeString(t));
+            var debug = new Action<string>(Console.WriteLine);
+            var getType = new Func<GType, string>((t) => typeResolver.GetTypeString(t).ToString());
 
             if(obj is {})
             {
@@ -196,8 +201,8 @@ namespace Generator
             scriptObject.Import("resolve_type", resolveType);
             scriptObject.Import("debug", debug);
             scriptObject.Import("type_to_string", getType);
-
-            scriptObject.Add("namespace", ns);
+            
+            scriptObject.Add("namespace", $"{ns}.{subnamespace}");
             scriptObject.Add("dll_import", dllImport);
 
             var context = new TemplateContext();
