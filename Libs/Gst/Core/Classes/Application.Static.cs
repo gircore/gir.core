@@ -1,6 +1,6 @@
 using System;
 
-namespace Gir.Core.Gst
+namespace Gst
 {
     public class Application
     {
@@ -9,7 +9,7 @@ namespace Gir.Core.Gst
             var argc = 0;
             var argv = IntPtr.Zero;
 
-            global::Gst.Methods.init(ref argc, ref argv);
+            Sys.Methods.init(ref argc, ref argv);
         }
     }
 }

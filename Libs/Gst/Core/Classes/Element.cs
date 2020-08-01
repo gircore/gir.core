@@ -1,20 +1,18 @@
 using System;
 
-namespace Gir.Core.Gst
+namespace Gst
 {
-    public class Element : GObject.Core.GObject
+    public class Element : GObject.Object
     {        
-        internal Element(IntPtr handle) : base(handle, true)
-        {
-        }
+        internal Element(IntPtr handle) : base(handle, true) { }
 
         public Bus GetBus()
         {
-            var ret = global::Gst.Element.get_bus(this);
-            return GObject.Core.GObject.Convert(ret, (r) => new Bus(r));
+            var ret = Sys.Element.get_bus(this);
+            return Convert(ret, (r) => new Bus(r));
         }
 
         public void SetState(State state) 
-            => global::Gst.Element.set_state(this, (global::Gst.State) state);
+            => Sys.Element.set_state(this, (Sys.State) state);
     }
 }
