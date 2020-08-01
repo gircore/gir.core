@@ -1,7 +1,6 @@
 using System;
-using WebKit2;
 
-namespace WebKitGTK.Core
+namespace WebKit2
 {
     public class StringUserScript : UserScript
     {

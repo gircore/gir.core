@@ -1,11 +1,11 @@
 using System;
 
-namespace WebKitGTK.Core
+namespace WebKit2
 {
-    public class WebInspector : GObject.Core.GObject
+    public class WebInspector : GObject.Object
     {
         internal WebInspector(IntPtr handle, bool isInitiallyUnowned = false) : base(handle, isInitiallyUnowned) { }
 
-        public void Show() => WebKit2.WebInspector.show(this);  
+        public void Show() => Sys.WebInspector.show(this);  
     }
 }
