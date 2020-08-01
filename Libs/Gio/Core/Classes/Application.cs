@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
-using GObject.Core;
+using GObject;
 
-namespace Gio.Core
+namespace Gio
 {
-    public partial class GApplication : GObject.Core.GObject
+    public partial class Application : GObject.Object
     {
         public event EventHandler<EventArgs>? Activate;
         public event EventHandler<EventArgs>? Startup;
 
         public Property<string> ApplicationId { get; set; }
        
-        public GApplication(string applicationId) : this(Application.@new(applicationId, ApplicationFlags.flags_none)) {}
+        public Application(string applicationId) : this(Sys.Application.@new(applicationId, Sys.ApplicationFlags.flags_none)) {}
 
-        internal protected GApplication(IntPtr handle) : base(handle)
+        internal protected Application(IntPtr handle) : base(handle)
         {
-            actions = new Dictionary<string, GCommandAction>();
+            actions = new Dictionary<string, CommandAction>();
 
             ApplicationId = PropertyOfString("application-id");
 
@@ -26,7 +26,7 @@ namespace Gio.Core
         public void Run()
         {
             var zero = IntPtr.Zero;
-            Application.run(this, 0, ref zero);
+            Sys.Application.run(this, 0, ref zero);
         }
 
         protected virtual void OnStartup() => Startup?.Invoke(this, EventArgs.Empty);

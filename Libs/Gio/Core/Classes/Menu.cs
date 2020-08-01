@@ -1,11 +1,11 @@
 using System;
 
-namespace Gio.Core
+namespace Gio
 {
-    public class GMenu : GObject.Core.GObject
+    public class Menu : GObject.Object
     {
-        public GMenu() : this(Gio.Menu.@new()) { }
-        protected internal GMenu(IntPtr handle) : base(handle)
+        public Menu() : this(Sys.Menu.@new()) { }
+        protected internal Menu(IntPtr handle) : base(handle)
         {
         }
     }
