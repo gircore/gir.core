@@ -3,12 +3,12 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace GdkPixbuf.Core
+namespace GdkPixbuf
 {
-    public partial class GPixbufLoader : GObject.Core.GObject
+    public class PixbufLoader : GObject.Object
     {
-        public GPixbufLoader() : this(GdkPixbuf.PixbufLoader.@new()) {}
-        internal GPixbufLoader(IntPtr handle) : base(handle) { }
+        public PixbufLoader() : this(Sys.PixbufLoader.@new()) {}
+        internal PixbufLoader(IntPtr handle) : base(handle) { }
 
         public bool Write(string imageResourceName) => Write(imageResourceName, Assembly.GetCallingAssembly());
         internal bool Write(string imageResourceName, Assembly assembly)
@@ -22,19 +22,19 @@ namespace GdkPixbuf.Core
             stream.CopyTo(ms);
             var buffer = ms.ToArray();
             
-            return GdkPixbuf.PixbufLoader.write(this, buffer, (ulong)buffer.LongLength, out var error);
+            return Sys.PixbufLoader.write(this, buffer, (ulong)buffer.LongLength, out var error);
         }
 
         private Pixbuf? pixbuf;
         public Pixbuf? GetPixbuf()
         {
-            if(pixbuf is null)
-            {
-                var ret = GdkPixbuf.PixbufLoader.get_pixbuf(this);
+            if (!(pixbuf is null)) 
+                return pixbuf;
+            
+            var ret = Sys.PixbufLoader.get_pixbuf(this);
                 
-                if(ret != IntPtr.Zero)
-                    pixbuf = new Pixbuf(ret);
-            }
+            if(ret != IntPtr.Zero)
+                pixbuf = new Pixbuf(ret);
 
             return pixbuf;
         } 
