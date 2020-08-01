@@ -1,17 +1,17 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GButton : GWidget
+    public class Button : Widget
     {
         public event EventHandler<EventArgs>? Clicked;
 
         public Property<string> Text { get; }
 
-        public GButton() : this(Gtk.Button.@new()) {}
-        public GButton(string text) : this(Gtk.Button.new_with_label(text)) {}
-        internal GButton(IntPtr handle) : base(handle) 
+        public Button() : this(Sys.Button.@new()) {}
+        public Button(string text) : this(Sys.Button.new_with_label(text)) {}
+        internal Button(IntPtr handle) : base(handle) 
         {
             Text = PropertyOfString("label");
 

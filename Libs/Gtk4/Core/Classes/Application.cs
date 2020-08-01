@@ -1,9 +1,9 @@
-using Gio;
+using Gio.Sys;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public partial class GApplication : Gio.Core.GApplication
+    public class Application : Gio.Application
     {
-        public GApplication(string applicationId) : base(Gtk.Application.@new(applicationId, ApplicationFlags.flags_none)) {}
+        public Application(string applicationId) : base(Sys.Application.@new(applicationId, ApplicationFlags.flags_none)) {}
     }
 }

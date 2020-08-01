@@ -1,10 +1,9 @@
 using System;
-using System.Reflection;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GWindow : GWidget
+    public class Window : Widget
     {
         #region Properties
         private Property<int> defaultHeight;
@@ -13,30 +12,30 @@ namespace Gtk.Core
         private Property<int> defaultWidth;
         public Property<int> DefaultWidth => defaultWidth;
 
-        private Property<GApplication?> application;
-        public Property<GApplication?> Application => application;
+        private Property<Application?> application;
+        public Property<Application?> Application => application;
 
         #endregion Properties
 
-        public GWindow() : this(Gtk.Window.@new()) {}
-        internal GWindow(IntPtr handle) : base(handle) 
+        public Window() : this(Sys.Window.@new()) {}
+        internal Window(IntPtr handle) : base(handle) 
         {
             InitProperties(out defaultHeight, out defaultWidth, out application);
         }
 
-        private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<GApplication?> application)
+        private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<Application?> application)
         {
             defaultHeight = PropertyOfInt("default-height");
             defaultWidth = PropertyOfInt("default-width");
 
-            application = Property<GApplication?>("application",
-                get : GetObject<GApplication?>,
+            application = Property("application",
+                get : GetObject<Application?>,
                 set: Set
             );
         }
 
-        public void SetDefaultSize(int width, int height) => Gtk.Window.set_default_size(this, width, height);
-        public void SetTitlebar(GWidget widget) => Gtk.Window.set_titlebar(this, widget);
-        public void SetChild(GWidget child) => Gtk.Window.set_child(this, child);
+        public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(this, width, height);
+        public void SetTitlebar(Widget widget) => Sys.Window.set_titlebar(this, widget);
+        public void SetChild(Widget child) => Sys.Window.set_child(this, child);
     }
 }

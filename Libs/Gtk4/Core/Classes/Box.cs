@@ -1,13 +1,12 @@
 using System;
-using GObject.Core;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GBox : GWidget
+    public class Box : Widget
     {
-        public GBox() : this(Gtk.Box.@new(Gtk.Orientation.horizontal, 0)) {}
-        internal GBox(IntPtr handle) : base(handle) { }
+        public Box() : this(Sys.Box.@new(Sys.Orientation.horizontal, 0)) {}
+        internal Box(IntPtr handle) : base(handle) { }
 
-        public void Append(GWidget widget) => Gtk.Box.append(this, widget);
+        public void Append(Widget widget) => Sys.Box.append(this, widget);
     }
 }

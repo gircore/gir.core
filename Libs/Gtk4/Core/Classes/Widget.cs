@@ -1,20 +1,19 @@
 using System;
-using System.Reflection;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public partial class GWidget : GObject.Core.GObject
+    public class Widget : GObject.Object
     {
         public Property<int> WidthRequest { get; }
         public Property<int> HeightRequest { get; }
 
-        internal GWidget(IntPtr handle) : base(handle, true) 
+        internal Widget(IntPtr handle) : base(handle, true) 
         {
             WidthRequest = PropertyOfInt("width-request");
             HeightRequest = PropertyOfInt("height-request");
         }
 
-        public void Show() => Gtk.Widget.show(this);
+        public void Show() => Sys.Widget.show(this);
     }
 }
