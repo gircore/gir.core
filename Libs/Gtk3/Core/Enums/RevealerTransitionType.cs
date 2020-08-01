@@ -1,4 +1,4 @@
-namespace Gtk.Core
+namespace Gtk
 {
     ///<summary>
     /// In sync with Gtk.RevealerTransitionType

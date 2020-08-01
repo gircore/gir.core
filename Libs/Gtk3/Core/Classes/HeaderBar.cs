@@ -1,16 +1,16 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GHeaderBar : GContainer
+    public class HeaderBar : Container
     {
         public Property<string> Title { get; }
         public Property<string> Subtitle { get; }
         public Property<bool> ShowCloseButton { get; }
 
-        public GHeaderBar() : this(Gtk.HeaderBar.@new()){}
-        internal GHeaderBar(IntPtr handle) : base(handle) 
+        public HeaderBar() : this(Sys.HeaderBar.@new()){}
+        internal HeaderBar(IntPtr handle) : base(handle) 
         {
             Title = PropertyOfString("title");
             Subtitle = PropertyOfString("subtitle");

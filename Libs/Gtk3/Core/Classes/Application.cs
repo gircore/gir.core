@@ -1,13 +1,13 @@
-using Gio;
+using Gio.Sys;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public partial class GApplication : Gio.Core.GApplication
+    public partial class Application : Gio.Application
     {
-        public GApplication(string applicationId) : base(Gtk.Application.@new(applicationId, ApplicationFlags.flags_none)) {}
+        public Application(string applicationId) : base(Sys.Application.@new(applicationId, ApplicationFlags.flags_none)) {}
 
-        public void AddWindow(GWindow window) => Gtk.Application.add_window(this, window);
-        public void SetAppMenu(GMenu menu) => Gtk.Application.set_app_menu(this, menu);
-        public void SetMenubar(GMenu menu) => Gtk.Application.set_menubar(this, menu);
+        public void AddWindow(Window window) => Sys.Application.add_window(this, window);
+        public void SetAppMenu(Menu menu) => Sys.Application.set_app_menu(this, menu);
+        public void SetMenubar(Menu menu) => Sys.Application.set_menubar(this, menu);
     }
 }

@@ -1,15 +1,15 @@
 using System;
 using System.Reflection;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GApplicationWindow : GWindow
+    public class ApplicationWindow : Window
     {
-        public GApplicationWindow(GApplication application) : this(Gtk.ApplicationWindow.@new(application)) {}
-        public GApplicationWindow(GApplication application, string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly()) 
+        public ApplicationWindow(Application application) : this(Sys.ApplicationWindow.@new(application)) {}
+        public ApplicationWindow(Application application, string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly()) 
         {
             Application.Value = application;
         }
-        internal GApplicationWindow(IntPtr handle) : base(handle) {}
+        internal ApplicationWindow(IntPtr handle) : base(handle) {}
     }
 }

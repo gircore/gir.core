@@ -1,6 +1,6 @@
-namespace Gtk.Core
+namespace Gtk
 {
-    public interface Image : Misc
+    public interface IImage : IMisc
     {
         void Clear();
     }

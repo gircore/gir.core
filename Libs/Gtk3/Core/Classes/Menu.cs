@@ -1,19 +1,19 @@
 using System;
 using System.Reflection;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GMenu : Gio.Core.GMenu
+    public class Menu : Gio.Menu
     {
-        private GBuilder? builder;
+        private Builder? builder;
 
-        public GMenu(string template, string obj = "menu") : this(new GBuilder(template, Assembly.GetCallingAssembly()), obj) {}
+        public Menu(string template, string obj = "menu") : this(new Builder(template, Assembly.GetCallingAssembly()), obj) {}
 
-        internal GMenu(GBuilder builder, string obj) : this(builder.GetObject(obj))
+        internal Menu(Builder builder, string obj) : this(builder.GetObject(obj))
         {
             this.builder = builder;
         }
 
-        internal GMenu(IntPtr handle) : base(handle) { }
+        internal Menu(IntPtr handle) : base(handle) { }
     }
 }

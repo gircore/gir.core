@@ -1,17 +1,17 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GToggleButton : GButton
+    public class ToggleButton : Button
     {
         public event EventHandler<EventArgs>? Toggled;
 
         public Property<bool> Active { get; }
 
-        public GToggleButton(string text) : this(Gtk.ToggleButton.new_with_label(text)) {}
+        public ToggleButton(string text) : this(Sys.ToggleButton.new_with_label(text)) {}
 
-        internal GToggleButton(IntPtr handle) : base(handle)
+        internal ToggleButton(IntPtr handle) : base(handle)
         {
             Active = PropertyOfBool("active");
 

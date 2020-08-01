@@ -1,19 +1,19 @@
 using System;
 using System.Reflection;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GCombobox : GBin
+    public class Combobox : Bin
     {
-        private Property<string> activeId;
+        private readonly Property<string> activeId;
         public Property<string> ActiveId => activeId;
 
-        internal GCombobox(string template, string obj, Assembly assembly) : base(template, obj, assembly)
+        internal Combobox(string template, string obj, Assembly assembly) : base(template, obj, assembly)
         {
             InitProperties(out activeId);
         }
-        internal GCombobox(IntPtr handle) : base(handle) 
+        internal Combobox(IntPtr handle) : base(handle) 
         { 
             InitProperties(out activeId);
         }

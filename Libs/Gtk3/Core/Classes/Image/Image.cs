@@ -1,11 +1,11 @@
 using System;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public abstract class GImage : GMisc, Image
+    public abstract class Image : Misc, IImage
     {
-        internal GImage(IntPtr handle) : base(handle) { }
+        internal Image(IntPtr handle) : base(handle) { }
 
-        public void Clear() => Gtk.Image.clear(this);
+        public void Clear() => Sys.Image.clear(this);
     }
 }

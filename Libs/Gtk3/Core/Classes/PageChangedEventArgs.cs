@@ -1,13 +1,13 @@
 using System;
 
-namespace Gtk.Core
+namespace Gtk
 {
     public class PageChangedEventArgs : EventArgs
     {
-        public GWidget Child { get; }
+        public Widget Child { get; }
         public uint PageNum { get; }
 
-        public PageChangedEventArgs(GWidget child, uint pagenum)
+        public PageChangedEventArgs(Widget child, uint pagenum)
         {
             Child = child ?? throw new ArgumentNullException(nameof(child));
             PageNum = pagenum;

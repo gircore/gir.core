@@ -1,14 +1,14 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GLabel : GMisc
+    public class Label : Misc
     {
         public Property<string> Text { get; }
 
-        public GLabel(string text) : this(Gtk.Label.@new(text)) { }
-        internal GLabel(IntPtr handle) : base(handle) 
+        public Label(string text) : this(Sys.Label.@new(text)) { }
+        internal Label(IntPtr handle) : base(handle) 
         {
             Text = PropertyOfString("label");
         }

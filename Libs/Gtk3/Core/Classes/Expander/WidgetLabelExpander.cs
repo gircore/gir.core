@@ -1,17 +1,17 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class WidgetLabelExpander : GExpander
+    public class WidgetLabelExpander : Expander
     {
-        public Property<GWidget> Widget { get; } = default!;
+        public Property<Widget> Widget { get; }
 
-        public WidgetLabelExpander(GWidget widget) : this(Gtk.Expander.@new("default"), widget) { }
-        internal WidgetLabelExpander(IntPtr handle, GWidget widget) : base(handle)
+        public WidgetLabelExpander(Widget widget) : this(Sys.Expander.@new("default"), widget) { }
+        internal WidgetLabelExpander(IntPtr handle, Widget widget) : base(handle)
         {
-            Widget = Property<GWidget>("label-widget",
-                get: GetObject<GWidget>,
+            Widget = Property("label-widget",
+                get: GetObject<Widget>,
                 set: Set
             );
 

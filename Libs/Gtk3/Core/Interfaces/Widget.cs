@@ -1,6 +1,6 @@
-namespace Gtk.Core
+namespace Gtk
 {
-    public interface Widget : GObject.Core.Object
+    public interface IWidget : GObject.IObject
     {
         void Show();
         void ShowAll();
