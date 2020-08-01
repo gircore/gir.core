@@ -1,48 +1,48 @@
 using System;
-using Gtk.Core;
-using Handy.Core;
-using WebKitGTK.Core;
+using Gtk;
+using Handy;
+using WebKit2;
 
 namespace GtkApp
 {
-    public class MyWindow : GApplicationWindow
+    public class MyWindow : ApplicationWindow
     {
         [Connect]
-        private GButton Button = default!;
+        private Button Button = default!;
         
         [Connect]
-        private GBox Box = default!;
+        private Box Box = default!;
 
-        private GBox innerBox = new MyBox();
-        private GButton button;
+        private Box innerBox = new MyBox();
+        private Button button;
 
         private Image image;
         private TextLabelExpander r;
-        private GRevealer revealer;
+        private Revealer revealer;
 
         private SimpleCommand action;
-        private GTextCombobox textCombobox;
-        private GCheckButton checkButton;
-        private GNotebook notebook;
+        private TextCombobox textCombobox;
+        private CheckButton checkButton;
+        private Notebook notebook;
         private WebView webView;
         private WebContext context;
-        private GPaginator paginator;
-        private GLabel b;
+        private Paginator paginator;
+        private Label b;
 
-        private GtkChamplain.Core.Embed map;
+        private GtkChamplain.Embed map;
 
-        public MyWindow(Gtk.Core.GApplication application) : base(application, "ui.glade") 
+        public MyWindow(Application application) : base(application, "ui.glade") 
         { 
-            notebook = new GNotebook();
+            notebook = new Notebook();
 
-            button = new GButton("Test");
+            button = new Button("Test");
 
             button.Text.Value = "NEW TEXT";
             button.Clicked += (obj, args) => image.Clear();
 
             image = new StockImage("folder", IconSize.Button);
 
-            notebook.InsertPage("Image", (GWidget)image, 0);
+            notebook.InsertPage("Image", image, 0);
             notebook.InsertPage("Box", innerBox, 1);
             
             context = new WebContext();
@@ -58,7 +58,7 @@ namespace GtkApp
 
             if(ret)
             {
-                var code = @"                    
+                const string code = @"                    
                     (function(globalContext) {
                         globalContext.document.getElementById(""clickMe"").onclick = function () 
                         {
@@ -79,15 +79,15 @@ namespace GtkApp
             webView.HeightRequest.Value = 500;
             webView.WidthRequest.Value = 500;
 
-            paginator = new GPaginator();
+            paginator = new Paginator();
             paginator.AllowMouseDrag.Value = true;
             paginator.Append(webView);
             paginator.IndicatorStyle.Value = PaginatorIndicatorStyle.Lines;
 
-            b = new GLabel("label");
+            b = new Label("label");
             paginator.Append(b);
 
-            map = new GtkChamplain.Core.Embed();
+            map = new GtkChamplain.Embed();
             map.WidthRequest.Value = 500;
             map.HeightRequest.Value = 500;
             paginator.Append(map);
@@ -95,7 +95,7 @@ namespace GtkApp
             notebook.InsertPage("Paginator", paginator, 2);
             Box.Add(notebook);
 
-            checkButton = new GCheckButton("Check");
+            checkButton = new CheckButton("Check");
             checkButton.Toggled += (s, o) => Console.WriteLine("Toggled");
             Box.Add(checkButton);
 
@@ -103,33 +103,32 @@ namespace GtkApp
             r.UseMarkup.Value = true;
             r.UseUnderline.Value = true;
 
-            textCombobox = new GTextCombobox("combobox.glade");
+            textCombobox = new TextCombobox("combobox.glade");
             textCombobox.AppendText("t3", "Test 3");
             textCombobox.AppendText("t4", "Test 4");
 
-            revealer = new GRevealer();
+            revealer = new Revealer();
             revealer.TransitionType.Value = RevealerTransitionType.Crossfade;
             revealer.Add(textCombobox);
             Box.Add(revealer);
 
-            r.Add(new GLabel("test"));
+            r.Add(new Label("test"));
             Box.Add(r);
 
             action = new SimpleCommand((o) => Console.WriteLine("Do it!"));
             application.AddAction("do", action);
         }
 
-        private void JsCallback(JavaScriptCore.Core.Value value)
+        private void JsCallback(JavaScriptCore.Value value)
         {
             if(value.IsString())
-            {
                 Console.WriteLine(value.GetString());
-            }
-            if(value.IsObject())
-            {
-                var p = value.GetProperty("myProp");
-                Console.WriteLine(p.GetString());
-            }
+
+            if (!value.IsObject()) 
+                return;
+            
+            var p = value.GetProperty("myProp");
+            Console.WriteLine(p.GetString());
         }
 
         private void OnInitializeWebExtension(object? sender, EventArgs args)

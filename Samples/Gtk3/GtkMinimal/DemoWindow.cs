@@ -1,34 +1,34 @@
 using System;
-using Gtk.Core;
+using Gtk;
 
 namespace GtkDemo
 {
-    public class DemoWindow : GApplicationWindow
+    public class DemoWindow : ApplicationWindow
     {
         [Connect]
-        private GButton Button = default!;
+        private Button Button = default!;
         
         [Connect]
-        private GBox Box = default!;
+        private Box Box = default!;
 
-        private GNotebook notebook;
+        private Notebook notebook;
 
-        public DemoWindow(GApplication application) : base(application, "demo_window.glade")
+        public DemoWindow(Application application) : base(application, "demo_window.glade")
         {
             // Connect Button
             Button.Clicked += Button_Clicked;
 
             // Create Notebook
-            notebook = new GNotebook();
+            notebook = new Notebook();
             Box.PackStart(notebook, true, true, 0);
 
             var image = new FileImage("data/gtk.png");
             notebook.InsertPage("Image", image, 0);
 
-            var label = new GLabel("Gtk and C# - Very exciting isn't it?");
+            var label = new Label("Gtk and C# - Very exciting isn't it?");
             notebook.InsertPage("Label", label, 1);
 
-            var button = new GButton("Open!");
+            var button = new Button("Open!");
             notebook.InsertPage("Dialogue", button, 2);
             button.Clicked += OpenDialog;
         }
@@ -41,7 +41,7 @@ namespace GtkDemo
         private void OpenDialog(object? sender, EventArgs args)
         {
             // TODO: Investigate adding widgets to GDialog
-            var dialog = new GDialog();
+            var dialog = new Dialog();
             dialog.Run();
         }
     }

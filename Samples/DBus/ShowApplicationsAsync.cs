@@ -1,4 +1,4 @@
-using Gio.Core.DBus;
+using Gio.DBus;
 using System;
 
 namespace Sample
