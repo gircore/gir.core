@@ -1,6 +1,6 @@
 using System;
 
-namespace WebKit2WebExtension.Core
+namespace WebKit2WebExtension
 {
     public class PageCreatedEventArgs : EventArgs
     {
@@ -11,7 +11,7 @@ namespace WebKit2WebExtension.Core
             WebPage = webPage ?? throw new ArgumentNullException(nameof(webPage));
         }
     }
-    public class WebExtension : GObject.Core.GObject
+    public class WebExtension : GObject.Object
     {
         public event EventHandler<PageCreatedEventArgs>? PageCreated;
         internal WebExtension(IntPtr handle) : base(handle) 
@@ -19,7 +19,7 @@ namespace WebKit2WebExtension.Core
             RegisterEvent("page-created", OnPageCreated);
         }
 
-        private WebPage GetPage(ref GObject.Value[] values) => ((WebPage?)(GObject.Core.GObject?)(IntPtr)values[1])!;
-        protected void OnPageCreated(ref GObject.Value[] values) => PageCreated?.Invoke(this, new PageCreatedEventArgs(GetPage(ref values)));
+        private WebPage GetPage(ref GObject.Sys.Value[] values) => ((WebPage?)(GObject.Object?)(IntPtr)values[1])!;
+        protected void OnPageCreated(ref GObject.Sys.Value[] values) => PageCreated?.Invoke(this, new PageCreatedEventArgs(GetPage(ref values)));
     }
 }

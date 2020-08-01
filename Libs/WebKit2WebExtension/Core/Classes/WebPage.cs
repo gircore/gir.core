@@ -1,8 +1,8 @@
 using System;
 
-namespace WebKit2WebExtension.Core
+namespace WebKit2WebExtension
 {
-    public class WebPage : GObject.Core.GObject
+    public class WebPage : GObject.Object
     {
         public event EventHandler<EventArgs>? DocumentLoaded;
 
