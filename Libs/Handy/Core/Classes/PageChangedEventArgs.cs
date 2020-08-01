@@ -1,13 +1,13 @@
 using System;
 
-namespace Handy.Core
+namespace Handy
 {
     public class PageChangedEventArgs : EventArgs
     {
         public uint Index { get; }
         public PageChangedEventArgs(uint index)
         {
-            this.Index = index;
+            Index = index;
         }
     }
 }
