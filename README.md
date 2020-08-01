@@ -53,18 +53,18 @@ Each library has a folder called *Wrapper*, which contains the project to genera
 If there is a *Core* folder it contains the high level code.
 
 ## How is it done?
-The API is split in two layers. The lower layer just wraps all the methods (like `Gtk.HeaderBar.@new()`) and is completely generated.
+The API is split in two layers. The lower layer just wraps all the methods (like `Sys.HeaderBar.@new()`) and is completely generated.
 
 The high level API is currently handcrafted to be able to provide the flexiblity for an easy to use API surface. For example the binding code for the GTK HeaderBar looks like:
 
 ```cs
- public class GHeaderBar : GContainer
-  {
+ public class HeaderBar : Container
+ {
       public Property<string> Title { get; }
       public Property<bool> ShowCloseButton { get; }
 
-      public GHeaderBar() : this(Gtk.HeaderBar.@new()){}
-      internal GHeaderBar(IntPtr handle) : base(handle) 
+      public HeaderBar() : this(Sys.HeaderBar.@new()){}
+      internal HeaderBar(IntPtr handle) : base(handle) 
       {
           Title = PropertyOfString("title");
           ShowCloseButton = PropertyOfBool("show-close-button");
