@@ -1,4 +1,4 @@
-namespace Gir.Core.Gst
+namespace Gst
 {
     public enum State
     {

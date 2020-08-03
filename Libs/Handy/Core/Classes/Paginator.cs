@@ -1,13 +1,13 @@
 using GObject;
-using GObject.Core;
-using Gtk.Core;
+using Gtk;
 using System;
 
-namespace Handy.Core
+namespace Handy
 {
-    public class GPaginator : GEventBox
+    public class Paginator : EventBox
     {
         public event EventHandler<PageChangedEventArgs>? PageChanged;
+        
         #region Properties
         public Property<uint> AnimationDuration { get; }
         public Property<uint> Pages { get; }
@@ -20,9 +20,9 @@ namespace Handy.Core
         public Property<PaginatorIndicatorStyle> IndicatorStyle { get; }
         #endregion Properties
 
-        public GPaginator() : this(Handy.Paginator.@new()){}
+        public Paginator() : this(Sys.Paginator.@new()){}
 
-        internal GPaginator(IntPtr handle) : base(handle) 
+        internal Paginator(IntPtr handle) : base(handle) 
         { 
             AnimationDuration = PropertyOfUint("animation-duration");
             Pages = PropertyOfUint("n-pages");
@@ -33,19 +33,19 @@ namespace Handy.Core
             IndicatorSpacing = PropertyOfUint("indicator-spacing");
             CenterContent = PropertyOfBool("center-content");
 
-            IndicatorStyle = Property<PaginatorIndicatorStyle>("indicator-style",
+            IndicatorStyle = Property("indicator-style",
                 get : GetEnum<PaginatorIndicatorStyle>,
-                set : SetEnum<PaginatorIndicatorStyle>
+                set : SetEnum
             );
 
             RegisterEvent("page-changed", OnPageChanged);
         }
 
-        public void Prepend(GWidget widget) => Handy.Paginator.prepend(this, widget);
-        public void Append(GWidget widget) => Handy.Paginator.insert(this, widget, -1);
-        public void ScrollTo(GWidget widget) => Handy.Paginator.scroll_to(this, widget);
+        public void Prepend(Widget widget) => Sys.Paginator.prepend(this, widget);
+        public void Append(Widget widget) => Sys.Paginator.insert(this, widget, -1);
+        public void ScrollTo(Widget widget) => Sys.Paginator.scroll_to(this, widget);
 
-        protected void OnPageChanged(ref Value[] values)
+        protected void OnPageChanged(ref GObject.Sys.Value[] values)
         { 
             var index = (uint) values[1];
             PageChanged?.Invoke(this, new PageChangedEventArgs(index));

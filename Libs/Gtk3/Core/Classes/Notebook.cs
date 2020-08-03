@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GNotebook : GContainer
+    public class Notebook : Container
     {
-        private Dictionary<GWidget, GWidget> data;
+        private readonly Dictionary<Widget, Widget> data;
 
         public event EventHandler<PageChangedEventArgs>? PageAdded;
         public event EventHandler<PageChangedEventArgs>? PageRemoved;
@@ -16,10 +16,10 @@ namespace Gtk.Core
         public Property<bool> ShowTabs { get; }
         public Property<bool> ShowBorder { get; }
 
-        public GNotebook() : this(Gtk.Notebook.@new()){ }
-        internal GNotebook(IntPtr handle) : base(handle) 
+        public Notebook() : this(Sys.Notebook.@new()){ }
+        internal Notebook(IntPtr handle) : base(handle) 
         {
-            data = new Dictionary<GWidget, GWidget>();
+            data = new Dictionary<Widget, Widget>();
 
             Page = PropertyOfInt("page");
             ShowTabs = PropertyOfBool("show-tabs");
@@ -30,15 +30,15 @@ namespace Gtk.Core
             RegisterEvent("page-removed", OnPageRemoved);
         }
 
-        public void InsertPage(string label, GWidget child, int position)
+        public void InsertPage(string label, Widget child, int position)
         {
-            var tabLabel = new GLabel(label);
+            var tabLabel = new Label(label);
             data.Add(child, tabLabel);
 
-            Gtk.Notebook.insert_page(this, child, tabLabel, position);
+            Sys.Notebook.insert_page(this, child, tabLabel, position);
         }
 
-        public void RemovePage(GWidget child)
+        public void RemovePage(Widget child)
         {
             if(!data.ContainsKey(child))
                 throw new Exception("Not inside this notebook");
@@ -48,32 +48,32 @@ namespace Gtk.Core
             RemovePage(index);
         }
 
-        protected void RemovePage(int page) => Gtk.Notebook.remove_page(this, page);
+        protected void RemovePage(int page) => Sys.Notebook.remove_page(this, page);
 
-        public int GetPageNum(GWidget child) => Gtk.Notebook.page_num(this, child);
+        public int GetPageNum(Widget child) => Sys.Notebook.page_num(this, child);
 
-        public int GetPageCount() => Gtk.Notebook.get_n_pages(this);
+        public int GetPageCount() => Sys.Notebook.get_n_pages(this);
 
-        private void GetChildAndPage(ref GObject.Value[] values, out GWidget child, out uint pageNum)
+        private static void GetChildAndPage(ref GObject.Sys.Value[] values, out Widget child, out uint pageNum)
         {
-            child = ((GWidget?)(GObject.Core.GObject?)(IntPtr)values[1])!;
+            child = ((Widget?)(GObject.Object?)(IntPtr)values[1])!;
             pageNum = (uint)values[2];
         }
 
-        private void OnPageRemoved(ref GObject.Value[] values)
+        private void OnPageRemoved(ref GObject.Sys.Value[] values)
         {
             GetChildAndPage(ref values, out var child, out var pageNum);
             OnPageRemoved(child, pageNum);
         }
 
-        private void OnPageAdded(ref GObject.Value[] values)
+        private void OnPageAdded(ref GObject.Sys.Value[] values)
         {
             GetChildAndPage(ref values, out var child, out var pageNum);
             OnPageAdded(child, pageNum);
         }
 
-        protected void OnPageAdded(GWidget child, uint pageNum) => PageAdded?.Invoke(this, new PageChangedEventArgs(child, pageNum));
-        protected void OnPageRemoved(GWidget child, uint pageNum) => PageRemoved?.Invoke(this, new PageChangedEventArgs(child, pageNum));
+        protected void OnPageAdded(Widget child, uint pageNum) => PageAdded?.Invoke(this, new PageChangedEventArgs(child, pageNum));
+        protected void OnPageRemoved(Widget child, uint pageNum) => PageRemoved?.Invoke(this, new PageChangedEventArgs(child, pageNum));
 
         protected override void Dispose(bool disposing)
         {

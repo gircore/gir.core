@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GWindow : GContainer
+    public class Window : Container
     {
         #region Properties
         private Property<int> defaultHeight;
@@ -13,37 +13,37 @@ namespace Gtk.Core
         private Property<int> defaultWith;
         public Property<int> DefaultWidth => defaultWith;
 
-        private Property<GApplication?> application;
-        public Property<GApplication?> Application => application;
+        private Property<Application?> application;
+        public Property<Application?> Application => application;
 
         #endregion Properties
 
-        public GWindow() : this(Gtk.Window.@new(Gtk.WindowType.toplevel)) {}
-        public GWindow(string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly()) 
+        public Window() : this(Sys.Window.@new(Sys.WindowType.toplevel)) {}
+        public Window(string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly()) 
         {
             InitProperties(out defaultHeight, out defaultWith, out application);
         }
-        internal GWindow(string template, string obj, Assembly assembly) : base(template, obj, assembly) 
+        internal Window(string template, string obj, Assembly assembly) : base(template, obj, assembly) 
         {
             InitProperties(out defaultHeight, out defaultWith, out application);
         }
-        internal GWindow(IntPtr handle) : base(handle) 
+        internal Window(IntPtr handle) : base(handle) 
         {
             InitProperties(out defaultHeight, out defaultWith, out application);
         }
 
-        private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<GApplication?> application)
+        private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<Application?> application)
         {
             defaultHeight = PropertyOfInt("default-height");
             defaultWidth = PropertyOfInt("default-width");
 
-            application = Property<GApplication?>("application",
-                get : GetObject<GApplication?>,
+            application = Property<Application?>("application",
+                get : GetObject<Application?>,
                 set: Set
             );
         }
 
-        public void SetDefaultSize(int width, int height) => Gtk.Window.set_default_size(this, width, height);
-        public void SetTitlebar(GWidget widget) => Gtk.Window.set_titlebar(this, widget);
+        public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(this, width, height);
+        public void SetTitlebar(Widget widget) => Sys.Window.set_titlebar(this, widget);
     }
 }

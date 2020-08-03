@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace Gio.Core
+namespace Gio
 {
-    public partial class GApplication : GObject.Core.GObject
+    public partial class Application : GObject.Object
     {
-        private Dictionary<string, GCommandAction> actions;
+        private Dictionary<string, CommandAction> actions;
         
         //public void AddAction(GBaseAction action) => ActionMap.add_action(this, action);
         public void RemoveAction(string name)
@@ -17,7 +17,7 @@ namespace Gio.Core
             action.Dispose();
             actions.Remove(name);
 
-            ActionMap.remove_action(this, name);
+            Sys.ActionMap.remove_action(this, name);
         }
 
         public void AddAction(string name, ICommand command)
@@ -25,8 +25,8 @@ namespace Gio.Core
             if(actions.ContainsKey(name))
                 throw new Exception($"Action {name} is already used");
 
-           var action = new GCommandAction(name, command);
-           ActionMap.add_action(this, action);
+           var action = new CommandAction(name, command);
+           Sys.ActionMap.add_action(this, action);
            actions[name] = action;
         }
     }

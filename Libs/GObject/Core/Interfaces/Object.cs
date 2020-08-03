@@ -1,6 +1,6 @@
-namespace GObject.Core
+namespace GObject
 {
-    public interface Object
+    public interface IObject
     {
         
     }

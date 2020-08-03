@@ -1,13 +1,13 @@
 using System;
 
-namespace GObject.Core
+namespace GObject
 {
-    public partial class GObject : IDisposable
+    public partial class Object : IDisposable
     {
         private bool disposedValue = false;
         protected bool Disposed => disposedValue;
 
-         ~GObject() => Dispose(false);
+         ~Object() => Dispose(false);
 
         public void Dispose()
         {
@@ -23,7 +23,7 @@ namespace GObject.Core
 
                 if(handle != IntPtr.Zero)
                 {
-                    global::GObject.Object.unref(handle);
+                    Sys.Object.unref(handle);
                     objects.Remove(handle);
                 }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace GLib.Core
+namespace GLib
 {
     public partial class GException : Exception, IDisposable
     {
@@ -20,6 +20,6 @@ namespace GLib.Core
             this.errorHandle = error;
         }
 
-        private void Free() => GLib.Error.free(errorHandle);
+        private void Free() => GLib.Sys.Error.free(errorHandle);
     }
 }

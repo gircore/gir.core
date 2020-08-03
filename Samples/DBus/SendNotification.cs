@@ -1,6 +1,6 @@
-using Gio.Core.DBus;
-using GLib.Core;
+using Gio.DBus;
 using System;
+using GLib;
 
 namespace Sample
 {
@@ -14,15 +14,15 @@ namespace Sample
             //Notification spec: https://developer.gnome.org/notification-spec/
 
             var bus = Connection.Get(BusType.Session);
-            using var parameters = new GVariant(
-                new GVariant("AppName"),
-                new GVariant(0u),
-                new GVariant(""), //Icon
-                new GVariant("Summary"),
-                new GVariant("Body"),
-                new GVariant(new string[0]),
-                GVariant.CreateEmptyDictionary(GVariantType.String, GVariantType.Variant),//hints
-                new GVariant(999)
+            using var parameters = new Variant(
+                new Variant("AppName"),
+                new Variant(0u),
+                new Variant(""), //Icon
+                new Variant("Summary"),
+                new Variant("Body"),
+                new Variant(new string[0]),
+                Variant.CreateEmptyDictionary(VariantType.String, VariantType.Variant),//hints
+                new Variant(999)
             );
 
             using var ret2 = bus.Call("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", "Notify", parameters);

@@ -1,10 +1,10 @@
 using System;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class FileImage : GImage
+    public class FileImage : Image
     {
-        public FileImage(string fileName) : this(Gtk.Image.new_from_file(fileName)) {}
+        public FileImage(string fileName) : this(Sys.Image.new_from_file(fileName)) {}
         internal FileImage(IntPtr handle) : base(handle) { }
     }
 }

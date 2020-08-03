@@ -1,6 +1,6 @@
 using System;
 
-namespace GLib.Core
+namespace GLib
 {
     public partial class GException : Exception, IDisposable
     {

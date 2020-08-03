@@ -1,4 +1,4 @@
-namespace Gio.Core.DBus
+namespace Gio.DBus
 {
     public enum BusType
     {

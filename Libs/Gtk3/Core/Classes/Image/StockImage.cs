@@ -1,14 +1,14 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class StockImage : GImage
+    public class StockImage : Image
     {
         public Property<int> PixelSize { get; }
         public Property<string> Name { get; } 
 
-        public StockImage(string name, IconSize size) : this(Gtk.Image.new_from_icon_name(name, (Gtk.IconSize)size)) {}
+        public StockImage(string name, IconSize size) : this(Sys.Image.new_from_icon_name(name, (Sys.IconSize)size)) {}
         internal StockImage(IntPtr handle) : base(handle)
         {
             Name = PropertyOfString("icon-name");

@@ -3,6 +3,20 @@ using Gir;
 
 namespace Generator
 {
+    public class ResolvedType
+    {
+        public string Type { get; }
+        public  string Attribute { get; }
+
+        public ResolvedType(string type, string attribute = "")
+        {
+            Type = type;
+            Attribute = attribute;
+        }
+
+        public override string ToString() => Attribute + Type;
+    }
+    
     internal class MyType
     {
         public string? ArrayLengthParameter { get; set;}
@@ -28,19 +42,19 @@ namespace Generator
             this.aliasResolver = resolver;
         }
 
-        public string Resolve(IType typeInfo) => typeInfo switch
+        public ResolvedType Resolve(IType typeInfo) => typeInfo switch
         {
-            { Array: { CType:{} n }} when n.EndsWith("**") => "ref IntPtr",
+            { Array: { CType:{} n }} when n.EndsWith("**") => new ResolvedType("ref IntPtr"),
             { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter)),
             { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),
             { Array: { Length: { } length, Type: { Name: "utf8" } name } } => GetTypeName(StringArray(length, typeInfo is GParameter)),
-            { Array: { }} => "IntPtr",
+            { Array: { }} => new ResolvedType("IntPtr"),
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
 
         private MyType StringArray(string length, bool isParameter) => new MyType("byte"){ IsArray = true, ArrayLengthParameter = length, IsPointer = true, IsValueType = false, IsParameter = isParameter};
 
-        public string GetTypeString(GType type)
+        public ResolvedType GetTypeString(GType type)
             => GetTypeName(ConvertGType(type, true));
 
         private MyType ResolveArrayType(GType arrayType, bool isParameter, string? length)
@@ -67,30 +81,27 @@ namespace Generator
 
             if(!result.IsValueType && gtype.Name is {})
             {
-                if(resolvedName is {})
-                    result.Type = resolvedName;
-                else
-                    result.Type = gtype.Name;
+                result.Type = resolvedName ?? gtype.Name;
             }
 
             return result;
         }
 
-        private string GetTypeName(MyType type)
+        private ResolvedType GetTypeName(MyType type)
             => type switch
             {
-                { IsArray: false, Type: "void", IsPointer: true } => "IntPtr",
-                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => "string",  //string in parameters are marshalled automatically
-                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => "IntPtr",
-                { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: {} l } => GetMarshal(l) + "string[]",
-                { IsArray: false, IsPointer: true, IsValueType: true } => "ref " + type.Type,
-                { IsArray: false, IsPointer: true, IsValueType: false } => "IntPtr",
-                { IsArray: true, Type: "byte", IsPointer: true } => "ref IntPtr", //string array
-                { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: {} l } => GetMarshal(l) + "IntPtr[]",
-                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: {} l } => GetMarshal(l) + type.Type + "[]",
-                { IsArray: true, IsValueType: true, ArrayLengthParameter: {} } => type.Type + "[]",
-                { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => "IntPtr",
-                _ => type.Type
+                { IsArray: false, Type: "void", IsPointer: true } => new ResolvedType("IntPtr"),
+                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),  //string in parameters are marshalled automatically
+                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => new ResolvedType("IntPtr"),
+                { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType("string[]", GetMarshal(l)),
+                { IsArray: false, IsPointer: true, IsValueType: true } => new ResolvedType("ref " + type.Type),
+                { IsArray: false, IsPointer: true, IsValueType: false } => new ResolvedType("IntPtr"),
+                { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("ref IntPtr"), //string array
+                { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType("IntPtr[]", GetMarshal(l)),
+                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType(type.Type + "[]", GetMarshal(l)),
+                { IsArray: true, IsValueType: true, ArrayLengthParameter: {} } => new ResolvedType(type.Type + "[]"),
+                { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => new ResolvedType("IntPtr"),
+                _ => new ResolvedType(type.Type)
             };
 
         private string GetMarshal(string arrayLength)

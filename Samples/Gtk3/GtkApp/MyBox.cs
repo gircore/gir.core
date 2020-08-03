@@ -1,17 +1,17 @@
-using Gtk.Core;
+using Gtk;
 
 namespace GtkApp
 {
-    public class MyBox : GBox
+    public class MyBox : Box
     {
         [Connect]
-        private GLabel Label1 = default!;
+        private Label Label1 = default!;
 
         [Connect]
-        private GLabel Label2 = default!;
+        private Label Label2 = default!;
 
         [Connect]
-        private GLabel Label3 = default!;
+        private Label Label3 = default!;
 
         public MyBox() : base("box.glade") 
         {

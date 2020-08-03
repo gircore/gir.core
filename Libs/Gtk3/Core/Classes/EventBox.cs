@@ -1,14 +1,14 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GEventBox : GBin
+    public class EventBox : Bin
     {
         protected Property<bool> AboveChild { get; }
         protected Property<bool> VisibleWindow { get; }
 
-        internal protected GEventBox(IntPtr handle) : base(handle) 
+        internal protected EventBox(IntPtr handle) : base(handle) 
         {
             AboveChild = PropertyOfBool("above-child");
             VisibleWindow = PropertyOfBool("visible-window");

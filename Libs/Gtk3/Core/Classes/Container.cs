@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GContainer : GWidget, Container
+    public class Container : Widget, IContainer
     {
-        internal GContainer(string template, string obj, Assembly assembly) : base(template, obj, assembly){}
-        internal protected GContainer(IntPtr handle) : base(handle) {}
+        internal Container(string template, string obj, Assembly assembly) : base(template, obj, assembly){}
+        internal protected Container(IntPtr handle) : base(handle) {}
 
-        public void Add(GWidget widget) => Gtk.Container.add(this, widget);
+        public void Add(Widget widget) => Sys.Container.add(this, widget);
     }
 }

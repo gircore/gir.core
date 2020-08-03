@@ -1,15 +1,15 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public abstract class GExpander : GBin
+    public abstract class Expander : Bin
     {
         public Property<bool> Expanded { get; }
         public Property<bool> ResizeToplevel { get; }
         public Property<bool> LabelFill { get; }
 
-        internal GExpander(IntPtr handle) : base(handle)
+        internal Expander(IntPtr handle) : base(handle)
         {
             Expanded = PropertyOfBool("expanded");
             ResizeToplevel = PropertyOfBool("resize-toplevel");

@@ -1,4 +1,4 @@
-using Gir.Core.Gst;
+using Gst;
 
 namespace Sample
 {

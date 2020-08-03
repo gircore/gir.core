@@ -1,8 +1,8 @@
 using System;
 
-namespace GdkPixbuf.Core
+namespace GdkPixbuf
 {
-    public class Pixbuf : GObject.Core.GObject
+    public class Pixbuf : GObject.Object
     {
         internal Pixbuf(IntPtr handle) : base(handle) { }
     }

@@ -1,8 +1,8 @@
 using System;
 
-namespace GLib.Core
+namespace GLib
 {
-    public partial class GVariant : IDisposable
+    public partial class Variant : IDisposable
     {
         private bool disposedValue;
 
@@ -14,12 +14,12 @@ namespace GLib.Core
                     if(child is IDisposable disposable)
                         disposable.Dispose();
 
-                Variant.unref(handle);
+                Sys.Variant.unref(handle);
                 disposedValue = true;
             }
         }
 
-         ~GVariant() => Dispose(false);
+         ~Variant() => Dispose(false);
 
         public void Dispose()
         {

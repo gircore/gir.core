@@ -1,9 +1,9 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace WebKitGTK.Core
+namespace WebKit2
 {
-    public class Settings : GObject.Core.GObject
+    public class Settings : GObject.Object
     {
         public Property<bool> AllowFileAccessFromFileUrls { get; }
         public Property<bool> AllowUniversalAccessFromFileUrls { get; }

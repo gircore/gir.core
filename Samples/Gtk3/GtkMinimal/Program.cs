@@ -1,5 +1,5 @@
 ﻿using System;
-using Gtk.Core;
+using Gtk;
 
 namespace GtkDemo
 {
@@ -12,14 +12,14 @@ namespace GtkDemo
 
         public Program()
         {
-            var app = new GApplication("org.gircore.minimal");
+            var app = new Application("org.gircore.minimal");
             app.Activate += OnActivate;
             app.Run();
         }
 
         private void OnActivate(object? sender, EventArgs args)
         {
-            if(sender is GApplication app)
+            if(sender is Application app)
             {
                 var w = new DemoWindow(app);
                 w.DefaultHeight.Value = 600;

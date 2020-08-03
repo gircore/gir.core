@@ -1,41 +1,39 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace GObject.Core
+namespace GObject
 {
-    public delegate void ActionRefValues(ref Value[] items);
+    public delegate void ActionRefValues(ref Sys.Value[] items);
 
-    public partial class GClosure
+    public partial class Closure
     {
         private IntPtr handle;
         private readonly Action? callback;
-        private ActionRefValues? callbackRefValues;
+        private readonly ActionRefValues? callbackRefValues;
 
-        public GClosure(GObject obj, Action callback) : this(obj)
+        public Closure(Object obj, Action callback) : this(obj)
         {
             this.callback = callback ?? throw new ArgumentNullException(nameof(callback));
         }
 
-        public GClosure(GObject obj, ActionRefValues callbackRefValues) : this(obj)
+        public Closure(Object obj, ActionRefValues callbackRefValues) : this(obj)
         {
             this.callbackRefValues = callbackRefValues ?? throw new ArgumentNullException(nameof(callbackRefValues));
         }
 
-        private GClosure(GObject obj)
+        private Closure(Object obj)
         {
-            handle = Closure.new_object((uint)Marshal.SizeOf(typeof(global::GObject.Closure)), obj);
-            Closure.set_marshal(handle, MarshalCallback);
+            handle = Sys.Closure.new_object((uint)Marshal.SizeOf(typeof(Sys.Closure)), obj);
+            Sys.Closure.set_marshal(handle, MarshalCallback);
         }
 
-        private void MarshalCallback (IntPtr closure, ref global::GObject.Value return_value, uint n_param_values, global::GObject.Value[] param_values, IntPtr invocation_hint, IntPtr marshal_data)
+        private void MarshalCallback (IntPtr closure, ref Sys.Value return_value, uint n_param_values, Sys.Value[] param_values, IntPtr invocation_hint, IntPtr marshal_data)
         {
-            if(callback is {})
-                callback();
-            
-            if(callbackRefValues is {})
-                callbackRefValues(ref param_values);
+            callback?.Invoke();
+
+            callbackRefValues?.Invoke(ref param_values);
         }
 
-        public static implicit operator IntPtr (GClosure closure) => closure.handle;
+        public static implicit operator IntPtr (Closure closure) => closure.handle;
     }
 }

@@ -1,4 +1,4 @@
-namespace  Handy.Core
+namespace  Handy
 {
     ///<summary>
     /// In sync with Handy.PaginatorIndicatorStyle

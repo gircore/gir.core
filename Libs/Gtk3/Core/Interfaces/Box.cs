@@ -1,7 +1,7 @@
-namespace Gtk.Core
+namespace Gtk
 {
-    public interface Box : Container
+    public interface IBox : IContainer
     {
-        void PackStart(GWidget widget, bool expand, bool fill, uint padding);
+        void PackStart(Widget widget, bool expand, bool fill, uint padding);
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Gtk.Core
+namespace Gtk
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class ConnectAttribute : Attribute

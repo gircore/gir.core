@@ -1,7 +1,7 @@
-namespace GtkChamplain.Core
+namespace GtkChamplain
 {
-    public class Embed : Gtk.Core.GBin
+    public class Embed : Gtk.Bin
     {
-        public Embed() : base(GtkChamplain.Embed.@new()) { }
+        public Embed() : base(Sys.Embed.@new()) { }
     }
 }

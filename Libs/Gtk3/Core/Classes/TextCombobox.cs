@@ -1,15 +1,15 @@
 using System;
 using System.Reflection;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GTextCombobox : GCombobox
+    public class TextCombobox : Combobox
     {
-        public GTextCombobox(string template, string obj = "combobox") : base(template, obj, Assembly.GetCallingAssembly()) {}
-        public GTextCombobox() : this(Gtk.ComboBoxText.@new()){}
-        internal GTextCombobox(IntPtr handle) : base(handle) { }
+        public TextCombobox(string template, string obj = "combobox") : base(template, obj, Assembly.GetCallingAssembly()) {}
+        public TextCombobox() : this(Sys.ComboBoxText.@new()){}
+        internal TextCombobox(IntPtr handle) : base(handle) { }
 
-        public void AppendText(string id, string text) => Gtk.ComboBoxText.insert(this, -1, id, text);
-        public void RemoveAll() => Gtk.ComboBoxText.remove_all(this);
+        public void AppendText(string id, string text) => Sys.ComboBoxText.insert(this, -1, id, text);
+        public void RemoveAll() => Sys.ComboBoxText.remove_all(this);
     }
 }

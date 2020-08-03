@@ -1,15 +1,15 @@
-namespace Gtk.Core
+namespace Gtk
 {
-    public partial class GWidget
+    public partial class Widget
     {
         protected override void Dispose(bool disposing)
         {
             if (!Disposed)
             {
                 
-                if(typeof(GWindow).IsAssignableFrom(GetType()))
+                if(typeof(Window).IsAssignableFrom(GetType()))
                 {
-                    Gtk.Widget.destroy(this);
+                    Sys.Widget.destroy(this);
                 }
 
                 if(builder is {})

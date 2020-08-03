@@ -1,8 +1,8 @@
 using System;
 
-namespace GObject.Core
+namespace GObject
 {
-    public partial class GClosure
+    public partial class Closure
     {
         protected bool disposedValue = false;
 
@@ -10,13 +10,13 @@ namespace GObject.Core
         {
             if (!disposedValue)
             {
-                global::GObject.Closure.unref(handle);
+                Sys.Closure.unref(handle);
                 handle = IntPtr.Zero;
                 disposedValue = true;
             }
         }
 
-         ~GClosure() => Dispose(false);
+         ~Closure() => Dispose(false);
 
         public void Dispose()
         {

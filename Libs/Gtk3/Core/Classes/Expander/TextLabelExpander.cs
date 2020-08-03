@@ -1,15 +1,15 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class TextLabelExpander : GExpander
+    public class TextLabelExpander : Expander
     {
         public Property<string> Label { get; }
         public Property<bool> UseMarkup { get; }
         public Property<bool> UseUnderline { get; }
 
-        public TextLabelExpander(string label) : this(Gtk.Expander.@new(label)) { }
+        public TextLabelExpander(string label) : this(Sys.Expander.@new(label)) { }
         internal TextLabelExpander(IntPtr handle) : base(handle)
         {
             Label = PropertyOfString("label");

@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GBin : GContainer
+    public class Bin : Container
     {
-        internal GBin(string template, string obj, Assembly assembly) : base(template, obj, assembly){}
-        internal protected GBin(IntPtr handle) : base(handle) { }
+        internal Bin(string template, string obj, Assembly assembly) : base(template, obj, assembly){}
+        internal protected Bin(IntPtr handle) : base(handle) { }
     }
 }

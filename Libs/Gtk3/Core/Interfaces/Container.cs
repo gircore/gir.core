@@ -1,7 +1,7 @@
-namespace Gtk.Core
+namespace Gtk
 {
-    public interface Container : Widget
+    public interface IContainer : IWidget
     {
-        void Add(GWidget widget);
+        void Add(Widget widget);
     }
 }

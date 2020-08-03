@@ -1,4 +1,4 @@
-namespace WebKitGTK.Core
+namespace WebKit2
 {
     public interface UserScript
     {

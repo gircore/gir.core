@@ -1,15 +1,15 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gio.Core
+namespace Gio
 {
-    public abstract class GBaseAction : GObject.Core.GObject
+    public abstract class BaseAction : GObject.Object
     {
         public Property<bool> Enabled { get; }
         public Property<string> Name { get; }
 
-        public GBaseAction(string name) : this(Gio.SimpleAction.@new(name, IntPtr.Zero)) { }
-        internal GBaseAction(IntPtr handle) : base(handle)
+        public BaseAction(string name) : this(Sys.SimpleAction.@new(name, IntPtr.Zero)) { }
+        internal BaseAction(IntPtr handle) : base(handle)
         {
             Enabled = PropertyOfBool("enabled");
             Name = PropertyOfString("name");

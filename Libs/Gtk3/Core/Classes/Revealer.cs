@@ -1,21 +1,21 @@
 using System;
-using GObject.Core;
+using GObject;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GRevealer : GBin
+    public class Revealer : Bin
     {
         public Property<uint> TransitionDuration { get; }
         public Property<RevealerTransitionType> TransitionType { get; }
         public Property<bool> Reveal { get; }
 
-        public GRevealer() : this (Gtk.Revealer.@new()) { }
-        internal GRevealer(IntPtr handle) : base(handle) 
+        public Revealer() : this (Sys.Revealer.@new()) { }
+        internal Revealer(IntPtr handle) : base(handle) 
         { 
             TransitionDuration = PropertyOfUint("transition-duration");
-            TransitionType = Property<RevealerTransitionType>("transition-type",
+            TransitionType = Property("transition-type",
                 get : GetEnum<RevealerTransitionType>,
-                set : SetEnum<RevealerTransitionType>
+                set : SetEnum
             );
             Reveal = PropertyOfBool("reveal-child");
         }

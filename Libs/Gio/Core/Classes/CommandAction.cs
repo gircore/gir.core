@@ -1,12 +1,12 @@
 using System;
 using System.Windows.Input;
 
-namespace Gio.Core
+namespace Gio
 {
-    public class GCommandAction : GBaseAction
+    public class CommandAction : BaseAction
     {
         private ICommand command;
-        public GCommandAction(string name, ICommand command) : base(name) 
+        public CommandAction(string name, ICommand command) : base(name) 
         {
             this.command = command;
             command.CanExecuteChanged += OnCanExecuteChanged;

@@ -1,8 +1,8 @@
 using System;
 
-namespace GObject.Core
+namespace GObject
 {
-    public class GConvertingProperty<T1, T2> : GPropertyBase<T1>, Property<T1>
+    public class GConvertingProperty<T1, T2> : NamedProperty<T1>, Property<T1>
     {
         private readonly Func<string, T2> get;
         private readonly Action<T2, string> set;
@@ -15,7 +15,7 @@ namespace GObject.Core
             set => set(to(value), name); 
         }
 
-        public GConvertingProperty(GObject obj, string name, Func<string, T2> get, Action<T2, string> set, System.Converter<T1, T2> to, System.Converter<T2, T1> from) : base(obj, name)
+        public GConvertingProperty(Object obj, string name, Func<string, T2> get, Action<T2, string> set, System.Converter<T1, T2> to, System.Converter<T2, T1> from) : base(obj, name)
         {
             this.get = get ?? throw new ArgumentNullException(nameof(get));
             this.set = set ?? throw new ArgumentNullException(nameof(set));

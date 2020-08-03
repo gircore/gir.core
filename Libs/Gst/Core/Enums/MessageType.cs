@@ -1,6 +1,6 @@
 using System;
 
-namespace Gir.Core.Gst
+namespace Gst
 {
     [Flags]
     public enum MessageType

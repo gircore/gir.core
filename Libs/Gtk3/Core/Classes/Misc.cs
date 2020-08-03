@@ -1,9 +1,9 @@
 using System;
 
-namespace Gtk.Core
+namespace Gtk
 {
-    public class GMisc : GWidget, Widget
+    public class Misc : Widget, IMisc
     {
-        internal GMisc(IntPtr handle) : base(handle) { }
+        internal Misc(IntPtr handle) : base(handle) { }
     }
 }

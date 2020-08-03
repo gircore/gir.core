@@ -1,15 +1,15 @@
 using System;
 
-namespace GLib.Core
+namespace GLib
 {
-    public partial class GVariantType
+    public partial class VariantType
     {
         private readonly IntPtr handle;
         internal IntPtr Handle => handle;
 
-        public GVariantType(string type) : this(VariantType.@new(type)) {}
+        public VariantType(string type) : this(Sys.VariantType.@new(type)) {}
 
-        internal GVariantType(IntPtr handle)
+        internal VariantType(IntPtr handle)
         {
             this.handle = handle;
         }

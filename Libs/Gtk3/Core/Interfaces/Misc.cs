@@ -1,6 +1,6 @@
-namespace Gtk.Core
+namespace Gtk
 {
-    public interface Misc : Widget
+    public interface IMisc : IWidget
     {
     }
 }
