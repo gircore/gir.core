@@ -1,10 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
-using GObject.Sys;
 
 namespace GObject
 {
-    public delegate void ActionRefValues(ref Value[] items);
+    public delegate void ActionRefValues(ref Sys.Value[] items);
 
     public partial class Closure
     {
@@ -28,7 +27,7 @@ namespace GObject
             Sys.Closure.set_marshal(handle, MarshalCallback);
         }
 
-        private void MarshalCallback (IntPtr closure, ref Value return_value, uint n_param_values, Value[] param_values, IntPtr invocation_hint, IntPtr marshal_data)
+        private void MarshalCallback (IntPtr closure, ref Sys.Value return_value, uint n_param_values, Sys.Value[] param_values, IntPtr invocation_hint, IntPtr marshal_data)
         {
             callback?.Invoke();
 

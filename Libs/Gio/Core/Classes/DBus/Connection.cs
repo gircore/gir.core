@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Gio.Sys;
 using GLib;
 using GObject;
 
@@ -13,7 +12,7 @@ namespace Gio.DBus
         public ReadOnlyProperty<bool> Closed { get; }
         #endregion Properties
 
-        public Connection(string address) : this(Sys.DBusConnection.new_for_address_sync(address, DBusConnectionFlags.none, IntPtr.Zero, IntPtr.Zero, out var error))
+        public Connection(string address) : this(Sys.DBusConnection.new_for_address_sync(address, Sys.DBusConnectionFlags.none, IntPtr.Zero, IntPtr.Zero, out var error))
         {
             HandleError(error);
         }
@@ -28,7 +27,7 @@ namespace Gio.DBus
         {
             var @params = parameters?.Handle ?? IntPtr.Zero;
 
-            var ret = DBusConnection.call_sync(this, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.none, 9999, IntPtr.Zero, out var error);
+            var ret = Sys.DBusConnection.call_sync(this, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, Sys.DBusCallFlags.none, 9999, IntPtr.Zero, out var error);
 
             HandleError(error);
 
@@ -42,14 +41,14 @@ namespace Gio.DBus
 
             void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
             {
-                var ret = DBusConnection.call_finish(sourceObject, res, out var error);
+                var ret = Sys.DBusConnection.call_finish(sourceObject, res, out var error);
                 HandleError(error);
 
                 tcs.SetResult(new Variant(ret));
             }
 
             var @params = parameters?.Handle ?? IntPtr.Zero;
-            DBusConnection.call(this, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, Callback, IntPtr.Zero);
+            Sys.DBusConnection.call(this, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, Sys.DBusCallFlags.none, -1, IntPtr.Zero, Callback, IntPtr.Zero);
 
             return tcs.Task;
         }

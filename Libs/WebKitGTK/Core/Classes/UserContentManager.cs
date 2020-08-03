@@ -1,6 +1,5 @@
 using System;
 using GObject;
-using GObject.Sys;
 
 namespace WebKit2
 {
@@ -13,7 +12,7 @@ namespace WebKit2
             if(!Sys.UserContentManager.register_script_message_handler(this, name))
                 return false;
 
-            void OnMessageReceived(ref Value[] values)
+            void OnMessageReceived(ref GObject.Sys.Value[] values)
             {
                 var result = values[1].GetBoxed();
                 result = Sys.JavascriptResult.@ref(result);
