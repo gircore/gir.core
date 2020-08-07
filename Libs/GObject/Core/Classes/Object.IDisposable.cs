@@ -21,13 +21,13 @@ namespace GObject
             {
                 disposedValue = true;
 
-                if(handle != IntPtr.Zero)
+                if(Handle != IntPtr.Zero)
                 {
-                    Sys.Object.unref(handle);
-                    objects.Remove(handle);
+                    Sys.Object.unref(Handle);
+                    objects.Remove(Handle);
                 }
 
-                handle = IntPtr.Zero;
+                _handle = IntPtr.Zero;
 
                 //TODO: Findout about closure release
                 /*foreach(var closure in closures)

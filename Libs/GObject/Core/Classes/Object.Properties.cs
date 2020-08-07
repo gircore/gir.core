@@ -12,11 +12,11 @@ namespace GObject
             if(propertyName is null)
                 return;
 
-            Sys.Object.set_property(handle, propertyName, ref value);
+            Sys.Object.set_property(Handle, propertyName, ref value);
             value.Dispose();
         }
 
-        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) => SetProperty((IntPtr)value, propertyName);
+        protected void Set(Object value, [CallerMemberName] string? propertyName = null) => SetProperty(value.Handle, propertyName);
         protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum => SetProperty((long)(object)e, propertyName);
         protected void Set(bool value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
         protected void Set(uint value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
@@ -31,7 +31,7 @@ namespace GObject
                 return default;
 
             var value = new Sys.Value();
-            Sys.Object.get_property(handle, propertyName, ref value);
+            Sys.Object.get_property(Handle, propertyName, ref value);
 
             return value;
         }
@@ -77,7 +77,7 @@ namespace GObject
             return (IntPtr) v;
         }
 
-        ///<summary>
+        /*///<summary>
         ///May return null!
         ///</sumamry>
         protected T GetObject<T>([CallerMemberName] string? propertyName = null) where T : Object?
@@ -86,6 +86,6 @@ namespace GObject
             #pragma warning disable CS8601, CS8603
             return (T)(IntPtr) v;
             #pragma warning restore CS8601, CS8603
-        }
+        }*/
     }
 }

@@ -1,19 +1,61 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace GObject
 {
+    // Stub Class
+    // Floating references handled by the base GObject class
+    [Wrapper("GInitiallyUnowned")]
+    public class InitiallyUnowned : Object
+    {
+        protected InitiallyUnowned() {}
+    }
+
+    // GObject Wrapper
+    [Wrapper("GObject")]
     public partial class Object : IObject
     {
+        // Object Dictionary
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
 
+        // Pointer to underlying GObject
         private IntPtr _handle;
         public IntPtr Handle => _handle;
 
-        private HashSet<Closure> closures;
+        // Member Fields
+        private HashSet<Closure> closures;        
+
+        // We determine whether an object is a wrapper or a subclass by the
+        // presence of 'WrapperAttribute'.
+        private static bool IsSubclass(Type type)
+            => type != typeof(Object) &&
+               type != typeof(InitiallyUnowned) &&
+               !Attribute.IsDefined(type, typeof(WrapperAttribute));
+
+
+
+        public Object()
+        {
+            var zero = new IntPtr(0);
+            IntPtr handle = Sys.Object.new_with_properties(
+                TypeDictionary.gtypeof(GetType()),
+                0, ref zero, new Sys.Value[0]
+            );
+            
+            Initialize(out closures, handle);
+        }
 
         protected Object(IntPtr handle, bool isInitiallyUnowned = false)
+            => Initialize(out closures, handle, isInitiallyUnowned);
+
+
+        private void Initialize(out HashSet<Closure> closures, IntPtr handle, bool isInitiallyUnowned = false)
         {
+            var type = this.GetType();
+            if (!TypeDictionary.Contains(type))
+                RegisterType(type);
+
             objects.Add(handle, this);
             
             if(isInitiallyUnowned)
@@ -25,8 +67,28 @@ namespace GObject
             RegisterOnFinalized();
         }
 
+        // Registers the object in the Type Dictionary
+        internal static void RegisterType(Type type)
+        {
+            if (IsSubclass(type))
+                RegisterClass(type);
+            else
+            {
+                // Lookup by Type Name
+                var attr = (WrapperAttribute)Attribute.GetCustomAttribute(type, typeof(WrapperAttribute));
+                string typeName = attr.TypeName;
+                ulong typeid = Sys.Methods.type_from_name(typeName);
+
+                // TODO: Work on error handling/backup methods
+                if (typeid == 0)
+                    throw new Exception("Type could not be found. This is a fatal error!");
+                    
+                TypeDictionary.RegisterType(type, typeid);
+            }
+        }
+
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
-        private void RegisterOnFinalized() => Sys.Object.weak_ref(this, this.OnFinalized, IntPtr.Zero);
+        private void RegisterOnFinalized() => Sys.Object.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
 
         internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) 
             => RegisterEvent($"notify::{propertyName}", callback);
