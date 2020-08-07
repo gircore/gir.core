@@ -7,7 +7,9 @@ namespace GObject
     {
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
 
-        private IntPtr handle;
+        private IntPtr _handle;
+        public IntPtr Handle => _handle;
+
         private HashSet<Closure> closures;
 
         protected Object(IntPtr handle, bool isInitiallyUnowned = false)
@@ -15,9 +17,9 @@ namespace GObject
             objects.Add(handle, this);
             
             if(isInitiallyUnowned)
-                this.handle = Sys.Object.ref_sink(handle);
+                this._handle = Sys.Object.ref_sink(handle);
             else
-                this.handle = handle;
+                this._handle = handle;
 
             closures = new HashSet<Closure>();
             RegisterOnFinalized();
@@ -43,7 +45,7 @@ namespace GObject
 
         private void RegisterEvent(string eventName, Closure closure)
         {
-            var ret = Sys.Methods.signal_connect_closure(handle, eventName, closure, false);
+            var ret = Sys.Methods.signal_connect_closure(_handle, eventName, closure, false);
 
             if(ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
@@ -69,15 +71,6 @@ namespace GObject
         {
             if(error != IntPtr.Zero)
                 throw new GLib.GException(error);
-        }
-
-        public static implicit operator IntPtr (Object? val) => val?.handle ?? IntPtr.Zero;
-
-        //TODO: Remove implicit cast
-        public static implicit operator Object? (IntPtr val)
-        {
-            objects.TryGetValue(val, out var ret);
-            return ret;
         }
 
         public static bool TryGetObject<T>(IntPtr handle, out T obj) where T: Object
