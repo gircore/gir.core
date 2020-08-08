@@ -13,6 +13,11 @@ namespace GObject.Test
             public Subclass() {}
         }
 
+        class Final : Subclass
+        {
+            public Final() {}
+        }
+
         public static void TestSimple()
         {
             var obj = new GObject.Object();
@@ -25,11 +30,11 @@ namespace GObject.Test
 
         public static void TestSubclass()
         {
-            var obj = new Subclass();
+            var obj = new Final();
             IntPtr ptr = Sys.Methods.type_name_from_instance(obj.Handle);
             string? name = Marshal.PtrToStringAnsi(ptr);
             Console.WriteLine("Using custom GObject-integrated type: " + name);
-            Debug.Assert("GObjectTestSubclass" == name);
+            Debug.Assert("GObjectTestFinal" == name);
 
             Console.WriteLine(nameof(TestSubclass) + " Passed!\n");
         }
