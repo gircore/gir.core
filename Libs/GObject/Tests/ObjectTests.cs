@@ -21,7 +21,7 @@ namespace GObject.Test
         public static void TestSimple()
         {
             var obj = new GObject.Object();
-            var stringPtr = Sys.Methods.type_name(TypeDictionary.gtypeof(obj.GetType()));
+            var stringPtr = Sys.Methods.type_name(TypeDictionary.FromType(obj.GetType()));
             string? name = Marshal.PtrToStringAnsi(stringPtr);
             Debug.Assert("GObject" == name);
 
@@ -31,11 +31,12 @@ namespace GObject.Test
         public static void TestSubclass()
         {
             var obj = new Final();
-            IntPtr ptr = Sys.Methods.type_name_from_instance(obj.Handle);
-            string? name = Marshal.PtrToStringAnsi(ptr);
-            Console.WriteLine("Using custom GObject-integrated type: " + name);
-            Debug.Assert("GObjectTestFinal" == name);
 
+            string name = obj.ToString();
+            Console.WriteLine("Using custom GObject-integrated type: " + name);
+            
+            Debug.Assert("GObjectTestFinal" == name);
+            
             Console.WriteLine(nameof(TestSubclass) + " Passed!\n");
         }
 
