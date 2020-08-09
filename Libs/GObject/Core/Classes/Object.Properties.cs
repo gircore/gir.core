@@ -77,15 +77,18 @@ namespace GObject
             return (IntPtr) v;
         }
 
-        /*///<summary>
+        ///<summary>
         ///May return null!
         ///</sumamry>
-        protected T GetObject<T>([CallerMemberName] string? propertyName = null) where T : Object?
+        protected T GetObject<T>([CallerMemberName] string? propertyName = null)
+            where T : Object
         {
-            using var v = GetProperty(propertyName);
-            #pragma warning disable CS8601, CS8603
-            return (T)(IntPtr) v;
-            #pragma warning restore CS8601, CS8603
-        }*/
+            // TODO: Fix
+            // This is the bare minimum needed for it to compile
+            // I don't know if it actually works.
+            var v = GetProperty(propertyName);
+            IntPtr handle = Sys.Value.get_object(ref v);
+            return WrapPointer<T>(handle, (ptr) => (T)Activator.CreateInstance(typeof(T), args: new object[] {ptr}));
+        }
     }
 }

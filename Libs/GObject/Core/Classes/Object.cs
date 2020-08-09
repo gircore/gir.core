@@ -26,38 +26,41 @@ namespace GObject
         // Member Fields
         private HashSet<Closure> closures;        
 
-        // We determine whether an object is a wrapper or a subclass by the
-        // presence of 'WrapperAttribute'.
+        // Wrapper vs Subclass Helper Function
+        // Uses presence of [Wrapper(type)] attribute
         private static bool IsSubclass(Type type)
             => type != typeof(Object) &&
                type != typeof(InitiallyUnowned) &&
                !Attribute.IsDefined(type, typeof(WrapperAttribute));
 
-
-
+        // New GObject Constructor
         public Object()
         {
             var zero = new IntPtr(0);
             IntPtr handle = Sys.Object.new_with_properties(
-                TypeDictionary.gtypeof(GetType()),
+                TypeDictionary.FromType(GetType()),
                 0, ref zero, new Sys.Value[0]
             );
             
             Initialize(out closures, handle);
         }
 
+        // Wrap GObject Constructor
         protected Object(IntPtr handle, bool isInitiallyUnowned = false)
             => Initialize(out closures, handle, isInitiallyUnowned);
 
-
+        // Common Initialisation Code
         private void Initialize(out HashSet<Closure> closures, IntPtr handle, bool isInitiallyUnowned = false)
         {
+            // Register on first run
             var type = this.GetType();
             if (!TypeDictionary.Contains(type))
                 RegisterType(type);
 
-            objects.Add(handle, this);
+            // Add to object dictionary
+            objects[handle] = this;
             
+            // If floating reference, sink immediately
             if(isInitiallyUnowned)
                 this._handle = Sys.Object.ref_sink(handle);
             else
@@ -87,12 +90,21 @@ namespace GObject
             }
         }
 
+        // Print class name
+        public override string ToString()
+        {
+            IntPtr ptr = Sys.Methods.type_name_from_instance(Handle);
+            string? name = Marshal.PtrToStringAnsi(ptr);
+            return name ?? throw new Exception("Could not lookup type name");
+        }
+
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
         private void RegisterOnFinalized() => Sys.Object.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
 
         internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) 
             => RegisterEvent($"notify::{propertyName}", callback);
 
+        // Signal Registration
         internal protected void RegisterEvent(string eventName, ActionRefValues callback)
         {
             ThrowIfDisposed();
@@ -107,7 +119,7 @@ namespace GObject
 
         private void RegisterEvent(string eventName, Closure closure)
         {
-            var ret = Sys.Methods.signal_connect_closure(_handle, eventName, closure, false);
+            var ret = Sys.Methods.signal_connect_closure(_handle, eventName, closure.Handle, false);
 
             if(ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
@@ -115,13 +127,37 @@ namespace GObject
             closures.Add(closure);
         }
 
-        public static T Convert<T>(IntPtr handle, Func<IntPtr, T> factory) where T : Object
+        // Wraps a pointer in the corresponding C# type, before returning it
+        // in the form type T. Note, T is the type returned, not the actual
+        // type of the object.
+        public static T WrapPointer<T>(IntPtr handle, Func<IntPtr, T>? factory = null, bool owned = true)
+            where T : Object
+        {
+            // Get System.Type from GType
+            // TODO: FIND ACTUAL TYPE
+            Type type = typeof(T);
+
+            // If ptr is in object dict, then return
+            if (objects.TryGetValue(handle, out Object obj))
+                return (T)obj;
+
+            // By design, all user-defined subclass objects will outlive their
+            // custom GObject representation. Therefore, if we do not find the
+            // object in the dictionary, this is a fatal error.
+            if (IsSubclass(type))
+                throw new NotImplementedException("Type garbage collected. Implement ToggleRefs!");
+
+            // Instantiate a new wrapper type to wrap our ptr
+            return factory?.Invoke(handle) ?? throw new Exception("Handle null reference!");
+        }
+
+        /*public static T Convert<T>(IntPtr handle, Func<IntPtr, T> factory) where T : Object
         {
             if(TryGetObject(handle, out T obj))
                 return obj;
             else
                 return factory(handle);
-        }
+        }*/
 
         private void ThrowIfDisposed()
         {
@@ -135,12 +171,12 @@ namespace GObject
                 throw new GLib.GException(error);
         }
 
-        public static bool TryGetObject<T>(IntPtr handle, out T obj) where T: Object
+        /*public static bool TryGetObject<T>(IntPtr handle, out T obj) where T: Object
         { 
             var result = objects.TryGetValue(handle, out var ret);
             obj = (T) ret;
             
             return result;
-        }
+        }*/
     }
 }

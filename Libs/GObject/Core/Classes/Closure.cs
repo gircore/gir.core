@@ -8,6 +8,8 @@ namespace GObject
     public partial class Closure
     {
         private IntPtr handle;
+        public IntPtr Handle => handle;
+        
         private readonly Action? callback;
         private readonly ActionRefValues? callbackRefValues;
 
@@ -33,7 +35,5 @@ namespace GObject
 
             callbackRefValues?.Invoke(ref param_values);
         }
-
-        public static implicit operator IntPtr (Closure closure) => closure.handle;
     }
 }

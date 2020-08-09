@@ -6,20 +6,22 @@ namespace GObject
     public class TypeDictionary
     {
         static readonly Dictionary<Type, ulong> typedict = new Dictionary<Type, ulong>();
+        //static readonly Dictionary<Type, ulong> typedictReversed = new Dictionary<Type, ulong>();
 
         // GObject GetType() function
-        public delegate ulong GetTypeDelegate();
+        // public delegate ulong GetTypeDelegate();
 
         public static bool Contains(Type type) => typedict.ContainsKey(type);
 
         public static void RegisterType(Type type, ulong typeid)
             => typedict[type] = typeid;
 
-        // Ensures that the object has a corresponding GType
-        // For GObjects, this will enforce class creation
-        // public static void EnsureType(System.Type type) => gtypeof(type);
+        public static Type FromGType(ulong gtype)
+        {
+            throw new Exception("Reverse lookup not implemented");
+        }
 
-        public static ulong gtypeof(System.Type type)
+        public static ulong FromType(System.Type type)
         {
             if (typedict.TryGetValue(type, out ulong typeid))
                 return typeid;

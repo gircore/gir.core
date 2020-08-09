@@ -56,11 +56,11 @@ namespace GObject
 
             // Get Boundary Type
             var boundary = GetBoundaryType(type);
-            ulong gtype = TypeDictionary.gtypeof(boundary);
+            ulong gtype = TypeDictionary.FromType(boundary);
             Sys.TypeQuery query = QueryType(gtype);
 
             // Get Immediate Parent Type
-            ulong parentType = TypeDictionary.gtypeof(basetype);
+            ulong parentType = TypeDictionary.FromType(basetype);
 
             // TODO: Use reflection to lookup properties, virtual function overrides, etc
             
