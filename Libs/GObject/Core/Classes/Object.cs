@@ -171,6 +171,12 @@ namespace GObject
                 throw new GLib.GException(error);
         }
 
+        public virtual Sys.Type GetGObjectType()
+        {
+            //TODO: Return value is not wrapped
+            return new Sys.Type(Sys.Object.get_type());
+        }
+
         /*public static bool TryGetObject<T>(IntPtr handle, out T obj) where T: Object
         { 
             var result = objects.TryGetValue(handle, out var ret);

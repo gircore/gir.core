@@ -31,6 +31,7 @@ namespace GObject.Test
         public static void TestSubclass()
         {
             var obj = new Final();
+            Console.WriteLine(obj.GetGObjectType() == GObject.Sys.Type.Object);
 
             string name = obj.ToString();
             Console.WriteLine("Using custom GObject-integrated type: " + name);

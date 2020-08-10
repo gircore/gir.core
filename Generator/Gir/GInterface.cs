@@ -19,5 +19,8 @@ namespace Gir
 
         [XmlElement("method")]
         public List<GMethod> Methods { get; set; } = default!;
+        
+        [XmlAttribute("get-type", Namespace="http://www.gtk.org/introspection/glib/1.0")]
+        public string? GetTypeFunction { get; set; }
     }
 }
