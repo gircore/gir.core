@@ -1,9 +1,12 @@
 static class Targets
 {
-    public const string generate = "generate";
-    public const string build = "build";
-    public const string clean = "clean";
-    public const string debug = "debug";
-    public const string release = "release";
-    public const string pack = "pack";
+    public const string Generate = "generate";
+    public const string Build = "build";
+    public const string Clean = "clean";
+    public const string CleanLibs = "cleanlibs";
+    public const string CleanSamples = "cleansamples";
+    public const string Debug = "debug";
+    public const string Release = "release";
+    public const string Pack = "pack";
+    public const string Samples = "samples";
 }
