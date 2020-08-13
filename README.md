@@ -33,6 +33,10 @@ If you want to create a debug build just run
 If you want to clean your debug build just run
 
     $ dotnet run -- debug clean
+
+If you want to build the samples just run
+
+    $ dotnet run -- debug samples
     
 To use the newly build libraries in your project just add a reference to the csproj file of the project you want to use, e.g:
 
