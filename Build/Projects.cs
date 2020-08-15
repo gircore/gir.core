@@ -74,4 +74,11 @@ static class Projects
     public const string GDK4_WRAPPER = "../Libs/Gdk4/Wrapper/";
     public const string PANGO_WRAPPER = "../Libs/Pango/Wrapper/";
     public const string XLIB_WRAPPER = "../Libs/Xlib/Wrapper/";
+
+    private const string SAMPLE = "../Samples/";
+    public const string DBUS_SAMPLE = SAMPLE + "DBus/";
+    public const string GST_SAMPLE = SAMPLE + "Gst/";
+    public const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
+    public const string GTK3_MINIMAL_SAMPLE = SAMPLE + "Gtk3/GtkMinimal";
+    public const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
 }

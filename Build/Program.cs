@@ -1,5 +1,4 @@
 ﻿using static Bullseye.Targets;
-using static Targets;
 using static DotNet;
 using static Projects;
 using System.Collections.Generic;
@@ -11,7 +10,17 @@ class Program
     private const string confRelease = "Release";
     private const string confDebug = "Debug";
 
-    private static string[] allProjects = {
+    private static readonly string[] sampleProjects =
+    {
+        DBUS_SAMPLE,
+        GST_SAMPLE,
+        GTK3_APP_SAMPLE,
+        GTK3_MINIMAL_SAMPLE,
+        GTK4_SIMPLE_WINDOW_SAMPLE
+    };
+    
+    private static readonly string[] libraryProjects = 
+    {
         GLIB_WRAPPER,
         CAIRO_WRAPPER,
         XLIB_WRAPPER,
@@ -49,7 +58,7 @@ class Program
 
     static void Main(string[] args)
     {        
-        Target<(string project, string girFile, string import, bool addAlias)>(generate, 
+        Target<(string project, string girFile, string import, bool addAlias)>(Targets.Generate, 
             ForEach(
                 (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false),
                 (GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
@@ -76,20 +85,32 @@ class Program
             (x) => Generate(x.project, x.girFile, x.import, x.addAlias)
         );
 
-        Target<string>(Targets.build, DependsOn(generate),
-            ForEach(allProjects),
+        Target(Targets.Build, DependsOn(Targets.Generate),
+            ForEach(libraryProjects),
             (project) => Build(project, configuration)
         );
 
-        Target(Targets.clean, 
-            ForEach(allProjects), 
+        Target(Targets.CleanLibs, 
+            ForEach(libraryProjects), 
             (project) => CleanUp(project, configuration)
         );
         
-        Target(Targets.release, () => configuration = confRelease);
-        Target(Targets.debug, () => configuration = confDebug);
+        Target(Targets.CleanSamples, 
+            ForEach(sampleProjects), 
+            (project) => CleanUp(project, configuration)
+        );
+        
+        Target(Targets.Clean, DependsOn(Targets.CleanLibs, Targets.CleanSamples));
+        
+        Target(Targets.Samples, DependsOn(Targets.Build), 
+            ForEach(sampleProjects),
+            (project) => Build(project, configuration)
+        );
+        
+        Target(Targets.Release, () => configuration = confRelease);
+        Target(Targets.Debug, () => configuration = confDebug);
 
-        Target("default", DependsOn(Targets.build));
+        Target("default", DependsOn(Targets.Build));
         RunTargetsAndExit(args);
     }
 
