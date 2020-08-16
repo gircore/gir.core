@@ -33,8 +33,8 @@ namespace GObject.Sys
         public static readonly Type Object = new Type ((ulong) Types.Object);
         public static readonly Type Variant = new Type ((ulong) Types.Variant);
         #endregion Statics
-
-        internal Type(ulong value)
+        
+        public Type(ulong value)
         {
             this.value = value;
         }
