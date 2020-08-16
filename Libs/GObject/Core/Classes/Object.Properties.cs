@@ -80,12 +80,14 @@ namespace GObject
         ///<summary>
         ///May return null!
         ///</sumamry>
-        protected T GetObject<T>([CallerMemberName] string? propertyName = null) where T : Object?
+        protected T GetObject<T>([CallerMemberName] string? propertyName = null) where T : Object
         {
-            using var v = GetProperty(propertyName);
-            #pragma warning disable CS8601, CS8603
-            return (T)(IntPtr) v;
-            #pragma warning restore CS8601, CS8603
+            var v = GetIntPtr(propertyName);
+
+            if (TryGetObject<T>(v, out var obj))
+                return obj;
+            
+            return default!; //TODO: Fix exclamation mark
         }
     }
 }

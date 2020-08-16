@@ -33,7 +33,7 @@ namespace GObject
                 /*foreach(var closure in closures)
                     closure.Dispose();*/
 
-                closures.Clear();
+                //TODO activate: closures.Clear();
             }
         }
     }

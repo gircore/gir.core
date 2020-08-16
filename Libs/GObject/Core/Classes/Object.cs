@@ -5,24 +5,51 @@ namespace GObject
 {
     public partial class Object : IObject
     {
+        internal static Sys.Type GetGType() => new Sys.Type(Sys.Object.get_type());
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
 
-        private IntPtr handle;
-        private HashSet<Closure> closures;
+        protected IntPtr handle;
+        internal IntPtr Handle => handle;
+        private HashSet<Closure> closures = new HashSet<Closure>();
 
-        protected Object(IntPtr handle, bool isInitiallyUnowned = false)
+        public Object(params Prop[] properties)
         {
-            objects.Add(handle, this);
+            RegisterType(GetType());
             
-            if(isInitiallyUnowned)
-                this.handle = Sys.Object.ref_sink(handle);
-            else
-                this.handle = handle;
-
-            closures = new HashSet<Closure>();
-            RegisterOnFinalized();
+            var zero = IntPtr.Zero;
+            var typeId = GetGTypeFor(GetType());
+            var ptr = Sys.Object.new_with_properties(
+                typeId, 
+                0, 
+                ref zero, 
+                new Sys.Value[0]
+            );
+            
+            Initialize(ptr);
+        }
+        
+        protected Object(IntPtr handle)
+        {
+            Initialize(handle);
         }
 
+        private void Initialize(IntPtr ptr)
+        {
+            handle = ptr;
+            objects.Add(ptr, this);
+            RegisterOnFinalized();
+        }
+        
+        protected Object(IntPtr handle, bool isInitiallyUnowned = false)
+        {
+            //TODO : Obsolete
+        }
+
+        protected virtual void Constructed()
+        {
+            
+        }
+        
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
         private void RegisterOnFinalized() => Sys.Object.weak_ref(this, this.OnFinalized, IntPtr.Zero);
 
@@ -48,7 +75,7 @@ namespace GObject
             if(ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
 
-            closures.Add(closure);
+            //TODO activate: closures.Add(closure);
         }
 
         public static T Convert<T>(IntPtr handle, Func<IntPtr, T> factory) where T : Object
