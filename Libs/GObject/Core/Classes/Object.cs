@@ -15,7 +15,7 @@ namespace GObject
         public Object(params Prop[] properties)
         {
             RegisterType(GetType());
-            
+            //TODO: use properties
             var zero = IntPtr.Zero;
             var typeId = GetGTypeFor(GetType());
             var ptr = Sys.Object.new_with_properties(

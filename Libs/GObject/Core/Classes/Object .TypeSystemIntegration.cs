@@ -17,7 +17,7 @@ namespace GObject
         private static bool IsSubclass(Type type)
             => type != typeof(Object) &&
                type != typeof(InitallyUnowned) &&
-               GetGetTypeIdMethodInfo(type) is null;
+               GetGTypeMethodInfo(type) is null;
 
         private static Sys.TypeQuery QueryType(ulong gtype)
         {
@@ -52,7 +52,7 @@ namespace GObject
         private static string GetQualifiedName(Type type)
             => $"{type.Namespace}_{type.Name}".Replace(".", "_");
 
-        private static MethodInfo? GetGetTypeIdMethodInfo(Type type)
+        private static MethodInfo? GetGTypeMethodInfo(Type type)
         {
             const BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
             return type.GetMethod(nameof(GetGType), flags);
@@ -66,9 +66,9 @@ namespace GObject
                 return new Sys.Type(Sys.Methods.type_from_name(qualifiedName));
             }
 
-            var getTypeIdMethod = GetGetTypeIdMethodInfo(type);
+            var getTypeIdMethod = GetGTypeMethodInfo(type);
             if (getTypeIdMethod is {})
-                return (Sys.Type) getTypeIdMethod.Invoke(null, null);
+                return (Sys.Type) getTypeIdMethod.Invoke(null, null); //This ensures the type registration
 
             return Sys.Type.Invalid;
         }
