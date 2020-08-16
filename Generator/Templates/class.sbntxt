@@ -5,6 +5,11 @@ namespace {{ namespace }}
 {
     public partial class {{ name }}
     {
+        {{- if (string.size get_type_function) > 0 -}}
+            [DllImport("{{ dll_import }}", EntryPoint = "{{ get_type_function }}")]
+            public static extern ulong get_type();
+        {{- end -}}
+        
         {{~ for method in methods
             include 'method.sbntxt' method
         end ~}}
