@@ -1,11 +1,22 @@
+using System;
+
 namespace GObject
 {
     public class InitallyUnowned : Object
     {
-        protected override void Constructed()
+        public InitallyUnowned(IntPtr handle) : base(handle)
         {
-            base.Constructed();
-            Sys.Object.ref_sink(handle);
+            Initialize();
+        }
+
+        public InitallyUnowned(params Prop[] properties) : base(properties)
+        {
+            Initialize();
+        }
+        
+        private void Initialize()
+        {
+            Sys.Object.ref_sink(Handle);
         }
     }
 }
