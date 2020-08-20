@@ -20,3 +20,6 @@ build
 
 #Rider
 *.idea
+
+# Visual Studio
+.vs/
