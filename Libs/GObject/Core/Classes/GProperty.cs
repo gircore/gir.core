@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace GObject
 {
@@ -7,10 +7,10 @@ namespace GObject
         protected readonly Action<T, string> set;
         protected readonly Func<string, T> get;
 
-        public virtual T Value 
+        public virtual T Value
         {
             get => get(name);
-            set => set(value, name); 
+            set => set(value, name);
         }
 
         public GProperty(Object obj, string name, Func<string, T> get, Action<T, string> set) : base(obj, name)
