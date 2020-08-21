@@ -5,6 +5,48 @@ namespace GObject
 {
     public partial class Object
     {
+        #region Methods
+
+        /// <summary>
+        /// Gets the value of the GProperty described by <paramref name="property"/>.
+        /// </summary>
+        /// <param name="property">The property descriptor of the GProperty from which get the value.</param>
+        /// <typeparam name="T">The type of the value to retrieve.</typeparam>
+        /// <returns>
+        /// The value of the GProperty.
+        /// </returns>
+        protected T GetProperty<T>(Property<T> property)
+        {
+            Type type = typeof(T);
+            var value = GetGProperty(property.Name);
+
+            if (type.IsSubclassOf(typeof(Object)))
+            {
+                if (objects.TryGetValue(value.To<IntPtr>(), out var ret))
+                    return (T)(object)ret;
+
+                return (T)(object)null!;
+            }
+
+            return value.To<T>();
+        }
+
+        /// <summary>
+        /// Sets the <paramref name="value"/> of the GProperty described by <paramref name="property"/>.
+        /// </summary>
+        /// <param name="property">The property descriptor of the GProperty on which set the value.</param>
+        /// <param name="value">The value to set to the GProperty.</param>
+        /// <typeparam name="T">The tye of the value to define.</typeparam>
+        protected void SetProperty<T>(Property<T> property, T value)
+        {
+            if (value is Object o)
+                SetGProperty((IntPtr)o, property.Name);
+            else
+                SetGProperty(Sys.Value.From(value), property.Name);
+        }
+
+        #endregion
+
         private void SetGProperty(Sys.Value value, string? propertyName)
         {
             ThrowIfDisposed();
