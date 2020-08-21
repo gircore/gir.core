@@ -27,6 +27,7 @@ namespace GObject.Sys
         public Value(int value) : this(Type.Int) => Value.set_int(ref this, value);
         public Value(uint value) : this(Type.UInt) => Value.set_uint(ref this, value);
         public Value(long value) : this(Type.Long) => Value.set_long(ref this, value);
+        public Value(double value) : this(Type.Double) => Value.set_double(ref this, value);
         public Value(string value) : this(Type.String) => Value.set_string(ref this, value);
 
         //TODO: Explicite / Implicite operatoren entfernen?
