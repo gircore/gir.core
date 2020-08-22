@@ -26,11 +26,11 @@ namespace GObject
 
         public Binding(Object source, string sourceProperty, Object target, string targetProperty) 
             : base(
-                Prop.With(propSource, source), 
-                Prop.With(propSourceProperty, sourceProperty),
-                Prop.With(propTarget, target),
-                Prop.With(propTargetProperty, targetProperty),
-                Prop.With(propFlags, Sys.BindingFlags.bidirectional))
+                ConstructProp.With(propSource, source), 
+                ConstructProp.With(propSourceProperty, sourceProperty),
+                ConstructProp.With(propTarget, target),
+                ConstructProp.With(propTargetProperty, targetProperty),
+                ConstructProp.With(propFlags, Sys.BindingFlags.bidirectional))
         {
             
         }

@@ -9,12 +9,12 @@ namespace GObject
             Initialize();
         }
 
-        public InitallyUnowned(params Prop[] properties) : base(properties)
+        public InitallyUnowned(params ConstructProp[] properties) : base(properties)
         {
             Initialize();
         }
         
-        private void Initialize()
+        protected override void Initialize()
         {
             Sys.Object.ref_sink(Handle);
         }

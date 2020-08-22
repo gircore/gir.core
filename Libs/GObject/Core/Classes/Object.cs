@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace GObject
 {
@@ -12,50 +13,95 @@ namespace GObject
         internal IntPtr Handle => handle;
         private HashSet<Closure> closures = new HashSet<Closure>();
 
-        public Object(params Prop[] properties)
+        public Object(params ConstructProp[] properties)
         {
             RegisterType(GetType());
-            //TODO: use properties
-            var zero = IntPtr.Zero;
+
             var typeId = GetGTypeFor(GetType());
-            var ptr = Sys.Object.new_with_properties(
-                typeId, 
-                0, 
-                ref zero, 
-                new Sys.Value[0]
-            );
+            IntPtr handle;
+
+            // Handle Properties
+            int nProps = properties.Length;
+
+            if (nProps > 0)
+            {
+                // We have properties
+                // Prepare Construct Properties
+                var names = new IntPtr[nProps];
+                var values = new Sys.Value[nProps];
+
+                // Populate arrays
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    var prop = properties[i];
+                    // TODO: Marshal in a block, rather than one at a time
+                    // for performance reasons.
+                    names[i] = (IntPtr)Marshal.StringToHGlobalAnsi(prop.Name);
+                    values[i] = prop.Value;
+                }
+
+                // Create with propeties
+                handle = Sys.Object.new_with_properties(
+                    typeId, 
+                    (uint)names.Length,
+                    ref names[0],
+                    values
+                );
+
+                // Free strings
+                foreach (var ptr in names)
+                    Marshal.FreeHGlobal(ptr);
+            }
+            else
+            {
+                // Construct with no properties
+                var zero = IntPtr.Zero;
+                handle = Sys.Object.new_with_properties(
+                    typeId, 
+                    0, 
+                    ref zero,
+                    Array.Empty<Sys.Value>()
+                );
+            }
             
-            Initialize(ptr);
+            Initialize(handle);
         }
         
         protected Object(IntPtr handle)
-        {
-            Initialize(handle);
-        }
+            => Initialize(handle);
 
         private void Initialize(IntPtr ptr)
         {
             handle = ptr;
             objects.Add(ptr, this);
             RegisterOnFinalized();
-        }
-        
-        protected Object(IntPtr handle, bool isInitiallyUnowned = false)
-        {
-            //TODO : Obsolete
+
+            // Allow subclasses to perform initialisation
+            Initialize();
         }
 
+        // Wrappers can override here to perform
+        // immediate initialisation
+        protected virtual void Initialize() {}
+
+        // TODO: Implement Virtual Methods
+        // This will be done in a later PR
         protected virtual void Constructed()
         {
             
         }
         
+        // Modify this in the future to play nicely with
+        // virtual function support?
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
         private void RegisterOnFinalized() => Sys.Object.weak_ref(this, this.OnFinalized, IntPtr.Zero);
 
+
+        // Property Notify Events
         internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) 
             => RegisterEvent($"notify::{propertyName}", callback);
 
+        // Signal Handling
         internal protected void RegisterEvent(string eventName, ActionRefValues callback)
         {
             ThrowIfDisposed();
