@@ -23,7 +23,7 @@ namespace GObject
 
         private Closure(Object obj)
         {
-            handle = Sys.Closure.new_object((uint)Marshal.SizeOf(typeof(Sys.Closure)), obj);
+            handle = Sys.Closure.new_object((uint)Marshal.SizeOf(typeof(Sys.Closure)), obj.Handle);
             Sys.Closure.set_marshal(handle, MarshalCallback);
         }
 

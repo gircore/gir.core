@@ -94,7 +94,7 @@ namespace GObject
         // Modify this in the future to play nicely with
         // virtual function support?
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
-        private void RegisterOnFinalized() => Sys.Object.weak_ref(this, this.OnFinalized, IntPtr.Zero);
+        private void RegisterOnFinalized() => Sys.Object.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
 
 
         // Property Notify Events
@@ -121,7 +121,9 @@ namespace GObject
             if(ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
 
-            //TODO activate: closures.Add(closure);
+            // Add to our closures list so the callback
+            // doesn't get garbage collected.
+            closures.Add(closure);
         }
 
         public static T Convert<T>(IntPtr handle, Func<IntPtr, T> factory) where T : Object
@@ -142,15 +144,6 @@ namespace GObject
         {
             if(error != IntPtr.Zero)
                 throw new GLib.GException(error);
-        }
-
-        public static implicit operator IntPtr (Object? val) => val?.handle ?? IntPtr.Zero;
-
-        //TODO: Remove implicit cast
-        public static implicit operator Object? (IntPtr val)
-        {
-            objects.TryGetValue(val, out var ret);
-            return ret;
         }
 
         public static bool TryGetObject<T>(IntPtr handle, out T obj) where T: Object
