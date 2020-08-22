@@ -13,11 +13,16 @@ namespace GObject
         internal IntPtr Handle => handle;
         private HashSet<Closure> closures = new HashSet<Closure>();
 
+        // Constructs a new object
         public Object(params ConstructProp[] properties)
         {
-            RegisterType(GetType());
-
-            var typeId = GetGTypeFor(GetType());
+            // This will automatically register our
+            // type in the type dictionary. If the type is
+            // a user-subclass, it will register it with
+            // the GType type system automatically.
+            var typeId = TypeDictionary.Get(GetType());
+            
+            // Pointer to GObject
             IntPtr handle;
 
             // Handle Properties
@@ -67,8 +72,13 @@ namespace GObject
             Initialize(handle);
         }
         
+        // Initialises a wrapper for an existing object
         protected Object(IntPtr handle)
-            => Initialize(handle);
+        {
+            // TODO: Check to make sure the handle matches our
+            // wrapper type.
+            Initialize(handle);
+        }
 
         private void Initialize(IntPtr ptr)
         {
@@ -86,16 +96,11 @@ namespace GObject
 
         // TODO: Implement Virtual Methods
         // This will be done in a later PR
-        protected virtual void Constructed()
-        {
-            
-        }
+        protected virtual void Constructed() {}
         
-        // Modify this in the future to play nicely with
-        // virtual function support?
+        // Modify this in the future to play nicely with virtual function support?
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
         private void RegisterOnFinalized() => Sys.Object.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
-
 
         // Property Notify Events
         internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) 
@@ -126,14 +131,6 @@ namespace GObject
             closures.Add(closure);
         }
 
-        public static T Convert<T>(IntPtr handle, Func<IntPtr, T> factory) where T : Object
-        {
-            if(TryGetObject(handle, out T obj))
-                return obj;
-            else
-                return factory(handle);
-        }
-
         private void ThrowIfDisposed()
         {
             if(Disposed)
@@ -146,12 +143,39 @@ namespace GObject
                 throw new GLib.GException(error);
         }
 
-        public static bool TryGetObject<T>(IntPtr handle, out T obj) where T: Object
-        { 
-            var result = objects.TryGetValue(handle, out var ret);
-            obj = (T) ret;
-            
-            return result;
+        // This function returns the proxy object to the provided handle
+        // if it already exists, otherwise creats a new wrapper object
+        // and returns it.
+        public static T WrapPointerAs<T>(IntPtr handle)
+            where T: Object
+        {
+            // Attempt to lookup the pointer in the object dictionary
+            if (objects.TryGetValue(handle, out var obj))
+                return (T)obj;
+
+            // If it is not found, we can assume that it
+            // is NOT a subclass type, as we ensure that
+            // subclass types always outlive their pointers
+            // TODO: Toggle Refs ^^^
+
+            // Resolve gtype of object
+            Sys.Type trueGType = TypeFromHandle(handle);
+            Type trueType = TypeDictionary.Get(trueGType);
+
+            // Ensure we are not constructing a subclass
+            if (IsSubclass(trueType))
+                throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
+
+            // Ensure the conversion is valid
+            Sys.Type castGType = TypeDictionary.Get(typeof(T));
+            if (!Sys.Methods.type_is_a(trueGType, castGType))
+                throw new InvalidCastException();
+
+            // Create using 'IntPtr' constructor
+            return (T)Activator.CreateInstance(
+                trueType,
+                new object[] { obj.Handle }
+            );
         }
     }
 }

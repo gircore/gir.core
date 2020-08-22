@@ -84,10 +84,7 @@ namespace GObject
         {
             var v = GetIntPtr(propertyName);
 
-            if (TryGetObject<T>(v, out var obj))
-                return obj;
-            
-            return default!; //TODO: Fix exclamation mark
+            return WrapPointerAs<T>(v);
         }
     }
 }

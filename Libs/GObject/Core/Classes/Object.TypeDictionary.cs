@@ -1,0 +1,132 @@
+using System;
+using System.Reflection;
+using System.Collections.Generic;
+
+namespace GObject
+{
+    public partial class Object
+    {
+        // Type Dictionary for mapping C#'s System.Type
+        // and GLib GTypes (currently Sys.Type, although
+        // this might change)
+        internal static class TypeDictionary
+        {
+            // Dual dictionaries for looking up types and gtypes
+            private static Dictionary<Type, Sys.Type> typedict;
+            private static Dictionary<Sys.Type, Type> gtypedict;
+
+            static TypeDictionary()
+            {
+                // Initialise Dictionaries
+                typedict = new Dictionary<Type, Sys.Type>();
+                gtypedict = new Dictionary<Sys.Type, Type>();
+
+                // Add GObject and GInitiallyUnowned
+                Add(typeof(Object), Object.GetGType());
+                Add(typeof(InitiallyUnowned), InitiallyUnowned.GetGType());
+            }
+
+            // Add to type dictionary
+            internal static void Add(Type type, Sys.Type gtype)
+            {
+                if (typedict.ContainsKey(type) ||
+                    gtypedict.ContainsKey(gtype))
+                    return;
+
+                typedict.Add(type, gtype);
+                gtypedict.Add(gtype, type);
+            }
+
+            // Get System.Type from GType
+            internal static Type Get(Sys.Type gtype)
+            {
+                // Check Type Dictionary
+                if (gtypedict.TryGetValue(gtype, out var type))
+                    return type;
+
+                // It is quite unlikely that we need to perform a lookup
+                // by gtype of a type we haven't created ourselves. Therefore,
+                // this shouldn't be too prohibitively expensive.
+
+                // string qualifiedName = Marshal.PtrToStringAnsi(Sys.Methods.type_name(gtype));
+                
+
+                // foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                // {
+                //     assembly.GetType()
+                // }
+
+                // TODO: For now, we'll just look through the type's inheritance chain
+                // and find the first already registered type (e.g. GtkWidget). Effectively,
+                // the lowest-common-denominator of functionality will be exposed.
+                while (!Contains(gtype))
+                {
+                    ulong parent = Sys.Methods.type_parent(gtype);
+                    if (parent == 0)
+                        throw new Exception("Could not get Type from GType");
+                    
+                    gtype = new Sys.Type(parent);
+                }
+
+                return gtypedict[gtype];
+            }
+
+            // Get GType from System.Type
+            internal static Sys.Type Get(Type type)
+            {
+                // Check Type Dictionary
+                if (typedict.TryGetValue(type, out var gtype))
+                    return gtype;
+
+                // It is reasonably unlikely that we will need
+                // to lookup a type we haven't yet created, therefore
+                // we might as well register recursively
+                // to avoid future performance hits.
+                
+                // Retrieve the GType accordingly
+                if (IsSubclass(type))
+                {
+                    // We are a subclass
+                    // RegisterNativeType will recursively add this
+                    // and all children to the type dictionary
+                    RegisterNativeType(type);
+                    return typedict[type];
+                }
+                
+                // We are a wrapper, so register types recursively
+                Type baseType = type;
+                while (!Contains(baseType.BaseType))
+                {
+                    var methodInfo = GetGTypeMethodInfo(type)!;
+                    ulong typeid = (ulong)methodInfo.Invoke(null, null);
+                    gtype = new Sys.Type(typeid);
+                    
+                    // Add to typedict for future use
+                    Add(type, gtype);
+                }
+
+                // Return gtype for *this* type
+                return typedict[type];
+            }
+            
+            // Contains functions
+            internal static bool Contains(Type type) => typedict.ContainsKey(type);
+            internal static bool Contains(Sys.Type gtype) => gtypedict.ContainsKey(gtype);
+
+            // Determines whether the type is a managed subclass,
+            // as opposed to wrapping an existing type.
+            internal static bool IsSubclass(Type type)
+                => type != typeof(Object) &&
+                type != typeof(InitiallyUnowned) &&
+                GetGTypeMethodInfo(type) is null;
+
+            // Returns the MethodInfo for the 'GetGType()' function
+            // if the type in question implements it (i.e. a wrapper)
+            private static MethodInfo? GetGTypeMethodInfo(Type type)
+            {
+                const BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
+                return type.GetMethod(nameof(GetGType), flags);
+            }
+        }
+    }
+}

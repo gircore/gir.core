@@ -2,14 +2,14 @@ using System;
 
 namespace GObject
 {
-    public class InitallyUnowned : Object
+    public class InitiallyUnowned : Object
     {
-        public InitallyUnowned(IntPtr handle) : base(handle)
+        public InitiallyUnowned(IntPtr handle) : base(handle)
         {
             Initialize();
         }
 
-        public InitallyUnowned(params ConstructProp[] properties) : base(properties)
+        public InitiallyUnowned(params ConstructProp[] properties) : base(properties)
         {
             Initialize();
         }
