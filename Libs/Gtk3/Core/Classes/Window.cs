@@ -7,7 +7,12 @@ namespace Gtk
     public partial class Window
     {
         #region Properties
-        public static readonly Property<int> DefaultHeightProperty = GObject.Property<int>.Register<Window>("default-height", get: (o) => o.DefaultHeightEx, set: (o, v) => o.DefaultHeightEx = v);
+        public static readonly Property<int> DefaultHeightProperty = GObject.Property<int>.Register<Window>(
+            "default-height",
+            nameof(DefaultHeightEx),
+            get: (o) => o.DefaultHeightEx,
+            set: (o, v) => o.DefaultHeightEx = v
+        );
 
         public int DefaultHeightEx
         {
@@ -15,7 +20,12 @@ namespace Gtk
             set => SetProperty(DefaultHeightProperty, value);
         }
 
-        public static readonly Property<int> DefaultWidthProperty = GObject.Property<int>.Register<Window>("default-width", get: (o) => o.DefaultWidthEx, set: (o, v) => o.DefaultWidthEx = v);
+        public static readonly Property<int> DefaultWidthProperty = GObject.Property<int>.Register<Window>(
+            "default-width",
+            nameof(DefaultWidthEx),
+            get: (o) => o.DefaultWidthEx,
+            set: (o, v) => o.DefaultWidthEx = v
+        );
 
         public int DefaultWidthEx
         {
@@ -23,12 +33,30 @@ namespace Gtk
             set => SetProperty(DefaultWidthProperty, value);
         }
 
-        public static readonly Property<Application> ApplicationProperty = GObject.Property<Application>.Register<Window>("application", get: (o) => o.ApplicationEx, set: (o, v) => o.ApplicationEx = v);
+        public static readonly Property<Application> ApplicationProperty = GObject.Property<Application>.Register<Window>(
+            "application",
+            nameof(ApplicationEx),
+            get: (o) => o.ApplicationEx,
+            set: (o, v) => o.ApplicationEx = v
+        );
 
         public Application ApplicationEx
         {
             get => GetProperty(ApplicationProperty);
             set => SetProperty(ApplicationProperty, value);
+        }
+
+        public static readonly Property<bool> ResizableProperty = GObject.Property<bool>.Register<Window>(
+            "resizable",
+            nameof(Resizable),
+            get: (o) => o.Resizable,
+            set: (o, v) => o.Resizable = v
+        );
+
+        public bool Resizable
+        {
+            get => GetProperty(ResizableProperty);
+            set => SetProperty(ResizableProperty, value);
         }
 
         private IProperty<int> defaultHeight;

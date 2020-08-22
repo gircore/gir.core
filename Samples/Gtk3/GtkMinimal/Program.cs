@@ -22,11 +22,15 @@ namespace GtkDemo
         {
             if (sender is Application app)
             {
+                var t = typeof(DemoWindow);
+
                 var w = new DemoWindow(app)
                 {
                     DefaultHeightEx = 600,
                     DefaultWidthEx = 800,
                 };
+
+                w.PropertyChanged += (s, a) => Trace.WriteLine($"  => Property Changed On DemoWindow: {a.PropertyName} = {t.GetProperty(a.PropertyName)?.GetValue(w)}");
 
                 w.ShowAll();
 
