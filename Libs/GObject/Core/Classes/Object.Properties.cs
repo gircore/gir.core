@@ -40,7 +40,7 @@ namespace GObject
         protected void SetProperty<T>(Property<T> property, T value)
         {
             if (value is Object o)
-                SetGProperty((IntPtr)o, property.Name);
+                SetGProperty(o.Handle, property.Name);
             else
                 SetGProperty(Sys.Value.From(value), property.Name);
         }
