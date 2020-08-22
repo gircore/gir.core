@@ -27,7 +27,13 @@ namespace GObject
         /// <summary>
         /// The name of the GProperty.
         /// </summary>
-        public string Name { get; private set; } = string.Empty;
+        public string Name { get; }
+
+        /// <summary>
+        /// The name of the C# property which serves as the
+        /// proxy of this GProperty.
+        /// </summary>
+        public string PropertyName { get; }
 
         /// <summary>
         /// Checks if this GProperty is readable.
@@ -42,7 +48,7 @@ namespace GObject
         /// <summary>
         /// Checks if this GProperty a child property.
         /// </summary>
-        public bool IsChild { get; private set; }
+        public bool IsChild { get; }
 
         #endregion
 
@@ -56,8 +62,15 @@ namespace GObject
         /// to register his properties using <see cref="Register{TObject}"/>
         /// or <see cref="RegisterChild{TObject}"/>.
         /// </remarks>
-        private Property()
-        { }
+        /// <param name="name">The name of this GProperty</param>
+        /// <param name="propertyName">The name of the C# property which serves as the proxy of this GProperty</param>
+        /// <param name="isChild">Define if this GProperty is a child GProperty</param>
+        private Property(string name, string propertyName, bool isChild)
+        {
+            Name = name;
+            PropertyName = propertyName;
+            IsChild = isChild;
+        }
 
         #endregion
 
@@ -68,16 +81,17 @@ namespace GObject
         /// into the GLib type of <typeparamref name="TObject"/>.
         /// </summary>
         /// <param name="name">The name of the GProperty to create.</param>
+        /// <param name="propertyName">The name of the C# property which serves as the proxy of this GProperty</param>
         /// <param name="get">The function called when retrieving the value of this property in bindings.</param>
         /// <param name="set">The function called when defing the value of this property in bindings.</param>
         /// <typeparam name="TObject">The type of the object on which this property will be registered.</typeparam>
         /// <returns>
         /// An instance of <see cref="Property{T}"/> representing the GProperty description.
         /// </returns>
-        public static Property<T> Register<TObject>(string name, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
+        public static Property<T> Register<TObject>(string name, string propertyName, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
             where TObject : Object
         {
-            return RegisterInternal(name, false, get, set);
+            return RegisterInternal(name, propertyName, false, get, set);
         }
 
         /// <summary>
@@ -85,16 +99,17 @@ namespace GObject
         /// into the GLib type of <typeparamref name="TObject"/>.
         /// </summary>
         /// <param name="name">The name of the child GProperty to create.</param>
+        /// <param name="propertyName">The name of the C# property which serves as the proxy of this GProperty</param>
         /// <param name="get">The function called when retrieving the value of this child property in bindings.</param>
         /// <param name="set">The function called when defing the value of this child property in bindings.</param>
         /// <typeparam name="TObject">The type of the object on which this child property will be registered.</typeparam>
         /// <returns>
         /// An instance of <see cref="Property{T}"/> representing the child GProperty description.
         /// </returns>
-        public static Property<T> RegisterChild<TObject>(string name, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
+        public static Property<T> RegisterChild<TObject>(string name, string propertyName, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
             where TObject : Object
         {
-            return RegisterInternal(name, true, get, set);
+            return RegisterInternal(name, propertyName, true, get, set);
         }
 
         /// <summary>
@@ -120,16 +135,23 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Property{T}"/> representing the GProperty description.
         /// </returns>
-        private static Property<T> RegisterInternal<TObject>(string name, bool isChild, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
+        private static Property<T> RegisterInternal<TObject>(string name, string propertyName, bool isChild, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
             where TObject : Object
         {
-            return new Property<T>
+            return new Property<T>(name, propertyName, isChild)
             {
-                Name = name,
-                IsChild = isChild,
                 _get = get is null ? null : new Func<Object, T>((o) => get((TObject)o)),
                 _set = set is null ? null : new Action<Object, T>((o, v) => set((TObject)o, v)),
             };
+        }
+
+        /// <summary>
+        /// Registers this GProperty into the given object.
+        /// </summary>
+        /// <param name="o">The object in which register the property.</param>
+        internal void Register(Object o)
+        {
+            o.RegisterNotifyPropertyChangedEvent(Name, () => o.OnPropertyChanged(PropertyName));
         }
 
         #endregion
