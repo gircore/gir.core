@@ -8,7 +8,7 @@ namespace GObject
         /// <summary>
         /// Event triggered when a property value changes.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = null!;
 
         /// <summary>
         /// Notify this object that a property has just changed.
