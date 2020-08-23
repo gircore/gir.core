@@ -1,4 +1,4 @@
-#Contributing
+# Contributing
 Contributing to gir.core is very easy. If there is something wrong or missing just open an issue to get in contact.
 
 Contributing code is very welcome, too. Either look for issues with the `enhancement` Tag and get in contact or just create a pull request containing the improvements.
