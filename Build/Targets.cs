@@ -1,6 +1,8 @@
 static class Targets
 {
     public const string Generate = "generate";
+    public const string GenerateWrapper = "generatewrapper";
+    public const string GenerateCore = "generatecore";
     public const string Build = "build";
     public const string Clean = "clean";
     public const string CleanLibs = "cleanlibs";

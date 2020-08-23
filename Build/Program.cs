@@ -58,7 +58,7 @@ class Program
 
     static void Main(string[] args)
     {        
-        Target<(string project, string girFile, string import, bool addAlias)>(Targets.Generate, 
+        Target<(string project, string girFile, string import, bool addAlias)>(Targets.GenerateWrapper, 
             ForEach(
                 (GLIB_WRAPPER, "GLib-2.0.gir", "libglib-2.0.so.0", false),
                 (GOBJECT_WRAPPER, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
@@ -68,7 +68,7 @@ class Program
                 (PANGO_WRAPPER, "Pango-1.0.gir", "TODO", false),
                 (GDK3_WRAPPER, "Gdk-3.0.gir", "TODO", true),
                 (GDK_PIXBUF_WRAPPER, "GdkPixbuf-2.0.gir", "libgdk_pixbuf-2.0.so.0", true),
-                (GTK3_WRAPPER, "Gtk-3.0.gir", "libgtk-3.so.0", true),
+                (GTK3_WRAPPER, GTK3_GIR, "libgtk-3.so.0", true),
                 (JAVASCRIPT_CORE_WRAPPER, "JavaScriptCore-4.0.gir", "javascriptcoregtk-4.0.so", false),
                 (HANDY_WRAPPER, "Handy-0.0.gir", "libhandy-0.0.so.0", false),
                 (WEBKITGTK_WRAPPER, "WebKit2-4.0.gir", "libwebkit2gtk-4.0.so.37", true),
@@ -82,7 +82,12 @@ class Program
                 (GSK4_WRAPPER, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
                 (GTK4_WRAPPER, "Gtk-4.0.gir", "libgtk-4.so.0", true) //GTK4
                 ),
-            (x) => Generate(x.project, x.girFile, x.import, x.addAlias)
+            (x) => GenerateWrapper(x.project, x.girFile, x.import, x.addAlias)
+        );
+
+        Target<(string project, string girFile)>(Targets.GenerateCore,
+            ForEach((GTK3_CORE, GTK3_GIR)),
+            (x) => GenerateCore(x.project, x.girFile)
         );
 
         Target(Targets.Build, DependsOn(Targets.Generate),
@@ -100,6 +105,7 @@ class Program
             (project) => CleanUp(project, configuration)
         );
         
+        Target(Targets.Generate, DependsOn(Targets.GenerateWrapper, Targets.GenerateCore));
         Target(Targets.Clean, DependsOn(Targets.CleanLibs, Targets.CleanSamples));
         
         Target(Targets.Samples, DependsOn(Targets.Build), 
@@ -122,16 +128,23 @@ class Program
         Clean(project, configuration);
     }
 
-    private static void Generate(string project, string girFile, string import, bool addGlibAliases)
+    private static void GenerateCore(string project, string girFile)
     {
         girFile = $"../gir-files/{girFile}";
-        var outputDir = project + "Generated";
+        var g = new Generator.CoreGenerator(girFile, project);
+        g.Generate();
+    }
+    
+    private static void GenerateWrapper(string project, string girFile, string import, bool addGlibAliases)
+    {
+        girFile = $"../gir-files/{girFile}";
+        var outputDir = Path.Combine(project,"Generated");
 
         var list = new List<string>();
         if(addGlibAliases)
             list.Add("../gir-files/GLib-2.0.gir");
 
-        var g = new Generator.Generator(girFile, outputDir, import, list);
+        var g = new Generator.WrapperGenerator(girFile, outputDir, import, list);
         g.Generate();
     }
 }

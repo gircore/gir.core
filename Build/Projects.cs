@@ -8,6 +8,7 @@ static class Projects
     private const string GTK3 = "../Libs/Gtk3/";
     public const string GTK3_WRAPPER = GTK3 + WRAPPER;
     public const string GTK3_CORE = GTK3 + CORE;
+    public const string GTK3_GIR = "Gtk-3.0.gir";
 
     private const string GTK4 = "../Libs/Gtk4/";
     public const string GTK4_WRAPPER = GTK4 + WRAPPER;
