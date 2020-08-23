@@ -5,29 +5,29 @@ namespace GObject
 {
     public partial class Object
     {
-        private void SetProperty(Sys.Value value, string? propertyName)
+        private void SetGProperty(Sys.Value value, string? propertyName)
         {
             ThrowIfDisposed();
 
-            if(propertyName is null)
+            if (propertyName is null)
                 return;
 
             Sys.Object.set_property(handle, propertyName, ref value);
             value.Dispose();
         }
 
-        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) => SetProperty(value?.Handle ?? IntPtr.Zero, propertyName);
-        protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum => SetProperty((long)(object)e, propertyName);
-        protected void Set(bool value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
-        protected void Set(uint value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
-        protected void Set(int value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
-        protected void Set(string value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
+        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) => SetGProperty(value?.Handle ?? IntPtr.Zero, propertyName);
+        protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum => SetGProperty((long)(object)e, propertyName);
+        protected void Set(bool value, [CallerMemberName] string? propertyName = null) => SetGProperty(value, propertyName);
+        protected void Set(uint value, [CallerMemberName] string? propertyName = null) => SetGProperty(value, propertyName);
+        protected void Set(int value, [CallerMemberName] string? propertyName = null) => SetGProperty(value, propertyName);
+        protected void Set(string value, [CallerMemberName] string? propertyName = null) => SetGProperty(value, propertyName);
 
-        private Sys.Value GetProperty(string? propertyName)
+        private Sys.Value GetGProperty(string? propertyName)
         {
             ThrowIfDisposed();
 
-            if(propertyName is null)
+            if (propertyName is null)
                 return default;
 
             var value = new Sys.Value();
@@ -36,45 +36,45 @@ namespace GObject
             return value;
         }
 
-        protected T GetEnum<T>([CallerMemberName] string? propertyName = null) where T:Enum
+        protected T GetEnum<T>([CallerMemberName] string? propertyName = null) where T : Enum
         {
-            using var v = GetProperty(propertyName);
+            using var v = GetGProperty(propertyName);
             return (T)((object)((long)v));
         }
 
         protected int GetInt([CallerMemberName] string? propertyName = null)
         {
-            using var v = GetProperty(propertyName);
-            return (int) v;
+            using var v = GetGProperty(propertyName);
+            return (int)v;
         }
 
         protected bool GetBool([CallerMemberName] string? propertyName = null)
         {
-            using var v = GetProperty(propertyName);
-            return (bool) v;
+            using var v = GetGProperty(propertyName);
+            return (bool)v;
         }
         protected double GetDouble([CallerMemberName] string? propertyName = null)
         {
-            using var v = GetProperty(propertyName);
-            return (double) v;
+            using var v = GetGProperty(propertyName);
+            return (double)v;
         }
 
         protected uint GetUInt([CallerMemberName] string? propertyName = null)
         {
-            using var v = GetProperty(propertyName);
-            return (uint) v;
+            using var v = GetGProperty(propertyName);
+            return (uint)v;
         }
 
         protected string GetStr([CallerMemberName] string? propertyName = null)
         {
-            using var v = GetProperty(propertyName);
-            return (string) v;
+            using var v = GetGProperty(propertyName);
+            return (string)v;
         }
 
         protected IntPtr GetIntPtr([CallerMemberName] string? propertyName = null)
         {
-            using var v = GetProperty(propertyName);
-            return (IntPtr) v;
+            using var v = GetGProperty(propertyName);
+            return (IntPtr)v;
         }
 
         ///<summary>
