@@ -163,12 +163,20 @@ namespace GObject
         // This function returns the proxy object to the provided handle
         // if it already exists, otherwise creats a new wrapper object
         // and returns it.
-        public static T WrapPointerAs<T>(IntPtr handle)
-            where T : Object
+        internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
         {
+            o = default!;
+
+            // Return false if T is not of type Object
+            if (!typeof(T).IsSubclassOf(typeof(Object)) && typeof(T) != typeof(Object))
+                return false;
+
             // Attempt to lookup the pointer in the object dictionary
             if (objects.TryGetValue(handle, out var obj))
-                return (T)obj;
+            {
+                o = (T)(object)obj;
+                return true;
+            }
 
             // If it is not found, we can assume that it
             // is NOT a subclass type, as we ensure that
@@ -189,13 +197,22 @@ namespace GObject
                 throw new InvalidCastException();
 
             // Create using 'IntPtr' constructor
-            var newObject = (T)Activator.CreateInstance(
+            o = (T)Activator.CreateInstance(
                 trueType,
                 obj.Handle
             );
 
-            objects.Add(handle, newObject);
-            return newObject;
+            objects.Add(handle, (Object)(object)o);
+            return true;
+        }
+
+        public static T WrapPointerAs<T>(IntPtr handle)
+            where T : Object
+        {
+            if (TryWrapPointerAs(handle, out T obj))
+                return obj;
+
+            throw new Exception("Unable to wrap the given pointer as T");
         }
 
         protected static IntPtr GetHandle(Object obj)

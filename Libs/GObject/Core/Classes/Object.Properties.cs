@@ -17,16 +17,10 @@ namespace GObject
         /// </returns>
         protected T GetProperty<T>(Property<T> property)
         {
-            Type type = typeof(T);
             var value = GetGProperty(property.Name);
 
-            if (type.IsSubclassOf(typeof(Object)))
-            {
-                if (objects.TryGetValue(value.To<IntPtr>(), out var ret))
-                    return (T)(object)ret;
-
-                return (T)(object)null!;
-            }
+            if (TryWrapPointerAs<T>(value.To<IntPtr>(), out var ret))
+                return ret;
 
             return value.To<T>();
         }
