@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Gtk
 {
-    public class Menu : Gio.Menu
+    public partial class Menu
     {
         private Builder? builder;
 

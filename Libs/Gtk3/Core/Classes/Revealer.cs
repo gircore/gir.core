@@ -3,11 +3,13 @@ using GObject;
 
 namespace Gtk
 {
-    public class Revealer : Bin
+    public partial class Revealer
     {
+        #region Properties
         public Property<uint> TransitionDuration { get; }
         public Property<RevealerTransitionType> TransitionType { get; }
         public Property<bool> Reveal { get; }
+        #endregion
 
         public Revealer() : this (Sys.Revealer.@new()) { }
         internal Revealer(IntPtr handle) : base(handle) 

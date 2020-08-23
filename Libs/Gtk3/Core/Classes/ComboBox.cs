@@ -4,16 +4,16 @@ using GObject;
 
 namespace Gtk
 {
-    public class Combobox : Bin
+    public partial class ComboBox
     {
         private readonly Property<string> activeId;
         public Property<string> ActiveId => activeId;
 
-        internal Combobox(string template, string obj, Assembly assembly) : base(template, obj, assembly)
+        internal ComboBox(string template, string obj, Assembly assembly) : base(template, obj, assembly)
         {
             InitProperties(out activeId);
         }
-        internal Combobox(IntPtr handle) : base(handle) 
+        internal ComboBox(IntPtr handle) : base(handle) 
         { 
             InitProperties(out activeId);
         }

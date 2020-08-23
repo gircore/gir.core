@@ -2,7 +2,7 @@ using System;
 
 namespace Gtk
 {
-    public class CheckButton : ToggleButton
+    public partial class CheckButton
     {
         public CheckButton(string text) : this(Sys.CheckButton.new_with_label(text)) {}
 

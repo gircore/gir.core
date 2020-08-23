@@ -3,7 +3,7 @@ using GObject;
 
 namespace Gtk
 {
-    public class Button : Widget
+    public partial class Button
     {
         public event EventHandler<EventArgs>? Clicked;
 

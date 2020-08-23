@@ -9,8 +9,8 @@ namespace GObject
         internal static Sys.Type GetGType() => new Sys.Type(Sys.Object.get_type());
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
 
-        protected IntPtr handle;
-        public IntPtr Handle => handle;
+        private IntPtr handle;
+        protected internal IntPtr Handle => handle;
         private HashSet<Closure> closures = new HashSet<Closure>();
 
         // Constructs a new object
@@ -105,17 +105,17 @@ namespace GObject
         private void RegisterOnFinalized() => Sys.Object.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
 
         // Property Notify Events
-        internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) 
+        protected internal void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) 
             => RegisterEvent($"notify::{propertyName}", callback);
 
         // Signal Handling
-        internal protected void RegisterEvent(string eventName, ActionRefValues callback)
+        protected internal void RegisterEvent(string eventName, ActionRefValues callback)
         {
             ThrowIfDisposed();
             RegisterEvent(eventName, new Closure(this, callback));
         }
 
-        internal protected void RegisterEvent(string eventName, Action callback)
+        protected internal void RegisterEvent(string eventName, Action callback)
         {
             ThrowIfDisposed();
             RegisterEvent(eventName, new Closure(this, callback));
@@ -179,5 +179,8 @@ namespace GObject
                 new object[] { obj.Handle }
             );
         }
+
+        protected IntPtr GetHandle(Object obj)
+            => obj.Handle;
     }
 }

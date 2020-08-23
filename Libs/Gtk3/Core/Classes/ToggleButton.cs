@@ -3,7 +3,7 @@ using GObject;
 
 namespace Gtk
 {
-    public class ToggleButton : Button
+    public partial class ToggleButton
     {
         public event EventHandler<EventArgs>? Toggled;
 

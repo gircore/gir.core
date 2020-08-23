@@ -9,7 +9,7 @@ namespace Gtk
                 
                 if(typeof(Window).IsAssignableFrom(GetType()))
                 {
-                    Sys.Widget.destroy(this);
+                    Sys.Widget.destroy(Handle);
                 }
 
                 if(builder is {})

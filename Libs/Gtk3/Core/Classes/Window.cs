@@ -4,7 +4,7 @@ using GObject;
 
 namespace Gtk
 {
-    public class Window : Container
+    public partial class Window
     {
         #region Properties
         private Property<int> defaultHeight;
@@ -43,7 +43,7 @@ namespace Gtk
             );
         }
 
-        public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(this, width, height);
-        public void SetTitlebar(Widget widget) => Sys.Window.set_titlebar(this, widget);
+        public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(Handle, width, height);
+        public void SetTitlebar(Widget widget) => Sys.Window.set_titlebar(Handle, GetHandle(widget));
     }
 }

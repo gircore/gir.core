@@ -49,8 +49,6 @@ namespace GObject.Sys
             return ptr;
         }*/
 
-        public static implicit operator ulong (Type type) => type.value;
-		
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
         private enum Types 
         {

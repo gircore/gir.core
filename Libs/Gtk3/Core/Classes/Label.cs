@@ -3,7 +3,7 @@ using GObject;
 
 namespace Gtk
 {
-    public class Label : Misc
+    public partial class Label
     {
         public Property<string> Text { get; }
 

@@ -7,7 +7,7 @@ using GObject;
 
 namespace Gtk
 {
-    internal partial class Builder : GObject.Object
+    public partial class Builder
     {
         public Property<string> TranslationDomain { get; }
         
@@ -31,7 +31,7 @@ namespace Gtk
 
         private uint AddFromString(string template)
         {
-            var result = Sys.Builder.add_from_string(this, template, (ulong) Encoding.UTF8.GetByteCount(template), out var error);
+            var result = Sys.Builder.add_from_string(Handle, template, (ulong) Encoding.UTF8.GetByteCount(template), out var error);
             HandleError(error);
             return result;
         }
@@ -56,7 +56,7 @@ namespace Gtk
 
         private void ConnectSignals(object obj)
         {
-            Sys.Builder.connect_signals_full(this, OnConnectEvent, IntPtr.Zero);
+            Sys.Builder.connect_signals_full(Handle, OnConnectEvent, IntPtr.Zero);
         }
 
         private void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name, IntPtr connect_object, GObject.Sys.ConnectFlags flags, IntPtr user_data)

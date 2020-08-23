@@ -4,17 +4,21 @@ using GObject;
 
 namespace Gtk
 {
-    public class Notebook : Container
+    public partial class Notebook
     {
         private readonly Dictionary<Widget, Widget> data;
 
+        #region Events
         public event EventHandler<PageChangedEventArgs>? PageAdded;
         public event EventHandler<PageChangedEventArgs>? PageRemoved;
-
+        #endregion
+        
+        #region Properties
         public Property<bool> Scrollable { get; }
         public Property<int> Page { get; }
         public Property<bool> ShowTabs { get; }
         public Property<bool> ShowBorder { get; }
+        #endregion
 
         public Notebook() : this(Sys.Notebook.@new()){ }
         internal Notebook(IntPtr handle) : base(handle) 
@@ -35,7 +39,7 @@ namespace Gtk
             var tabLabel = new Label(label);
             data.Add(child, tabLabel);
 
-            Sys.Notebook.insert_page(this, child, tabLabel, position);
+            Sys.Notebook.insert_page(Handle, GetHandle(child), GetHandle(tabLabel), position);
         }
 
         public void RemovePage(Widget child)
@@ -48,11 +52,11 @@ namespace Gtk
             RemovePage(index);
         }
 
-        protected void RemovePage(int page) => Sys.Notebook.remove_page(this, page);
+        protected void RemovePage(int page) => Sys.Notebook.remove_page(Handle, page);
 
-        public int GetPageNum(Widget child) => Sys.Notebook.page_num(this, child);
+        public int GetPageNum(Widget child) => Sys.Notebook.page_num(Handle, GetHandle(child));
 
-        public int GetPageCount() => Sys.Notebook.get_n_pages(this);
+        public int GetPageCount() => Sys.Notebook.get_n_pages(Handle);
 
         private static void GetChildAndPage(ref GObject.Sys.Value[] values, out Widget child, out uint pageNum)
         {

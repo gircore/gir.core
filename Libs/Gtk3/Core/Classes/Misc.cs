@@ -2,7 +2,7 @@ using System;
 
 namespace Gtk
 {
-    public class Misc : Widget, IMisc
+    public partial class Misc : IMisc
     {
         internal Misc(IntPtr handle) : base(handle) { }
     }
