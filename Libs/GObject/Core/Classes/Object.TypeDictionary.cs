@@ -48,13 +48,26 @@ namespace GObject
                 // by gtype of a type we haven't created ourselves. Therefore,
                 // this shouldn't be too prohibitively expensive.
 
-                // string qualifiedName = Marshal.PtrToStringAnsi(Sys.Methods.type_name(gtype));
-                
+                // TODO: Revise Generator to automatically implement
+                // Use Wrapper Attribute for mapping GType name to C# Type
+                // Use GetGType function for reverse mapping.
+
+                // Search all System.Type which contain a [Wrapper(TypeName)]
+                // for the corresponding type.
+
+                // Possible Idea: Autogenerate a 'RegisterTypes.cs' file that
+                // on startup will add every type to the type dictionary?
+
+                // Quick Path: Find the first 'Word' in the type and lookup
+                // assemblies by that name. Do we hardcode references to 'Pango',
+                // 'Gtk', etc?
 
                 // foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
                 // {
                 //     assembly.GetType()
                 // }
+
+                // Search through unloaded assemblies?
 
                 // TODO: For now, we'll just look through the type's inheritance chain
                 // and find the first already registered type (e.g. GtkWidget). Effectively,
@@ -64,6 +77,8 @@ namespace GObject
                     ulong parent = Sys.Methods.type_parent(gtype);
                     if (parent == 0)
                         throw new Exception("Could not get Type from GType");
+
+                    // TODO: One-way registration?
                     
                     gtype = new Sys.Type(parent);
                 }
@@ -95,15 +110,20 @@ namespace GObject
                 }
                 
                 // We are a wrapper, so register types recursively
+                Console.WriteLine("Registering Recursively");
                 Type baseType = type;
-                while (!Contains(baseType.BaseType))
+                while (!Contains(baseType))
                 {
-                    var methodInfo = GetGTypeMethodInfo(type)!;
-                    ulong typeid = (ulong)methodInfo.Invoke(null, null);
+                    Console.WriteLine(baseType.Name);
+                    var methodInfo = GetGTypeMethodInfo(baseType)!;
+                    ulong typeid = (Sys.Type)methodInfo.Invoke(null, null);
                     gtype = new Sys.Type(typeid);
                     
                     // Add to typedict for future use
-                    Add(type, gtype);
+                    Add(baseType, gtype);
+                    Console.WriteLine($"Adding {baseType.Name}");
+
+                    baseType = baseType.BaseType;
                 }
 
                 // Return gtype for *this* type

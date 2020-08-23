@@ -4,6 +4,8 @@ namespace GObject
 {
     public class InitiallyUnowned : Object
     {
+        internal static new Sys.Type GetGType() => new Sys.Type(Sys.InitiallyUnowned.get_type());
+
         public InitiallyUnowned(IntPtr handle) : base(handle)
         {
             Initialize();

@@ -21,6 +21,7 @@ namespace GObject
             // a user-subclass, it will register it with
             // the GType type system automatically.
             var typeId = TypeDictionary.Get(GetType());
+            Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
             
             // Pointer to GObject
             IntPtr handle;
@@ -28,6 +29,7 @@ namespace GObject
             // Handle Properties
             int nProps = properties.Length;
 
+            // TODO: Remove dual branches
             if (nProps > 0)
             {
                 // We have properties

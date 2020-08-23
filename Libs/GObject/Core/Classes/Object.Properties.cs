@@ -16,7 +16,7 @@ namespace GObject
             value.Dispose();
         }
 
-        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) => SetProperty(value!.Handle, propertyName);
+        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) => SetProperty(value?.Handle ?? IntPtr.Zero, propertyName);
         protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum => SetProperty((long)(object)e, propertyName);
         protected void Set(bool value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
         protected void Set(uint value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
