@@ -2,7 +2,7 @@
 
 namespace GObject
 {
-    public class GProperty<T> : NamedProperty<T>, Property<T>
+    public class GProperty<T> : NamedProperty<T>, IProperty<T>
     {
         protected readonly Action<T, string> set;
         protected readonly Func<string, T> get;

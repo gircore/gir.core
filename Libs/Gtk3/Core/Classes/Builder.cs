@@ -9,24 +9,24 @@ namespace Gtk
 {
     public partial class Builder
     {
-        public Property<string> TranslationDomain { get; }
-        
+        public IProperty<string> TranslationDomain { get; }
+
         internal Builder(string template, Assembly assembly) : this(Sys.Builder.@new())
         {
             using var stream = assembly.GetManifestResourceStream(template);
 
-            if(stream is null)
-                throw new Exception ($"Cannot get resource file '{template}'");
+            if (stream is null)
+                throw new Exception($"Cannot get resource file '{template}'");
 
-            var templateContent =  ReadFromStream(stream);
+            var templateContent = ReadFromStream(stream);
 
             AddFromString(templateContent);
         }
         internal Builder(string template) : this(template, Assembly.GetCallingAssembly()) { }
-        
+
         private uint AddFromString(string template)
         {
-            var result = Sys.Builder.add_from_string(Handle, template, (ulong) Encoding.UTF8.GetByteCount(template), out var error);
+            var result = Sys.Builder.add_from_string(Handle, template, (ulong)Encoding.UTF8.GetByteCount(template), out var error);
             HandleError(error);
             return result;
         }
@@ -37,7 +37,7 @@ namespace Gtk
             stream.CopyTo(ms);
 
             var buffer = ms.ToArray();
-            
+
             return Encoding.UTF8.GetString(buffer, 0, buffer.Length);
         }
 
@@ -79,32 +79,32 @@ namespace Gtk
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public;
             var fields = obj.GetType().GetFields(flags);
 
-            foreach(var field in fields)
+            foreach (var field in fields)
             {
                 var attributes = field.GetCustomAttributes(typeof(ConnectAttribute), false);
 
-                if(attributes.Length == 0)
+                if (attributes.Length == 0)
                     continue;
 
-                var connectAttribute = (ConnectAttribute) attributes[0];
+                var connectAttribute = (ConnectAttribute)attributes[0];
                 var element = connectAttribute.WidgetName ?? field.Name;
 
-                if(!typeof(Widget).IsAssignableFrom(field.FieldType))
+                if (!typeof(Widget).IsAssignableFrom(field.FieldType))
                     throw new Exception($"{field.FieldType.Name} must be a {nameof(Widget)}");
 
-                var constructor = field.FieldType.GetConstructors(BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance)
+                var constructor = field.FieldType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
                     .Where(CheckConstructor)
                     .FirstOrDefault();
 
-                if(constructor is null)
+                if (constructor is null)
                     throw new Exception($"{field.ReflectedType.FullName} Field {field.Name}: Could not find a constructor with one parameter of {nameof(IntPtr)} to create a {field.FieldType.FullName}");
 
                 var ptr = GetObject(element);
 
-                if(ptr == IntPtr.Zero)
+                if (ptr == IntPtr.Zero)
                     throw new Exception($"{field.ReflectedType.FullName} Field {field.Name}: Could not find an element in the template with the name {element}");
 
-                var newElement = constructor.Invoke(new object[] {ptr});
+                var newElement = constructor.Invoke(new object[] { ptr });
                 field.SetValue(obj, newElement);
             }
         }
@@ -113,7 +113,7 @@ namespace Gtk
         {
             var parameters = constructorInfo.GetParameters();
 
-            if(parameters.Length != 1)
+            if (parameters.Length != 1)
                 return false;
 
             return parameters.First().ParameterType == typeof(IntPtr);

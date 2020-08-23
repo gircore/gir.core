@@ -5,8 +5,8 @@ namespace Gtk
 {
     public partial class Widget
     {
-        public Property<int> WidthRequest { get; }
-        public Property<int> HeightRequest { get; }
+        public IProperty<int> WidthRequest { get; }
+        public IProperty<int> HeightRequest { get; }
 
         public void Show() => Sys.Widget.show(Handle);
     }

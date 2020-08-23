@@ -7,28 +7,28 @@ namespace Gtk
     public partial class Window
     {
         #region Properties
-        private Property<int> defaultHeight;
-        public Property<int> DefaultHeight => defaultHeight;
+        private IProperty<int> defaultHeight;
+        public IProperty<int> DefaultHeight => defaultHeight;
 
-        private Property<int> defaultWith;
-        public Property<int> DefaultWidth => defaultWith;
+        private IProperty<int> defaultWith;
+        public IProperty<int> DefaultWidth => defaultWith;
 
-        private Property<Application?> application;
-        public Property<Application?> Application => application;
+        private IProperty<Application?> application;
+        public IProperty<Application?> Application => application;
 
         #endregion Properties
 
-        public Window() : this(Sys.Window.@new(Sys.WindowType.toplevel)) {}
-        public Window(string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly()) 
+        public Window() : this(Sys.Window.@new(Sys.WindowType.toplevel)) { }
+        public Window(string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly())
         {
             InitProperties(out defaultHeight, out defaultWith, out application);
         }
-        internal Window(string template, string obj, Assembly assembly) : base(template, obj, assembly) 
+        internal Window(string template, string obj, Assembly assembly) : base(template, obj, assembly)
         {
             InitProperties(out defaultHeight, out defaultWith, out application);
         }
 
-        private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<Application?> application)
+        private void InitProperties(out IProperty<int> defaultHeight, out IProperty<int> defaultWidth, out IProperty<Application?> application)
         {
             defaultHeight = PropertyOfInt("default-height");
             defaultWidth = PropertyOfInt("default-width");

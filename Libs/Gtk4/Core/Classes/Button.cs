@@ -7,10 +7,10 @@ namespace Gtk
     {
         public event EventHandler<EventArgs>? Clicked;
 
-        public Property<string> Text { get; }
+        public IProperty<string> Text { get; }
 
-        public Button() : this(Sys.Button.@new()) {}
-        public Button(string text) : this(Sys.Button.new_with_label(text)) {}
+        public Button() : this(Sys.Button.@new()) { }
+        public Button(string text) : this(Sys.Button.new_with_label(text)) { }
 
         protected virtual void OnClicked() => Clicked?.Invoke(this, EventArgs.Empty);
     }
