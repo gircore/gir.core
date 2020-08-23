@@ -128,7 +128,7 @@ namespace GObject
         {
             foreach (FieldInfo field in GetType().GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy))
             {
-                if (field.FieldType.GetGenericTypeDefinition() == typeof(Property<>))
+                if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Property<>))
                 {
                     var method = field.FieldType.GetMethod("Register", BindingFlags.Instance | BindingFlags.NonPublic);
                     method?.Invoke(field.GetValue(this), new object[] { this });
