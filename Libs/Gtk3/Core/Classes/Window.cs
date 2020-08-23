@@ -7,6 +7,30 @@ namespace Gtk
     public partial class Window
     {
         #region Properties
+        public static readonly Property<int> DefaultHeightProperty = GObject.Property<int>.Register<Window>("default-height", get: (o) => o.DefaultHeightEx, set: (o, v) => o.DefaultHeightEx = v);
+
+        public int DefaultHeightEx
+        {
+            get => GetProperty(DefaultHeightProperty);
+            set => SetProperty(DefaultHeightProperty, value);
+        }
+
+        public static readonly Property<int> DefaultWidthProperty = GObject.Property<int>.Register<Window>("default-width", get: (o) => o.DefaultWidthEx, set: (o, v) => o.DefaultWidthEx = v);
+
+        public int DefaultWidthEx
+        {
+            get => GetProperty(DefaultWidthProperty);
+            set => SetProperty(DefaultWidthProperty, value);
+        }
+
+        public static readonly Property<Application> ApplicationProperty = GObject.Property<Application>.Register<Window>("application", get: (o) => o.ApplicationEx, set: (o, v) => o.ApplicationEx = v);
+
+        public Application ApplicationEx
+        {
+            get => GetProperty(ApplicationProperty);
+            set => SetProperty(ApplicationProperty, value);
+        }
+
         private IProperty<int> defaultHeight;
         public IProperty<int> DefaultHeight => defaultHeight;
 
