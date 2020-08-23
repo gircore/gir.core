@@ -2,10 +2,8 @@ using System;
 
 namespace WebKit2
 {
-    public class WebInspector : GObject.Object
+    public partial class WebInspector
     {
-        internal WebInspector(IntPtr handle, bool isInitiallyUnowned = false) : base(handle, isInitiallyUnowned) { }
-
-        public void Show() => Sys.WebInspector.show(this);  
+        public void Show() => Sys.WebInspector.show(Handle);  
     }
 }

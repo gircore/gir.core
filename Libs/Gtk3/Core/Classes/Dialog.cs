@@ -10,8 +10,7 @@ namespace Gtk
         #endregion Properties
 
         public Dialog() : this(Sys.Dialog.@new()) { }
-        internal Dialog(IntPtr handle) : base(handle){ }
-        
+
         public int Run() => Sys.Dialog.run(Handle);
     }
 }

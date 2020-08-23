@@ -17,7 +17,7 @@ namespace GObject.Sys
             data1 = 0;
             data2 = 0;
 
-            Value.init(ref this, type);
+            Value.init(ref this, type.Value);
         }
 
         public void Dispose() => Value.unset(ref this);

@@ -2,11 +2,8 @@ using System;
 
 namespace Gio
 {
-    public class Menu : GObject.Object
+    public partial class Menu
     {
         public Menu() : this(Sys.Menu.@new()) { }
-        protected internal Menu(IntPtr handle) : base(handle)
-        {
-        }
     }
 }

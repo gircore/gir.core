@@ -6,7 +6,7 @@ namespace Gtk
 {
     public partial class Notebook
     {
-        private readonly Dictionary<Widget, Widget> data;
+        private readonly Dictionary<Widget, Widget> data = new Dictionary<Widget, Widget>();
 
         #region Events
         public event EventHandler<PageChangedEventArgs>? PageAdded;
@@ -21,18 +21,6 @@ namespace Gtk
         #endregion
 
         public Notebook() : this(Sys.Notebook.@new()){ }
-        internal Notebook(IntPtr handle) : base(handle) 
-        {
-            data = new Dictionary<Widget, Widget>();
-
-            Page = PropertyOfInt("page");
-            ShowTabs = PropertyOfBool("show-tabs");
-            Scrollable = PropertyOfBool("scrollable");
-            ShowBorder = PropertyOfBool("show-border");
-
-            RegisterEvent("page-added", OnPageAdded);
-            RegisterEvent("page-removed", OnPageRemoved);
-        }
 
         public void InsertPage(string label, Widget child, int position)
         {
@@ -60,8 +48,11 @@ namespace Gtk
 
         private static void GetChildAndPage(ref GObject.Sys.Value[] values, out Widget child, out uint pageNum)
         {
-            child = ((Widget?)(GObject.Object?)(IntPtr)values[1])!;
-            pageNum = (uint)values[2];
+            //TODO
+            //child = ((Widget?)(GObject.Object?)(IntPtr)values[1])!;
+            //pageNum = (uint)values[2];
+            child = null!;
+            pageNum = 0;
         }
 
         private void OnPageRemoved(ref GObject.Sys.Value[] values)

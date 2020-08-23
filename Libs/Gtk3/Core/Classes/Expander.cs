@@ -14,20 +14,5 @@ namespace Gtk
         public Property<bool> UseUnderline { get; }
         public Property<Widget> Widget { get; }
         #endregion
-
-        internal Expander(IntPtr handle) : base(handle)
-        {
-            Expanded = PropertyOfBool("expanded");
-            ResizeToplevel = PropertyOfBool("resize-toplevel");
-            LabelFill = PropertyOfBool("label-fill");
-            Label = PropertyOfString("label");
-            UseMarkup = PropertyOfBool("use-markup");
-            UseUnderline = PropertyOfBool("use-underline");
-            
-            Widget = Property("label-widget",
-                get: GetObject<Widget>,
-                set: Set
-            );
-        }
     }
 }

@@ -21,12 +21,6 @@ namespace Gtk
             builder.Connect(this);
         }
 
-        internal Widget(IntPtr handle) : base(handle, true) 
-        {
-            WidthRequest = PropertyOfInt("width-request");
-            HeightRequest = PropertyOfInt("height-request");
-        }
-
         public void Show() => Sys.Widget.show(Handle);
         public void ShowAll() => Sys.Widget.show_all(Handle);
     }

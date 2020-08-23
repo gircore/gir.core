@@ -6,7 +6,7 @@ namespace GObject
 {
     public partial class Object : IObject
     {
-        internal static Sys.Type GetGType() => new Sys.Type(Sys.Object.get_type());
+        protected static Sys.Type GetGType() => new Sys.Type(Sys.Object.get_type());
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
 
         private IntPtr handle;
@@ -20,7 +20,8 @@ namespace GObject
             // type in the type dictionary. If the type is
             // a user-subclass, it will register it with
             // the GType type system automatically.
-            var typeId = TypeDictionary.Get(GetType());
+            var bla = GetType();
+            var typeId = TypeDictionary.Get(bla);
             Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
             
             // Pointer to GObject
@@ -49,7 +50,7 @@ namespace GObject
 
                 // Create with propeties
                 handle = Sys.Object.new_with_properties(
-                    typeId, 
+                    typeId.Value, 
                     (uint)names.Length,
                     ref names[0],
                     values
@@ -64,7 +65,7 @@ namespace GObject
                 // Construct with no properties
                 var zero = IntPtr.Zero;
                 handle = Sys.Object.new_with_properties(
-                    typeId, 
+                    typeId.Value, 
                     0, 
                     ref zero,
                     Array.Empty<Sys.Value>()
@@ -162,25 +163,28 @@ namespace GObject
 
             // Resolve gtype of object
             Sys.Type trueGType = TypeFromHandle(handle);
-            Type trueType = TypeDictionary.Get(trueGType);
+            var trueType = TypeDictionary.Get(trueGType);
 
             // Ensure we are not constructing a subclass
             if (IsSubclass(trueType))
                 throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
 
             // Ensure the conversion is valid
-            Sys.Type castGType = TypeDictionary.Get(typeof(T));
-            if (!Sys.Methods.type_is_a(trueGType, castGType))
+            var castGType = TypeDictionary.Get(typeof(T));
+            if (!Sys.Methods.type_is_a(trueGType.Value, castGType.Value))
                 throw new InvalidCastException();
 
             // Create using 'IntPtr' constructor
-            return (T)Activator.CreateInstance(
-                trueType,
-                new object[] { obj.Handle }
+            var newObject = (T)Activator.CreateInstance(
+                trueType, 
+                obj.Handle
             );
+            
+            objects.Add(handle, newObject);
+            return newObject;
         }
 
-        protected IntPtr GetHandle(Object obj)
+        protected static IntPtr GetHandle(Object obj)
             => obj.Handle;
     }
 }

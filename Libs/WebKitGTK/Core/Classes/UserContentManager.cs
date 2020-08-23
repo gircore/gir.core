@@ -3,13 +3,11 @@ using GObject;
 
 namespace WebKit2
 {
-    public class UserContentManager : GObject.Object
+    public partial class UserContentManager
     {
-        internal UserContentManager(IntPtr handle, bool isInitiallyUnowned = false) : base(handle, isInitiallyUnowned) {   }
-
         public bool RegisterScriptMessageHandler(string name, Action<JavaScriptCore.Value> callback)
         {
-            if(!Sys.UserContentManager.register_script_message_handler(this, name))
+            if(!Sys.UserContentManager.register_script_message_handler(Handle, name))
                 return false;
 
             void OnMessageReceived(ref GObject.Sys.Value[] values)
@@ -17,7 +15,7 @@ namespace WebKit2
                 var result = values[1].GetBoxed();
                 result = Sys.JavascriptResult.@ref(result);
                 var jsValue = Sys.JavascriptResult.get_js_value(result);
-                var value = new JavaScriptCore.Value(jsValue);
+                var value = JavaScriptCore.Value.Create(jsValue);
                 callback(value);
             }
 
@@ -29,7 +27,7 @@ namespace WebKit2
         { 
              var zero = IntPtr.Zero;
              var webkitScript = Sys.UserScript.@new(script.Script, Sys.UserContentInjectedFrames.all_frames, Sys.UserScriptInjectionTime.end, zero, zero);
-            Sys.UserContentManager.add_script(this, webkitScript);
+            Sys.UserContentManager.add_script(Handle, webkitScript);
         }
     }
 }

@@ -13,7 +13,5 @@ namespace Gtk
         {
             this.builder = builder;
         }
-
-        internal Menu(IntPtr handle) : base(handle) { }
     }
 }

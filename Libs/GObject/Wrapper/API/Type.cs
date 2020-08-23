@@ -9,6 +9,8 @@ namespace GObject.Sys
         [FieldOffset(0)]
         private ulong value;
 
+        public ulong Value => value;
+
         #region Statics
         public static readonly Type Invalid = new Type ((ulong)Types.Invalid);
         public static readonly Type None = new Type ((ulong)Types.None);

@@ -23,12 +23,7 @@ namespace Gtk
             AddFromString(templateContent);
         }
         internal Builder(string template) : this(template, Assembly.GetCallingAssembly()) { }
-
-        internal Builder(IntPtr handle) : base(handle)
-        {
-            TranslationDomain = PropertyOfString("translation-domain");
-        }
-
+        
         private uint AddFromString(string template)
         {
             var result = Sys.Builder.add_from_string(Handle, template, (ulong) Encoding.UTF8.GetByteCount(template), out var error);
@@ -46,7 +41,7 @@ namespace Gtk
             return Encoding.UTF8.GetString(buffer, 0, buffer.Length);
         }
 
-        public IntPtr GetObject(string name) => Sys.Builder.get_object(this, name);
+        public IntPtr GetObject(string name) => Sys.Builder.get_object(Handle, name);
 
         public void Connect(Widget connector)
         {
@@ -62,6 +57,7 @@ namespace Gtk
         private void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name, IntPtr connect_object, GObject.Sys.ConnectFlags flags, IntPtr user_data)
         {
             //TODO Errorhandling
+            /* TODO Activate
             if(!TryGetObject(@object, out Widget signalsender) || !TryGetObject(connect_object, out Widget connector))
                 return;
 
@@ -75,6 +71,7 @@ namespace Gtk
             var del = Delegate.CreateDelegate(eventType, connector, method);
 
             senderEvent.AddMethod.Invoke(signalsender, new object[] { del });
+            */
         }
 
         private void ConnectFields(object obj)

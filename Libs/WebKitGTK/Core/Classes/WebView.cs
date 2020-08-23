@@ -6,27 +6,18 @@ using JavaScriptCore;
 
 namespace WebKit2
 {
-    public class WebView : Container
+    public partial class WebView
     {
         #region Properties
         public Property<WebContext?> Context { get; }
         #endregion Properties
 
-        public WebView(WebContext context) : this(Sys.WebView.new_with_context(context)) {}
-        public WebView() : this(Sys.WebView.@new()) { }
+        public WebView(WebContext context) : this(Sys.WebView.new_with_context(GetHandle(context))) {}
 
-        internal WebView(IntPtr handle) : base(handle) 
-        { 
-            Context = Property("web-context",
-                get : GetObject<WebContext?>,
-                set : Set
-            );
-        }
-
-        public void LoadUri(string uri) => Sys.WebView.load_uri(this, uri);
-        public Settings GetSettings() => Convert(Sys.WebView.get_settings(this), (ptr) => new Settings(ptr, true));
-        public UserContentManager GetUserContentManager() => Convert(Sys.WebView.get_user_content_manager(this), (ptr) => new UserContentManager(ptr, true));
-        public WebInspector GetInspector() => Convert(Sys.WebView.get_inspector(this), (ptr) => new WebInspector(ptr, true));
+        public void LoadUri(string uri) => Sys.WebView.load_uri(Handle, uri);
+        public Settings GetSettings() => WrapPointerAs<Settings>(Sys.WebView.get_settings(Handle));
+        public UserContentManager GetUserContentManager() => WrapPointerAs<UserContentManager>(Sys.WebView.get_user_content_manager(Handle));
+        public WebInspector GetInspector() => WrapPointerAs<WebInspector>(Sys.WebView.get_inspector(Handle));
 
         public Task<Value> RunJavascriptAsync(string script)
         {
@@ -38,12 +29,11 @@ namespace WebKit2
                 HandleError(error);
 
                 var jsValue = Sys.JavascriptResult.get_js_value(jsResult);
-                if (!TryGetObject<Value>(jsValue, out var value)) value = new Value(jsValue);
-
+                var value = WrapPointerAs<Value>(jsValue);
                 tcs.SetResult(value);
             }
 
-            Sys.WebView.run_javascript(this, script, IntPtr.Zero, Callback, IntPtr.Zero);
+            Sys.WebView.run_javascript(Handle, script, IntPtr.Zero, Callback, IntPtr.Zero);
 
             return tcs.Task;
         }

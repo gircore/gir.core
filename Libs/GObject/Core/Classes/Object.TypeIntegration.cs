@@ -12,18 +12,18 @@ namespace GObject
         // This class purely contains an implementation for registering
         // user subclasses with GType.
 
-        private static bool IsSubclass(Type type)
+        private static bool IsSubclass(System.Type type)
             => TypeDictionary.IsSubclass(type);
 
         // This returns the gtype for the furthest derived
         // wrapper class. It is the boundary between types defined in
         // GLib (wrappers) and types defined by the user (subclass)
-        private static ulong GetBoundaryTypeId(Type type)
+        private static ulong GetBoundaryTypeId(System.Type type)
         {
             while (IsSubclass(type))
                 type = type.BaseType!;
             
-            return TypeDictionary.Get(type);
+            return TypeDictionary.Get(type).Value;
         }
 
         // Query a gtype structure to find out information
@@ -60,11 +60,11 @@ namespace GObject
             Console.WriteLine("instance_init: Initialising custom subclass!");
         }
 
-        private static string QualifyName(Type type)
+        private static string QualifyName(System.Type type)
             => $"{type.Namespace}_{type.Name}".Replace(".", "_");
         
         // Registers a new type class with the underlying GType type system
-        private static void RegisterNativeType(Type type)
+        private static void RegisterNativeType(System.Type type)
         {
             if (!IsSubclass(type))
                 throw new Exception($"Error! Trying to register wrapper class {type} as new type");

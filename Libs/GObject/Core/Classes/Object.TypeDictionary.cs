@@ -12,22 +12,22 @@ namespace GObject
         internal static class TypeDictionary
         {
             // Dual dictionaries for looking up types and gtypes
-            private static Dictionary<Type, Sys.Type> typedict;
-            private static Dictionary<Sys.Type, Type> gtypedict;
+            private static Dictionary<System.Type, Sys.Type> typedict;
+            private static Dictionary<Sys.Type, System.Type> gtypedict;
 
             static TypeDictionary()
             {
                 // Initialise Dictionaries
-                typedict = new Dictionary<Type, Sys.Type>();
-                gtypedict = new Dictionary<Sys.Type, Type>();
+                typedict = new Dictionary<System.Type, Sys.Type>();
+                gtypedict = new Dictionary<Sys.Type, System.Type>();
 
                 // Add GObject and GInitiallyUnowned
-                Add(typeof(Object), Object.GetGType());
+                Add(typeof(GObject.Object), Object.GetGType());
                 Add(typeof(InitiallyUnowned), InitiallyUnowned.GetGType());
             }
 
             // Add to type dictionary
-            internal static void Add(Type type, Sys.Type gtype)
+            internal static void Add(System.Type type, Sys.Type gtype)
             {
                 if (typedict.ContainsKey(type) ||
                     gtypedict.ContainsKey(gtype))
@@ -38,7 +38,7 @@ namespace GObject
             }
 
             // Get System.Type from GType
-            internal static Type Get(Sys.Type gtype)
+            internal static System.Type Get(Sys.Type gtype)
             {
                 // Check Type Dictionary
                 if (gtypedict.TryGetValue(gtype, out var type))
@@ -74,7 +74,7 @@ namespace GObject
                 // the lowest-common-denominator of functionality will be exposed.
                 while (!Contains(gtype))
                 {
-                    ulong parent = Sys.Methods.type_parent(gtype);
+                    ulong parent = Sys.Methods.type_parent(gtype.Value);
                     if (parent == 0)
                         throw new Exception("Could not get Type from GType");
 
@@ -87,7 +87,7 @@ namespace GObject
             }
 
             // Get GType from System.Type
-            internal static Sys.Type Get(Type type)
+            internal static Sys.Type Get(System.Type type)
             {
                 // Check Type Dictionary
                 if (typedict.TryGetValue(type, out var gtype))
@@ -111,12 +111,12 @@ namespace GObject
                 
                 // We are a wrapper, so register types recursively
                 Console.WriteLine("Registering Recursively");
-                Type baseType = type;
+                System.Type baseType = type;
                 while (!Contains(baseType))
                 {
                     Console.WriteLine(baseType.Name);
                     var methodInfo = GetGTypeMethodInfo(baseType)!;
-                    ulong typeid = (Sys.Type)methodInfo.Invoke(null, null);
+                    var typeid = (ulong) methodInfo.Invoke(null, null);
                     gtype = new Sys.Type(typeid);
                     
                     // Add to typedict for future use
@@ -131,19 +131,19 @@ namespace GObject
             }
             
             // Contains functions
-            internal static bool Contains(Type type) => typedict.ContainsKey(type);
+            internal static bool Contains(System.Type type) => typedict.ContainsKey(type);
             internal static bool Contains(Sys.Type gtype) => gtypedict.ContainsKey(gtype);
 
             // Determines whether the type is a managed subclass,
             // as opposed to wrapping an existing type.
-            internal static bool IsSubclass(Type type)
+            internal static bool IsSubclass(System.Type type)
                 => type != typeof(Object) &&
                 type != typeof(InitiallyUnowned) &&
                 GetGTypeMethodInfo(type) is null;
 
             // Returns the MethodInfo for the 'GetGType()' function
             // if the type in question implements it (i.e. a wrapper)
-            private static MethodInfo? GetGTypeMethodInfo(Type type)
+            private static MethodInfo? GetGTypeMethodInfo(System.Type type)
             {
                 const BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
                 return type.GetMethod(nameof(GetGType), flags);

@@ -27,20 +27,17 @@ namespace Gtk
         {
             InitProperties(out defaultHeight, out defaultWith, out application);
         }
-        internal Window(IntPtr handle) : base(handle) 
-        {
-            InitProperties(out defaultHeight, out defaultWith, out application);
-        }
 
         private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<Application?> application)
         {
             defaultHeight = PropertyOfInt("default-height");
             defaultWidth = PropertyOfInt("default-width");
 
-            application = Property<Application?>("application",
+            /*application = Property("application",
                 get : GetObject<Application?>,
                 set: Set
-            );
+            );*/
+            application = null!;
         }
 
         public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(Handle, width, height);

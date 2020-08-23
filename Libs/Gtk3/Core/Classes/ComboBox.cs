@@ -13,10 +13,6 @@ namespace Gtk
         {
             InitProperties(out activeId);
         }
-        internal ComboBox(IntPtr handle) : base(handle) 
-        { 
-            InitProperties(out activeId);
-        }
 
         //Workaround for: https://github.com/dotnet/roslyn/issues/32358
         private void InitProperties(out Property<string> activeId)

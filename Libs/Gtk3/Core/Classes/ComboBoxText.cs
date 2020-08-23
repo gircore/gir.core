@@ -7,7 +7,6 @@ namespace Gtk
     {
         public ComboBoxText(string template, string obj = "combobox") : base(template, obj, Assembly.GetCallingAssembly()) {}
         public ComboBoxText() : this(Sys.ComboBoxText.@new()){}
-        internal ComboBoxText(IntPtr handle) : base(handle) { }
 
         public void AppendText(string id, string text) => Sys.ComboBoxText.insert(Handle, -1, id, text);
         public void RemoveAll() => Sys.ComboBoxText.remove_all(Handle);

@@ -2,17 +2,17 @@ using System;
 
 namespace Gst
 {
-    public class Element : GObject.Object
+    public class Element : GObject.InitiallyUnowned
     {        
-        internal Element(IntPtr handle) : base(handle, true) { }
+        internal Element(IntPtr handle) : base(handle) { }
 
         public Bus GetBus()
         {
-            var ret = Sys.Element.get_bus(this);
-            return Convert(ret, (r) => new Bus(r));
+            var ret = Sys.Element.get_bus(Handle);
+            return WrapPointerAs<Bus>(ret);
         }
 
         public void SetState(State state) 
-            => Sys.Element.set_state(this, (Sys.State) state);
+            => Sys.Element.set_state(Handle, (Sys.State) state);
     }
 }

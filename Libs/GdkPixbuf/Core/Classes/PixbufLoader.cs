@@ -5,10 +5,9 @@ using System.Reflection;
 
 namespace GdkPixbuf
 {
-    public class PixbufLoader : GObject.Object
+    public partial class PixbufLoader
     {
         public PixbufLoader() : this(Sys.PixbufLoader.@new()) {}
-        internal PixbufLoader(IntPtr handle) : base(handle) { }
 
         public bool Write(string imageResourceName) => Write(imageResourceName, Assembly.GetCallingAssembly());
         internal bool Write(string imageResourceName, Assembly assembly)
@@ -22,7 +21,7 @@ namespace GdkPixbuf
             stream.CopyTo(ms);
             var buffer = ms.ToArray();
             
-            return Sys.PixbufLoader.write(this, buffer, (ulong)buffer.LongLength, out var error);
+            return Sys.PixbufLoader.write(Handle, buffer, (ulong)buffer.LongLength, out var error);
         }
 
         private Pixbuf? pixbuf;
@@ -31,7 +30,7 @@ namespace GdkPixbuf
             if (!(pixbuf is null)) 
                 return pixbuf;
             
-            var ret = Sys.PixbufLoader.get_pixbuf(this);
+            var ret = Sys.PixbufLoader.get_pixbuf(Handle);
                 
             if(ret != IntPtr.Zero)
                 pixbuf = new Pixbuf(ret);

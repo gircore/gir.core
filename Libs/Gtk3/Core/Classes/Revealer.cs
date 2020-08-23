@@ -12,14 +12,5 @@ namespace Gtk
         #endregion
 
         public Revealer() : this (Sys.Revealer.@new()) { }
-        internal Revealer(IntPtr handle) : base(handle) 
-        { 
-            TransitionDuration = PropertyOfUint("transition-duration");
-            TransitionType = Property("transition-type",
-                get : GetEnum<RevealerTransitionType>,
-                set : SetEnum
-            );
-            Reveal = PropertyOfBool("reveal-child");
-        }
     }
 }

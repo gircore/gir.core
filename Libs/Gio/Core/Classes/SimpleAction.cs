@@ -1,13 +1,13 @@
 using System;
+using GObject;
 
 namespace Gio
 {
-    public class SimpleAction : BaseAction
+    public partial class SimpleAction
     {
-        public event EventHandler<EventArgs>? Activate;
+        public Property<bool> Enabled { get; }
+        public Property<string> Name { get; }
 
-        public SimpleAction(string name) : base(name) { }
-
-        protected override void OnActivate() => Activate?.Invoke(this, EventArgs.Empty);
+        public SimpleAction(string name) : this(Sys.SimpleAction.@new(name, IntPtr.Zero)) { }
     }
 }

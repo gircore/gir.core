@@ -4,7 +4,7 @@ using System;
 
 namespace Handy
 {
-    public class Paginator : EventBox
+    public partial class Paginator
     {
         public event EventHandler<PageChangedEventArgs>? PageChanged;
         
@@ -22,28 +22,9 @@ namespace Handy
 
         public Paginator() : this(Sys.Paginator.@new()){}
 
-        internal Paginator(IntPtr handle) : base(handle) 
-        { 
-            AnimationDuration = PropertyOfUint("animation-duration");
-            Pages = PropertyOfUint("n-pages");
-            AllowMouseDrag = PropertyOfBool("allow-mouse-drag");
-            Position = ReadOnlyPropertyOfDouble("position");
-            Spacing = PropertyOfUint("spacing");
-            Interactive = PropertyOfBool("interactive");
-            IndicatorSpacing = PropertyOfUint("indicator-spacing");
-            CenterContent = PropertyOfBool("center-content");
-
-            IndicatorStyle = Property("indicator-style",
-                get : GetEnum<PaginatorIndicatorStyle>,
-                set : SetEnum
-            );
-
-            RegisterEvent("page-changed", OnPageChanged);
-        }
-
-        public void Prepend(Widget widget) => Sys.Paginator.prepend(this, widget);
-        public void Append(Widget widget) => Sys.Paginator.insert(this, widget, -1);
-        public void ScrollTo(Widget widget) => Sys.Paginator.scroll_to(this, widget);
+        public void Prepend(Widget widget) => Sys.Paginator.prepend(Handle, GetHandle(widget));
+        public void Append(Widget widget) => Sys.Paginator.insert(Handle, GetHandle(widget), -1);
+        public void ScrollTo(Widget widget) => Sys.Paginator.scroll_to(Handle, GetHandle(widget));
 
         protected void OnPageChanged(ref GObject.Sys.Value[] values)
         { 

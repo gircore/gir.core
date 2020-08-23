@@ -5,11 +5,10 @@ namespace Gtk
 {
     public partial class ApplicationWindow
     {
-        public ApplicationWindow(Application application) : this(Sys.ApplicationWindow.@new(application.Handle)) {}
+        //TODO: constructor parameters are not intuitive
         public ApplicationWindow(Application application, string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly()) 
         {
             Application.Value = application;
         }
-        internal ApplicationWindow(IntPtr handle) : base(handle) {}
     }
 }
