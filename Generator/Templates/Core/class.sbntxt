@@ -8,11 +8,11 @@ namespace {{ namespace }}
     [Wrapper("{{ type_name }}")]
     public partial class {{ name }} : {{ parent }}
     {
-        internal new static GObject.Type GetGType() => new GObject.Type(Sys.{{ name }}.get_type());
+        protected internal new static GObject.Type GetGType() => new GObject.Type(Sys.{{ name }}.get_type());
         
         #region Constructors
-        protected {{ name }}(IntPtr ptr) : base(ptr) {}
-        protected {{ name }}(ConstructProp[] properties) : base(properties) {}
+        protected internal {{ name }}(IntPtr ptr) : base(ptr) {}
+        protected internal {{ name }}(ConstructProp[] properties) : base(properties) {}
         #endregion Constructors
     }
 }

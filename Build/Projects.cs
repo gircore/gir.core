@@ -13,6 +13,11 @@ static class Projects
     private const string GTK4 = "../Libs/Gtk4/";
     public const string GTK4_WRAPPER = GTK4 + WRAPPER;
     public const string GTK4_CORE = GTK4 + CORE;
+    public const string GTK4_GIR = "Gtk-4.0.gir";
+
+    private const string GDK4 = "../Libs/Gdk4/";
+    public const string GDK4_WRAPPER = GDK4 + WRAPPER;
+    public const string GDK4_CORE = GDK4 + CORE;
 
     private const string GSK4 = "../Libs/Gsk4/";
     public const string GSK4_WRAPPER = GSK4 + WRAPPER;
@@ -20,18 +25,22 @@ static class Projects
     private const string HANDY = "../Libs/Handy/";
     public const string HANDY_WRAPPER = HANDY + WRAPPER;
     public const string HANDY_CORE = HANDY + CORE;
+    public const string HANDY_GIR = "Handy-0.0.gir";
 
     private const string WEBKITGTK = "../Libs/WebKitGTK/";
     public const string WEBKITGTK_WRAPPER = WEBKITGTK + WRAPPER;
     public const string WEBKITGTK_CORE = WEBKITGTK + CORE;
+    public const string WEBKITGTK_GIR = "WebKit2-4.0.gir";
 
     private const string WEBKIT2WEBEXTENSION = "../Libs/WebKit2WebExtension/";
     public const string WEBKIT2WEBEXTENSION_WRAPPER = WEBKIT2WEBEXTENSION + WRAPPER;
     public const string WEBKIT2WEBEXTENSION_CORE = WEBKIT2WEBEXTENSION + CORE;
+    public const string WEBKIT2WEBEXTENSION_GIR = "WebKit2WebExtension-4.0.gir";
 
     private const string GIO= "../Libs/Gio/";
     public const string GIO_WRAPPER = GIO + WRAPPER;
     public const string GIO_CORE = GIO + CORE;
+    public const string GIO_GIR = "Gio-2.0.gir";
 
     private const string GOBJECT = "../Libs/GObject/";
     public const string GOBJECT_WRAPPER = GOBJECT + WRAPPER;
@@ -44,10 +53,12 @@ static class Projects
     private const string JAVASCRIPT_CORE = "../Libs/JavascriptCore/";
     public const string JAVASCRIPT_CORE_WRAPPER = JAVASCRIPT_CORE + WRAPPER;
     public const string JAVASCRIPT_CORE_CORE = JAVASCRIPT_CORE + CORE;
+    public const string JAVASCRIPT_CORE_GIR = "JavaScriptCore-4.0.gir";
     
     private const string GDK_PIXBUF = "../Libs/GdkPixbuf/";
     public const string GDK_PIXBUF_WRAPPER = GDK_PIXBUF + WRAPPER;
     public const string GDK_PIXBUF_CORE = GDK_PIXBUF + CORE;
+    public const string GDK_PIXBUF_GIR = "GdkPixbuf-2.0.gir";
 
     private const string CHAMPLAIN = "../Libs/Champlain/";
     public const string CHAMPLAIN_WRAPPER = CHAMPLAIN + WRAPPER;
@@ -56,8 +67,7 @@ static class Projects
     private const string GTKCHAMPLAIN = "../Libs/GtkChamplain/";
     public const string GTKCHAMPLAIN_WRAPPER = GTKCHAMPLAIN + WRAPPER;
     public const string GTKCHAMPLAIN_CORE = GTKCHAMPLAIN + CORE;
-
-
+    
     private const string CLUTTER = "../Libs/Clutter/";
     public const string CLUTTER_WRAPPER = CLUTTER + WRAPPER;
     public const string CLUTTER_CORE = CLUTTER + CORE;
@@ -72,7 +82,6 @@ static class Projects
 
     public const string CAIRO_WRAPPER = "../Libs/Cairo/Wrapper/";
     public const string GDK3_WRAPPER = "../Libs/Gdk3/Wrapper/";
-    public const string GDK4_WRAPPER = "../Libs/Gdk4/Wrapper/";
     public const string PANGO_WRAPPER = "../Libs/Pango/Wrapper/";
     public const string XLIB_WRAPPER = "../Libs/Xlib/Wrapper/";
 

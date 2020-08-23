@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Gir;
 using Scriban;
 using Scriban.Runtime;
@@ -35,6 +36,15 @@ namespace Generator
             context.PushGlobal(scriptObject);
             
             templateFile = $"../Generator/Templates/Core/{templateFile}.sbntxt";
+            
+            
+            if (fileName.Contains("Accessible"))
+            {
+                //TODO: Workaround for missing ATK!
+                Console.WriteLine($"Skipping file {fileName} because it looks like an ATK class which is not supported.");
+                return;   
+            }
+
             GenerateCode(templateFile, fileName, context);
         }
     }

@@ -9,11 +9,14 @@ namespace Generator
     public abstract class Generator
     {
         private readonly string girFile;
-        private readonly string outputDir;
-        
+
         #region Properties
         private readonly GRepository repository;
         protected GRepository Repository => repository;
+        
+        private readonly string outputDir;
+        public string OutputDir => outputDir;
+
         #endregion Properties
         
         protected Generator(string girFile, string outputDir)
