@@ -78,17 +78,18 @@ namespace GObject
                 if (typedict.TryGetValue(type, out var gtype))
                     return gtype;
 
-                // It is reasonably unlikely that we will need
-                // to lookup a type we haven't yet created, therefore
-                // we might as well register recursively
-                // to avoid future performance hits.
+                // If we are looking up a type that is not yet in
+                // the type dictionary, we are most likely registering
+                // a new type. Therefore, we should register the type
+                // and parent types recursively now to avoid having to
+                // do this in the future.
                 
                 // Retrieve the GType accordingly
                 if (IsSubclass(type))
                 {
                     // We are a subclass
                     // RegisterNativeType will recursively add this
-                    // and all children to the type dictionary
+                    // and all parent types to the type dictionary
                     RegisterNativeType(type);
                     return typedict[type];
                 }
