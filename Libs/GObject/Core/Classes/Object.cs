@@ -23,7 +23,7 @@ namespace GObject
             var bla = GetType();
             var typeId = TypeDictionary.Get(bla);
             Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
-            
+
             // Pointer to GObject
             IntPtr handle;
 
@@ -50,7 +50,7 @@ namespace GObject
 
                 // Create with propeties
                 handle = Sys.Object.new_with_properties(
-                    typeId.Value, 
+                    typeId.Value,
                     (uint)names.Length,
                     ref names[0],
                     values
@@ -65,16 +65,16 @@ namespace GObject
                 // Construct with no properties
                 var zero = IntPtr.Zero;
                 handle = Sys.Object.new_with_properties(
-                    typeId.Value, 
-                    0, 
+                    typeId.Value,
+                    0,
                     ref zero,
                     Array.Empty<Sys.Value>()
                 );
             }
-            
+
             Initialize(handle);
         }
-        
+
         // Initialises a wrapper for an existing object
         protected Object(IntPtr handle)
         {
@@ -95,18 +95,18 @@ namespace GObject
 
         // Wrappers can override here to perform
         // immediate initialisation
-        protected virtual void Initialize() {}
+        protected virtual void Initialize() { }
 
         // TODO: Implement Virtual Methods
         // This will be done in a later PR
-        protected virtual void Constructed() {}
-        
+        protected virtual void Constructed() { }
+
         // Modify this in the future to play nicely with virtual function support?
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
         private void RegisterOnFinalized() => Sys.Object.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
 
         // Property Notify Events
-        protected internal void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) 
+        protected internal void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback)
             => RegisterEvent($"notify::{propertyName}", callback);
 
         // Signal Handling
@@ -126,7 +126,7 @@ namespace GObject
         {
             var ret = Sys.Methods.signal_connect_closure(handle, eventName, closure, false);
 
-            if(ret == 0)
+            if (ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
 
             // Add to our closures list so the callback
@@ -136,13 +136,13 @@ namespace GObject
 
         private void ThrowIfDisposed()
         {
-            if(Disposed)
+            if (Disposed)
                 throw new Exception("Object is disposed");
         }
 
         protected static void HandleError(IntPtr error)
         {
-            if(error != IntPtr.Zero)
+            if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
         }
 
@@ -150,7 +150,7 @@ namespace GObject
         // if it already exists, otherwise creats a new wrapper object
         // and returns it.
         public static T WrapPointerAs<T>(IntPtr handle)
-            where T: Object
+            where T : Object
         {
             // Attempt to lookup the pointer in the object dictionary
             if (objects.TryGetValue(handle, out var obj))
@@ -176,10 +176,10 @@ namespace GObject
 
             // Create using 'IntPtr' constructor
             var newObject = (T)Activator.CreateInstance(
-                trueType, 
+                trueType,
                 obj.Handle
             );
-            
+
             objects.Add(handle, newObject);
             return newObject;
         }
