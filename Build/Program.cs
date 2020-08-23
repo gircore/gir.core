@@ -122,16 +122,24 @@ class Program
 
     private static void CleanUp(string project, string configuration)
     {
-        if(project.EndsWith("Wrapper/"))
-            Directory.Delete(project + "Generated", true);
+        const string? generatedDir = "Generated";
+        foreach (var dictionary in Directory.EnumerateDirectories(project))
+            if(dictionary == generatedDir)
+                Directory.Delete(Path.Combine(project, generatedDir));
 
+        var classFolder = Path.Combine(project, "Classes");
+        if(Directory.Exists(classFolder))
+            foreach(var file in Directory.EnumerateFiles(classFolder))
+                if (file.Contains(".Generated."))
+                    File.Delete(file);
+            
         Clean(project, configuration);
     }
 
     private static void GenerateCore(string project, string girFile)
     {
         girFile = $"../gir-files/{girFile}";
-        var g = new Generator.CoreGenerator(girFile, project);
+        var g = new Generator.CoreGenerator(girFile, Path.Combine(project, "Classes"));
         g.Generate();
     }
     
