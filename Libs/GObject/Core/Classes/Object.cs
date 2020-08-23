@@ -10,7 +10,7 @@ namespace GObject
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
 
         protected IntPtr handle;
-        internal IntPtr Handle => handle;
+        public IntPtr Handle => handle;
         private HashSet<Closure> closures = new HashSet<Closure>();
 
         // Constructs a new object
