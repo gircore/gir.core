@@ -2,12 +2,12 @@ using System;
 
 namespace GObject
 {
-    public class Prop
+    public class ConstructProp
     {
         public string Name { get; }
         public Sys.Value Value { get; }
 
-        private Prop(string name, object value)
+        private ConstructProp(string name, object value)
         {
             Name = name;
 
@@ -20,6 +20,6 @@ namespace GObject
             };
         }
         
-        public static Prop With(string name, object value) => new Prop(name, value);
+        public static ConstructProp With(string name, object value) => new ConstructProp(name, value);
     }
 }

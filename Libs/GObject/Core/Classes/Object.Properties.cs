@@ -16,7 +16,7 @@ namespace GObject
             value.Dispose();
         }
 
-        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) => SetProperty((IntPtr)value, propertyName);
+        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) => SetProperty(value?.Handle ?? IntPtr.Zero, propertyName);
         protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum => SetProperty((long)(object)e, propertyName);
         protected void Set(bool value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
         protected void Set(uint value, [CallerMemberName] string? propertyName = null) => SetProperty(value, propertyName);
@@ -84,10 +84,7 @@ namespace GObject
         {
             var v = GetIntPtr(propertyName);
 
-            if (TryGetObject<T>(v, out var obj))
-                return obj;
-            
-            return default!; //TODO: Fix exclamation mark
+            return WrapPointerAs<T>(v);
         }
     }
 }

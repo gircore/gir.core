@@ -1,24 +1,34 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace GObject
 {
     public partial class Object
     {
+        // See Object.TypeDictionary.cs for type mapping code
+        // =====
+        // This class purely contains an implementation for registering
+        // user subclasses with GType.
+
+        private static bool IsSubclass(Type type)
+            => TypeDictionary.IsSubclass(type);
+
+        // This returns the gtype for the furthest derived
+        // wrapper class. It is the boundary between types defined in
+        // GLib (wrappers) and types defined by the user (subclass)
         private static ulong GetBoundaryTypeId(Type type)
         {
             while (IsSubclass(type))
                 type = type.BaseType!;
             
-            return GetGTypeFor(type);
+            return TypeDictionary.Get(type);
         }
 
-        private static bool IsSubclass(Type type)
-            => type != typeof(Object) &&
-               type != typeof(InitallyUnowned) &&
-               GetGTypeMethodInfo(type) is null;
-
+        // Query a gtype structure to find out information
+        // like class size, etc, so we can allocate our own
+        // type info struct deriving from it.
         private static Sys.TypeQuery QueryType(ulong gtype)
         {
             // Create query struct
@@ -44,42 +54,23 @@ namespace GObject
             Console.WriteLine("class_init: Initialising custom subclass!");
         }
 
+        // TODO: Virtual Function
         private static void InstanceInit(IntPtr instance, IntPtr g_class)
         {
             Console.WriteLine("instance_init: Initialising custom subclass!");
         }
 
-        private static string GetQualifiedName(Type type)
+        private static string QualifyName(Type type)
             => $"{type.Namespace}_{type.Name}".Replace(".", "_");
-
-        private static MethodInfo? GetGTypeMethodInfo(Type type)
-        {
-            const BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
-            return type.GetMethod(nameof(GetGType), flags);
-        }
         
-        private static Sys.Type GetGTypeFor(Type type)
+        // Registers a new type class with the underlying GType type system
+        private static void RegisterNativeType(Type type)
         {
-            if (IsSubclass(type))
-            {
-                var qualifiedName = GetQualifiedName(type);
-                return new Sys.Type(Sys.Methods.type_from_name(qualifiedName));
-            }
+            if (!IsSubclass(type))
+                throw new Exception($"Error! Trying to register wrapper class {type} as new type");
 
-            var getTypeIdMethod = GetGTypeMethodInfo(type);
-            if (getTypeIdMethod is {})
-                return (Sys.Type) getTypeIdMethod.Invoke(null, null); //This ensures the type registration
-
-            return Sys.Type.Invalid;
-        }
-        
-        private static void RegisterType(Type type)
-        {
-            if (GetGTypeFor(type) != Sys.Type.Invalid)
-                return; //Type is already registered
-            
-            if(type.BaseType is {} && IsSubclass(type.BaseType))
-                RegisterType(type.BaseType);
+            if (type.BaseType is {} && IsSubclass(type.BaseType))
+                RegisterNativeType(type.BaseType);
 
             var boundaryTypeId = GetBoundaryTypeId(type);
             var query = QueryType(boundaryTypeId);
@@ -97,7 +88,7 @@ namespace GObject
             Marshal.StructureToPtr(typeInfo, ptr, true);
 
             // Perform Registration
-            var qualifiedName = GetQualifiedName(type);
+            var qualifiedName = QualifyName(type);
             Console.WriteLine($"Registering type {type.Name} as {qualifiedName}");
             var typeid = Sys.Methods.type_register_static(boundaryTypeId, qualifiedName, ptr, 0);
 
@@ -106,6 +97,24 @@ namespace GObject
 
             // Free Memory
             Marshal.FreeHGlobal(ptr);
+
+            // Register type in type dictionary
+            TypeDictionary.Add(type, new Sys.Type(typeid));
+        }
+
+        private static Sys.Type TypeFromHandle(IntPtr handle)
+        {
+            try
+            {
+                GTypeInstance instance = (GTypeInstance)Marshal.PtrToStructure(handle, typeof(GTypeInstance));
+                GTypeClass typeClass = (GTypeClass)Marshal.PtrToStructure(instance.g_class, typeof(GTypeClass));
+                return new Sys.Type(typeClass.gtype);
+            }
+            catch
+            {
+                // TODO: Check if pointer is actually a GObject?
+                throw new Exception("Could not resolve type from pointer");
+            }
         }
     }
 }

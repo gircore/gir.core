@@ -4,7 +4,7 @@ using GObject;
 
 namespace Gtk
 {
-    public partial class Widget : GObject.Object, IWidget
+    public partial class Widget : GObject.InitiallyUnowned, IWidget
     {
         private Builder? builder;
 

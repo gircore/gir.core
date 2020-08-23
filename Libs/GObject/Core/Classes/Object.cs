@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace GObject
 {
@@ -9,27 +10,75 @@ namespace GObject
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
 
         protected IntPtr handle;
-        internal IntPtr Handle => handle;
+        public IntPtr Handle => handle;
         private HashSet<Closure> closures = new HashSet<Closure>();
 
-        public Object(params Prop[] properties)
+        // Constructs a new object
+        public Object(params ConstructProp[] properties)
         {
-            RegisterType(GetType());
-            //TODO: use properties
-            var zero = IntPtr.Zero;
-            var typeId = GetGTypeFor(GetType());
-            var ptr = Sys.Object.new_with_properties(
-                typeId, 
-                0, 
-                ref zero, 
-                new Sys.Value[0]
-            );
+            // This will automatically register our
+            // type in the type dictionary. If the type is
+            // a user-subclass, it will register it with
+            // the GType type system automatically.
+            var typeId = TypeDictionary.Get(GetType());
+            Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
             
-            Initialize(ptr);
+            // Pointer to GObject
+            IntPtr handle;
+
+            // Handle Properties
+            int nProps = properties.Length;
+
+            // TODO: Remove dual branches
+            if (nProps > 0)
+            {
+                // We have properties
+                // Prepare Construct Properties
+                var names = new IntPtr[nProps];
+                var values = new Sys.Value[nProps];
+
+                // Populate arrays
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    var prop = properties[i];
+                    // TODO: Marshal in a block, rather than one at a time
+                    // for performance reasons.
+                    names[i] = (IntPtr)Marshal.StringToHGlobalAnsi(prop.Name);
+                    values[i] = prop.Value;
+                }
+
+                // Create with propeties
+                handle = Sys.Object.new_with_properties(
+                    typeId, 
+                    (uint)names.Length,
+                    ref names[0],
+                    values
+                );
+
+                // Free strings
+                foreach (var ptr in names)
+                    Marshal.FreeHGlobal(ptr);
+            }
+            else
+            {
+                // Construct with no properties
+                var zero = IntPtr.Zero;
+                handle = Sys.Object.new_with_properties(
+                    typeId, 
+                    0, 
+                    ref zero,
+                    Array.Empty<Sys.Value>()
+                );
+            }
+            
+            Initialize(handle);
         }
         
+        // Initialises a wrapper for an existing object
         protected Object(IntPtr handle)
         {
+            // TODO: Check to make sure the handle matches our
+            // wrapper type.
             Initialize(handle);
         }
 
@@ -38,24 +87,28 @@ namespace GObject
             handle = ptr;
             objects.Add(ptr, this);
             RegisterOnFinalized();
-        }
-        
-        protected Object(IntPtr handle, bool isInitiallyUnowned = false)
-        {
-            //TODO : Obsolete
+
+            // Allow subclasses to perform initialisation
+            Initialize();
         }
 
-        protected virtual void Constructed()
-        {
-            
-        }
+        // Wrappers can override here to perform
+        // immediate initialisation
+        protected virtual void Initialize() {}
+
+        // TODO: Implement Virtual Methods
+        // This will be done in a later PR
+        protected virtual void Constructed() {}
         
+        // Modify this in the future to play nicely with virtual function support?
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
-        private void RegisterOnFinalized() => Sys.Object.weak_ref(this, this.OnFinalized, IntPtr.Zero);
+        private void RegisterOnFinalized() => Sys.Object.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
 
+        // Property Notify Events
         internal protected void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback) 
             => RegisterEvent($"notify::{propertyName}", callback);
 
+        // Signal Handling
         internal protected void RegisterEvent(string eventName, ActionRefValues callback)
         {
             ThrowIfDisposed();
@@ -75,15 +128,9 @@ namespace GObject
             if(ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
 
-            //TODO activate: closures.Add(closure);
-        }
-
-        public static T Convert<T>(IntPtr handle, Func<IntPtr, T> factory) where T : Object
-        {
-            if(TryGetObject(handle, out T obj))
-                return obj;
-            else
-                return factory(handle);
+            // Add to our closures list so the callback
+            // doesn't get garbage collected.
+            closures.Add(closure);
         }
 
         private void ThrowIfDisposed()
@@ -98,21 +145,39 @@ namespace GObject
                 throw new GLib.GException(error);
         }
 
-        public static implicit operator IntPtr (Object? val) => val?.handle ?? IntPtr.Zero;
-
-        //TODO: Remove implicit cast
-        public static implicit operator Object? (IntPtr val)
+        // This function returns the proxy object to the provided handle
+        // if it already exists, otherwise creats a new wrapper object
+        // and returns it.
+        public static T WrapPointerAs<T>(IntPtr handle)
+            where T: Object
         {
-            objects.TryGetValue(val, out var ret);
-            return ret;
-        }
+            // Attempt to lookup the pointer in the object dictionary
+            if (objects.TryGetValue(handle, out var obj))
+                return (T)obj;
 
-        public static bool TryGetObject<T>(IntPtr handle, out T obj) where T: Object
-        { 
-            var result = objects.TryGetValue(handle, out var ret);
-            obj = (T) ret;
-            
-            return result;
+            // If it is not found, we can assume that it
+            // is NOT a subclass type, as we ensure that
+            // subclass types always outlive their pointers
+            // TODO: Toggle Refs ^^^
+
+            // Resolve gtype of object
+            Sys.Type trueGType = TypeFromHandle(handle);
+            Type trueType = TypeDictionary.Get(trueGType);
+
+            // Ensure we are not constructing a subclass
+            if (IsSubclass(trueType))
+                throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
+
+            // Ensure the conversion is valid
+            Sys.Type castGType = TypeDictionary.Get(typeof(T));
+            if (!Sys.Methods.type_is_a(trueGType, castGType))
+                throw new InvalidCastException();
+
+            // Create using 'IntPtr' constructor
+            return (T)Activator.CreateInstance(
+                trueType,
+                new object[] { obj.Handle }
+            );
         }
     }
 }
