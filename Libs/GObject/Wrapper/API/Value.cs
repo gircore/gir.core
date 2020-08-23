@@ -31,16 +31,15 @@ namespace GObject.Sys
         public Value(string value) : this(Type.String) => Value.set_string(ref this, value);
 
         /// <summary>
-        /// Gets a <see cref="Value"/> from the on one of type <typeparamref name="T"/>.
+        /// Gets an instance of <see cref="Value"/> from the given <paramref name="value"/>.
         /// </summary>
-        /// <typeparam name="T">The type from which the value is created.</typeparam>
         /// <returns>
-        /// A Value from type <typeparamref name="T"/> if the cast is successful.
+        /// An instance of <see cref="Value"/> if the cast is successful.
         /// </returns>
         /// <exception cref="NotSupportedException">
-        /// The given type cannot be parsed as a <see cref="Value"/>.
+        /// The given <paramref name="value"/> has a type which cannot be parsed as a <see cref="Value"/>.
         /// </exception>
-        public static Value From<T>(T value) => value switch
+        public static Value From(object? value) => value switch
         {
             bool v1 => new Value(v1),
             uint v2 => new Value(v2),
@@ -49,7 +48,7 @@ namespace GObject.Sys
             double v5 => new Value(v5),
             string v6 => new Value(v6),
             IntPtr v7 => new Value(v7),
-            Enum _ => new Value((long)(object)value),
+            Enum _ => new Value((long)value),
             _ => throw new NotSupportedException("Unable to create the value from the given type.")
         };
 
