@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace GObject
 {
@@ -87,6 +88,7 @@ namespace GObject
         {
             handle = ptr;
             objects.Add(ptr, this);
+            RegisterProperties();
             RegisterOnFinalized();
 
             // Allow subclasses to perform initialisation
@@ -120,6 +122,18 @@ namespace GObject
         {
             ThrowIfDisposed();
             RegisterEvent(eventName, new Closure(this, callback));
+        }
+
+        private void RegisterProperties()
+        {
+            foreach (FieldInfo field in GetType().GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy))
+            {
+                if (field.FieldType.GetGenericTypeDefinition() == typeof(Property<>))
+                {
+                    var method = field.FieldType.GetMethod("Register", BindingFlags.Instance | BindingFlags.NonPublic);
+                    method?.Invoke(field.GetValue(this), new object[] { this });
+                }
+            }
         }
 
         private void RegisterEvent(string eventName, Closure closure)
