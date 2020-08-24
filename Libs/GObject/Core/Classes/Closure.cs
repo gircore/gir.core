@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace GObject
@@ -10,15 +11,20 @@ namespace GObject
         private IntPtr handle;
         private readonly Action? callback;
         private readonly ActionRefValues? callbackRefValues;
+        private static readonly Dictionary<Delegate, Closure> handlers = new Dictionary<Delegate, Closure>();
+
+        public IntPtr Handle => handle;
 
         public Closure(Object obj, Action callback) : this(obj)
         {
             this.callback = callback ?? throw new ArgumentNullException(nameof(callback));
+            handlers[callback] = this;
         }
 
         public Closure(Object obj, ActionRefValues callbackRefValues) : this(obj)
         {
             this.callbackRefValues = callbackRefValues ?? throw new ArgumentNullException(nameof(callbackRefValues));
+            handlers[callbackRefValues] = this;
         }
 
         private Closure(Object obj)
@@ -27,13 +33,23 @@ namespace GObject
             Sys.Closure.set_marshal(handle, MarshalCallback);
         }
 
-        private void MarshalCallback (IntPtr closure, ref Sys.Value return_value, uint n_param_values, Sys.Value[] param_values, IntPtr invocation_hint, IntPtr marshal_data)
+        private void MarshalCallback(IntPtr closure, ref Sys.Value return_value, uint n_param_values, Sys.Value[] param_values, IntPtr invocation_hint, IntPtr marshal_data)
         {
             callback?.Invoke();
 
             callbackRefValues?.Invoke(ref param_values);
         }
 
-        public static implicit operator IntPtr (Closure closure) => closure.handle;
+        public static bool TryGetByDelegate(Action action, out Closure closure)
+        {
+            return handlers.TryGetValue(action, out closure);
+        }
+
+        public static bool TryGetByDelegate(ActionRefValues action, out Closure closure)
+        {
+            return handlers.TryGetValue(action, out closure);
+        }
+
+        public static implicit operator IntPtr(Closure closure) => closure.handle;
     }
 }
