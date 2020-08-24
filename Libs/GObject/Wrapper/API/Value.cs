@@ -41,6 +41,7 @@ namespace GObject.Sys
         /// </exception>
         public static Value From(object? value) => value switch
         {
+            null => new Value(IntPtr.Zero),
             bool v1 => new Value(v1),
             uint v2 => new Value(v2),
             int v3 => new Value(v3),
