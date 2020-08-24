@@ -12,7 +12,8 @@ namespace GObject
 
         private IntPtr handle;
         protected internal IntPtr Handle => handle;
-        private HashSet<Closure> closures = new HashSet<Closure>();
+        // private HashSet<Closure> closures = new HashSet<Closure>();
+        private static readonly Dictionary<Closure, ulong> closures = new Dictionary<Closure, ulong>();
 
         // Constructs a new object
         public Object(params ConstructProp[] properties)
@@ -111,17 +112,32 @@ namespace GObject
         protected internal void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback)
             => RegisterEvent($"notify::{propertyName}", callback);
 
-        // Signal Handling
-        protected internal void RegisterEvent(string eventName, ActionRefValues callback)
+        protected internal void RegisterEvent(string eventName, ActionRefValues callback, bool after = false)
         {
             ThrowIfDisposed();
-            RegisterEvent(eventName, new Closure(this, callback));
+            RegisterEvent(eventName, new Closure(this, callback), after);
         }
 
-        protected internal void RegisterEvent(string eventName, Action callback)
+        protected internal void RegisterEvent(string eventName, Action callback, bool after = false)
         {
             ThrowIfDisposed();
-            RegisterEvent(eventName, new Closure(this, callback));
+            RegisterEvent(eventName, new Closure(this, callback), after);
+        }
+
+        protected internal void UnregisterEvent(ActionRefValues callback)
+        {
+            ThrowIfDisposed();
+
+            if (Closure.TryGetByDelegate(callback, out Closure closure))
+                UnregisterEvent(closure);
+        }
+
+        protected internal void UnregisterEvent(Action callback)
+        {
+            ThrowIfDisposed();
+
+            if (Closure.TryGetByDelegate(callback, out Closure closure))
+                UnregisterEvent(closure);
         }
 
         private void RegisterProperties()
@@ -136,19 +152,32 @@ namespace GObject
             }
         }
 
-        private void RegisterEvent(string eventName, Closure closure)
+        private void RegisterEvent(string eventName, Closure closure, bool after)
         {
-            var ret = Sys.Methods.signal_connect_closure(handle, eventName, closure, false);
+            if (closures.TryGetValue(closure, out ulong id) && Sys.Methods.signal_handler_is_connected(handle, id))
+                return; // Skip if the handler is already registered
+
+            var ret = Sys.Methods.signal_connect_closure(handle, eventName, closure, after);
 
             if (ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
 
             // Add to our closures list so the callback
             // doesn't get garbage collected.
-            closures.Add(closure);
+            // closures.Add(closure);
+            closures[closure] = ret;
         }
 
-        private void ThrowIfDisposed()
+        private void UnregisterEvent(Closure closure)
+        {
+            if (!closures.TryGetValue(closure, out ulong id))
+                return;
+
+            Sys.Methods.signal_handler_disconnect(handle, id);
+            closures.Remove(closure);
+        }
+
+        protected void ThrowIfDisposed()
         {
             if (Disposed)
                 throw new Exception("Object is disposed");
