@@ -12,7 +12,7 @@ namespace {{ namespace }}
         
         #region Constructors
         protected internal {{ name }}(IntPtr ptr) : base(ptr) {}
-        protected internal {{ name }}(ConstructProp[] properties) : base(properties) {}
+        protected internal {{ name }}(params ConstructProp[] properties) : base(properties) {}
         #endregion Constructors
     }
 }
