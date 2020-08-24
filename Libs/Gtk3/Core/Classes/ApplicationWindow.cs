@@ -8,7 +8,7 @@ namespace Gtk
         //TODO: constructor parameters are not intuitive
         public ApplicationWindow(Application application, string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly())
         {
-            Application = application;
+            // Application = application;
         }
     }
 }
