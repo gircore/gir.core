@@ -79,7 +79,7 @@ namespace GObject
                         throw new Exception("Could not get Type from GType");
 
                     // TODO: One-way registration?
-                    
+
                     gtype = new Sys.Type(parent);
                 }
 
@@ -98,7 +98,7 @@ namespace GObject
                 // a new type. Therefore, we should register the type
                 // and parent types recursively now to avoid having to
                 // do this in the future.
-                
+
                 // Retrieve the GType accordingly
                 if (IsSubclass(type))
                 {
@@ -108,7 +108,7 @@ namespace GObject
                     RegisterNativeType(type);
                     return typedict[type];
                 }
-                
+
                 // We are a wrapper, so register types recursively
                 Console.WriteLine("Registering Recursively");
                 System.Type baseType = type;
@@ -116,9 +116,8 @@ namespace GObject
                 {
                     Console.WriteLine(baseType.Name);
                     var methodInfo = GetGTypeMethodInfo(baseType)!;
-                    var typeid = (ulong) methodInfo.Invoke(null, null);
-                    gtype = new Sys.Type(typeid);
-                    
+                    gtype = ((Type)methodInfo.Invoke(null, null)).GType;
+
                     // Add to typedict for future use
                     Add(baseType, gtype);
                     Console.WriteLine($"Adding {baseType.Name}");
@@ -129,7 +128,7 @@ namespace GObject
                 // Return gtype for *this* type
                 return typedict[type];
             }
-            
+
             // Contains functions
             internal static bool Contains(System.Type type) => typedict.ContainsKey(type);
             internal static bool Contains(Sys.Type gtype) => gtypedict.ContainsKey(gtype);

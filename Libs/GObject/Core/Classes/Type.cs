@@ -2,11 +2,19 @@ namespace GObject
 {
     public readonly struct Type
     {
-        private readonly Sys.Type type;
+        #region Properties
+
+        internal Sys.Type GType { get; }
+
+        #endregion
+
+        #region Constructors
 
         public Type(ulong type)
         {
-            this.type = new Sys.Type(type);
+            GType = new Sys.Type(type);
         }
+
+        #endregion
     }
 }
