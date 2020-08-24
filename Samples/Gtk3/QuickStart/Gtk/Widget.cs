@@ -1,25 +1,24 @@
 using System;
-using System.Reflection;
 using GObject;
 
 namespace Gtk
 {
-    public partial class Widget : GObject.InitiallyUnowned
+    public partial class Widget : InitiallyUnowned
     {
-        public Property<int> WidthRequest { get; }
-        public Property<int> HeightRequest { get; }
+        #region Methods
 
-        internal protected Widget(params ConstructProp[] properties) : base(properties) {}
+        public void Show() => Sys.Widget.show(Handle);
+        public void ShowAll() => Sys.Widget.show_all(Handle);
 
-        internal new static GObject.Sys.Type GetGType() => new GObject.Sys.Type(Sys.Widget.get_type());
+        #endregion
 
-        internal Widget(IntPtr handle) : base(handle)
+        #region Experimental
+
+        public EventHandler<SignalArgs> this[Signal signal]
         {
-            WidthRequest = PropertyOfInt("width-request");
-            HeightRequest = PropertyOfInt("height-request");
+            set => signal.Connect(this, value, true);
         }
 
-        public void Show() => Sys.Widget.show(this.Handle);
-        public void ShowAll() => Sys.Widget.show_all(this.Handle);
+        #endregion
     }
 }

@@ -4,49 +4,67 @@ using GObject;
 
 namespace Gtk
 {
-    public class Window : Container
+    public partial class Window
     {
         #region Properties
-        private Property<int> defaultHeight;
-        public Property<int> DefaultHeight => defaultHeight;
 
-        private Property<int> defaultWith;
-        public Property<int> DefaultWidth => defaultWith;
+        public static readonly Property<string> TitleProperty = GObject.Property<string>.Register<Window>(
+            "title",
+            nameof(Title),
+            get: (o) => o.Title,
+            set: (o, v) => o.Title = v
+        );
 
-        //private Property<Application?> application;
-        //public Property<Application?> Application => application;
+        public string Title
+        {
+            get => GetProperty(TitleProperty);
+            set => SetProperty(TitleProperty, value);
+        }
 
-        internal new static GObject.Sys.Type GetGType() => new GObject.Sys.Type(Sys.Window.get_type());
+        public static readonly Property<int> DefaultHeightProperty = GObject.Property<int>.Register<Window>(
+            "default-height",
+            nameof(DefaultHeight),
+            get: (o) => o.DefaultHeight,
+            set: (o, v) => o.DefaultHeight = v
+        );
+
+        public int DefaultHeight
+        {
+            get => GetProperty(DefaultHeightProperty);
+            set => SetProperty(DefaultHeightProperty, value);
+        }
+
+        public static readonly Property<int> DefaultWidthProperty = GObject.Property<int>.Register<Window>(
+            "default-width",
+            nameof(DefaultWidth),
+            get: (o) => o.DefaultWidth,
+            set: (o, v) => o.DefaultWidth = v
+        );
+
+        public int DefaultWidth
+        {
+            get => GetProperty(DefaultWidthProperty);
+            set => SetProperty(DefaultWidthProperty, value);
+        }
 
         #endregion Properties
 
-        public Window(string title) : base(GObject.ConstructProp.With("title", title))
-        {
-            InitProperties(out defaultHeight, out defaultWith);
-        }
+        #region Constructors
 
-        protected Window(params ConstructProp[] properties) : base(properties)
-        {
-            InitProperties(out defaultHeight, out defaultWith);
-        }
+        public Window(string title)
+            : this(
+                ConstructProp.With(TitleProperty, title)
+            )
+        { }
 
-        internal Window(IntPtr handle) : base(handle) 
-        {
-            InitProperties(out defaultHeight, out defaultWith);
-        }
+        #endregion
 
-        private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth)
-        {
-            defaultHeight = PropertyOfInt("default-height");
-            defaultWidth = PropertyOfInt("default-width");
+        #region Methods
 
-            /*application = Property<Application?>("application",
-                get : GetObject<Application?>,
-                set: Set
-            );*/
-        }
+        public void Close() => Sys.Window.close(Handle);
+        public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(Handle, width, height);
+        public void SetTitlebar(Widget widget) => Sys.Window.set_titlebar(Handle, GetHandle(widget));
 
-        public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(this.Handle, width, height);
-        public void SetTitlebar(Widget widget) => Sys.Window.set_titlebar(this.Handle, widget.Handle);
+        #endregion
     }
 }

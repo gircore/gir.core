@@ -9,11 +9,11 @@ namespace Gtk
     public partial class Button : Bin
     {
         // Type Function
-        internal new static GObject.Type GetGType() => new GObject.Type(Sys.Button.get_type());
+        protected internal new static GObject.Type GetGType() => new GObject.Type(Sys.Button.get_type());
 
         // Constructors
-        protected Button(IntPtr ptr) : base(ptr) {}
-        protected Button(ConstructProp[] properties) : base(properties) {}
+        protected internal Button(IntPtr ptr) : base(ptr) { }
+        protected internal Button(params ConstructProp[] properties) : base(properties) { }
 
         // Properties
     }
