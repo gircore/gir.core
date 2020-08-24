@@ -115,34 +115,20 @@ namespace GObject
         /// <summary>
         /// Get the value of this property in the given object.
         /// </summary>
-        public T Get(Object o) => _get is null ? default! : _get(o);
+        public T Get(Object o) => _get is null
+            ? throw new InvalidOperationException("Trying to read the value of a write-only property.")
+            : _get(o);
 
         /// <summary>
         /// Set the value of this property in the given object
         /// using the given value.
         /// </summary>
-        public void Set(Object o, T v) => _set?.Invoke(o, v);
-
-        /// <summary>
-        /// Registers this property descriptor and creates the correct GProperty
-        /// or child GProperty into the GLib type of <typeparamref name="TObject"/>.
-        /// </summary>
-        /// <param name="name">The name of the GProperty to create.</param>
-        /// <param name="isChild">Define if the GProperty is a child GProperty or not.</param>
-        /// <param name="get">The function called when retrieving the value of this property in bindings.</param>
-        /// <param name="set">The function called when defing the value of this property in bindings.</param>
-        /// <typeparam name="TObject">The type of the object on which this property will be registered.</typeparam>
-        /// <returns>
-        /// An instance of <see cref="Property{T}"/> representing the GProperty description.
-        /// </returns>
-        private static Property<T> RegisterInternal<TObject>(string name, string propertyName, bool isChild, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
-            where TObject : Object
-        {
-            return new Property<T>(name, propertyName, isChild)
+        public void Set(Object o, T v)
             {
-                _get = get is null ? null : new Func<Object, T>((o) => get((TObject)o)),
-                _set = set is null ? null : new Action<Object, T>((o, v) => set((TObject)o, v)),
-            };
+            if (_set is null)
+                throw new InvalidOperationException("Trying to write the value of a read-only property.");
+
+            _set(o, v);
         }
 
         /// <summary>
