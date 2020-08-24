@@ -110,10 +110,10 @@ namespace GObject
         }
 
         /// <summary>
-        /// Registers this GProperty into the given object.
+        /// Registers this GProperty for notify events into the given object.
         /// </summary>
         /// <param name="o">The object in which register the property.</param>
-        internal void Register(Object o)
+        internal void RegisterNotifyEvent(Object o)
         {
             o.RegisterNotifyPropertyChangedEvent(Name, () => o.OnPropertyChanged(PropertyName));
         }
