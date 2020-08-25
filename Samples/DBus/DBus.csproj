@@ -7,8 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libs\Gio\Core\Gio.Core.csproj" />
-    <ProjectReference Include="..\..\Libs\GLib\Core\GLib.Core.csproj" />
-    <ProjectReference Include="..\..\Libs\Gio\Core\Gio.Core.csproj" />
   </ItemGroup>
 
 </Project>
