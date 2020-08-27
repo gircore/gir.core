@@ -4,7 +4,7 @@ namespace GObject
 {
     public class Binding : Object
     {
-        internal new static Sys.Type GetGType() => new Sys.Type(Sys.Binding.get_type());
+        protected new static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GBinding", Sys.Binding.get_type);
 
         #region Properties
 

@@ -7,7 +7,7 @@ namespace GObject
 {
     public partial class Object : IObject
     {
-        protected static Sys.Type GetGType() => new Sys.Type(Sys.Object.get_type());
+        protected static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GObject", Sys.Object.get_type);
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
 
         private IntPtr handle;

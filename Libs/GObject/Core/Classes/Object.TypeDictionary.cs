@@ -12,18 +12,20 @@ namespace GObject
         internal static class TypeDictionary
         {
             // Dual dictionaries for looking up types and gtypes
-            private static Dictionary<System.Type, Sys.Type> typedict;
-            private static Dictionary<Sys.Type, System.Type> gtypedict;
+            private static readonly Dictionary<System.Type, Sys.Type> typedict;
+            private static readonly Dictionary<Sys.Type, System.Type> gtypedict;
+            private static readonly Dictionary<System.Type, TypeDescriptor?> descriptordict;
 
             static TypeDictionary()
             {
                 // Initialise Dictionaries
                 typedict = new Dictionary<System.Type, Sys.Type>();
                 gtypedict = new Dictionary<Sys.Type, System.Type>();
+                descriptordict = new Dictionary<System.Type, TypeDescriptor?>();
 
                 // Add GObject and GInitiallyUnowned
-                Add(typeof(GObject.Object), Object.GetGType());
-                Add(typeof(InitiallyUnowned), InitiallyUnowned.GetGType());
+                Add(typeof(GObject.Object), Object.GTypeDescriptor.GetGType());
+                Add(typeof(InitiallyUnowned), InitiallyUnowned.GTypeDescriptor.GetGType());
             }
 
             // Add to type dictionary
@@ -90,8 +92,8 @@ namespace GObject
             internal static Sys.Type Get(System.Type type)
             {
                 // Check Type Dictionary
-                if (typedict.TryGetValue(type, out var gtype))
-                    return gtype;
+                if (typedict.TryGetValue(type, out var cachedGtype))
+                    return cachedGtype;
 
                 // If we are looking up a type that is not yet in
                 // the type dictionary, we are most likely registering
@@ -115,11 +117,13 @@ namespace GObject
                 while (!Contains(baseType))
                 {
                     Console.WriteLine(baseType.Name);
-                    var methodInfo = GetGTypeMethodInfo(baseType)!;
-                    gtype = ((Type)methodInfo.Invoke(null, null)).GType;
+                    var typeDescriptor = GetTypeDescriptor(baseType);
 
+                    if(typeDescriptor is null)
+                        throw new ArgumentException($"{type.Name} is unknown.", nameof(type));
+                    
                     // Add to typedict for future use
-                    Add(baseType, gtype);
+                    Add(baseType, typeDescriptor.GetGType());
                     Console.WriteLine($"Adding {baseType.Name}");
 
                     baseType = baseType.BaseType;
@@ -138,14 +142,20 @@ namespace GObject
             internal static bool IsSubclass(System.Type type)
                 => type != typeof(Object) &&
                 type != typeof(InitiallyUnowned) &&
-                GetGTypeMethodInfo(type) is null;
+                GetTypeDescriptor(type) is null;
 
             // Returns the MethodInfo for the 'GetGType()' function
             // if the type in question implements it (i.e. a wrapper)
-            private static MethodInfo? GetGTypeMethodInfo(System.Type type)
+            private static TypeDescriptor? GetTypeDescriptor(System.Type type)
             {
-                const BindingFlags flags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
-                return type.GetMethod(nameof(GetGType), flags);
+                if (descriptordict.TryGetValue(type, out var cachedDescriptor))
+                    return cachedDescriptor;
+                
+                var descriptorField = type.GetField(nameof(Object.GTypeDescriptor), BindingFlags.NonPublic | BindingFlags.Static);
+                var descriptor = (TypeDescriptor?)descriptorField?.GetValue(null);
+                descriptordict[type] = descriptor;
+                
+                return descriptor;
             }
         }
     }
