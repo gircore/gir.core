@@ -192,7 +192,7 @@ namespace GObject
         // This function returns the proxy object to the provided handle
         // if it already exists, otherwise creats a new wrapper object
         // and returns it.
-        internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
+        protected static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
         {
             o = default!;
 
