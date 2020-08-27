@@ -15,7 +15,12 @@ namespace GObject
             /// The function to retrieve the GType.
             /// </summary>
             private readonly Func<ulong> getGType;
-
+            
+            /// <summary>
+            /// Cached type.
+            /// </summary>
+            private Sys.Type? gtype;
+            
             #endregion
 
             #region Properties
@@ -24,16 +29,20 @@ namespace GObject
             /// The name of the wrapped type.
             /// </summary>
             public string Name { get; }
+            
+            /// <summary>
+            /// The c type of the wrapper.
+            /// </summary>
+            public Sys.Type GType
+                => gtype ??= new Sys.Type(getGType());
 
             #endregion
 
             private TypeDescriptor(string name, Func<ulong> getGType)
             {
                 Name = name ?? throw new ArgumentNullException(nameof(name));
-                this.getGType = getGType;
+                this.getGType = getGType ?? throw new ArgumentNullException(nameof(getGType));
             }
-
-            public Sys.Type GetGType() => new Sys.Type(getGType());
 
             public static TypeDescriptor For(string wrapperName, Func<ulong> getType)
             {

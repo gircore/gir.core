@@ -24,8 +24,8 @@ namespace GObject
                 descriptordict = new Dictionary<System.Type, TypeDescriptor?>();
 
                 // Add GObject and GInitiallyUnowned
-                Add(typeof(GObject.Object), Object.GTypeDescriptor.GetGType());
-                Add(typeof(InitiallyUnowned), InitiallyUnowned.GTypeDescriptor.GetGType());
+                Add(typeof(GObject.Object), Object.GTypeDescriptor.GType);
+                Add(typeof(InitiallyUnowned), InitiallyUnowned.GTypeDescriptor.GType);
             }
 
             // Add to type dictionary
@@ -123,7 +123,7 @@ namespace GObject
                         throw new ArgumentException($"{type.Name} is unknown.", nameof(type));
                     
                     // Add to typedict for future use
-                    Add(baseType, typeDescriptor.GetGType());
+                    Add(baseType, typeDescriptor.GType);
                     Console.WriteLine($"Adding {baseType.Name}");
 
                     baseType = baseType.BaseType;
