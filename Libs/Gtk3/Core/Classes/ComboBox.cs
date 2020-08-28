@@ -6,8 +6,8 @@ namespace Gtk
 {
     public partial class ComboBox
     {
-        private readonly Property<string> activeId;
-        public Property<string> ActiveId => activeId;
+        private readonly IProperty<string> activeId;
+        public IProperty<string> ActiveId => activeId;
 
         internal ComboBox(string template, string obj, Assembly assembly) : base(template, obj, assembly)
         {
@@ -15,7 +15,7 @@ namespace Gtk
         }
 
         //Workaround for: https://github.com/dotnet/roslyn/issues/32358
-        private void InitProperties(out Property<string> activeId)
+        private void InitProperties(out IProperty<string> activeId)
         {
             activeId = PropertyOfString("active-id");
         }

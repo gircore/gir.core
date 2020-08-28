@@ -9,9 +9,9 @@ namespace Gio
         public event EventHandler<EventArgs>? Activate;
         public event EventHandler<EventArgs>? Startup;
 
-        public Property<string> ApplicationId { get; set; }
-       
-        public Application(string applicationId) : this(Sys.Application.@new(applicationId, Sys.ApplicationFlags.flags_none)) {}
+        public IProperty<string> ApplicationId { get; set; }
+
+        public Application(string applicationId) : this(Sys.Application.@new(applicationId, Sys.ApplicationFlags.flags_none)) { }
 
         public void Run()
         {

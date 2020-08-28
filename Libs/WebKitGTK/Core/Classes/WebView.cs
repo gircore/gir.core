@@ -9,10 +9,10 @@ namespace WebKit2
     public partial class WebView
     {
         #region Properties
-        public Property<WebContext?> Context { get; }
+        public IProperty<WebContext?> Context { get; }
         #endregion Properties
 
-        public WebView(WebContext context) : this(Sys.WebView.new_with_context(GetHandle(context))) {}
+        public WebView(WebContext context) : this(Sys.WebView.new_with_context(GetHandle(context))) { }
 
         public void LoadUri(string uri) => Sys.WebView.load_uri(Handle, uri);
         public Settings GetSettings() => WrapPointerAs<Settings>(Sys.WebView.get_settings(Handle));

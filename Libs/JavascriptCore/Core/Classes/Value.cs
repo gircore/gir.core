@@ -7,7 +7,7 @@ namespace JavaScriptCore
     public partial class Value
     {
         #region Properties
-        public Property<Context> Context { get; }
+        public IProperty<Context> Context { get; }
         #endregion Properties
 
         #region Methods
@@ -43,7 +43,7 @@ namespace JavaScriptCore
             return WrapPointerAs<Value>(ptr);
         }
         #endregion
-      
+
         public static Value Create(IntPtr ptr) => new Value(ptr);
     }
 }

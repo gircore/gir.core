@@ -1,6 +1,6 @@
 namespace GObject
 {
-    public interface Property<T> : CanChange<T>
+    public interface IProperty<T> : CanChange<T>
     {
         T Value { get; set; }
     }

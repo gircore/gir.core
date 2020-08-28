@@ -12,15 +12,15 @@ namespace Gtk
         public event EventHandler<PageChangedEventArgs>? PageAdded;
         public event EventHandler<PageChangedEventArgs>? PageRemoved;
         #endregion
-        
+
         #region Properties
-        public Property<bool> Scrollable { get; }
-        public Property<int> Page { get; }
-        public Property<bool> ShowTabs { get; }
-        public Property<bool> ShowBorder { get; }
+        public IProperty<bool> Scrollable { get; }
+        public IProperty<int> Page { get; }
+        public IProperty<bool> ShowTabs { get; }
+        public IProperty<bool> ShowBorder { get; }
         #endregion
 
-        public Notebook() : this(Sys.Notebook.@new()){ }
+        public Notebook() : this(Sys.Notebook.@new()) { }
 
         public void InsertPage(string label, Widget child, int position)
         {
@@ -32,7 +32,7 @@ namespace Gtk
 
         public void RemovePage(Widget child)
         {
-            if(!data.ContainsKey(child))
+            if (!data.ContainsKey(child))
                 throw new Exception("Not inside this notebook");
 
             data.Remove(child);
@@ -74,7 +74,7 @@ namespace Gtk
         {
             base.Dispose(disposing);
 
-            if(disposing)
+            if (disposing)
                 data.Clear();
         }
     }

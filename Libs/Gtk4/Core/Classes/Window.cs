@@ -6,31 +6,15 @@ namespace Gtk
     public partial class Window
     {
         #region Properties
-        private Property<int> defaultHeight = null!;//TODO
-        public Property<int> DefaultHeight => defaultHeight;
+        public IProperty<int> DefaultHeight { get; }
 
-        private Property<int> defaultWidth = null!;//TODO
-        public Property<int> DefaultWidth => defaultWidth;
+        public IProperty<int> DefaultWidth { get; }
 
-        private Property<Application?> application = null!;//TODO
-        public Property<Application?> Application => application;
+        public IProperty<Application?> Application { get; }
 
         #endregion Properties
 
-        public Window() : this(Sys.Window.@new()) {}
-
-        private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<Application?> application)
-        {
-            defaultHeight = PropertyOfInt("default-height");
-            defaultWidth = PropertyOfInt("default-width");
-
-            //TODO
-            /*application = Property("application",
-                get : GetObject<Application?>,
-                set: Set
-            );*/
-            application = null!;
-        }
+        public Window() : this(Sys.Window.@new()) { }
 
         public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(Handle, width, height);
         public void SetTitlebar(Widget widget) => Sys.Window.set_titlebar(Handle, GetHandle(widget));

@@ -7,28 +7,80 @@ namespace Gtk
     public partial class Window
     {
         #region Properties
-        private Property<int> defaultHeight;
-        public Property<int> DefaultHeight => defaultHeight;
+        public static readonly Property<int> DefaultHeightProperty = GObject.Property<int>.Register<Window>(
+            "default-height",
+            nameof(DefaultHeightEx),
+            get: (o) => o.DefaultHeightEx,
+            set: (o, v) => o.DefaultHeightEx = v
+        );
 
-        private Property<int> defaultWith;
-        public Property<int> DefaultWidth => defaultWith;
+        public int DefaultHeightEx
+        {
+            get => GetProperty(DefaultHeightProperty);
+            set => SetProperty(DefaultHeightProperty, value);
+        }
 
-        private Property<Application?> application;
-        public Property<Application?> Application => application;
+        public static readonly Property<int> DefaultWidthProperty = GObject.Property<int>.Register<Window>(
+            "default-width",
+            nameof(DefaultWidthEx),
+            get: (o) => o.DefaultWidthEx,
+            set: (o, v) => o.DefaultWidthEx = v
+        );
+
+        public int DefaultWidthEx
+        {
+            get => GetProperty(DefaultWidthProperty);
+            set => SetProperty(DefaultWidthProperty, value);
+        }
+
+        public static readonly Property<Application> ApplicationProperty = GObject.Property<Application>.Register<Window>(
+            "application",
+            nameof(ApplicationEx),
+            get: (o) => o.ApplicationEx,
+            set: (o, v) => o.ApplicationEx = v
+        );
+
+        public Application ApplicationEx
+        {
+            get => GetProperty(ApplicationProperty);
+            set => SetProperty(ApplicationProperty, value);
+        }
+
+        public static readonly Property<bool> ResizableProperty = GObject.Property<bool>.Register<Window>(
+            "resizable",
+            nameof(Resizable),
+            get: (o) => o.Resizable,
+            set: (o, v) => o.Resizable = v
+        );
+
+        public bool Resizable
+        {
+            get => GetProperty(ResizableProperty);
+            set => SetProperty(ResizableProperty, value);
+        }
+
+        private IProperty<int> defaultHeight;
+        public IProperty<int> DefaultHeight => defaultHeight;
+
+        private IProperty<int> defaultWith;
+        public IProperty<int> DefaultWidth => defaultWith;
+
+        private IProperty<Application?> application;
+        public IProperty<Application?> Application => application;
 
         #endregion Properties
 
-        public Window() : this(Sys.Window.@new(Sys.WindowType.toplevel)) {}
-        public Window(string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly()) 
+        public Window() : this(Sys.Window.@new(Sys.WindowType.toplevel)) { }
+        public Window(string template, string obj = "root") : base(template, obj, Assembly.GetCallingAssembly())
         {
             InitProperties(out defaultHeight, out defaultWith, out application);
         }
-        internal Window(string template, string obj, Assembly assembly) : base(template, obj, assembly) 
+        internal Window(string template, string obj, Assembly assembly) : base(template, obj, assembly)
         {
             InitProperties(out defaultHeight, out defaultWith, out application);
         }
 
-        private void InitProperties(out Property<int> defaultHeight, out Property<int> defaultWidth, out Property<Application?> application)
+        private void InitProperties(out IProperty<int> defaultHeight, out IProperty<int> defaultWidth, out IProperty<Application?> application)
         {
             defaultHeight = PropertyOfInt("default-height");
             defaultWidth = PropertyOfInt("default-width");

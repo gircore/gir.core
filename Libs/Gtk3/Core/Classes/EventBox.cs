@@ -6,8 +6,8 @@ namespace Gtk
     public partial class EventBox
     {
         #region Properties
-        protected Property<bool> AboveChild { get; }
-        protected Property<bool> VisibleWindow { get; }
+        protected IProperty<bool> AboveChild { get; }
+        protected IProperty<bool> VisibleWindow { get; }
         #endregion Properties
     }
 }

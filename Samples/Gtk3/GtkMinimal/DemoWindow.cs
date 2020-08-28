@@ -7,7 +7,7 @@ namespace GtkDemo
     {
         [Connect]
         private Button Button = default!;
-        
+
         [Connect]
         private Box Box = default!;
 
@@ -36,6 +36,7 @@ namespace GtkDemo
         private void Button_Clicked(object? sender, EventArgs args)
         {
             Console.WriteLine("Hello World!");
+            Resizable = !Resizable;
         }
 
         private void OpenDialog(object? sender, EventArgs args)

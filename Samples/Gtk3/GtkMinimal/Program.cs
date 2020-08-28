@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Gtk;
 
 namespace GtkDemo
@@ -19,12 +20,33 @@ namespace GtkDemo
 
         private void OnActivate(object? sender, EventArgs args)
         {
-            if(sender is Application app)
+            if (sender is Application app)
             {
-                var w = new DemoWindow(app);
-                w.DefaultHeight.Value = 600;
-                w.DefaultWidth.Value = 800;
+                var t = typeof(DemoWindow);
+
+                var w = new DemoWindow(app)
+                {
+                    DefaultHeightEx = 600,
+                    DefaultWidthEx = 800,
+                };
+
+                w.PropertyChanged += (s, a) => Trace.WriteLine($"  => Property Changed On DemoWindow: {a.PropertyName} = {t.GetProperty(a.PropertyName)?.GetValue(w)}");
+
                 w.ShowAll();
+
+                Trace.WriteLine("Getters using properties");
+                Trace.Indent();
+                Trace.WriteLine($"ApplicationId = {w.ApplicationEx.ApplicationId.Value}");
+                Trace.WriteLine($"DefaultHeight = {w.DefaultHeightEx}");
+                Trace.WriteLine($"DefaultWidth = {w.DefaultWidthEx}");
+                Trace.Unindent();
+
+                Trace.WriteLine("Getters using descriptors");
+                Trace.Indent();
+                Trace.WriteLine($"ApplicationProperty.Get() = {Window.ApplicationProperty.Get(w).ApplicationId.Value}");
+                Trace.WriteLine($"DefaultHeightProperty.Get() = {Window.DefaultHeightProperty.Get(w)}");
+                Trace.WriteLine($"DefaultWidthProperty.Get() = {Window.DefaultWidthProperty.Get(w)}");
+                Trace.Unindent();
             }
         }
     }

@@ -8,7 +8,7 @@ namespace Gio
     public partial class DBusConnection
     {
         #region Properties
-        public Property<string> Address { get; }
+        public IProperty<string> Address { get; }
         public ReadOnlyProperty<bool> Closed { get; }
         #endregion Properties
 
