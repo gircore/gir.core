@@ -7,7 +7,7 @@ namespace GObject
 {
     public partial class Object : IObject
     {
-        protected static Sys.Type GetGType() => new Sys.Type(Sys.Object.get_type());
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GObject", Sys.Object.get_type);
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
 
         private IntPtr handle;
@@ -146,7 +146,7 @@ namespace GObject
             {
                 if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Property<>))
                 {
-                    var method = field.FieldType.GetMethod("RegisterNotifyEvent", BindingFlags.Instance | BindingFlags.NonPublic);
+                    var method = field.FieldType.GetMethod(nameof(Property<Object>.RegisterNotifyEvent), BindingFlags.Instance | BindingFlags.NonPublic);
                     method?.Invoke(field.GetValue(this), new object[] { this });
                 }
             }
@@ -192,7 +192,7 @@ namespace GObject
         // This function returns the proxy object to the provided handle
         // if it already exists, otherwise creats a new wrapper object
         // and returns it.
-        internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
+        protected static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
         {
             o = default!;
 

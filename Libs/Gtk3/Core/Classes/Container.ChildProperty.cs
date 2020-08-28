@@ -73,7 +73,7 @@ namespace Gtk
             ThrowIfDisposed();
 
             GObject.Sys.Value v = GObject.Sys.Value.From(value);
-            Sys.Container.child_set_property(Handle, widget.Handle, property.Name, ref v);
+            Sys.Container.child_set_property(Handle, GetHandle(widget), property.Name, ref v);
         }
 
         /// <summary>
