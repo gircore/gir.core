@@ -151,7 +151,11 @@ namespace GObject
                 if (descriptordict.TryGetValue(type, out var cachedDescriptor))
                     return cachedDescriptor;
                 
-                var descriptorField = type.GetField(nameof(Object.GTypeDescriptor), BindingFlags.NonPublic | BindingFlags.Static);
+                var descriptorField = type.GetField(
+                    nameof(Object.GTypeDescriptor), 
+                    BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly
+                );
+                
                 var descriptor = (TypeDescriptor?)descriptorField?.GetValue(null);
                 descriptordict[type] = descriptor;
                 
