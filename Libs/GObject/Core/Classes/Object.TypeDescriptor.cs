@@ -19,7 +19,7 @@ namespace GObject
             /// <summary>
             /// Cached type.
             /// </summary>
-            private Sys.Type? gtype;
+            private GObject.Type? gtype;
             
             #endregion
 
@@ -33,8 +33,8 @@ namespace GObject
             /// <summary>
             /// The c type of the wrapper.
             /// </summary>
-            public Sys.Type GType
-                => gtype ??= new Sys.Type(getGType());
+            public GObject.Type GType
+                => gtype ??= new GObject.Type(getGType());
 
             #endregion
 
