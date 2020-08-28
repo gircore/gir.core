@@ -7,7 +7,7 @@ namespace Gtk
     
     public partial class Container : Widget
     {
-        protected new static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkContainer", Sys.Container.get_type);
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkContainer", Sys.Container.get_type);
         
         #region Constructors
         protected internal Container(IntPtr ptr) : base(ptr) {}

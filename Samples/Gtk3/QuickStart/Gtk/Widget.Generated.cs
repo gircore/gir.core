@@ -7,7 +7,7 @@ namespace Gtk
     
     public partial class Widget : GObject.InitiallyUnowned
     {
-        protected new static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkWidget", Sys.Widget.get_type);
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkWidget", Sys.Widget.get_type);
         
         #region Constructors
         protected internal Widget(IntPtr ptr) : base(ptr) {}

@@ -7,7 +7,7 @@ namespace Gtk
     
     public partial class Button : Bin
     {
-        protected new static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkButton", Sys.Button.get_type);
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkButton", Sys.Button.get_type);
         
         #region Constructors
         protected internal Button(IntPtr ptr) : base(ptr) {}

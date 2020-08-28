@@ -7,7 +7,7 @@ namespace Gtk
     
     public partial class Window : Bin
     {
-        protected new static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkWindow", Sys.Window.get_type);
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkWindow", Sys.Window.get_type);
         
         #region Constructors
         protected internal Window(IntPtr ptr) : base(ptr) {}

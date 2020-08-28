@@ -7,7 +7,7 @@ namespace Gtk
     
     public partial class Bin : Container
     {
-        protected new static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkBin", Sys.Bin.get_type);
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GtkBin", Sys.Bin.get_type);
         
         #region Constructors
         protected internal Bin(IntPtr ptr) : base(ptr) {}
