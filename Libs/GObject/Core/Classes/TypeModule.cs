@@ -4,7 +4,7 @@ namespace GObject
 {
     public class TypeModule : Object
     {
-        protected new static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GTypeModule", Sys.TypeModule.get_type);
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GTypeModule", Sys.TypeModule.get_type);
         
         #region Constructors
         protected internal TypeModule(IntPtr ptr) : base(ptr) {}

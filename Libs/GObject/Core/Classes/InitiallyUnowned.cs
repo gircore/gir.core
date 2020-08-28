@@ -4,7 +4,7 @@ namespace GObject
 {
     public class InitiallyUnowned : Object
     {
-        protected new static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GInitiallyUnowned", Sys.InitiallyUnowned.get_type);
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("GInitiallyUnowned", Sys.InitiallyUnowned.get_type);
 
         public InitiallyUnowned(IntPtr handle) : base(handle)
         {
