@@ -226,12 +226,17 @@ namespace GObject
                 throw new InvalidCastException();
 
             // Create using 'IntPtr' constructor
-            o = (T)Activator.CreateInstance(
-                trueType,
-                obj.Handle
+            var ctor = trueType.GetConstructor(
+                BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance,
+                null, new[] { typeof(IntPtr) }, null
             );
 
-            objects.Add(handle, (Object)(object)o);
+            o = (T)ctor.Invoke(new object[] { handle });
+
+            // TODO: We don't need the following line as
+            // we already add to the object dictionary in the
+            // constructor.
+            // objects.Add(handle, (Object)(object)o);
             return true;
         }
 
