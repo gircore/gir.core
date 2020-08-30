@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace GObject.Sys
@@ -37,6 +36,8 @@ namespace GObject.Sys
 
         #endregion
 
+        #region Methods
+        
         /// <summary>
         /// Gets an instance of <see cref="Value"/> from the given <paramref name="value"/>.
         /// </summary>
@@ -87,9 +88,7 @@ namespace GObject.Sys
 
             throw new NotSupportedException("Unable to cast the value to the given type.");
         }
-
-        public void Dispose() => Value.unset(ref this);
-
+        
         public IntPtr GetPtr() => Value.get_pointer(ref this);
         public IntPtr GetBoxed() => Value.get_boxed(ref this);
         public IntPtr GetObject() => Value.get_object(ref this);
@@ -104,5 +103,9 @@ namespace GObject.Sys
             var ptr = Value.get_string(ref this);
             return Marshal.PtrToStringAnsi(ptr);
         }
+        
+        public void Dispose() => Value.unset(ref this);
+        
+        #endregion
     }
 }
