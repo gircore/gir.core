@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using GObject;
-using Gtk;
-using JavaScriptCore;
 
 namespace WebKit2
 {
@@ -19,9 +17,9 @@ namespace WebKit2
         public UserContentManager GetUserContentManager() => WrapPointerAs<UserContentManager>(Sys.WebView.get_user_content_manager(Handle));
         public WebInspector GetInspector() => WrapPointerAs<WebInspector>(Sys.WebView.get_inspector(Handle));
 
-        public Task<Value> RunJavascriptAsync(string script)
+        public Task<JavaScriptCore.Value> RunJavascriptAsync(string script)
         {
-            var tcs = new TaskCompletionSource<Value>();
+            var tcs = new TaskCompletionSource<JavaScriptCore.Value>();
 
             void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
             {
@@ -29,7 +27,7 @@ namespace WebKit2
                 HandleError(error);
 
                 var jsValue = Sys.JavascriptResult.get_js_value(jsResult);
-                var value = WrapPointerAs<Value>(jsValue);
+                var value = WrapPointerAs<JavaScriptCore.Value>(jsValue);
                 tcs.SetResult(value);
             }
 

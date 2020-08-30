@@ -22,8 +22,7 @@ namespace GObject
             // type in the type dictionary. If the type is
             // a user-subclass, it will register it with
             // the GType type system automatically.
-            var bla = GetType();
-            var typeId = TypeDictionary.Get(bla);
+            var typeId = TypeDictionary.Get(GetType());
             Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
 
             // Pointer to GObject
@@ -46,8 +45,8 @@ namespace GObject
                     var prop = properties[i];
                     // TODO: Marshal in a block, rather than one at a time
                     // for performance reasons.
-                    names[i] = (IntPtr)Marshal.StringToHGlobalAnsi(prop.Name);
-                    values[i] = prop.Value;
+                    names[i] = Marshal.StringToHGlobalAnsi(prop.Name);
+                    values[i] = prop.Value.GValue;
                 }
 
                 // Create with propeties

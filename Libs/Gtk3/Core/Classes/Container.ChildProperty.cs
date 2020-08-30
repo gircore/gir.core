@@ -72,7 +72,7 @@ namespace Gtk
         {
             ThrowIfDisposed();
 
-            GObject.Sys.Value v = GObject.Sys.Value.From(value);
+            var v = GObject.Sys.Value.From(value);
             Sys.Container.child_set_property(Handle, GetHandle(widget), property.Name, ref v);
         }
 
@@ -89,7 +89,7 @@ namespace Gtk
             GObject.Sys.Value value = default;
             Sys.Container.child_get_property(Handle, GetHandle(widget), property.Name, ref value);
 
-            if (TryWrapPointerAs<T>(value.To<IntPtr>(), out var ret))
+            if (TryWrapPointerAs<T>(GObject.Sys.Value.get_object(ref value), out var ret))
                 return ret;
 
             return value.To<T>();

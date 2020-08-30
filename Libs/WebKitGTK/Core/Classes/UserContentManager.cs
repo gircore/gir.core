@@ -12,7 +12,7 @@ namespace WebKit2
 
             void OnMessageReceived(ref GObject.Sys.Value[] values)
             {
-                var result = values[1].GetBoxed();
+                var result = GObject.Sys.Value.get_boxed(ref values[1]);
                 result = Sys.JavascriptResult.@ref(result);
                 var jsValue = Sys.JavascriptResult.get_js_value(result);
                 var value = JavaScriptCore.Value.Create(jsValue);

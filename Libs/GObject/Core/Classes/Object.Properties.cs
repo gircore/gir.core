@@ -34,43 +34,41 @@ namespace GObject
         protected void SetProperty<T>(Property<T> property, T value)
         {
             if (value is Object o)
-                SetGProperty(new Sys.Value(o.Handle), property.Name);
+                SetGProperty(new Value(o.Handle), property.Name);
             else
-                SetGProperty(Sys.Value.From(value), property.Name);
+                SetGProperty(Value.From(value), property.Name);
         }
 
-
-
-        private void SetGProperty(Sys.Value value, string? propertyName)
+        private void SetGProperty(Value value, string? propertyName)
         {
             ThrowIfDisposed();
 
             if (propertyName is null)
                 return;
 
-            Sys.Object.set_property(handle, propertyName, ref value);
+            Sys.Object.set_property(handle, propertyName, ref value.GValue);
             value.Dispose();
         }
 
-        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value?.Handle ?? IntPtr.Zero), propertyName);
-        
-        protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum 
-            => SetGProperty(new Sys.Value((long)(object)e), propertyName);
-        
-        protected void Set(bool value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value), propertyName);
-        
-        protected void Set(uint value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value), propertyName);
-        
-        protected void Set(int value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value), propertyName);
-        
-        protected void Set(string value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value), propertyName);
+        protected void Set(Object? value, [CallerMemberName] string? propertyName = null)
+            => SetGProperty(new Value(value?.Handle ?? IntPtr.Zero), propertyName);
 
-        private Sys.Value GetGProperty(string? propertyName)
+        protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum
+            => SetGProperty(new Value((long)(object)e), propertyName);
+
+        protected void Set(bool value, [CallerMemberName] string? propertyName = null)
+            => SetGProperty(new Value(value), propertyName);
+
+        protected void Set(uint value, [CallerMemberName] string? propertyName = null)
+            => SetGProperty(new Value(value), propertyName);
+
+        protected void Set(int value, [CallerMemberName] string? propertyName = null)
+            => SetGProperty(new Value(value), propertyName);
+
+        protected void Set(string value, [CallerMemberName] string? propertyName = null)
+            => SetGProperty(new Value(value), propertyName);
+
+        private Value GetGProperty(string? propertyName)
         {
             ThrowIfDisposed();
 
@@ -80,7 +78,7 @@ namespace GObject
             var value = new Sys.Value();
             Sys.Object.get_property(handle, propertyName, ref value);
 
-            return value;
+            return new Value(value);
         }
 
         protected T GetEnum<T>([CallerMemberName] string? propertyName = null) where T : Enum

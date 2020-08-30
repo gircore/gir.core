@@ -37,7 +37,7 @@ namespace GObject.Sys
         #endregion
 
         #region Methods
-        
+
         /// <summary>
         /// Gets an instance of <see cref="Value"/> from the given <paramref name="value"/>.
         /// </summary>
@@ -76,36 +76,21 @@ namespace GObject.Sys
         public T To<T>()
         {
             System.Type t = typeof(T);
-            if (t == typeof(bool)) return (T) (object) GetBool();
-            if (t == typeof(uint)) return (T) (object) GetUint();
-            if (t == typeof(int)) return (T) (object) GetInt();
-            if (t.IsEnum || t == typeof(long)) return (T) (object) GetLong();
-            if (t == typeof(double)) return (T) (object) GetDouble();
-            if (t == typeof(string)) return (T) (object) GetString();
-            
+            if (t == typeof(bool)) return (T) (object) Value.get_boolean(ref this);
+            if (t == typeof(uint)) return (T) (object) Value.get_uint(ref this);
+            if (t == typeof(int)) return (T) (object) Value.get_int(ref this);
+            if (t.IsEnum || t == typeof(long)) return (T) (object) Value.get_long(ref this);
+            if (t == typeof(double)) return (T) (object) Value.get_double(ref this);
+            if (t == typeof(string)) return (T) (object) Marshal.PtrToStringAnsi(Value.get_string(ref this));
+
             //Warning: This could be GetPointer() or GetObject()!
-            if (t == typeof(IntPtr)) return (T) (object) GetObject(); 
+            if (t == typeof(IntPtr)) return (T) (object) Value.get_object(ref this);
 
             throw new NotSupportedException("Unable to cast the value to the given type.");
         }
-        
-        public IntPtr GetPtr() => Value.get_pointer(ref this);
-        public IntPtr GetBoxed() => Value.get_boxed(ref this);
-        public IntPtr GetObject() => Value.get_object(ref this);
-        public bool GetBool() => Value.get_boolean(ref this);
-        public uint GetUint() => Value.get_uint(ref this);
-        public int GetInt() => Value.get_int(ref this);
-        public long GetLong() => Value.get_long(ref this);
-        public double GetDouble() => Value.get_double(ref this);
 
-        public string GetString()
-        {
-            var ptr = Value.get_string(ref this);
-            return Marshal.PtrToStringAnsi(ptr);
-        }
-        
         public void Dispose() => Value.unset(ref this);
-        
+
         #endregion
     }
 }

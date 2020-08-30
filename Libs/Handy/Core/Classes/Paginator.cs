@@ -28,7 +28,7 @@ namespace Handy
 
         protected void OnPageChanged(ref GObject.Sys.Value[] values)
         {
-            var index = values[1].GetUint();
+            var index = GObject.Sys.Value.get_uint(ref values[1]);
             PageChanged?.Invoke(this, new PageChangedEventArgs(index));
         }
     }
