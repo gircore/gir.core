@@ -2,7 +2,7 @@ using System;
 
 namespace GObject
 {
-    public partial class Closure
+    internal partial class Closure
     {
         protected bool disposedValue = false;
 
@@ -10,8 +10,8 @@ namespace GObject
         {
             if (!disposedValue)
             {
-                Sys.Closure.unref(handle);
-                handle = IntPtr.Zero;
+                Sys.Closure.unref(Handle);
+                Handle = IntPtr.Zero;
                 disposedValue = true;
             }
         }

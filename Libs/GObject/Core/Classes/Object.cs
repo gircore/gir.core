@@ -157,7 +157,7 @@ namespace GObject
             if (closures.TryGetValue(closure, out ulong id) && Sys.Methods.signal_handler_is_connected(handle, id))
                 return; // Skip if the handler is already registered
 
-            var ret = Sys.Methods.signal_connect_closure(handle, eventName, closure, after);
+            var ret = Sys.Methods.signal_connect_closure(handle, eventName, closure.Handle, after);
 
             if (ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
