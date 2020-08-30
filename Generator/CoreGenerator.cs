@@ -27,6 +27,9 @@ namespace Generator
                 scriptObject.Import("comment_line_by_line", 
                     new Func<string, string>((s) => s.CommentLineByLine())
                 );
+                scriptObject.Import("make_pascal_case",
+                    new Func<string, string>((s) => s.MakePascalCase())    
+                );
 
                 Create("class", cls.Name + ".Generated.cs", scriptObject);
             }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
 using Sf = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -17,6 +18,28 @@ namespace Generator
                 sb.AppendLine("///" + s);
 
             return sb.ToString();
+        }
+
+        public static string MakePascalCase(this string str)
+        {
+            string ToPascalCase(string s)
+            {
+                var words = str.Split("-");
+                var builder = new StringBuilder();
+                foreach (var word in words)
+                {
+                    builder.Append(char.ToUpper(word[0]) + word.Substring(1));
+                }
+
+                return builder.ToString();
+            }
+            
+            return str switch
+            {
+                {Length: 0} => "",
+                {Length: 1} => str.ToUpper(),
+                _ => ToPascalCase(str)
+            };
         }
 
         public static string MakeSingleLine(this string str)

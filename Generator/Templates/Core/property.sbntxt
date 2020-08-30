@@ -1,8 +1,18 @@
-public static readonly Property<TYPE> NAMEProperty = GObject.Property<TYPE>.Wrap(
-    "always-show-image",
-    nameof(C#PROP),
-    (o) => o.C#PROP,
-    (o, v) => o.C#PROP = v
+{{-
+func get_name
+    ret (property.name | make_pascal_case)
+end
+
+func get_descriptor_name
+    ret get_name + 'Property'
+end
+-}}
+
+public static readonly Property<TYPE> {{ get_descriptor_name }} = Property<TYPE>.Wrap(
+    "{{ property.name }}",
+    nameof({{ get_name }}),
+    (o) => o.{{ get_name }},
+    (o, v) => o.{{ get_name }} = v
 );
 
 {{ if $1.doc && $1.doc.text }}
@@ -10,8 +20,8 @@ public static readonly Property<TYPE> NAMEProperty = GObject.Property<TYPE>.Wrap
 {{~ $1.doc.text | comment_line_by_line ~}}
 ///</summary>
 {{ end }}
-public TYPE C#PROP
+public TYPE {{ get_name }}
 {
-    get => GetProperty(NAMEProperty);
-    set => SetProperty(NAMEProperty, value);
+    get => GetProperty({{ get_descriptor_name }});
+    set => SetProperty({{ get_descriptor_name }}, value);
 }
