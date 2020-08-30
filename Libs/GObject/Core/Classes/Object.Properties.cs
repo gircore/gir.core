@@ -34,12 +34,12 @@ namespace GObject
         protected void SetProperty<T>(Property<T> property, T value)
         {
             if (value is Object o)
-                SetGProperty(o.Handle, property.Name);
+                SetGProperty(new Sys.Value(o.Handle), property.Name);
             else
                 SetGProperty(Sys.Value.From(value), property.Name);
         }
 
-        #endregion
+
 
         private void SetGProperty(Sys.Value value, string? propertyName)
         {
@@ -52,12 +52,18 @@ namespace GObject
             value.Dispose();
         }
 
-        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) => SetGProperty(value?.Handle ?? IntPtr.Zero, propertyName);
-        protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum => SetGProperty((long)(object)e, propertyName);
-        protected void Set(bool value, [CallerMemberName] string? propertyName = null) => SetGProperty(value, propertyName);
-        protected void Set(uint value, [CallerMemberName] string? propertyName = null) => SetGProperty(value, propertyName);
-        protected void Set(int value, [CallerMemberName] string? propertyName = null) => SetGProperty(value, propertyName);
-        protected void Set(string value, [CallerMemberName] string? propertyName = null) => SetGProperty(value, propertyName);
+        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) 
+            => SetGProperty(new Sys.Value(value?.Handle ?? IntPtr.Zero), propertyName);
+        protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum 
+            => SetGProperty(new Sys.Value((long)(object)e), propertyName);
+        protected void Set(bool value, [CallerMemberName] string? propertyName = null) 
+            => SetGProperty(new Sys.Value(value), propertyName);
+        protected void Set(uint value, [CallerMemberName] string? propertyName = null) 
+            => SetGProperty(new Sys.Value(value), propertyName);
+        protected void Set(int value, [CallerMemberName] string? propertyName = null) 
+            => SetGProperty(new Sys.Value(value), propertyName);
+        protected void Set(string value, [CallerMemberName] string? propertyName = null) 
+            => SetGProperty(new Sys.Value(value), propertyName);
 
         private Sys.Value GetGProperty(string? propertyName)
         {
@@ -75,42 +81,42 @@ namespace GObject
         protected T GetEnum<T>([CallerMemberName] string? propertyName = null) where T : Enum
         {
             using var v = GetGProperty(propertyName);
-            return (T)((object)((long)v));
+            return (T)((object)v.GetLong());
         }
 
         protected int GetInt([CallerMemberName] string? propertyName = null)
         {
             using var v = GetGProperty(propertyName);
-            return (int)v;
+            return v.GetInt();
         }
 
         protected bool GetBool([CallerMemberName] string? propertyName = null)
         {
             using var v = GetGProperty(propertyName);
-            return (bool)v;
+            return v.GetBool();
         }
         protected double GetDouble([CallerMemberName] string? propertyName = null)
         {
             using var v = GetGProperty(propertyName);
-            return (double)v;
+            return v.GetDouble();
         }
 
         protected uint GetUInt([CallerMemberName] string? propertyName = null)
         {
             using var v = GetGProperty(propertyName);
-            return (uint)v;
+            return v.GetUint();
         }
 
         protected string GetStr([CallerMemberName] string? propertyName = null)
         {
             using var v = GetGProperty(propertyName);
-            return (string)v;
+            return v.GetString();
         }
 
         protected IntPtr GetIntPtr([CallerMemberName] string? propertyName = null)
         {
             using var v = GetGProperty(propertyName);
-            return (IntPtr)v;
+            return v.GetObject();
         }
 
         ///<summary>
@@ -122,5 +128,6 @@ namespace GObject
 
             return WrapPointerAs<T>(v);
         }
+        #endregion
     }
 }
