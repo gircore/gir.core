@@ -157,29 +157,36 @@ namespace Generator
         {
             var subnamespace = "Sys";
             templateFile = $"../Generator/Templates/Wrapper/{templateFile}.sbntxt";
-            var resolveType = new Func<IType, string>((t) =>
-            {
-                var resolvedType =  typeResolver.Resolve(t);
-                return resolvedType.Attribute + resolvedType.Type.Replace(".", $".{subnamespace}.");
-            });
-            var commentLineByLine = new Func<string, string>((s) => s.CommentLineByLine());
-            var makeSingleLine = new Func<string, string>((s) => s.MakeSingleLine());
-            var escapeQuotes = new Func<string, string>((s) => s.EscapeQuotes());
-            var fixIdentifier = new Func<string, string>((s) => s.FixIdentifier());
-            var debug = new Action<string>(Console.WriteLine);
-            var getType = new Func<GType, string>((t) => typeResolver.GetTypeString(t).ToString());
 
             if(obj is {})
             {
                 scriptObject.Import(obj);
             }
-            scriptObject.Import("comment_line_by_line", commentLineByLine);
-            scriptObject.Import("make_single_line", makeSingleLine);
-            scriptObject.Import("escape_quotes", escapeQuotes);
-            scriptObject.Import("fix_identifier", fixIdentifier);
-            scriptObject.Import("resolve_type", resolveType);
-            scriptObject.Import("debug", debug);
-            scriptObject.Import("type_to_string", getType);
+            scriptObject.Import("comment_line_by_line",
+                new Func<string, string>((s) => s.CommentLineByLine())
+            );
+            scriptObject.Import("make_single_line",
+                new Func<string, string>((s) => s.MakeSingleLine())
+            );
+            scriptObject.Import("escape_quotes",
+                new Func<string, string>((s) => s.EscapeQuotes())
+            );
+            scriptObject.Import("fix_identifier",
+                new Func<string, string>((s) => s.FixIdentifier())
+            );
+            scriptObject.Import("resolve_type",
+                new Func<IType, string>((t) =>
+                {
+                    var resolvedType =  typeResolver.Resolve(t);
+                    return resolvedType.Attribute + resolvedType.Type.Replace(".", $".{subnamespace}.");
+                })
+            );
+            scriptObject.Import("debug",
+                new Action<string>(Console.WriteLine)
+            );
+            scriptObject.Import("type_to_string",
+                new Func<GType, string>((t) => typeResolver.GetTypeString(t).ToString())
+            );
             
             scriptObject.Add("namespace", $"{ns}.{subnamespace}");
             scriptObject.Add("dll_import", dllImport);

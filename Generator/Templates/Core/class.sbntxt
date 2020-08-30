@@ -9,6 +9,12 @@ namespace {{ namespace }}
     {
         private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ type_name }}", Sys.{{ name }}.get_type);
         
+        #region Properties
+{{~ for property in properties
+    include 'property.sbntxt' property
+end ~}}
+        #endregion
+        
         #region Constructors
         protected internal {{ name }}(IntPtr ptr) : base(ptr) {}
         protected internal {{ name }}(params ConstructProp[] properties) : base(properties) {}

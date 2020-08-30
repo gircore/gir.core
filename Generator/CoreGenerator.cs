@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Gir;
 using Scriban;
 using Scriban.Runtime;
@@ -25,6 +24,9 @@ namespace Generator
             {
                 var scriptObject = new ScriptObject {{"namespace", @namespace}};
                 scriptObject.Import(cls);
+                scriptObject.Import("comment_line_by_line", 
+                    new Func<string, string>((s) => s.CommentLineByLine())
+                );
 
                 Create("class", cls.Name + ".Generated.cs", scriptObject);
             }

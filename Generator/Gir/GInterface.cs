@@ -22,5 +22,8 @@ namespace Gir
         
         [XmlAttribute("get-type", Namespace="http://www.gtk.org/introspection/glib/1.0")]
         public string? GetTypeFunction { get; set; }
+
+        [XmlElement("property")]
+        public List<GProperty> Properties { get; set; } = default!;
     }
 }
