@@ -90,7 +90,6 @@ namespace GObject.Sys
 
         public void Dispose() => Value.unset(ref this);
 
-        //TODO: Explicite / Implicite operatoren entfernen?
         public IntPtr GetPtr() => Value.get_pointer(ref this);
         public IntPtr GetBoxed() => Value.get_boxed(ref this);
         public IntPtr GetObject() => Value.get_object(ref this);

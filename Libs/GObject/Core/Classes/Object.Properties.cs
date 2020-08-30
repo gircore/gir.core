@@ -54,14 +54,19 @@ namespace GObject
 
         protected void Set(Object? value, [CallerMemberName] string? propertyName = null) 
             => SetGProperty(new Sys.Value(value?.Handle ?? IntPtr.Zero), propertyName);
+        
         protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum 
             => SetGProperty(new Sys.Value((long)(object)e), propertyName);
+        
         protected void Set(bool value, [CallerMemberName] string? propertyName = null) 
             => SetGProperty(new Sys.Value(value), propertyName);
+        
         protected void Set(uint value, [CallerMemberName] string? propertyName = null) 
             => SetGProperty(new Sys.Value(value), propertyName);
+        
         protected void Set(int value, [CallerMemberName] string? propertyName = null) 
             => SetGProperty(new Sys.Value(value), propertyName);
+        
         protected void Set(string value, [CallerMemberName] string? propertyName = null) 
             => SetGProperty(new Sys.Value(value), propertyName);
 
