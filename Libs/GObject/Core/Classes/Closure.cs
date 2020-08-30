@@ -4,16 +4,25 @@ using System.Runtime.InteropServices;
 
 namespace GObject
 {
-    public delegate void ActionRefValues(ref Sys.Value[] items);
+    public delegate void ActionRefValues(ref Sys.Value[] items); //Todo: This exposes the sys namespace
 
-    public partial class Closure
+    internal partial class Closure
     {
-        private IntPtr handle;
+        #region Fields
+
         private readonly Action? callback;
         private readonly ActionRefValues? callbackRefValues;
         private static readonly Dictionary<Delegate, Closure> handlers = new Dictionary<Delegate, Closure>();
 
-        public IntPtr Handle => handle;
+        #endregion
+
+        #region Properties
+
+        internal IntPtr Handle { get; private set; }
+
+        #endregion
+
+        #region Constructors
 
         public Closure(Object obj, Action callback) : this(obj)
         {
@@ -29,11 +38,15 @@ namespace GObject
 
         private Closure(Object obj)
         {
-            handle = Sys.Closure.new_object((uint)Marshal.SizeOf(typeof(Sys.Closure)), obj.Handle);
-            Sys.Closure.set_marshal(handle, MarshalCallback);
+            Handle = Sys.Closure.new_object((uint) Marshal.SizeOf(typeof(Sys.Closure)), obj.Handle);
+            Sys.Closure.set_marshal(Handle, MarshalCallback);
         }
 
-        private void MarshalCallback(IntPtr closure, ref Sys.Value return_value, uint n_param_values, Sys.Value[] param_values, IntPtr invocation_hint, IntPtr marshal_data)
+        #endregion
+
+        #region Methods
+        private void MarshalCallback(IntPtr closure, ref Sys.Value return_value, uint n_param_values,
+            Sys.Value[] param_values, IntPtr invocation_hint, IntPtr marshal_data)
         {
             callback?.Invoke();
 
@@ -49,7 +62,6 @@ namespace GObject
         {
             return handlers.TryGetValue(action, out closure);
         }
-
-        public static implicit operator IntPtr(Closure closure) => closure.handle;
+        #endregion
     }
 }
