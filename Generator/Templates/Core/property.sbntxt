@@ -7,9 +7,21 @@ if !property_type
     debug name + ': Can not create property ' + property_name
     ret # Quit function because we can not create this property
 end
+
+func get_obsolete
+    if property.deprecated
+        text = ""
+        if property.doc_deprecated
+            text = property.doc_deprecated.text | make_single_line | escape_quotes
+        end
+        ret '[Obsolete("' + text + '")]'
+    end
+    ret ''
+end
 }}
         #region {{ property_descriptor_name }}
-        
+        {{ get_obsolete 
+        }}
         public static readonly Property<{{ property_type }}> {{ property_descriptor_name }} = Property<{{ property_type }}>.Register<{{ name }}>(
             "{{ property.name }}",
             nameof({{ property_name }}),
@@ -21,7 +33,9 @@ end
         ///<summary>
         {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
         ///</summary>
-        {{~ end ~}}
+        {{ end 
+        get_obsolete 
+        }}
         public {{ property_type }} {{ property_name }}
         {
             get => GetProperty({{ property_descriptor_name }});{{ if property.writeable }}

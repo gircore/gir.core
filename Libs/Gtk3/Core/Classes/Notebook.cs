@@ -13,13 +13,6 @@ namespace Gtk
         public event EventHandler<PageChangedEventArgs>? PageRemoved;
         #endregion
 
-        #region Properties
-        public IProperty<bool> Scrollable { get; }
-        public IProperty<int> Page { get; }
-        public IProperty<bool> ShowTabs { get; }
-        public IProperty<bool> ShowBorder { get; }
-        #endregion
-
         public Notebook() : this(Sys.Notebook.@new()) { }
 
         public void InsertPage(string label, Widget child, int position)

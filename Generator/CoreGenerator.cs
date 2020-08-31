@@ -39,6 +39,12 @@ namespace Generator
                 scriptObject.Import("make_pascal_case",
                     new Func<string, string>((s) => s.MakePascalCase())    
                 );
+                scriptObject.Import("make_single_line",
+                    new Func<string, string>((s) => s.MakeSingleLine())
+                );
+                scriptObject.Import("escape_quotes",
+                    new Func<string, string>((s) => s.EscapeQuotes())
+                );
                 scriptObject.Import("type_to_string",
                     new Func<GType?, string?>((t) =>
                     {

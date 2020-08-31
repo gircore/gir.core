@@ -6,7 +6,6 @@ namespace Gtk
     public partial class Image : IImage
     {
         #region Properties
-        public Property<int> PixelSize { get; }
         public Property<string> Name { get; }
         #endregion
 

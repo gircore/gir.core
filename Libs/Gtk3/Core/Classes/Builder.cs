@@ -9,8 +9,6 @@ namespace Gtk
 {
     public partial class Builder
     {
-        public IProperty<string> TranslationDomain { get; }
-
         internal Builder(string template, Assembly assembly) : this(Sys.Builder.@new())
         {
             using var stream = assembly.GetManifestResourceStream(template);

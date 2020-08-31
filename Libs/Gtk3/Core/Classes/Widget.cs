@@ -1,17 +1,10 @@
-using System;
 using System.Reflection;
-using GObject;
 
 namespace Gtk
 {
     public partial class Widget : IWidget
     {
         private Builder? builder;
-
-        #region Properties
-        public IProperty<int> WidthRequest { get; }
-        public IProperty<int> HeightRequest { get; }
-        #endregion
 
         internal Widget(string template, string obj, Assembly assembly) : this(new Builder(template, assembly), obj) { }
 

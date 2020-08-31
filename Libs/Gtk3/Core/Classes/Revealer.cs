@@ -6,7 +6,6 @@ namespace Gtk
     public partial class Revealer
     {
         #region Properties
-        public IProperty<uint> TransitionDuration { get; }
         public IProperty<RevealerTransitionType> TransitionType { get; }
         public IProperty<bool> Reveal { get; }
         #endregion
