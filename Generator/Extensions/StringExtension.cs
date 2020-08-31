@@ -9,13 +9,13 @@ namespace Generator
 {
     public static class StringExtension
     {
-        public static string CommentLineByLine(this string str)
+        public static string CommentLineByLine(this string str, string linePrefix = "")
         {
             var sArray = str.Split("\n");
             var sb = new StringBuilder();
 
             foreach(var s in sArray)
-                sb.AppendLine("///" + s);
+                sb.AppendLine(linePrefix + "///" + s);
 
             return sb.ToString();
         }

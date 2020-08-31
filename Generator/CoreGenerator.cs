@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gir;
 using Scriban;
 using Scriban.Runtime;
@@ -8,7 +9,15 @@ namespace Generator
 {
     public class CoreGenerator : Generator
     {
-        public CoreGenerator(string girFile, string outputDir) : base(girFile, outputDir) { }
+        private readonly TypeResolver typeResolver;
+
+        public CoreGenerator(string girFile, string outputDir) : base(girFile, outputDir)
+        {
+            var aliases = new List<GAlias>();
+            aliases.AddRange(Repository.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+            var aliasResolver = new AliasResolver(aliases);
+            typeResolver = new TypeResolver(aliasResolver);
+        }
 
         protected override void Generate(GNamespace gNamespace)
         {
@@ -24,11 +33,27 @@ namespace Generator
             {
                 var scriptObject = new ScriptObject {{"namespace", @namespace}};
                 scriptObject.Import(cls);
-                scriptObject.Import("comment_line_by_line", 
-                    new Func<string, string>((s) => s.CommentLineByLine())
+                scriptObject.Import("comment_line_by_line_with_prefix", 
+                    new Func<string, string, string>((s, prefix) => s.CommentLineByLine(prefix))
                 );
                 scriptObject.Import("make_pascal_case",
                     new Func<string, string>((s) => s.MakePascalCase())    
+                );
+                scriptObject.Import("type_to_string",
+                    new Func<GType?, string?>((t) =>
+                    {
+                        try
+                        {
+                            return t is null ? null : typeResolver.GetTypeString(t).ToString();
+                        }
+                        catch
+                        {
+                            return null;
+                        }
+                    })
+                );
+                scriptObject.Import("debug",
+                    new Action<string>(Console.WriteLine)
                 );
 
                 Create("class", cls.Name + ".Generated.cs", scriptObject);

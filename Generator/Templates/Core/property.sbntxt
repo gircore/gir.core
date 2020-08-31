@@ -1,27 +1,31 @@
 {{-
-func get_name
-    ret (property.name | make_pascal_case)
+property_name = (property.name | make_pascal_case)
+property_descriptor_name = property_name + 'Property'
+property_type = ($1.type | type_to_string)
+
+if !property_type 
+    debug name + ': Can not create property ' + property_name
+    ret # Quit function because we can not create this property
 end
-
-func get_descriptor_name
-    ret get_name + 'Property'
-end
--}}
-
-public static readonly Property<TYPE> {{ get_descriptor_name }} = Property<TYPE>.Wrap(
-    "{{ property.name }}",
-    nameof({{ get_name }}),
-    (o) => o.{{ get_name }},
-    (o, v) => o.{{ get_name }} = v
-);
-
-{{ if $1.doc && $1.doc.text }}
-///<summary>
-{{~ $1.doc.text | comment_line_by_line ~}}
-///</summary>
-{{ end }}
-public TYPE {{ get_name }}
-{
-    get => GetProperty({{ get_descriptor_name }});
-    set => SetProperty({{ get_descriptor_name }}, value);
-}
+}}
+        #region {{ property_descriptor_name }}
+        
+        public static readonly Property<{{ property_type }}> {{ property_descriptor_name }} = Property<{{ property_type }}>.Register<{{ name }}>(
+            "{{ property.name }}",
+            nameof({{ property_name }}),
+            (o) => o.{{ property_name }}{{ if property.writeable }},
+            (o, v) => o.{{ property_name }} = v{{ end }}
+        );
+        
+        {{~ if $1.doc && $1.doc.text ~}}
+        ///<summary>
+        {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
+        ///</summary>
+        {{~ end ~}}
+        public {{ property_type }} {{ property_name }}
+        {
+            get => GetProperty({{ property_descriptor_name }});{{ if property.writeable }}
+            set => SetProperty({{ property_descriptor_name }}, value);{{ end }}
+        }
+        
+        #endregion
