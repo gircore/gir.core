@@ -53,7 +53,7 @@ namespace Gtk
 
         public Window(string title)
             : this(
-                ConstructProp.With(TitleProperty, title)
+                ConstructParameter.With(TitleProperty, title)
             )
         { }
 

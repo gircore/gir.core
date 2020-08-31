@@ -79,11 +79,11 @@ namespace GObject
 
         public Binding(Object source, string sourceProperty, Object target, string targetProperty)
             : base(
-                ConstructProp.With(SourceProperty, source),
-                ConstructProp.With(SourcePropertyProperty, sourceProperty),
-                ConstructProp.With(TargetProperty, target),
-                ConstructProp.With(TargetPropertyProperty, targetProperty),
-                ConstructProp.With(FlagsProperty, Sys.BindingFlags.bidirectional))
+                ConstructParameter.With(SourceProperty, source),
+                ConstructParameter.With(SourcePropertyProperty, sourceProperty),
+                ConstructParameter.With(TargetProperty, target),
+                ConstructParameter.With(TargetPropertyProperty, targetProperty),
+                ConstructParameter.With(FlagsProperty, Sys.BindingFlags.bidirectional))
         { }
 
         protected override void Dispose(bool disposing)
