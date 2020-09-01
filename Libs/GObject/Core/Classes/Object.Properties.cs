@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 
 namespace GObject
 {
@@ -19,7 +18,7 @@ namespace GObject
         {
             var value = GetGProperty(property.Name);
 
-            if (TryWrapPointerAs<T>(value.To<IntPtr>(), out var ret))
+            if (TryWrapPointerAs(value.To<IntPtr>(), out T ret))
                 return ret;
 
             return value.To<T>();
@@ -39,100 +38,42 @@ namespace GObject
                 SetGProperty(Sys.Value.From(value), property.Name);
         }
 
-
-
-        private void SetGProperty(Sys.Value value, string? propertyName)
+        /// <summary>
+        /// Defines the value of a native GProperty given its <paramref name="name"/>
+        /// </summary>
+        /// <param name="value">The property name.</param>
+        /// <param name="name">The property value.</param>
+        private void SetGProperty(Sys.Value value, string? name)
         {
             ThrowIfDisposed();
 
-            if (propertyName is null)
+            if (name is null)
                 return;
 
-            Sys.Object.set_property(handle, propertyName, ref value);
+            Sys.Object.set_property(handle, name, ref value);
             value.Dispose();
         }
 
-        protected void Set(Object? value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value?.Handle ?? IntPtr.Zero), propertyName);
-        
-        protected void SetEnum<T>(T e, [CallerMemberName] string? propertyName = null) where T : Enum 
-            => SetGProperty(new Sys.Value((long)(object)e), propertyName);
-        
-        protected void Set(bool value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value), propertyName);
-        
-        protected void Set(uint value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value), propertyName);
-        
-        protected void Set(int value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value), propertyName);
-        
-        protected void Set(string value, [CallerMemberName] string? propertyName = null) 
-            => SetGProperty(new Sys.Value(value), propertyName);
-
-        private Sys.Value GetGProperty(string? propertyName)
+        /// <summary>
+        /// Gets the value of a native GProperty given its <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">The property name.</param>
+        /// <returns>
+        /// The native value of the property, wrapped is a <see cref="Sys.Value"/>.
+        /// </returns>
+        private Sys.Value GetGProperty(string? name)
         {
             ThrowIfDisposed();
 
-            if (propertyName is null)
+            if (name is null)
                 return default;
 
             var value = new Sys.Value();
-            Sys.Object.get_property(handle, propertyName, ref value);
+            Sys.Object.get_property(handle, name, ref value);
 
             return value;
         }
 
-        protected T GetEnum<T>([CallerMemberName] string? propertyName = null) where T : Enum
-        {
-            using var v = GetGProperty(propertyName);
-            return (T)((object)v.GetLong());
-        }
-
-        protected int GetInt([CallerMemberName] string? propertyName = null)
-        {
-            using var v = GetGProperty(propertyName);
-            return v.GetInt();
-        }
-
-        protected bool GetBool([CallerMemberName] string? propertyName = null)
-        {
-            using var v = GetGProperty(propertyName);
-            return v.GetBool();
-        }
-        protected double GetDouble([CallerMemberName] string? propertyName = null)
-        {
-            using var v = GetGProperty(propertyName);
-            return v.GetDouble();
-        }
-
-        protected uint GetUInt([CallerMemberName] string? propertyName = null)
-        {
-            using var v = GetGProperty(propertyName);
-            return v.GetUint();
-        }
-
-        protected string GetStr([CallerMemberName] string? propertyName = null)
-        {
-            using var v = GetGProperty(propertyName);
-            return v.GetString();
-        }
-
-        protected IntPtr GetIntPtr([CallerMemberName] string? propertyName = null)
-        {
-            using var v = GetGProperty(propertyName);
-            return v.GetObject();
-        }
-
-        ///<summary>
-        ///May return null!
-        ///</sumamry>
-        protected T GetObject<T>([CallerMemberName] string? propertyName = null) where T : Object
-        {
-            var v = GetIntPtr(propertyName);
-
-            return WrapPointerAs<T>(v);
-        }
         #endregion
     }
 }
