@@ -13,9 +13,6 @@ namespace WebKit2WebExtension
     }
     public partial class WebExtension : GObject.Object
     {
-        public event EventHandler<PageCreatedEventArgs>? PageCreated;
-
         private WebPage GetPage(ref GObject.Sys.Value[] values) => null!;//TODO
-        protected void OnPageCreated(ref GObject.Sys.Value[] values) => PageCreated?.Invoke(this, new PageCreatedEventArgs(GetPage(ref values)));
     }
 }
