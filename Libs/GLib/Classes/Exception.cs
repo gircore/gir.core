@@ -5,21 +5,18 @@ namespace GLib
 {
     public partial class GException : Exception
     {
-        private readonly IntPtr errorHandle;
-
         #region Properties
-        protected Error? error;
-        protected Error Error => error ??= Marshal.PtrToStructure<GLib.Error>(errorHandle);
+        protected Error Error { get; private set; }
 
         private string? message;
         public override string Message =>  message ??= Marshal.PtrToStringAuto(Error.Message);
         #endregion Properties
 
-        public GException(IntPtr error)
+        public GException(ref Error error)
         {
-            this.errorHandle = error;
+            Error = error;
         }
 
-        private void Free() => Error.free(errorHandle);
+        private void Free() => Error.Free();
     }
 }

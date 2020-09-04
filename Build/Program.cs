@@ -77,7 +77,7 @@ class Program
         Target(Targets.Release, () => configuration = confRelease);
         Target(Targets.Debug, () => configuration = confDebug);
 
-        Target("default", DependsOn(Targets.Build));
+        Target("default", DependsOn(Targets.Generate));
         RunTargetsAndExit(args);
     }
 

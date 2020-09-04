@@ -1,0 +1,14 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace {{ namespace }}
+{
+    public partial struct {{ name }}
+    {
+        #region Native methods
+{{~ for method in methods
+    include 'method.sbntxt' method
+end ~}}
+        #endregion
+    }
+}

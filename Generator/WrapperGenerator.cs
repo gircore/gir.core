@@ -7,7 +7,7 @@ using Scriban;
 using Scriban.Runtime;
 
 namespace Generator
-{
+{/*
     public class WrapperGenerator : Generator
     {
         private readonly string dllImport;
@@ -196,5 +196,5 @@ namespace Generator
 
             GenerateCode(templateFile, fileName + ".cs", context);
         }
-    }
+    }*/
 }

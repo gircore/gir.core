@@ -20,7 +20,7 @@ namespace GLib
             {
                 if(disposing)
                 {
-                    error = null;
+                    Error = null;
                     message = null;
                 }
 

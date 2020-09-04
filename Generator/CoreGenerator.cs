@@ -39,59 +39,74 @@ namespace Generator
                 throw new Exception("Could not create code. Namespace is missing a name.");
             
             GenerateClasses(gNamespace.Classes, gNamespace.Name);
+            GenerateRecords(gNamespace.Records, gNamespace.Name);
+            GenerateRecords(gNamespace.Unions, gNamespace.Name);
         }
 
-        private void GenerateClasses(IEnumerable<GInterface> classes, string @namespace)
+        private void GenerateRecords(IEnumerable<GRecord> records, string ns)
+        {
+            foreach(var record in records)
+                record.Methods.InsertRange(0, record.Functions);
+
+            GenerateClasses(records, ns, "struct", "Structs");
+        }
+        
+        private void GenerateClasses(IEnumerable<GInterface> classes, string @namespace, string templateName = "class", string subfolder = "Classes")
         {
             foreach (var cls in classes)
             {
-                var scriptObject = new ScriptObject
-                {
-                    {"namespace", @namespace},
-                    {"dll_import", dllImport}
-                };
-                scriptObject.Import(cls);
-                scriptObject.Import("comment_line_by_line_with_prefix", 
-                    new Func<string, string, string>((s, prefix) => s.CommentLineByLine(prefix))
-                );
-                scriptObject.Import("make_pascal_case",
-                    new Func<string, string>((s) => s.MakePascalCase())    
-                );
-                scriptObject.Import("make_single_line",
-                    new Func<string, string>((s) => s.MakeSingleLine())
-                );
-                scriptObject.Import("escape_quotes",
-                    new Func<string, string>((s) => s.EscapeQuotes())
-                );
-                scriptObject.Import("type_to_string",
-                    new Func<GType?, string?>((t) =>
-                    {
-                        try
-                        {
-                            return t is null ? null : typeResolver.GetTypeString(t).ToString();
-                        }
-                        catch
-                        {
-                            return null;
-                        }
-                    })
-                );
-                scriptObject.Import("debug",
-                    new Action<string>(Console.WriteLine)
-                );
-                scriptObject.Import("fix_identifier",
-                    new Func<string, string>((s) => s.FixIdentifier())
-                );
-                scriptObject.Import("resolve_type",
-                    new Func<IType, string>((t) =>
-                    {
-                        var resolvedType =  typeResolver.Resolve(t);
-                        return resolvedType.Attribute + resolvedType.Type;
-                    })
-                );
-
-                Create("class", Path.Combine("Classes", cls.Name + ".Generated.cs"), scriptObject);
+                var scriptObject = CreateScriptObject(@namespace, cls);
+                Create(templateName, Path.Combine(subfolder, cls.Name + ".Generated.cs"), scriptObject);
             }
+        }
+
+        private ScriptObject CreateScriptObject(string @namespace, Object obj)
+        {
+            var scriptObject = new ScriptObject
+            {
+                {"namespace", @namespace},
+                {"dll_import", dllImport}
+            };
+            scriptObject.Import(obj);
+            scriptObject.Import("comment_line_by_line_with_prefix",
+                new Func<string, string, string>((s, prefix) => s.CommentLineByLine(prefix))
+            );
+            scriptObject.Import("make_pascal_case",
+                new Func<string, string>((s) => s.MakePascalCase())
+            );
+            scriptObject.Import("make_single_line",
+                new Func<string, string>((s) => s.MakeSingleLine())
+            );
+            scriptObject.Import("escape_quotes",
+                new Func<string, string>((s) => s.EscapeQuotes())
+            );
+            scriptObject.Import("type_to_string",
+                new Func<GType?, string?>((t) =>
+                {
+                    try
+                    {
+                        return t is null ? null : typeResolver.GetTypeString(t).ToString();
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                })
+            );
+            scriptObject.Import("debug",
+                new Action<string>(Console.WriteLine)
+            );
+            scriptObject.Import("fix_identifier",
+                new Func<string, string>((s) => s.FixIdentifier())
+            );
+            scriptObject.Import("resolve_type",
+                new Func<IType, string>((t) =>
+                {
+                    var resolvedType = typeResolver.Resolve(t);
+                    return resolvedType.Attribute + resolvedType.Type;
+                })
+            );
+            return scriptObject;
         }
 
         private void Create(string templateFile, string fileName, ScriptObject scriptObject)

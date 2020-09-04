@@ -19,25 +19,28 @@ func parameters
             if $0.parameters
                 ", "
             end
-            "out IntPtr error"
+            "out GLib.Error error"
         end
     end
+end
 
+func get_obsolete
+    if method.deprecated
+        text = ""
+        if method.doc_deprecated
+            text = method.doc_deprecated.text | make_single_line | escape_quotes
+        end
+        ret '[Obsolete("' + text + '")]'
+    end
+    ret ''
 end
 -}}
-{{ if $1.doc && $1.doc.text }}
-///<summary>
-{{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
-///</summary>
-{{ end }}
-{{~ if $1.deprecated
-        text = ""
-        if $1.doc_deprecated
-            text = $1.doc_deprecated.text | make_single_line | escape_quotes
-~}}
-[Obsolete("{{ text }}")]
-{{~
-        end
-end ~}}
-[DllImport("{{ dll_import }}", EntryPoint = "{{ $1.identifier }}")]
-private static extern {{ $1.return_value | resolve_type }} {{ $1.name | fix_identifier }}({{ parameters $1 }});
+        {{~ if $1.doc && $1.doc.text ~}}
+        ///<summary>
+        {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
+        ///</summary>
+        {{ end 
+        get_obsolete -}}
+        [DllImport("{{ dll_import }}", EntryPoint = "{{ $1.identifier }}")]
+        private static extern {{ $1.return_value | resolve_type }} {{ $1.name | fix_identifier }}({{ parameters $1 }});
+

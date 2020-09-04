@@ -52,7 +52,14 @@ namespace Generator
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
 
-        private MyType StringArray(string length, bool isParameter) => new MyType("byte"){ IsArray = true, ArrayLengthParameter = length, IsPointer = true, IsValueType = false, IsParameter = isParameter};
+        private MyType StringArray(string length, bool isParameter) => new MyType("byte")
+        {
+            IsArray = true, 
+            ArrayLengthParameter = length, 
+            IsPointer = true, 
+            IsValueType = false, 
+            IsParameter = isParameter
+        };
 
         public ResolvedType GetTypeString(GType type)
             => GetTypeName(ConvertGType(type, true));
@@ -130,6 +137,7 @@ namespace Generator
                 var t when t.StartsWith("Cogl") => IntPtr(),
 
                 "GValue" => Value(),
+                "GError" => Error(),
 
                 "guint16" => UShort(),
                 "gushort" => UShort(),
@@ -190,6 +198,7 @@ namespace Generator
         private MyType Long() => ValueType("long");
         private MyType ULong() => ValueType("ulong");
         private MyType Float() => ValueType("float");
+        private MyType Error() => ValueType("Error");
 
         private MyType ValueType(string str) => new MyType(str){IsValueType = true};
         private MyType ReferenceType(string str) => new MyType(str);
