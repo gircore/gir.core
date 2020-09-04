@@ -7,7 +7,7 @@ namespace GLib
         private readonly IntPtr handle;
         internal IntPtr Handle => handle;
 
-        public VariantType(string type) : this(Sys.VariantType.@new(type)) {}
+        public VariantType(string type) : this(VariantType.@new(type)) {}
 
         internal VariantType(IntPtr handle)
         {

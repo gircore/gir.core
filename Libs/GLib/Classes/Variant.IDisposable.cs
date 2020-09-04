@@ -2,7 +2,7 @@ using System;
 
 namespace GLib
 {
-    public partial class VariantType : IDisposable
+    public partial class Variant : IDisposable
     {
         private bool disposedValue;
 
@@ -10,12 +10,16 @@ namespace GLib
         {
             if (!disposedValue)
             {
-                Sys.VariantType.free(handle);
+                foreach(var child in children)
+                    if(child is IDisposable disposable)
+                        disposable.Dispose();
+
+                Variant.unref(handle);
                 disposedValue = true;
             }
         }
 
-         ~VariantType() => Dispose(false);
+         ~Variant() => Dispose(false);
 
         public void Dispose()
         {

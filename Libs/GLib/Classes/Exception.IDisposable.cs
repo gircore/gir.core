@@ -2,7 +2,7 @@ using System;
 
 namespace GLib
 {
-    public partial class GException : Exception, IDisposable
+    public partial class GException :IDisposable
     {
         private bool disposedValue = false;
 

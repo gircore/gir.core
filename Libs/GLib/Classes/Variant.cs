@@ -13,10 +13,10 @@ namespace GLib
         public IntPtr Handle => handle;
         #endregion Properties
 
-        public Variant(int i) : this(Sys.Variant.new_int32(i)) { }
-        public Variant(uint ui) : this(Sys.Variant.new_uint32(ui)){ }
-        public Variant(string str) : this(Sys.Variant.new_string(str)) { }
-        public Variant(params string[] strs) : this(Sys.Variant.new_strv(strs, strs.Length)) { }
+        public Variant(int i) : this(Variant.new_int32(i)) { }
+        public Variant(uint ui) : this(Variant.new_uint32(ui)){ }
+        public Variant(string str) : this(Variant.new_string(str)) { }
+        public Variant(params string[] strs) : this(Variant.new_strv(strs, strs.Length)) { }
 
         public Variant(params Variant[] children)
         {
@@ -30,7 +30,7 @@ namespace GLib
             var counter = 0;
             foreach(var entry in dictionary)
             {
-                var e = new Variant(Sys.Variant.new_dict_entry(new Variant(entry.Key).Handle, entry.Value.handle));
+                var e = new Variant(Variant.new_dict_entry(new Variant(entry.Key).Handle, entry.Value.handle));
                 data[counter] = e;
                 counter++;
             }
@@ -42,13 +42,13 @@ namespace GLib
         {
             children = new Variant[0];
             this.handle = handle;
-            Sys.Variant.ref_sink(handle);
+            Variant.ref_sink(handle);
         }
 
         public static Variant CreateEmptyDictionary(VariantType key, VariantType value)
         {
-            var childType = Sys.VariantType.new_dict_entry(key.Handle, value.Handle);
-            return new Variant(Sys.Variant.new_array(childType, new IntPtr[0], 0));
+            var childType = VariantType.new_dict_entry(key.Handle, value.Handle);
+            return new Variant(Variant.new_array(childType, new IntPtr[0], 0));
         }
 
         private void Init(out IntPtr handle, params Variant[] children)
@@ -61,20 +61,20 @@ namespace GLib
             for(int i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle;
             
-            handle = Sys.Variant.new_tuple(ptrs, (ulong) count);
-            Sys.Variant.ref_sink(handle);
+            handle = Variant.new_tuple(ptrs, (ulong) count);
+            Variant.ref_sink(handle);
         }
 
         public string GetString()
         {
             ulong length = 0;
-            var strPtr = Sys.Variant.get_string(handle, ref length);
+            var strPtr = Variant.get_string(handle, ref length);
 
             var text = Marshal.PtrToStringAuto(strPtr);
             return text;
         }
 
         public string Print(bool typeAnnotate)
-            => Marshal.PtrToStringAuto(Sys.Variant.print(handle, typeAnnotate));
+            => Marshal.PtrToStringAuto(Variant.print(handle, typeAnnotate));
     }
 }
