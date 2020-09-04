@@ -5,15 +5,6 @@ namespace Gtk
 {
     public partial class Window
     {
-        #region Properties
-        public IProperty<int> DefaultHeight { get; }
-
-        public IProperty<int> DefaultWidth { get; }
-
-        public IProperty<Application?> Application { get; }
-
-        #endregion Properties
-
         public Window() : this(Sys.Window.@new()) { }
 
         public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(Handle, width, height);

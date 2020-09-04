@@ -8,11 +8,6 @@ namespace Gtk
     {
         private readonly Dictionary<Widget, Widget> data = new Dictionary<Widget, Widget>();
 
-        #region Events
-        public event EventHandler<PageChangedEventArgs>? PageAdded;
-        public event EventHandler<PageChangedEventArgs>? PageRemoved;
-        #endregion
-
         public Notebook() : this(Sys.Notebook.@new()) { }
 
         public void InsertPage(string label, Widget child, int position)
@@ -47,21 +42,6 @@ namespace Gtk
             child = null!;
             pageNum = 0;
         }
-
-        private void OnPageRemoved(ref GObject.Sys.Value[] values)
-        {
-            GetChildAndPage(ref values, out var child, out var pageNum);
-            OnPageRemoved(child, pageNum);
-        }
-
-        private void OnPageAdded(ref GObject.Sys.Value[] values)
-        {
-            GetChildAndPage(ref values, out var child, out var pageNum);
-            OnPageAdded(child, pageNum);
-        }
-
-        protected void OnPageAdded(Widget child, uint pageNum) => PageAdded?.Invoke(this, new PageChangedEventArgs(child, pageNum));
-        protected void OnPageRemoved(Widget child, uint pageNum) => PageRemoved?.Invoke(this, new PageChangedEventArgs(child, pageNum));
 
         protected override void Dispose(bool disposing)
         {

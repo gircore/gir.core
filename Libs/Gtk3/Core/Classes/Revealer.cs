@@ -5,11 +5,6 @@ namespace Gtk
 {
     public partial class Revealer
     {
-        #region Properties
-        public IProperty<RevealerTransitionType> TransitionType { get; }
-        public IProperty<bool> Reveal { get; }
-        #endregion
-
         public Revealer() : this(Sys.Revealer.@new()) { }
     }
 }

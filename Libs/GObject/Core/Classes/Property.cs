@@ -75,7 +75,7 @@ namespace GObject
         /// <param name="name">The name of the GProperty to create.</param>
         /// <param name="propertyName">The name of the C# property which serves as the proxy of this GProperty</param>
         /// <param name="get">The function called when retrieving the value of this property in bindings.</param>
-        /// <param name="set">The function called when defing the value of this property in bindings.</param>
+        /// <param name="set">The function called when defining the value of this property in bindings.</param>
         /// <typeparam name="TObject">The type of the object on which this property will be registered.</typeparam>
         /// <returns>
         /// An instance of <see cref="Property{T}"/> representing the GProperty description.
@@ -85,8 +85,30 @@ namespace GObject
         {
             return new Property<T>(name, propertyName)
             {
-                _get = get is null ? null : new Func<Object, T>((o) => get((TObject)o)),
-                _set = set is null ? null : new Action<Object, T>((o, v) => set((TObject)o, v)),
+                _get = get is null ? null : new Func<Object, T>((o) => get((TObject) o)),
+                _set = set is null ? null : new Action<Object, T>((o, v) => set((TObject) o, v)),
+            };
+        }
+
+        /// <summary>
+        /// Wrap this property descriptor on an existing GProperty
+        /// from a GLib type of <typeparamref name="TObject"/>.
+        /// </summary>
+        /// <param name="name">The name of the GProperty to wrap.</param>
+        /// <param name="propertyName">The name of the C# property which serves as the proxy of this GProperty</param>
+        /// <param name="get">The function called when retrieving the value of this property in bindings.</param>
+        /// <param name="set">The function called when defining the value of this property in bindings.</param>
+        /// <typeparam name="TObject">The type of the object on which this property will be wrapped.</typeparam>
+        /// <returns>
+        /// An instance of <see cref="Property{T}"/> representing the GProperty description.
+        /// </returns>
+        public static Property<T> Wrap<TObject>(string name, string propertyName, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
+            where TObject : Object
+        {
+            return new Property<T>(name, propertyName)
+            {
+                _get = get is null ? null : new Func<Object, T>((o) => get((TObject) o)),
+                _set = set is null ? null : new Action<Object, T>((o, v) => set((TObject) o, v)),
             };
         }
 

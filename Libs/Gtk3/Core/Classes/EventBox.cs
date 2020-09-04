@@ -3,7 +3,7 @@ using GObject;
 
 namespace Gtk
 {
-    public partial class Expander
+    public partial class EventBox
     {
     }
 }

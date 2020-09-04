@@ -24,7 +24,7 @@ namespace Gtk
 
         private uint AddFromString(string template)
         {
-            var result = Sys.Builder.add_from_string(Handle, template, (ulong)Encoding.UTF8.GetByteCount(template), out var error);
+            var result = Sys.Builder.add_from_string(Handle, template, (ulong) Encoding.UTF8.GetByteCount(template), out var error);
             HandleError(error);
             return result;
         }
@@ -84,7 +84,7 @@ namespace Gtk
                 if (attributes.Length == 0)
                     continue;
 
-                var connectAttribute = (ConnectAttribute)attributes[0];
+                var connectAttribute = (ConnectAttribute) attributes[0];
                 var element = connectAttribute.WidgetName ?? field.Name;
 
                 if (!typeof(Widget).IsAssignableFrom(field.FieldType))
