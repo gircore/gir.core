@@ -11,7 +11,7 @@ namespace {{ namespace }}
         
         #region Properties
 {{~ for property in properties
-    include 'property.sbntxt' property
+    #include 'property.sbntxt' property
 end ~}}
         #endregion
         
@@ -19,5 +19,16 @@ end ~}}
         protected internal {{ name }}(IntPtr ptr) : base(ptr) {}
         protected internal {{ name }}(params ConstructProp[] properties) : base(properties) {}
         #endregion Constructors
+        
+        #region Methods
+{{- if (string.size get_type_function) > 0 -}}
+    [DllImport("{{ dll_import }}", EntryPoint = "{{ get_type_function }}")]
+    public static extern ulong get_type();
+{{- end -}}
+
+{{~ for method in methods
+    include 'method.sbntxt' method
+end ~}}
+        #endregion
     }
 }
