@@ -3,6 +3,7 @@ using static DotNet;
 using static Projects;
 using System.Collections.Generic;
 using System.IO;
+using Generator;
 
 class Program
 {
@@ -21,7 +22,7 @@ class Program
 
     private static readonly Project[] libraryProjects = 
     {
-        (GLIB, "GLib-2.0.gir", "libglib-2.0.so.0", false),
+        (GLIB, "GLib-2.0.gir", "libglib-2.0", "0", false),
         /*(GOBJECT, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
         (GIO, GIO_GIR, "libgio-2.0.so.0", true),
         (CAIRO, "cairo-1.0.gir", "TODO", false),
@@ -53,12 +54,12 @@ class Program
 
         Target(Targets.Build, DependsOn(Targets.Generate),
             ForEach(libraryProjects),
-            (x) => Build(x.Name, configuration)
+            (x) => Build(x.Folder, configuration)
         );
 
         Target(Targets.CleanLibs, 
             ForEach(libraryProjects), 
-            (x) => CleanUp(x.Name, configuration)
+            (x) => CleanUp(x.Folder, configuration)
         );
         
         Target(Targets.CleanSamples, 
@@ -92,14 +93,9 @@ class Program
 
     private static void Generate(Project project)
     {
-        var girFile = $"../gir-files/{project.Gir}";
-        var outputDir = Path.Combine(project.Name,"Generated");
-
-        var list = new List<string>();
-        if(project.AddAlias)
-            list.Add("../gir-files/GLib-2.0.gir");
-
-        var g = new Generator.CoreGenerator(girFile,Path.Combine(project.Name, "Classes"), project.DllImport);
+        project.Gir = $"../gir-files/{project.Gir}";
+        
+        var g = new CoreGenerator(project);
         g.Generate();
     }
 }

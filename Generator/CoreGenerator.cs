@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Gir;
@@ -13,9 +14,9 @@ namespace Generator
         private readonly TypeResolver typeResolver;
         private readonly string dllImport;
         
-        public CoreGenerator(string girFile, string outputDir, string dllImport) : base(girFile, outputDir)
+        public CoreGenerator(Project project) : base(project)
         {
-            this.dllImport = ConvertLibName(dllImport) ?? throw new ArgumentNullException(nameof(dllImport));
+            dllImport = GetDllImport(project) ?? throw new ArgumentNullException(nameof(dllImport));
             var aliases = new List<GAlias>();
             aliases.AddRange(Repository.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
             var aliasResolver = new AliasResolver(aliases);
@@ -24,35 +25,12 @@ namespace Generator
         
         // Determines the dll name from the shared library (based on msys2 gtk binaries)
         // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
-        private static string ConvertLibName(string sharedLibrary)
+        private static string GetDllImport(Project project)
         {
-            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
-            if (!isWindows)
-                return sharedLibrary;
-
-            string dllName;
-            
-            if (sharedLibrary.Contains(".so."))
-            {
-                // We have a version number at the end
-                // e.g. libcairo-gobject.so.2
-                string[] components = sharedLibrary.Split(".so.");
-                var name = components[0];
-                var version = components[1];
-
-                dllName = $"{name}-{version}.dll";
-            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return project.GetWindowsDllImport();
             else
-            {
-                // There is no version number at the end
-                // Simply add ".dll"
-                string name = sharedLibrary.Split(".so")[0];
-                dllName = $"{name}.dll";
-            }
-
-            Console.WriteLine($"Renaming {sharedLibrary} to {dllName}");
-            return dllName;
+                return project.GetLinuxDllImport();
         }
 
         protected override void Generate(GNamespace gNamespace)
@@ -101,8 +79,18 @@ namespace Generator
                 scriptObject.Import("debug",
                     new Action<string>(Console.WriteLine)
                 );
+                scriptObject.Import("fix_identifier",
+                    new Func<string, string>((s) => s.FixIdentifier())
+                );
+                scriptObject.Import("resolve_type",
+                    new Func<IType, string>((t) =>
+                    {
+                        var resolvedType =  typeResolver.Resolve(t);
+                        return resolvedType.Attribute + resolvedType.Type;
+                    })
+                );
 
-                Create("class", cls.Name + ".Generated.cs", scriptObject);
+                Create("class", Path.Combine("Classes", cls.Name + ".Generated.cs"), scriptObject);
             }
         }
 

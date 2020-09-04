@@ -8,33 +8,24 @@ namespace Generator
 {
     public abstract class Generator
     {
-        private readonly string girFile;
-
         #region Properties
-        private readonly GRepository repository;
-        protected GRepository Repository => repository;
-        
-        private readonly string outputDir;
-        public string OutputDir => outputDir;
-
+        protected GRepository Repository { get; }
+        protected Project Project { get; }
         #endregion Properties
         
-        protected Generator(string girFile, string outputDir)
+        protected Generator(Project project)
         {
-            this.girFile = girFile ?? throw new ArgumentNullException(nameof(girFile));
-            this.outputDir = outputDir ?? throw new ArgumentNullException(nameof(outputDir));
+            Project = project ?? throw new ArgumentNullException(nameof(project));
             
-            repository = ReadRepository(girFile);
-
-            Directory.CreateDirectory(outputDir);
+            Repository = ReadRepository(project.Gir);
         }
 
         public void Generate()
         {
-            if (repository.Namespace is null)
-                throw new Exception($"Can not generate for {girFile}. Namespace is missing.");
+            if (Repository.Namespace is null)
+                throw new Exception($"Can not generate for {Project.Name}. Namespace is missing.");
 
-            Generate(repository.Namespace);
+            Generate(Repository.Namespace);
         }
         
         protected static GRepository ReadRepository(string girFile)
@@ -63,7 +54,7 @@ namespace Generator
 
         private void Write(string fileName, string content)
         {
-            var path = Path.Combine(outputDir, fileName);
+            var path = Path.Combine(Project.Folder, fileName);
             File.WriteAllText(path, content);
         }
     }
