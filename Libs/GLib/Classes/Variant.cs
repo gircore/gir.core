@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace GLib
 {
     public partial class Variant
-    {
+    {/*
         private Variant[] children;
 
         #region Properties
@@ -13,10 +13,10 @@ namespace GLib
         public IntPtr Handle => handle;
         #endregion Properties
 
-        public Variant(int i) : this(Variant.new_int32(i)) { }
-        public Variant(uint ui) : this(Variant.new_uint32(ui)){ }
-        public Variant(string str) : this(Variant.new_string(str)) { }
-        public Variant(params string[] strs) : this(Variant.new_strv(strs, strs.Length)) { }
+        public static Variant Create(int i) => new Variant(Variant.new_int32(i));
+        public static Variant Create(uint ui) => new Variant(Variant.new_uint32(ui));
+        public static Variant Create(string str) => new Variant(Variant.new_string(str));
+        public static Variant Create(params string[] strs) => new Variant(Variant.new_strv(strs, strs.Length));
 
         public Variant(params Variant[] children)
         {
@@ -75,6 +75,6 @@ namespace GLib
         }
 
         public string Print(bool typeAnnotate)
-            => Marshal.PtrToStringAuto(Variant.print(handle, typeAnnotate));
+            => Marshal.PtrToStringAuto(Variant.print(handle, typeAnnotate));*/
     }
 }

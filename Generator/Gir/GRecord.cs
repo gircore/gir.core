@@ -8,6 +8,9 @@ namespace Gir
         [XmlElement("function")]
         public List<GMethod> Functions { get; set; } = default!;
 
+        [XmlElement("field")] 
+        public List<GField> Fields { get; set; } = default!;
+
         public override IEnumerable<GMethod> AllMethods
         {
             get

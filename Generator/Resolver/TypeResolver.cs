@@ -137,8 +137,8 @@ namespace Generator
                 var t when t.StartsWith("Cogl") => IntPtr(),
 
                 "GValue" => Value(),
-                "GError" => Error(),
-                "GVariantType" => VariantType(),
+                //"GError" => Error(),
+                //"GVariantType" => VariantType(),
 
                 "guint16" => UShort(),
                 "gushort" => UShort(),

@@ -2,9 +2,9 @@ using System;
 
 namespace GLib
 {
-    public partial class Variant : IDisposable
+    public partial class Variant //: IDisposable
     {
-        private bool disposedValue;
+       /* private bool disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -25,6 +25,6 @@ namespace GLib
         {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
-        }
+        }*/
     }
 }

@@ -8,16 +8,18 @@ namespace GLib
     {
         #region Fields
 
-        public int Domain;
-        public int Code;
-        public IntPtr Message;
+        private readonly int domain;
+        private readonly int code;
+        private readonly IntPtr message;
 
+        #endregion
+
+        #region Properties
+        public string Message => Marshal.PtrToStringAuto(message);
         #endregion
         
         #region Methods
-
-        public void Free() => free(ref this);
-
+        internal static void FreeError(IntPtr errorHandle) => free(errorHandle);
         #endregion
     }
 }

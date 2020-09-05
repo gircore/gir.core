@@ -13,7 +13,7 @@ namespace Generator
     {
         private readonly TypeResolver typeResolver;
         private readonly string dllImport;
-        
+
         public CoreGenerator(Project project) : base(project)
         {
             dllImport = GetDllImport(project) ?? throw new ArgumentNullException(nameof(dllImport));
@@ -22,7 +22,7 @@ namespace Generator
             var aliasResolver = new AliasResolver(aliases);
             typeResolver = new TypeResolver(aliasResolver);
         }
-        
+
         // Determines the dll name from the shared library (based on msys2 gtk binaries)
         // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
         private static string GetDllImport(Project project)
@@ -37,7 +37,7 @@ namespace Generator
         {
             if (gNamespace.Name is null)
                 throw new Exception("Could not create code. Namespace is missing a name.");
-            
+
             GenerateClasses(gNamespace.Classes, gNamespace.Name);
             GenerateStructs(gNamespace.Records, gNamespace.Name);
             GenerateStructs(gNamespace.Unions, gNamespace.Name);
@@ -48,70 +48,85 @@ namespace Generator
 
         private void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
         {
-            Generate(delegates,
-                templateName: "delegate",
-                subfolder: "Delegates",
-                getFileName: (dele) => dele.Name,
-                createScriptObject: () => CreateScriptObject(@namespace, dllImport)
-            );
+            var scriptObject = CreateScriptObject(@namespace, dllImport);
+            foreach (var dele in delegates)
+            {
+                Generate(dele,
+                    templateName: "delegate",
+                    subfolder: "Delegates",
+                    fileName: dele.Name,
+                    scriptObject: scriptObject
+                );
+            }
         }
-        
+
         private void GenerateStructs(IEnumerable<GRecord> records, string @namespace)
         {
-            foreach(var record in records)
-                record.Methods.InsertRange(0, record.Functions);
-            
-            Generate(records,
-                templateName: "struct",
-                subfolder: "Structs",
-                getFileName: (record) => record.Name,
-                createScriptObject: () => CreateScriptObject(@namespace, dllImport)
-            );
+            var scriptObject = CreateScriptObject(@namespace, dllImport);
+            foreach (var record in records)
+            {
+                // There are structs which must be generated as classes. Currently
+                // this is especially true for GLib. But there a structs which actually
+                // are structs. The only distinction right now is that the "fake" structs
+                // have no fields defined
+
+                var hasFields = record.Fields.Any();
+                var templateName = hasFields ? "struct" : "simple_class";
+                var subfolder = hasFields ? "Structs" : "Classes";
+
+                Generate(record,
+                    templateName: templateName,
+                    subfolder: subfolder,
+                    fileName: record.Name,
+                    scriptObject: scriptObject
+                );
+            }
         }
-        
+
         private void GenerateClasses(IEnumerable<GInterface> classes, string @namespace)
         {
-            Generate(classes, 
-                templateName: "class", 
-                subfolder: "Classes", 
-                getFileName:(cls) => cls.Name, 
-                createScriptObject:() => CreateScriptObject(@namespace, dllImport)
-            );
+            var scriptObject = CreateScriptObject(@namespace, dllImport);
+            foreach (var cls in classes)
+            {
+                Generate(cls,
+                    templateName: "class",
+                    subfolder: "Classes",
+                    fileName: cls.Name,
+                    scriptObject: scriptObject
+                );   
+            }
         }
 
         private void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags)
         {
-            ScriptObject CreateEnumScriptObject()
-            {
-                var scriptObject = CreateScriptObject(@namespace, dllImport);
-                scriptObject.Add("has_flags", hasFlags);
-                return scriptObject;
-            };
+            var scriptObject = CreateScriptObject(@namespace, dllImport);
+            scriptObject.Add("has_flags", hasFlags);
             
-            Generate(enums, 
-                templateName: "enum", 
-                subfolder: "Enums", 
-                getFileName:(obj) => obj.Name, 
-                createScriptObject: CreateEnumScriptObject
-            );
+            foreach (var obj in enums)
+            {
+                Generate(obj,
+                    templateName: "enum",
+                    subfolder: "Enums",
+                    fileName: obj.Name,
+                    scriptObject: scriptObject
+                );   
+            }
         }
 
-        private void Generate<T>(IEnumerable<T> objects, string templateName, string subfolder, Func<T, string?> getFileName, Func<ScriptObject> createScriptObject)
+        private void Generate<T>(T obj, string templateName, string subfolder,
+            string? fileName, ScriptObject scriptObject)
         {
-            foreach (var obj in objects)
+            //Create subfolder if it does not exist
+            Directory.CreateDirectory(Path.Combine(Project.Folder, subfolder));
+            
+            if (string.IsNullOrEmpty(fileName))
             {
-                var name = getFileName(obj);
-
-                if (string.IsNullOrEmpty(name))
-                {
-                    Console.WriteLine($"Could not generate {templateName}, name is missing");
-                    continue;
-                }
-                
-                var scriptObject = createScriptObject();
-                scriptObject.Import(obj);
-                GenerateCode(templateName, Path.Combine(subfolder, name + ".Generated.cs"), scriptObject);
+                Console.WriteLine($"Could not generate {templateName}, name is missing");
+                return;
             }
+            
+            scriptObject.Import(obj);
+            GenerateCode(templateName, Path.Combine(subfolder, fileName + ".Generated.cs"), scriptObject);
         }
 
         private ScriptObject CreateScriptObject(string @namespace, string dllImport)
@@ -166,17 +181,16 @@ namespace Generator
         {
             var context = new TemplateContext {TemplateLoader = new CoreTemplateLoader()};
             context.PushGlobal(scriptObject);
-            
+
             templateFile = $"../Generator/Templates/Core/{templateFile}.sbntxt";
-            
-            
+
             if (fileName.Contains("Accessible"))
             {
                 //TODO: Workaround for missing ATK!
-                Console.WriteLine($"Skipping file {fileName} because it looks like an ATK class which is not supported.");
-                return;   
+                Console.WriteLine(
+                    $"Skipping file {fileName} because it looks like an ATK class which is not supported.");
+                return;
             }
-
             GenerateCode(templateFile, fileName, context);
         }
     }

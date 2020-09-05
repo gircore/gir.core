@@ -4,7 +4,7 @@ namespace GLib
 {
     public partial class GException :IDisposable
     {
-        private bool disposedValue = false;
+        private bool disposedValue;
 
          ~GException() => Dispose(false);
 
@@ -16,17 +16,11 @@ namespace GLib
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
-            {
-                if(disposing)
-                {
-                    Error = null;
-                    message = null;
-                }
-
-                Free();
-                disposedValue = true;
-            }
+            if (disposedValue) 
+                return;
+            
+            Free();
+            disposedValue = true;
         }
     }
 }
