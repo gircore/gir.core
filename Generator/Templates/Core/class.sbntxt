@@ -26,7 +26,7 @@ end ~}}
     public static extern ulong get_type();
 {{- end -}}
 
-{{~ for method in methods
+{{~ for method in all_methods
     include 'method.sbntxt' method
 end ~}}
         #endregion

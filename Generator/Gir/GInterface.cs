@@ -25,5 +25,15 @@ namespace Gir
 
         [XmlElement("property")]
         public List<GProperty> Properties { get; set; } = default!;
+
+        public virtual IEnumerable<GMethod> AllMethods
+        {
+            get
+            {
+                foreach (var method in Methods)
+                    if (!method.HasVariadicParameter())
+                        yield return method;
+            }
+        }
     }
 }

@@ -2,4 +2,8 @@
   <PropertyGroup>
     <PackageId>Gir.CS.GLib</PackageId>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Delegates" />
+    <Folder Include="Enums" />
+  </ItemGroup>
 </Project>

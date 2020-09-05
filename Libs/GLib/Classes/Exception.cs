@@ -6,15 +6,15 @@ namespace GLib
     public partial class GException : Exception
     {
         #region Properties
-        protected Error Error { get; private set; }
-
+        private Error Error { get; }
+        
         private string? message;
-        public override string Message =>  message ??= Marshal.PtrToStringAuto(Error.Message);
+        public override string Message => message ??= Marshal.PtrToStringAuto(Error.Message);
         #endregion Properties
 
-        public GException(ref Error error)
+        public GException(IntPtr errorHandle)
         {
-            Error = error;
+            Error = Marshal.PtrToStructure<GLib.Error>(errorHandle);
         }
 
         private void Free() => Error.Free();

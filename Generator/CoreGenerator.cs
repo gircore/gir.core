@@ -39,35 +39,88 @@ namespace Generator
                 throw new Exception("Could not create code. Namespace is missing a name.");
             
             GenerateClasses(gNamespace.Classes, gNamespace.Name);
-            GenerateRecords(gNamespace.Records, gNamespace.Name);
-            GenerateRecords(gNamespace.Unions, gNamespace.Name);
+            GenerateStructs(gNamespace.Records, gNamespace.Name);
+            GenerateStructs(gNamespace.Unions, gNamespace.Name);
+            GenerateEnums(gNamespace.Bitfields, gNamespace.Name, true);
+            GenerateEnums(gNamespace.Enumerations, gNamespace.Name, false);
+            GenerateDelegates(gNamespace.Callbacks, gNamespace.Name);
         }
 
-        private void GenerateRecords(IEnumerable<GRecord> records, string ns)
+        private void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
+        {
+            Generate(delegates,
+                templateName: "delegate",
+                subfolder: "Delegates",
+                getFileName: (dele) => dele.Name,
+                createScriptObject: () => CreateScriptObject(@namespace, dllImport)
+            );
+        }
+        
+        private void GenerateStructs(IEnumerable<GRecord> records, string @namespace)
         {
             foreach(var record in records)
                 record.Methods.InsertRange(0, record.Functions);
-
-            GenerateClasses(records, ns, "struct", "Structs");
+            
+            Generate(records,
+                templateName: "struct",
+                subfolder: "Structs",
+                getFileName: (record) => record.Name,
+                createScriptObject: () => CreateScriptObject(@namespace, dllImport)
+            );
         }
         
-        private void GenerateClasses(IEnumerable<GInterface> classes, string @namespace, string templateName = "class", string subfolder = "Classes")
+        private void GenerateClasses(IEnumerable<GInterface> classes, string @namespace)
         {
-            foreach (var cls in classes)
+            Generate(classes, 
+                templateName: "class", 
+                subfolder: "Classes", 
+                getFileName:(cls) => cls.Name, 
+                createScriptObject:() => CreateScriptObject(@namespace, dllImport)
+            );
+        }
+
+        private void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags)
+        {
+            ScriptObject CreateEnumScriptObject()
             {
-                var scriptObject = CreateScriptObject(@namespace, cls);
-                Create(templateName, Path.Combine(subfolder, cls.Name + ".Generated.cs"), scriptObject);
+                var scriptObject = CreateScriptObject(@namespace, dllImport);
+                scriptObject.Add("has_flags", hasFlags);
+                return scriptObject;
+            };
+            
+            Generate(enums, 
+                templateName: "enum", 
+                subfolder: "Enums", 
+                getFileName:(obj) => obj.Name, 
+                createScriptObject: CreateEnumScriptObject
+            );
+        }
+
+        private void Generate<T>(IEnumerable<T> objects, string templateName, string subfolder, Func<T, string?> getFileName, Func<ScriptObject> createScriptObject)
+        {
+            foreach (var obj in objects)
+            {
+                var name = getFileName(obj);
+
+                if (string.IsNullOrEmpty(name))
+                {
+                    Console.WriteLine($"Could not generate {templateName}, name is missing");
+                    continue;
+                }
+                
+                var scriptObject = createScriptObject();
+                scriptObject.Import(obj);
+                GenerateCode(templateName, Path.Combine(subfolder, name + ".Generated.cs"), scriptObject);
             }
         }
 
-        private ScriptObject CreateScriptObject(string @namespace, Object obj)
+        private ScriptObject CreateScriptObject(string @namespace, string dllImport)
         {
             var scriptObject = new ScriptObject
             {
                 {"namespace", @namespace},
                 {"dll_import", dllImport}
             };
-            scriptObject.Import(obj);
             scriptObject.Import("comment_line_by_line_with_prefix",
                 new Func<string, string, string>((s, prefix) => s.CommentLineByLine(prefix))
             );
@@ -109,7 +162,7 @@ namespace Generator
             return scriptObject;
         }
 
-        private void Create(string templateFile, string fileName, ScriptObject scriptObject)
+        private void GenerateCode(string templateFile, string fileName, ScriptObject scriptObject)
         {
             var context = new TemplateContext {TemplateLoader = new CoreTemplateLoader()};
             context.PushGlobal(scriptObject);

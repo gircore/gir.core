@@ -6,7 +6,7 @@ namespace {{ namespace }}
     public partial struct {{ name }}
     {
         #region Native methods
-{{~ for method in methods
+{{~ for method in all_methods
     include 'method.sbntxt' method
 end ~}}
         #endregion

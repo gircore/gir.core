@@ -2,11 +2,13 @@ namespace Generator
 {
     public class Project
     {
+        #region Properties
         public string Folder { get; }
         public string Gir { get; set; }
         public string Name { get; }
         public bool AddAlias { get; }
         public string? Version { get; }
+        #endregion
 
         private Project(string folder, string gir, string name, string? version, bool addAlias)
         {
@@ -42,6 +44,8 @@ namespace Generator
 
             return Name + ".so" + versionExtension;
         }
+
+        public override string ToString() => Name;
 
         public static implicit operator Project(
             (string Folder, string Gir, string Name, string? Version, bool AddAlias) tuple) => new Project(

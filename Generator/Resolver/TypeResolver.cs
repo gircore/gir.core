@@ -138,6 +138,7 @@ namespace Generator
 
                 "GValue" => Value(),
                 "GError" => Error(),
+                "GVariantType" => VariantType(),
 
                 "guint16" => UShort(),
                 "gushort" => UShort(),
@@ -199,6 +200,7 @@ namespace Generator
         private MyType ULong() => ValueType("ulong");
         private MyType Float() => ValueType("float");
         private MyType Error() => ValueType("Error");
+        private MyType VariantType() => ValueType("VariantType");
 
         private MyType ValueType(string str) => new MyType(str){IsValueType = true};
         private MyType ReferenceType(string str) => new MyType(str);

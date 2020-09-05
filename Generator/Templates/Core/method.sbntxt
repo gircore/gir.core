@@ -19,7 +19,7 @@ func parameters
             if $0.parameters
                 ", "
             end
-            "out GLib.Error error"
+            "out IntPtr error"
         end
     end
 end

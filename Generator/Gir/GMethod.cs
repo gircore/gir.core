@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Gir
@@ -30,5 +31,15 @@ namespace Gir
 
         [XmlElement("parameters")]
         public GParameters? Parameters { get; set; }
+        
+        [XmlAttribute("moved-to")]
+        public string? MovedTo { get; set; }
+
+        public bool HasVariadicParameter()
+        {
+            static bool IsVariadic(GParameter p) => p.VarArgs is {};
+
+            return Parameters?.Parameters.Any(IsVariadic) ?? false;
+        }
     }
 }
