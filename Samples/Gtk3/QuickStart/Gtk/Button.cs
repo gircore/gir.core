@@ -89,7 +89,7 @@ namespace Gtk
 
         #region Signals
 
-        public static readonly Signal ActivateSignal = Signal.Register("activate");
+        public static readonly Signal<SignalArgs> ActivateSignal = Signal<SignalArgs>.Register("activate");
 
         public event EventHandler<SignalArgs> Activate
         {
@@ -97,7 +97,7 @@ namespace Gtk
             remove => ActivateSignal.Disconnect(this, value);
         }
 
-        public static readonly Signal ClickedSignal = Signal.Register("clicked");
+        public static readonly Signal<SignalArgs> ClickedSignal = Signal<SignalArgs>.Register("clicked");
 
         public event EventHandler<SignalArgs> Clicked
         {

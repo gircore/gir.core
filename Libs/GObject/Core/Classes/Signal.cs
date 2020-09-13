@@ -3,9 +3,18 @@ using System.Collections.Generic;
 
 namespace GObject
 {
+    /// <summary>
+    /// Base class for signal based events.
+    /// </summary>
     public class SignalArgs : EventArgs
     {
-        public object[] Args { get; }
+        #region Properties
+
+        public object[] Args { get; private set; }
+
+        #endregion
+
+        #region Constructors
 
         public SignalArgs()
         {
@@ -13,11 +22,27 @@ namespace GObject
         }
 
         internal SignalArgs(params object[] args)
+            : this()
+        {
+            SetArgs(args);
+        }
+
+        internal SignalArgs(params Sys.Value[] args)
+            : this()
+        {
+            SetArgs(args);
+        }
+
+        #endregion
+
+        #region Methods
+
+        internal void SetArgs(object[] args)
         {
             Args = args;
         }
 
-        internal SignalArgs(params Sys.Value[] args)
+        internal void SetArgs(Sys.Value[] args)
         {
             Args = new object[args.Length];
 
@@ -26,16 +51,19 @@ namespace GObject
                 // TODO: Args[i] = args[i].Value;
             }
         }
+
+        #endregion
     }
 
     /// <summary>
     /// Describes a GSignal.
     /// </summary>
-    public sealed class Signal
+    public sealed class Signal<T>
+        where T : SignalArgs, new()
     {
         #region Fields
 
-        private static readonly Dictionary<EventHandler<SignalArgs>, ActionRefValues> Handlers = new Dictionary<EventHandler<SignalArgs>, ActionRefValues>();
+        private static readonly Dictionary<EventHandler<T>, ActionRefValues> Handlers = new Dictionary<EventHandler<T>, ActionRefValues>();
 
         #endregion
 
@@ -89,9 +117,9 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Signal"/> which describes the registered signal.
         /// </returns>
-        public static Signal Register(string name, Sys.SignalFlags flags, Sys.Type returnType, params Sys.Type[] paramTypes)
+        public static Signal<T> Register(string name, Sys.SignalFlags flags, Sys.Type returnType, params Sys.Type[] paramTypes)
         {
-            return new Signal(name, flags, returnType, paramTypes);
+            return new Signal<T>(name, flags, returnType, paramTypes);
         }
 
         /// <summary>
@@ -102,9 +130,9 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Signal"/> which describes the registered signal.
         /// </returns>
-        public static Signal Register(string name, Sys.SignalFlags flags = Sys.SignalFlags.run_last)
+        public static Signal<T> Register(string name, Sys.SignalFlags flags = Sys.SignalFlags.run_last)
         {
-            return new Signal(name, flags, Sys.Type.None, Array.Empty<Sys.Type>());
+            return new Signal<T>(name, flags, Sys.Type.None, Array.Empty<Sys.Type>());
         }
 
         /// <summary>
@@ -114,10 +142,10 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Signal"/> which describes the signal to wrap.
         /// </returns>
-        public static Signal Wrap(string name)
+        public static Signal<T> Wrap(string name)
         {
             // Here only the signal name is relevant, other paramters are not used.
-            return new Signal(name, Sys.SignalFlags.run_last, Sys.Type.None, Array.Empty<Sys.Type>());
+            return new Signal<T>(name, Sys.SignalFlags.run_last, Sys.Type.None, Array.Empty<Sys.Type>());
         }
 
         /// <summary>
@@ -160,13 +188,20 @@ namespace GObject
         /// <param name="after">
         /// Define if this action must be called before or after the default handler of this signal.
         /// </param>
-        public void Connect(Object o, EventHandler<SignalArgs> action, bool after = false)
+        public void Connect(Object o, EventHandler<T> action, bool after = false)
         {
             if (action == null)
                 return;
 
             if (!Handlers.TryGetValue(action, out ActionRefValues callback))
-                callback = (ref Sys.Value[] values) => action(o, new SignalArgs(values));
+            {
+                callback = (ref Sys.Value[] values) =>
+                {
+                    T args = new T();
+                    args.SetArgs(values);
+                    action(o, args);
+                };
+            }
 
             o.RegisterEvent(Name, callback, after);
             Handlers[action] = callback;
@@ -203,7 +238,7 @@ namespace GObject
         /// </summary>
         /// <param name="o">The object from which disconnect the handler.</param>
         /// <param name="action">The signal handler function.</param>
-        public void Disconnect(Object o, EventHandler<SignalArgs> action)
+        public void Disconnect(Object o, EventHandler<T> action)
         {
             if (action == null)
                 return;

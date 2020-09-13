@@ -49,7 +49,7 @@ namespace Gtk
 
         #region Signals
 
-        public static readonly Signal AddSignal = Signal.Register("add", GObject.Sys.SignalFlags.run_first);
+        public static readonly Signal<SignalArgs> AddSignal = Signal<SignalArgs>.Register("add", GObject.Sys.SignalFlags.run_first);
 
         // Renamed to Added because we have a Add() method down
         public event EventHandler<SignalArgs> Added
@@ -58,7 +58,7 @@ namespace Gtk
             remove => AddSignal.Disconnect(this, value);
         }
 
-        public static readonly Signal CheckResizeSignal = Signal.Register("check-resize");
+        public static readonly Signal<SignalArgs> CheckResizeSignal = Signal<SignalArgs>.Register("check-resize");
 
         public event EventHandler<SignalArgs> CheckResize
         {
@@ -66,7 +66,7 @@ namespace Gtk
             remove => CheckResizeSignal.Disconnect(this, value);
         }
 
-        public static readonly Signal RemoveSignal = Signal.Register("remove", GObject.Sys.SignalFlags.run_first);
+        public static readonly Signal<SignalArgs> RemoveSignal = Signal<SignalArgs>.Register("remove", GObject.Sys.SignalFlags.run_first);
 
         // Renamed to Removed because we have a Remove() method down
         public event EventHandler<SignalArgs> Removed
@@ -75,7 +75,7 @@ namespace Gtk
             remove => RemoveSignal.Disconnect(this, value);
         }
 
-        public static readonly Signal SetFocusChildSignal = Signal.Register("remove", GObject.Sys.SignalFlags.run_first);
+        public static readonly Signal<SignalArgs> SetFocusChildSignal = Signal<SignalArgs>.Register("remove", GObject.Sys.SignalFlags.run_first);
 
         public event EventHandler<SignalArgs> SetFocusChild
         {

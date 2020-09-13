@@ -11,7 +11,7 @@ namespace Gtk
         
         #region Constructors
         protected internal Widget(IntPtr ptr) : base(ptr) {}
-        protected internal Widget(params ConstructProp[] properties) : base(properties) {}
+        protected internal Widget(params ConstructParameter[] properties) : base(properties) {}
         #endregion Constructors
     }
 }
