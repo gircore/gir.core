@@ -1,3 +1,5 @@
+using System;
+
 namespace Generator
 {
     public class Project
@@ -10,21 +12,13 @@ namespace Generator
         public string? Version { get; }
         #endregion
 
-        private Project(string folder, string gir, string name, string? version, bool addAlias)
+        public Project(string folder, string gir, string name, string? version, bool addAlias)
         {
             Folder = folder;
             Gir = gir;
             Name = name;
             AddAlias = addAlias;
             Version = version;
-        }
-
-        private string GetVersion()
-        {
-            if (string.IsNullOrEmpty(Version))
-                return "";
-
-            return "." + Version;
         }
 
         public string GetWindowsDllImport()
@@ -46,14 +40,5 @@ namespace Generator
         }
 
         public override string ToString() => Name;
-
-        public static implicit operator Project(
-            (string Folder, string Gir, string Name, string? Version, bool AddAlias) tuple) => new Project(
-            tuple.Folder,
-            tuple.Gir,
-            tuple.Name,
-            tuple.Version,
-            tuple.AddAlias
-        );
     }
 }

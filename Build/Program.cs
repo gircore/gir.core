@@ -1,7 +1,7 @@
-﻿using static Bullseye.Targets;
+﻿using System;
+using static Bullseye.Targets;
 using static DotNet;
 using static Projects;
-using System.Collections.Generic;
 using System.IO;
 using Generator;
 
@@ -20,9 +20,9 @@ class Program
         GTK4_SIMPLE_WINDOW_SAMPLE
     };
 
-    private static readonly Project[] libraryProjects = 
+    private static readonly (Project Project, Type Type)[] libraryProjects =
     {
-        (GLIB, "GLib-2.0.gir", "libglib-2.0", "0", false),
+        (new Project(GLIB, "GLib-2.0.gir", "libglib-2.0", "0", false), typeof(GLibGenerator))
         /*(GOBJECT, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
         (GIO, GIO_GIR, "libgio-2.0.so.0", true),
         (CAIRO, "cairo-1.0.gir", "TODO", false),
@@ -46,34 +46,34 @@ class Program
     };
 
     static void Main(string[] args)
-    {        
-        Target(Targets.Generate, 
+    {
+        Target(Targets.Generate,
             ForEach(libraryProjects),
-            Generate
+            (l) => Generate(l.Project, l.Type)
         );
 
         Target(Targets.Build, DependsOn(Targets.Generate),
             ForEach(libraryProjects),
-            (x) => Build(x.Folder, configuration)
+            (x) => Build(x.Project.Folder, configuration)
         );
 
-        Target(Targets.CleanLibs, 
-            ForEach(libraryProjects), 
-            (x) => CleanUp(x.Folder, configuration)
+        Target(Targets.CleanLibs,
+            ForEach(libraryProjects),
+            (x) => CleanUp(x.Project.Folder, configuration)
         );
-        
-        Target(Targets.CleanSamples, 
-            ForEach(sampleProjects), 
+
+        Target(Targets.CleanSamples,
+            ForEach(sampleProjects),
             (project) => CleanUp(project, configuration)
         );
-        
+
         Target(Targets.Clean, DependsOn(Targets.CleanLibs, Targets.CleanSamples));
-        
-        Target(Targets.Samples, DependsOn(Targets.Build), 
+
+        Target(Targets.Samples, DependsOn(Targets.Build),
             ForEach(sampleProjects),
             (project) => Build(project, configuration)
         );
-        
+
         Target(Targets.Release, () => configuration = confRelease);
         Target(Targets.Debug, () => configuration = confDebug);
 
@@ -83,19 +83,22 @@ class Program
 
     private static void CleanUp(string project, string configuration)
     {
-        if(Directory.Exists(project))
-            foreach(var file in Directory.EnumerateFiles(project))
-                if (file.Contains(".Generated."))
-                    File.Delete(file);
-            
+        if (Directory.Exists(project))
+            foreach (var d in Directory.EnumerateDirectories(project))
+                foreach (var file in Directory.EnumerateFiles(d))
+                    if (file.Contains(".Generated."))
+                        File.Delete(file);
+
         Clean(project, configuration);
     }
 
-    private static void Generate(Project project)
+    private static void Generate(Project project, Type type)
     {
         project.Gir = $"../gir-files/{project.Gir}";
         
-        var g = new CoreGenerator(project);
-        g.Generate();
+        if (Activator.CreateInstance(type, project) is IGenerator generator)
+            generator.Generate();
+        else
+            throw new Exception($"{type.Name} is not a generator");
     }
 }

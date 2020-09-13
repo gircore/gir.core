@@ -2,7 +2,4 @@
   <PropertyGroup>
     <PackageId>Gir.CS.GLib</PackageId>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Enums" />
-  </ItemGroup>
 </Project>
