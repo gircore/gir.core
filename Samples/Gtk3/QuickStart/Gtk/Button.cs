@@ -111,9 +111,9 @@ namespace Gtk
 
         public Button(string label, bool useUnderline = false, bool alwaysShowImage = false)
             : this(
-                ConstructParameter.With(LabelProperty, label),
-                ConstructParameter.With(UseUnderlineProperty, useUnderline),
-                ConstructParameter.With(AlwaysShowImageProperty, alwaysShowImage)
+                ConstructParam.With(LabelProperty, label),
+                ConstructParam.With(UseUnderlineProperty, useUnderline),
+                ConstructParam.With(AlwaysShowImageProperty, alwaysShowImage)
             )
         { }
 

@@ -16,7 +16,7 @@ namespace GObject
         private static readonly Dictionary<Closure, ulong> closures = new Dictionary<Closure, ulong>();
 
         // Constructs a new object
-        public Object(params ConstructParameter[] properties)
+        public Object(params ConstructParam[] properties)
         {
             // This will automatically register our
             // type in the type dictionary. If the type is

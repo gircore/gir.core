@@ -8,7 +8,7 @@ namespace GObject
 
         #region Constructors
         protected internal TypeModule(IntPtr ptr) : base(ptr) { }
-        protected internal TypeModule(ConstructParameter[] properties) : base(properties) { }
+        protected internal TypeModule(ConstructParam[] properties) : base(properties) { }
         #endregion Constructors
     }
 }

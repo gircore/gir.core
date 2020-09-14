@@ -11,7 +11,7 @@ namespace GObject
             Initialize();
         }
 
-        public InitiallyUnowned(params ConstructParameter[] properties) : base(properties)
+        public InitiallyUnowned(params ConstructParam[] properties) : base(properties)
         {
             Initialize();
         }
