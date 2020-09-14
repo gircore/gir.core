@@ -11,7 +11,7 @@ namespace Gtk
         
         #region Constructors
         protected internal Button(IntPtr ptr) : base(ptr) {}
-        protected internal Button(params ConstructProp[] properties) : base(properties) {}
+        protected internal Button(params ConstructParameter[] properties) : base(properties) {}
         #endregion Constructors
     }
 }

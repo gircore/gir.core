@@ -8,11 +8,6 @@ namespace Gtk
     {
         private Builder? builder;
 
-        #region Properties
-        public IProperty<int> WidthRequest { get; }
-        public IProperty<int> HeightRequest { get; }
-        #endregion
-
         internal Widget(string template, string obj, Assembly assembly) : this(new Builder(template, assembly), obj) { }
 
         internal Widget(Builder builder, string obj) : this(builder.GetObject(obj))

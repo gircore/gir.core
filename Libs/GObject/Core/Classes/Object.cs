@@ -16,7 +16,7 @@ namespace GObject
         private static readonly Dictionary<Closure, ulong> closures = new Dictionary<Closure, ulong>();
 
         // Constructs a new object
-        public Object(params ConstructProp[] properties)
+        public Object(params ConstructParameter[] properties)
         {
             // This will automatically register our
             // type in the type dictionary. If the type is
@@ -46,14 +46,14 @@ namespace GObject
                     var prop = properties[i];
                     // TODO: Marshal in a block, rather than one at a time
                     // for performance reasons.
-                    names[i] = (IntPtr)Marshal.StringToHGlobalAnsi(prop.Name);
+                    names[i] = (IntPtr) Marshal.StringToHGlobalAnsi(prop.Name);
                     values[i] = prop.Value;
                 }
 
                 // Create with propeties
                 handle = Sys.Object.new_with_properties(
                     typeId.Value,
-                    (uint)names.Length,
+                    (uint) names.Length,
                     ref names[0],
                     values
                 );
@@ -203,7 +203,7 @@ namespace GObject
             // Attempt to lookup the pointer in the object dictionary
             if (objects.TryGetValue(handle, out var obj))
             {
-                o = (T)(object)obj;
+                o = (T) (object) obj;
                 return true;
             }
 
@@ -231,7 +231,7 @@ namespace GObject
                 null, new[] { typeof(IntPtr) }, null
             );
 
-            o = (T)ctor.Invoke(new object[] { handle });
+            o = (T) ctor.Invoke(new object[] { handle });
 
             // TODO: We don't need the following line as
             // we already add to the object dictionary in the

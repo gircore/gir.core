@@ -14,7 +14,7 @@ namespace Gtk
 
         #region Experimental
 
-        public EventHandler<SignalArgs> this[Signal signal]
+        public EventHandler<SignalArgs> this[Signal<SignalArgs> signal]
         {
             set => signal.Connect(this, value, true);
         }

@@ -7,11 +7,6 @@ namespace Gio
 {
     public partial class DBusConnection
     {
-        #region Properties
-        public IProperty<string> Address { get; }
-        public ReadOnlyProperty<bool> Closed { get; }
-        #endregion Properties
-
         public DBusConnection(string address) : this(Sys.DBusConnection.new_for_address_sync(address, Sys.DBusConnectionFlags.none, IntPtr.Zero, IntPtr.Zero, out var error))
         {
             HandleError(error);

@@ -89,7 +89,7 @@ namespace Gtk
 
         #region Signals
 
-        public static readonly Signal ActivateSignal = Signal.Register("activate");
+        public static readonly Signal<SignalArgs> ActivateSignal = Signal<SignalArgs>.Wrap("activate");
 
         public event EventHandler<SignalArgs> Activate
         {
@@ -97,7 +97,7 @@ namespace Gtk
             remove => ActivateSignal.Disconnect(this, value);
         }
 
-        public static readonly Signal ClickedSignal = Signal.Register("clicked");
+        public static readonly Signal<SignalArgs> ClickedSignal = Signal<SignalArgs>.Wrap("clicked");
 
         public event EventHandler<SignalArgs> Clicked
         {
@@ -111,9 +111,9 @@ namespace Gtk
 
         public Button(string label, bool useUnderline = false, bool alwaysShowImage = false)
             : this(
-                ConstructProp.With(LabelProperty, label),
-                ConstructProp.With(UseUnderlineProperty, useUnderline),
-                ConstructProp.With(AlwaysShowImageProperty, alwaysShowImage)
+                ConstructParameter.With(LabelProperty, label),
+                ConstructParameter.With(UseUnderlineProperty, useUnderline),
+                ConstructParameter.With(AlwaysShowImageProperty, alwaysShowImage)
             )
         { }
 

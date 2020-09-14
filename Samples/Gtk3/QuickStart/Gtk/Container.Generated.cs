@@ -11,7 +11,7 @@ namespace Gtk
         
         #region Constructors
         protected internal Container(IntPtr ptr) : base(ptr) {}
-        protected internal Container(params ConstructProp[] properties) : base(properties) {}
+        protected internal Container(params ConstructParameter[] properties) : base(properties) {}
         #endregion Constructors
     }
 }

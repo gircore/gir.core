@@ -6,10 +6,6 @@ namespace JavaScriptCore
 {
     public partial class Value
     {
-        #region Properties
-        public IProperty<Context> Context { get; }
-        #endregion Properties
-
         #region Methods
         public double GetDouble() => Sys.Value.to_double(Handle);
         public int GetInt() => Sys.Value.to_int32(Handle);
