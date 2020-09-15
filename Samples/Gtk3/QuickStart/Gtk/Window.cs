@@ -8,7 +8,7 @@ namespace Gtk
     {
         #region Properties
 
-        public static readonly Property<string> TitleProperty = GObject.Property<string>.Register<Window>(
+        public static readonly Property<string> TitleProperty = Property<string>.Register<Window>(
             "title",
             nameof(Title),
             get: (o) => o.Title,
@@ -21,7 +21,7 @@ namespace Gtk
             set => SetProperty(TitleProperty, value);
         }
 
-        public static readonly Property<int> DefaultHeightProperty = GObject.Property<int>.Register<Window>(
+        public static readonly Property<int> DefaultHeightProperty = Property<int>.Register<Window>(
             "default-height",
             nameof(DefaultHeight),
             get: (o) => o.DefaultHeight,
@@ -34,7 +34,7 @@ namespace Gtk
             set => SetProperty(DefaultHeightProperty, value);
         }
 
-        public static readonly Property<int> DefaultWidthProperty = GObject.Property<int>.Register<Window>(
+        public static readonly Property<int> DefaultWidthProperty = Property<int>.Register<Window>(
             "default-width",
             nameof(DefaultWidth),
             get: (o) => o.DefaultWidth,

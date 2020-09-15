@@ -7,7 +7,7 @@ namespace Gtk
     {
         #region Properties
 
-        public static readonly Property<bool> AlwaysShowImageProperty = GObject.Property<bool>.Register<Button>(
+        public static readonly Property<bool> AlwaysShowImageProperty = Property<bool>.Register<Button>(
             "always-show-image",
             nameof(AlwaysShowImage),
             (o) => o.AlwaysShowImage,
@@ -20,7 +20,7 @@ namespace Gtk
             set => SetProperty(AlwaysShowImageProperty, value);
         }
 
-        public static readonly Property<Widget> ImageProperty = GObject.Property<Widget>.Register<Button>(
+        public static readonly Property<Widget> ImageProperty = Property<Widget>.Register<Button>(
             "image",
             nameof(Image),
             (o) => o.Image,
@@ -33,7 +33,7 @@ namespace Gtk
             set => SetProperty(ImageProperty, value);
         }
 
-        public static readonly Property<PositionType> ImagePositionProperty = GObject.Property<PositionType>.Register<Button>(
+        public static readonly Property<PositionType> ImagePositionProperty = Property<PositionType>.Register<Button>(
             "image-position",
             nameof(ImagePosition),
             (o) => o.ImagePosition,
@@ -46,7 +46,7 @@ namespace Gtk
             set => SetProperty(ImagePositionProperty, value);
         }
 
-        public static readonly Property<string> LabelProperty = GObject.Property<string>.Register<Button>(
+        public static readonly Property<string> LabelProperty = Property<string>.Register<Button>(
             "label",
             nameof(Label),
             (o) => o.Label,
@@ -59,7 +59,7 @@ namespace Gtk
             set => SetProperty(LabelProperty, value);
         }
 
-        public static readonly Property<ReliefStyle> ReliefProperty = GObject.Property<ReliefStyle>.Register<Button>(
+        public static readonly Property<ReliefStyle> ReliefProperty = Property<ReliefStyle>.Register<Button>(
             "relief",
             nameof(Relief),
             (o) => o.Relief,
@@ -72,7 +72,7 @@ namespace Gtk
             set => SetProperty(ReliefProperty, value);
         }
 
-        public static readonly Property<bool> UseUnderlineProperty = GObject.Property<bool>.Register<Button>(
+        public static readonly Property<bool> UseUnderlineProperty = Property<bool>.Register<Button>(
             "use-underline",
             nameof(UseUnderline),
             (o) => o.UseUnderline,
@@ -89,17 +89,17 @@ namespace Gtk
 
         #region Signals
 
-        public static readonly Signal<SignalArgs> ActivateSignal = Signal<SignalArgs>.Wrap("activate");
+        public static readonly Signal ActivateSignal = Signal.Wrap("activate");
 
-        public event EventHandler<SignalArgs> Activate
+        public event EventHandler<SignalArgs> OnActivate
         {
             add => ActivateSignal.Connect(this, value, true);
             remove => ActivateSignal.Disconnect(this, value);
         }
 
-        public static readonly Signal<SignalArgs> ClickedSignal = Signal<SignalArgs>.Wrap("clicked");
+        public static readonly Signal ClickedSignal = Signal.Wrap("clicked");
 
-        public event EventHandler<SignalArgs> Clicked
+        public event EventHandler<SignalArgs> OnClicked
         {
             add => ClickedSignal.Connect(this, value, true);
             remove => ClickedSignal.Disconnect(this, value);

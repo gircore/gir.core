@@ -46,7 +46,7 @@ namespace GObject
         {
             Args = new object[args.Length];
 
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 // TODO: Args[i] = args[i].Value;
             }
@@ -56,9 +56,71 @@ namespace GObject
     }
 
     /// <summary>
+    /// Default implementation of a GSignal descriptor. Mainly a shortcut
+    /// to <see cref="Signal{SignalArgs}"/> for basic signals.
+    /// </summary>
+    public sealed class Signal : Signal<SignalArgs>
+    {
+        #region Constructors
+
+        private Signal(string name, Sys.SignalFlags flags, Sys.Type returnType, Sys.Type[] paramTypes)
+            : base(name, flags, returnType, paramTypes)
+        { }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Registers a new GSignal into this type.
+        /// </summary>
+        /// <param name="name">The name of the GSignal to create.</param>
+        /// <param name="flags">The GSignal flags.</param>
+        /// <param name="returnType">The type of the value returned by the handlers of this GSignal.</param>
+        /// <param name="paramTypes">
+        /// The types list for each parameters given to handlers of this GSignal,
+        /// in the order they appear.</param>
+        /// <returns>
+        /// An instance of <see cref="Signal"/> which describes the registered signal.
+        /// </returns>
+        public static new Signal Register(string name, Sys.SignalFlags flags, Sys.Type returnType, params Sys.Type[] paramTypes)
+        {
+            return new Signal(name, flags, returnType, paramTypes);
+        }
+
+        /// <summary>
+        /// Registers a new GSignal into this type.
+        /// </summary>
+        /// <param name="name">The name of the GSignal to create.</param>
+        /// <param name="flags">The GSignal flags.</param>
+        /// <returns>
+        /// An instance of <see cref="Signal"/> which describes the registered signal.
+        /// </returns>
+        public static new Signal Register(string name, Sys.SignalFlags flags = Sys.SignalFlags.run_last)
+        {
+            return new Signal(name, flags, Sys.Type.None, Array.Empty<Sys.Type>());
+        }
+
+        /// <summary>
+        /// Wraps an existing GSignal.
+        /// </summary>
+        /// <param name="name">The name of the GSignal to wrap.</param>
+        /// <returns>
+        /// An instance of <see cref="Signal"/> which describes the signal to wrap.
+        /// </returns>
+        public static new Signal Wrap(string name)
+        {
+            // Here only the signal name is relevant, other paramters are not used.
+            return new Signal(name, Sys.SignalFlags.run_last, Sys.Type.None, Array.Empty<Sys.Type>());
+        }
+
+        #endregion
+    }
+
+    /// <summary>
     /// Describes a GSignal.
     /// </summary>
-    public sealed class Signal<T>
+    public class Signal<T>
         where T : SignalArgs, new()
     {
         #region Fields
@@ -93,7 +155,7 @@ namespace GObject
 
         #region Constructors
 
-        private Signal(string name, Sys.SignalFlags flags, Sys.Type returnType, Sys.Type[] paramTypes)
+        internal Signal(string name, Sys.SignalFlags flags, Sys.Type returnType, Sys.Type[] paramTypes)
         {
             Name = name;
             Flags = flags;
@@ -197,7 +259,7 @@ namespace GObject
             {
                 callback = (ref Sys.Value[] values) =>
                 {
-                    T args = new T();
+                    var args = new T();
                     args.SetArgs(values);
                     action(o, args);
                 };
