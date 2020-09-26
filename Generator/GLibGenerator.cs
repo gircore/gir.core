@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gir;
@@ -6,6 +7,14 @@ namespace Generator
 {
     public class GLibGenerator : Generator<GLibTemplateLoader>
     {
+        enum StructType
+        {
+            RefStruct,          // Simple Marshal-able C-struct
+            OpaqueStruct,       // Opaque struct, marshal as class + IntPtr
+            PublicClassStruct,  // GObject type struct (special case)
+            PrivateClassStruct  // Same as above, but opaque
+        }
+
         public GLibGenerator(Project project) : base(project) { }
 
         protected override void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
@@ -21,6 +30,30 @@ namespace Generator
             }
         }
 
+        // Determine how we should generate a given record/struct based on
+        // a simple set of rules.
+        private StructType GetStructType(GRecord record)
+        {
+            switch (record)
+            {
+                // Disguised (private) Class Struct
+                case GRecord r when r.GLibIsGTypeStructFor != null && r.Disguised == true:
+                    return StructType.PrivateClassStruct;
+
+                // Introspectable (public) Class Struct
+                case GRecord r when r.GLibIsGTypeStructFor != null && r.Disguised == false:
+                    return StructType.PublicClassStruct;
+
+                // Disguised/Empty Struct
+                case GRecord r when r.Disguised || r.Fields.Count == 0:
+                    return StructType.OpaqueStruct;
+
+                // Regular C-Style Structure
+                default:
+                    return StructType.RefStruct;
+            }
+        }
+
         protected override void GenerateStructs(IEnumerable<GRecord> records, string @namespace)
         {
             foreach (var record in records)
@@ -30,9 +63,12 @@ namespace Generator
                 // are structs. The only distinction right now is that the "fake" structs
                 // have no fields defined
 
-                var hasFields = record.Fields.Any();
-                var templateName = hasFields ? "struct" : "struct_as_class";
-                var subfolder = hasFields ? "Structs" : "Classes";
+                var (templateName, subfolder) = GetStructType(record) switch
+                {
+                    StructType.RefStruct => ("struct", "Structs"),
+                    StructType.OpaqueStruct => ("struct_as_class", "Classes"),
+                    _ => throw new NotImplementedException($"Cannot generate struct {record.Name} - Skipping"),
+                };
 
                 Generate(record,
                     templateName: templateName,

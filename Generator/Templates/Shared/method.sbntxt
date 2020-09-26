@@ -25,7 +25,7 @@ func parameters
 end
 
 func get_obsolete
-    if method.deprecated
+    if method && method.deprecated
         text = ""
         if method.doc_deprecated
             text = method.doc_deprecated.text | make_single_line | escape_quotes

@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Gir
 {
-    public class GField
+    public class GField : IType
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -13,7 +13,16 @@ namespace Gir
         [XmlAttribute("private")]
         public bool Private { get; set; }
         
-        [XmlElement("type")]
-        public GType? Type { get; set; }
+		[XmlElement ("callback")]
+		public GCallback? Callback { get; set; }
+
+        [XmlElement ("type")]
+		public GType? Type { get; set; }
+
+		[XmlElement("array")]
+		public GArray? Array { get; set; }
+
+        [XmlElement ("doc")]
+		public GDoc? Doc { get; set; }
     }
 }
