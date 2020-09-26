@@ -12,13 +12,13 @@ namespace Gir
         public List<GField> Fields { get; set; } = default!;
 
         [XmlAttribute ("is-gtype-struct-for", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
-		public string? GLibIsGTypeStructFor;
+        public string? GLibIsGTypeStructFor;
 
         [XmlAttribute ("disguised")]
-		public bool Disguised = false;
+        public bool Disguised = false;
 
         [XmlAttribute ("introspectable")]
-		public bool Introspectable = true;
+        public bool Introspectable = true;
 
         public override IEnumerable<GMethod> AllMethods
         {

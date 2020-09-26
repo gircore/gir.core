@@ -9,20 +9,20 @@ namespace Gir
 
         [XmlAttribute("readable")]
         public bool Readable { get; set; }
-        
+
         [XmlAttribute("private")]
         public bool Private { get; set; }
-        
-		[XmlElement ("callback")]
-		public GCallback? Callback { get; set; }
+
+        [XmlElement ("callback")]
+        public GCallback? Callback { get; set; }
 
         [XmlElement ("type")]
-		public GType? Type { get; set; }
+        public GType? Type { get; set; }
 
-		[XmlElement("array")]
-		public GArray? Array { get; set; }
+        [XmlElement("array")]
+        public GArray? Array { get; set; }
 
         [XmlElement ("doc")]
-		public GDoc? Doc { get; set; }
+        public GDoc? Doc { get; set; }
     }
 }
