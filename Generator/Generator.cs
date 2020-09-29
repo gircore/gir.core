@@ -87,7 +87,7 @@ namespace Generator
                     return StructType.PublicClassStruct;
 
                 // Regular C-Style Structure
-                case GRecord r when !r.Disguised || r.Fields.Count > 0:
+                case GRecord r when !r.Disguised && r.Fields.Count > 0:
                     return StructType.RefStruct;
                 
                 // Default: Disguised Struct (Marshal with IntPtr)
@@ -225,7 +225,14 @@ namespace Generator
                 new Func<IType, string>((t) =>
                 {
                     var resolvedType = typeResolver.Resolve(t);
-                    return resolvedType.Attribute + resolvedType.Type;
+                    return resolvedType.GetTypeString();
+                })
+            );
+            scriptObject.Import("resolve_field",
+                new Func<IType, string>((t) =>
+                {
+                    var resolvedType = typeResolver.Resolve(t);
+                    return resolvedType.GetFieldString();
                 })
             );
             return scriptObject;
