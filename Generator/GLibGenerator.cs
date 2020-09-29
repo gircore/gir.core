@@ -7,50 +7,18 @@ namespace Generator
 {
     public class GLibGenerator : Generator<GLibTemplateLoader>
     {
-        enum StructType
-        {
-            RefStruct,          // Simple Marshal-able C-struct
-            OpaqueStruct,       // Opaque struct, marshal as class + IntPtr
-            PublicClassStruct,  // GObject type struct (special case)
-            PrivateClassStruct  // Same as above, but opaque
-        }
-
         public GLibGenerator(Project project) : base(project) { }
 
         protected override void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
         {
-            foreach (var dele in delegates)
+            foreach (var dlg in delegates)
             {
-                Generate(dele,
+                Generate(dlg,
                     templateName: "delegate",
                     subfolder: "Delegates",
-                    fileName: dele.Name,
+                    fileName: dlg.Name,
                     scriptObject: ScriptObject
                 );
-            }
-        }
-
-        // Determine how we should generate a given record/struct based on
-        // a simple set of rules.
-        private StructType GetStructType(GRecord record)
-        {
-            switch (record)
-            {
-                // Disguised (private) Class Struct
-                case GRecord r when r.GLibIsGTypeStructFor != null && r.Disguised == true:
-                    return StructType.PrivateClassStruct;
-
-                // Introspectable (public) Class Struct
-                case GRecord r when r.GLibIsGTypeStructFor != null && r.Disguised == false:
-                    return StructType.PublicClassStruct;
-
-                // Disguised/Empty Struct
-                case GRecord r when r.Disguised || r.Fields.Count == 0:
-                    return StructType.OpaqueStruct;
-
-                // Regular C-Style Structure
-                default:
-                    return StructType.RefStruct;
             }
         }
 
@@ -58,11 +26,10 @@ namespace Generator
         {
             foreach (var record in records)
             {
-                // There are structs which must be generated as classes. Currently
-                // this is especially true for GLib. But there a structs which actually
-                // are structs. The only distinction right now is that the "fake" structs
-                // have no fields defined
-
+                // By calling GetStructType(), we determine whether the struct is
+                // readable or opaque and generate it accordingly. See GetStructType()
+                // for details.
+                
                 var (templateName, subfolder) = GetStructType(record) switch
                 {
                     StructType.RefStruct => ("struct", "Structs"),

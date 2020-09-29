@@ -15,11 +15,21 @@ namespace Generator
         void Generate();
     }
 
+    public enum StructType
+    {
+        RefStruct,          // Simple Marshal-able C-struct
+        OpaqueStruct,       // Opaque struct, marshal as class + IntPtr
+        PublicClassStruct,  // GObject type struct (special case)
+        PrivateClassStruct  // Same as above, but opaque
+    }
+
     public abstract class Generator<K> : IGenerator where K : ITemplateLoader
     {
         #region Fields
+
         private readonly TypeResolver typeResolver;
         private readonly string dllImport;
+
         #endregion
 
         #region Properties
@@ -58,6 +68,32 @@ namespace Generator
                 return project.GetWindowsDllImport();
             else
                 return project.GetLinuxDllImport();
+        }
+
+        /// <summary>
+        /// Determine how we should generate a given record/struct based on
+        /// a simple set of rules.
+        /// </summary>
+        protected StructType GetStructType(GRecord record)
+        {
+            switch (record)
+            {
+                // Disguised (private) Class Struct
+                case GRecord r when r.GLibIsGTypeStructFor != null && r.Disguised == true:
+                    return StructType.PrivateClassStruct;
+
+                // Introspectable (public) Class Struct
+                case GRecord r when r.GLibIsGTypeStructFor != null && r.Disguised == false:
+                    return StructType.PublicClassStruct;
+
+                // Regular C-Style Structure
+                case GRecord r when !r.Disguised || r.Fields.Count > 0:
+                    return StructType.RefStruct;
+                
+                // Default: Disguised Struct (Marshal with IntPtr)
+                default:
+                    return StructType.OpaqueStruct;
+            }
         }
 
         public void Generate()
