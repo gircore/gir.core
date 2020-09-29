@@ -6,15 +6,20 @@ namespace Generator
     public class ResolvedType
     {
         public string Type { get; }
-        public  string Attribute { get; }
+        public string Attribute { get; }
+        public bool IsRef {get; }
 
-        public ResolvedType(string type, string attribute = "")
+        public ResolvedType(string type, bool isRef = false, string attribute = "")
         {
             Type = type;
             Attribute = attribute;
+            IsRef = isRef;
         }
 
-        public override string ToString() => Attribute + Type;
+        public override string ToString() => GetTypeString();
+        
+        public string GetTypeString() => Attribute + " " + (IsRef ? "ref" : String.Empty) + " " + Type;
+        public string GetFieldString() => Attribute + " " + (IsRef ? "IntPtr" : Type);
     }
     
     internal class MyType
@@ -97,15 +102,16 @@ namespace Generator
         private ResolvedType GetTypeName(MyType type)
             => type switch
             {
+                { Type: "gpointer" } => new ResolvedType("IntPtr"),
                 { IsArray: false, Type: "void", IsPointer: true } => new ResolvedType("IntPtr"),
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),  //string in parameters are marshalled automatically
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => new ResolvedType("IntPtr"),
-                { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType("string[]", GetMarshal(l)),
-                { IsArray: false, IsPointer: true, IsValueType: true } => new ResolvedType("ref " + type.Type),
+                { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType("string[]", attribute: GetMarshal(l)),
+                { IsArray: false, IsPointer: true, IsValueType: true } => new ResolvedType(type.Type, true),
                 { IsArray: false, IsPointer: true, IsValueType: false } => new ResolvedType("IntPtr"),
-                { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("ref IntPtr"), //string array
-                { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType("IntPtr[]", GetMarshal(l)),
-                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType(type.Type + "[]", GetMarshal(l)),
+                { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("IntPtr", true), //string array
+                { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType("IntPtr[]", attribute: GetMarshal(l)),
+                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType(type.Type + "[]", attribute: GetMarshal(l)),
                 { IsArray: true, IsValueType: true, ArrayLengthParameter: {} } => new ResolvedType(type.Type + "[]"),
                 { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => new ResolvedType("IntPtr"),
                 _ => new ResolvedType(type.Type)

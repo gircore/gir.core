@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gir;
@@ -10,12 +11,12 @@ namespace Generator
 
         protected override void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
         {
-            foreach (var dele in delegates)
+            foreach (var dlg in delegates)
             {
-                Generate(dele,
+                Generate(dlg,
                     templateName: "delegate",
                     subfolder: "Delegates",
-                    fileName: dele.Name,
+                    fileName: dlg.Name,
                     scriptObject: ScriptObject
                 );
             }
@@ -25,14 +26,16 @@ namespace Generator
         {
             foreach (var record in records)
             {
-                // There are structs which must be generated as classes. Currently
-                // this is especially true for GLib. But there a structs which actually
-                // are structs. The only distinction right now is that the "fake" structs
-                // have no fields defined
-
-                var hasFields = record.Fields.Any();
-                var templateName = hasFields ? "struct" : "struct_as_class";
-                var subfolder = hasFields ? "Structs" : "Classes";
+                // By calling GetStructType(), we determine whether the struct is
+                // readable or opaque and generate it accordingly. See GetStructType()
+                // for details.
+                
+                var (templateName, subfolder) = GetStructType(record) switch
+                {
+                    StructType.RefStruct => ("struct", "Structs"),
+                    StructType.OpaqueStruct => ("struct_as_class", "Classes"),
+                    _ => throw new NotImplementedException($"Cannot generate struct {record.Name} - Skipping"),
+                };
 
                 Generate(record,
                     templateName: templateName,
