@@ -7,7 +7,7 @@ namespace Generator
     {
         public string Type { get; }
         public string Attribute { get; }
-        public bool IsRef {get; }
+        public bool IsRef { get; }
 
         public ResolvedType(string type, bool isRef = false, string attribute = "")
         {
@@ -18,8 +18,8 @@ namespace Generator
 
         public override string ToString() => GetTypeString();
         
-        public string GetTypeString() => Attribute + " " + (IsRef ? "ref" : String.Empty) + " " + Type;
-        public string GetFieldString() => Attribute + " " + (IsRef ? "IntPtr" : Type);
+        public string GetTypeString() => Attribute + (IsRef ? "ref " : string.Empty) + Type;
+        public string GetFieldString() => Attribute + (IsRef ? "IntPtr" : Type);
     }
     
     internal class MyType
@@ -123,7 +123,7 @@ namespace Generator
         private MyType ResolveCType(string cType)
         {
             var isPointer = cType.EndsWith("*");
-            cType = cType.Replace("*", "").Replace("const ", "");
+            cType = cType.Replace("*", "").Replace("const ", "").Replace("volatile ", "");
 
             var result = cType switch
             {

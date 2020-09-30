@@ -76,24 +76,20 @@ namespace Generator
         /// </summary>
         protected StructType GetStructType(GRecord record)
         {
-            switch (record)
+            return record switch
             {
                 // Disguised (private) Class Struct
-                case GRecord r when r.GLibIsGTypeStructFor != null && r.Disguised == true:
-                    return StructType.PrivateClassStruct;
-
+                { Disguised: true, GLibIsGTypeStructFor: { }} => StructType.PrivateClassStruct,
+                
                 // Introspectable (public) Class Struct
-                case GRecord r when r.GLibIsGTypeStructFor != null && r.Disguised == false:
-                    return StructType.PublicClassStruct;
-
+                { Disguised: false, GLibIsGTypeStructFor: { }} => StructType.PublicClassStruct,
+                
                 // Regular C-Style Structure
-                case GRecord r when !r.Disguised && r.Fields.Count > 0:
-                    return StructType.RefStruct;
+                { Disguised: false, Fields: {} f} when f.Count > 0 => StructType.RefStruct,
                 
                 // Default: Disguised Struct (Marshal with IntPtr)
-                default:
-                    return StructType.OpaqueStruct;
-            }
+                _ => StructType.OpaqueStruct
+            };
         }
 
         public void Generate()

@@ -9,9 +9,15 @@ namespace Gir
 
         [XmlAttribute("readable")]
         public bool Readable { get; set; }
+        
+        [XmlAttribute("writeable")]
+        public bool Writeable { get; set; }
 
         [XmlAttribute("private")]
         public bool Private { get; set; }
+        
+        [XmlAttribute("bits")]
+        public int Bits { get; set; }
 
         [XmlElement ("callback")]
         public GCallback? Callback { get; set; }

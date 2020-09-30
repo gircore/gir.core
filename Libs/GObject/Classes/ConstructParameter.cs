@@ -15,7 +15,7 @@ namespace GObject
         /// <summary>
         /// The value of the property.
         /// </summary>
-        public Sys.Value Value { get; }
+        public Value Value { get; }
 
         #endregion
 
@@ -24,7 +24,7 @@ namespace GObject
         private ConstructParameter(string name, object? value)
         {
             Name = name;
-            Value = Sys.Value.From(value);
+            Value = Value.From(value);
         }
 
         #endregion

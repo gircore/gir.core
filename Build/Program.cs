@@ -22,9 +22,9 @@ class Program
 
     private static readonly (Project Project, Type Type)[] libraryProjects =
     {
-        (new Project(GLIB, "GLib-2.0.gir", "libglib-2.0", "0", false), typeof(GLibGenerator))
-        /*(GOBJECT, "GObject-2.0.gir", "libgobject-2.0.so.0", true),
-        (GIO, GIO_GIR, "libgio-2.0.so.0", true),
+        (new Project(GLIB, "GLib-2.0.gir", "libglib-2.0", "0", false), typeof(GLibGenerator)),
+        (new Project(GOBJECT, "GObject-2.0.gir", "libgobject-2.0", "0", true), typeof(GObjectGenerator)),
+        /*(GIO, GIO_GIR, "libgio-2.0.so.0", true),
         (CAIRO, "cairo-1.0.gir", "TODO", false),
         (XLIB, "xlib-2.0.gir", "TODO", false),
         (PANGO, "Pango-1.0.gir", "TODO", false),
@@ -77,7 +77,7 @@ class Program
         Target(Targets.Release, () => configuration = confRelease);
         Target(Targets.Debug, () => configuration = confDebug);
 
-        Target("default", DependsOn(Targets.Generate));
+        Target("default", DependsOn(Targets.Build));
         RunTargetsAndExit(args);
     }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace GObject.Sys
+namespace GObject
 {
     [StructLayout(LayoutKind.Sequential)]
 	public partial struct Closure
