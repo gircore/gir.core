@@ -2,9 +2,6 @@
   <ItemGroup>
     <ProjectReference Include="..\GLib\GLib.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Structs" />
-  </ItemGroup>
 
   <PropertyGroup>
     <PackageId>Gir.CS.GObject</PackageId>
