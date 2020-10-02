@@ -112,12 +112,15 @@ namespace Generator
             scriptObject = null; //Reset script object to create a new for a new run
             GenerateDelegates(Repository.Namespace.Callbacks, Repository.Namespace.Name);
             scriptObject = null; //Reset script object to create a new for a new run
+            GenerateGlobals(Repository.Namespace.Functions, Repository.Namespace.Name);
+            scriptObject = null; //Reset script object to create a new for a new run
         }
 
         protected virtual void GenerateClasses(IEnumerable<GInterface> classes, string @namespace) { }
         protected virtual void GenerateStructs(IEnumerable<GRecord> records, string @namespace) { }
         protected virtual void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags) { }
         protected virtual void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace) { }
+        protected virtual void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace) { }
         
         private static GRepository ReadRepository(string girFile)
         {
@@ -127,7 +130,11 @@ namespace Generator
             return (GRepository) serializer.Deserialize(fs);
         }
 
-        protected void Generate<T>(T obj, string templateName, string subfolder,
+        protected void Generate(string templateName, string subfolder,
+            string? fileName, ScriptObject scriptObject)
+            => Generate(null, templateName, subfolder, fileName, scriptObject);
+
+        protected void Generate(object? obj, string templateName, string subfolder,
             string? fileName, ScriptObject scriptObject)
         {
             //Create subfolder if it does not exist
@@ -139,7 +146,8 @@ namespace Generator
                 return;
             }
             
-            scriptObject.Import(obj);
+            if(obj is { })
+                scriptObject.Import(obj);
 
             fileName = Path.Combine(subfolder, fileName + ".Generated.cs");
 
@@ -177,6 +185,12 @@ namespace Generator
         {
             var path = Path.Combine(Project.Folder, fileName);
             File.WriteAllText(path, content);
+        }
+        
+        protected void RemoveVarArgsMethods(List<GMethod> methods)
+        {
+            static bool IsVariadic(GParameter p) => p.VarArgs is {};
+            methods.RemoveAll((x) => x.Parameters?.Parameters.Any(IsVariadic) ?? false);
         }
 
         private ScriptObject CreateScriptObject(string @namespace, string dllImport)

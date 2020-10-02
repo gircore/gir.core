@@ -75,7 +75,7 @@ namespace GObject
                 // the lowest-common-denominator of functionality will be exposed.
                 while (!Contains(gtype))
                 {
-                    ulong parent = Sys.Methods.type_parent(gtype.Value);
+                    var parent = Global.type_parent(gtype.Value);
                     if (parent == 0)
                         throw new Exception("Could not get Type from GType");
 

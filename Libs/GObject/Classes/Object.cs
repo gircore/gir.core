@@ -150,14 +150,36 @@ namespace GObject
             }
         }
 
-        /// <summary>
-        /// Property Notify Events
-        /// </summary>
-        /// <param name="propertyName"></param>
-        /// <param name="callback"></param>
+        // Property Notify Events
         protected internal void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback)
+            => RegisterEvent($"notify::{propertyName}", callback);
+
+        protected internal void RegisterEvent(string eventName, ActionRefValues callback, bool after = false)
         {
-            //TODO
+            ThrowIfDisposed();
+            RegisterEvent(eventName, new Closure(this, callback), after);
+        }
+
+        protected internal void RegisterEvent(string eventName, Action callback, bool after = false)
+        {
+            ThrowIfDisposed();
+            RegisterEvent(eventName, new Closure(this, callback), after);
+        }
+
+        protected internal void UnregisterEvent(ActionRefValues callback)
+        {
+            ThrowIfDisposed();
+
+            if (Closure.TryGetByDelegate(callback, out Closure closure))
+                UnregisterEvent(closure);
+        }
+
+        protected internal void UnregisterEvent(Action callback)
+        {
+            ThrowIfDisposed();
+
+            if (Closure.TryGetByDelegate(callback, out Closure closure))
+                UnregisterEvent(closure);
         }
 
 
@@ -187,6 +209,60 @@ namespace GObject
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        
+        // This function returns the proxy object to the provided handle
+        // if it already exists, otherwise creats a new wrapper object
+        // and returns it.
+        protected static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
+        {
+            o = default!;
+
+            // Return false if T is not of type Object
+            if (!typeof(T).IsSubclassOf(typeof(Object)) && typeof(T) != typeof(Object))
+                return false;
+
+            // Attempt to lookup the pointer in the object dictionary
+            if (objects.TryGetValue(handle, out var obj))
+            {
+                o = (T) (object) obj;
+                return true;
+            }
+
+            // If it is not found, we can assume that it
+            // is NOT a subclass type, as we ensure that
+            // subclass types always outlive their pointers
+            // TODO: Toggle Refs ^^^
+
+            // Resolve gtype of object
+            var trueGType = TypeFromHandle(handle);
+            var trueType = TypeDictionary.Get(trueGType);
+
+            // Ensure we are not constructing a subclass
+            if (IsSubclass(trueType))
+                throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
+
+            // Ensure the conversion is valid
+            var castGType = TypeDictionary.Get(typeof(T));
+            if (!Global.type_is_a(trueGType.Value, castGType.Value))
+                throw new InvalidCastException();
+
+            // Create using 'IntPtr' constructor
+            var ctor = trueType.GetConstructor(
+                System.Reflection.BindingFlags.NonPublic 
+                | System.Reflection.BindingFlags.Public 
+                | System.Reflection.BindingFlags.Instance,
+                null, new[] { typeof(IntPtr) }, null
+            );
+
+            o = (T) ctor.Invoke(new object[] { handle });
+
+            // TODO: We don't need the following line as
+            // we already add to the object dictionary in the
+            // constructor.
+            // objects.Add(handle, (Object)(object)o);
+            return true;
+        }
+        
         #endregion
 
         #region IDisposable

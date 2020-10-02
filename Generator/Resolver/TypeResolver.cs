@@ -49,6 +49,7 @@ namespace Generator
 
         public ResolvedType Resolve(IType typeInfo) => typeInfo switch
         {
+            GField f when  f.Callback is { } => new ResolvedType("IntPtr"),
             { Array: { CType:{} n }} when n.EndsWith("**") => new ResolvedType("ref IntPtr"),
             { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter)),
             { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),

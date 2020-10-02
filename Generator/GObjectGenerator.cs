@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gir;
 
 namespace Generator
@@ -42,7 +43,7 @@ namespace Generator
                     subfolder: "Classes",
                     fileName: cls.Name,
                     scriptObject: ScriptObject
-                );   
+                );
             }
         }
 
@@ -57,8 +58,22 @@ namespace Generator
                     subfolder: "Enums",
                     fileName: obj.Name,
                     scriptObject: ScriptObject
-                );   
+                );
             }
+        }
+
+        protected override void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace)
+        {
+            var list = methods.ToList();
+            RemoveVarArgsMethods(list);
+            ScriptObject.Add("methods", list);
+            
+            Generate(
+                templateName: "global",
+                subfolder: "Classes",
+                fileName: "Global",
+                scriptObject: ScriptObject
+            );
         }
     }
 }
