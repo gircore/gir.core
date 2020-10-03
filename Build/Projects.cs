@@ -6,7 +6,6 @@ static class Projects
     public const string HANDY_GIR = "Handy-0.0.gir";
     public const string WEBKITGTK_GIR = "WebKit2-4.0.gir";
     public const string WEBKIT2WEBEXTENSION_GIR = "WebKit2WebExtension-4.0.gir";
-    public const string GIO_GIR = "Gio-2.0.gir";
     public const string JAVASCRIPT_CORE_GIR = "JavaScriptCore-4.0.gir";
     
     public const string GTK3 = "../Libs/Gtk3/";

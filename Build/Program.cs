@@ -24,8 +24,8 @@ class Program
     {
         (new Project(GLIB, "GLib-2.0.gir", "libglib-2.0", "0", false), typeof(GLibGenerator)),
         (new Project(GOBJECT, "GObject-2.0.gir", "libgobject-2.0", "0", true), typeof(GObjectGenerator)),
-        /*(GIO, GIO_GIR, "libgio-2.0.so.0", true),
-        (CAIRO, "cairo-1.0.gir", "TODO", false),
+        (new Project(GIO, "Gio-2.0.gir", "libgio-2.0","0", true), typeof(GObjectGenerator))
+        /*(CAIRO, "cairo-1.0.gir", "TODO", false),
         (XLIB, "xlib-2.0.gir", "TODO", false),
         (PANGO, "Pango-1.0.gir", "TODO", false),
         (GDK3, "Gdk-3.0.gir", "TODO", true),

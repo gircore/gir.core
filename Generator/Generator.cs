@@ -48,8 +48,14 @@ namespace Generator
             Repository = ReadRepository(project.Gir);
             
             dllImport = GetDllImport(project) ?? throw new ArgumentNullException(nameof(dllImport));
+            
             var aliases = new List<GAlias>();
             aliases.AddRange(Repository.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+            
+            var repo = ReadRepository("../gir-files/GLib-2.0.gir");
+            if(repo.Namespace != Repository.Namespace)
+                aliases.AddRange(repo.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+            
             var aliasResolver = new AliasResolver(aliases);
             typeResolver = new TypeResolver(aliasResolver);
         }
