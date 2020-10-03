@@ -5,7 +5,13 @@ namespace GObject
 {
     public class SignalArgs : EventArgs
     {
+        #region Properties
+        
         public object[] Args { get; }
+        
+        #endregion
+
+        #region Constructors
 
         public SignalArgs()
         {
@@ -26,6 +32,8 @@ namespace GObject
                 // TODO: Args[i] = args[i].Value;
             }
         }
+
+        #endregion
     }
 
     /// <summary>

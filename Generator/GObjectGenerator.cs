@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gir;
+using Scriban.Runtime;
 
 namespace Generator
 {
@@ -12,11 +13,14 @@ namespace Generator
         {
             foreach (var dele in delegates)
             {
-                Generate(dele,
+                var scriptObject = GetScriptObject();
+                scriptObject.Import(dele);
+
+                Generate(
                     templateName: "delegate",
                     subfolder: "Delegates",
                     fileName: dele.Name,
-                    scriptObject: ScriptObject
+                    scriptObject: scriptObject
                 );
             }
         }
@@ -25,11 +29,14 @@ namespace Generator
         {
             foreach (var record in records)
             {
-                Generate(record,
+                var scriptObject = GetScriptObject();
+                scriptObject.Import(record);
+
+                Generate(
                     templateName: "struct",
                     subfolder: "Structs",
                     fileName: record.Name,
-                    scriptObject: ScriptObject
+                    scriptObject: scriptObject
                 );
             }
         }
@@ -38,26 +45,31 @@ namespace Generator
         {
             foreach (var cls in classes)
             {
-                Generate(cls,
+                var scriptObject = GetScriptObject();
+                scriptObject.Import(cls);
+
+                Generate(
                     templateName: "class",
                     subfolder: "Classes",
                     fileName: cls.Name,
-                    scriptObject: ScriptObject
+                    scriptObject: scriptObject
                 );
             }
         }
 
         protected override void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags)
         {
-            ScriptObject.Add("has_flags", hasFlags);
-            
             foreach (var obj in enums)
             {
-                Generate(obj,
+                var scriptObject = GetScriptObject();
+                scriptObject.Import(obj);
+                scriptObject.Add("has_flags", hasFlags);
+
+                Generate(
                     templateName: "enum",
                     subfolder: "Enums",
                     fileName: obj.Name,
-                    scriptObject: ScriptObject
+                    scriptObject: scriptObject
                 );
             }
         }
@@ -66,13 +78,14 @@ namespace Generator
         {
             var list = methods.ToList();
             RemoveVarArgsMethods(list);
-            ScriptObject.Add("methods", list);
-            
+            var scriptObject = GetScriptObject();
+            scriptObject.Add("methods", list);
+
             Generate(
                 templateName: "global",
                 subfolder: "Classes",
                 fileName: "Global",
-                scriptObject: ScriptObject
+                scriptObject: scriptObject
             );
         }
     }

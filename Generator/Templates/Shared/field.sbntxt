@@ -5,4 +5,4 @@
         /// </summary>
         {{ end 
         get_obsolete -}}
-        public {{ $1 | resolve_field }} {{ $1.name }};
+        public {{ $1 | resolve_field }} {{ $1.name | fix_identifier }};

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gir;
+using Scriban.Runtime;
 
 namespace Generator
 {
@@ -13,11 +14,14 @@ namespace Generator
         {
             foreach (var dlg in delegates)
             {
-                Generate(dlg,
+                var scriptObject = GetScriptObject();
+                scriptObject.Import(dlg);
+                
+                Generate(
                     templateName: "delegate",
                     subfolder: "Delegates",
                     fileName: dlg.Name,
-                    scriptObject: ScriptObject
+                    scriptObject: scriptObject
                 );
             }
         }
@@ -29,7 +33,7 @@ namespace Generator
                 // By calling GetStructType(), we determine whether the struct is
                 // readable or opaque and generate it accordingly. See GetStructType()
                 // for details.
-                
+
                 var (templateName, subfolder) = GetStructType(record) switch
                 {
                     StructType.RefStruct => ("struct", "Structs"),
@@ -37,11 +41,14 @@ namespace Generator
                     _ => throw new NotImplementedException($"Cannot generate struct {record.Name} - Skipping"),
                 };
 
-                Generate(record,
+                var scriptObject = GetScriptObject();
+                scriptObject.Import(record);
+
+                Generate(
                     templateName: templateName,
                     subfolder: subfolder,
                     fileName: record.Name,
-                    scriptObject: ScriptObject
+                    scriptObject: scriptObject
                 );
             }
         }
@@ -50,27 +57,32 @@ namespace Generator
         {
             foreach (var cls in classes)
             {
-                Generate(cls,
+                var scriptObject = GetScriptObject();
+                scriptObject.Import(cls);
+
+                Generate(
                     templateName: "class",
                     subfolder: "Classes",
                     fileName: cls.Name,
-                    scriptObject: ScriptObject
-                );   
+                    scriptObject: scriptObject
+                );
             }
         }
 
         protected override void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags)
         {
-            ScriptObject.Add("has_flags", hasFlags);
-            
             foreach (var obj in enums)
             {
-                Generate(obj,
+                var scriptObject = GetScriptObject();
+                scriptObject.Import(obj);
+                scriptObject.Add("has_flags", hasFlags);
+
+                Generate(
                     templateName: "enum",
                     subfolder: "Enums",
                     fileName: obj.Name,
-                    scriptObject: ScriptObject
-                );   
+                    scriptObject: scriptObject
+                );
             }
         }
     }

@@ -37,10 +37,6 @@ namespace Generator
         private GRepository Repository { get; }
         private Project Project { get; }
 
-        private ScriptObject? scriptObject;
-        protected ScriptObject ScriptObject 
-            => scriptObject ??= CreateScriptObject(Repository.Namespace.Name, dllImport);
-
         #endregion Properties
 
         #region Constructors
@@ -69,6 +65,9 @@ namespace Generator
             else
                 return project.GetLinuxDllImport();
         }
+
+        protected ScriptObject GetScriptObject()
+            => CreateScriptObject(Repository.Namespace.Name, dllImport);
 
         /// <summary>
         /// Determine how we should generate a given record/struct based on
@@ -101,19 +100,12 @@ namespace Generator
                 throw new Exception("Could not create code. Namespace is missing a name.");
 
             GenerateClasses(Repository.Namespace.Classes, Repository.Namespace.Name);
-            scriptObject = null; //Reset script object to create a new for a new run
             GenerateStructs(Repository.Namespace.Records, Repository.Namespace.Name);
-            scriptObject = null; //Reset script object to create a new for a new run
             GenerateStructs(Repository.Namespace.Unions, Repository.Namespace.Name);
-            scriptObject = null; //Reset script object to create a new for a new run
             GenerateEnums(Repository.Namespace.Bitfields, Repository.Namespace.Name, true);
-            scriptObject = null; //Reset script object to create a new for a new run
             GenerateEnums(Repository.Namespace.Enumerations, Repository.Namespace.Name, false);
-            scriptObject = null; //Reset script object to create a new for a new run
             GenerateDelegates(Repository.Namespace.Callbacks, Repository.Namespace.Name);
-            scriptObject = null; //Reset script object to create a new for a new run
             GenerateGlobals(Repository.Namespace.Functions, Repository.Namespace.Name);
-            scriptObject = null; //Reset script object to create a new for a new run
         }
 
         protected virtual void GenerateClasses(IEnumerable<GInterface> classes, string @namespace) { }
@@ -129,12 +121,8 @@ namespace Generator
             using var fs = new FileStream(girFile, FileMode.Open);
             return (GRepository) serializer.Deserialize(fs);
         }
-
+        
         protected void Generate(string templateName, string subfolder,
-            string? fileName, ScriptObject scriptObject)
-            => Generate(null, templateName, subfolder, fileName, scriptObject);
-
-        protected void Generate(object? obj, string templateName, string subfolder,
             string? fileName, ScriptObject scriptObject)
         {
             //Create subfolder if it does not exist
@@ -145,9 +133,6 @@ namespace Generator
                 Console.WriteLine($"Could not generate {templateName}, name is missing");
                 return;
             }
-            
-            if(obj is { })
-                scriptObject.Import(obj);
 
             fileName = Path.Combine(subfolder, fileName + ".Generated.cs");
 

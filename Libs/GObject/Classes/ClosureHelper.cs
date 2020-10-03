@@ -6,19 +6,21 @@ namespace GObject
 {
     public delegate void ActionRefValues(ref Value[] items);
 
-    internal class ClosureHelper
+    internal class ClosureHelper : IDisposable
     {
         #region Fields
 
+        private static readonly Dictionary<Delegate, ClosureHelper> handlers = new Dictionary<Delegate, ClosureHelper>();
+        
+        private bool disposedValue = false;
         private readonly Action? callback;
         private readonly ActionRefValues? callbackRefValues;
-        private static readonly Dictionary<Delegate, ClosureHelper> handlers = new Dictionary<Delegate, ClosureHelper>();
 
         #endregion
 
         #region Properties
 
-        internal IntPtr Handle { get; }
+        internal IntPtr Handle { get; private set; }
 
         #endregion
 
@@ -41,6 +43,8 @@ namespace GObject
             Handle = Closure.new_object((uint) Marshal.SizeOf(typeof(Closure)), obj.Handle);
             Closure.set_marshal(Handle, MarshalCallback);
         }
+        
+        ~ClosureHelper() => Dispose(false);
 
         #endregion
 
@@ -61,6 +65,24 @@ namespace GObject
         public static bool TryGetByDelegate(ActionRefValues action, out ClosureHelper closure)
         {
             return handlers.TryGetValue(action, out closure);
+        }
+        #endregion
+        
+        #region IDisposeable
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                Closure.unref(Handle);
+                Handle = IntPtr.Zero;
+                disposedValue = true;
+            }
         }
         #endregion
     }

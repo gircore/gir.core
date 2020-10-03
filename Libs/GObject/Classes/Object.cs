@@ -9,7 +9,7 @@ namespace GObject
     public partial class Object : INotifyPropertyChanged, IDisposable
     {
         private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
-        private static readonly Dictionary<Closure, ulong> closures = new Dictionary<Closure, ulong>();
+        private static readonly Dictionary<ClosureHelper, ulong> closures = new Dictionary<ClosureHelper, ulong>();
         
         #region Events
         /// <summary>
@@ -157,20 +157,36 @@ namespace GObject
         protected internal void RegisterEvent(string eventName, ActionRefValues callback, bool after = false)
         {
             ThrowIfDisposed();
-            RegisterEvent(eventName, new Closure(this, callback), after);
+            RegisterEvent(eventName, new ClosureHelper(this, callback), after);
         }
 
         protected internal void RegisterEvent(string eventName, Action callback, bool after = false)
         {
             ThrowIfDisposed();
-            RegisterEvent(eventName, new Closure(this, callback), after);
+            RegisterEvent(eventName, new ClosureHelper(this, callback), after);
+        }
+        
+        private void RegisterEvent(string eventName, ClosureHelper closure, bool after)
+        {
+            if (closures.TryGetValue(closure, out var id) && Global.signal_handler_is_connected(Handle, id))
+                return; // Skip if the handler is already registered
+
+            var ret = Global.signal_connect_closure(Handle, eventName, closure.Handle, after);
+
+            if (ret == 0)
+                throw new Exception($"Could not connect to event {eventName}");
+
+            // Add to our closures list so the callback
+            // doesn't get garbage collected.
+            // closures.Add(closure);
+            closures[closure] = ret;
         }
 
         protected internal void UnregisterEvent(ActionRefValues callback)
         {
             ThrowIfDisposed();
 
-            if (Closure.TryGetByDelegate(callback, out Closure closure))
+            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper closure))
                 UnregisterEvent(closure);
         }
 
@@ -178,8 +194,17 @@ namespace GObject
         {
             ThrowIfDisposed();
 
-            if (Closure.TryGetByDelegate(callback, out Closure closure))
+            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper closure))
                 UnregisterEvent(closure);
+        }
+        
+        private void UnregisterEvent(ClosureHelper closure)
+        {
+            if (!closures.TryGetValue(closure, out var id))
+                return;
+
+            Global.signal_handler_disconnect(Handle, id);
+            closures.Remove(closure);
         }
 
 
