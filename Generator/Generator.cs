@@ -28,7 +28,7 @@ namespace Generator
         #region Fields
 
         private readonly TypeResolver typeResolver;
-        private readonly string dllImport;
+        private string? dllImport;
 
         #endregion
 
@@ -47,9 +47,7 @@ namespace Generator
             
             Repository = ReadRepository(project.Gir);
             FixRepository(Repository);
-            
-            dllImport = GetDllImport(project) ?? throw new ArgumentNullException(nameof(dllImport));
-            
+
             var aliases = new List<GAlias>();
             aliases.AddRange(Repository.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
             
@@ -62,16 +60,6 @@ namespace Generator
         }
 
         #endregion
-        
-        // Determines the dll name from the shared library (based on msys2 gtk binaries)
-        // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
-        private static string GetDllImport(Project project)
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return project.GetWindowsDllImport();
-            else
-                return project.GetLinuxDllImport();
-        }
 
         protected ScriptObject GetScriptObject()
             => CreateScriptObject(Repository.Namespace.Name, dllImport);
@@ -101,10 +89,12 @@ namespace Generator
         public void Generate()
         {
             if (Repository.Namespace is null)
-                throw new Exception($"Can not generate for {Project.Name}. Namespace is missing.");
+                throw new Exception($"Can not generate for {Project}. Namespace is missing.");
             
             if (Repository.Namespace.Name is null)
                 throw new Exception("Could not create code. Namespace is missing a name.");
+            
+            dllImport = Repository.Namespace.GetDllImport() ?? throw new ArgumentNullException(nameof(dllImport));
 
             GenerateClasses(Repository.Namespace.Classes, Repository.Namespace.Name);
             GenerateStructs(Repository.Namespace.Records, Repository.Namespace.Name);

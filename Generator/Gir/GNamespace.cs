@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 
 namespace Gir
@@ -49,5 +50,44 @@ namespace Gir
 
         [XmlElement("constant")]
         public List<GConstant> Constants { get; set; } = default!;
+        
+        // Determines the dll name from the shared library (based on msys2 gtk binaries)
+        // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
+        public string? GetDllImport()
+        {
+            if (string.IsNullOrEmpty(SharedLibrary))
+                return null;
+
+            var lib = SharedLibrary;
+            if (SharedLibrary.Contains(","))
+                lib = SharedLibrary.Split(',')[1];//Workaround multiple libraries, take the last one
+
+            var lastDot = lib.LastIndexOf('.');
+            var version = lib[(lastDot+1)..];
+            var name = lib[..lastDot].Replace(".so", "");
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return GetWindowsDllImport(name, version);
+            else
+                return GetLinuxDllImport(name, version);
+        }
+        
+        private string GetWindowsDllImport(string name, string version)
+        {
+            var versionExtension = "";
+            if (!string.IsNullOrEmpty(version))
+                versionExtension = "-" + version;
+
+            return name + versionExtension + ".dll";
+        }
+        
+        private string GetLinuxDllImport(string name, string version)
+        {
+            var versionExtension = "";
+            if (!string.IsNullOrEmpty(version))
+                versionExtension = "." + version;
+
+            return name + ".so" + versionExtension;
+        }
     }
 }
