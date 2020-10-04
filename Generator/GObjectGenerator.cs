@@ -76,10 +76,8 @@ namespace Generator
 
         protected override void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace)
         {
-            var list = methods.ToList();
-            RemoveVarArgsMethods(list);
             var scriptObject = GetScriptObject();
-            scriptObject.Add("methods", list);
+            scriptObject.Add("methods", methods.Where(x => !x.HasVariadicParameter()));
 
             Generate(
                 templateName: "global",

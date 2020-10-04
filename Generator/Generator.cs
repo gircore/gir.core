@@ -177,12 +177,6 @@ namespace Generator
             var path = Path.Combine(Project.Folder, fileName);
             File.WriteAllText(path, content);
         }
-        
-        protected void RemoveVarArgsMethods(List<GMethod> methods)
-        {
-            static bool IsVariadic(GParameter p) => p.VarArgs is {};
-            methods.RemoveAll((x) => x.Parameters?.Parameters.Any(IsVariadic) ?? false);
-        }
 
         private ScriptObject CreateScriptObject(string @namespace, string dllImport)
         {
