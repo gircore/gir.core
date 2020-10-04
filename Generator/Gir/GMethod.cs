@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -34,6 +35,8 @@ namespace Gir
         
         [XmlAttribute("moved-to")]
         public string? MovedTo { get; set; }
+        
+        public bool IsNew { get; set; }
 
         public bool HasVariadicParameter()
         {

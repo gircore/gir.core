@@ -10,5 +10,7 @@ namespace Gir
 
 		[XmlElement("parameter")]
 		public List<GParameter> Parameters { get; set; } = default!;
+
+		public int Count => InstanceParameter is {} ? 1 : 0 + Parameters?.Count ?? 0;
     }
 }

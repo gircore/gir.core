@@ -1,11 +1,11 @@
 {{-
-if (string.size $1.identifier) == 0
+if (string.size method.identifier) == 0
     debug "Ignoring method of " + name + " because it has no identifier"
     ret
 end
 
-if (string.size $1.name) == 0
-    debug "Ignoring method of " + name + " with identifier " + $1.identifier + " because it has no name"
+if (string.size method.name) == 0
+    debug "Ignoring method of " + name + " with identifier " + method.identifier + " because it has no name"
     ret
 end
 
@@ -34,13 +34,19 @@ func get_obsolete
     end
     ret ''
 end
+
+func get_new
+    if method.is_new 
+        ret 'new ' 
+    end
+end
 -}}
-        {{~ if $1.doc && $1.doc.text ~}}
+        {{~ if method.doc && method.doc.text ~}}
         ///<summary>
-        {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
+        {{~ method.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
         ///</summary>
         {{ end 
         get_obsolete -}}
         [DllImport("{{ dll_import }}", EntryPoint = "{{ $1.identifier }}")]
-        internal static extern {{ $1.return_value | resolve_type }} {{ $1.name | fix_identifier }}({{ parameters $1 }});
+        internal static {{ get_new -}} extern {{ method.return_value | resolve_type }} {{ method.name | fix_identifier }}({{ parameters method }});
 

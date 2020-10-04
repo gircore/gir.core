@@ -46,6 +46,7 @@ namespace Generator
             Project = project ?? throw new ArgumentNullException(nameof(project));
             
             Repository = ReadRepository(project.Gir);
+            FixRepository(Repository);
             
             dllImport = GetDllImport(project) ?? throw new ArgumentNullException(nameof(dllImport));
             
@@ -126,6 +127,36 @@ namespace Generator
 
             using var fs = new FileStream(girFile, FileMode.Open);
             return (GRepository) serializer.Deserialize(fs);
+        }
+
+        private static void FixRepository(GRepository repository)
+        {
+            MarkNewMethodsAsNew(repository);
+        }
+
+        private static void MarkNewMethodsAsNew(GRepository repository)
+        {
+            if (repository.Namespace is null)
+                return;
+            
+            foreach (var cls in repository.Namespace.Classes)
+            {
+                if (string.IsNullOrEmpty(cls.Parent))
+                    continue;
+
+                var parent = repository.Namespace.Classes.FirstOrDefault(x => x.Name == cls.Parent);
+
+                if (parent is null)
+                    continue;
+
+                foreach (var method in cls.AllMethods)
+                {
+                    method.IsNew = parent.AllMethods.Any(x =>
+                        x.Name == method.Name &&
+                        x.Parameters?.Count == method.Parameters?.Count
+                    );
+                }
+            }
         }
         
         protected void Generate(string templateName, string subfolder,
