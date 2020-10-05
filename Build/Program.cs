@@ -25,8 +25,8 @@ class Program
         (new Project(GLIB, "GLib-2.0.gir"), typeof(GLibGenerator)),
         (new Project(GOBJECT, "GObject-2.0.gir"), typeof(GObjectGenerator)),
         (new Project(GIO, "Gio-2.0.gir"), typeof(GObjectGenerator)),
-        /*(new Project(CAIRO, "cairo-1.0.gir"), typeof(GObjectGenerator))
-        (XLIB, "xlib-2.0.gir", "TODO", false),
+        (new Project(CAIRO, "cairo-1.0.gir"), typeof(GObjectGenerator))
+        /*(XLIB, "xlib-2.0.gir", "TODO", false),
         (PANGO, "Pango-1.0.gir", "TODO", false),
         (GDK3, "Gdk-3.0.gir", "TODO", true),
         (GDK_PIXBUF, GDK_PIXBUF_GIR, "libgdk_pixbuf-2.0.so.0", true),
