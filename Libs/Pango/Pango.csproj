@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\Cairo\Cairo.csproj" />
+    <ProjectReference Include="..\GLib\GLib.csproj" />
+    <ProjectReference Include="..\GObject\GObject.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.CS.Pango</PackageId>
+  </PropertyGroup>
+</Project>
