@@ -81,10 +81,12 @@ namespace Generator
 
         private MyType ConvertGType(GType gtype, bool isParameter)
         {
-            if (gtype.CType is null)
-                throw new Exception("GType is missing CType");
-
             var ctype = gtype.CType;
+            if (ctype is null)
+            {
+                Console.WriteLine($"GType is missing CType. Assuming {gtype.Name} as CType");
+                ctype = gtype.Name ?? throw new Exception($"GType {gtype.Name} is missing CType");
+            }
 
             if (aliasResolver.TryGetForCType(ctype, out var resolvedCType, out var resolvedName))
                 ctype = resolvedCType;
