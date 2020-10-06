@@ -189,7 +189,7 @@ namespace Generator
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Could not create code for {fileName}: {ex.Message}");
+                Console.Error.WriteLine($"Could not create code for {fileName}: {ex.InnerException?.Message ?? ""}");
             }
         }
 
