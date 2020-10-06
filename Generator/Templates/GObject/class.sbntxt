@@ -35,6 +35,13 @@ namespace {{ namespace }}
     #include 'property.sbntxt' property
 end ~}}
         #endregion
+
+        #region Signals
+{{~ for signal in signals
+    include 'signal.sbntxt' signal
+end ~}}
+        #endregion
+
         {{if has_parent}} 
         #region Constructors
         protected internal {{ name }}(IntPtr ptr) : base(ptr) {}

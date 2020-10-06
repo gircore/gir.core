@@ -1,0 +1,50 @@
+{{-
+signal_name = 'On' + (signal.name | make_pascal_case)
+signal_descriptor_name = (signal.name | make_pascal_case) + 'Signal'
+signal_type = 'SignalArgs'
+
+if !signal_type 
+    debug name + ': Can not create signal ' + signal_name
+    ret # Quit function because we can not create this signal
+end
+
+func get_obsolete
+    if signal.deprecated
+        text = ""
+        if signal.doc_deprecated
+            text = signal.doc_deprecated.text | make_single_line | escape_quotes
+        end
+        ret '[Obsolete("' + text + '")]'
+    end
+    ret ''
+end
+}}
+
+        {{ get_obsolete 
+        }}
+        public static readonly Signal<{{ signal_type }}> {{ signal_descriptor_name }}
+            = Signal<{{ signal_type }}>.Wrap("{{ signal.name }}");
+        
+        {{~ if $1.doc && $1.doc.text ~}}
+        ///<summary>
+        {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
+        ///</summary>
+        {{ end 
+        get_obsolete 
+        }}
+        public event EventHandler<{{ signal_type }}> {{ signal_name }}
+        {
+            // TODO: Add support for 'when' annotation (e.g. run after)
+            // in template file signal.sbntxt
+            add => {{ signal_descriptor_name }}.Connect(this, value, true);
+            remove => {{ signal_descriptor_name }}.Disconnect(this, value);
+        }
+
+        {{#public static readonly Signal ActivateSignal = Signal.Wrap("activate");
+
+        #public event EventHandler<SignalArgs> Activate
+        #{
+        #    add => ActivateSignal.Connect(this, value, true);
+        #    remove => ActivateSignal.Disconnect(this, value);
+        #}
+        }}

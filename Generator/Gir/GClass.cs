@@ -8,6 +8,9 @@ namespace Gir
         [XmlElement("constructor")] 
         public List<GMethod> Constructors { get; set; } = default!;
 
+        [XmlElement ("signal", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
+		public List<GSignal> Signals { get; set; } = default!;
+
         [XmlAttribute("parent")] 
         public string? Parent { get; set; }
         
