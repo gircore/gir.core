@@ -8,13 +8,13 @@ namespace Gir
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
-        [XmlElement("return-value")]
+        [XmlElement("return-value", Namespace = "http://www.gtk.org/introspection/core/1.0")]
         public GReturnValue? ReturnValue { get; set; }
 
         [XmlElement("doc", Namespace = "http://www.gtk.org/introspection/core/1.0")]
         public GDoc? Doc { get; set; }
 
-        [XmlElement("parameters")]
+        [XmlElement("parameters", Namespace = "http://www.gtk.org/introspection/core/1.0")]
         public GParameters? Parameters { get; set; }
 
         [XmlAttribute("deprecated")]
