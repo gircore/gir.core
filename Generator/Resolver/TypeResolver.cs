@@ -3,7 +3,7 @@ using Gir;
 
 namespace Generator
 {
-    public class ResolvedType
+    public class ResolvedType : IEquatable<ResolvedType>
     {
         public string Type { get; }
         public string Attribute { get; }
@@ -20,6 +20,28 @@ namespace Generator
         
         public string GetTypeString() => Attribute + (IsRef ? "ref " : string.Empty) + Type;
         public string GetFieldString() => Attribute + (IsRef ? "IntPtr" : Type);
+
+        #region Equality
+        public bool Equals(ResolvedType? other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Type == other.Type && IsRef == other.IsRef;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ResolvedType) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, IsRef);
+        }
+        #endregion
     }
     
     internal class MyType
@@ -165,6 +187,7 @@ namespace Generator
                 "gint32" => Int(),
                 "pid_t" => Int(),
 
+                "unsigned int" => UInt(), //Workaround
                 "unsigned" => UInt(),//Workaround
                 "guint" => UInt(),
                 "guint32" => UInt(),

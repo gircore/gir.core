@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\GObject\GObject.csproj" />
+    <ProjectReference Include="..\Gio\Gio.csproj" />
+    <ProjectReference Include="..\Gdk3\Gdk3.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.CS.Gtk</PackageId>
+  </PropertyGroup>
+</Project>

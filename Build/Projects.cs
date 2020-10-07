@@ -1,6 +1,5 @@
 static class Projects
 {
-    public const string GTK3_GIR = "Gtk-3.0.gir";
     public const string GTK4_GIR = "Gtk-4.0.gir";
     public const string HANDY_GIR = "Handy-0.0.gir";
     public const string WEBKITGTK_GIR = "WebKit2-4.0.gir";
