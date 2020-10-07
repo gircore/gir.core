@@ -13,11 +13,12 @@ class Program
 
     private static readonly string[] sampleProjects =
     {
-        DBUS_SAMPLE,
-        GST_SAMPLE,
-        GTK3_APP_SAMPLE,
-        GTK3_MINIMAL_SAMPLE,
-        GTK4_SIMPLE_WINDOW_SAMPLE
+        //DBUS_SAMPLE,
+        //GST_SAMPLE,
+        //GTK3_APP_SAMPLE,
+        //GTK3_MINIMAL_SAMPLE,
+        GTK3_QUICKSTART,
+        //GTK4_SIMPLE_WINDOW_SAMPLE
     };
 
     private static readonly (Project Project, Type Type)[] libraryProjects =

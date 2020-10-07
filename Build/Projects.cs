@@ -33,5 +33,6 @@ static class Projects
     public const string GST_SAMPLE = SAMPLE + "Gst/";
     public const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
     public const string GTK3_MINIMAL_SAMPLE = SAMPLE + "Gtk3/GtkMinimal";
+    public const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
     public const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
 }
