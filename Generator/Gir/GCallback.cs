@@ -13,7 +13,7 @@ namespace Gir
         [XmlElement("return-value")]
         public GReturnValue? ReturnValue { get; set; }
 
-        [XmlElement("doc")]
+        [XmlElement("doc", Namespace = "http://www.gtk.org/introspection/core/1.0")]
         public GDoc? Doc { get; set; }
 
         [XmlElement("parameters")]

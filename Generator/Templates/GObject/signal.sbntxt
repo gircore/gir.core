@@ -18,33 +18,23 @@ func get_obsolete
     end
     ret ''
 end
-}}
-
-        {{ get_obsolete 
-        }}
+~}}
+        /// <summary>
+        /// Signal Descriptor for {{signal_name}}.
+        /// </summary>
+        {{~ get_obsolete ~}}
         public static readonly Signal<{{ signal_type }}> {{ signal_descriptor_name }}
             = Signal<{{ signal_type }}>.Wrap("{{ signal.name }}");
         
         {{~ if $1.doc && $1.doc.text ~}}
-        ///<summary>
+        /// <summary>
         {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
-        ///</summary>
+        /// </summary>
         {{ end 
-        get_obsolete 
-        }}
+        get_obsolete -}}
         public event EventHandler<{{ signal_type }}> {{ signal_name }}
         {
-            // TODO: Add support for 'when' annotation (e.g. run after)
-            // in template file signal.sbntxt
-            add => {{ signal_descriptor_name }}.Connect(this, value, true);
+            add => {{ signal_descriptor_name }}.Connect(this, value);
             remove => {{ signal_descriptor_name }}.Disconnect(this, value);
         }
 
-        {{#public static readonly Signal ActivateSignal = Signal.Wrap("activate");
-
-        #public event EventHandler<SignalArgs> Activate
-        #{
-        #    add => ActivateSignal.Connect(this, value, true);
-        #    remove => ActivateSignal.Disconnect(this, value);
-        #}
-        }}

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 
 namespace GObject
 {
+    /// <summary>
+    /// Base class for signal based events.
+    /// </summary>
     public class SignalArgs : EventArgs
     {
         #region Properties
-        
-        public object[] Args { get; }
-        
+
+        public object[] Args { get; private set; }
+
         #endregion
 
         #region Constructors
@@ -19,15 +22,31 @@ namespace GObject
         }
 
         internal SignalArgs(params object[] args)
+            : this()
+        {
+            SetArgs(args);
+        }
+
+        internal SignalArgs(params Value[] args)
+            : this()
+        {
+            SetArgs(args);
+        }
+
+        #endregion
+
+        #region Methods
+
+        internal void SetArgs(object[] args)
         {
             Args = args;
         }
 
-        internal SignalArgs(params Value[] args)
+        internal void SetArgs(Value[] args)
         {
             Args = new object[args.Length];
 
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 // TODO: Args[i] = args[i].Value;
             }
@@ -37,13 +56,76 @@ namespace GObject
     }
 
     /// <summary>
+    /// Default implementation of a GSignal descriptor. Mainly a shortcut
+    /// to <see cref="Signal{SignalArgs}"/> for basic signals.
+    /// </summary>
+    public sealed class Signal : Signal<SignalArgs>
+    {
+        #region Constructors
+
+        private Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes)
+            : base(name, flags, returnType, paramTypes)
+        { }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Registers a new GSignal into this type.
+        /// </summary>
+        /// <param name="name">The name of the GSignal to create.</param>
+        /// <param name="flags">The GSignal flags.</param>
+        /// <param name="returnType">The type of the value returned by the handlers of this GSignal.</param>
+        /// <param name="paramTypes">
+        /// The types list for each parameters given to handlers of this GSignal,
+        /// in the order they appear.</param>
+        /// <returns>
+        /// An instance of <see cref="Signal"/> which describes the registered signal.
+        /// </returns>
+        public static new Signal Register(string name, SignalFlags flags, Type returnType, params Type[] paramTypes)
+        {
+            return new Signal(name, flags, returnType, paramTypes);
+        }
+
+        /// <summary>
+        /// Registers a new GSignal into this type.
+        /// </summary>
+        /// <param name="name">The name of the GSignal to create.</param>
+        /// <param name="flags">The GSignal flags.</param>
+        /// <returns>
+        /// An instance of <see cref="Signal"/> which describes the registered signal.
+        /// </returns>
+        public static new Signal Register(string name, SignalFlags flags = SignalFlags.run_last)
+        {
+            return new Signal(name, flags, Type.None, Array.Empty<Type>());
+        }
+
+        /// <summary>
+        /// Wraps an existing GSignal.
+        /// </summary>
+        /// <param name="name">The name of the GSignal to wrap.</param>
+        /// <returns>
+        /// An instance of <see cref="Signal"/> which describes the signal to wrap.
+        /// </returns>
+        public static new Signal Wrap(string name)
+        {
+            // Here only the signal name is relevant, other paramters are not used.
+            return new Signal(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
+        }
+
+        #endregion
+    }
+
+    /// <summary>
     /// Describes a GSignal.
     /// </summary>
-    public sealed class Signal
+    public class Signal<T>
+        where T : SignalArgs, new()
     {
         #region Fields
 
-        private static readonly Dictionary<EventHandler<SignalArgs>, ActionRefValues> Handlers = new Dictionary<EventHandler<SignalArgs>, ActionRefValues>();
+        private static readonly Dictionary<EventHandler<T>, ActionRefValues> Handlers = new Dictionary<EventHandler<T>, ActionRefValues>();
 
         #endregion
 
@@ -73,7 +155,7 @@ namespace GObject
 
         #region Constructors
 
-        private Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes)
+        internal Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes)
         {
             Name = name;
             Flags = flags;
@@ -97,9 +179,9 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Signal"/> which describes the registered signal.
         /// </returns>
-        public static Signal Register(string name, SignalFlags flags, Type returnType, params Type[] paramTypes)
+        public static Signal<T> Register(string name, SignalFlags flags, Type returnType, params Type[] paramTypes)
         {
-            return new Signal(name, flags, returnType, paramTypes);
+            return new Signal<T>(name, flags, returnType, paramTypes);
         }
 
         /// <summary>
@@ -110,9 +192,9 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Signal"/> which describes the registered signal.
         /// </returns>
-        public static Signal Register(string name, SignalFlags flags = SignalFlags.run_last)
+        public static Signal<T> Register(string name, SignalFlags flags = SignalFlags.run_last)
         {
-            return new Signal(name, flags, Type.None, Array.Empty<Type>());
+            return new Signal<T>(name, flags, Type.None, Array.Empty<Type>());
         }
 
         /// <summary>
@@ -122,10 +204,10 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Signal"/> which describes the signal to wrap.
         /// </returns>
-        public static Signal Wrap(string name)
+        public static Signal<T> Wrap(string name)
         {
             // Here only the signal name is relevant, other paramters are not used.
-            return new Signal(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
+            return new Signal<T>(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
         }
 
         /// <summary>
@@ -168,13 +250,20 @@ namespace GObject
         /// <param name="after">
         /// Define if this action must be called before or after the default handler of this signal.
         /// </param>
-        public void Connect(Object o, EventHandler<SignalArgs> action, bool after = false)
+        public void Connect(Object o, EventHandler<T> action, bool after = false)
         {
             if (action == null)
                 return;
 
             if (!Handlers.TryGetValue(action, out ActionRefValues callback))
-                callback = (ref Value[] values) => action(o, new SignalArgs(values));
+            {
+                callback = (ref Value[] values) =>
+                {
+                    var args = new T();
+                    args.SetArgs(values);
+                    action(o, args);
+                };
+            }
 
             o.RegisterEvent(Name, callback, after);
             Handlers[action] = callback;
@@ -211,7 +300,7 @@ namespace GObject
         /// </summary>
         /// <param name="o">The object from which disconnect the handler.</param>
         /// <param name="action">The signal handler function.</param>
-        public void Disconnect(Object o, EventHandler<SignalArgs> action)
+        public void Disconnect(Object o, EventHandler<T> action)
         {
             if (action == null)
                 return;

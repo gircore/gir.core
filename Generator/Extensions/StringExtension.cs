@@ -15,7 +15,7 @@ namespace Generator
             var sb = new StringBuilder();
 
             foreach(var s in sArray)
-                sb.AppendLine(linePrefix + "///" + s);
+                sb.AppendLine(linePrefix + "/// " + s);
 
             return sb.ToString();
         }
