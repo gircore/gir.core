@@ -95,7 +95,7 @@ namespace Generator
             if (Repository.Namespace.Name is null)
                 throw new Exception("Could not create code. Namespace is missing a name.");
 
-            dllImport = Repository.Namespace.GetDllImport() ?? throw new ArgumentNullException(nameof(dllImport));
+            dllImport = Repository.Namespace.GetDllImport(Repository.Namespace.Name) ?? throw new ArgumentNullException(nameof(dllImport));
 
             GenerateClasses(Repository.Namespace.Classes, Repository.Namespace.Name);
             GenerateStructs(Repository.Namespace.Records, Repository.Namespace.Name);

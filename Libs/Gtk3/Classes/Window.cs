@@ -1,5 +1,3 @@
-using System;
-using System.Reflection;
 using GObject;
 
 namespace Gtk
@@ -53,18 +51,13 @@ namespace Gtk
 
         public Window(string title)
             : this(
-                ConstructParameter.With(TitleProperty, title)
+               ConstructParameter.With(TitleProperty, title)
             )
         { }
 
         #endregion
-
-        #region Methods
-
-        public void Close() => Sys.Window.close(Handle);
-        public void SetDefaultSize(int width, int height) => Sys.Window.set_default_size(Handle, width, height);
-        public void SetTitlebar(Widget widget) => Sys.Window.set_titlebar(Handle, GetHandle(widget));
-
-        #endregion
+        public void SetTitle(string title) => Window.set_title(Handle, title);
+        public void ShowAll() => Window.show_all(Handle);
+        public void Close() => Window.close(Handle);
     }
 }

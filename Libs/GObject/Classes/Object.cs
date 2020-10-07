@@ -39,10 +39,9 @@ namespace GObject
             // a user-subclass, it will register it with
             // the GType type system automatically.
             var t = GetType();
-            //var typeId = TypeDictionary.Get(t);
-            //Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
-            var typeId = Type.Object; //TODO delete if above code is working
-            
+            var typeId = TypeDictionary.Get(t);
+            Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
+
             // Pointer to GObject
             IntPtr handle;
 
