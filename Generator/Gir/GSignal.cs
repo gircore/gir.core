@@ -19,6 +19,8 @@ namespace Gir
 
         [XmlAttribute("deprecated")]
         public bool Deprecated { get; set; }
+
+        public bool NeedsSignalArgs => Parameters?.Parameters.Count > 0;
         
         // TODO: Instance Parameters?
 

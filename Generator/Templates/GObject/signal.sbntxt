@@ -19,6 +19,17 @@ func get_obsolete
     ret ''
 end
 ~}}
+
+        {{~ if signal.parameters && signal.parameters.parameters ~}}
+        /// <summary>
+        /// Signal (Event) Arguments for {{signal_name}}
+        /// </summary>
+        public class {{(signal.name | make_pascal_case)}}SignalArgs : SignalArgs
+        {
+            
+        }
+        {{~ end ~}}
+
         /// <summary>
         /// Signal Descriptor for {{signal_name}}.
         /// </summary>

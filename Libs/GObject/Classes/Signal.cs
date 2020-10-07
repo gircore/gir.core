@@ -10,7 +10,7 @@ namespace GObject
     {
         #region Properties
 
-        public object[] Args { get; private set; }
+        private object[] Args { get; set; }
 
         #endregion
 
@@ -19,12 +19,6 @@ namespace GObject
         public SignalArgs()
         {
             Args = Array.Empty<object>();
-        }
-
-        internal SignalArgs(params object[] args)
-            : this()
-        {
-            SetArgs(args);
         }
 
         internal SignalArgs(params Value[] args)
@@ -37,20 +31,11 @@ namespace GObject
 
         #region Methods
 
-        internal void SetArgs(object[] args)
-        {
-            Args = args;
-        }
-
-        internal void SetArgs(Value[] args)
-        {
-            Args = new object[args.Length];
-
-            for (var i = 0; i < args.Length; i++)
-            {
-                // TODO: Args[i] = args[i].Value;
-            }
-        }
+        /// <summary>
+        /// Override this method to populate a SignalArgs-derived type
+        /// from an array of Values.
+        /// </summary>
+        public virtual void SetArgs(Value[] args) {}
 
         #endregion
     }
@@ -206,7 +191,7 @@ namespace GObject
         /// </returns>
         public static Signal<T> Wrap(string name)
         {
-            // Here only the signal name is relevant, other paramters are not used.
+            // Here only the signal name is relevant, other parameters are not used.
             return new Signal<T>(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
         }
 
