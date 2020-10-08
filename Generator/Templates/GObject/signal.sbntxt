@@ -3,6 +3,10 @@ signal_name = 'On' + (signal.name | make_pascal_case)
 signal_descriptor_name = (signal.name | make_pascal_case) + 'Signal'
 signal_type = 'SignalArgs'
 
+if signal.parameters && signal.parameters.parameters
+    signal_type = (signal.name | make_pascal_case) + 'SignalArgs'
+end
+
 if !signal_type 
     debug name + ': Can not create signal ' + signal_name
     ret # Quit function because we can not create this signal
@@ -24,9 +28,38 @@ end
         /// <summary>
         /// Signal (Event) Arguments for {{signal_name}}
         /// </summary>
-        public class {{(signal.name | make_pascal_case)}}SignalArgs : SignalArgs
+        public sealed class {{signal_type}} : SignalArgs
         {
-            
+            {{~ for param in signal.parameters.parameters ~}}
+
+            {{~ if param.doc && param.doc.text ~}}
+            /// <summary>
+            {{~ param.doc.text | comment_line_by_line_with_prefix '\t\t\t'~}}
+            /// </summary>
+            {{~ end ~}}
+            {{~ if param.nullable ~}}
+            public {{param | resolve_field}}? {{ param.name | fix_identifier }};
+            {{~ else ~}}
+            public {{param | resolve_field}} {{ param.name | fix_identifier }};
+            {{~ end ~}}
+
+            {{~ end ~}}
+
+            public override void SetArgs(Value[] args)
+            {
+                // FIXME: Marshalling
+                // We need to find a way to marshal from GValues to the concrete
+                // type of the parameter. This will probably involve a generator
+                // type dictionary which stores rich type information as we
+                // walk through the introspection data.
+
+                {{~ index = 0
+                for param in signal.parameters.parameters
+                index = index + 1
+                ~}}
+                {{ param.name | fix_identifier }} = args[{{index}}].To</* Type Goes Here */>();
+                {{~ end ~}}
+            }
         }
         {{~ end ~}}
 

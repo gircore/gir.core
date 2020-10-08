@@ -15,7 +15,7 @@ namespace Gir
         public GDoc? Doc { get; set; }
 
         [XmlElement("parameters", Namespace = "http://www.gtk.org/introspection/core/1.0")]
-        public GParameters? Parameters { get; set; }
+        public GParameters Parameters { get; set; } = default!;
 
         [XmlAttribute("deprecated")]
         public bool Deprecated { get; set; }
