@@ -5,10 +5,10 @@ namespace Gtk
 {
     public partial class Button
     {
-         #region Properties
+        #region Properties
 
         public static readonly Property<bool> AlwaysShowImageProperty = Property<bool>.Register<Button>(
-            "always-show-image",
+            Native.AlwaysShowImageProperty,
             nameof(AlwaysShowImage),
             (o) => o.AlwaysShowImage,
             (o, v) => o.AlwaysShowImage = v
@@ -21,7 +21,7 @@ namespace Gtk
         }
 
         public static readonly Property<Widget> ImageProperty = Property<Widget>.Register<Button>(
-            "image",
+            Native.ImageProperty,
             nameof(Image),
             (o) => o.Image,
             (o, v) => o.Image = v
@@ -34,7 +34,7 @@ namespace Gtk
         }
 
         public static readonly Property<PositionType> ImagePositionProperty = Property<PositionType>.Register<Button>(
-            "image-position",
+            Native.ImagePositionProperty,
             nameof(ImagePosition),
             (o) => o.ImagePosition,
             (o, v) => o.ImagePosition = v
@@ -47,7 +47,7 @@ namespace Gtk
         }
 
         public static readonly Property<string> LabelProperty = Property<string>.Register<Button>(
-            "label",
+            Native.LabelProperty,
             nameof(Label),
             (o) => o.Label,
             (o, v) => o.Label = v
@@ -60,7 +60,7 @@ namespace Gtk
         }
 
         public static readonly Property<ReliefStyle> ReliefProperty = Property<ReliefStyle>.Register<Button>(
-            "relief",
+            Native.ReliefProperty,
             nameof(Relief),
             (o) => o.Relief,
             (o, v) => o.Relief = v
@@ -73,7 +73,7 @@ namespace Gtk
         }
 
         public static readonly Property<bool> UseUnderlineProperty = Property<bool>.Register<Button>(
-            "use-underline",
+            Native.UseUnderlineProperty,
             nameof(UseUnderline),
             (o) => o.UseUnderline,
             (o, v) => o.UseUnderline = v

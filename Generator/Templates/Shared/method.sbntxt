@@ -48,5 +48,5 @@ end
         {{ end 
         get_obsolete -}}
         [DllImport("{{ dll_import }}", EntryPoint = "{{ $1.identifier }}")]
-        internal static {{ get_new -}} extern {{ method.return_value | resolve_type }} {{ method.name | fix_identifier }}({{ parameters method }});
+        public static extern {{ method.return_value | resolve_type }} {{ method.name | fix_identifier }}({{ parameters method }});
 

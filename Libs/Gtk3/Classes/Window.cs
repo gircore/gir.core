@@ -6,8 +6,8 @@ namespace Gtk
     {
         #region Properties
 
-        public static readonly Property<string> TitleProperty = GObject.Property<string>.Register<Window>(
-            "title",
+        public static readonly Property<string> TitleProperty = Property<string>.Register<Window>(
+            Native.TitleProperty,
             nameof(Title),
             get: (o) => o.Title,
             set: (o, v) => o.Title = v
@@ -19,8 +19,8 @@ namespace Gtk
             set => SetProperty(TitleProperty, value);
         }
 
-        public static readonly Property<int> DefaultHeightProperty = GObject.Property<int>.Register<Window>(
-            "default-height",
+        public static readonly Property<int> DefaultHeightProperty = Property<int>.Register<Window>(
+            Native.DefaultHeightProperty,
             nameof(DefaultHeight),
             get: (o) => o.DefaultHeight,
             set: (o, v) => o.DefaultHeight = v
@@ -32,8 +32,8 @@ namespace Gtk
             set => SetProperty(DefaultHeightProperty, value);
         }
 
-        public static readonly Property<int> DefaultWidthProperty = GObject.Property<int>.Register<Window>(
-            "default-width",
+        public static readonly Property<int> DefaultWidthProperty = Property<int>.Register<Window>(
+            Native.DefaultWidthProperty,
             nameof(DefaultWidth),
             get: (o) => o.DefaultWidth,
             set: (o, v) => o.DefaultWidth = v
@@ -56,8 +56,7 @@ namespace Gtk
         { }
 
         #endregion
-        public void SetTitle(string title) => Window.set_title(Handle, title);
-        public void ShowAll() => Window.show_all(Handle);
-        public void Close() => Window.close(Handle);
+        public void SetTitle(string title) => Native.set_title(Handle, title);
+        public void Close() => Native.close(Handle);
     }
 }

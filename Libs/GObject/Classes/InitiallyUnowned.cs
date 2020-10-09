@@ -4,7 +4,7 @@ namespace GObject
     {
         protected override void Initialize()
         {
-            Object.ref_sink(Handle);
+            Object.Native.ref_sink(Handle);
         }
     }
 }

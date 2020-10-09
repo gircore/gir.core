@@ -5,7 +5,7 @@ namespace Gtk
     public partial class Container
     {
         public static readonly Property<Widget> ChildProperty = Property<Widget>.Register<Container>(
-            "child",
+            Native.ChildProperty,
             nameof(Child),
             set: (o, v) => o.Child = v
         );

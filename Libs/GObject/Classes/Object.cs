@@ -67,7 +67,7 @@ namespace GObject
                 }
 
                 // Create with propeties
-                handle = Object.new_with_properties(
+                handle = Native.new_with_properties(
                     typeId.Value,
                     (uint) names.Length,
                     ref names[0],
@@ -82,7 +82,7 @@ namespace GObject
             {
                 // Construct with no properties
                 var zero = IntPtr.Zero;
-                handle = Object.new_with_properties(
+                handle = Native.new_with_properties(
                     typeId.Value,
                     0,
                     ref zero,
@@ -128,7 +128,7 @@ namespace GObject
         
         // Modify this in the future to play nicely with virtual function support?
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
-        private void RegisterOnFinalized() => Object.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
+        private void RegisterOnFinalized() => Native.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
         
         private void RegisterProperties()
         {
@@ -305,7 +305,7 @@ namespace GObject
 
                 if(Handle != IntPtr.Zero)
                 {
-                    Object.unref(Handle);
+                    Native.unref(Handle);
                     objects.Remove(Handle);
                 }
 
