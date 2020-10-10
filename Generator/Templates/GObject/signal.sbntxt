@@ -1,15 +1,15 @@
 {{-
+if !signal.name
+    debug name + ': Can not create signal ' + signal_name
+    ret # Quit function because we can not create this signal
+end
+
 signal_name = 'On' + (signal.name | make_pascal_case)
 signal_descriptor_name = (signal.name | make_pascal_case) + 'Signal'
 signal_type = 'SignalArgs'
 
-if signal.parameters && signal.parameters.parameters
+if signal.needs_signal_args
     signal_type = (signal.name | make_pascal_case) + 'SignalArgs'
-end
-
-if !signal_type 
-    debug name + ': Can not create signal ' + signal_name
-    ret # Quit function because we can not create this signal
 end
 
 func get_obsolete
@@ -24,7 +24,7 @@ func get_obsolete
 end
 ~}}
 
-        {{~ if signal.parameters && signal.parameters.parameters ~}}
+        {{~ if signal.needs_signal_args ~}}
         /// <summary>
         /// Signal (Event) Arguments for {{signal_name}}
         /// </summary>
