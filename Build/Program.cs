@@ -13,11 +13,12 @@ class Program
 
     private static readonly string[] sampleProjects =
     {
-        DBUS_SAMPLE,
-        GST_SAMPLE,
-        GTK3_APP_SAMPLE,
-        GTK3_MINIMAL_SAMPLE,
-        GTK4_SIMPLE_WINDOW_SAMPLE
+        //DBUS_SAMPLE,
+        //GST_SAMPLE,
+        //GTK3_APP_SAMPLE,
+        //GTK3_MINIMAL_SAMPLE,
+        GTK3_QUICKSTART,
+        //GTK4_SIMPLE_WINDOW_SAMPLE
     };
 
     private static readonly (Project Project, Type Type)[] libraryProjects =
@@ -30,9 +31,9 @@ class Program
         (new Project(PANGO, "Pango-1.0.gir"), typeof(GObjectGenerator)),
         //(new Project(CLUTTER, "Clutter-1.0.gir"), typeof(GObjectGenerator)),
         (new Project(GDK3, "Gdk-3.0.gir"), typeof(GObjectGenerator)),
-        /*(GDK_PIXBUF, GDK_PIXBUF_GIR, "libgdk_pixbuf-2.0.so.0", true),
-        (GTK3, GTK3_GIR, "libgtk-3.so.0", true),
-        (JAVASCRIPT_CORE, JAVASCRIPT_CORE_GIR, "javascriptcoregtk-4.0.so", false),
+        (new Project(GDK_PIXBUF, "GdkPixbuf-2.0.gir"), typeof(GObjectGenerator)),
+        (new Project(GTK3, "Gtk-3.0.gir"), typeof(GObjectGenerator)),
+        /*(JAVASCRIPT_CORE, JAVASCRIPT_CORE_GIR, "javascriptcoregtk-4.0.so", false),
         (HANDY, HANDY_GIR, "libhandy-0.0.so.0", false),
         (WEBKITGTK, WEBKITGTK_GIR, "libwebkit2gtk-4.0.so.37", true),
         (WEBKIT2WEBEXTENSION, WEBKIT2WEBEXTENSION_GIR, "WEBEXTENSION", true),

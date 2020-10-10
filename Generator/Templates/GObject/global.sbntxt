@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace {{ namespace }}
 {
-    public static class Global
+    public partial class Global
     {
 {{~ for method in methods
     include 'method.sbntxt' method

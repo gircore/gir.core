@@ -7,8 +7,8 @@ namespace Gtk
     {
         #region Properties
 
-        public static readonly Property<bool> AlwaysShowImageProperty = GObject.Property<bool>.Register<Button>(
-            "always-show-image",
+        public static readonly Property<bool> AlwaysShowImageProperty = Property<bool>.Register<Button>(
+            Native.AlwaysShowImageProperty,
             nameof(AlwaysShowImage),
             (o) => o.AlwaysShowImage,
             (o, v) => o.AlwaysShowImage = v
@@ -20,8 +20,8 @@ namespace Gtk
             set => SetProperty(AlwaysShowImageProperty, value);
         }
 
-        public static readonly Property<Widget> ImageProperty = GObject.Property<Widget>.Register<Button>(
-            "image",
+        public static readonly Property<Widget> ImageProperty = Property<Widget>.Register<Button>(
+            Native.ImageProperty,
             nameof(Image),
             (o) => o.Image,
             (o, v) => o.Image = v
@@ -33,8 +33,8 @@ namespace Gtk
             set => SetProperty(ImageProperty, value);
         }
 
-        public static readonly Property<PositionType> ImagePositionProperty = GObject.Property<PositionType>.Register<Button>(
-            "image-position",
+        public static readonly Property<PositionType> ImagePositionProperty = Property<PositionType>.Register<Button>(
+            Native.ImagePositionProperty,
             nameof(ImagePosition),
             (o) => o.ImagePosition,
             (o, v) => o.ImagePosition = v
@@ -46,8 +46,8 @@ namespace Gtk
             set => SetProperty(ImagePositionProperty, value);
         }
 
-        public static readonly Property<string> LabelProperty = GObject.Property<string>.Register<Button>(
-            "label",
+        public static readonly Property<string> LabelProperty = Property<string>.Register<Button>(
+            Native.LabelProperty,
             nameof(Label),
             (o) => o.Label,
             (o, v) => o.Label = v
@@ -59,8 +59,8 @@ namespace Gtk
             set => SetProperty(LabelProperty, value);
         }
 
-        public static readonly Property<ReliefStyle> ReliefProperty = GObject.Property<ReliefStyle>.Register<Button>(
-            "relief",
+        public static readonly Property<ReliefStyle> ReliefProperty = Property<ReliefStyle>.Register<Button>(
+            Native.ReliefProperty,
             nameof(Relief),
             (o) => o.Relief,
             (o, v) => o.Relief = v
@@ -72,8 +72,8 @@ namespace Gtk
             set => SetProperty(ReliefProperty, value);
         }
 
-        public static readonly Property<bool> UseUnderlineProperty = GObject.Property<bool>.Register<Button>(
-            "use-underline",
+        public static readonly Property<bool> UseUnderlineProperty = Property<bool>.Register<Button>(
+            Native.UseUnderlineProperty,
             nameof(UseUnderline),
             (o) => o.UseUnderline,
             (o, v) => o.UseUnderline = v
@@ -89,34 +89,28 @@ namespace Gtk
 
         #region Signals
 
-        public static readonly Signal ActivateSignal = Signal.Register("activate");
+        public static readonly Signal ActivateSignal = Signal.Wrap("activate");
 
-        public event EventHandler<SignalArgs> Activate
+        public event EventHandler<SignalArgs> OnActivate
         {
             add => ActivateSignal.Connect(this, value, true);
             remove => ActivateSignal.Disconnect(this, value);
         }
 
-        public static readonly Signal ClickedSignal = Signal.Register("clicked");
+        public static readonly Signal ClickedSignal = Signal.Wrap("clicked");
 
-        public event EventHandler<SignalArgs> Clicked
+        public event EventHandler<SignalArgs> OnClicked
         {
             add => ClickedSignal.Connect(this, value, true);
             remove => ClickedSignal.Disconnect(this, value);
         }
 
         #endregion
-
-        #region Constructors
-
-        public Button(string label, bool useUnderline = false, bool alwaysShowImage = false)
+        
+        public Button(string label)
             : this(
-                ConstructParameter.With(LabelProperty, label),
-                ConstructParameter.With(UseUnderlineProperty, useUnderline),
-                ConstructParameter.With(AlwaysShowImageProperty, alwaysShowImage)
+                ConstructParameter.With(LabelProperty, label)
             )
         { }
-
-        #endregion
     }
 }

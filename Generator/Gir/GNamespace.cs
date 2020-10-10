@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 
@@ -53,14 +55,21 @@ namespace Gir
         
         // Determines the dll name from the shared library (based on msys2 gtk binaries)
         // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
-        public string? GetDllImport()
+        public string? GetDllImport(string namspaceName)
         {
             if (string.IsNullOrEmpty(SharedLibrary))
                 return null;
 
             var lib = SharedLibrary;
             if (SharedLibrary.Contains(","))
-                lib = SharedLibrary.Split(',')[1];//Workaround multiple libraries, take the last one
+            {
+                var libs = SharedLibrary.Split(',');
+                var result = libs.FirstOrDefault(
+                    x => x.Contains(namspaceName, StringComparison.OrdinalIgnoreCase)
+                );
+
+                lib = result ?? throw new Exception($"Cant find dll import for {namspaceName}, no match found in: {SharedLibrary}");
+            }
 
             var lastDot = lib.LastIndexOf('.');
             var version = lib[(lastDot+1)..];

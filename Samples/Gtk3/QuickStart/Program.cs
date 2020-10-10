@@ -1,6 +1,6 @@
-﻿using System;
-using GObject;
+﻿using GObject;
 using Gtk;
+using Global = Gtk.Global;
 
 namespace GtkDemo
 {
@@ -11,14 +11,11 @@ namespace GtkDemo
 
         public static void Main(string[] args)
         {
-            var argc = 0;
-            var argv = IntPtr.Zero;
-
-            Gtk.Sys.Methods.init(ref argc, ref argv);
+            Global.Init();
 
             // Awesome windows initializations <3, almost the MVU style ^^
 
-            _window1 = new Gtk.Window("Hello World")
+            _window1 = new Window("HeloWorld")
             {
                 Child = new Button("Open")
                 {
@@ -28,7 +25,7 @@ namespace GtkDemo
 
             _window1.ShowAll();
 
-            Gtk.Sys.Methods.main();
+            Global.Main();
 
             _window1?.Dispose();
             _window2?.Dispose();

@@ -50,7 +50,7 @@ namespace GObject
             if (name is null)
                 return;
 
-            Object.set_property(Handle, name, ref value);
+            Native.set_property(Handle, name, ref value);
             value.Dispose();
         }
 
@@ -69,7 +69,7 @@ namespace GObject
                 return default;
 
             var value = new Value();
-            Object.get_property(Handle, name, ref value);
+            Native.get_property(Handle, name, ref value);
 
             return value;
         }

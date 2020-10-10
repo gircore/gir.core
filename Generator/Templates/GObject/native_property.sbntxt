@@ -1,0 +1,3 @@
+{{property_name = (property.name | make_pascal_case)
+property_descriptor_name = property_name + 'Property'}}
+        public const string {{ property_descriptor_name }} = "{{ property.name }}";

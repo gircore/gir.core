@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\..\Gio\Wrapper\Gio.Wrapper.csproj" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <PackageId>Gir.Wrapper.CS.GdkPixbuf</PackageId>
-  </PropertyGroup>
-</Project>
