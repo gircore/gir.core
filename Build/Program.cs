@@ -13,7 +13,7 @@ class Program
 
     private static readonly string[] sampleProjects =
     {
-        //DBUS_SAMPLE,
+        DBUS_SAMPLE,
         //GST_SAMPLE,
         //GTK3_APP_SAMPLE,
         //GTK3_MINIMAL_SAMPLE,
