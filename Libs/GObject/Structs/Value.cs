@@ -11,7 +11,8 @@ namespace GObject
         {
             g_type = 0;
             data = IntPtr.Zero;
-            
+            data2 = IntPtr.Zero;
+
             Value.init(ref this, type.Value);
         }
 
@@ -76,6 +77,23 @@ namespace GObject
             if (t == typeof(IntPtr)) return (T) (object) GetObject(); 
 
             throw new NotSupportedException("Unable to cast the value to the given type.");
+        }
+
+        public object Extract()
+        {
+            return g_type switch
+            {
+                (ulong) Types.Boolean => GetBool(),
+                (ulong) Types.UInt => GetUint(),
+                (ulong) Types.Int => GetInt(),
+                (ulong) Types.Enum => GetLong(),
+                (ulong) Types.Long => GetLong(),
+                (ulong) Types.Double => GetDouble(),
+                (ulong) Types.String => GetString(),
+                (ulong) Types.Object => GetObject(), //TODO: Get real Object
+                (ulong) Types.Pointer => GetPtr(),
+                _ => throw new NotSupportedException($"Unable to extract the value to the given type. The type {g_type} is unknown.")
+            };
         }
         
         public IntPtr GetPtr() => Value.get_pointer(ref this);

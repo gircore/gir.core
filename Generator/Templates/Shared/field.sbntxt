@@ -3,6 +3,10 @@
         /// <summary>
         {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
         /// </summary>
-        {{ end 
-        get_obsolete -}}
+        {{ end }} 
+        {{ get_obsolete }}
+        {{ if $1.fixed_size }}
+        
+        {{ else }}
         public {{ $1 | resolve_field }} {{ $1.name | fix_identifier }};
+        {{ end }}
