@@ -52,33 +52,12 @@ namespace GObject
         };
 
         /// <summary>
-        /// Casts this <see cref="Value"/> to the type <typeparamref name="T"/>.
-        ///
-        /// In case of an IntPtr a GObject pointer is returned. This method does not support GPointer.
+        /// Extracts the content of this <see cref="Value"/> into an object. 
         /// </summary>
-        /// <typeparam name="T">The type in which this value is casted.</typeparam>
-        /// <returns>
-        /// A value of type <typeparamref name="T"/> if the cast is successful.
-        /// </returns>
+        /// <returns>The content of this wrapped in an object</returns>
         /// <exception cref="NotSupportedException">
         /// The value cannot be casted to the given type.
         /// </exception>
-        public T To<T>()
-        {
-            System.Type t = typeof(T);
-            if (t == typeof(bool)) return (T) (object) GetBool();
-            if (t == typeof(uint)) return (T) (object) GetUint();
-            if (t == typeof(int)) return (T) (object) GetInt();
-            if (t.IsEnum || t == typeof(long)) return (T) (object) GetLong();
-            if (t == typeof(double)) return (T) (object) GetDouble();
-            if (t == typeof(string)) return (T) (object) GetString();
-            
-            //Warning: This could be GetPointer() or GetObject()!
-            if (t == typeof(IntPtr)) return (T) (object) GetObject(); 
-
-            throw new NotSupportedException("Unable to cast the value to the given type.");
-        }
-
         public object Extract()
         {
             return g_type switch
@@ -95,6 +74,8 @@ namespace GObject
                 _ => throw new NotSupportedException($"Unable to extract the value to the given type. The type {g_type} is unknown.")
             };
         }
+
+        public T Extract<T>() => (T) Extract();
         
         public IntPtr GetPtr() => Value.get_pointer(ref this);
         public IntPtr GetBoxed() => Value.get_boxed(ref this);

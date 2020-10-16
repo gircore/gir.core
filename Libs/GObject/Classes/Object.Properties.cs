@@ -18,10 +18,10 @@ namespace GObject
         {
             var value = GetGProperty(property.Name);
 
-            if (TryWrapPointerAs(value.To<IntPtr>(), out T ret))
+            if (TryWrapPointerAs(value.Extract<IntPtr>(), out T ret))
                 return ret;
 
-            return value.To<T>();
+            return value.Extract<T>();
         }
 
         /// <summary>
