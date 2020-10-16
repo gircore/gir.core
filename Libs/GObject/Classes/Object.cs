@@ -234,7 +234,7 @@ namespace GObject
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         
-        protected static bool GetObject<T>(IntPtr handle, out T obj) where T : Object
+        protected internal static bool GetObject<T>(IntPtr handle, out T obj) where T : Object
         {
             if (objects.TryGetValue(handle, out var foundObj))
             {

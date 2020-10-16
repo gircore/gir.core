@@ -10,7 +10,7 @@ namespace GObject
         public Value(Type type)
         {
             g_type = 0;
-            data = IntPtr.Zero;
+            data1 = IntPtr.Zero;
             data2 = IntPtr.Zero;
 
             Value.init(ref this, type.Value);
@@ -58,7 +58,7 @@ namespace GObject
         /// <exception cref="NotSupportedException">
         /// The value cannot be casted to the given type.
         /// </exception>
-        public object Extract()
+        public object? Extract()
         {
             return g_type switch
             {
@@ -69,17 +69,20 @@ namespace GObject
                 (ulong) Types.Long => GetLong(),
                 (ulong) Types.Double => GetDouble(),
                 (ulong) Types.String => GetString(),
-                (ulong) Types.Object => GetObject(), //TODO: Get real Object
+                (ulong) Types.Object => GetObject(),
                 (ulong) Types.Pointer => GetPtr(),
                 _ => throw new NotSupportedException($"Unable to extract the value to the given type. The type {g_type} is unknown.")
             };
         }
 
-        public T Extract<T>() => (T) Extract();
+        public T Extract<T>() => (T) Extract()!;
         
         public IntPtr GetPtr() => Value.get_pointer(ref this);
         public IntPtr GetBoxed() => Value.get_boxed(ref this);
-        public IntPtr GetObject() => Value.get_object(ref this);
+
+        public Object? GetObject()
+            => Object.GetObject(Value.get_object(ref this), out Object obj) ? obj : null;
+
         public bool GetBool() => Value.get_boolean(ref this);
         public uint GetUint() => Value.get_uint(ref this);
         public int GetInt() => Value.get_int(ref this);

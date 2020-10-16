@@ -11,7 +11,7 @@ namespace Gir
         public bool ZeroTerminated { get; set; }
         
         [XmlAttribute("fixed-size")]
-        public int? FixedSize { get; set; }
+        public string? FixedSize { get; set; }
 
         [XmlAttribute("type", Namespace="http://www.gtk.org/introspection/c/1.0")]
         public string? CType { get; set; }
