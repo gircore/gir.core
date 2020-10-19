@@ -15,14 +15,7 @@ namespace GObject
         /// The value of the GProperty.
         /// </returns>
         protected T GetProperty<T>(Property<T> property)
-        {
-            var value = GetGProperty(property.Name);
-
-            if (TryWrapPointerAs(value.To<IntPtr>(), out T ret))
-                return ret;
-
-            return value.To<T>();
-        }
+            => GetGProperty(property.Name).Extract<T>();
 
         /// <summary>
         /// Sets the <paramref name="value"/> of the GProperty described by <paramref name="property"/>.
