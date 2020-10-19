@@ -81,7 +81,7 @@ namespace GObject
         public IntPtr GetBoxed() => Value.get_boxed(ref this);
 
         public Object? GetObject()
-            => Object.GetObject(Value.get_object(ref this), out Object obj) ? obj : null;
+            => Object.TryWrapPointerAs(Value.get_object(ref this), out Object obj) ? obj : null;
 
         public bool GetBool() => Value.get_boolean(ref this);
         public uint GetUint() => Value.get_uint(ref this);
