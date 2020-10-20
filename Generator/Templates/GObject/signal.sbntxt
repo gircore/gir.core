@@ -22,6 +22,14 @@ func get_obsolete
     end
     ret ''
 end
+
+func write_type
+    if $0.nullable
+        ($0 | resolve_field) + '?'
+    else
+       ($0 | resolve_field)+''
+    end
+end
 ~}}
 
         {{~ if signal.needs_signal_args ~}}
@@ -37,11 +45,7 @@ end
             {{~ param.doc.text | comment_line_by_line_with_prefix '\t\t\t'~}}
             /// </summary>
             {{~ end ~}}
-            {{~ if param.nullable ~}}
-            public {{param | resolve_field}}? {{ param.name | fix_identifier }};
-            {{~ else ~}}
-            public {{param | resolve_field}} {{ param.name | fix_identifier }};
-            {{~ end ~}}
+            public {{param | write_type}} {{ param.name | fix_identifier }} = default!;
 
             {{~ end ~}}
 
@@ -57,7 +61,7 @@ end
                 for param in signal.parameters.parameters
                 index = index + 1
                 ~}}
-                {{ param.name | fix_identifier }} = args[{{index}}].To</* Type Goes Here */>();
+                {{ param.name | fix_identifier }} = args[{{index}}].Extract<{{param | write_type}}>();
                 {{~ end ~}}
             }
         }
