@@ -98,6 +98,7 @@ namespace Generator
             dllImport = Repository.Namespace.GetDllImport(Repository.Namespace.Name) ?? throw new ArgumentNullException(nameof(dllImport));
 
             GenerateClasses(Repository.Namespace.Classes, Repository.Namespace.Name);
+            GenerateInterfaces(Repository.Namespace.Interfaces, Repository.Namespace.Name);
             GenerateStructs(Repository.Namespace.Records, Repository.Namespace.Name);
             GenerateStructs(Repository.Namespace.Unions, Repository.Namespace.Name);
             GenerateEnums(Repository.Namespace.Bitfields, Repository.Namespace.Name, true);
@@ -106,7 +107,8 @@ namespace Generator
             GenerateGlobals(Repository.Namespace.Functions, Repository.Namespace.Name);
         }
 
-        protected virtual void GenerateClasses(IEnumerable<GInterface> classes, string @namespace) { }
+        protected  virtual void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace) { }
+        protected virtual void GenerateClasses(IEnumerable<GClass> classes, string @namespace) { }
         protected virtual void GenerateStructs(IEnumerable<GRecord> records, string @namespace) { }
         protected virtual void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags) { }
         protected virtual void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace) { }
@@ -204,7 +206,7 @@ namespace Generator
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Could not create code for {fileName}: {ex.InnerException?.Message ?? ""}");
+                Console.Error.WriteLine($"Could not create code for {fileName}: {ex.InnerException?.Message ?? ex.Message ?? ""}");
             }
         }
 

@@ -53,7 +53,7 @@ namespace Generator
             }
         }
 
-        protected override void GenerateClasses(IEnumerable<GInterface> classes, string @namespace)
+        protected override void GenerateClasses(IEnumerable<GClass> classes, string @namespace)
         {
             foreach (var cls in classes)
             {

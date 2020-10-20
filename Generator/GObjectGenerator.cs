@@ -41,7 +41,7 @@ namespace Generator
             }
         }
 
-        protected override void GenerateClasses(IEnumerable<GInterface> classes, string @namespace)
+        protected override void GenerateClasses(IEnumerable<GClass> classes, string @namespace)
         {
             foreach (var cls in classes)
             {
@@ -52,6 +52,22 @@ namespace Generator
                     templateName: "class",
                     subfolder: "Classes",
                     fileName: cls.Name,
+                    scriptObject: scriptObject
+                );
+            }
+        }
+
+        protected override void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace)
+        {
+            foreach (var iface in interfaces)
+            {
+                var scriptObject = GetScriptObject();
+                scriptObject.Import(iface);
+
+                Generate(
+                    templateName: "interface",
+                    subfolder: "Interfaces",
+                    fileName: iface.Name,
                     scriptObject: scriptObject
                 );
             }
