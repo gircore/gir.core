@@ -16,7 +16,7 @@ namespace Generator
         }
 
         public bool TryGetForCType(string cType, [NotNullWhen(returnValue: true)] out string? t, out string? n)
-            => TryGet(cType, (a, t) => a.Type == t, out t, out n);
+            => TryGet(cType, (a, t) => a.Type == t || a.Name == t, out t, out n);
 
         private bool TryGet(string typeName, Func<GAlias, string, bool> predicate, [NotNullWhen(returnValue: true)] out string? t, out string? n)
         {
