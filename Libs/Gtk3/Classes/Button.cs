@@ -87,26 +87,6 @@ namespace Gtk
 
         #endregion
 
-        #region Signals
-
-        public static readonly Signal ActivateSignal = Signal.Wrap("activate");
-
-        public event EventHandler<SignalArgs> OnActivate
-        {
-            add => ActivateSignal.Connect(this, value, true);
-            remove => ActivateSignal.Disconnect(this, value);
-        }
-
-        public static readonly Signal ClickedSignal = Signal.Wrap("clicked");
-
-        public event EventHandler<SignalArgs> OnClicked
-        {
-            add => ClickedSignal.Connect(this, value, true);
-            remove => ClickedSignal.Disconnect(this, value);
-        }
-
-        #endregion
-        
         public Button(string label)
             : this(
                 ConstructParameter.With(LabelProperty, label)
