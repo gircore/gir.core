@@ -234,10 +234,22 @@ namespace GObject
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         
+        protected internal static bool GetObject<T>(IntPtr handle, out T obj) where T : Object
+        {
+            if (objects.TryGetValue(handle, out var foundObj))
+            {
+                obj = (T) foundObj;
+                return true;
+            }
+
+            obj = default!;
+            return false;
+        }
+        
         // This function returns the proxy object to the provided handle
         // if it already exists, otherwise creats a new wrapper object
         // and returns it.
-        protected static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
+        protected internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
         {
             o = default!;
 
@@ -279,11 +291,7 @@ namespace GObject
             );
 
             o = (T) ctor.Invoke(new object[] { handle });
-
-            // TODO: We don't need the following line as
-            // we already add to the object dictionary in the
-            // constructor.
-            // objects.Add(handle, (Object)(object)o);
+            
             return true;
         }
         

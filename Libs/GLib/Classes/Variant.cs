@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace GLib
 {
     public partial class Variant
-    {/*
+    {
         private Variant[] children;
 
         #region Properties
@@ -24,7 +24,7 @@ namespace GLib
             Init(out this.handle, children);
         }
 
-        public Variant(IDictionary<string, Variant> dictionary)
+        /*public Variant(IDictionary<string, Variant> dictionary)
         {
             var data = new Variant[dictionary.Count];
             var counter = 0;
@@ -36,7 +36,7 @@ namespace GLib
             }
             this.children = data;
             Init(out this.handle, data);
-        }
+        }*/
 
         public Variant(IntPtr handle)
         {
@@ -75,6 +75,6 @@ namespace GLib
         }
 
         public string Print(bool typeAnnotate)
-            => Marshal.PtrToStringAuto(Variant.print(handle, typeAnnotate));*/
+            => Marshal.PtrToStringAuto(Variant.print(handle, typeAnnotate));
     }
 }
