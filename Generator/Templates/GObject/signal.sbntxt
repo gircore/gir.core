@@ -32,7 +32,18 @@ func write_type
 end
 ~}}
 
+        #region Signal {{signal_name}}
+        
         {{~ if signal.needs_signal_args ~}}
+        
+        ///<summary>
+        /// Indexer to connect {{ signal_descriptor_name }} with an EventHandler<{{signal_type}}>
+        ///</summary>
+        public EventHandler<{{signal_type}}> this[Signal<{{signal_type}}> signal]
+        {
+            set => signal.Connect(this, value, true);
+        }
+        
         /// <summary>
         /// Signal (Event) Arguments for {{signal_name}}
         /// </summary>
@@ -85,4 +96,5 @@ end
             add => {{ signal_descriptor_name }}.Connect(this, value);
             remove => {{ signal_descriptor_name }}.Disconnect(this, value);
         }
-
+        
+        #endregion

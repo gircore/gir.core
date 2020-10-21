@@ -79,6 +79,11 @@ using GObject;
          public int GetPageNum(Widget child) => Native.page_num(Handle, GetHandle(child));
 
          public int GetPageCount() => Native.get_n_pages(Handle);
+         
+         public Widget this[string label]
+         {
+             set => Native.append_page(Handle, GetHandle(value), GetHandle((new Label(label))));
+         }
          #endregion
      }
  } 

@@ -17,10 +17,16 @@ namespace GtkDemo
 
             _window1 = new Window("HeloWorld")
             {
-                Child = new Button("Open")
+                Child = new Notebook()
                 {
-                    [Button.ClickedSignal] = OnOpenButtonClick,
-                },
+                    [Notebook.ChangeCurrentPageSignal] = NotebookPageChange,
+
+                    ["Page1"] = new Label("Page1"),
+                    ["Page2"] = new Button("Open")
+                            {
+                                [Button.ClickedSignal] = OnOpenButtonClick,
+                            }
+                }
             };
 
             _window1.ShowAll();
@@ -29,6 +35,11 @@ namespace GtkDemo
 
             _window1?.Dispose();
             _window2?.Dispose();
+        }
+
+        public static void NotebookPageChange(object? sender, Notebook.ChangeCurrentPageSignalArgs args)
+        {
+            //TODO: This Event is not received
         }
 
         public static void OnOpenButtonClick(object? sender, SignalArgs args)

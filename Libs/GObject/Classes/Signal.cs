@@ -40,80 +40,8 @@ namespace GObject
         #endregion
     }
 
-    /// <summary>
-    /// Default implementation of a GSignal descriptor. Mainly a shortcut
-    /// to <see cref="Signal{SignalArgs}"/> for basic signals.
-    /// </summary>
-    public sealed class Signal : Signal<SignalArgs>
+    public class Signal
     {
-        #region Constructors
-
-        private Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes)
-            : base(name, flags, returnType, paramTypes)
-        { }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Registers a new GSignal into this type.
-        /// </summary>
-        /// <param name="name">The name of the GSignal to create.</param>
-        /// <param name="flags">The GSignal flags.</param>
-        /// <param name="returnType">The type of the value returned by the handlers of this GSignal.</param>
-        /// <param name="paramTypes">
-        /// The types list for each parameters given to handlers of this GSignal,
-        /// in the order they appear.</param>
-        /// <returns>
-        /// An instance of <see cref="Signal"/> which describes the registered signal.
-        /// </returns>
-        public static new Signal Register(string name, SignalFlags flags, Type returnType, params Type[] paramTypes)
-        {
-            return new Signal(name, flags, returnType, paramTypes);
-        }
-
-        /// <summary>
-        /// Registers a new GSignal into this type.
-        /// </summary>
-        /// <param name="name">The name of the GSignal to create.</param>
-        /// <param name="flags">The GSignal flags.</param>
-        /// <returns>
-        /// An instance of <see cref="Signal"/> which describes the registered signal.
-        /// </returns>
-        public static new Signal Register(string name, SignalFlags flags = SignalFlags.run_last)
-        {
-            return new Signal(name, flags, Type.None, Array.Empty<Type>());
-        }
-
-        /// <summary>
-        /// Wraps an existing GSignal.
-        /// </summary>
-        /// <param name="name">The name of the GSignal to wrap.</param>
-        /// <returns>
-        /// An instance of <see cref="Signal"/> which describes the signal to wrap.
-        /// </returns>
-        public static new Signal Wrap(string name)
-        {
-            // Here only the signal name is relevant, other paramters are not used.
-            return new Signal(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Describes a GSignal.
-    /// </summary>
-    public class Signal<T>
-        where T : SignalArgs, new()
-    {
-        #region Fields
-
-        private static readonly Dictionary<EventHandler<T>, ActionRefValues> Handlers = new Dictionary<EventHandler<T>, ActionRefValues>();
-
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -137,7 +65,7 @@ namespace GObject
         public Type[] ParamTypes { get; }
 
         #endregion
-
+        
         #region Constructors
 
         internal Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes)
@@ -149,9 +77,9 @@ namespace GObject
         }
 
         #endregion
-
+        
         #region Methods
-
+        
         /// <summary>
         /// Registers a new GSignal into this type.
         /// </summary>
@@ -164,9 +92,9 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Signal"/> which describes the registered signal.
         /// </returns>
-        public static Signal<T> Register(string name, SignalFlags flags, Type returnType, params Type[] paramTypes)
+        public static Signal Register(string name, SignalFlags flags, Type returnType, params Type[] paramTypes)
         {
-            return new Signal<T>(name, flags, returnType, paramTypes);
+            return new Signal(name, flags, returnType, paramTypes);
         }
 
         /// <summary>
@@ -177,9 +105,9 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Signal"/> which describes the registered signal.
         /// </returns>
-        public static Signal<T> Register(string name, SignalFlags flags = SignalFlags.run_last)
+        public static Signal Register(string name, SignalFlags flags = SignalFlags.run_last)
         {
-            return new Signal<T>(name, flags, Type.None, Array.Empty<Type>());
+            return new Signal(name, flags, Type.None, Array.Empty<Type>());
         }
 
         /// <summary>
@@ -189,12 +117,12 @@ namespace GObject
         /// <returns>
         /// An instance of <see cref="Signal"/> which describes the signal to wrap.
         /// </returns>
-        public static Signal<T> Wrap(string name)
+        public static Signal Wrap(string name)
         {
             // Here only the signal name is relevant, other parameters are not used.
-            return new Signal<T>(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
+            return new Signal(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
         }
-
+        
         /// <summary>
         /// Connects an <paramref name="action"/> to this signal.
         /// </summary>
@@ -228,6 +156,66 @@ namespace GObject
         }
 
         /// <summary>
+        /// Disconnects an <paramref name="action"/> previously connected to this signal.
+        /// </summary>
+        /// <param name="o">The object from which disconnect the handler.</param>
+        /// <param name="action">The signal handler function.</param>
+        public void Disconnect(Object o, Action action)
+        {
+            if (action == null)
+                return;
+
+            o.UnregisterEvent(action);
+        }
+
+        /// <summary>
+        /// Disconnects an <paramref name="action"/> previously connected to this signal.
+        /// </summary>
+        /// <param name="o">The object from which disconnect the handler.</param>
+        /// <param name="action">The signal handler function.</param>
+        public void Disconnect(Object o, ActionRefValues action)
+        {
+            if (action == null)
+                return;
+
+            o.UnregisterEvent(action);
+        }
+        #endregion
+    }
+    
+    /// <summary>
+    /// Describes a GSignal.
+    /// </summary>
+    public class Signal<T> : Signal where T : SignalArgs, new()
+    {
+        #region Fields
+        
+        private static readonly Dictionary<EventHandler<T>, ActionRefValues> Handlers = new Dictionary<EventHandler<T>, ActionRefValues>();
+        
+        #endregion
+        
+        #region Constructors
+
+        internal Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes) : base(name, flags, returnType, paramTypes){ }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Wraps an existing GSignal.
+        /// </summary>
+        /// <param name="name">The name of the GSignal to wrap.</param>
+        /// <returns>
+        /// An instance of <see cref="Signal"/> which describes the signal to wrap.
+        /// </returns>
+        public new static Signal<T> Wrap(string name)
+        {
+            // Here only the signal name is relevant, other parameters are not used.
+            return new Signal<T>(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
+        }
+
+        /// <summary>
         /// Connects an <paramref name="action"/> to this signal.
         /// </summary>
         /// <param name="o">The object on which connect the handler.</param>
@@ -252,32 +240,6 @@ namespace GObject
 
             o.RegisterEvent(Name, callback, after);
             Handlers[action] = callback;
-        }
-
-        /// <summary>
-        /// Disconnects an <paramref name="action"/> previously connected to this signal.
-        /// </summary>
-        /// <param name="o">The object from which disconnect the handler.</param>
-        /// <param name="action">The signal handler function.</param>
-        public void Disconnect(Object o, Action action)
-        {
-            if (action == null)
-                return;
-
-            o.UnregisterEvent(action);
-        }
-
-        /// <summary>
-        /// Disconnects an <paramref name="action"/> previously connected to this signal.
-        /// </summary>
-        /// <param name="o">The object from which disconnect the handler.</param>
-        /// <param name="action">The signal handler function.</param>
-        public void Disconnect(Object o, ActionRefValues action)
-        {
-            if (action == null)
-                return;
-
-            o.UnregisterEvent(action);
         }
 
         /// <summary>
