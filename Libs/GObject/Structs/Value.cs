@@ -69,10 +69,20 @@ namespace GObject
                 (ulong) Types.Long => GetLong(),
                 (ulong) Types.Double => GetDouble(),
                 (ulong) Types.String => GetString(),
-                (ulong) Types.Object => GetObject(),
                 (ulong) Types.Pointer => GetPtr(),
-                _ => throw new NotSupportedException($"Unable to extract the value to the given type. The type {g_type} is unknown.")
+                _ => CheckComplexTypes(g_type)
             };
+        }
+
+        private object? CheckComplexTypes(ulong gtype)
+        {
+            if (Global.type_is_a(gtype, (ulong) Types.Object))
+                return GetObject();
+            
+            if (Global.type_is_a(gtype, (ulong) Types.Boxed))
+                throw new NotImplementedException();
+
+            throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
         }
 
         public T Extract<T>() => (T) Extract()!;
