@@ -1,5 +1,7 @@
 using System;
 
+#nullable enable
+
 namespace GObject
 {
     public partial struct TypeInfo
@@ -16,11 +18,11 @@ namespace GObject
             this.instance_size = instance_size;
 
             // Class Functions
-            this.base_init = base_init;
-            this.base_finalize = base_finalize;
-            this.class_init = class_init;
-            this.class_finalize = class_finalize;
-            this.instance_init = instance_init;
+            this.base_init = base_init!;
+            this.base_finalize = base_finalize!;
+            this.class_init = class_init!;
+            this.class_finalize = class_finalize!;
+            this.instance_init = instance_init!;
 
             // Initialise to Null
             this.class_data = IntPtr.Zero;
