@@ -1,4 +1,5 @@
-﻿using GObject;
+﻿using System;
+using GObject;
 using Gtk;
 using Global = Gtk.Global;
 
@@ -19,7 +20,7 @@ namespace GtkDemo
             {
                 Child = new Notebook()
                 {
-                    [Notebook.ChangeCurrentPageSignal] = NotebookPageChange,
+                    [Notebook.SwitchPageSignal] = OnSwitchedPage,
 
                     ["Page1"] = new Label("Page1"),
                     ["Page2"] = new Button("Open")
@@ -37,9 +38,9 @@ namespace GtkDemo
             _window2?.Dispose();
         }
 
-        public static void NotebookPageChange(object? sender, Notebook.ChangeCurrentPageSignalArgs args)
+        public static void OnSwitchedPage(object? sender, Notebook.SwitchPageSignalArgs args)
         {
-            //TODO: This Event is not received
+            Console.WriteLine($"SwitchedPage: {args.page_num} with child {args.page.GetType().Name}");
         }
 
         public static void OnOpenButtonClick(object? sender, SignalArgs args)
