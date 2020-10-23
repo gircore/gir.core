@@ -24,3 +24,10 @@ not all libraries in gir.core have msys2 packages at the moment.
 Gtk can also be built with the MSVC toolchain, although this is less
 straightforward. Look at [gvs-build](https://github.com/wingtk/gvsbuild)
 for a build script that automates this process.
+
+## Troubleshooting
+### System.DllNotFoundException
+The DLL could not be found. Make sure it is in your PATH and try again. Try
+adding `C:/msys64/mingw64/bin` at the **front** of your PATH if you have other
+Gtk applications installed - this prevents the wrong version of the Gtk DLL
+being loaded by the bindings.
