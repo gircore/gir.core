@@ -14,5 +14,7 @@ namespace Gtk
         }
 
         public static void Main() => Global.main();
+        
+        public static void MainQuit() => Global.main_quit();
     }
 }

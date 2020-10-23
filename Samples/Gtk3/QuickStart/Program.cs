@@ -1,66 +1,130 @@
-﻿using System;
-using GObject;
+﻿using GObject;
 using Gtk;
 using Global = Gtk.Global;
 
 namespace GtkDemo
 {
+    /// <summary>
+    /// Minimalist demo program demonstrating the core
+    /// features of Gir.Core
+    /// </summary>
     public class Program
     {
-        private static Window _window1 = null!;
-        private static Window _window2 = null!;
+        // Our Gtk Widgets
+        private static Window mainWindow = null!;
+        private static Window? popupWindow;
 
+        // Entry Point
         public static void Main(string[] args)
         {
+            // We need to call Gtk.Global.Init() before using
+            // any Gtk widgets or functions. If you use Gtk.Application,
+            // this is done for you.
             Global.Init();
 
-            // Awesome windows initializations <3, almost the MVU style ^^
-
-            _window1 = new Window("HeloWorld")
+            // Gir.Core supports Object Initialiser Syntax for every widget,
+            // allowing for entire widget trees to be created using a nice,
+            // almost MVU-style syntax:
+            mainWindow = new Window("Hello World!")
             {
+                // Set the default size of our window
+                DefaultWidth = 800,
+                DefaultHeight = 600,
+
+                // Set the child property of mainWindow to
+                // a Gtk.Notebook widget. This creates tabs which
+                // the user can use to switch between different 'Pages'.
                 Child = new Notebook()
                 {
-                    [Notebook.SwitchPageSignal] = OnSwitchedPage,
+                    // Register a callback for switching pages
+                    [Notebook.SwitchPageSignal] = OnPageSwitched,
 
-                    ["Page1"] = new Label("Page1"),
+                    // Add some widgets to the notebook
+                    ["Page1"] = new Label("Hello C#"),
                     ["Page2"] = new Button("Open")
-                            {
-                                [Button.ClickedSignal] = OnOpenButtonClick,
-                            }
-                }
+                    {
+                        // Register a callback for the button
+                        [Button.ClickedSignal] = OnOpenButtonClick,
+                    }
+                },
+
+                // Setup our application to quit when the main
+                // window is closed. We can use delegates as well as
+                // ordinary methods for signal callbacks.
+                [Window.DestroySignal] = (o, e) => Global.MainQuit()
             };
 
-            _window1.ShowAll();
+            // Show our window. In Gtk3, widgets are hidden by default.
+            // We need to tell Gtk that our window should be visible
+            // to the user.
+            mainWindow.ShowAll();
 
+            // Call Gtk.Global.Main() to start our application
+            // main loop. The program will keep on running until
+            // Gtk.Global.MainQuit() is called.
             Global.Main();
 
-            _window1?.Dispose();
-            _window2?.Dispose();
+            // Finally, clean up after ourselves and dispose of the
+            // window widget. This is not required, but it is good
+            // practice to dispose of widgets explicitly.
+            mainWindow?.Dispose();
         }
 
-        public static void OnSwitchedPage(object? sender, Notebook.SwitchPageSignalArgs args)
+        /// <summary>
+        /// This method is called whenever the user switches pages
+        /// in the notebook. We print out the page number and its contents.
+        /// </summary>
+        public static void OnPageSwitched(object? sender, Notebook.SwitchPageSignalArgs args)
         {
-            Console.WriteLine($"SwitchedPage: {args.page_num} with child {args.page.GetType().Name}");
+            System.Console.WriteLine($"SwitchedPage: {args.page_num} with child {args.page.GetType().Name}");
         }
 
+        /// <summary>
+        /// This method is called when the user clicks on our button
+        /// widget. We create a new window and display it to the user
+        /// with some text.
+        /// </summary>
         public static void OnOpenButtonClick(object? sender, SignalArgs args)
         {
-            _window2 = new Gtk.Window("Another Window")
+            // If we already have a popup window, show that and return.
+            if (popupWindow is {})
             {
+                popupWindow.ShowAll();
+                return;
+            }
+
+            // Otherwise, create a new Gtk.Window widget
+            popupWindow = new Gtk.Window("Another Window")
+            {
+                // Set our default size
                 DefaultWidth = 400,
                 DefaultHeight = 300,
+
+                // Add a button to this Window
                 Child = new Button("Close")
                 {
+                    // When the button is clicked, make sure the
+                    // 'OnCloseButtonClick' method is called.
                     [Button.ClickedSignal] = OnCloseButtonClick,
                 }
             };
 
-            _window2.ShowAll();
+            // Finally, show our popup window
+            popupWindow.ShowAll();
         }
 
+        /// <summary>
+        /// This method is called whenever the button inside our Popup
+        /// Window is clicked. We simply instruct Gtk to close our window.
+        /// </summary>
         public static void OnCloseButtonClick(object? sender, SignalArgs args)
         {
-            _window2?.Close();
+            // Close the window
+            popupWindow!.Close();
+
+            // Unset popupWindow
+            popupWindow.Dispose();
+            popupWindow = null;
         }
     }
 }
