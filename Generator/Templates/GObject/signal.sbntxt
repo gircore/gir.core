@@ -56,7 +56,7 @@ end
             {{~ param.doc.text | comment_line_by_line_with_prefix '\t\t\t'~}}
             /// </summary>
             {{~ end ~}}
-            public {{param | write_type}} {{ param.name | fix_identifier }} = default!;
+            public {{param | write_type}} {{ param.name | fix_identifier | make_pascal_case }} = default!;
 
             {{~ end ~}}
 
@@ -72,7 +72,7 @@ end
                 for param in signal.parameters.parameters
                 index = index + 1
                 ~}}
-                {{ param.name | fix_identifier }} = args[{{index}}].Extract<{{param | write_type}}>();
+                {{ param.name | fix_identifier | make_pascal_case}} = args[{{index}}].Extract<{{param | write_type}}>();
                 {{~ end ~}}
             }
         }

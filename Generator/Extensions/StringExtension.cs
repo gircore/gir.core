@@ -24,7 +24,7 @@ namespace Generator
         {
             string ToPascalCase(string s)
             {
-                var words = str.Split("-");
+                var words = str.Replace("_", "-").Split("-");
                 var builder = new StringBuilder();
                 foreach (var word in words)
                 {

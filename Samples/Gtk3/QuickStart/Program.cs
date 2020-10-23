@@ -76,7 +76,7 @@ namespace GtkDemo
         /// </summary>
         public static void OnPageSwitched(object? sender, Notebook.SwitchPageSignalArgs args)
         {
-            System.Console.WriteLine($"SwitchedPage: {args.page_num} with child {args.page.GetType().Name}");
+            System.Console.WriteLine($"SwitchedPage: {args.PageNum} with child {args.Page.GetType().Name}");
         }
 
         /// <summary>
