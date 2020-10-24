@@ -1,5 +1,4 @@
-﻿using GObject;
-using Gtk;
+﻿using Gtk;
 using Global = Gtk.Global;
 
 namespace GtkDemo
@@ -74,7 +73,7 @@ namespace GtkDemo
         /// This method is called whenever the user switches pages
         /// in the notebook. We print out the page number and its contents.
         /// </summary>
-        public static void OnPageSwitched(object? sender, Notebook.SwitchPageSignalArgs args)
+        public static void OnPageSwitched(Notebook sender, Notebook.SwitchPageSignalArgs args)
         {
             System.Console.WriteLine($"SwitchedPage: {args.PageNum} with child {args.Page.GetType().Name}");
         }
@@ -84,7 +83,7 @@ namespace GtkDemo
         /// widget. We create a new window and display it to the user
         /// with some text.
         /// </summary>
-        public static void OnOpenButtonClick(object? sender, SignalArgs args)
+        public static void OnOpenButtonClick(Button sender, System.EventArgs args)
         {
             // If we already have a popup window, show that and return.
             if (popupWindow is {})
@@ -94,7 +93,7 @@ namespace GtkDemo
             }
 
             // Otherwise, create a new Gtk.Window widget
-            popupWindow = new Gtk.Window("Another Window")
+            popupWindow = new Window("Another Window")
             {
                 // Set our default size
                 DefaultWidth = 400,
@@ -117,7 +116,7 @@ namespace GtkDemo
         /// This method is called whenever the button inside our Popup
         /// Window is clicked. We simply instruct Gtk to close our window.
         /// </summary>
-        public static void OnCloseButtonClick(object? sender, SignalArgs args)
+        public static void OnCloseButtonClick(Button sender, System.EventArgs args)
         {
             // Close the window
             popupWindow!.Close();

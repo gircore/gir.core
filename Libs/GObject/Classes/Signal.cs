@@ -4,6 +4,23 @@ using System.Collections.Generic;
 namespace GObject
 {
     /// <summary>
+    /// SignalHandler for signals without any extra information
+    /// </summary>
+    /// <param name="sender">The sender of this signal</param>
+    /// <param name="args">Empty event args</param>
+    public delegate void SignalHandler<TSender>(TSender sender, EventArgs args) 
+        where TSender : Object;
+    
+    /// <summary>
+    /// SignalHandler for signals with extra information
+    /// </summary>
+    /// <param name="sender">The sender of this signal</param>
+    /// <param name="args">SignalArgs with additional data</param>
+    public delegate void SignalHandler<TSender, TSignalArgs>(TSender sender, TSignalArgs args) 
+        where TSender : Object 
+        where TSignalArgs : SignalArgs;
+    
+    /// <summary>
     /// Base class for signal based events.
     /// </summary>
     public class SignalArgs : EventArgs
@@ -122,7 +139,7 @@ namespace GObject
             // Here only the signal name is relevant, other parameters are not used.
             return new Signal(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
         }
-        
+
         /// <summary>
         /// Connects an <paramref name="action"/> to this signal.
         /// </summary>
@@ -182,83 +199,172 @@ namespace GObject
         }
         #endregion
     }
+
+    /// <summary>
+    /// Describes a GSignal.
+    /// </summary>
+    public class Signal<TSender, TSignalArgs> : Signal where TSender : Object where TSignalArgs : SignalArgs, new()
+    {
+
+    #region Fields
+
+    private static readonly Dictionary<SignalHandler<TSender, TSignalArgs>, ActionRefValues> Handlers =
+        new Dictionary<SignalHandler<TSender, TSignalArgs>, ActionRefValues>();
+
+    #endregion
+
+    #region Constructors
+
+    internal Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes) : base(name, flags, returnType,
+        paramTypes)
+    {
+    }
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    /// Wraps an existing GSignal.
+    /// </summary>
+    /// <param name="name">The name of the GSignal to wrap.</param>
+    /// <returns>
+    /// An instance of <see cref="Signal"/> which describes the signal to wrap.
+    /// </returns>
+    public new static Signal<TSender, TSignalArgs> Wrap(string name)
+    {
+        // Here only the signal name is relevant, other parameters are not used.
+        return new Signal<TSender, TSignalArgs>(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
+    }
+
+    /// <summary>
+    /// Connects an <paramref name="action"/> to this signal.
+    /// </summary>
+    /// <param name="o">The object on which connect the handler.</param>
+    /// <param name="action">The signal handler function.</param>
+    /// <param name="after">
+    /// Define if this action must be called before or after the default handler of this signal.
+    /// </param>
+    public void Connect(TSender o, SignalHandler<TSender, TSignalArgs> action, bool after = false)
+    {
+        if (action == null)
+            return;
+
+        if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+        {
+            callback = (ref Value[] values) =>
+            {
+                var args = new TSignalArgs();
+                args.SetArgs(values);
+                action(o, args);
+            };
+        }
+
+        o.RegisterEvent(Name, callback, after);
+        Handlers[action] = callback;
+    }
+
+    /// <summary>
+    /// Disconnects an <paramref name="action"/> previously connected to this signal.
+    /// </summary>
+    /// <param name="o">The object from which disconnect the handler.</param>
+    /// <param name="action">The signal handler function.</param>
+    public void Disconnect(TSender o, SignalHandler<TSender, TSignalArgs> action)
+    {
+        if (action == null)
+            return;
+
+        if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            return;
+
+        o.UnregisterEvent(callback);
+        Handlers.Remove(action);
+    }
+
+    #endregion
+
+    }
     
     /// <summary>
     /// Describes a GSignal.
     /// </summary>
-    public class Signal<T> : Signal where T : SignalArgs, new()
+    public class Signal<TSender> : Signal where TSender : Object
     {
-        #region Fields
-        
-        private static readonly Dictionary<EventHandler<T>, ActionRefValues> Handlers = new Dictionary<EventHandler<T>, ActionRefValues>();
-        
-        #endregion
-        
-        #region Constructors
 
-        internal Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes) : base(name, flags, returnType, paramTypes){ }
+    #region Fields
 
-        #endregion
+    private static readonly Dictionary<SignalHandler<TSender>, ActionRefValues> Handlers =
+        new Dictionary<SignalHandler<TSender>, ActionRefValues>();
 
-        #region Methods
+    #endregion
 
-        /// <summary>
-        /// Wraps an existing GSignal.
-        /// </summary>
-        /// <param name="name">The name of the GSignal to wrap.</param>
-        /// <returns>
-        /// An instance of <see cref="Signal"/> which describes the signal to wrap.
-        /// </returns>
-        public new static Signal<T> Wrap(string name)
+    #region Constructors
+
+    internal Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes) : base(name, flags, returnType,
+        paramTypes)
+    {
+    }
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    /// Wraps an existing GSignal.
+    /// </summary>
+    /// <param name="name">The name of the GSignal to wrap.</param>
+    /// <returns>
+    /// An instance of <see cref="Signal"/> which describes the signal to wrap.
+    /// </returns>
+    public new static Signal<TSender> Wrap(string name)
+    {
+        // Here only the signal name is relevant, other parameters are not used.
+        return new Signal<TSender>(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
+    }
+
+    /// <summary>
+    /// Connects an <paramref name="action"/> to this signal.
+    /// </summary>
+    /// <param name="o">The object on which connect the handler.</param>
+    /// <param name="action">The signal handler function.</param>
+    /// <param name="after">
+    /// Define if this action must be called before or after the default handler of this signal.
+    /// </param>
+    public void Connect(TSender o, SignalHandler<TSender> action, bool after = false)
+    {
+        if (action == null)
+            return;
+
+        if (!Handlers.TryGetValue(action, out ActionRefValues callback))
         {
-            // Here only the signal name is relevant, other parameters are not used.
-            return new Signal<T>(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
-        }
-
-        /// <summary>
-        /// Connects an <paramref name="action"/> to this signal.
-        /// </summary>
-        /// <param name="o">The object on which connect the handler.</param>
-        /// <param name="action">The signal handler function.</param>
-        /// <param name="after">
-        /// Define if this action must be called before or after the default handler of this signal.
-        /// </param>
-        public void Connect(Object o, EventHandler<T> action, bool after = false)
-        {
-            if (action == null)
-                return;
-
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            callback = (ref Value[] values) =>
             {
-                callback = (ref Value[] values) =>
-                {
-                    var args = new T();
-                    args.SetArgs(values);
-                    action(o, args);
-                };
-            }
-
-            o.RegisterEvent(Name, callback, after);
-            Handlers[action] = callback;
+                action(o, EventArgs.Empty);
+            };
         }
 
-        /// <summary>
-        /// Disconnects an <paramref name="action"/> previously connected to this signal.
-        /// </summary>
-        /// <param name="o">The object from which disconnect the handler.</param>
-        /// <param name="action">The signal handler function.</param>
-        public void Disconnect(Object o, EventHandler<T> action)
-        {
-            if (action == null)
-                return;
+        o.RegisterEvent(Name, callback, after);
+        Handlers[action] = callback;
+    }
 
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
-                return;
+    /// <summary>
+    /// Disconnects an <paramref name="action"/> previously connected to this signal.
+    /// </summary>
+    /// <param name="o">The object from which disconnect the handler.</param>
+    /// <param name="action">The signal handler function.</param>
+    public void Disconnect(TSender o, SignalHandler<TSender> action)
+    {
+        if (action == null)
+            return;
 
-            o.UnregisterEvent(callback);
-            Handlers.Remove(action);
-        }
+        if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            return;
 
-        #endregion
+        o.UnregisterEvent(callback);
+        Handlers.Remove(action);
+    }
+
+    #endregion
+
     }
 }

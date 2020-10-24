@@ -40,6 +40,16 @@ end ~}}
 
         #region Signals
         
+        {{ if signals_have_event_args }}
+        ///<summary>
+        /// Indexer to connect with an SignalHandler<{{name}}>
+        ///</summary>
+        public SignalHandler<{{ name }}> this[Signal<{{ name }}> signal]
+        {
+            set => signal.Connect(this, value, true);
+        }
+        {{ end }}
+        
 {{~ for signal in signals
     include 'signal.sbntxt' signal
 end ~}}

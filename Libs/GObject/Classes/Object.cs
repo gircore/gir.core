@@ -294,13 +294,7 @@ namespace GObject
             
             return true;
         }
-        
-        public EventHandler<SignalArgs> this[Signal<SignalArgs> signal]
-        {
-            set => signal.Connect(this, value, true);
-        }
 
-        
         #endregion
 
         #region IDisposable

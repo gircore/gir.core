@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Gir
@@ -32,5 +33,7 @@ namespace Gir
                         yield return method;
             }
         }
+
+        public bool SignalsHaveEventArgs => Signals.Any(x => !x.NeedsSignalArgs);
     }
 }
