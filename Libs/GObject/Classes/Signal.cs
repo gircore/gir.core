@@ -27,7 +27,7 @@ namespace GObject
     {
         #region Properties
 
-        private object[] Args { get; set; }
+        protected Value[] Args { get; set; }
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace GObject
 
         public SignalArgs()
         {
-            Args = Array.Empty<object>();
+            Args = Array.Empty<Value>();
         }
 
         internal SignalArgs(params Value[] args)
@@ -47,12 +47,11 @@ namespace GObject
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Override this method to populate a SignalArgs-derived type
-        /// from an array of Values.
-        /// </summary>
-        public virtual void SetArgs(Value[] args) {}
+        
+        internal void SetArgs(Value[] args)
+        {
+            Args = args;
+        }
 
         #endregion
     }

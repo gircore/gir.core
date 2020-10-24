@@ -56,27 +56,23 @@ end
         /// Signal (Event) Arguments for {{signal_name}}
         /// </summary>
         public sealed class {{signal_type}} : SignalArgs
-        {
-            {{~ for param in signal.parameters.parameters ~}}
+        {            
+            #region Properties
+            {{~ 
+            index = 0
+            for param in signal.parameters.parameters 
+            index = index + 1
+            ~}}
 
             {{~ if param.doc && param.doc.text ~}}
             /// <summary>
             {{~ param.doc.text | comment_line_by_line_with_prefix '\t\t\t'~}}
             /// </summary>
             {{~ end ~}}
-            public {{param | write_type}} {{ param.name | fix_identifier | make_pascal_case }} = default!;
+            public {{param | write_type}} {{ param.name | fix_identifier | make_pascal_case }} => Args[{{index}}].Extract<{{param | write_type}}>();
 
             {{~ end ~}}
-
-            public override void SetArgs(Value[] args)
-            {
-                {{~ index = 0
-                for param in signal.parameters.parameters
-                index = index + 1
-                ~}}
-                {{ param.name | fix_identifier | make_pascal_case}} = args[{{index}}].Extract<{{param | write_type}}>();
-                {{~ end ~}}
-            }
+            #endregion
         }
         {{~ end ~}}
 
