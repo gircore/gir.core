@@ -2,22 +2,27 @@
 
 Gir.Core is a project which aims to provide C# wrapper for different [GObject] based libraries like [GTK] for user interfaces.
 
-If you want to get started with the library head over to http://gircore.tiede.org. If you want to get into more technical details just continue reading.
+<!-- If you want to get started with the library head over to http://gircore.tiede.org. If you want to get into more technical details just continue reading. -->
 
 For the [GObject] system there are a lot of libraries which allow to write complete applications with deep system integration on linux. Unfortunately there are only bindings for [GtkSharp] which are well maintained and they just wrap the low level C-API.
 
 This project aims to provide:
-* An API which feels more natural to C# developers and thus greatly simplifies the C-API (including the async/await feature).
+* An API which feels more natural to C# developers and thus simplifies the C-API (including the async/await feature).
 * A more complete API surface to integrate deeply with linux via supporting more libraries
+* A declarative style of creating [GTK] UIs. See the [sample][sample_gtk_quickstart]. (Additionally to the XML and object based possibilities to create UIs).
+* An easy way to allow 3rd party developers to integrate into this stack to achieve interoperability between different [GObject] based libraries.
 
-Supported libraries
+Currently supported libraries
 * [GTK] (wip): UI-Toolkit (GTK3 + experimental GTK4)
-* [WebKitGTK] (wip): Browser-Engine
-* [JavaScriptCore] (wip): Javascript integration for [WebKitGTK]
-* [libhandy] (wip): Convergent UI-Widgets for [GTK] to support mobile phones
+* [WebKitGTK] (planed): Browser-Engine
+* [JavaScriptCore] (planed): Javascript integration for [WebKitGTK]
+* [libhandy] (planed): Convergent UI-Widgets for [GTK] to support mobile phones
 * [dbus] (wip): Library for inter-process communication via [GIO]
-* [libchamplain] (wip): Library to display maps
-* [gstreamer] (wip): Multimedia Framework
+* [libchamplain] (planed): Library to display maps
+* [gstreamer] (planed): Multimedia Framework
+
+## Status
+As we are currently figuring out the best way for this project the code is under heavy development and not ready for production. There is currently _no_ nuget package available.
 
 ## Build & Use
 To build the project locally follow these steps:
@@ -40,7 +45,7 @@ If you want to build the samples just run
     
 To use the newly build libraries in your project just add a reference to the csproj file of the project you want to use, e.g:
 
-    $ dotnet add reference [RepoPath]/Libs/Gtk/Core/Gtk.Core.csproj
+    $ dotnet add reference [RepoPath]/Libs/Gtk/Gtk.csproj
 
 ## How to help
 Anyone who wants to help is very welcome. Just create a pull request for new code or create an issue to get in contact.
@@ -52,29 +57,7 @@ The folder structure in this repository is organized like:
 * **Samples:** Example apps for GTK, gstreamer, ...
 * **Libs:** Contains the libraries
 
-Each library has a folder called *Wrapper*, which contains the project to generate and build the low level API. These projects do very seldom contain code.
-
-If there is a *Core* folder it contains the high level code.
-
-## How is it done?
-The API is split in two layers. The lower layer just wraps all the methods (like `Sys.HeaderBar.@new()`) and is completely generated.
-
-The high level API is currently handcrafted to be able to provide the flexiblity for an easy to use API surface. For example the binding code for the GTK HeaderBar looks like:
-
-```cs
- public class HeaderBar : Container
- {
-      public Property<string> Title { get; }
-      public Property<bool> ShowCloseButton { get; }
-
-      public HeaderBar() : this(Sys.HeaderBar.@new()){}
-      internal HeaderBar(IntPtr handle) : base(handle) 
-      {
-          Title = PropertyOfString("title");
-          ShowCloseButton = PropertyOfBool("show-close-button");
-      }
-  }
-```
+The code in the library folder is not complete because the biggest part of the code gets generated and is only available after a run of the build project.
 
 [gstreamer]: https://gstreamer.freedesktop.org/
 [GIO]: https://developer.gnome.org/gio/stable/
@@ -86,3 +69,4 @@ The high level API is currently handcrafted to be able to provide the flexiblity
 [dbus]: https://www.freedesktop.org/wiki/Software/dbus/
 [libchamplain]: https://wiki.gnome.org/Projects/libchamplain
 [GtkSharp]: https://github.com/GtkSharp/GtkSharp
+[sample_gtk_quickstart]: https://github.com/gircore/gir.core/tree/develop/Samples/Gtk3/Quickstart
