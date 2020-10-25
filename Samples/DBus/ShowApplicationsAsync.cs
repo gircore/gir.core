@@ -1,9 +1,10 @@
 using Gio;
 using System;
+using GLib;
 
 namespace Sample
 {
-    public partial class DBus
+    public static partial class DBus
     {
         public static async void ShowApplicationsAsync()
         {
@@ -11,7 +12,12 @@ namespace Sample
             Console.ReadLine();
             
             var bus = DBusConnection.Get(BusType.session);
-            using var ret = await bus.CallAsync("org.gnome.Panel", "/org/gnome/Shell", "org.gnome.Shell", "ShowApplications");
+            using Variant ret = await bus.CallAsync(
+                busName: "org.gnome.Panel", 
+                objectPath: "/org/gnome/Shell", 
+                interfaceName: "org.gnome.Shell", 
+                methodName: "ShowApplications"
+            );
 
             Console.WriteLine(ret.Print(true));
         }

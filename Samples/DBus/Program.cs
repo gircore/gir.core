@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Samples
+﻿namespace Samples
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Sample.DBus.ShowApplicationsAsync();
             Sample.DBus.SendNotification();
