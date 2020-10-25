@@ -11,7 +11,7 @@ namespace Sample
             Console.WriteLine("Press enter to show applications...");
             Console.ReadLine();
             
-            var bus = DBusConnection.Get(BusType.session);
+            var bus = DBusConnection.Get(BusType.Session);
             using Variant ret = await bus.CallAsync(
                 busName: "org.gnome.Panel", 
                 objectPath: "/org/gnome/Shell", 

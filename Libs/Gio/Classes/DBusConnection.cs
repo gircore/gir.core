@@ -32,7 +32,7 @@ namespace Gio
             }
 
             var @params = parameters?.Handle ?? IntPtr.Zero;
-            Native.call(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, Callback, IntPtr.Zero);
+            Native.call(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.None, -1, IntPtr.Zero, Callback, IntPtr.Zero);
 
             return tcs.Task;
         }
