@@ -6,10 +6,11 @@ namespace Gio
 {
     public partial class DBusConnection
     {
-        #region Methods
+        #region Static methods
+        
         public static DBusConnection Get(BusType busType)
         {
-            var handle = Global.bus_get_sync(busType, IntPtr.Zero, out var error);
+            IntPtr handle = Global.bus_get_sync(busType, IntPtr.Zero, out IntPtr error);
             HandleError(error);
 
             if (GetObject(handle, out DBusConnection obj))
@@ -17,6 +18,10 @@ namespace Gio
 
             return new DBusConnection(handle);
         }
+        
+        #endregion
+        
+        #region Methods
 
         public Task<Variant> CallAsync(string busName, string objectPath, string interfaceName, string methodName,
             Variant? parameters = null)
@@ -25,18 +30,28 @@ namespace Gio
 
             void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
             {
-                var ret = Native.call_finish(sourceObject, res, out var error);
+                IntPtr ret = Native.call_finish(sourceObject, res, out IntPtr error);
                 HandleError(error);
 
                 tcs.SetResult(new Variant(ret));
             }
 
-            var @params = parameters?.Handle ?? IntPtr.Zero;
+            IntPtr @params = parameters?.Handle ?? IntPtr.Zero;
             Native.call(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.None, -1, IntPtr.Zero, Callback, IntPtr.Zero);
 
             return tcs.Task;
         }
 
+        public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
+        {
+            IntPtr @params = parameters?.Handle ?? IntPtr.Zero;
+            IntPtr ret = Native.call_sync(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.None, 9999, IntPtr.Zero, out IntPtr error);
+
+            HandleError(error);
+
+            return new Variant(ret);
+        }
+        
         #endregion
     }
 }
