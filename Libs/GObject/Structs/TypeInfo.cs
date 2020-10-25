@@ -6,6 +6,8 @@ namespace GObject
 {
     public partial struct TypeInfo
     {
+        #region Constructors
+
         public TypeInfo(ushort class_size, ushort instance_size,
             BaseInitFunc? base_init = null,
             BaseFinalizeFunc? base_finalize = null,
@@ -29,5 +31,7 @@ namespace GObject
             this.value_table = IntPtr.Zero;
             this.n_preallocs = 0;
         }
+
+        #endregion
     }
 }

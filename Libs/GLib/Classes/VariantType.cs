@@ -6,29 +6,47 @@ namespace GLib
     public partial class VariantType : IDisposable
     {
         #region Static Member
+
         //public static VariantType String = new VariantType("s");
         //public static VariantType Variant = new VariantType("v");
+
         #endregion
+
+        #region Properties
 
         internal IntPtr Handle { get; }
 
-        public VariantType(string type) : this(VariantType.@new(type)) {}
+        #endregion
+
+        #region Constructors
+
+        public VariantType(string type) : this(@new(type)) { }
 
         internal VariantType(IntPtr handle)
         {
             Handle = handle;
         }
-        
-        public void Dispose()
-            => VariantType.free(Handle);
+
+        #endregion
+
+        #region Methods
 
         public override string ToString()
         {
-            var variantType = VariantType.dup_string(Handle);
+            IntPtr variantType = dup_string(Handle);
             var t = Marshal.PtrToStringAnsi(variantType);
             //TODO FREE variantType!!
 
             return t;
         }
+
+        #endregion
+
+        #region IDisposable Implementation
+
+        public void Dispose()
+            => free(Handle);
+
+        #endregion
     }
 }

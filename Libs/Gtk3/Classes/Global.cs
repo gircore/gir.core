@@ -4,17 +4,20 @@ namespace Gtk
 {
     public partial class Global
     {
+        #region Methods
+
         public static void Init()
         {
             var argc = 0;
-            var argv = IntPtr.Zero;
+            IntPtr argv = IntPtr.Zero;
 
-            
-            Global.init(ref argc, ref argv);
+            init(ref argc, ref argv);
         }
 
-        public static void Main() => Global.main();
-        
-        public static void MainQuit() => Global.main_quit();
+        public static void Main() => main();
+
+        public static void MainQuit() => main_quit();
+
+        #endregion
     }
 }

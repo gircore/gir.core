@@ -13,21 +13,21 @@ namespace GObject
             data1 = IntPtr.Zero;
             data2 = IntPtr.Zero;
 
-            Value.init(ref this, type.Value);
+            init(ref this, type.Value);
         }
 
-        public Value(IntPtr value) : this(Type.Object) => Value.set_object(ref this, value);
-        public Value(bool value) : this(Type.Boolean) => Value.set_boolean(ref this, value);
-        public Value(int value) : this(Type.Int) => Value.set_int(ref this, value);
-        public Value(uint value) : this(Type.UInt) => Value.set_uint(ref this, value);
-        public Value(long value) : this(Type.Long) => Value.set_long(ref this, value);
-        public Value(double value) : this(Type.Double) => Value.set_double(ref this, value);
-        public Value(string value) : this(Type.String) => Value.set_string(ref this, value);
+        public Value(IntPtr value) : this(Type.Object) => set_object(ref this, value);
+        public Value(bool value) : this(Type.Boolean) => set_boolean(ref this, value);
+        public Value(int value) : this(Type.Int) => set_int(ref this, value);
+        public Value(uint value) : this(Type.UInt) => set_uint(ref this, value);
+        public Value(long value) : this(Type.Long) => set_long(ref this, value);
+        public Value(double value) : this(Type.Double) => set_double(ref this, value);
+        public Value(string value) : this(Type.String) => set_string(ref this, value);
 
         #endregion
-        
+
         #region Methods
-        
+
         /// <summary>
         /// Gets an instance of <see cref="Value"/> from the given <paramref name="value"/>.
         /// </summary>
@@ -52,7 +52,7 @@ namespace GObject
         };
 
         /// <summary>
-        /// Extracts the content of this <see cref="Value"/> into an object. 
+        /// Extracts the content of this <see cref="Value"/> into an object.
         /// </summary>
         /// <returns>The content of this wrapped in an object</returns>
         /// <exception cref="NotSupportedException">
@@ -78,7 +78,7 @@ namespace GObject
         {
             if (Global.type_is_a(gtype, (ulong) Types.Object))
                 return GetObject();
-            
+
             if (Global.type_is_a(gtype, (ulong) Types.Boxed))
                 throw new NotImplementedException();
 
@@ -86,27 +86,31 @@ namespace GObject
         }
 
         public T Extract<T>() => (T) Extract()!;
-        
-        public IntPtr GetPtr() => Value.get_pointer(ref this);
-        public IntPtr GetBoxed() => Value.get_boxed(ref this);
+
+        public IntPtr GetPtr() => get_pointer(ref this);
+        public IntPtr GetBoxed() => get_boxed(ref this);
 
         public Object? GetObject()
-            => Object.TryWrapPointerAs(Value.get_object(ref this), out Object obj) ? obj : null;
+            => Object.TryWrapPointerAs(get_object(ref this), out Object obj) ? obj : null;
 
-        public bool GetBool() => Value.get_boolean(ref this);
-        public uint GetUint() => Value.get_uint(ref this);
-        public int GetInt() => Value.get_int(ref this);
-        public long GetLong() => Value.get_long(ref this);
-        public double GetDouble() => Value.get_double(ref this);
+        public bool GetBool() => get_boolean(ref this);
+        public uint GetUint() => get_uint(ref this);
+        public int GetInt() => get_int(ref this);
+        public long GetLong() => get_long(ref this);
+        public double GetDouble() => get_double(ref this);
 
         public string GetString()
         {
-            var ptr = Value.get_string(ref this);
+            IntPtr ptr = get_string(ref this);
             return Marshal.PtrToStringAnsi(ptr);
         }
-        
-        public void Dispose() => Value.unset(ref this);
-        
+
+        #endregion
+
+        #region IDisposable Implementation
+
+        public void Dispose() => unset(ref this);
+
         #endregion
     }
 }
