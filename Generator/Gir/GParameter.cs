@@ -4,6 +4,8 @@ namespace Gir
 {
     public class GParameter : IType
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -27,5 +29,7 @@ namespace Gir
 
         [XmlAttribute("nullable")]
         public bool Nullable;
+
+        #endregion
     }
 }

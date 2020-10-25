@@ -5,6 +5,8 @@ namespace Gir
 {
     public class GRecord : GClass
     {
+        #region Properties
+
         [XmlElement("function")]
         public List<GMethod> Functions { get; set; } = default!;
 
@@ -35,5 +37,7 @@ namespace Gir
                 }
             }
         }
+
+        #endregion
     }
 }

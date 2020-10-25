@@ -11,7 +11,11 @@ namespace Generator
 {
     public interface IGenerator
     {
+        #region Methods
+
         void Generate();
+
+        #endregion
     }
 
     public enum StructType
@@ -36,7 +40,7 @@ namespace Generator
         private GRepository Repository { get; }
         private Project Project { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Constructors
 
@@ -60,6 +64,16 @@ namespace Generator
         }
 
         #endregion
+
+        #region Methods
+
+        private static GRepository ReadRepository(string girFile)
+        {
+            var serializer = new XmlSerializer(typeof(GRepository), "http://www.gtk.org/introspection/core/1.0");
+
+            using var fs = new FileStream(girFile, FileMode.Open);
+            return (GRepository) serializer.Deserialize(fs);
+        }
 
         protected ScriptObject GetScriptObject()
             => CreateScriptObject(Repository.Namespace!.Name!, _dllImport!);
@@ -112,14 +126,6 @@ namespace Generator
         protected virtual void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags) { }
         protected virtual void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace) { }
         protected virtual void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace) { }
-
-        private static GRepository ReadRepository(string girFile)
-        {
-            var serializer = new XmlSerializer(typeof(GRepository), "http://www.gtk.org/introspection/core/1.0");
-
-            using var fs = new FileStream(girFile, FileMode.Open);
-            return (GRepository) serializer.Deserialize(fs);
-        }
 
         private void FixRepository(GRepository repository)
         {
@@ -269,5 +275,7 @@ namespace Generator
             );
             return scriptObject;
         }
+
+        #endregion
     }
 }

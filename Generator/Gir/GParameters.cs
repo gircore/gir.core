@@ -5,6 +5,8 @@ namespace Gir
 {
     public class GParameters
     {
+        #region Properties
+
         [XmlElement("instance-parameter")]
         public GParameter? InstanceParameter { get; set; }
 
@@ -24,5 +26,7 @@ namespace Gir
         }
 
         public int Count => (InstanceParameter is { } ? 1 : 0) + (Parameters?.Count ?? 0);
+
+        #endregion
     }
 }

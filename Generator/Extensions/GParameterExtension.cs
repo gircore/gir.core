@@ -5,6 +5,8 @@ namespace Generator
 {
     internal static class GParameterExtension
     {
+        #region Methods
+
         internal static bool AreEqual(this GParameters? obj, TypeResolver resolver, GParameters? other)
         {
             if (obj is { } && other is null) return false;
@@ -23,5 +25,7 @@ namespace Generator
 
             return true;
         }
+
+        #endregion
     }
 }

@@ -4,6 +4,8 @@ namespace Gir
 {
     public class GArray
     {
+        #region Properties
+
         [XmlAttribute("length")]
         public string? Length { get; set; }
 
@@ -18,5 +20,7 @@ namespace Gir
 
         [XmlElement("type")]
         public GType? Type { get; set; }
+
+        #endregion
     }
 }

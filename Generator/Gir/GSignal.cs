@@ -4,6 +4,8 @@ namespace Gir
 {
     public class GSignal
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -24,5 +26,7 @@ namespace Gir
         // TODO: Instance Parameters?
 
         // TODO: Implement more Signal attributes like When, Hooks, Recurse, etc
+
+        #endregion
     }
 }

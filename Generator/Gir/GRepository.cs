@@ -6,6 +6,8 @@ namespace Gir
     [XmlRoot(ElementName = "repository")]
     public class GRepository
     {
+        #region Properties
+
         [XmlAttribute("version")]
         public string? Version { get; set; }
 
@@ -14,5 +16,7 @@ namespace Gir
 
         [XmlElement("include")]
         public List<GInclude> Includes { get; set; } = default!;
+
+        #endregion
     }
 }

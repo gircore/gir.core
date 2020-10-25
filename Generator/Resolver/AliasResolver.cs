@@ -8,12 +8,22 @@ namespace Generator
 {
     public class AliasResolver
     {
+        #region Fields
+
         private readonly IEnumerable<GAlias> _aliases;
+
+        #endregion
+
+        #region Constructors
 
         public AliasResolver(IEnumerable<GAlias> aliases)
         {
             _aliases = aliases ?? throw new ArgumentNullException(nameof(aliases));
         }
+
+        #endregion
+
+        #region Methods
 
         public bool TryGetForCType(string cType, [NotNullWhen(returnValue: true)] out string? t, out string? n)
             => TryGet(cType, (a, t) => a.Type == t || a.Name == t, out t, out n);
@@ -33,5 +43,7 @@ namespace Generator
             n = matching.For?.Name;
             return true;
         }
+
+        #endregion
     }
 }

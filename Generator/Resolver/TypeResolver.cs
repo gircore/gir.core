@@ -5,9 +5,15 @@ namespace Generator
 {
     public class ResolvedType : IEquatable<ResolvedType>
     {
+        #region Properties
+
         public string Type { get; }
         public string Attribute { get; }
         public bool IsRef { get; }
+
+        #endregion
+
+        #region Constructors
 
         public ResolvedType(string type, bool isRef = false, string attribute = "")
         {
@@ -16,12 +22,19 @@ namespace Generator
             IsRef = isRef;
         }
 
+        #endregion
+
+        #region Methods
+
         public override string ToString() => GetTypeString();
 
         public string GetTypeString() => Attribute + (IsRef ? "ref " : string.Empty) + Type;
         public string GetFieldString() => Attribute + (IsRef ? "IntPtr" : Type);
 
-        #region Equality
+        #endregion
+
+        #region IEquatable<ResolvedType> Implementation
+
         public bool Equals(ResolvedType? other)
         {
             if (other is null) return false;
@@ -41,11 +54,14 @@ namespace Generator
         {
             return HashCode.Combine(Type, IsRef);
         }
+
         #endregion
     }
 
     internal class MyType
     {
+        #region Properties
+
         public string? ArrayLengthParameter { get; set; }
         public bool IsArray { get; set; }
         public string Type { get; set; }
@@ -53,20 +69,36 @@ namespace Generator
         public bool IsValueType { get; set; }
         public bool IsParameter { get; set; }
 
+        #endregion
+
+        #region Constructors
+
         public MyType(string type)
         {
             Type = type;
         }
+
+        #endregion
     }
 
     public class TypeResolver
     {
+        #region Fields
+
         private readonly AliasResolver _aliasResolver;
+
+        #endregion
+
+        #region Constructors
 
         public TypeResolver(AliasResolver resolver)
         {
             _aliasResolver = resolver;
         }
+
+        #endregion
+
+        #region Methods
 
         public ResolvedType Resolve(IType typeInfo) => typeInfo switch
         {
@@ -235,5 +267,7 @@ namespace Generator
 
         private MyType ValueType(string str) => new MyType(str) { IsValueType = true };
         private MyType ReferenceType(string str) => new MyType(str);
+
+        #endregion
     }
 }

@@ -4,6 +4,8 @@ namespace Gir
 {
     public class GMember
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -15,5 +17,7 @@ namespace Gir
 
         [XmlElement("doc")]
         public GDoc? Doc { get; set; }
+
+        #endregion
     }
 }

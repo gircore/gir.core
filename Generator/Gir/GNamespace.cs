@@ -7,6 +7,8 @@ namespace Gir
 {
     public class GNamespace
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -95,5 +97,7 @@ namespace Gir
 
             return name + ".so" + versionExtension;
         }
+
+        #endregion
     }
 }

@@ -6,6 +6,8 @@ namespace Gir
 {
     public class GClass : GInterface
     {
+        #region Properties
+
         [XmlElement("constructor")]
         public List<GMethod> Constructors { get; set; } = default!;
 
@@ -37,5 +39,7 @@ namespace Gir
         }
 
         public bool SignalsHaveEventArgs => Signals.Any(x => !x.NeedsSignalArgs);
+
+        #endregion
     }
 }

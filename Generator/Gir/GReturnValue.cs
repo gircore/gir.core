@@ -4,6 +4,8 @@ namespace Gir
 {
     public class GReturnValue : IType
     {
+        #region Properties
+
         [XmlAttribute("transfer-ownership")]
         public string? TransferOwnership { get; set; }
 
@@ -18,5 +20,7 @@ namespace Gir
 
         [XmlElement("array")]
         public GArray? Array { get; set; }
+
+        #endregion
     }
 }

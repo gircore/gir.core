@@ -8,9 +8,9 @@ namespace Build
 {
     public static class Program
     {
+        #region Fields
+
         private static string Configuration = ConfDebug;
-        private const string ConfRelease = "Release";
-        private const string ConfDebug = "Debug";
 
         private static readonly string[] SampleProjects =
         {
@@ -46,6 +46,17 @@ namespace Build
             (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
             (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/
         };
+
+        #endregion
+
+        #region Constants
+
+        private const string ConfRelease = "Release";
+        private const string ConfDebug = "Debug";
+
+        #endregion
+
+        #region Methods
 
         public static void Main(string[] args)
         {
@@ -111,5 +122,7 @@ namespace Build
             else
                 throw new Exception($"{type.Name} is not a generator");
         }
+
+        #endregion
     }
 }

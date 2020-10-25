@@ -7,7 +7,13 @@ namespace Generator
 {
     public class GLibGenerator : Generator<GLibTemplateLoader>
     {
+        #region Constructors
+
         public GLibGenerator(Project project) : base(project) { }
+
+        #endregion
+
+        #region Methods
 
         protected override void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
         {
@@ -84,5 +90,7 @@ namespace Generator
                 );
             }
         }
+
+        #endregion
     }
 }

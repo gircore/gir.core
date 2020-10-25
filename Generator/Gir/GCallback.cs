@@ -4,6 +4,8 @@ namespace Gir
 {
     public class GCallback
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -18,5 +20,7 @@ namespace Gir
 
         [XmlElement("parameters")]
         public GParameters? Parameters { get; set; }
+
+        #endregion
     }
 }

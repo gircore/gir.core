@@ -4,6 +4,8 @@ namespace Build
 {
     public static class DotNet
     {
+        #region Methods
+
         public static void Build(string project, string configuration)
         {
             Command.Run(Commands.Dotnet, $"{Commands.Build} --nologo -c {configuration} {project}");
@@ -16,5 +18,7 @@ namespace Build
         {
             Command.Run(Commands.Dotnet, $"{Commands.Clean} --nologo -c {configuration}", project);
         }
+
+        #endregion
     }
 }

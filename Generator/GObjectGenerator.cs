@@ -7,7 +7,13 @@ namespace Generator
 {
     public class GObjectGenerator : Generator<GObjectTemplateLoader>
     {
+        #region Constructors
+
         public GObjectGenerator(Project project) : base(project) { }
+
+        #endregion
+
+        #region Methods
 
         protected override void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
         {
@@ -102,5 +108,7 @@ namespace Generator
                 scriptObject: scriptObject
             );
         }
+
+        #endregion
     }
 }

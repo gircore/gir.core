@@ -4,6 +4,8 @@ namespace Gir
 {
     public class GField : IType
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -30,5 +32,7 @@ namespace Gir
 
         [XmlElement("doc")]
         public GDoc? Doc { get; set; }
+
+        #endregion
     }
 }

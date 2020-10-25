@@ -4,6 +4,8 @@ namespace Gir
 {
     public class GAlias
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -15,5 +17,7 @@ namespace Gir
 
         [XmlElement("type")]
         public GType? For { get; set; }
+
+        #endregion
     }
 }

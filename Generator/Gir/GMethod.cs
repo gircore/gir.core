@@ -5,6 +5,8 @@ namespace Gir
 {
     public class GMethod
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -43,5 +45,7 @@ namespace Gir
 
             return Parameters?.Parameters.Any(IsVariadic) ?? false;
         }
+
+        #endregion
     }
 }

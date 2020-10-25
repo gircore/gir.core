@@ -5,6 +5,8 @@ namespace Gir
 {
     public class GEnumeration
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -19,5 +21,7 @@ namespace Gir
 
         [XmlElement("member")]
         public List<GMember> Members { get; set; } = default!;
+
+        #endregion
     }
 }

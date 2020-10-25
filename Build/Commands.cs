@@ -2,6 +2,8 @@ namespace Build
 {
     public static class Commands
     {
+        #region Constants
+
         public const string Dotnet = "dotnet";
         public const string Build = "build";
         public const string Run = "run";
@@ -10,5 +12,7 @@ namespace Build
         public const string Push = "push";
         public const string Restore = "restore";
         public const string Clean = "clean";
+
+        #endregion
     }
 }

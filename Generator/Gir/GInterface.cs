@@ -5,6 +5,8 @@ namespace Gir
 {
     public class GInterface
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -37,5 +39,7 @@ namespace Gir
                 }
             }
         }
+
+        #endregion
     }
 }

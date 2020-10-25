@@ -9,6 +9,8 @@ namespace Generator
 {
     public static class StringExtension
     {
+        #region Methods
+
         public static string CommentLineByLine(this string str, string linePrefix = "")
         {
             var sArray = str.Split("\n");
@@ -101,5 +103,7 @@ namespace Generator
 
             return identifier;
         }
+
+        #endregion
     }
 }
