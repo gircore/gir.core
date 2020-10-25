@@ -8,11 +8,11 @@ namespace Generator
 {
     public class AliasResolver
     {
-        private IEnumerable<GAlias> aliases;
+        private readonly IEnumerable<GAlias> _aliases;
 
         public AliasResolver(IEnumerable<GAlias> aliases)
         {
-            this.aliases = aliases ?? throw new System.ArgumentNullException(nameof(aliases));
+            _aliases = aliases ?? throw new ArgumentNullException(nameof(aliases));
         }
 
         public bool TryGetForCType(string cType, [NotNullWhen(returnValue: true)] out string? t, out string? n)
@@ -20,9 +20,9 @@ namespace Generator
 
         private bool TryGet(string typeName, Func<GAlias, string, bool> predicate, [NotNullWhen(returnValue: true)] out string? t, out string? n)
         {
-            var matching = aliases.FirstOrDefault(x => predicate(x, typeName));
+            GAlias? matching = _aliases.FirstOrDefault(x => predicate(x, typeName));
 
-            if(matching is null || matching.For?.CType is null)
+            if (matching is null || matching.For?.CType is null)
             {
                 t = default;
                 n = default;

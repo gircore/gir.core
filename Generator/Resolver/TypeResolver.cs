@@ -17,23 +17,23 @@ namespace Generator
         }
 
         public override string ToString() => GetTypeString();
-        
+
         public string GetTypeString() => Attribute + (IsRef ? "ref " : string.Empty) + Type;
         public string GetFieldString() => Attribute + (IsRef ? "IntPtr" : Type);
 
         #region Equality
         public bool Equals(ResolvedType? other)
         {
-            if (ReferenceEquals(null, other)) return false;
+            if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
             return Type == other.Type && IsRef == other.IsRef;
         }
 
         public override bool Equals(object? obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((ResolvedType) obj);
         }
 
@@ -43,10 +43,10 @@ namespace Generator
         }
         #endregion
     }
-    
+
     internal class MyType
     {
-        public string? ArrayLengthParameter { get; set;}
+        public string? ArrayLengthParameter { get; set; }
         public bool IsArray { get; set; }
         public string Type { get; set; }
         public bool IsPointer { get; set; }
@@ -57,35 +57,34 @@ namespace Generator
         {
             Type = type;
         }
-
     }
 
     public class TypeResolver
     {
-        private readonly AliasResolver aliasResolver;
+        private readonly AliasResolver _aliasResolver;
 
         public TypeResolver(AliasResolver resolver)
         {
-            this.aliasResolver = resolver;
+            _aliasResolver = resolver;
         }
 
         public ResolvedType Resolve(IType typeInfo) => typeInfo switch
         {
-            GField f when  f.Callback is { } => new ResolvedType("IntPtr"),
-            { Array: { CType:{} n }} when n.EndsWith("**") => new ResolvedType("IntPtr", true),
+            GField f when f.Callback is { } => new ResolvedType("IntPtr"),
+            { Array: { CType: { } n } } when n.EndsWith("**") => new ResolvedType("IntPtr", true),
             { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter)),
             { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),
             { Array: { Length: { } length, Type: { Name: "utf8" } name } } => GetTypeName(StringArray(length, typeInfo is GParameter)),
-            { Array: { }} => new ResolvedType("IntPtr"),
+            { Array: { } } => new ResolvedType("IntPtr"),
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
 
         private MyType StringArray(string length, bool isParameter) => new MyType("byte")
         {
-            IsArray = true, 
-            ArrayLengthParameter = length, 
-            IsPointer = true, 
-            IsValueType = false, 
+            IsArray = true,
+            ArrayLengthParameter = length,
+            IsPointer = true,
+            IsValueType = false,
             IsParameter = isParameter
         };
 
@@ -94,7 +93,7 @@ namespace Generator
 
         private MyType ResolveArrayType(GType arrayType, bool isParameter, string? length)
         {
-            var type = ConvertGType(arrayType, isParameter);
+            MyType? type = ConvertGType(arrayType, isParameter);
             type.IsArray = true;
             type.ArrayLengthParameter = length;
 
@@ -110,13 +109,13 @@ namespace Generator
                 ctype = gtype.Name ?? throw new Exception($"GType {gtype.Name} is missing CType");
             }
 
-            if (aliasResolver.TryGetForCType(ctype, out var resolvedCType, out var resolvedName))
+            if (_aliasResolver.TryGetForCType(ctype, out var resolvedCType, out var resolvedName))
                 ctype = resolvedCType;
 
-            var result = ResolveCType(ctype);
+            MyType? result = ResolveCType(ctype);
             result.IsParameter = isParameter;
 
-            if(!result.IsValueType && gtype.Name is {})
+            if (!result.IsValueType && gtype.Name is { })
             {
                 result.Type = resolvedName ?? gtype.Name;
             }
@@ -131,13 +130,13 @@ namespace Generator
                 { IsArray: false, Type: "void", IsPointer: true } => new ResolvedType("IntPtr"),
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),  //string in parameters are marshalled automatically
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => new ResolvedType("IntPtr"),
-                { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType("string[]", attribute: GetMarshal(l)),
+                { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("string[]", attribute: GetMarshal(l)),
                 { IsArray: false, IsPointer: true, IsValueType: true } => new ResolvedType(type.Type, true),
                 { IsArray: false, IsPointer: true, IsValueType: false } => new ResolvedType("IntPtr"),
                 { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("IntPtr", true), //string array
-                { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType("IntPtr[]", attribute: GetMarshal(l)),
-                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: {} l } => new ResolvedType(type.Type + "[]", attribute: GetMarshal(l)),
-                { IsArray: true, IsValueType: true, ArrayLengthParameter: {} } => new ResolvedType(type.Type + "[]"),
+                { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("IntPtr[]", attribute: GetMarshal(l)),
+                { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType(type.Type + "[]", attribute: GetMarshal(l)),
+                { IsArray: true, IsValueType: true, ArrayLengthParameter: { } } => new ResolvedType(type.Type + "[]"),
                 { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => new ResolvedType("IntPtr"),
                 _ => new ResolvedType(type.Type)
             };
@@ -150,7 +149,7 @@ namespace Generator
             var isPointer = cType.EndsWith("*");
             cType = cType.Replace("*", "").Replace("const ", "").Replace("volatile ", "");
 
-            var result = cType switch
+            MyType? result = cType switch
             {
                 "void" => ValueType("void"),
                 "gboolean" => ValueType("bool"),
@@ -234,7 +233,7 @@ namespace Generator
         private MyType Error() => ValueType("Error");
         private MyType VariantType() => ValueType("VariantType");
 
-        private MyType ValueType(string str) => new MyType(str){IsValueType = true};
+        private MyType ValueType(string str) => new MyType(str) { IsValueType = true };
         private MyType ReferenceType(string str) => new MyType(str);
     }
 }

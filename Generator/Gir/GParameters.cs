@@ -6,22 +6,23 @@ namespace Gir
     public class GParameters
     {
         [XmlElement("instance-parameter")]
-		public GParameter? InstanceParameter { get; set; }
+        public GParameter? InstanceParameter { get; set; }
 
-		[XmlElement("parameter")]
-		public List<GParameter> Parameters { get; set; } = default!;
+        [XmlElement("parameter")]
+        public List<GParameter> Parameters { get; set; } = default!;
 
-		public IEnumerable<GParameter> AllParameters
-		{
-			get
-			{
-				if (InstanceParameter is { })
-					yield return InstanceParameter;
+        public IEnumerable<GParameter> AllParameters
+        {
+            get
+            {
+                if (InstanceParameter is { })
+                    yield return InstanceParameter;
 
-				foreach (var parameter in Parameters)
-					yield return parameter;
-			}
-		}
-		public int Count => (InstanceParameter is {} ? 1 : 0) + (Parameters?.Count ?? 0);
+                foreach (GParameter? parameter in Parameters)
+                    yield return parameter;
+            }
+        }
+
+        public int Count => (InstanceParameter is { } ? 1 : 0) + (Parameters?.Count ?? 0);
     }
 }

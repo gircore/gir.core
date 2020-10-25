@@ -25,7 +25,7 @@ namespace Gir
         [XmlElement("varargs")]
         public GVarArgs? VarArgs { get; set; }
 
-        [XmlAttribute ("nullable")]
-		public bool Nullable;
+        [XmlAttribute("nullable")]
+        public bool Nullable;
     }
 }

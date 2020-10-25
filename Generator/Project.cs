@@ -1,5 +1,3 @@
-using System;
-
 namespace Generator
 {
     public class Project
@@ -7,7 +5,7 @@ namespace Generator
         #region Properties
         public string Folder { get; }
         public string Gir { get; set; }
-        
+
         #endregion
 
         public Project(string folder, string gir)

@@ -11,9 +11,9 @@ namespace Generator
 
         protected override void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
         {
-            foreach (var dele in delegates)
+            foreach (GCallback? dele in delegates)
             {
-                var scriptObject = GetScriptObject();
+                ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(dele);
 
                 Generate(
@@ -27,9 +27,9 @@ namespace Generator
 
         protected override void GenerateStructs(IEnumerable<GRecord> records, string @namespace)
         {
-            foreach (var record in records)
+            foreach (GRecord? record in records)
             {
-                var scriptObject = GetScriptObject();
+                ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(record);
 
                 Generate(
@@ -43,9 +43,9 @@ namespace Generator
 
         protected override void GenerateClasses(IEnumerable<GClass> classes, string @namespace)
         {
-            foreach (var cls in classes)
+            foreach (GClass? cls in classes)
             {
-                var scriptObject = GetScriptObject();
+                ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(cls);
 
                 Generate(
@@ -59,9 +59,9 @@ namespace Generator
 
         protected override void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace)
         {
-            foreach (var iface in interfaces)
+            foreach (GInterface? iface in interfaces)
             {
-                var scriptObject = GetScriptObject();
+                ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(iface);
 
                 Generate(
@@ -75,9 +75,9 @@ namespace Generator
 
         protected override void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags)
         {
-            foreach (var obj in enums)
+            foreach (GEnumeration? obj in enums)
             {
-                var scriptObject = GetScriptObject();
+                ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(obj);
                 scriptObject.Add("has_flags", hasFlags);
 
@@ -92,7 +92,7 @@ namespace Generator
 
         protected override void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace)
         {
-            var scriptObject = GetScriptObject();
+            ScriptObject? scriptObject = GetScriptObject();
             scriptObject.Add("methods", methods.Where(x => !x.HasVariadicParameter()));
 
             Generate(

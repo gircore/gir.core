@@ -9,7 +9,6 @@ namespace Generator
     {
         public override string GetPath(TemplateContext context, SourceSpan callerSpan, string templateName)
         {
-            
             var file = Path.Combine(Environment.CurrentDirectory + "/../Generator/Templates/GLib/", templateName);
 
             if (!File.Exists(file))

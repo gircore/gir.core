@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace Gir
 {
-    [XmlRoot(ElementName="repository")]
+    [XmlRoot(ElementName = "repository")]
     public class GRepository
     {
         [XmlAttribute("version")]

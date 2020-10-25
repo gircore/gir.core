@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
 using Sf = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Sk = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
+using St = Microsoft.CodeAnalysis.SyntaxToken;
 
 namespace Generator
 {
@@ -14,37 +14,39 @@ namespace Generator
             var sArray = str.Split("\n");
             var sb = new StringBuilder();
 
-            foreach(var s in sArray)
-                sb.AppendLine(linePrefix + "/// " + s);
+            foreach (var s in sArray)
+                sb.Append(linePrefix).Append("/// ").AppendLine(s);
 
             return sb.ToString();
         }
 
         public static string MakePascalCase(this string str)
         {
-            string ToPascalCase(string s)
+            static string ToPascalCase(string s)
             {
-                var words = str.Replace("_", "-").Split("-");
+                var words = s.Replace("_", "-").Split("-");
                 var builder = new StringBuilder();
                 foreach (var word in words)
                 {
-                    builder.Append(char.ToUpper(word[0]) + word.Substring(1));
+                    builder
+                        .Append(char.ToUpper(word[0]))
+                        .Append(word, 1, word.Length - 1);
                 }
 
                 return builder.ToString();
             }
-            
+
             return str switch
             {
-                {Length: 0} => "",
-                {Length: 1} => str.ToUpper(),
+                { Length: 0 } => "",
+                { Length: 1 } => str.ToUpper(),
                 _ => ToPascalCase(str)
             };
         }
 
         public static string MakeSingleLine(this string str)
             => str.Replace("\n", "");
-    
+
         public static string EscapeQuotes(this string str)
             => str.Replace("\"", @"\""");
 
@@ -58,8 +60,8 @@ namespace Generator
 
         private static string FixIfIdentifierIsKeyword(string identifier)
         {
-            var token = Sf.ParseToken(identifier);
-            if(token.Kind() != Sk.IdentifierToken)
+            St token = Sf.ParseToken(identifier);
+            if (token.Kind() != Sk.IdentifierToken)
                 identifier = "@" + identifier;
 
             return identifier;
@@ -80,16 +82,18 @@ namespace Generator
                 {8, "Eight"},
                 {9, "Nine"}
             };
+
             var firstChar = identifier[0];
-            if(char.IsNumber(firstChar))
+
+            if (char.IsNumber(firstChar))
             {
-                var number = (int)char.GetNumericValue(firstChar);
+                var number = (int) char.GetNumericValue(firstChar);
                 var sb = new StringBuilder();
 
-                if(data.TryGetValue(number, out string str))
+                if (data.TryGetValue(number, out var str))
                 {
                     sb.Append(str);
-                    sb.Append(identifier.Substring(1));
+                    sb.Append(identifier, 1, identifier.Length - 1);
 
                     identifier = sb.ToString();
                 }

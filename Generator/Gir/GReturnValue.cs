@@ -8,7 +8,7 @@ namespace Gir
         public string? TransferOwnership { get; set; }
 
         [XmlAttribute("nullable")]
-        public bool Nullable { get; set;}
+        public bool Nullable { get; set; }
 
         [XmlElement("doc")]
         public GDoc? Doc { get; set; }

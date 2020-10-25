@@ -10,7 +10,7 @@ namespace Gir
         [XmlAttribute("value")]
         public string? Value { get; set; }
 
-        [XmlAttribute("identifier", Namespace="http://www.gtk.org/introspection/c/1.0")]
+        [XmlAttribute("identifier", Namespace = "http://www.gtk.org/introspection/c/1.0")]
         public string? Identifier { get; set; }
 
         [XmlElement("doc")]
