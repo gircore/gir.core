@@ -1,9 +1,9 @@
 namespace GObject
 {
     /// <summary>
-    /// Define the value of a GProperty which can be used at the construct time.
+    /// Define the value of GProperty which can be used at the construct time.
     /// </summary>
-    public sealed class ConstructParam
+    public sealed class ConstructParameter
     {
         #region Properties
 
@@ -21,7 +21,7 @@ namespace GObject
 
         #region Constructors
 
-        private ConstructParam(string name, object? value)
+        private ConstructParameter(string name, object? value)
         {
             Name = name;
             Value = Value.From(value);
@@ -39,10 +39,10 @@ namespace GObject
         /// <param name="value">The property value.</param>
         /// <typeparam name="T">The type of the value to set in the property.</typeparam>
         /// <returns>
-        /// A new instance of <see cref="ConstructParam"/>, which describe a
+        /// A new instance of <see cref="ConstructParameter"/>, which describe the
         /// property-value pair to use at construct time.
         /// </returns>
-        public static ConstructParam With<T>(Property<T> property, T value) => new ConstructParam(property.Name, value);
+        public static ConstructParameter With<T>(Property<T> property, T value) => new ConstructParameter(property.Name, value);
 
         #endregion
     }
