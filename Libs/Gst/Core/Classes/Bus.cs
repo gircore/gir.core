@@ -2,14 +2,14 @@ using System;
 
 namespace Gst
 {
-    public class Bus : GObject.Object
+    public class Bus : GObject.InitiallyUnowned
     {
-        protected internal Bus(IntPtr handle) : base(handle, true) { }
+        protected internal Bus(IntPtr handle) : base(handle) { }
 
         public void WaitForEndOrError()
             => TimedPopFiltered(Sys.Constants.CLOCK_TIME_NONE);
             
         public void TimedPopFiltered(ulong timeout)
-            => Sys.Bus.timed_pop_filtered(this, timeout, (Sys.MessageType) (MessageType.EOS | MessageType.Error));
+            => Sys.Bus.timed_pop_filtered(Handle, timeout, (Sys.MessageType) (MessageType.EOS | MessageType.Error));
     }
 }

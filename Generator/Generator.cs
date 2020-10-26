@@ -2,231 +2,280 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Xml.Serialization;
 using Gir;
 using Scriban;
 using Scriban.Runtime;
 
 namespace Generator
 {
-    public class Generator
+    public interface IGenerator
     {
-        private readonly string girFile;
-        private readonly string outputDir;
-        private readonly GRepository repository;
-        private readonly string dllImport;
+        #region Methods
 
-        private readonly TypeResolver typeResolver;
+        void Generate();
 
-        // Determines the dll name from the shared library (based on msys2 gtk binaries)
-        // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
-        private string ConvertLibName(string sharedLibrary)
+        #endregion
+    }
+
+    public enum StructType
+    {
+        RefStruct, // Simple Marshal-able C-struct
+        OpaqueStruct, // Opaque struct, marshal as class + IntPtr
+        PublicClassStruct, // GObject type struct (special case)
+        PrivateClassStruct // Same as above, but opaque
+    }
+
+    public abstract class Generator<K> : IGenerator where K : ITemplateLoader
+    {
+        #region Fields
+
+        private readonly TypeResolver _typeResolver;
+        private string? _dllImport;
+
+        #endregion
+
+        #region Properties
+
+        private GRepository Repository { get; }
+        private Project Project { get; }
+
+        #endregion
+
+        #region Constructors
+
+        protected Generator(Project project)
         {
-            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            Project = project ?? throw new ArgumentNullException(nameof(project));
 
-            if (!isWindows)
-                return sharedLibrary;
-
-            string dllName;
-            
-            if (sharedLibrary.Contains(".so."))
-            {
-                // We have a version number at the end
-                // e.g. libcairo-gobject.so.2
-                string[] components = sharedLibrary.Split(".so.");
-                var name = components[0];
-                var version = components[1];
-
-                dllName = $"{name}-{version}.dll";
-            }
-            else
-            {
-                // There is no version number at the end
-                // Simply add ".dll"
-                string name = sharedLibrary.Split(".so")[0];
-                dllName = $"{name}.dll";
-            }
-
-            Console.WriteLine($"Renaming {sharedLibrary} to {dllName}");
-            return dllName;
-        }
-
-        public Generator(string girFile, string outputDir, string dllImport, IEnumerable<string> aliasFiles)
-        {
-            this.dllImport = ConvertLibName(dllImport) ?? throw new ArgumentNullException(nameof(dllImport));
-            this.girFile = girFile ?? throw new ArgumentNullException(nameof(girFile));
-            this.outputDir = outputDir ?? throw new ArgumentNullException(nameof(outputDir));
-
-            var reader = new GirReader();
-            repository = reader.ReadRepository(girFile);
+            Repository = ReadRepository(project.Gir);
 
             var aliases = new List<GAlias>();
-            aliases.AddRange(repository?.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
-            foreach(var aliasGir in aliasFiles)
-            {
-                var repo = reader.ReadRepository(aliasGir);
+            aliases.AddRange(Repository.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+
+            GRepository? repo = ReadRepository("../gir-files/GLib-2.0.gir");
+            if (repo.Namespace != Repository.Namespace)
                 aliases.AddRange(repo.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
-            }
 
             var aliasResolver = new AliasResolver(aliases);
-            typeResolver = new TypeResolver(aliasResolver);
+            _typeResolver = new TypeResolver(aliasResolver);
 
-            Directory.CreateDirectory(outputDir);
+            FixRepository(Repository);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static GRepository ReadRepository(string girFile)
+        {
+            var serializer = new XmlSerializer(typeof(GRepository), "http://www.gtk.org/introspection/core/1.0");
+
+            using var fs = new FileStream(girFile, FileMode.Open);
+            return (GRepository) serializer.Deserialize(fs);
+        }
+
+        protected ScriptObject GetScriptObject()
+            => CreateScriptObject(Repository.Namespace!.Name!, _dllImport!);
+
+        /// <summary>
+        /// Determine how we should generate a given record/struct based on
+        /// a simple set of rules.
+        /// </summary>
+        protected StructType GetStructType(GRecord record)
+        {
+            return record switch
+            {
+                // Disguised (private) Class Struct
+                { Disguised: true, GLibIsGTypeStructFor: { } } => StructType.PrivateClassStruct,
+
+                // Introspectable (public) Class Struct
+                { Disguised: false, GLibIsGTypeStructFor: { } } => StructType.PublicClassStruct,
+
+                // Regular C-Style Structure
+                { Disguised: false, Fields: { } f } when f.Count > 0 => StructType.RefStruct,
+
+                // Default: Disguised Struct (Marshal with IntPtr)
+                _ => StructType.OpaqueStruct
+            };
         }
 
         public void Generate()
         {
+            if (Repository.Namespace is null)
+                throw new Exception($"Can not generate for {Project}. Namespace is missing.");
+
+            if (Repository.Namespace.Name is null)
+                throw new Exception("Could not create code. Namespace is missing a name.");
+
+            _dllImport = Repository.Namespace.GetDllImport(Repository.Namespace.Name) ?? throw new ArgumentNullException(nameof(_dllImport));
+
+            GenerateClasses(Repository.Namespace.Classes, Repository.Namespace.Name);
+            GenerateInterfaces(Repository.Namespace.Interfaces, Repository.Namespace.Name);
+            GenerateStructs(Repository.Namespace.Records, Repository.Namespace.Name);
+            GenerateStructs(Repository.Namespace.Unions, Repository.Namespace.Name);
+            GenerateEnums(Repository.Namespace.Bitfields, Repository.Namespace.Name, true);
+            GenerateEnums(Repository.Namespace.Enumerations, Repository.Namespace.Name, false);
+            GenerateDelegates(Repository.Namespace.Callbacks, Repository.Namespace.Name);
+            GenerateGlobals(Repository.Namespace.Functions, Repository.Namespace.Name);
+        }
+
+        protected virtual void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace) { }
+        protected virtual void GenerateClasses(IEnumerable<GClass> classes, string @namespace) { }
+        protected virtual void GenerateStructs(IEnumerable<GRecord> records, string @namespace) { }
+        protected virtual void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags) { }
+        protected virtual void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace) { }
+        protected virtual void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace) { }
+
+        private void FixRepository(GRepository repository)
+        {
+            MarkNewMethodsAsNew(repository);
+        }
+
+        private void MarkNewMethodsAsNew(GRepository repository)
+        {
             if (repository.Namespace is null)
+                return;
+
+            foreach (GClass? cls in repository.Namespace.Classes)
             {
-                Console.WriteLine($"Could not create classes for {girFile}. Namespace is missing.");
+                if (string.IsNullOrEmpty(cls.Parent))
+                    continue;
+
+                GClass? parent = repository.Namespace.Classes.Find(x => x.Name == cls.Parent);
+
+                if (parent is null)
+                    continue;
+
+                foreach (GMethod? method in cls.AllMethods)
+                {
+                    RecursivelyAddNewIdentifierToMethod(method, parent, repository.Namespace.Classes);
+                }
+            }
+        }
+
+        private void RecursivelyAddNewIdentifierToMethod(GMethod method, GClass parentClass, List<GClass> classes)
+        {
+            method.IsNew = parentClass.AllMethods.Any(x =>
+                x.Name == method.Name &&
+                x.Parameters.AreEqual(_typeResolver, method.Parameters)
+            );
+
+            if (method.IsNew || string.IsNullOrEmpty(parentClass.Parent))
+                return;
+
+            GClass? parent = classes.Find(x => x.Name == parentClass.Parent);
+            if (parent is null)
+                return;
+
+            RecursivelyAddNewIdentifierToMethod(method, parent, classes);
+        }
+
+        protected void Generate(string templateName, string subfolder,
+            string? fileName, ScriptObject scriptObject)
+        {
+            //Create subfolder if it does not exist
+            Directory.CreateDirectory(Path.Combine(Project.Folder, subfolder));
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                Console.WriteLine($"Could not generate {templateName}, name is missing");
                 return;
             }
 
-            if (repository.Namespace.Name is null)
-            {
-                Console.WriteLine($"Could not create classes for {girFile}. Namespace is missing a name.");
-                return;
-            }
+            fileName = Path.Combine(subfolder, fileName + ".Generated.cs");
 
-            var ns = repository.Namespace.Name;
-            GenerateClasses(repository.Namespace.Classes, ns);
-            GenerateInterfaces(repository.Namespace.Interfaces, ns);
-            GenerateRecords(repository.Namespace.Records, ns);
-            GenerateRecords(repository.Namespace.Unions, ns);
-            GenerateEnums(repository.Namespace.Bitfields, ns, true);
-            GenerateEnums(repository.Namespace.Enumerations, ns, false);
-            GenerateDelegates(repository.Namespace.Callbacks, ns);
-            GenerateMethods(repository.Namespace.Functions, ns);
-            GenerateConstants(repository.Namespace.Constants, ns);
-        }
-
-        private void GenerateConstants(IEnumerable<GConstant> constants, string ns)
-        {
-            var scriptObject = new ScriptObject();
-            scriptObject.Add("constants", constants);
-            Generate("constants", "Constants", ns, scriptObject);
-        }
-
-        private void GenerateRecords(IEnumerable<GRecord> records, string ns)
-        {
-            foreach(var record in records)
-                record.Methods.InsertRange(0, record.Functions);
-
-            GenerateClasses(records, ns, "struct");
-        }
-
-        private void GenerateClasses(IEnumerable<GClass> classes, string ns, string template = "class")
-        {
-            foreach (var cls in classes)
-                cls.Methods.InsertRange(0, cls.Constructors);
-
-            GenerateInterfaces(classes, ns, template);
-        }
-
-        private void GenerateInterfaces(IEnumerable<GInterface> classes, string ns, string template = "class")
-        {
-            foreach (var cls in classes)
-            {
-                RemoveVarArgsMethods(cls.Methods);
-                
-                if (cls.Name is { })
-                    Generate(template, cls.Name, ns, cls);
-                else
-                    Console.WriteLine("Could not generate class, name is missing");
-            }
-        }
-
-        private void GenerateDelegates(IEnumerable<GCallback> delegates, string ns)
-        {
-            var scriptObject = new ScriptObject();
-            scriptObject.Add("delegates", delegates);
-            Generate("delegates", "Delegates", ns, scriptObject);
-        }
-
-        private void GenerateMethods(List<GMethod> methods, string ns)
-        {
-            var scriptObject = new ScriptObject();
-            RemoveVarArgsMethods(methods);
-            scriptObject.Add("methods", methods);
-            Generate("methods", "Methods", ns, scriptObject);
-        }
-
-        private void GenerateEnums(IEnumerable<GEnumeration> enums, string ns, bool hasFlags)
-        {
-            foreach (var e in enums)
-            {
-                var scriptObject = new ScriptObject();
-                scriptObject.Add("has_flags", hasFlags);
-
-                if (e.Name is { })
-                    Generate("enum", e.Name, ns, scriptObject, e);
-                else
-                    Console.WriteLine("Could not generate enum, name is missing");
-            }
-        }
-
-        private void RemoveVarArgsMethods(List<GMethod> methods)
-        {
-            bool IsVariadic(GParameter p) => p.VarArgs is {};
-            methods.RemoveAll((x) => x.Parameters?.Parameters.Any(IsVariadic) ?? false);
-        }
-
-        private void Generate(string templateFile, string fileName, string ns, object? obj = null)
-            => Generate(templateFile, fileName, ns, new ScriptObject(), obj);
-
-        private void Generate(string templateFile, string fileName, string ns, ScriptObject scriptObject, object? obj = null)
-        {
-            var subnamespace = "Sys";
-            templateFile = $"../Generator/Templates/{templateFile}.sbntxt";
-            var resolveType = new Func<IType, string>((t) =>
-            {
-                var resolvedType =  typeResolver.Resolve(t);
-                return resolvedType.Attribute + resolvedType.Type.Replace(".", $".{subnamespace}.");
-            });
-            var commentLineByLine = new Func<string, string>((s) => s.CommentLineByLine());
-            var makeSingleLine = new Func<string, string>((s) => s.MakeSingleLine());
-            var escapeQuotes = new Func<string, string>((s) => s.EscapeQuotes());
-            var fixIdentifier = new Func<string, string>((s) => s.FixIdentifier());
-            var debug = new Action<string>(Console.WriteLine);
-            var getType = new Func<GType, string>((t) => typeResolver.GetTypeString(t).ToString());
-
-            if(obj is {})
-            {
-                scriptObject.Import(obj);
-            }
-            scriptObject.Import("comment_line_by_line", commentLineByLine);
-            scriptObject.Import("make_single_line", makeSingleLine);
-            scriptObject.Import("escape_quotes", escapeQuotes);
-            scriptObject.Import("fix_identifier", fixIdentifier);
-            scriptObject.Import("resolve_type", resolveType);
-            scriptObject.Import("debug", debug);
-            scriptObject.Import("type_to_string", getType);
-            
-            scriptObject.Add("namespace", $"{ns}.{subnamespace}");
-            scriptObject.Add("dll_import", dllImport);
-
-            var context = new TemplateContext();
-            context.TemplateLoader = new TemplateLoader();
+            K loader = Activator.CreateInstance<K>();
+            var context = new TemplateContext { TemplateLoader = loader };
             context.PushGlobal(scriptObject);
 
+            var templateFile = loader.GetPath(null, default, templateName + ".sbntxt");
+            if (fileName.Contains("Accessible"))
+            {
+                //TODO: Workaround for missing ATK!
+                Console.WriteLine(
+                    $"Skipping file {fileName} because it looks like an ATK class which is not supported.");
+                return;
+            }
+
+            GenerateCode(templateFile, fileName, context);
+        }
+
+        private void GenerateCode(string templateFile, string fileName, TemplateContext context)
+        {
             try
             {
                 var template = Template.Parse(File.ReadAllText(templateFile));
                 var content = template.Render(context);
                 Write(fileName, content);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.Error.WriteLine($"Could not create Wrapper for {fileName}: {ex.Message}");
+                Console.Error.WriteLine($"Could not create code for {fileName}: {ex.InnerException?.Message ?? ex.Message ?? ""}");
             }
         }
 
-        private void Write(string name, string content)
+        private void Write(string fileName, string content)
         {
-            var fileName = name + ".cs";
-            var path = Path.Combine(outputDir, fileName);
-
+            var path = Path.Combine(Project.Folder, fileName);
             File.WriteAllText(path, content);
         }
+
+        private ScriptObject CreateScriptObject(string @namespace, string dllImport)
+        {
+            var scriptObject = new ScriptObject
+            {
+                {"namespace", @namespace},
+                {"dll_import", dllImport}
+            };
+            scriptObject.Import("comment_line_by_line_with_prefix",
+                new Func<string, string, string>((s, prefix) => s.CommentLineByLine(prefix))
+            );
+            scriptObject.Import("make_pascal_case",
+                new Func<string, string>((s) => s.MakePascalCase())
+            );
+            scriptObject.Import("make_single_line",
+                new Func<string, string>((s) => s.MakeSingleLine())
+            );
+            scriptObject.Import("escape_quotes",
+                new Func<string, string>((s) => s.EscapeQuotes())
+            );
+            scriptObject.Import("type_to_string",
+                new Func<GType?, string?>((t) =>
+                {
+                    try
+                    {
+                        return t is null ? null : _typeResolver.GetTypeString(t).ToString();
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                })
+            );
+            scriptObject.Import("debug",
+                new Action<string>(Console.WriteLine)
+            );
+            scriptObject.Import("fix_identifier",
+                new Func<string, string>((s) => s.FixIdentifier())
+            );
+            scriptObject.Import("resolve_type",
+                new Func<IType, string>((t) =>
+                {
+                    ResolvedType? resolvedType = _typeResolver.Resolve(t);
+                    return resolvedType.GetTypeString();
+                })
+            );
+            scriptObject.Import("resolve_field",
+                new Func<IType, string>((t) =>
+                {
+                    ResolvedType? resolvedType = _typeResolver.Resolve(t);
+                    return resolvedType.GetFieldString();
+                })
+            );
+            return scriptObject;
+        }
+
+        #endregion
     }
 }

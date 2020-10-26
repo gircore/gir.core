@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\Wrapper\Clutter.Wrapper.csproj" />
-  </ItemGroup>
-  
-  <PropertyGroup>
-    <PackageId>Gir.Core.CS.Clutter</PackageId>
-  </PropertyGroup>
-</Project>

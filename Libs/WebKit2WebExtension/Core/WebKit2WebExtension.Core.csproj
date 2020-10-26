@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
+    <ProjectReference Include="..\Wrapper\WebKit2WebExtension.Wrapper.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

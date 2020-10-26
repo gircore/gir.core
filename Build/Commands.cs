@@ -1,11 +1,18 @@
-static class Commands
+namespace Build
 {
-    public const string dotnet = "dotnet";
-    public const string build = "build";
-    public const string run = "run";
-    public const string pack = "pack";
-    public const string nuget = "nuget";
-    public const string push = "push";
-    public const string restore = "restore";
-    public const string clean = "clean";
+    public static class Commands
+    {
+        #region Constants
+
+        public const string Dotnet = "dotnet";
+        public const string Build = "build";
+        public const string Run = "run";
+        public const string Pack = "pack";
+        public const string Nuget = "nuget";
+        public const string Push = "push";
+        public const string Restore = "restore";
+        public const string Clean = "clean";
+
+        #endregion
+    }
 }

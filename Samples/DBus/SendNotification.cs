@@ -1,4 +1,4 @@
-using Gio.DBus;
+using Gio;
 using System;
 using GLib;
 
@@ -8,6 +8,7 @@ namespace Sample
     {
         public static void SendNotification()
         {
+            /*TODO: FIX
             Console.WriteLine("Press enter to send notification...");
             Console.ReadLine();
 
@@ -26,6 +27,7 @@ namespace Sample
             );
 
             using var ret2 = bus.Call("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", "Notify", parameters);
+            */
         }
     }
 }

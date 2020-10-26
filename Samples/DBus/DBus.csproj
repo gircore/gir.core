@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libs\Gio\Core\Gio.Core.csproj" />
+    <ProjectReference Include="..\..\Libs\Gio\Gio.csproj" />
   </ItemGroup>
 
 </Project>

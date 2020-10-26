@@ -5,13 +5,15 @@ namespace Gir
 {
     public class GEnumeration
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
-        [XmlAttribute("type", Namespace="http://www.gtk.org/introspection/c/1.0")]
+        [XmlAttribute("type", Namespace = "http://www.gtk.org/introspection/c/1.0")]
         public string? Type { get; set; }
 
-        [XmlAttribute("type-name", Namespace="http://www.gtk.org/introspection/glib/1.0")]
+        [XmlAttribute("type-name", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public string? TypeName { get; set; }
 
         [XmlElement("doc")]
@@ -19,5 +21,7 @@ namespace Gir
 
         [XmlElement("member")]
         public List<GMember> Members { get; set; } = default!;
+
+        #endregion
     }
 }

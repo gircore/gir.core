@@ -3,6 +3,7 @@
     <ProjectReference Include="..\Wrapper\Gtk4.Wrapper.csproj" />
     <ProjectReference Include="..\..\GObject\Core\GObject.Core.csproj" />
     <ProjectReference Include="..\..\Gio\Core\Gio.Core.csproj" />
+    <ProjectReference Include="..\..\Gdk4\Core\Gdk4.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

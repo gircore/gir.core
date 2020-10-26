@@ -11,15 +11,8 @@ namespace WebKit2WebExtension
             WebPage = webPage ?? throw new ArgumentNullException(nameof(webPage));
         }
     }
-    public class WebExtension : GObject.Object
+    public partial class WebExtension : GObject.Object
     {
-        public event EventHandler<PageCreatedEventArgs>? PageCreated;
-        internal WebExtension(IntPtr handle) : base(handle) 
-        {
-            RegisterEvent("page-created", OnPageCreated);
-        }
-
-        private WebPage GetPage(ref GObject.Sys.Value[] values) => ((WebPage?)(GObject.Object?)(IntPtr)values[1])!;
-        protected void OnPageCreated(ref GObject.Sys.Value[] values) => PageCreated?.Invoke(this, new PageCreatedEventArgs(GetPage(ref values)));
+        private WebPage GetPage(ref GObject.Sys.Value[] values) => null!;//TODO
     }
 }
