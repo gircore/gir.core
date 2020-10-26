@@ -2,29 +2,35 @@ using System;
 
 namespace GLib
 {
-    public partial class Variant //: IDisposable
+    public partial class Variant : IDisposable
     {
-       /* private bool disposedValue;
+        #region IDisposable Implementation
+
+        private bool _disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
-                foreach(var child in children)
-                    if(child is IDisposable disposable)
+                foreach (Variant? child in _children)
+                {
+                    if (child is IDisposable disposable)
                         disposable.Dispose();
+                }
 
-                Variant.unref(handle);
-                disposedValue = true;
+                unref(_handle);
+                _disposedValue = true;
             }
         }
 
-         ~Variant() => Dispose(false);
+        ~Variant() => Dispose(false);
 
         public void Dispose()
         {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
-        }*/
+        }
+
+        #endregion
     }
 }

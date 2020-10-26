@@ -1,64 +1,114 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gir;
+using Scriban.Runtime;
 
 namespace Generator
 {
     public class GObjectGenerator : Generator<GObjectTemplateLoader>
     {
+        #region Constructors
+
         public GObjectGenerator(Project project) : base(project) { }
+
+        #endregion
+
+        #region Methods
 
         protected override void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
         {
-            foreach (var dele in delegates)
+            foreach (GCallback? dele in delegates)
             {
-                Generate(dele,
+                ScriptObject? scriptObject = GetScriptObject();
+                scriptObject.Import(dele);
+
+                Generate(
                     templateName: "delegate",
                     subfolder: "Delegates",
                     fileName: dele.Name,
-                    scriptObject: ScriptObject
+                    scriptObject: scriptObject
                 );
             }
         }
 
         protected override void GenerateStructs(IEnumerable<GRecord> records, string @namespace)
         {
-            foreach (var record in records)
+            foreach (GRecord? record in records)
             {
-                Generate(record,
+                ScriptObject? scriptObject = GetScriptObject();
+                scriptObject.Import(record);
+
+                Generate(
                     templateName: "struct",
                     subfolder: "Structs",
                     fileName: record.Name,
-                    scriptObject: ScriptObject
+                    scriptObject: scriptObject
                 );
             }
         }
 
-        protected override void GenerateClasses(IEnumerable<GInterface> classes, string @namespace)
+        protected override void GenerateClasses(IEnumerable<GClass> classes, string @namespace)
         {
-            foreach (var cls in classes)
+            foreach (GClass? cls in classes)
             {
-                Generate(cls,
+                ScriptObject? scriptObject = GetScriptObject();
+                scriptObject.Import(cls);
+
+                Generate(
                     templateName: "class",
                     subfolder: "Classes",
                     fileName: cls.Name,
-                    scriptObject: ScriptObject
-                );   
+                    scriptObject: scriptObject
+                );
+            }
+        }
+
+        protected override void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace)
+        {
+            foreach (GInterface? iface in interfaces)
+            {
+                ScriptObject? scriptObject = GetScriptObject();
+                scriptObject.Import(iface);
+
+                Generate(
+                    templateName: "interface",
+                    subfolder: "Interfaces",
+                    fileName: iface.Name,
+                    scriptObject: scriptObject
+                );
             }
         }
 
         protected override void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags)
         {
-            ScriptObject.Add("has_flags", hasFlags);
-            
-            foreach (var obj in enums)
+            foreach (GEnumeration? obj in enums)
             {
-                Generate(obj,
+                ScriptObject? scriptObject = GetScriptObject();
+                scriptObject.Import(obj);
+                scriptObject.Add("has_flags", hasFlags);
+
+                Generate(
                     templateName: "enum",
                     subfolder: "Enums",
                     fileName: obj.Name,
-                    scriptObject: ScriptObject
-                );   
+                    scriptObject: scriptObject
+                );
             }
         }
+
+        protected override void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace)
+        {
+            ScriptObject? scriptObject = GetScriptObject();
+            scriptObject.Add("methods", methods.Where(x => !x.HasVariadicParameter()));
+
+            Generate(
+                templateName: "global",
+                subfolder: "Classes",
+                fileName: "Global",
+                scriptObject: scriptObject
+            );
+        }
+
+        #endregion
     }
 }

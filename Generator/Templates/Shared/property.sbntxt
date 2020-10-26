@@ -22,7 +22,7 @@ end
         #region {{ property_descriptor_name }}
         {{ get_obsolete 
         }}
-        public static readonly Property<{{ property_type }}> {{ property_descriptor_name }} = Property<{{ property_type }}>.Register<{{ name }}>(
+        public static readonly Property<{{ property_type }}> {{ property_descriptor_name }} = Property<{{ property_type }}>.Wrap<{{ name }}>(
             "{{ property.name }}",
             nameof({{ property_name }}),
             (o) => o.{{ property_name }}{{ if property.writeable }},
