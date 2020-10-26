@@ -4,6 +4,8 @@ namespace Gir
 {
     public class GConstant
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -12,5 +14,7 @@ namespace Gir
 
         [XmlElement("type")]
         public GType? Type { get; set; }
+
+        #endregion
     }
 }

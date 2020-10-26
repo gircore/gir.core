@@ -1,7 +1,5 @@
 using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
 
 namespace GObject
 {
@@ -22,7 +20,7 @@ namespace GObject
         {
             while (IsSubclass(type))
                 type = type.BaseType!;
-            
+
             return TypeDictionary.Get(type).Value;
         }
 
@@ -35,19 +33,19 @@ namespace GObject
             TypeQuery query = default;
 
             // Convert to Pointer
-            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(query));
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(query));
             Marshal.StructureToPtr(query, ptr, true);
 
             // Perform Query
             Global.type_query(gtype, ptr);
 
             // Marshal and Free Memory
-            query = (TypeQuery)Marshal.PtrToStructure(ptr, typeof(TypeQuery));
+            query = (TypeQuery) Marshal.PtrToStructure(ptr, typeof(TypeQuery));
             Marshal.FreeHGlobal(ptr);
 
             return query;
         }
-        
+
         // Class Initialiser
         private static void ClassInit(IntPtr g_class, IntPtr class_data)
         {
@@ -62,29 +60,29 @@ namespace GObject
 
         private static string QualifyName(System.Type type)
             => $"{type.Namespace}_{type.Name}".Replace(".", "_");
-        
+
         // Registers a new type class with the underlying GType type system
         private static void RegisterNativeType(System.Type type)
         {
             if (!IsSubclass(type))
                 throw new Exception($"Error! Trying to register wrapper class {type} as new type");
 
-            if (type.BaseType is {} && IsSubclass(type.BaseType))
+            if (type.BaseType is { } && IsSubclass(type.BaseType))
                 RegisterNativeType(type.BaseType);
 
             var boundaryTypeId = GetBoundaryTypeId(type);
-            var query = QueryType(boundaryTypeId);
+            TypeQuery query = QueryType(boundaryTypeId);
 
-            // Create TypeInfo            
+            // Create TypeInfo
             var typeInfo = new TypeInfo(
-                class_size: (ushort)query.class_size,
-                instance_size: (ushort)query.instance_size,
+                class_size: (ushort) query.class_size,
+                instance_size: (ushort) query.instance_size,
                 class_init: ClassInit,
                 instance_init: InstanceInit
             );
 
             // Convert to Pointer
-            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeInfo));
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeInfo));
             Marshal.StructureToPtr(typeInfo, ptr, true);
 
             // Perform Registration
@@ -106,8 +104,8 @@ namespace GObject
         {
             try
             {
-                var instance = Marshal.PtrToStructure<TypeInstance>(handle);
-                var typeClass = Marshal.PtrToStructure<TypeClass>(instance.g_class);
+                TypeInstance instance = Marshal.PtrToStructure<TypeInstance>(handle);
+                TypeClass typeClass = Marshal.PtrToStructure<TypeClass>(instance.g_class);
                 return new Type(typeClass.g_type);
             }
             catch

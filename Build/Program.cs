@@ -1,105 +1,128 @@
 ﻿using System;
 using static Bullseye.Targets;
-using static DotNet;
-using static Projects;
+using static Build.Projects;
 using System.IO;
 using Generator;
 
-class Program
+namespace Build
 {
-    private static string configuration = confDebug;
-    private const string confRelease = "Release";
-    private const string confDebug = "Debug";
-
-    private static readonly string[] sampleProjects =
+    public static class Program
     {
-        DBUS_SAMPLE,
-        //GST_SAMPLE,
-        //GTK3_APP_SAMPLE,
-        //GTK3_MINIMAL_SAMPLE,
-        GTK3_QUICKSTART,
-        //GTK4_SIMPLE_WINDOW_SAMPLE
-    };
+        #region Fields
 
-    private static readonly (Project Project, Type Type)[] libraryProjects =
-    {
-        (new Project(GLIB, "GLib-2.0.gir"), typeof(GLibGenerator)),
-        (new Project(GOBJECT, "GObject-2.0.gir"), typeof(GObjectGenerator)),
-        (new Project(GIO, "Gio-2.0.gir"), typeof(GObjectGenerator)),
-        (new Project(CAIRO, "cairo-1.0.gir"), typeof(GObjectGenerator)),
-        //(new Project(XLIB, "xlib-2.0.gir"), typeof(GObjectGenerator)),
-        (new Project(PANGO, "Pango-1.0.gir"), typeof(GObjectGenerator)),
-        //(new Project(CLUTTER, "Clutter-1.0.gir"), typeof(GObjectGenerator)),
-        (new Project(GDK3, "Gdk-3.0.gir"), typeof(GObjectGenerator)),
-        (new Project(GDK_PIXBUF, "GdkPixbuf-2.0.gir"), typeof(GObjectGenerator)),
-        (new Project(GTK3, "Gtk-3.0.gir"), typeof(GObjectGenerator)),
-        /*(JAVASCRIPT_CORE, JAVASCRIPT_CORE_GIR, "javascriptcoregtk-4.0.so", false),
-        (HANDY, HANDY_GIR, "libhandy-0.0.so.0", false),
-        (WEBKITGTK, WEBKITGTK_GIR, "libwebkit2gtk-4.0.so.37", true),
-        (WEBKIT2WEBEXTENSION, WEBKIT2WEBEXTENSION_GIR, "WEBEXTENSION", true),
-        (GTKCLUTTER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
-        (CHAMPLAIN, "Champlain-0.12.gir", "libchamplain-0.12", false),
-        (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),
-        (GST, "Gst-1.0.gir", "libgstreamer-1.0.so.0", true),
-        (GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
-        (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
-        (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/
-    };
+        private static string Configuration = ConfDebug;
 
-    static void Main(string[] args)
-    {
-        Target(Targets.Generate,
-            ForEach(libraryProjects),
-            (l) => Generate(l.Project, l.Type)
-        );
+        private static readonly string[] SampleProjects =
+        {
+            DBUS_SAMPLE,
+            //GST_SAMPLE,
+            //GTK3_APP_SAMPLE,
+            //GTK3_MINIMAL_SAMPLE,
+            GTK3_QUICKSTART,
+            //GTK4_SIMPLE_WINDOW_SAMPLE
+        };
 
-        Target(Targets.Build, DependsOn(Targets.Generate),
-            ForEach(libraryProjects),
-            (x) => Build(x.Project.Folder, configuration)
-        );
+        private static readonly (Project Project, Type Type)[] LibraryProjects =
+        {
+            (new Project(GLIB, "GLib-2.0.gir"), typeof(GLibGenerator)),
+            (new Project(GOBJECT, "GObject-2.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GIO, "Gio-2.0.gir"), typeof(GObjectGenerator)),
+            (new Project(CAIRO, "cairo-1.0.gir"), typeof(GObjectGenerator)),
+            //(new Project(XLIB, "xlib-2.0.gir"), typeof(GObjectGenerator)),
+            (new Project(PANGO, "Pango-1.0.gir"), typeof(GObjectGenerator)),
+            //(new Project(CLUTTER, "Clutter-1.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GDK3, "Gdk-3.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GDK_PIXBUF, "GdkPixbuf-2.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GTK3, "Gtk-3.0.gir"), typeof(GObjectGenerator)),
+            /*(JAVASCRIPT_CORE, JAVASCRIPT_CORE_GIR, "javascriptcoregtk-4.0.so", false),
+            (HANDY, HANDY_GIR, "libhandy-0.0.so.0", false),
+            (WEBKITGTK, WEBKITGTK_GIR, "libwebkit2gtk-4.0.so.37", true),
+            (WEBKIT2WEBEXTENSION, WEBKIT2WEBEXTENSION_GIR, "WEBEXTENSION", true),
+            (GTKCLUTTER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
+            (CHAMPLAIN, "Champlain-0.12.gir", "libchamplain-0.12", false),
+            (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),
+            (GST, "Gst-1.0.gir", "libgstreamer-1.0.so.0", true),
+            (GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
+            (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
+            (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/
+        };
 
-        Target(Targets.CleanLibs,
-            ForEach(libraryProjects),
-            (x) => CleanUp(x.Project.Folder, configuration)
-        );
+        #endregion
 
-        Target(Targets.CleanSamples,
-            ForEach(sampleProjects),
-            (project) => CleanUp(project, configuration)
-        );
+        #region Constants
 
-        Target(Targets.Clean, DependsOn(Targets.CleanLibs, Targets.CleanSamples));
+        private const string ConfRelease = "Release";
+        private const string ConfDebug = "Debug";
 
-        Target(Targets.Samples, DependsOn(Targets.Build),
-            ForEach(sampleProjects),
-            (project) => Build(project, configuration)
-        );
+        #endregion
 
-        Target(Targets.Release, () => configuration = confRelease);
-        Target(Targets.Debug, () => configuration = confDebug);
+        #region Methods
 
-        Target("default", DependsOn(Targets.Build));
-        RunTargetsAndExit(args);
-    }
+        public static void Main(string[] args)
+        {
+            Target(Targets.Generate,
+                ForEach(LibraryProjects),
+                (l) => Generate(l.Project, l.Type)
+            );
 
-    private static void CleanUp(string project, string configuration)
-    {
-        if (Directory.Exists(project))
-            foreach (var d in Directory.EnumerateDirectories(project))
-                foreach (var file in Directory.EnumerateFiles(d))
-                    if (file.Contains(".Generated."))
-                        File.Delete(file);
+            Target(Targets.Build,
+                DependsOn(Targets.Generate),
+                ForEach(LibraryProjects),
+                (x) => DotNet.Build(x.Project.Folder, Configuration)
+            );
 
-        Clean(project, configuration);
-    }
+            Target(Targets.CleanLibs,
+                ForEach(LibraryProjects),
+                (x) => CleanUp(x.Project.Folder, Configuration)
+            );
 
-    private static void Generate(Project project, Type type)
-    {
-        project.Gir = $"../gir-files/{project.Gir}";
-        
-        if (Activator.CreateInstance(type, project) is IGenerator generator)
-            generator.Generate();
-        else
-            throw new Exception($"{type.Name} is not a generator");
+            Target(Targets.CleanSamples,
+                ForEach(SampleProjects),
+                (project) => CleanUp(project, Configuration)
+            );
+
+            Target(Targets.Clean, DependsOn(Targets.CleanLibs, Targets.CleanSamples));
+
+            Target(Targets.Samples,
+                DependsOn(Targets.Build),
+                ForEach(SampleProjects),
+                (project) => DotNet.Build(project, Configuration)
+            );
+
+            Target(Targets.Release, () => Configuration = ConfRelease);
+            Target(Targets.Debug, () => Configuration = ConfDebug);
+
+            Target("default", DependsOn(Targets.Build));
+            RunTargetsAndExit(args);
+        }
+
+        private static void CleanUp(string project, string configuration)
+        {
+            if (Directory.Exists(project))
+            {
+                foreach (var d in Directory.EnumerateDirectories(project))
+                {
+                    foreach (var file in Directory.EnumerateFiles(d))
+                    {
+                        if (file.Contains(".Generated."))
+                            File.Delete(file);
+                    }
+                }
+            }
+
+            DotNet.Clean(project, configuration);
+        }
+
+        private static void Generate(Project project, Type type)
+        {
+            project.Gir = $"../gir-files/{project.Gir}";
+
+            if (Activator.CreateInstance(type, project) is IGenerator generator)
+                generator.Generate();
+            else
+                throw new Exception($"{type.Name} is not a generator");
+        }
+
+        #endregion
     }
 }

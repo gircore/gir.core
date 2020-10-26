@@ -2,11 +2,13 @@ using System;
 
 namespace GLib
 {
-    public partial class GException :IDisposable
+    public partial class GException : IDisposable
     {
-        private bool disposedValue;
+        #region IDisposable Implementation
 
-         ~GException() => Dispose(false);
+        private bool _disposedValue;
+
+        ~GException() => Dispose(false);
 
         public void Dispose()
         {
@@ -16,11 +18,13 @@ namespace GLib
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposedValue) 
+            if (_disposedValue)
                 return;
-            
+
             Free();
-            disposedValue = true;
+            _disposedValue = true;
         }
+
+        #endregion
     }
 }

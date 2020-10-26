@@ -7,11 +7,17 @@ namespace GtkDemo
     /// Minimalist demo program demonstrating the core
     /// features of Gir.Core
     /// </summary>
-    public class Program
+    public static class Program
     {
+        #region Fields
+
         // Our Gtk Widgets
-        private static Window mainWindow = null!;
-        private static Window? popupWindow;
+        private static Window MainWindow = null!;
+        private static Window? PopupWindow;
+
+        #endregion
+
+        #region Methods
 
         // Entry Point
         public static void Main(string[] args)
@@ -24,7 +30,7 @@ namespace GtkDemo
             // Gir.Core supports Object Initialiser Syntax for every widget,
             // allowing for entire widget trees to be created using a nice,
             // almost MVU-style syntax:
-            mainWindow = new Window("Hello World!")
+            MainWindow = new Window("Hello World!")
             {
                 // Set the default size of our window
                 DefaultWidth = 800,
@@ -56,7 +62,7 @@ namespace GtkDemo
             // Show our window. In Gtk3, widgets are hidden by default.
             // We need to tell Gtk that our window should be visible
             // to the user.
-            mainWindow.ShowAll();
+            MainWindow.ShowAll();
 
             // Call Gtk.Global.Main() to start our application
             // main loop. The program will keep on running until
@@ -66,7 +72,7 @@ namespace GtkDemo
             // Finally, clean up after ourselves and dispose of the
             // window widget. This is not required, but it is good
             // practice to dispose of widgets explicitly.
-            mainWindow?.Dispose();
+            MainWindow?.Dispose();
         }
 
         /// <summary>
@@ -86,14 +92,14 @@ namespace GtkDemo
         public static void OnOpenButtonClick(Button sender, System.EventArgs args)
         {
             // If we already have a popup window, show that and return.
-            if (popupWindow is {})
+            if (PopupWindow is { })
             {
-                popupWindow.ShowAll();
+                PopupWindow.ShowAll();
                 return;
             }
 
             // Otherwise, create a new Gtk.Window widget
-            popupWindow = new Window("Another Window")
+            PopupWindow = new Window("Another Window")
             {
                 // Set our default size
                 DefaultWidth = 400,
@@ -109,7 +115,7 @@ namespace GtkDemo
             };
 
             // Finally, show our popup window
-            popupWindow.ShowAll();
+            PopupWindow.ShowAll();
         }
 
         /// <summary>
@@ -119,11 +125,13 @@ namespace GtkDemo
         public static void OnCloseButtonClick(Button sender, System.EventArgs args)
         {
             // Close the window
-            popupWindow!.Close();
+            PopupWindow!.Close();
 
             // Unset popupWindow
-            popupWindow.Dispose();
-            popupWindow = null;
+            PopupWindow.Dispose();
+            PopupWindow = null;
         }
+
+        #endregion
     }
 }
