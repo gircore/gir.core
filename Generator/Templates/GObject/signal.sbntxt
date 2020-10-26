@@ -1,0 +1,98 @@
+{{-
+if !signal.name
+    debug name + ': Can not create signal ' + signal_name
+    ret # Quit function because we can not create this signal
+end
+
+signal_name = 'On' + (signal.name | make_pascal_case)
+signal_descriptor_name = (signal.name | make_pascal_case) + 'Signal'
+signal_type = 'SignalArgs'
+
+if signal.needs_signal_args
+    signal_type = (signal.name | make_pascal_case) + 'SignalArgs'
+end
+
+func get_obsolete
+    if signal.deprecated
+        text = ""
+        if signal.doc_deprecated
+            text = signal.doc_deprecated.text | make_single_line | escape_quotes
+        end
+        ret '[Obsolete("' + text + '")]'
+    end
+    ret ''
+end
+
+func write_type
+    if $0.nullable
+        ($0 | resolve_field) + '?'
+    else
+       ($0 | resolve_field)+''
+    end
+end
+
+func write_signal_type
+    if signal.needs_signal_args
+        name + ', ' + signal_type
+    else
+        name
+    end
+end
+~}}
+
+        #region Signal {{signal_name}}
+        
+        {{~ if signal.needs_signal_args ~}}
+        
+        ///<summary>
+        /// Indexer to connect {{ signal_descriptor_name }} with an SignalHandler<{{write_signal_type}}>
+        ///</summary>
+        public SignalHandler<{{ write_signal_type }}> this[Signal<{{ write_signal_type }}> signal]
+        {
+            set => signal.Connect(this, value, true);
+        }
+        
+        /// <summary>
+        /// Signal (Event) Arguments for {{signal_name}}
+        /// </summary>
+        public sealed class {{signal_type}} : SignalArgs
+        {            
+            #region Properties
+            {{~ 
+            index = 0
+            for param in signal.parameters.parameters 
+            index = index + 1
+            ~}}
+
+            {{~ if param.doc && param.doc.text ~}}
+            /// <summary>
+            {{~ param.doc.text | comment_line_by_line_with_prefix '\t\t\t'~}}
+            /// </summary>
+            {{~ end ~}}
+            public {{param | write_type}} {{ param.name | fix_identifier | make_pascal_case }} => Args[{{index}}].Extract<{{param | write_type}}>();
+
+            {{~ end ~}}
+            #endregion
+        }
+        {{~ end ~}}
+
+        /// <summary>
+        /// Signal Descriptor for {{signal_name}}.
+        /// </summary>
+        {{~ get_obsolete ~}}
+        public static readonly Signal<{{ write_signal_type }}> {{ signal_descriptor_name }}
+            = Signal<{{ write_signal_type }}>.Wrap("{{ signal.name }}");
+        
+        {{~ if $1.doc && $1.doc.text ~}}
+        /// <summary>
+        {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
+        /// </summary>
+        {{ end 
+        get_obsolete -}}
+        public event SignalHandler<{{ write_signal_type }}> {{ signal_name }}
+        {
+            add => {{ signal_descriptor_name }}.Connect(this, value);
+            remove => {{ signal_descriptor_name }}.Disconnect(this, value);
+        }
+        
+        #endregion

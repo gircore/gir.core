@@ -3,6 +3,7 @@
     <ProjectReference Include="..\GObject\GObject.csproj" />
     <ProjectReference Include="..\Gio\Gio.csproj" />
     <ProjectReference Include="..\Gdk3\Gdk3.csproj" />
+    <ProjectReference Include="..\GdkPixbuf\GdkPixbuf.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

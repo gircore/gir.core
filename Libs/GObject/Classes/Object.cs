@@ -8,26 +8,32 @@ namespace GObject
 {
     public partial class Object : INotifyPropertyChanged, IDisposable
     {
-        private static readonly Dictionary<IntPtr, Object> objects = new Dictionary<IntPtr, Object>();
-        private static readonly Dictionary<ClosureHelper, ulong> closures = new Dictionary<ClosureHelper, ulong>();
-        
+        #region Fields
+
+        private static readonly Dictionary<IntPtr, Object> Objects = new Dictionary<IntPtr, Object>();
+        private static readonly Dictionary<ClosureHelper, ulong> Closures = new Dictionary<ClosureHelper, ulong>();
+
+        #endregion
+
         #region Events
+
         /// <summary>
         /// Event triggered when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged = null!;
+
         #endregion
-        
+
         #region Properties
 
         protected internal IntPtr Handle { get; private set; }
-        
+
         protected bool Disposed { get; private set; }
 
         #endregion
-        
+
         #region Constructors
-        
+
         /// <summary>
         /// Constructs a new object
         /// </summary>
@@ -38,15 +44,15 @@ namespace GObject
             // type in the type dictionary. If the type is
             // a user-subclass, it will register it with
             // the GType type system automatically.
-            var t = GetType();
-            var typeId = TypeDictionary.Get(t);
+            System.Type? t = GetType();
+            Type typeId = TypeDictionary.Get(t);
             Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
 
             // Pointer to GObject
             IntPtr handle;
 
             // Handle Properties
-            int nProps = properties.Length;
+            var nProps = properties.Length;
 
             // TODO: Remove dual branches
             if (nProps > 0)
@@ -57,9 +63,9 @@ namespace GObject
                 var values = new Value[nProps];
 
                 // Populate arrays
-                for (int i = 0; i < properties.Length; i++)
+                for (var i = 0; i < properties.Length; i++)
                 {
-                    var prop = properties[i];
+                    ConstructParameter? prop = properties[i];
                     // TODO: Marshal in a block, rather than one at a time
                     // for performance reasons.
                     names[i] = Marshal.StringToHGlobalAnsi(prop.Name);
@@ -75,13 +81,13 @@ namespace GObject
                 );
 
                 // Free strings
-                foreach (var ptr in names)
+                foreach (IntPtr ptr in names)
                     Marshal.FreeHGlobal(ptr);
             }
             else
             {
                 // Construct with no properties
-                var zero = IntPtr.Zero;
+                IntPtr zero = IntPtr.Zero;
                 handle = Native.new_with_properties(
                     typeId.Value,
                     0,
@@ -105,45 +111,46 @@ namespace GObject
         }
 
         ~Object() => Dispose(false);
-        
+
         #endregion
 
         #region Methods
+
         private void Initialize(IntPtr ptr)
         {
             Handle = ptr;
             //TODO
-            objects.Add(ptr, this);
+            Objects.Add(ptr, this);
             RegisterProperties();
             RegisterOnFinalized();
 
             // Allow subclasses to perform initialisation
             Initialize();
         }
-        
+
         /// <summary>
         ///  Wrappers can override here to perform immediate initialisation
         /// </summary>
         protected virtual void Initialize() { }
-        
+
         // Modify this in the future to play nicely with virtual function support?
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
-        private void RegisterOnFinalized() => Native.weak_ref(Handle, this.OnFinalized, IntPtr.Zero);
-        
+        private void RegisterOnFinalized() => Native.weak_ref(Handle, OnFinalized, IntPtr.Zero);
+
         private void RegisterProperties()
         {
-            const System.Reflection.BindingFlags propertyDescriptorFieldFlags = System.Reflection.BindingFlags.Public 
-                | System.Reflection.BindingFlags.Static 
+            const System.Reflection.BindingFlags PropertyDescriptorFieldFlags = System.Reflection.BindingFlags.Public
+                | System.Reflection.BindingFlags.Static
                 | System.Reflection.BindingFlags.FlattenHierarchy;
-            
-            const System.Reflection.BindingFlags methodFlags = System.Reflection.BindingFlags.Instance 
+
+            const System.Reflection.BindingFlags MethodFlags = System.Reflection.BindingFlags.Instance
                 | System.Reflection.BindingFlags.NonPublic;
-            
-            foreach (var field in GetType().GetFields(propertyDescriptorFieldFlags))
+
+            foreach (System.Reflection.FieldInfo? field in GetType().GetFields(PropertyDescriptorFieldFlags))
             {
                 if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Property<>))
                 {
-                    var method = field.FieldType.GetMethod(nameof(Property<Object>.RegisterNotifyEvent), methodFlags);
+                    System.Reflection.MethodInfo? method = field.FieldType.GetMethod(nameof(Property<Object>.RegisterNotifyEvent), MethodFlags);
                     method?.Invoke(field.GetValue(this), new object[] { this });
                 }
             }
@@ -164,10 +171,10 @@ namespace GObject
             ThrowIfDisposed();
             RegisterEvent(eventName, new ClosureHelper(this, callback), after);
         }
-        
+
         private void RegisterEvent(string eventName, ClosureHelper closure, bool after)
         {
-            if (closures.TryGetValue(closure, out var id) && Global.signal_handler_is_connected(Handle, id))
+            if (Closures.TryGetValue(closure, out var id) && Global.signal_handler_is_connected(Handle, id))
                 return; // Skip if the handler is already registered
 
             var ret = Global.signal_connect_closure(Handle, eventName, closure.Handle, after);
@@ -178,7 +185,7 @@ namespace GObject
             // Add to our closures list so the callback
             // doesn't get garbage collected.
             // closures.Add(closure);
-            closures[closure] = ret;
+            Closures[closure] = ret;
         }
 
         protected internal void UnregisterEvent(ActionRefValues callback)
@@ -196,16 +203,15 @@ namespace GObject
             if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper closure))
                 UnregisterEvent(closure);
         }
-        
+
         private void UnregisterEvent(ClosureHelper closure)
         {
-            if (!closures.TryGetValue(closure, out var id))
+            if (!Closures.TryGetValue(closure, out var id))
                 return;
 
             Global.signal_handler_disconnect(Handle, id);
-            closures.Remove(closure);
+            Closures.Remove(closure);
         }
-
 
         protected void ThrowIfDisposed()
         {
@@ -233,10 +239,10 @@ namespace GObject
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        
+
         protected internal static bool GetObject<T>(IntPtr handle, out T obj) where T : Object
         {
-            if (objects.TryGetValue(handle, out var foundObj))
+            if (Objects.TryGetValue(handle, out Object? foundObj))
             {
                 obj = (T) foundObj;
                 return true;
@@ -245,7 +251,7 @@ namespace GObject
             obj = default!;
             return false;
         }
-        
+
         // This function returns the proxy object to the provided handle
         // if it already exists, otherwise creats a new wrapper object
         // and returns it.
@@ -258,7 +264,7 @@ namespace GObject
                 return false;
 
             // Attempt to lookup the pointer in the object dictionary
-            if (objects.TryGetValue(handle, out var obj))
+            if (Objects.TryGetValue(handle, out Object? obj))
             {
                 o = (T) (object) obj;
                 return true;
@@ -270,34 +276,34 @@ namespace GObject
             // TODO: Toggle Refs ^^^
 
             // Resolve gtype of object
-            var trueGType = TypeFromHandle(handle);
-            var trueType = TypeDictionary.Get(trueGType);
+            Type trueGType = TypeFromHandle(handle);
+            System.Type? trueType = TypeDictionary.Get(trueGType);
 
             // Ensure we are not constructing a subclass
             if (IsSubclass(trueType))
                 throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
 
             // Ensure the conversion is valid
-            var castGType = TypeDictionary.Get(typeof(T));
+            Type castGType = TypeDictionary.Get(typeof(T));
             if (!Global.type_is_a(trueGType.Value, castGType.Value))
                 throw new InvalidCastException();
 
             // Create using 'IntPtr' constructor
-            var ctor = trueType.GetConstructor(
-                System.Reflection.BindingFlags.NonPublic 
-                | System.Reflection.BindingFlags.Public 
+            System.Reflection.ConstructorInfo? ctor = trueType.GetConstructor(
+                System.Reflection.BindingFlags.NonPublic
+                | System.Reflection.BindingFlags.Public
                 | System.Reflection.BindingFlags.Instance,
                 null, new[] { typeof(IntPtr) }, null
             );
 
             o = (T) ctor.Invoke(new object[] { handle });
-            
+
             return true;
         }
-        
+
         #endregion
 
-        #region IDisposable
+        #region IDisposable Implementation
 
         public void Dispose()
         {
@@ -311,10 +317,10 @@ namespace GObject
             {
                 Disposed = true;
 
-                if(Handle != IntPtr.Zero)
+                if (Handle != IntPtr.Zero)
                 {
                     Native.unref(Handle);
-                    objects.Remove(Handle);
+                    Objects.Remove(Handle);
                 }
 
                 Handle = IntPtr.Zero;

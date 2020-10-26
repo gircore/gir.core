@@ -9,6 +9,8 @@ namespace Generator
 {
     public abstract class TemplateLoader : ITemplateLoader
     {
+        #region Methods
+
         public virtual string GetPath(TemplateContext context, SourceSpan callerSpan, string templateName)
             => Path.Combine(Environment.CurrentDirectory + "/../Generator/Templates/Shared/", templateName);
 
@@ -17,5 +19,7 @@ namespace Generator
 
         public ValueTask<string> LoadAsync(TemplateContext context, SourceSpan callerSpan, string templatePath)
             => new ValueTask<string>(File.ReadAllTextAsync(templatePath));
+
+        #endregion
     }
 }

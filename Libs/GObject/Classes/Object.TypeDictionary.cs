@@ -5,44 +5,66 @@ namespace GObject
 {
     public partial class Object
     {
-        // Type Dictionary for mapping C#'s System.Type
-        // and GLib GTypes (currently Sys.Type, although
-        // this might change)
+        /// <summary>
+        /// Type Dictionary for mapping C#'s System.Type
+        /// and GLib GTypes (currently Sys.Type, although
+        /// this might change)
+        /// </summary>
         internal static class TypeDictionary
         {
+            #region Fields
+
             // Dual dictionaries for looking up types and gtypes
-            private static readonly Dictionary<System.Type, Type> typedict;
-            private static readonly Dictionary<Type, System.Type> gtypedict;
-            private static readonly Dictionary<System.Type, TypeDescriptor?> descriptordict;
+            private static readonly Dictionary<System.Type, Type> TypeDict;
+            private static readonly Dictionary<Type, System.Type> GTypeDict;
+            private static readonly Dictionary<System.Type, TypeDescriptor?> DescriptorDict;
+
+            #endregion
+
+            #region Constructors
 
             static TypeDictionary()
             {
                 // Initialise Dictionaries
-                typedict = new Dictionary<System.Type, Type>();
-                gtypedict = new Dictionary<Type, System.Type>();
-                descriptordict = new Dictionary<System.Type, TypeDescriptor?>();
+                TypeDict = new Dictionary<System.Type, Type>();
+                GTypeDict = new Dictionary<Type, System.Type>();
+                DescriptorDict = new Dictionary<System.Type, TypeDescriptor?>();
 
                 // Add GObject and GInitiallyUnowned
-                Add(typeof(GObject.Object), Object.GTypeDescriptor.GType);
-                Add(typeof(InitiallyUnowned), InitiallyUnowned.GTypeDescriptor.GType);
+                Add(typeof(Object), GTypeDescriptor.GType);
+                Add(typeof(InitiallyUnowned), GTypeDescriptor.GType);
             }
 
-            // Add to type dictionary
+            #endregion
+
+            #region Methods
+
+            /// <summary>
+            /// Add to type dictionary.
+            /// </summary>
+            /// <param name="type">The C# type.</param>
+            /// <param name="gtype">The corresponding GType.</param>
             internal static void Add(System.Type type, Type gtype)
             {
-                if (typedict.ContainsKey(type) ||
-                    gtypedict.ContainsKey(gtype))
+                if (TypeDict.ContainsKey(type) || GTypeDict.ContainsKey(gtype))
                     return;
 
-                typedict.Add(type, gtype);
-                gtypedict.Add(gtype, type);
+                TypeDict.Add(type, gtype);
+                GTypeDict.Add(gtype, type);
             }
 
-            // Get System.Type from GType
+            /// <summary>
+            /// Get the C# type from the given GType.
+            /// </summary>
+            /// <param name="gtype">The GType.</param>
+            /// <returns>
+            /// An instance of <see cref="System.Type"/> corresponding to the C# type of
+            /// the given <paramref name="gtype"/>.
+            /// </returns>
             internal static System.Type Get(Type gtype)
             {
                 // Check Type Dictionary
-                if (gtypedict.TryGetValue(gtype, out var type))
+                if (GTypeDict.TryGetValue(gtype, out System.Type? type))
                     return type;
 
                 // It is quite unlikely that we need to perform a lookup
@@ -84,14 +106,20 @@ namespace GObject
                     gtype = new Type(parent);
                 }
 
-                return gtypedict[gtype];
+                return GTypeDict[gtype];
             }
 
-            // Get GType from System.Type
+            /// <summary>
+            /// Get the GType from the given C# Type.
+            /// </summary>
+            /// <param name="type">The C# type.</param>
+            /// <returns>
+            /// An instance of <see cref="Type"/> corresponding to the given C# <paramref name="type"/>.
+            /// </returns>
             internal static Type Get(System.Type type)
             {
                 // Check Type Dictionary
-                if (typedict.TryGetValue(type, out var cachedGtype))
+                if (TypeDict.TryGetValue(type, out Type cachedGtype))
                     return cachedGtype;
 
                 // If we are looking up a type that is not yet in
@@ -107,7 +135,7 @@ namespace GObject
                     // RegisterNativeType will recursively add this
                     // and all parent types to the type dictionary
                     RegisterNativeType(type);
-                    return typedict[type];
+                    return TypeDict[type];
                 }
 
                 // We are a wrapper, so register types recursively
@@ -116,11 +144,11 @@ namespace GObject
                 while (!Contains(baseType))
                 {
                     Console.WriteLine(baseType.Name);
-                    var typeDescriptor = GetTypeDescriptor(baseType);
+                    TypeDescriptor? typeDescriptor = GetTypeDescriptor(baseType);
 
-                    if(typeDescriptor is null)
+                    if (typeDescriptor is null)
                         throw new ArgumentException($"{type.Name} is unknown.", nameof(type));
-                    
+
                     // Add to typedict for future use
                     Add(baseType, typeDescriptor.GType);
                     Console.WriteLine($"Adding {baseType.Name}");
@@ -129,12 +157,12 @@ namespace GObject
                 }
 
                 // Return gtype for *this* type
-                return typedict[type];
+                return TypeDict[type];
             }
 
             // Contains functions
-            internal static bool Contains(System.Type type) => typedict.ContainsKey(type);
-            internal static bool Contains(Type gtype) => gtypedict.ContainsKey(gtype);
+            internal static bool Contains(System.Type type) => TypeDict.ContainsKey(type);
+            internal static bool Contains(Type gtype) => GTypeDict.ContainsKey(gtype);
 
             // Determines whether the type is a managed subclass,
             // as opposed to wrapping an existing type.
@@ -147,21 +175,23 @@ namespace GObject
             // if the type in question implements it (i.e. a wrapper)
             private static TypeDescriptor? GetTypeDescriptor(System.Type type)
             {
-                if (descriptordict.TryGetValue(type, out var cachedDescriptor))
+                if (DescriptorDict.TryGetValue(type, out TypeDescriptor? cachedDescriptor))
                     return cachedDescriptor;
-                
-                var descriptorField = type.GetField(
-                    nameof(Object.GTypeDescriptor), 
-                    System.Reflection.BindingFlags.NonPublic 
-                    | System.Reflection.BindingFlags.Static 
+
+                System.Reflection.FieldInfo? descriptorField = type.GetField(
+                    nameof(GTypeDescriptor),
+                    System.Reflection.BindingFlags.NonPublic
+                    | System.Reflection.BindingFlags.Static
                     | System.Reflection.BindingFlags.DeclaredOnly
                 );
-                
-                var descriptor = (TypeDescriptor?)descriptorField?.GetValue(null);
-                descriptordict[type] = descriptor;
-                
+
+                var descriptor = (TypeDescriptor?) descriptorField?.GetValue(null);
+                DescriptorDict[type] = descriptor;
+
                 return descriptor;
             }
+
+            #endregion
         }
     }
 }

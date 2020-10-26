@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using Gir;
 using Scriban;
@@ -12,7 +11,11 @@ namespace Generator
 {
     public interface IGenerator
     {
+        #region Methods
+
         void Generate();
+
+        #endregion
     }
 
     public enum StructType
@@ -27,8 +30,8 @@ namespace Generator
     {
         #region Fields
 
-        private readonly TypeResolver typeResolver;
-        private string? dllImport;
+        private readonly TypeResolver _typeResolver;
+        private string? _dllImport;
 
         #endregion
 
@@ -37,7 +40,7 @@ namespace Generator
         private GRepository Repository { get; }
         private Project Project { get; }
 
-        #endregion Properties
+        #endregion
 
         #region Constructors
 
@@ -50,20 +53,30 @@ namespace Generator
             var aliases = new List<GAlias>();
             aliases.AddRange(Repository.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
 
-            var repo = ReadRepository("../gir-files/GLib-2.0.gir");
+            GRepository? repo = ReadRepository("../gir-files/GLib-2.0.gir");
             if (repo.Namespace != Repository.Namespace)
                 aliases.AddRange(repo.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
 
             var aliasResolver = new AliasResolver(aliases);
-            typeResolver = new TypeResolver(aliasResolver);
+            _typeResolver = new TypeResolver(aliasResolver);
 
             FixRepository(Repository);
         }
 
         #endregion
 
+        #region Methods
+
+        private static GRepository ReadRepository(string girFile)
+        {
+            var serializer = new XmlSerializer(typeof(GRepository), "http://www.gtk.org/introspection/core/1.0");
+
+            using var fs = new FileStream(girFile, FileMode.Open);
+            return (GRepository) serializer.Deserialize(fs);
+        }
+
         protected ScriptObject GetScriptObject()
-            => CreateScriptObject(Repository.Namespace.Name, dllImport);
+            => CreateScriptObject(Repository.Namespace!.Name!, _dllImport!);
 
         /// <summary>
         /// Determine how we should generate a given record/struct based on
@@ -74,13 +87,13 @@ namespace Generator
             return record switch
             {
                 // Disguised (private) Class Struct
-                { Disguised: true, GLibIsGTypeStructFor: { }} => StructType.PrivateClassStruct,
+                { Disguised: true, GLibIsGTypeStructFor: { } } => StructType.PrivateClassStruct,
 
                 // Introspectable (public) Class Struct
-                { Disguised: false, GLibIsGTypeStructFor: { }} => StructType.PublicClassStruct,
+                { Disguised: false, GLibIsGTypeStructFor: { } } => StructType.PublicClassStruct,
 
                 // Regular C-Style Structure
-                { Disguised: false, Fields: {} f} when f.Count > 0 => StructType.RefStruct,
+                { Disguised: false, Fields: { } f } when f.Count > 0 => StructType.RefStruct,
 
                 // Default: Disguised Struct (Marshal with IntPtr)
                 _ => StructType.OpaqueStruct
@@ -95,9 +108,10 @@ namespace Generator
             if (Repository.Namespace.Name is null)
                 throw new Exception("Could not create code. Namespace is missing a name.");
 
-            dllImport = Repository.Namespace.GetDllImport(Repository.Namespace.Name) ?? throw new ArgumentNullException(nameof(dllImport));
+            _dllImport = Repository.Namespace.GetDllImport(Repository.Namespace.Name) ?? throw new ArgumentNullException(nameof(_dllImport));
 
             GenerateClasses(Repository.Namespace.Classes, Repository.Namespace.Name);
+            GenerateInterfaces(Repository.Namespace.Interfaces, Repository.Namespace.Name);
             GenerateStructs(Repository.Namespace.Records, Repository.Namespace.Name);
             GenerateStructs(Repository.Namespace.Unions, Repository.Namespace.Name);
             GenerateEnums(Repository.Namespace.Bitfields, Repository.Namespace.Name, true);
@@ -106,19 +120,12 @@ namespace Generator
             GenerateGlobals(Repository.Namespace.Functions, Repository.Namespace.Name);
         }
 
-        protected virtual void GenerateClasses(IEnumerable<GInterface> classes, string @namespace) { }
+        protected virtual void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace) { }
+        protected virtual void GenerateClasses(IEnumerable<GClass> classes, string @namespace) { }
         protected virtual void GenerateStructs(IEnumerable<GRecord> records, string @namespace) { }
         protected virtual void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags) { }
         protected virtual void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace) { }
         protected virtual void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace) { }
-
-        private static GRepository ReadRepository(string girFile)
-        {
-            var serializer = new XmlSerializer(typeof(GRepository), "http://www.gtk.org/introspection/core/1.0");
-
-            using var fs = new FileStream(girFile, FileMode.Open);
-            return (GRepository) serializer.Deserialize(fs);
-        }
 
         private void FixRepository(GRepository repository)
         {
@@ -130,17 +137,17 @@ namespace Generator
             if (repository.Namespace is null)
                 return;
 
-            foreach (var cls in repository.Namespace.Classes)
+            foreach (GClass? cls in repository.Namespace.Classes)
             {
                 if (string.IsNullOrEmpty(cls.Parent))
                     continue;
 
-                var parent = repository.Namespace.Classes.FirstOrDefault(x => x.Name == cls.Parent);
+                GClass? parent = repository.Namespace.Classes.Find(x => x.Name == cls.Parent);
 
                 if (parent is null)
                     continue;
 
-                foreach (var method in cls.AllMethods)
+                foreach (GMethod? method in cls.AllMethods)
                 {
                     RecursivelyAddNewIdentifierToMethod(method, parent, repository.Namespace.Classes);
                 }
@@ -151,13 +158,13 @@ namespace Generator
         {
             method.IsNew = parentClass.AllMethods.Any(x =>
                 x.Name == method.Name &&
-                x.Parameters.AreEqual(typeResolver, method.Parameters)
+                x.Parameters.AreEqual(_typeResolver, method.Parameters)
             );
 
             if (method.IsNew || string.IsNullOrEmpty(parentClass.Parent))
                 return;
-            
-            var parent = classes.FirstOrDefault(x => x.Name == parentClass.Parent);
+
+            GClass? parent = classes.Find(x => x.Name == parentClass.Parent);
             if (parent is null)
                 return;
 
@@ -178,8 +185,8 @@ namespace Generator
 
             fileName = Path.Combine(subfolder, fileName + ".Generated.cs");
 
-            var loader = Activator.CreateInstance<K>();
-            var context = new TemplateContext {TemplateLoader = loader};
+            K loader = Activator.CreateInstance<K>();
+            var context = new TemplateContext { TemplateLoader = loader };
             context.PushGlobal(scriptObject);
 
             var templateFile = loader.GetPath(null, default, templateName + ".sbntxt");
@@ -204,7 +211,7 @@ namespace Generator
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Could not create code for {fileName}: {ex.InnerException?.Message ?? ""}");
+                Console.Error.WriteLine($"Could not create code for {fileName}: {ex.InnerException?.Message ?? ex.Message ?? ""}");
             }
         }
 
@@ -238,7 +245,7 @@ namespace Generator
                 {
                     try
                     {
-                        return t is null ? null : typeResolver.GetTypeString(t).ToString();
+                        return t is null ? null : _typeResolver.GetTypeString(t).ToString();
                     }
                     catch
                     {
@@ -255,18 +262,20 @@ namespace Generator
             scriptObject.Import("resolve_type",
                 new Func<IType, string>((t) =>
                 {
-                    var resolvedType = typeResolver.Resolve(t);
+                    ResolvedType? resolvedType = _typeResolver.Resolve(t);
                     return resolvedType.GetTypeString();
                 })
             );
             scriptObject.Import("resolve_field",
                 new Func<IType, string>((t) =>
                 {
-                    var resolvedType = typeResolver.Resolve(t);
+                    ResolvedType? resolvedType = _typeResolver.Resolve(t);
                     return resolvedType.GetFieldString();
                 })
             );
             return scriptObject;
         }
+
+        #endregion
     }
 }
