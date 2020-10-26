@@ -233,7 +233,7 @@ namespace GObject
         public new static Signal<TSender, TSignalArgs> Wrap(string name)
         {
             // Here only the signal name is relevant, other parameters are not used.
-            return new Signal<TSender, TSignalArgs>(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
+            return new Signal<TSender, TSignalArgs>(name, SignalFlags.RunLast, Type.None, Array.Empty<Type>());
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace GObject
         public new static Signal<TSender> Wrap(string name)
         {
             // Here only the signal name is relevant, other parameters are not used.
-            return new Signal<TSender>(name, SignalFlags.run_last, Type.None, Array.Empty<Type>());
+            return new Signal<TSender>(name, SignalFlags.RunLast, Type.None, Array.Empty<Type>());
         }
 
         /// <summary>
