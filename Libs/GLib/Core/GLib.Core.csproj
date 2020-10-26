@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\Wrapper\GLib.Wrapper.csproj" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <PackageId>Gir.Core.CS.GLib</PackageId>
-  </PropertyGroup>
-</Project>

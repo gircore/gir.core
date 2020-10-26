@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\GObject\GObject.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.CS.Gio</PackageId>
+  </PropertyGroup>
+</Project>

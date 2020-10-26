@@ -1,0 +1,18 @@
+        
+        {{~ if $1.doc && $1.doc.text ~}}
+        /// <summary>
+        {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
+        /// </summary>
+        {{ end }} 
+        {{ get_obsolete }}
+        {{ 
+            if $1.array && $1.array.fixed_size 
+                for $x  in 1 .. ($1.array.fixed_size | string.to_int)
+        }}
+        public {{ $1 | resolve_field }} {{ ($1.name + $x) | fix_identifier }};
+        {{
+                end
+            else 
+        }}
+        public {{ $1 | resolve_field }} {{ $1.name | fix_identifier }};
+        {{ end }}

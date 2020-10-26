@@ -1,0 +1,17 @@
+{{-
+ps = []
+
+func to_string 
+    ret ($0 | resolve_type) + " " + ($0.name | fix_identifier)
+end
+
+if $1.instance_parameter
+    ps = [ ($1.instance_parameter | to_string)]
+end
+
+for parameter in $1.parameters 
+    ps = array.add ps (parameter | to_string)
+end 
+
+array.join ps ", "
+-}}
