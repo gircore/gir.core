@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 
@@ -8,16 +7,18 @@ namespace Gir
 {
     public class GNamespace
     {
+        #region Properties
+
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
         [XmlAttribute("version")]
         public string? Version { get; set; }
 
-        [XmlAttribute("identifier-prefixes", Namespace="http://www.gtk.org/introspection/c/1.0")]
+        [XmlAttribute("identifier-prefixes", Namespace = "http://www.gtk.org/introspection/c/1.0")]
         public string? IdentifierPrefixes { get; set; }
 
-        [XmlAttribute("symbol-prefixes", Namespace="http://www.gtk.org/introspection/c/1.0")]
+        [XmlAttribute("symbol-prefixes", Namespace = "http://www.gtk.org/introspection/c/1.0")]
         public string? SymbolPrefixes { get; set; }
 
         [XmlAttribute("shared-library")]
@@ -30,10 +31,10 @@ namespace Gir
         public List<GInterface> Interfaces { get; set; } = default!;
 
         [XmlElement("bitfield")]
-        public List<GEnumeration> Bitfields { get; set;} = default!;
+        public List<GEnumeration> Bitfields { get; set; } = default!;
 
         [XmlElement("enumeration")]
-        public List<GEnumeration> Enumerations { get; set;} = default!;
+        public List<GEnumeration> Enumerations { get; set; } = default!;
 
         [XmlElement("alias")]
         public List<GAlias> Aliases { get; set; } = default!;
@@ -52,7 +53,7 @@ namespace Gir
 
         [XmlElement("constant")]
         public List<GConstant> Constants { get; set; } = default!;
-        
+
         // Determines the dll name from the shared library (based on msys2 gtk binaries)
         // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
         public string? GetDllImport(string namspaceName)
@@ -64,15 +65,13 @@ namespace Gir
             if (SharedLibrary.Contains(","))
             {
                 var libs = SharedLibrary.Split(',');
-                var result = libs.FirstOrDefault(
-                    x => x.Contains(namspaceName, StringComparison.OrdinalIgnoreCase)
-                );
+                var result = Array.Find(libs, x => x.Contains(namspaceName, StringComparison.OrdinalIgnoreCase));
 
                 lib = result ?? throw new Exception($"Cant find dll import for {namspaceName}, no match found in: {SharedLibrary}");
             }
 
             var lastDot = lib.LastIndexOf('.');
-            var version = lib[(lastDot+1)..];
+            var version = lib[(lastDot + 1)..];
             var name = lib[..lastDot].Replace(".so", "");
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -80,7 +79,7 @@ namespace Gir
             else
                 return GetLinuxDllImport(name, version);
         }
-        
+
         private string GetWindowsDllImport(string name, string version)
         {
             var versionExtension = "";
@@ -89,7 +88,7 @@ namespace Gir
 
             return name + versionExtension + ".dll";
         }
-        
+
         private string GetLinuxDllImport(string name, string version)
         {
             var versionExtension = "";
@@ -98,5 +97,7 @@ namespace Gir
 
             return name + ".so" + versionExtension;
         }
+
+        #endregion
     }
 }

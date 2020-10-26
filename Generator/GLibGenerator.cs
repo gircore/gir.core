@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Gir;
 using Scriban.Runtime;
 
@@ -8,15 +7,21 @@ namespace Generator
 {
     public class GLibGenerator : Generator<GLibTemplateLoader>
     {
+        #region Constructors
+
         public GLibGenerator(Project project) : base(project) { }
+
+        #endregion
+
+        #region Methods
 
         protected override void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace)
         {
-            foreach (var dlg in delegates)
+            foreach (GCallback? dlg in delegates)
             {
-                var scriptObject = GetScriptObject();
+                ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(dlg);
-                
+
                 Generate(
                     templateName: "delegate",
                     subfolder: "Delegates",
@@ -28,20 +33,20 @@ namespace Generator
 
         protected override void GenerateStructs(IEnumerable<GRecord> records, string @namespace)
         {
-            foreach (var record in records)
+            foreach (GRecord? record in records)
             {
                 // By calling GetStructType(), we determine whether the struct is
                 // readable or opaque and generate it accordingly. See GetStructType()
                 // for details.
 
-                var (templateName, subfolder) = GetStructType(record) switch
+                (var templateName, var subfolder) = GetStructType(record) switch
                 {
                     StructType.RefStruct => ("struct", "Structs"),
                     StructType.OpaqueStruct => ("struct_as_class", "Classes"),
                     _ => throw new NotImplementedException($"Cannot generate struct {record.Name} - Skipping"),
                 };
 
-                var scriptObject = GetScriptObject();
+                ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(record);
 
                 Generate(
@@ -55,9 +60,9 @@ namespace Generator
 
         protected override void GenerateClasses(IEnumerable<GClass> classes, string @namespace)
         {
-            foreach (var cls in classes)
+            foreach (GClass? cls in classes)
             {
-                var scriptObject = GetScriptObject();
+                ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(cls);
 
                 Generate(
@@ -71,9 +76,9 @@ namespace Generator
 
         protected override void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags)
         {
-            foreach (var obj in enums)
+            foreach (GEnumeration? obj in enums)
             {
-                var scriptObject = GetScriptObject();
+                ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(obj);
                 scriptObject.Add("has_flags", hasFlags);
 
@@ -85,5 +90,7 @@ namespace Generator
                 );
             }
         }
+
+        #endregion
     }
 }

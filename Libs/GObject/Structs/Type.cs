@@ -7,9 +7,9 @@ namespace GObject
     {
         #region Fields
 
-        [FieldOffset(0)] private ulong value;
+        [FieldOffset(0)] private readonly ulong _value;
 
-        public ulong Value => value;
+        public ulong Value => _value;
 
         #endregion
 
@@ -41,10 +41,12 @@ namespace GObject
         #endregion Statics
 
         #region Constructors
+
         public Type(ulong value)
         {
-            this.value = value;
+            _value = value;
         }
+
         #endregion
 
         /*public IntPtr GetClassPointer()
@@ -57,9 +59,8 @@ namespace GObject
         }*/
 
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
-       
     }
-    
+
     internal enum Types
     {
         Invalid = 0 << 2,
