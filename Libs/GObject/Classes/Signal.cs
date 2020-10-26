@@ -7,7 +7,7 @@ namespace GObject
     /// SignalHandler for signals without any extra data.
     /// </summary>
     /// <param name="sender">The sender of this signal.</param>
-    /// <param name="args">Event args. Will always a]have the value of <see cref="EventArgs.Empty"/>.</param>
+    /// <param name="args">Event args. Will always have the value of <see cref="EventArgs.Empty"/>.</param>
     public delegate void SignalHandler<TSender>(TSender sender, EventArgs args)
         where TSender : Object;
 
