@@ -118,6 +118,7 @@ namespace Generator
             GenerateEnums(Repository.Namespace.Enumerations, Repository.Namespace.Name, false);
             GenerateDelegates(Repository.Namespace.Callbacks, Repository.Namespace.Name);
             GenerateGlobals(Repository.Namespace.Functions, Repository.Namespace.Name);
+            GenerateConstants(Repository.Namespace.Constants, Repository.Namespace.Name);
         }
 
         protected virtual void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace) { }
@@ -126,6 +127,7 @@ namespace Generator
         protected virtual void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags) { }
         protected virtual void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace) { }
         protected virtual void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace) { }
+        protected virtual void GenerateConstants(IEnumerable<GConstant> constants, string @namespace) { }
 
         private void FixRepository(GRepository repository)
         {
