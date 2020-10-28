@@ -6,7 +6,8 @@ namespace Gio
 {
     public partial class DBusConnection
     {
-        #region Methods
+        #region Static methods
+        
         public static DBusConnection Get(BusType busType)
         {
             IntPtr handle = Global.bus_get_sync(busType, IntPtr.Zero, out IntPtr error);
@@ -17,6 +18,10 @@ namespace Gio
 
             return new DBusConnection(handle);
         }
+        
+        #endregion
+        
+        #region Methods
 
         public Task<Variant> CallAsync(string busName, string objectPath, string interfaceName, string methodName,
             Variant? parameters = null)
@@ -32,11 +37,21 @@ namespace Gio
             }
 
             IntPtr @params = parameters?.Handle ?? IntPtr.Zero;
-            Native.call(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.none, -1, IntPtr.Zero, Callback, IntPtr.Zero);
+            Native.call(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.None, -1, IntPtr.Zero, Callback, IntPtr.Zero);
 
             return tcs.Task;
         }
 
+        public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
+        {
+            IntPtr @params = parameters?.Handle ?? IntPtr.Zero;
+            IntPtr ret = Native.call_sync(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.None, 9999, IntPtr.Zero, out IntPtr error);
+
+            HandleError(error);
+
+            return new Variant(ret);
+        }
+        
         #endregion
     }
 }

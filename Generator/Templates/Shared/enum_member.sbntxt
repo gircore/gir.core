@@ -1,1 +1,1 @@
-{{ $1.name | fix_identifier }} = {{$1.value}},
+{{ $1.name | fix_identifier | make_pascal_case}} = {{$1.value}},

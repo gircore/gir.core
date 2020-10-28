@@ -7,8 +7,8 @@ namespace GLib
     {
         #region Static Member
 
-        //public static VariantType String = new VariantType("s");
-        //public static VariantType Variant = new VariantType("v");
+        public static readonly VariantType String = new VariantType("s");
+        public static readonly VariantType Variant = new VariantType("v");
 
         #endregion
 
