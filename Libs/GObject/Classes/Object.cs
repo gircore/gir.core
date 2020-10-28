@@ -26,7 +26,7 @@ namespace GObject
 
         #region Properties
 
-        protected internal IntPtr Handle { get; private set; }
+        public IntPtr Handle { get; private set; }
 
         protected bool Disposed { get; private set; }
 
@@ -255,6 +255,14 @@ namespace GObject
         // This function returns the proxy object to the provided handle
         // if it already exists, otherwise creats a new wrapper object
         // and returns it.
+        public static T WrapPointerAs<T>(IntPtr handle)
+        {
+            if (TryWrapPointerAs<T>(handle, out T obj))
+                return obj;
+
+            throw new Exception("Could not wrap handle");
+        }
+
         protected internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
         {
             o = default!;

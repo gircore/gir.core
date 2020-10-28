@@ -13,16 +13,17 @@ namespace GObject
             data1 = IntPtr.Zero;
             data2 = IntPtr.Zero;
 
-            init(ref this, type.Value);
+            Native.init(ref this, type.Value);
         }
 
-        public Value(IntPtr value) : this(Type.Object) => set_object(ref this, value);
-        public Value(bool value) : this(Type.Boolean) => set_boolean(ref this, value);
-        public Value(int value) : this(Type.Int) => set_int(ref this, value);
-        public Value(uint value) : this(Type.UInt) => set_uint(ref this, value);
-        public Value(long value) : this(Type.Long) => set_long(ref this, value);
-        public Value(double value) : this(Type.Double) => set_double(ref this, value);
-        public Value(string value) : this(Type.String) => set_string(ref this, value);
+        public Value(IntPtr value) : this(Type.Object) => Native.set_object(ref this, value);
+        public Value(bool value) : this(Type.Boolean) => Native.set_boolean(ref this, value);
+        public Value(int value) : this(Type.Int) => Native.set_int(ref this, value);
+        public Value(uint value) : this(Type.UInt) => Native.set_uint(ref this, value);
+        public Value(long value) : this(Type.Long) => Native.set_long(ref this, value);
+        public Value(double value) : this(Type.Double) => Native.set_double(ref this, value);
+        public Value(float value) : this(Type.Float) => Native.set_float(ref this, value);
+        public Value(string value) : this(Type.String) => Native.set_string(ref this, value);
 
         #endregion
 
@@ -45,8 +46,9 @@ namespace GObject
             int v3 => new Value(v3),
             long v4 => new Value(v4),
             double v5 => new Value(v5),
-            string v6 => new Value(v6),
-            IntPtr v7 => new Value(v7),
+            float v6 => new Value(v6),
+            string v7 => new Value(v7),
+            IntPtr v8 => new Value(v8),
             Enum _ => new Value((long) value),
             _ => throw new NotSupportedException("Unable to create the value from the given type.")
         };
@@ -68,6 +70,7 @@ namespace GObject
                 (ulong) Types.Enum => GetLong(),
                 (ulong) Types.Long => GetLong(),
                 (ulong) Types.Double => GetDouble(),
+                (ulong) Types.Float => GetFloat(),
                 (ulong) Types.String => GetString(),
                 (ulong) Types.Pointer => GetPtr(),
                 _ => CheckComplexTypes(g_type)
@@ -87,21 +90,22 @@ namespace GObject
 
         public T Extract<T>() => (T) Extract()!;
 
-        public IntPtr GetPtr() => get_pointer(ref this);
-        public IntPtr GetBoxed() => get_boxed(ref this);
+        public IntPtr GetPtr() => Native.get_pointer(ref this);
+        public IntPtr GetBoxed() => Native.get_boxed(ref this);
 
         public Object? GetObject()
-            => Object.TryWrapPointerAs(get_object(ref this), out Object obj) ? obj : null;
+            => Object.TryWrapPointerAs(Native.get_object(ref this), out Object obj) ? obj : null;
 
-        public bool GetBool() => get_boolean(ref this);
-        public uint GetUint() => get_uint(ref this);
-        public int GetInt() => get_int(ref this);
-        public long GetLong() => get_long(ref this);
-        public double GetDouble() => get_double(ref this);
+        public bool GetBool() => Native.get_boolean(ref this);
+        public uint GetUint() => Native.get_uint(ref this);
+        public int GetInt() => Native.get_int(ref this);
+        public long GetLong() => Native.get_long(ref this);
+        public double GetDouble() => Native.get_double(ref this);
+        public float GetFloat() => Native.get_float(ref this);
 
         public string GetString()
         {
-            IntPtr ptr = get_string(ref this);
+            IntPtr ptr = Native.get_string(ref this);
             return Marshal.PtrToStringAnsi(ptr);
         }
 
@@ -109,7 +113,7 @@ namespace GObject
 
         #region IDisposable Implementation
 
-        public void Dispose() => unset(ref this);
+        public void Dispose() => Native.unset(ref this);
 
         #endregion
     }

@@ -7,9 +7,6 @@ namespace Gir
     {
         #region Properties
 
-        [XmlElement("function")]
-        public List<GMethod> Functions { get; set; } = default!;
-
         [XmlElement("field")]
         public List<GField> Fields { get; set; } = default!;
 
@@ -21,22 +18,6 @@ namespace Gir
 
         [XmlAttribute("introspectable")]
         public bool Introspectable = true;
-
-        public override IEnumerable<GMethod> AllMethods
-        {
-            get
-            {
-                foreach (GMethod? method in base.AllMethods)
-                    yield return method;
-
-                foreach (GMethod? function in Functions)
-                {
-                    // Do not make functions available which were moved to another part of the ABI
-                    if (!string.IsNullOrEmpty(function.MovedTo) && !function.HasVariadicParameter())
-                        yield return function;
-                }
-            }
-        }
 
         #endregion
     }

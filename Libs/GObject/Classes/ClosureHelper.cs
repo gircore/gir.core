@@ -40,8 +40,8 @@ namespace GObject
 
         private ClosureHelper(Object obj)
         {
-            Handle = Closure.new_object((uint) Marshal.SizeOf(typeof(Closure)), obj.Handle);
-            Closure.set_marshal(Handle, MarshalCallback);
+            Handle = Closure.Native.new_object((uint) Marshal.SizeOf(typeof(Closure)), obj.Handle);
+            Closure.Native.set_marshal(Handle, MarshalCallback);
         }
 
         ~ClosureHelper() => Dispose(false);
@@ -82,7 +82,7 @@ namespace GObject
         {
             if (!_disposedValue)
             {
-                Closure.unref(Handle);
+                Closure.Native.unref(Handle);
                 Handle = IntPtr.Zero;
                 _disposedValue = true;
             }
