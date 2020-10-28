@@ -13,7 +13,7 @@ namespace GLib
 
         #region Methods
 
-        internal static void FreeError(IntPtr errorHandle) => free(errorHandle);
+        internal static void FreeError(IntPtr errorHandle) => Native.free(errorHandle);
 
         #endregion
     }
