@@ -1,4 +1,4 @@
-using Gst;
+using System;
 
 namespace Gst
 {
@@ -6,8 +6,8 @@ namespace Gst
     {
         public static Element Launch(string pipelineDescription)
         {
-            var ret = Sys.Methods.parse_launch(pipelineDescription, out var error);
-            
+            IntPtr ret = Global.parse_launch(pipelineDescription, out IntPtr error);
+
             //TODO: Handle error
             
             return new Element(ret); //Parse always returns a new object
