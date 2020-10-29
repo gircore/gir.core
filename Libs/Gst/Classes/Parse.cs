@@ -12,6 +12,8 @@ namespace Gst
         /// <exception cref="GException">Throws an exception in case of an error</exception>
         public static Element Launch(string pipelineDescription)
         {
+            //TODO: As this method wrapps a global function it should probably be part of the toolkit layer.
+            
             IntPtr ret = Global.parse_launch(pipelineDescription, out IntPtr error);
 
             if (error != IntPtr.Zero)
