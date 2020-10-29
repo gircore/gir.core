@@ -45,6 +45,20 @@ namespace Gtk
             set => SetProperty(DefaultWidthProperty, value);
         }
 
+
+        public static readonly Property<bool> ResizableProperty = Property<bool>.Register<Window>(
+            Native.ResizableProperty,
+            nameof(Resizable),
+            (o) => o.Resizable,
+            (o, v) => o.Resizable = v
+        );
+
+        public bool Resizable
+        {
+            get => GetProperty(ResizableProperty);
+            set => SetProperty(ResizableProperty, value);
+        }
+
         #endregion Properties
 
         #region Constructors

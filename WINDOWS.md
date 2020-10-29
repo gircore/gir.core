@@ -31,3 +31,9 @@ The DLL could not be found. Make sure it is in your PATH and try again. Try
 adding `C:/msys64/mingw64/bin` at the **front** of your PATH if you have other
 Gtk applications installed - this prevents the wrong version of the Gtk DLL
 being loaded by the bindings.
+
+For example, in PowerShell:
+
+```ps
+PS> $env:PATH = "C:\msys64\mingw64\bin;${env:PATH}"
+```
