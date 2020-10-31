@@ -15,7 +15,7 @@ namespace Build
         private static readonly string[] SampleProjects =
         {
             DBUS_SAMPLE,
-            //GST_SAMPLE,
+            GSTREAMER_SAMPLE,
             //GTK3_APP_SAMPLE,
             //GTK3_MINIMAL_SAMPLE,
             GTK3_QUICKSTART,
@@ -40,9 +40,9 @@ namespace Build
             (WEBKIT2WEBEXTENSION, WEBKIT2WEBEXTENSION_GIR, "WEBEXTENSION", true),
             (GTKCLUTTER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
             (CHAMPLAIN, "Champlain-0.12.gir", "libchamplain-0.12", false),
-            (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),
-            (GST, "Gst-1.0.gir", "libgstreamer-1.0.so.0", true),
-            (GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
+            (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),*/
+            (new Project(GST, "Gst-1.0.gir"), typeof(GObjectGenerator)),
+            /*(GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
             (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
             (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/
         };

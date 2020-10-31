@@ -19,7 +19,7 @@ Currently supported libraries
 * [libhandy] (planed): Convergent UI-Widgets for [GTK] to support mobile phones
 * [dbus] (wip): Library for inter-process communication via [GIO]
 * [libchamplain] (planed): Library to display maps
-* [gstreamer] (planed): Multimedia Framework
+* [gstreamer] (wip): Multimedia Framework
 
 ## Status
 As we are currently figuring out the best way for this project the code is under heavy development and not ready for production. There is currently _no_ nuget package available.

@@ -1,0 +1,12 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace {{ namespace }}
+{
+    public partial class Constant
+    {
+{{~ for constant in constants
+    include 'constant.sbntxt' constant
+end ~}}
+    }
+}

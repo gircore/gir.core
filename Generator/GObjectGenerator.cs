@@ -109,6 +109,19 @@ namespace Generator
             );
         }
 
+        protected override void GenerateConstants(IEnumerable<GConstant> constants, string @namespace)
+        {
+            ScriptObject? scriptObject = GetScriptObject();
+            scriptObject.Add("constants", constants);
+
+            Generate(
+                templateName: "constants",
+                subfolder: "Classes",
+                fileName: "Constant",
+                scriptObject: scriptObject
+            );
+        }
+
         #endregion
     }
 }
