@@ -25,12 +25,14 @@ namespace {{ namespace }}
         #endregion
 
         #region Methods
-        internal struct Native
+
+        internal static class Native
         {
         {{~ for method in all_methods
             include 'method.sbntxt' method
         end ~}}
         }
+
         #endregion
     }
 }

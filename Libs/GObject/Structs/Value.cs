@@ -22,6 +22,7 @@ namespace GObject
         public Value(uint value) : this(Type.UInt) => Native.set_uint(ref this, value);
         public Value(long value) : this(Type.Long) => Native.set_long(ref this, value);
         public Value(double value) : this(Type.Double) => Native.set_double(ref this, value);
+        public Value(float value) : this(Type.Float) => Native.set_float(ref this, value);
         public Value(string value) : this(Type.String) => Native.set_string(ref this, value);
 
         #endregion
@@ -45,8 +46,9 @@ namespace GObject
             int v3 => new Value(v3),
             long v4 => new Value(v4),
             double v5 => new Value(v5),
-            string v6 => new Value(v6),
-            IntPtr v7 => new Value(v7),
+            float v6 => new Value(v6),
+            string v7 => new Value(v7),
+            IntPtr v8 => new Value(v8),
             Enum _ => new Value((long) value),
             _ => throw new NotSupportedException("Unable to create the value from the given type.")
         };
@@ -68,6 +70,7 @@ namespace GObject
                 (ulong) Types.Enum => GetLong(),
                 (ulong) Types.Long => GetLong(),
                 (ulong) Types.Double => GetDouble(),
+                (ulong) Types.Float => GetFloat(),
                 (ulong) Types.String => GetString(),
                 (ulong) Types.Pointer => GetPtr(),
                 _ => CheckComplexTypes(g_type)
@@ -98,6 +101,7 @@ namespace GObject
         public int GetInt() => Native.get_int(ref this);
         public long GetLong() => Native.get_long(ref this);
         public double GetDouble() => Native.get_double(ref this);
+        public float GetFloat() => Native.get_float(ref this);
 
         public string GetString()
         {
