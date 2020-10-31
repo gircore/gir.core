@@ -34,7 +34,7 @@ namespace Build
 
         private const string SAMPLE = "../Samples/";
         public const string DBUS_SAMPLE = SAMPLE + "DBus/";
-        public const string GST_SAMPLE = SAMPLE + "Gst/";
+        public const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
         public const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
         public const string GTK3_MINIMAL_SAMPLE = SAMPLE + "Gtk3/GtkMinimal";
         public const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
