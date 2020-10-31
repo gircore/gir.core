@@ -1,13 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libs\Gtk3\Core\Gtk3.Core.csproj" />
-    <ProjectReference Include="..\..\..\Libs\GObject\Core\GObject.Core.csproj" />
+    <ProjectReference Include="..\..\..\Libs\Gtk3\Gtk3.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,11 +14,6 @@
     <EmbeddedResource Include="**\*.glade">
       <LogicalName>%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="data/gtk.png"></EmbeddedResource>
+    <EmbeddedResource Include="data/gtk.png" />
   </ItemGroup>
-
-<PropertyGroup>
-    <Nullable>enable</Nullable>
-</PropertyGroup>
-
 </Project>
