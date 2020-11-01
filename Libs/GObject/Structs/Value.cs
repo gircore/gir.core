@@ -67,7 +67,6 @@ namespace GObject
                 (ulong) Types.Boolean => GetBool(),
                 (ulong) Types.UInt => GetUint(),
                 (ulong) Types.Int => GetInt(),
-                (ulong) Types.Enum => GetLong(),
                 (ulong) Types.Long => GetLong(),
                 (ulong) Types.Double => GetDouble(),
                 (ulong) Types.Float => GetFloat(),
@@ -108,8 +107,8 @@ namespace GObject
         public long GetLong() => Native.get_long(ref this);
         public double GetDouble() => Native.get_double(ref this);
         public float GetFloat() => Native.get_float(ref this);
-        public uint GetFlags() => Native.get_flags(ref this);
-        public int GetEnum() => Native.get_enum(ref this);
+        public long GetFlags() => (long) Native.get_flags(ref this);
+        public long GetEnum() => (long) Native.get_enum(ref this);
 
         public string GetString()
         {
