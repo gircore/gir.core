@@ -7,9 +7,9 @@ namespace Gst
         public static void Init()
         {
             var argc = 0;
-            var argv = IntPtr.Zero;
+            IntPtr argv = IntPtr.Zero;
 
-            Sys.Methods.init(ref argc, ref argv);
+            Global.init(ref argc, ref argv);
         }
     }
 }
