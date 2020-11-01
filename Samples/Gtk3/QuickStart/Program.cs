@@ -27,6 +27,15 @@ namespace GtkDemo
             // this is done for you.
             Global.Init();
 
+            var myBox = new Box(Orientation.Horizontal, 5);
+            myBox.PackStart(new Button("test1"), true, true, 1);
+            myBox.PackStart(new Button("Test2"), true, true, 1);
+
+            if (myBox is Orientable ot)
+            {
+                var bla = ot.Orientation;
+            }
+
             // Gir.Core supports Object Initialiser Syntax for every widget,
             // allowing for entire widget trees to be created using a nice,
             // almost MVU-style syntax:
@@ -35,11 +44,11 @@ namespace GtkDemo
                 // Set the default size of our window
                 DefaultWidth = 800,
                 DefaultHeight = 600,
-
+                Child = myBox,
                 // Set the child property of mainWindow to
                 // a Gtk.Notebook widget. This creates tabs which
                 // the user can use to switch between different 'Pages'.
-                Child = new Notebook()
+                /*Child = new Notebook()
                 {
                     // Register a callback for switching pages
                     [Notebook.SwitchPageSignal] = OnPageSwitched,
@@ -51,7 +60,7 @@ namespace GtkDemo
                         // Register a callback for the button
                         [Button.ClickedSignal] = OnOpenButtonClick,
                     }
-                },
+                },*/
 
                 // Setup our application to quit when the main
                 // window is closed. We can use delegates as well as

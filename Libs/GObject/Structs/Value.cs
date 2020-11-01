@@ -85,6 +85,12 @@ namespace GObject
             if (Global.Native.type_is_a(gtype, (ulong) Types.Boxed))
                 throw new NotImplementedException();
 
+            if (Global.Native.type_is_a(gtype, (ulong) Types.Enum))
+                return GetEnum();
+
+            if (Global.Native.type_is_a(gtype, (ulong) Types.Flags))
+                return GetFlags();
+            
             throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
         }
 
@@ -102,6 +108,8 @@ namespace GObject
         public long GetLong() => Native.get_long(ref this);
         public double GetDouble() => Native.get_double(ref this);
         public float GetFloat() => Native.get_float(ref this);
+        public uint GetFlags() => Native.get_flags(ref this);
+        public int GetEnum() => Native.get_enum(ref this);
 
         public string GetString()
         {
