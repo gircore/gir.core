@@ -11,12 +11,12 @@ namespace Gtk
             var argc = 0;
             IntPtr argv = IntPtr.Zero;
 
-            init(ref argc, ref argv);
+            Native.init(ref argc, ref argv);
         }
 
-        public static void Main() => main();
+        public static void Main() => Native.main();
 
-        public static void MainQuit() => main_quit();
+        public static void MainQuit() => Native.main_quit();
 
         #endregion
     }

@@ -174,10 +174,10 @@ namespace GObject
 
         private void RegisterEvent(string eventName, ClosureHelper closure, bool after)
         {
-            if (Closures.TryGetValue(closure, out var id) && Global.signal_handler_is_connected(Handle, id))
+            if (Closures.TryGetValue(closure, out var id) && Global.Native.signal_handler_is_connected(Handle, id))
                 return; // Skip if the handler is already registered
 
-            var ret = Global.signal_connect_closure(Handle, eventName, closure.Handle, after);
+            var ret = Global.Native.signal_connect_closure(Handle, eventName, closure.Handle, after);
 
             if (ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
@@ -209,7 +209,7 @@ namespace GObject
             if (!Closures.TryGetValue(closure, out var id))
                 return;
 
-            Global.signal_handler_disconnect(Handle, id);
+            Global.Native.signal_handler_disconnect(Handle, id);
             Closures.Remove(closure);
         }
 
@@ -293,7 +293,7 @@ namespace GObject
 
             // Ensure the conversion is valid
             Type castGType = TypeDictionary.Get(typeof(T));
-            if (!Global.type_is_a(trueGType.Value, castGType.Value))
+            if (!Global.Native.type_is_a(trueGType.Value, castGType.Value))
                 throw new InvalidCastException();
 
             // Create using 'IntPtr' constructor
