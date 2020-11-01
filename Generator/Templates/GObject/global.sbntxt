@@ -5,8 +5,11 @@ namespace {{ namespace }}
 {
     public partial class Global
     {
-{{~ for method in methods
-    include 'method.sbntxt' method
-end ~}}
+        internal static class Native
+        {
+        {{~ for method in methods
+            include 'method.sbntxt' method
+        end ~}}
+        }
     }
 }

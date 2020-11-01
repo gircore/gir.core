@@ -79,10 +79,10 @@ namespace GObject
 
         private object? CheckComplexTypes(ulong gtype)
         {
-            if (Global.type_is_a(gtype, (ulong) Types.Object))
+            if (Global.Native.type_is_a(gtype, (ulong) Types.Object))
                 return GetObject();
 
-            if (Global.type_is_a(gtype, (ulong) Types.Boxed))
+            if (Global.Native.type_is_a(gtype, (ulong) Types.Boxed))
                 throw new NotImplementedException();
 
             throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
