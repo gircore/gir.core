@@ -14,7 +14,7 @@ namespace Gst
         {
             //TODO: As this method wrapps a global function it should probably be part of the toolkit layer.
             
-            IntPtr ret = Global.parse_launch(pipelineDescription, out IntPtr error);
+            IntPtr ret = Global.Native.parse_launch(pipelineDescription, out IntPtr error);
 
             if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
