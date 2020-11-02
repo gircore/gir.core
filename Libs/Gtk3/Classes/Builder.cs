@@ -6,28 +6,29 @@ using System.Text;
 
 namespace Gtk
 {
-    public partial class Builder
+    public class BuilderGenerator
     {
-        internal Builder(string template, Assembly assembly) : this(Native.@new())
+        internal string? Template { get; set; }
+
+        public Builder Generate(Widget widget)
         {
-            using var stream = assembly.GetManifestResourceStream(template);
+            var templateContent = GetTemplate(widget.GetType().Assembly);
+            var length = Encoding.UTF8.GetByteCount(templateContent);
+            var builder = new Builder(Builder.Native.new_from_string(templateContent, length));
+            builder.Connect(widget);
+            return builder;
+        }
+
+        private string GetTemplate(Assembly assembly)
+        {
+            using var stream = assembly.GetManifestResourceStream(Template);
 
             if(stream is null)
-                throw new Exception ($"Cannot get resource file '{template}'");
+                throw new Exception ($"Cannot get resource file '{Template}'");
 
-            var templateContent =  ReadFromStream(stream);
-
-            AddFromString(templateContent);
+            return ReadFromStream(stream);
         }
-        internal Builder(string template) : this(template, Assembly.GetCallingAssembly()) { }
-
-        private uint AddFromString(string template)
-        {
-            var result = Native.add_from_string(Handle, template, (ulong) Encoding.UTF8.GetByteCount(template), out var error);
-            HandleError(error);
-            return result;
-        }
-
+        
         private string ReadFromStream(Stream stream)
         {
             using var ms = new MemoryStream();
@@ -36,6 +37,17 @@ namespace Gtk
             var buffer = ms.ToArray();
             
             return Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+        }
+
+    }
+    public partial class Builder
+    {
+        public static BuilderGenerator From(string template)
+        {
+            return new BuilderGenerator()
+            {
+                Template = template
+            };
         }
 
         internal IntPtr GetObject(string name) => Native.get_object(Handle, name);

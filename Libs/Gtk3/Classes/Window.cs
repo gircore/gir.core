@@ -5,6 +5,19 @@ namespace Gtk
     public partial class Window
     {
         #region Properties
+        
+        public static readonly Property<Application> ApplicationProperty = Property<Application>.Register<Window>(
+            Native.ApplicationProperty,
+            nameof(Application),
+            get: (o) => o.Application,
+            set: (o, v) => o.Application = v
+        );
+
+        public Application Application
+        {
+            get => GetProperty(ApplicationProperty);
+            set => SetProperty(ApplicationProperty, value);
+        }
 
         public static readonly Property<bool> ResizableProperty = Property<bool>.Register<Window>(
             Native.ResizableProperty,
