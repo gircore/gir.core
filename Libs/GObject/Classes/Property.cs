@@ -13,12 +13,12 @@ namespace GObject
         /// <summary>
         /// The property getter.
         /// </summary>
-        private Func<Object, T>? _get;
+        private Func<IObject, T>? _get;
 
         /// <summary>
         /// The property setter.
         /// </summary>
-        private Action<Object, T>? _set;
+        private Action<IObject, T>? _set;
 
         #endregion
 
@@ -115,7 +115,7 @@ namespace GObject
         /// <summary>
         /// Get the value of this property in the given object.
         /// </summary>
-        public T Get(Object o) => _get is null
+        public T Get(IObject o) => _get is null
             ? throw new InvalidOperationException("Trying to read the value of a write-only property.")
             : _get(o);
 
@@ -123,7 +123,7 @@ namespace GObject
         /// Set the value of this property in the given object
         /// using the given value.
         /// </summary>
-        public void Set(Object o, T v)
+        public void Set(IObject o, T v)
         {
             if (_set is null)
                 throw new InvalidOperationException("Trying to write the value of a read-only property.");
