@@ -27,7 +27,7 @@ namespace GtkDemo
             // this is done for you.
             Global.Init();
 
-            var myBox = new Box(Orientation.Horizontal, 5);
+            Box myBox = new Box(Orientation.Horizontal, 5);
             myBox.PackStart(new Button("test1"), true, true, 1);
             myBox.PackStart(new Button("Test2"), true, true, 1);
 
@@ -35,6 +35,11 @@ namespace GtkDemo
             {
                 var bla = ot.Orientation;
             }
+
+            var blu = myBox.AsOrientable().Orientation;
+
+            IBox myIBox = new Box(Orientation.Vertical, 5);
+            var fu = myIBox.Orientation;
 
             // Gir.Core supports Object Initialiser Syntax for every widget,
             // allowing for entire widget trees to be created using a nice,
