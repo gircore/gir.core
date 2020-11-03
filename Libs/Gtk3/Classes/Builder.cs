@@ -6,51 +6,21 @@ using System.Text;
 
 namespace Gtk
 {
-    public class BuilderGenerator
-    {
-        internal string? Template { get; set; }
-
-        public Builder Generate(Widget widget)
-        {
-            var templateContent = GetTemplate(widget.GetType().Assembly);
-            var length = Encoding.UTF8.GetByteCount(templateContent);
-            var builder = new Builder(Builder.Native.new_from_string(templateContent, length));
-            builder.Connect(widget);
-            return builder;
-        }
-
-        private string GetTemplate(Assembly assembly)
-        {
-            using var stream = assembly.GetManifestResourceStream(Template);
-
-            if(stream is null)
-                throw new Exception ($"Cannot get resource file '{Template}'");
-
-            return ReadFromStream(stream);
-        }
-        
-        private string ReadFromStream(Stream stream)
-        {
-            using var ms = new MemoryStream();
-            stream.CopyTo(ms);
-
-            var buffer = ms.ToArray();
-            
-            return Encoding.UTF8.GetString(buffer, 0, buffer.Length);
-        }
-
-    }
     public partial class Builder
     {
-        public static BuilderGenerator From(string template)
+        #region Constructors
+        public Builder(string template) : this(Native.@new())
         {
-            return new BuilderGenerator()
-            {
-                Template = template
-            };
+            var templateContent = GetTemplate(Assembly.GetCallingAssembly(), template);
+            var length = (ulong) Encoding.UTF8.GetByteCount(templateContent);
+            Native.add_from_string(Handle, templateContent, length, out IntPtr error);
+            HandleError(error);
         }
+        #endregion
+        
+        #region Methods
 
-        internal IntPtr GetObject(string name) => Native.get_object(Handle, name);
+        public IntPtr GetObject(string name) => Native.get_object(Handle, name);
 
         public void Connect(Widget connector)
         {
@@ -128,5 +98,26 @@ namespace Gtk
 
             return true;
         }
+        
+        private static string GetTemplate(Assembly assembly, string template)
+        {
+            using Stream? stream = assembly.GetManifestResourceStream(template);
+
+            if(stream is null)
+                throw new Exception ($"Cannot get resource file '{template}'");
+
+            return ReadFromStream(stream);
+        }
+        
+        private static string ReadFromStream(Stream stream)
+        {
+            using var ms = new MemoryStream();
+            stream.CopyTo(ms);
+
+            byte[]? buffer = ms.ToArray();
+            
+            return Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+        }
+        #endregion
     }
 }

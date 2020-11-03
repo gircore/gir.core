@@ -13,8 +13,12 @@ namespace GtkDemo
 
         private Notebook notebook;
 
-        public DemoWindow(Application application) : base(application)
+        public DemoWindow(Application application) : this(application, new Builder("demo_window.glade")) { }
+        private DemoWindow(Application application, Builder builder) : base(builder.GetObject("root"))
         {
+            Application = application;
+            builder.Connect(this);
+            
             // Connect Button
             Button.OnClicked += Button_Clicked;
 

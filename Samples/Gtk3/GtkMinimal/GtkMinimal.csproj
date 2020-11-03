@@ -14,6 +14,6 @@
     <EmbeddedResource Include="**\*.glade">
       <LogicalName>%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="data/gtk.png" />
+    <None Update="data\gtk.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

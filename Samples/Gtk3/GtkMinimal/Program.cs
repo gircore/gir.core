@@ -23,19 +23,15 @@ namespace GtkDemo
         {
             if (sender is Application app)
             {
-                var t = typeof(DemoWindow);
-
                 var w = new DemoWindow(app)
                 {
                     DefaultHeight = 600, 
                     DefaultWidth = 800,
                 };
-                
-                var builder = Builder.From("demo_window.glade").Generate(w);
 
                 w.PropertyChanged += (s, a) =>
                     Trace.WriteLine(
-                        $"  => Property Changed On DemoWindow: {a.PropertyName} = {t.GetProperty(a.PropertyName)?.GetValue(w)}");
+                        $"  => Property Changed On DemoWindow: {a.PropertyName} = {typeof(DemoWindow).GetProperty(a.PropertyName)?.GetValue(w)}");
 
                 w.ShowAll();
 
