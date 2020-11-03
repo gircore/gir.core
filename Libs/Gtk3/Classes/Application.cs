@@ -1,4 +1,4 @@
-﻿using Gio;
+﻿using GObject;
 
 namespace Gtk
 {
@@ -6,8 +6,8 @@ namespace Gtk
     {
         #region Constructors
         
-        public Application(string applicationId, ApplicationFlags flags = ApplicationFlags.FlagsNone) 
-            : this(Native.@new(applicationId, flags)) { }
+        public Application(string applicationId) 
+            : this(ConstructParameter.With(ApplicationIdProperty, applicationId)) { }
         
         #endregion
     }

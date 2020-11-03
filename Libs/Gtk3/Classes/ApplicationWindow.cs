@@ -1,7 +1,13 @@
-﻿namespace Gtk
+﻿using GObject;
+
+namespace Gtk
 {
     public partial class ApplicationWindow
     {
-        public ApplicationWindow(Application application) : this(Native.@new(GetHandle(application))) { }
+        #region Constructors
+        public ApplicationWindow(Application application) 
+            : this(ConstructParameter.With(ApplicationProperty, application)) { }
+        
+        #endregion
     }
 }
