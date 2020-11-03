@@ -14,7 +14,7 @@ namespace GObject
         /// <returns>
         /// The value of the GProperty.
         /// </returns>
-        protected internal T GetProperty<T>(Property<T> property)
+        protected T GetProperty<T>(Property<T> property)
             => GetGProperty(property.Name).Extract<T>();
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace GObject
         /// <param name="property">The property descriptor of the GProperty on which set the value.</param>
         /// <param name="value">The value to set to the GProperty.</param>
         /// <typeparam name="T">The tye of the value to define.</typeparam>
-        protected internal void SetProperty<T>(Property<T> property, T value)
+        protected void SetProperty<T>(Property<T> property, T value)
         {
             if (value is Object o)
                 SetGProperty(new Value(o.Handle), property.Name);

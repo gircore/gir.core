@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace GObject
 {
-    public partial class Object : IObject
+    public partial class Object : INotifyPropertyChanged, IDisposable
     {
         #region Fields
 

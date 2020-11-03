@@ -13,12 +13,12 @@ namespace GObject
         /// <summary>
         /// The property getter.
         /// </summary>
-        private Func<IObject, T>? _get;
+        private Func<Object, T>? _get;
 
         /// <summary>
         /// The property setter.
         /// </summary>
-        private Action<IObject, T>? _set;
+        private Action<Object, T>? _set;
 
         #endregion
 
@@ -81,12 +81,12 @@ namespace GObject
         /// An instance of <see cref="Property{T}"/> representing the GProperty description.
         /// </returns>
         public static Property<T> Register<TObject>(string name, string propertyName, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
-            where TObject : IObject
+            where TObject : Object
         {
             return new Property<T>(name, propertyName)
             {
-                _get = get is null ? null : new Func<IObject, T>((o) => get((TObject) o)),
-                _set = set is null ? null : new Action<IObject, T>((o, v) => set((TObject) o, v)),
+                _get = get is null ? null : new Func<Object, T>((o) => get((TObject) o)),
+                _set = set is null ? null : new Action<Object, T>((o, v) => set((TObject) o, v)),
             };
         }
 
@@ -103,19 +103,19 @@ namespace GObject
         /// An instance of <see cref="Property{T}"/> representing the GProperty description.
         /// </returns>
         public static Property<T> Wrap<TObject>(string name, string propertyName, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
-            where TObject : IObject
+            where TObject : Object
         {
             return new Property<T>(name, propertyName)
             {
-                _get = get is null ? null : new Func<IObject, T>((o) => get((TObject) o)),
-                _set = set is null ? null : new Action<IObject, T>((o, v) => set((TObject) o, v)),
+                _get = get is null ? null : new Func<Object, T>((o) => get((TObject) o)),
+                _set = set is null ? null : new Action<Object, T>((o, v) => set((TObject) o, v)),
             };
         }
 
         /// <summary>
         /// Get the value of this property in the given object.
         /// </summary>
-        public T Get(IObject o) => _get is null
+        public T Get(Object o) => _get is null
             ? throw new InvalidOperationException("Trying to read the value of a write-only property.")
             : _get(o);
 
@@ -123,7 +123,7 @@ namespace GObject
         /// Set the value of this property in the given object
         /// using the given value.
         /// </summary>
-        public void Set(IObject o, T v)
+        public void Set(Object o, T v)
         {
             if (_set is null)
                 throw new InvalidOperationException("Trying to write the value of a read-only property.");
