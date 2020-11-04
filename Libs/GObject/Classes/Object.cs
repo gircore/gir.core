@@ -60,7 +60,7 @@ namespace GObject
                 // We have properties
                 // Prepare Construct Properties
                 var names = new IntPtr[nProps];
-                var values = new Value[nProps];
+                var values = new Value[nProps]; //TODO: Do we need to dispose values?
 
                 // Populate arrays
                 for (var i = 0; i < properties.Length; i++)

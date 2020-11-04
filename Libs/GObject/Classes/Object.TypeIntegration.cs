@@ -46,18 +46,6 @@ namespace GObject
             return query;
         }
 
-        // Class Initialiser
-        private static void ClassInit(IntPtr g_class, IntPtr class_data)
-        {
-            Console.WriteLine("class_init: Initialising custom subclass!");
-        }
-
-        // TODO: Virtual Function
-        private static void InstanceInit(IntPtr instance, IntPtr g_class)
-        {
-            Console.WriteLine("instance_init: Initialising custom subclass!");
-        }
-
         private static string QualifyName(System.Type type)
             => $"{type.Namespace}_{type.Name}".Replace(".", "_");
 
@@ -77,8 +65,8 @@ namespace GObject
             var typeInfo = new TypeInfo(
                 class_size: (ushort) query.class_size,
                 instance_size: (ushort) query.instance_size,
-                class_init: ClassInit,
-                instance_init: InstanceInit
+                class_init: type.GetClassInitFunc(),
+                instance_init: type.GetInstanceInitFunc()
             );
 
             // Convert to Pointer
