@@ -17,7 +17,7 @@ namespace Build
             DBUS_SAMPLE,
             GSTREAMER_SAMPLE,
             //GTK3_APP_SAMPLE,
-            //GTK3_MINIMAL_SAMPLE,
+            GTK3_MINIMAL_SAMPLE,
             GTK3_QUICKSTART,
             //GTK4_SIMPLE_WINDOW_SAMPLE
         };
