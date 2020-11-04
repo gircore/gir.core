@@ -9,6 +9,10 @@ namespace Gtk
                 ConstructParameter.With(IconNameProperty, iconName),
                 ConstructParameter.With(IconSizeProperty, (int)size)
             );
+      
+        // TODO: This is incorrect. Don't use @Native.new pattern
+        // public static Image FromFile(string filename)
+        //     => new Image(Native.new_from_file(filename));
 
         public static readonly Property<string> IconNameProperty = Property<string>.Register<Image>(
             Native.IconNameProperty,

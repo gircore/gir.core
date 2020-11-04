@@ -1,3 +1,4 @@
+using System;
 using GObject;
 
 namespace Gtk
@@ -62,7 +63,7 @@ namespace Gtk
 
         #region Contructors
 
-        public Notebook() : this(Native.@new()) { }
+        public Notebook() : this(Array.Empty<ConstructParameter>()) { }
 
         #endregion
 
