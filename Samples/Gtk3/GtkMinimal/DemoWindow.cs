@@ -13,16 +13,20 @@ namespace GtkDemo
 
         private Notebook notebook;
 
-        public DemoWindow(Application application) : base(application, "demo_window.glade")
+        public DemoWindow(Application application) : this(application, new Builder("demo_window.glade")) { }
+        private DemoWindow(Application application, Builder builder) : base(builder.GetObject("root"))
         {
+            Application = application;
+            builder.Connect(this);
+            
             // Connect Button
-            Button.Clicked += Button_Clicked;
+            Button.OnClicked += Button_Clicked;
 
             // Create Notebook
             notebook = new Notebook();
             Box.PackStart(notebook, true, true, 0);
 
-            var image = new FileImage("data/gtk.png");
+            var image = Image.FromFile("data/gtk.png");
             notebook.InsertPage("Image", image, 0);
 
             var label = new Label("Gtk and C# - Very exciting isn't it?");
@@ -30,16 +34,16 @@ namespace GtkDemo
 
             var button = new Button("Open!");
             notebook.InsertPage("Dialogue", button, 2);
-            button.Clicked += OpenDialog;
+            button.OnClicked += OpenDialog;
         }
 
-        private void Button_Clicked(object? sender, EventArgs args)
+        private void Button_Clicked(Button sender, EventArgs args)
         {
             Console.WriteLine("Hello World!");
             Resizable = !Resizable;
         }
 
-        private void OpenDialog(object? sender, EventArgs args)
+        private void OpenDialog(Button sender, EventArgs args)
         {
             // TODO: Investigate adding widgets to GDialog
             var dialog = new Dialog();
