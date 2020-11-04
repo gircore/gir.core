@@ -26,6 +26,13 @@ namespace Gir
         [XmlAttribute("fundamental", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public bool Fundamental { get; set; }
 
+        [XmlElement("implements")]
+        public List<GImplement> Implements { get; set; } = default!;
+
+        //TODO: Workaround as long as no ATK is supported
+        public List<GImplement> ImplementsWithoutAtk 
+            => Implements.Where(x => x.Name is {} && !x.Name.Contains("Atk")).ToList();
+        
         public override IEnumerable<GMethod> AllMethods
         {
             get

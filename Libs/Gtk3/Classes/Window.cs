@@ -71,7 +71,7 @@ namespace Gtk
             set => SetProperty(DefaultWidthProperty, value);
         }
 
-        #endregion Properties
+        #endregion
 
         #region Constructors
 
@@ -82,7 +82,12 @@ namespace Gtk
         { }
 
         #endregion
+        
+        #region Methods
+        
         public void SetTitle(string title) => Native.set_title(Handle, title);
         public void Close() => Native.close(Handle);
+        
+        #endregion
     }
 }
