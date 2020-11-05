@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+#nullable enable
+
 namespace GObject
 {
     public partial class Object : INotifyPropertyChanged, IDisposable
@@ -40,63 +42,41 @@ namespace GObject
         /// <param name="properties"></param>
         public Object(params ConstructParameter[] properties)
         {
-            // This will automatically register our
-            // type in the type dictionary. If the type is
-            // a user-subclass, it will register it with
-            // the GType type system automatically.
-            System.Type? t = GetType();
-            Type typeId = TypeDictionary.Get(t);
-            Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
-
-            // Pointer to GObject
-            IntPtr handle;
+            Type gtype = GetType().Register();
 
             // Handle Properties
             var nProps = properties.Length;
+            
+            var names = new IntPtr[nProps];
+            var values = new Value[nProps]; //TODO: Do we need to dispose values?
 
-            // TODO: Remove dual branches
-            if (nProps > 0)
+            // Populate arrays
+            for (var i = 0; i < nProps; i++)
             {
-                // We have properties
-                // Prepare Construct Properties
-                var names = new IntPtr[nProps];
-                var values = new Value[nProps]; //TODO: Do we need to dispose values?
-
-                // Populate arrays
-                for (var i = 0; i < properties.Length; i++)
-                {
-                    ConstructParameter? prop = properties[i];
-                    // TODO: Marshal in a block, rather than one at a time
-                    // for performance reasons.
-                    names[i] = Marshal.StringToHGlobalAnsi(prop.Name);
-                    values[i] = prop.Value;
-                }
-
-                // Create with properties
-                handle = Native.new_with_properties(
-                    typeId.Value,
-                    (uint) names.Length,
-                    ref names[0],
-                    values
-                );
-
-                // Free strings
-                foreach (IntPtr ptr in names)
-                    Marshal.FreeHGlobal(ptr);
+                ConstructParameter? prop = properties[i];
+                // TODO: Marshal in a block, rather than one at a time
+                // for performance reasons.
+                names[i] = Marshal.StringToHGlobalAnsi(prop.Name);
+                values[i] = prop.Value;
             }
-            else
-            {
-                // Construct with no properties
-                IntPtr zero = IntPtr.Zero;
-                handle = Native.new_with_properties(
-                    typeId.Value,
-                    0,
-                    ref zero,
-                    Array.Empty<Value>()
-                );
-            }
+
+            IntPtr namePointer = nProps > 0 ? names[0] : IntPtr.Zero;
+            
+            // Create with properties
+            IntPtr handle = Native.new_with_properties(
+                gtype.Value,
+                (uint) names.Length,
+                ref namePointer,
+                values
+            );
+
+            // Free strings
+            foreach (IntPtr ptr in names)
+                Marshal.FreeHGlobal(ptr);
 
             Initialize(handle);
+            
+            Console.WriteLine($"Instantiating {GetType().FullName}");
         }
 
         /// <summary>
@@ -284,15 +264,15 @@ namespace GObject
             // TODO: Toggle Refs ^^^
 
             // Resolve GType of object
-            Type trueGType = TypeFromHandle(handle);
-            System.Type? trueType = TypeDictionary.Get(trueGType);
+            Type trueGType = handle.GetGType();
+            System.Type trueType = TypeDictionary.Get(trueGType) ?? throw new Exception($"Could not find {trueGType}");
 
             // Ensure we are not constructing a subclass
-            if (IsSubclass(trueType))
+            if (trueType.IsSubclass())
                 throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
 
             // Ensure the conversion is valid
-            Type castGType = TypeDictionary.Get(typeof(T));
+            Type castGType = TypeDictionary.Get(typeof(T)) ?? throw new Exception($"Could not find {typeof(T)}");
             if (!Global.Native.type_is_a(trueGType.Value, castGType.Value))
                 throw new InvalidCastException();
 

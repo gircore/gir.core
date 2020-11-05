@@ -1,5 +1,7 @@
-﻿using Gtk;
+﻿using System;
+using Gtk;
 using Global = Gtk.Global;
+using Object = GObject.Object;
 
 namespace GtkDemo
 {
@@ -13,7 +15,7 @@ namespace GtkDemo
         public static void Main(string[] args)
         {
             Global.Init();
-
+            
             var mainWindow = new Window("MyWindow")
             {
                 DefaultWidth = 300, 
