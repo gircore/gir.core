@@ -8,6 +8,11 @@ namespace GtkDemo
         [Template("CompositeWidget.glade")]
         public class CompositeWidget : Bin
         {
+            private static void BaseInit(IntPtr gClass)
+            {
+                Console.WriteLine("Composite BaseInit");
+            }
+            
             private static void ClassInit(IntPtr gClass, IntPtr classData)
             {
                 Console.WriteLine("Class init Composite");
