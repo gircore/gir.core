@@ -1,5 +1,8 @@
 using System;
 using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using GLib;
 using Type = GObject.Type;
 
 namespace Gtk
@@ -15,18 +18,15 @@ namespace Gtk
 
         private static void InitTemplate(Type gtype, System.Type type)
         {
-            var template = GetTemplate(gtype, type);
-           
-            
-            //WidgetClass.Native.set_template();
+            Bytes? template = GetTemplate(type);
+            if (template is null)
+                return;
 
-            /*SetTemplateFromStream(gtype, stream);
+            WidgetClass.Native.set_template(gtype.GetClassPointer(), (IntPtr) template);
             BindTemplateChildren(gtype, type);
-            (new SignalConnector(type)).ConnectSignals(gtype);
-            */
         }
 
-        private static GLib.Bytes? GetTemplate(Type gClass, System.Type type)
+        private static Bytes? GetTemplate(System.Type type)
         {
             object[] attrs = type.GetCustomAttributes(typeof(TemplateAttribute), false);
 
@@ -38,16 +38,37 @@ namespace Gtk
 
             if (stream == null)
                 throw new Exception("Cannot get resource file '" + resourceName + "'");
-            
-            var size = (int)stream.Length;
-            var buffer = new byte[size];
-            stream.Read (buffer, 0, size);
-            stream.Close ();
 
-            return null; //new GLib.Bytes (buffer);
+            var size = (int) stream.Length;
+            var buffer = new byte[size];
+            stream.Read(buffer, 0, size);
+            stream.Close();
+
+            return Bytes.From(buffer);
         }
 
+        private static void BindTemplateChildren(Type gtype, System.Type t)
+        {
+            const BindingFlags flags = BindingFlags.Public
+                                       | BindingFlags.NonPublic
+                                       | BindingFlags.DeclaredOnly
+                                       | BindingFlags.Instance;
 
+            foreach (var field in t.GetFields(flags))
+            {
+                object[]? attrs = field.GetCustomAttributes(typeof(ConnectAttribute), true);
+
+                if (attrs.Length == 0)
+                    continue;
+
+                var attr = (ConnectAttribute) attrs[0];
+                var name = attr.WidgetName ?? field.Name;
+                
+                //TODO: fill internal child
+                WidgetClass.Native.bind_template_child_full(gtype.GetClassPointer(), name, false, 0);
+            }
+        }
+        
         public void ShowAll() => Native.show_all(Handle);
 
         #endregion

@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace GObject
@@ -49,14 +50,16 @@ namespace GObject
 
         #endregion
 
-        /*public IntPtr GetClassPointer()
+        //TODO: This should not be public
+        public IntPtr GetClassPointer()
         {
-            var ptr = TypeClass.peek(value);
+            IntPtr ptr = TypeClass.Native.peek(Value);
             
             if(ptr == IntPtr.Zero)
-                ptr = TypeClass.@ref(value);
+                ptr = TypeClass.Native.@ref(Value);
+            
             return ptr;
-        }*/
+        }
 
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
     }
