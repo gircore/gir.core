@@ -10,9 +10,12 @@ namespace {{ namespace }}
     public partial class {{ name }}
     {        
         #region Methods
+        internal static class Native
+        {
 {{~ for method in all_methods
     include 'method.sbntxt' method
 end ~}}
+        }
         #endregion
     }
 }
