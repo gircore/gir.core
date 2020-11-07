@@ -6,14 +6,27 @@ namespace GObject
     internal static class IntPtrExtension
     {
         #region Methods
-
-        public static Type GetGType(this IntPtr handle)
+        
+        public static Type GetGTypeFromTypeClass(this IntPtr typeClassPtr)
         {
             try
             {
-                TypeInstance instance = Marshal.PtrToStructure<TypeInstance>(handle);
-                TypeClass typeClass = Marshal.PtrToStructure<TypeClass>(instance.g_class);
+                TypeClass typeClass = Marshal.PtrToStructure<TypeClass>(typeClassPtr);
                 return new Type(typeClass.g_type);
+            }
+            catch(Exception ex)
+            {
+                // TODO: Check if pointer is actually a GObject?
+                throw new Exception("Could not resolve type from pointer" + ex.Message);
+            }
+        }
+
+        public static Type GetGTypeFromTypeInstance(this IntPtr typeInstancePtr)
+        {
+            try
+            {
+                TypeInstance typeInstance = Marshal.PtrToStructure<TypeInstance>(typeInstancePtr);
+                return typeInstance.g_class.GetGTypeFromTypeClass();
             }
             catch
             {

@@ -264,7 +264,7 @@ namespace GObject
             // TODO: Toggle Refs ^^^
 
             // Resolve GType of object
-            Type trueGType = handle.GetGType();
+            Type trueGType = handle.GetGTypeFromTypeInstance();
             System.Type trueType = TypeDictionary.Get(trueGType) ?? throw new Exception($"Could not find {trueGType}");
 
             // Ensure we are not constructing a subclass

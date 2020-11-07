@@ -9,6 +9,7 @@ namespace GObject
     {
         #region Fields
 
+        private const string ClassInit = "ClassInit";
         private static readonly Dictionary<System.Type, Object.TypeDescriptor?> DescriptorDict =
             new Dictionary<System.Type, Object.TypeDescriptor?>();
 
@@ -42,11 +43,14 @@ namespace GObject
             method?.Invoke(null, parameters);
         }
 
+        internal static void InvokeClassInitMethod(this IReflect callingType, Type gClass, IReflect type)
+            => callingType.InvokeStaticMethod(ClassInit, gClass, type, IntPtr.Zero);
+
         internal static ClassInitFunc? GetClassInitFunc(this IReflect type) => (gClass, classData) =>
         {
             type.InvokeStaticMethod(
-                name: "ClassInit",
-                parameters: new object[] {gClass, classData}
+                name: ClassInit,
+                parameters: new object[] {gClass.GetGTypeFromTypeClass(), type, classData}
             );
         };
 
@@ -54,7 +58,7 @@ namespace GObject
         {
             type.InvokeStaticMethod(
                 name: "InstanceInit",
-                parameters: new object[] {instance, gClass}
+                parameters: new object[] {instance, gClass.GetGTypeFromTypeClass(), type}
             );
         };
 
@@ -62,7 +66,7 @@ namespace GObject
         {
             type.InvokeStaticMethod(
                 name: "BaseInit",
-                parameters: new object[] {gClass}
+                parameters: new object[] {gClass.GetGTypeFromTypeClass(), type}
             );
         };
 

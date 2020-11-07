@@ -1,5 +1,6 @@
 ﻿using System;
 using Gtk;
+using Type = GObject.Type;
 
 namespace GtkDemo
 {
@@ -8,17 +9,17 @@ namespace GtkDemo
         [Template("CompositeWidget.glade")]
         public class CompositeWidget : Bin
         {
-            private static void BaseInit(IntPtr gClass)
+            private static void BaseInit(Type gClass, System.Type type)
             {
                 Console.WriteLine("Composite BaseInit");
             }
             
-            private static void ClassInit(IntPtr gClass, IntPtr classData)
+            private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
             {
                 Console.WriteLine("Class init Composite");
             }
             
-            private static void InstanceInit(IntPtr gClass, IntPtr classData)
+            private static void InstanceInit(IntPtr instance, Type gClass, System.Type type)
             {
                 Console.WriteLine("Instance init Composite");
             }

@@ -1,4 +1,5 @@
 using System;
+using Type = GObject.Type;
 
 namespace Gtk
 {
@@ -6,7 +7,7 @@ namespace Gtk
     {
         #region Methods
 
-        private static void ClassInit(IntPtr gClass, IntPtr classData)
+        private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
         {
             Console.WriteLine("Class init Widget");
         }

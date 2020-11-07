@@ -30,17 +30,9 @@ namespace GObject
                     //Type is a subclass, because custom type does not have a type descriptor
                     //We create a new type for this.
 
-                    //Call class init for complete hierarchy
-                    System.Type? parent = type.BaseType;
-                    while (parent is { })
-                    {
-                        parent.GetClassInitFunc()?.Invoke(IntPtr.Zero, IntPtr.Zero);
-                        parent = parent.BaseType;
-                    }
-
                     //As a base we use the first native class we find in its hierarchy.
                     System.Type boundarySystemType = GetBoundaryType(type);
-                    Type boundaryGtype = Register(boundarySystemType); //Register in case this is not registred
+                    Type boundaryGtype = Register(boundarySystemType); //Get the boundary GType via registering in case it is unknown.
                     TypeQuery query = boundaryGtype.QueryType();
 
                     // Create TypeInfo
@@ -71,6 +63,21 @@ namespace GObject
 
                     // Register type in type dictionary
                     TypeDictionary.Register(type, subclassType);
+                    
+                    //Call class init for complete hierarchy
+                    //Object & InitallyUnowned are the root and do not have custom code in ClassInit.
+                    
+                    //TODO If we have subclass1 -> subclass2 -> Button -> Box -> ...
+                    //The following will the button class init method 2 times, but it should
+                    //only be one time!!!
+                    System.Type? parent = type.BaseType;
+                    while (parent is { } && (parent != typeof(Object) && (parent != typeof(InitiallyUnowned))))
+                    {
+                        var parentType = Register(parent);
+                        parent.InvokeClassInitMethod(subclassType, type);
+                        parent = parent.BaseType;
+                    }
+                    
                     return subclassType;
                 }
             }
