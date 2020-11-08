@@ -236,61 +236,66 @@ namespace GObject
             return false;
         }
 
-        // This function returns the proxy object to the provided handle
-        // if it already exists, otherwise creates a new wrapper object
-        // and returns it.
-        public static T WrapPointerAs<T>(IntPtr handle)
+
+        /// <summary>
+        /// This function returns the proxy object to the provided handle
+        /// if it already exists, otherwise creates a new wrapper object
+        /// and returns it.
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>The wraped or object</returns>
+        /// <exception cref="Exception">Exception is thrown if it pointer could not be wrapped.</exception>
+        protected internal static T WrapPointerAs<T>(IntPtr handle)
+            => (T) WrapPointer(handle);
+
+        protected internal static bool TryWrapPointerAs<T>(IntPtr handle, out T obj)
         {
-            if (TryWrapPointerAs<T>(handle, out T obj))
-                return obj;
-
-            throw new Exception($"Failed to wrap handle as type <{typeof(T).FullName}>");
-        }
-
-        protected internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
-        {
-            o = default!;
-
-            // Return false if T is not of type Object
-            if (!typeof(T).IsSubclassOf(typeof(Object)) && typeof(T) != typeof(Object))
-                return false;
-
-            // Attempt to lookup the pointer in the object dictionary
-            if (Objects.TryGetValue(handle, out Object? obj))
+            try
             {
-                o = (T) (object) obj;
+                obj = WrapPointerAs<T>(handle);
                 return true;
             }
+            catch
+            {
+                obj = default!;
+                return false;
+            }
+        }
+
+        protected internal static object WrapPointer(IntPtr handle)
+        {
+            // Attempt to lookup the pointer in the object dictionary
+            if (Objects.TryGetValue(handle, out Object? obj))
+                return obj;
+
+            // Resolve GType of object
+            Type gtype = handle.GetGTypeFromTypeInstance();
+
+            // Return false if handle is not of type Object
+            if (!Type.IsA(gtype, Types.Object))
+                throw new Exception("Type is not an GObject");
 
             // If it is not found, we can assume that it
             // is NOT a subclass type, as we ensure that
             // subclass types always outlive their pointers
             // TODO: Toggle Refs ^^^
-
-            // Resolve GType of object
-            Type trueGType = handle.GetGTypeFromTypeInstance();
-            System.Type trueType = TypeDictionary.Get(trueGType) ?? throw new Exception($"Could not find {trueGType}");
+            
+            System.Type? type = TypeDictionary.Get(gtype) ?? throw new Exception($"Could not find {gtype}");
 
             // Ensure we are not constructing a subclass
-            if (trueType.IsSubclass())
+            if (type.IsSubclass())
                 throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
-
-            // Ensure the conversion is valid
-            Type castGType = TypeDictionary.Get(typeof(T)) ?? throw new Exception($"Could not find {typeof(T)}");
-            if (!Global.Native.type_is_a(trueGType.Value, castGType.Value))
-                throw new InvalidCastException();
-
+            
             // Create using 'IntPtr' constructor
-            System.Reflection.ConstructorInfo? ctor = trueType.GetConstructor(
+            System.Reflection.ConstructorInfo ctor = type.GetConstructor(
                 System.Reflection.BindingFlags.NonPublic
                 | System.Reflection.BindingFlags.Public
                 | System.Reflection.BindingFlags.Instance,
-                null, new[] { typeof(IntPtr) }, null
-            );
+                null, new[] {typeof(IntPtr)}, null
+            ) ?? throw new Exception($"constructor({nameof(IntPtr)}) not found for {type.FullName}");
 
-            o = (T) ctor.Invoke(new object[] { handle });
-
-            return true;
+            return ctor.Invoke(new object[] { handle });
         }
 
         #endregion
