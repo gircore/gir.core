@@ -1,4 +1,4 @@
-{{-
+{{~
 include 'helper.sbntxt'
 
 $signal = $1
@@ -32,10 +32,9 @@ else
 end
 ~}}
 
-        #region Signal {{signal_name}}
+        #region Signal {{$signal_name}}
         
         {{~ if $signal.needs_signal_args ~}}
-        
         ///<summary>
         /// Indexer to connect {{ signal_descriptor_name }} with an SignalHandler<{{$signal_generic_args}}>
         ///</summary>
@@ -61,10 +60,10 @@ end
             {{~ end ~}}
             #endregion
         }
+        
         {{~ end ~}}
-
         /// <summary>
-        /// Signal Descriptor for {{signal_name}}.
+        /// Signal Descriptor for {{$signal_name}}.
         /// </summary>
         {{~ $signal | write_obsolete_attribute $indent ~}}
         public static readonly Signal<{{ $signal_generic_args }}> {{ $signal_descriptor_name }}

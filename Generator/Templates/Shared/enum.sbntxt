@@ -7,8 +7,8 @@ namespace {{ namespace }}
     {{~ end ~}}
     public enum {{ name }} : long
     {
-{{ for member in members
+{{~ for member in members
 include 'enum_member.sbntxt' member '        '
-end }}
+end ~}}
     }
 }

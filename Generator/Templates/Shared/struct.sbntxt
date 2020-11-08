@@ -16,7 +16,6 @@ this | write_obsolete_attribute '    '
     public partial struct {{ name }}
     {
         #region Fields
-
 {{~ for field in fields
 include 'field.sbntxt' field '        '
 end ~}}

@@ -40,16 +40,11 @@ namespace {{ namespace }}
     {
 {{if !fundamental}}
         private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ type_name }}", {{ name }}.Native.get_type);
-        
-        #region Properties
-        {{~ for property in properties
-            #include 'property.sbntxt' property
-        end ~}}
-        #endregion
 
         #region Signals
         
-        {{ if signals_have_event_args }}
+        {{- if signals_have_event_args }}
+        
         ///<summary>
         /// Indexer to connect with an SignalHandler<{{name}}>
         ///</summary>
@@ -58,34 +53,43 @@ namespace {{ namespace }}
             set => signal.Connect(this, value, true);
         }
         {{ end }}
-        
-        {{~ for $signal in signals
-            include 'signal.sbntxt' $signal '        ' name
+
+        {{- for $signal in signals
+
+include 'signal.sbntxt' $signal '        ' name
+
         end ~}}
-
+        
         #endregion
-
-        {{if has_parent}} 
+        
+        {{- if has_parent}} 
+        
         #region Constructors
+        
         protected internal {{ name }}(IntPtr ptr) : base(ptr) {}
         protected internal {{ name }}(params ConstructParameter[] properties) : base(properties) {}
-        #endregion
-        {{ end }}
-{{ end }}
         
+        #endregion
+        
+        {{- end }}
+{{- end }}
+
         #region Methods
+        
         protected static{{' new'|get_if_parent}} class Native
         {
         {{~if !fundamental && (string.size get_type_function) > 0 
             get_type_function | write_dll_import dll_import '            '
         ~}}
             public static extern ulong get_type();
-        {{ end }}
+        {{ end ~}}
 
             #region Properties
-            {{ for $property in properties
+            
+            {{~ for $property in properties
                 include 'native_property.sbntxt' $property '            '
-            end }}
+            end ~}}
+            
             #endregion
         
             #region Methods
