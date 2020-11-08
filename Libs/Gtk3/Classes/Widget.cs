@@ -26,6 +26,8 @@ namespace Gtk
             if(!gtype.HasValue)
                 throw new Exception($"Unknown type {myType.FullName}");
             
+            Native.init_template(Handle);
+            
             ForAllConnectAttributes(myType, (field, name) =>
             {
                 IntPtr ptr = Native.get_template_child(Handle, gtype.Value.Value, name);
