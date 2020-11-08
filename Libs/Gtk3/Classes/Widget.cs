@@ -1,15 +1,33 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using GLib;
+using BindingFlags = System.Reflection.BindingFlags;
+using Object = GObject.Object;
 using Type = GObject.Type;
 
 namespace Gtk
 {
     public partial class Widget
     {
+        #region Field
+        private const BindingFlags TemplateFieldBindingFlags = BindingFlags.Public
+                                                               | BindingFlags.NonPublic
+                                                               | BindingFlags.DeclaredOnly
+                                                               | BindingFlags.Instance;
+        #endregion
         #region Methods
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+            var myType = GetType();
+            ForAllConnectAttributes(myType, (field, name) =>
+            {
+                var ptr = Native.get_template_child(Handle, Object.TypeDictionary.Get(myType).Value.Value, name);
+                field.SetValue (this, ??, TemplateFieldBindingFlags, null, null);
+            });
+        }
 
         private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
         {
@@ -22,7 +40,7 @@ namespace Gtk
             if (template is null)
                 return;
 
-            WidgetClass.Native.set_template(gtype.GetClassPointer(), (IntPtr) template);
+            WidgetClass.Native.set_template(gtype.GetClassPointer(), GetHandle(template));
             BindTemplateChildren(gtype, type);
         }
 
@@ -47,14 +65,16 @@ namespace Gtk
             return Bytes.From(buffer);
         }
 
-        private static void BindTemplateChildren(Type gtype, System.Type t)
+        private static void BindTemplateChildren(Type gtype, IReflect t)
         {
-            const BindingFlags flags = BindingFlags.Public
-                                       | BindingFlags.NonPublic
-                                       | BindingFlags.DeclaredOnly
-                                       | BindingFlags.Instance;
-
-            foreach (var field in t.GetFields(flags))
+            ForAllConnectAttributes(t, (field, name) => 
+                WidgetClass.Native.bind_template_child_full(gtype.GetClassPointer(), name, false, 0)
+            );
+        }
+        
+        private static void ForAllConnectAttributes(IReflect t, Action<FieldInfo, string> action)
+        {
+            foreach (var field in t.GetFields(TemplateFieldBindingFlags))
             {
                 object[]? attrs = field.GetCustomAttributes(typeof(ConnectAttribute), true);
 
@@ -63,9 +83,8 @@ namespace Gtk
 
                 var attr = (ConnectAttribute) attrs[0];
                 var name = attr.WidgetName ?? field.Name;
-                
-                //TODO: fill internal child
-                WidgetClass.Native.bind_template_child_full(gtype.GetClassPointer(), name, false, 0);
+
+                action(field, name);
             }
         }
         
