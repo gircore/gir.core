@@ -265,6 +265,9 @@ namespace GObject
 
         protected internal static object WrapPointer(IntPtr handle)
         {
+            if(handle == IntPtr.Zero)
+                throw new Exception("Can not convert IntPtr.Zero");
+            
             // Attempt to lookup the pointer in the object dictionary
             if (Objects.TryGetValue(handle, out Object? obj))
                 return obj;
