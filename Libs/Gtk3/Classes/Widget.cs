@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using GLib;
 using BindingFlags = System.Reflection.BindingFlags;
-using Object = GObject.Object;
 using Type = GObject.Type;
 
 namespace Gtk
@@ -21,17 +20,23 @@ namespace Gtk
         protected override void Initialize()
         {
             base.Initialize();
-            var myType = GetType();
+            System.Type myType = GetType();
+            
+            Type? gtype = TypeDictionary.Get(myType);
+            if(!gtype.HasValue)
+                throw new Exception($"Unknown type {myType.FullName}");
+            
             ForAllConnectAttributes(myType, (field, name) =>
             {
-                var ptr = Native.get_template_child(Handle, Object.TypeDictionary.Get(myType).Value.Value, name);
-                field.SetValue (this, ??, TemplateFieldBindingFlags, null, null);
+                IntPtr ptr = Native.get_template_child(Handle, gtype.Value.Value, name);
+                field.SetValue (this, WrapPointer(ptr), TemplateFieldBindingFlags, null, null);
             });
         }
 
         private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
         {
             Console.WriteLine("Class init Widget");
+            InitTemplate(gClass, type);
         }
 
         private static void InitTemplate(Type gtype, System.Type type)
