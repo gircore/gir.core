@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using GLib;
 
 #nullable enable
 
@@ -207,6 +208,9 @@ namespace GObject
 
         protected static IntPtr GetHandle(Object obj)
             => obj.Handle;
+
+        protected static IntPtr GetHandle(Bytes bytes)
+            => bytes.Handle;
 
         /// <summary>
         /// Notify this object that a property has just changed.

@@ -4,19 +4,29 @@ namespace GLib
 {
     public partial class Bytes
     {
-        private IntPtr _handle;
+        #region Properties
 
-        internal Bytes(IntPtr handle)
+        internal IntPtr Handle { get; }
+
+        #endregion
+
+        #region Constructors
+
+        private Bytes(IntPtr handle)
         {
-            _handle = handle;
+            Handle = handle;
         }
+
+        #endregion
+
+        #region Methods
 
         public static Bytes From(byte[] data)
         {
-             return new Bytes(Native.@new(data, (ulong) data.Length));
+            return new Bytes(Native.@new(data, (ulong) data.Length));
         }
 
-        //TODO: Get rid of this
-        public static explicit operator IntPtr(Bytes b) => b._handle;
+        #endregion
+
     }
 }
