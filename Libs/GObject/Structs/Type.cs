@@ -50,6 +50,20 @@ namespace GObject
 
         #endregion
 
+        #region Methods
+        
+        public static bool IsA(Type gtype, Type type)
+            => IsA(gtype.Value, type.Value);
+
+        internal static bool IsA(Type gtype, Types type)
+            => IsA(gtype.Value, type);
+        
+        internal static bool IsA(ulong gtype, Types type)
+            => IsA(gtype, (ulong) type);
+
+        internal static bool IsA(ulong gtype, ulong type)
+            => Global.Native.type_is_a(gtype, type);
+
         //TODO: This should not be public
         public IntPtr GetClassPointer()
         {
@@ -60,6 +74,7 @@ namespace GObject
             
             return ptr;
         }
+        #endregion
 
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
     }
