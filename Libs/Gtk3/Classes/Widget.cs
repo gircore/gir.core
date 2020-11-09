@@ -41,7 +41,7 @@ namespace Gtk
             InitTemplate(gClass, type);
         }
 
-        private static void InitTemplate(Type gtype, System.Type type)
+        protected static void InitTemplate(Type gtype, System.Type type)
         {
             Bytes? template = GetTemplate(type);
             if (template is null)

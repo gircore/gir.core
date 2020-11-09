@@ -16,6 +16,9 @@ namespace GtkDemo
         {
             Global.Init();
             
+            //TODO: Manually register button for the type as long as the type dict is not filled automatically
+            Object.TypeDictionary.Register(typeof(Gtk.Button), Gtk.Button.Bla());
+            
             var mainWindow = new Window("MyWindow")
             {
                 DefaultWidth = 300, 

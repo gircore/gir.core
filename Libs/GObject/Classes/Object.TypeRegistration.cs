@@ -70,13 +70,13 @@ namespace GObject
                     //TODO If we have subclass1 -> subclass2 -> Button -> Box -> ...
                     //The following will the button class init method 2 times, but it should
                     //only be one time!!!
-                    System.Type? parent = type.BaseType;
+                    /*System.Type? parent = type.BaseType;
                     while (parent is { } && (parent != typeof(Object) && (parent != typeof(InitiallyUnowned))))
                     {
                         var parentType = Register(parent);
                         parent.InvokeClassInitMethod(subclassType, type);
                         parent = parent.BaseType;
-                    }
+                    }*/
                     
                     return subclassType;
                 }

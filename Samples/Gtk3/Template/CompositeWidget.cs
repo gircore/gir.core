@@ -17,6 +17,7 @@ namespace GtkDemo
             private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
             {
                 Console.WriteLine("Class init Composite");
+                InitTemplate(gClass, type);
             }
             
             private static void InstanceInit(IntPtr instance, Type gClass, System.Type type)

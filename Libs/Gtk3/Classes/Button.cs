@@ -5,6 +5,9 @@ namespace Gtk
 {
     public partial class Button
     {
+        //TODO: Workaround as long as typedict is not filled
+        public static GObject.Type Bla() => GTypeDescriptor.GType;
+        
         #region Properties
 
         public static readonly Property<bool> AlwaysShowImageProperty = Property<bool>.Register<Button>(
