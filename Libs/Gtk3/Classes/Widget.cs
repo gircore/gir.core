@@ -20,14 +20,11 @@ namespace Gtk
         protected override void Initialize()
         {
             base.Initialize();
-            System.Type myType = GetType();
-            Type gtype = GetGType();
-
             Native.init_template(Handle);
             
-            ForAllConnectAttributes(myType, (field, name) =>
+            ForAllConnectAttributes(GetType(), (field, name) =>
             {
-                IntPtr ptr = Native.get_template_child(Handle, gtype.Value, name);
+                IntPtr ptr = Native.get_template_child(Handle, GetGType().Value, name);
                 field.SetValue (this, WrapPointer(ptr), TemplateFieldBindingFlags, null, null);
             });
         }
