@@ -21,16 +21,13 @@ namespace Gtk
         {
             base.Initialize();
             System.Type myType = GetType();
-            
-            Type? gtype = TypeDictionary.Get(myType);
-            if(!gtype.HasValue)
-                throw new Exception($"Unknown type {myType.FullName}");
-            
+            Type gtype = GetGType();
+
             Native.init_template(Handle);
             
             ForAllConnectAttributes(myType, (field, name) =>
             {
-                IntPtr ptr = Native.get_template_child(Handle, gtype.Value.Value, name);
+                IntPtr ptr = Native.get_template_child(Handle, gtype.Value, name);
                 field.SetValue (this, WrapPointer(ptr), TemplateFieldBindingFlags, null, null);
             });
         }

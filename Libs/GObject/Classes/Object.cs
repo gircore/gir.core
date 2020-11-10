@@ -16,6 +16,7 @@ namespace GObject
         private static readonly Dictionary<IntPtr, Object> Objects = new Dictionary<IntPtr, Object>();
         private static readonly Dictionary<ClosureHelper, ulong> Closures = new Dictionary<ClosureHelper, ulong>();
 
+        private Type? _myType = null;
         #endregion
 
         #region Events
@@ -28,6 +29,8 @@ namespace GObject
         #endregion
 
         #region Properties
+
+        protected internal Type GetGType() => _myType ?? throw new Exception($"Type of {GetType().FullName} is unknown");
 
         protected internal IntPtr Handle { get; private set; }
 
@@ -100,6 +103,8 @@ namespace GObject
         private void Initialize(IntPtr ptr)
         {
             Handle = ptr;
+            _myType = ptr.GetGTypeFromTypeInstance();
+            
             //TODO
             Objects.Add(ptr, this);
             RegisterProperties();
