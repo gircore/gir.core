@@ -11,7 +11,6 @@ namespace GObject
             // Dual dictionaries for looking up types and gtypes
             private static readonly Dictionary<System.Type, Type> TypeDict;
             private static readonly Dictionary<Type, System.Type> GTypeDict;
-            private static readonly Dictionary<System.Type, TypeDescriptor?> DescriptorDict;
 
             #endregion
             
@@ -21,8 +20,7 @@ namespace GObject
             {
                 TypeDict = new Dictionary<System.Type, Type>();
                 GTypeDict = new Dictionary<Type, System.Type>();
-                DescriptorDict = new Dictionary<System.Type, TypeDescriptor?>();
-                
+
                 Register(typeof(Object), GTypeDescriptor.GType);
                 Register(typeof(InitiallyUnowned), GTypeDescriptor.GType);
             }
@@ -47,7 +45,7 @@ namespace GObject
             public static bool Contains(System.Type type) => TypeDict.ContainsKey(type);
             public static bool Contains(Type gtype) => GTypeDict.ContainsKey(gtype);
             
-            // <summary>
+            /// <summary>
             /// Get the C# type from the given GType.
             /// </summary>
             /// <param name="gtype">The GType.</param>
