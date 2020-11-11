@@ -67,8 +67,14 @@ namespace GObject
             if (!IsSubclass(type))
                 throw new Exception($"Error! Trying to register wrapper class {type} as new type");
 
-            if (type.BaseType is { } && IsSubclass(type.BaseType))
-                RegisterNativeType(type.BaseType);
+            if (type.BaseType is { })
+            {
+                if (IsSubclass((type.BaseType)))
+                    RegisterNativeType(type.BaseType);
+                else
+                    TypeDictionary.AddRecursive(type.BaseType);
+            }
+                
 
             var boundaryTypeId = GetBoundaryTypeId(type);
             TypeQuery query = QueryType(boundaryTypeId);
@@ -97,7 +103,7 @@ namespace GObject
             Marshal.FreeHGlobal(ptr);
 
             // Register type in type dictionary
-            TypeDictionary.Add(type, new Type(typeid));
+            TypeDictionary.AddSingle(type, new Type(typeid));
         }
 
         private static Type TypeFromHandle(IntPtr handle)

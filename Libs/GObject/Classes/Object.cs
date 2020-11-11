@@ -295,7 +295,7 @@ namespace GObject
             TypeDescriptor desc = TypeDictionary.GetTypeDescriptor(typeof(T))
                 ?? throw new Exception($"Error: Type {typeof(T).FullName} does not define a TypeDescriptor.");
             
-            TypeDictionary.Add(typeof(T), desc.GType);
+            TypeDictionary.AddRecursive(typeof(T), desc.GType);
             
             // Optimisation: Compare the gtype of 'T' to the GType of the pointer. If they are
             // equal, we can skip the type dictionary's (possible) recursive lookup and return

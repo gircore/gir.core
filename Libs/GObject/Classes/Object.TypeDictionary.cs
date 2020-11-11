@@ -34,8 +34,8 @@ namespace GObject
                 DescriptorDict = new Dictionary<System.Type, TypeDescriptor?>();
 
                 // Add GObject and GInitiallyUnowned
-                Add(typeof(Object), GTypeDescriptor.GType);
-                Add(typeof(InitiallyUnowned), GTypeDescriptor.GType);
+                AddSingle(typeof(Object), GTypeDescriptor.GType);
+                AddSingle(typeof(InitiallyUnowned), GTypeDescriptor.GType);
             }
 
             #endregion
@@ -43,17 +43,58 @@ namespace GObject
             #region Methods
 
             /// <summary>
-            /// Add to type dictionary.
+            /// Adds a single pair of (<c>System.Type</c>, <c>Type</c>) to the type dictionary.
+            /// Prefer <see cref="AddRecursive(System.Type, Type)"/> where relevant.
             /// </summary>
             /// <param name="type">The C# type.</param>
             /// <param name="gtype">The corresponding GType.</param>
-            internal static void Add(System.Type type, Type gtype)
+            internal static void AddSingle(System.Type type, Type gtype)
             {
                 if (TypeDict.ContainsKey(type) || GTypeDict.ContainsKey(gtype))
                     return;
 
                 TypeDict.Add(type, gtype);
                 GTypeDict.Add(gtype, type);
+            }
+
+            /// <summary>
+            /// Recursively register <c>type</c> in the type dictionary. Prefer
+            /// <see cref="AddRecursive(System.Type, Type)"/> if the gtype is already known.
+            /// </summary>
+            /// <param name="type">The C# type.</param>
+            internal static void AddRecursive(System.Type type)
+            {
+                Type gtype = GetTypeDescriptor(type)!.GType;
+                AddRecursive(type, gtype);
+            }
+
+            /// <summary>
+            /// Recursively register a <c>type</c> and <c>gtype</c> pair in type dictionary. This
+            /// is preferred to <see cref="AddRecursive(System.Type)"/> as it avoids an additional
+            /// type descriptor lookup.
+            /// </summary>
+            /// <param name="type">The C# type.</param>
+            /// <param name="gtype">The corresponding GType.</param>
+            internal static void AddRecursive(System.Type type, Type gtype)
+            {
+                AddSingle(type, gtype);
+                
+                // Register recursively
+                System.Type? baseType = type.BaseType;
+                while (baseType != null && !Contains(baseType))
+                {
+                    Console.WriteLine(baseType.Name);
+                    TypeDescriptor? typeDescriptor = GetTypeDescriptor(baseType);
+
+                    if (typeDescriptor is null)
+                        throw new ArgumentException($"{type.Name} is unknown.", nameof(type));
+
+                    // Add to typedict for future use
+                    AddSingle(baseType, typeDescriptor.GType);
+                    Console.WriteLine($"Adding {baseType.Name}");
+
+                    baseType = baseType.BaseType;
+                }
             }
 
             /// <summary>
@@ -139,7 +180,7 @@ namespace GObject
                 if (foundType != null)
                 {
                     Console.WriteLine($"Found type. Using {foundType.FullName} = {gtype.ToString()}");
-                    Add(foundType, gtype);
+                    AddRecursive(foundType, gtype);
                     return foundType;
                 }
 
@@ -175,7 +216,7 @@ namespace GObject
                     if (foundType != null)
                     {
                         Console.WriteLine($"The System.Type for GType {gtype.ToString()} could not be found. Resorting to using type {foundType.FullName}. Unexpected behaviour may occur");
-                        Add(foundType, gtype);
+                        AddRecursive(foundType, gtype);
                         return foundType;
                     }
                 }
@@ -203,7 +244,7 @@ namespace GObject
                 // If we are looking up a type that is not yet in
                 // the type dictionary, we are most likely registering
                 // a new type. Therefore, we should register the type
-                // and parent types recursively now to avoid having to
+                // and parent types recursively now, to avoid having to
                 // do this in the future.
 
                 // Retrieve the GType accordingly
@@ -216,23 +257,8 @@ namespace GObject
                     return TypeDict[type];
                 }
 
-                // We are a wrapper, so register types recursively
-                Console.WriteLine("Registering Recursively");
-                System.Type baseType = type;
-                while (!Contains(baseType))
-                {
-                    Console.WriteLine(baseType.Name);
-                    TypeDescriptor? typeDescriptor = GetTypeDescriptor(baseType);
-
-                    if (typeDescriptor is null)
-                        throw new ArgumentException($"{type.Name} is unknown.", nameof(type));
-
-                    // Add to typedict for future use
-                    Add(baseType, typeDescriptor.GType);
-                    Console.WriteLine($"Adding {baseType.Name}");
-
-                    baseType = baseType.BaseType;
-                }
+                // We are a wrapper. Add to type dictionary
+                AddRecursive(type, GetTypeDescriptor(type)!.GType);
 
                 // Return gtype for *this* type
                 return TypeDict[type];
