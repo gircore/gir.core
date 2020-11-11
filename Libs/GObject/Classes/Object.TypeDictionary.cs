@@ -251,7 +251,7 @@ namespace GObject
 
             // Returns the MethodInfo for the 'GetGType()' function
             // if the type in question implements it (i.e. a wrapper)
-            private static TypeDescriptor? GetTypeDescriptor(System.Type type)
+            internal static TypeDescriptor? GetTypeDescriptor(System.Type type)
             {
                 if (DescriptorDict.TryGetValue(type, out TypeDescriptor? cachedDescriptor))
                     return cachedDescriptor;

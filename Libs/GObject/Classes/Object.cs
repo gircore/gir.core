@@ -290,21 +290,16 @@ namespace GObject
             Type trueGType = TypeFromHandle(handle);
             System.Type? trueType = null;
 
-            // Optimisation: Compare the gtype of 'T' to the GType of the pointer. If they are
-            // equal, we can skip the type dictionary's (possible) recursive lookup and return
-            // immediately. We additionally register the (type, gtype) pair in the type dictionary
-            // for future use.
+            // Ensure 'T' is registered in type dictionary for future use. It is an error for a
+            // wrapper type to not define a TypeDescriptor. 
+            TypeDescriptor desc = TypeDictionary.GetTypeDescriptor(typeof(T))
+                ?? throw new Exception($"Error: Type {typeof(T).FullName} does not define a TypeDescriptor.");
             
-            // Check if types are equal
-            PropertyInfo? propertyInfo = typeof(T).GetProperty(
-                "GTypeDescriptor", System.Reflection.BindingFlags.Static | 
-                System.Reflection.BindingFlags.NonPublic);
-            
-            // Ensure 'T' is registered in type dictionary
-            // Note: PropertyInfo should never be null for T : GObject
-            TypeDescriptor desc = (TypeDescriptor) propertyInfo!.GetValue(null, null);
             TypeDictionary.Add(typeof(T), desc.GType);
             
+            // Optimisation: Compare the gtype of 'T' to the GType of the pointer. If they are
+            // equal, we can skip the type dictionary's (possible) recursive lookup and return
+            // immediately.
             if (desc.GType.Equals(trueGType))
             {
                 // We are actually a type 'T'.
@@ -324,6 +319,7 @@ namespace GObject
             }
 
             // Ensure we are not constructing a subclass
+            // TODO: This can be removed once ToggleRefs are implemented
             if (IsSubclass(trueType))
                 throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
 
@@ -336,7 +332,7 @@ namespace GObject
             );
             
             if (ctor == null)
-                throw new Exception($"Type {trueType.FullName} does not contain an IntPtr constructor. This could mean improperly defined bindings");
+                throw new Exception($"Type {trueType.FullName} does not define an IntPtr constructor. This could mean improperly defined bindings");
 
             o = (T) ctor.Invoke(new object[] { handle });
 
