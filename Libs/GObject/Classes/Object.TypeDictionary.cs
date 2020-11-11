@@ -66,18 +66,48 @@ namespace GObject
             /// </returns>
             internal static System.Type Get(Type gtype)
             {
-                // Check Type Dictionary
+                // TODO: Use Gir Namespace to create a "module initializer"
+                // We have name in the form of NamespaceType
+                //
+                // 1. WrapPointerAs<T>(...) => Register the type parameter recursively
+                // 2. WrapPointerAs<T>(...) => If the type of the pointer matches the
+                //       descriptor of the Type Parameter, then return
+                // 3. TypeDict.Lookup(...) => Check registered types
+                // 4. TypeDict.FuzzySearchLoaded(...) => Searches loaded assemblies for
+                //       namespaces that match the first 'Word' of the GType name. If
+                //       multiple assemblies match, check second word, etc. Perform type
+                //       lookup on returned Assemblies.
+                // 5. TypeDict.FuzzySearchUnloaded(...) => Repeat 4) for unloaded
+                //       assemblies. Search unloaded for namespaces that match the first
+                //       'Word'. If match, keep assembly loaded. If not, unload assembly.
+                //       Search all returned assemblies for the necessary type.
+                // 6. Worst Case, throw exception or return minimum supported type (e.g.
+                //       GObject).
+                //
+                // Functions:
+                // - GetNamespace(string typeName, int depth)
+                //       Gets the first 'depth' words from typeName, assuming it is
+                //       in camel case.
+                // - Get(GObject.Type gtype)
+                //       Gets native name from GLib. Checks whether each assembly's
+                //       metadata class starts with the first 'Word', and progressively
+                //       narrows it down to one assembly by using the second, third, etc
+                //       word. Then repeats for unloaded assemblies.
+                // - FuzzySearchAssemblies(string typeName, Assembly[] assemblies)
+                //       Searches each assembly in the array for Type 'typeName'.
+                //       Check Type Dictionary
+                
+                // Step 1: Check already registered types
                 if (GTypeDict.TryGetValue(gtype, out System.Type? type))
                     return type;
-
-                // It is quite unlikely that we need to perform a lookup
-                // by gtype of a type we haven't created ourselves. Therefore,
-                // this shouldn't be too prohibitively expensive.
-
-                // TODO: Possible Idea: Autogenerate a 'RegisterTypes.cs' file that
-                // on startup will add every type to the type dictionary? Would
-                // this use too much memory?
-
+                
+                // It is quite unlikely that we will need to perform a lookup
+                // for a type we haven't already registered. Most calls to Get(gtype)
+                // will originate from WrapPointerAs<T> which will register 'T' before
+                // calling. Therefore, this shouldn't be too prohibitively expensive.
+                
+                // Step 2: Search Loaded Assemblies
+                
                 // DEBUG: Log gtype namespace and type
                 PrintGTypeLookup(gtype);
 
@@ -85,6 +115,8 @@ namespace GObject
                 Console.WriteLine($"Loaded Assemblies:");
                 foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
                     Console.WriteLine(" - " + asm.GetName());
+
+
 
                 // TODO: Recursive registration for GTypes so we don't have to
                 // repeat this expensive process again.
