@@ -12,6 +12,10 @@ namespace GObject
 
         private static readonly Dictionary<Delegate, ClosureHelper> Handlers = new Dictionary<Delegate, ClosureHelper>();
 
+        // We need to store a reference to MarshalCallback to
+        // prevent the delegate from being collected by the GC
+        private readonly ClosureMarshal _marshalCallback;
+
         private bool _disposedValue;
         private readonly Action? _callback;
         private readonly ActionRefValues? _callbackRefValues;
@@ -41,7 +45,8 @@ namespace GObject
         private ClosureHelper(Object obj)
         {
             Handle = Closure.Native.new_object((uint) Marshal.SizeOf(typeof(Closure)), obj.Handle);
-            Closure.Native.set_marshal(Handle, MarshalCallback);
+            _marshalCallback = MarshalCallback;
+            Closure.Native.set_marshal(Handle, _marshalCallback);
         }
 
         ~ClosureHelper() => Dispose(false);
@@ -50,12 +55,12 @@ namespace GObject
 
         #region Methods
 
-        private void MarshalCallback(IntPtr closure, ref Value return_value, uint n_param_values,
-            Value[] param_values, IntPtr invocation_hint, IntPtr marshal_data)
+        private void MarshalCallback(IntPtr closure, ref Value returnValue, uint nParamValues,
+            Value[] paramValues, IntPtr invocationHint, IntPtr marshalData)
         {
             _callback?.Invoke();
 
-            _callbackRefValues?.Invoke(ref param_values);
+            _callbackRefValues?.Invoke(ref paramValues);
         }
 
         public static bool TryGetByDelegate(Action action, out ClosureHelper closure)
