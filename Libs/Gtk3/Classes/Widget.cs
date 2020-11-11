@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using GLib;
+using GObject;
 using BindingFlags = System.Reflection.BindingFlags;
 using Type = GObject.Type;
 
@@ -17,9 +18,32 @@ namespace Gtk
         #endregion
         #region Methods
 
-        protected override void Initialize()
+        #region Template without reflection
+        protected static void SetTemplate2(Type gtype, Bytes template)
         {
-            base.Initialize();
+            WidgetClass.Native.set_template(gtype.GetClassPointer(), GetHandle(template));
+        }
+        
+        protected void InitTemplate2()
+        {
+            Native.init_template(Handle);
+        }
+
+        protected void BindTemplateChild2<T>(string name, ref T field) where T : GObject.Object
+        {
+            IntPtr ptr = Native.get_template_child(Handle, GetGType().Value, name);
+            field = WrapPointerAs<T>(ptr);
+        }
+
+        protected static void BindTemplateChild2(Type gtype, string name)
+        {
+            WidgetClass.Native.bind_template_child_full(gtype.GetClassPointer(), name, false, 0);
+        }
+        #endregion
+
+        #region Template with reflection
+        protected void InitTemplate()
+        {
             Native.init_template(Handle);
             
             ForAllConnectAttributes(GetType(), (field, name) =>
@@ -28,14 +52,8 @@ namespace Gtk
                 field.SetValue (this, WrapPointer(ptr), TemplateFieldBindingFlags, null, null);
             });
         }
-
-        private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
-        {
-            Console.WriteLine("Class init Widget");
-            InitTemplate(gClass, type);
-        }
-
-        protected static void InitTemplate(Type gtype, System.Type type)
+        
+        protected static void SetTemplate(Type gtype, System.Type type)
         {
             Bytes? template = GetTemplate(type);
             if (template is null)
@@ -44,28 +62,7 @@ namespace Gtk
             WidgetClass.Native.set_template(gtype.GetClassPointer(), GetHandle(template));
             BindTemplateChildren(gtype, type);
         }
-
-        private static Bytes? GetTemplate(System.Type type)
-        {
-            object[] attrs = type.GetCustomAttributes(typeof(TemplateAttribute), false);
-
-            if (attrs.Length == 0)
-                return null;
-
-            var resourceName = ((TemplateAttribute) attrs[0]).Ui;
-            Stream? stream = type.Assembly.GetManifestResourceStream(resourceName);
-
-            if (stream == null)
-                throw new Exception("Cannot get resource file '" + resourceName + "'");
-
-            var size = (int) stream.Length;
-            var buffer = new byte[size];
-            stream.Read(buffer, 0, size);
-            stream.Close();
-
-            return Bytes.From(buffer);
-        }
-
+        
         private static void BindTemplateChildren(Type gtype, IReflect t)
         {
             ForAllConnectAttributes(t, (field, name) => 
@@ -88,7 +85,20 @@ namespace Gtk
                 action(field, name);
             }
         }
-        
+
+        private static Bytes? GetTemplate(System.Type type)
+        {
+            object[] attrs = type.GetCustomAttributes(typeof(TemplateAttribute), false);
+
+            if (attrs.Length == 0)
+                return null;
+
+            var resourceName = ((TemplateAttribute) attrs[0]).Ui;
+            return type.Assembly.ReadResource(resourceName);
+        }
+
+        #endregion
+
         public void ShowAll() => Native.show_all(Handle);
 
         #endregion

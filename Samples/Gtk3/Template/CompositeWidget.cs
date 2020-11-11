@@ -1,40 +1,37 @@
 ﻿using System;
+using System.Reflection;
+using GObject;
 using Gtk;
 using Type = GObject.Type;
 
 namespace GtkDemo
 {
-    
-        //[TypeName(nameof(GtkCompositeWidget))]
-        [Template("CompositeWidget.glade")]
-        public class CompositeWidget : Bin
+    public class CompositeWidget : Bin
+    {
+        private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
         {
-            private static void BaseInit(Type gClass, System.Type type)
-            {
-                Console.WriteLine("Composite BaseInit");
-            }
-            
-            private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
-            {
-                Console.WriteLine("Class init Composite");
-                InitTemplate(gClass, type);
-            }
-            
-            private static void InstanceInit(IntPtr instance, Type gClass, System.Type type)
-            {
-                Console.WriteLine("Instance init Composite");
-            }
-            
-            [Connect] private Button Button = default!;
-
-            public CompositeWidget()
-            {
-            
-            }
-
-            private void button_clicked(object obj, EventArgs args)
-            {
-                Button.Label = "Clicked!";
-            } 
+            SetTemplate2(
+                gtype: gClass, 
+                template: Assembly.GetExecutingAssembly().ReadResource("CompositeWidget.glade")
+            );
+            BindTemplateChild2(gClass, nameof(Button));
         }
+
+        protected override void Initialize()
+        {
+            InitTemplate2();
+            BindTemplateChild2(nameof(Button), ref Button);
+        }
+
+        private Button Button = default!;
+
+        public CompositeWidget()
+        {
+        }
+
+        private void button_clicked(object obj, EventArgs args)
+        {
+            Button.Label = "Clicked!";
+        }
+    }
 }

@@ -25,7 +25,9 @@ namespace GtkDemo
                 DefaultHeight = 200, 
                 Child = new CompositeWidget()
             };
-
+            
+            mainWindow.ShowAll();
+            Global.Main();
         }
         #endregion
     }
