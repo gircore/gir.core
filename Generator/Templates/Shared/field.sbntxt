@@ -1,4 +1,18 @@
-        
+{{-
+func get_parameters
+    if $0
+        include 'parameters.sbntxt' $0
+    end
+end
+if $1.callback_fixed
+-}}
+    {{~ if $1.callback_fixed.doc && $1.callback_fixed.doc.text ~}}
+    ///<summary>
+    {{~ $1.callback_fixed.doc.text | comment_line_by_line_with_prefix '' ~}}
+    ///</summary>
+    {{~ end ~}}
+    public delegate {{ $1.callback_fixed.return_value | resolve_type }} {{ $1.callback_fixed.name | fix_identifier }}({{ $1.callback_fixed.parameters | get_parameters }});
+{{end}}
         {{~ if $1.doc && $1.doc.text ~}}
         /// <summary>
         {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
