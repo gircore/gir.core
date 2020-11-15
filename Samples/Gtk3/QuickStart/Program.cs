@@ -32,7 +32,7 @@ MainWindow = new Window("Hello World!")
 
         // Add some widgets to the notebook
         ["Page1"] = new Label("Hello C#"),
-        ["Page2"] = new Button("Open")
+        ["Page2"] = new MyButton("Open")
         {
             // Register a callback for the button
             [Button.ClickedSignal] = OnOpenButtonClick,
@@ -59,7 +59,6 @@ Global.Main();
 // window widget. This is not required, but it is good
 // practice to dispose of widgets explicitly.
 MainWindow?.Dispose();
-
 
 // This method is called whenever the user switches pages
 // in the notebook. We print out the page number and its contents.
@@ -110,4 +109,14 @@ void OnCloseButtonClick(Button sender, System.EventArgs args)
     // Unset popupWindow
     PopupWindow.Dispose();
     PopupWindow = null;
+}
+
+internal class MyButton : Button
+{
+    public MyButton(string label) : base(label) { }
+
+    protected override void Pressed()
+    {
+        //base.Pressed();
+    }
 }

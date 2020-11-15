@@ -8,6 +8,8 @@ namespace Gtk
         //TODO: Workaround as long as typedict is not filled
         public static GObject.Type Bla() => GTypeDescriptor.GType;
         
+        private static readonly unsafe delegate*<IntPtr, void> _originalPressed;
+        
         #region Properties
 
         public static readonly Property<bool> AlwaysShowImageProperty = Property<bool>.Register<Button>(
@@ -99,16 +101,26 @@ namespace Gtk
             unsafe
             {
                 var btnClass = (ButtonClass*) ptr;
-                btnClass->pressed = &P;
+                _originalPressed = btnClass->pressed;
+                btnClass->pressed = &PrivatePressed;
             }
         }
 
-        //TODO: Remove this testcode
-        public static void P(nint instance)
+        private static unsafe void PrivatePressed(nint instance)
         {
-            Console.WriteLine("button clicked");
+            if (GetObject(instance, out Button b))
+                b.Pressed();
+            else
+                _originalPressed(instance);
         }
-        
+        protected internal virtual void Pressed()
+        {
+            unsafe
+            {
+                _originalPressed(Handle);
+            }
+        }
+
         public Button(string label)
             : this(
                 ConstructParameter.With(LabelProperty, label)
