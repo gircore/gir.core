@@ -8,7 +8,7 @@ namespace Gtk
         //TODO: Workaround as long as typedict is not filled
         public static GObject.Type Bla() => GTypeDescriptor.GType;
         
-        private static readonly unsafe delegate*<IntPtr, void> _originalPressed;
+        private static readonly unsafe delegate*<nint, void> _originalPressed;
         
         #region Properties
 
@@ -108,7 +108,7 @@ namespace Gtk
 
         private static unsafe void PrivatePressed(nint instance)
         {
-            if (GetObject(instance, out Button b))
+            if (GetObject<Button>(instance, out var b))
                 b.Pressed();
             else
                 _originalPressed(instance);

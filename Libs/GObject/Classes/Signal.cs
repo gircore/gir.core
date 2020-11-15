@@ -246,10 +246,7 @@ namespace GObject
         /// </param>
         public void Connect(TSender o, SignalHandler<TSender, TSignalArgs> action, bool after = false)
         {
-            if (action == null)
-                return;
-
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            if (!Handlers.TryGetValue(action, out ActionRefValues? callback))
             {
                 callback = (ref Value[] values) =>
                 {
@@ -270,10 +267,7 @@ namespace GObject
         /// <param name="action">The signal handler function.</param>
         public void Disconnect(TSender o, SignalHandler<TSender, TSignalArgs> action)
         {
-            if (action == null)
-                return;
-
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            if (!Handlers.TryGetValue(action, out ActionRefValues? callback))
                 return;
 
             o.UnregisterEvent(callback);
@@ -330,10 +324,7 @@ namespace GObject
         /// </param>
         public void Connect(TSender o, SignalHandler<TSender> action, bool after = false)
         {
-            if (action == null)
-                return;
-
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            if (!Handlers.TryGetValue(action, out ActionRefValues? callback))
             {
                 callback = (ref Value[] _) => action(o, EventArgs.Empty);
             }
@@ -349,10 +340,7 @@ namespace GObject
         /// <param name="action">The signal handler function.</param>
         public void Disconnect(TSender o, SignalHandler<TSender> action)
         {
-            if (action == null)
-                return;
-
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            if (!Handlers.TryGetValue(action, out ActionRefValues? callback))
                 return;
 
             o.UnregisterEvent(callback);

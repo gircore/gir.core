@@ -25,7 +25,7 @@ namespace GObject
             Global.Native.type_query(type.Value, ptr);
 
             // Marshal and Free Memory
-            query = (TypeQuery) Marshal.PtrToStructure(ptr, typeof(TypeQuery));
+            query = Marshal.PtrToStructure<TypeQuery>(ptr);
             Marshal.FreeHGlobal(ptr);
 
             return query;

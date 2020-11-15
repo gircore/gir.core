@@ -37,7 +37,7 @@ namespace GLib
             var t = Marshal.PtrToStringAnsi(variantType);
             //TODO FREE variantType!!
 
-            return t;
+            return t ?? "";
         }
 
         #endregion

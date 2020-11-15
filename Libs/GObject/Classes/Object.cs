@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using GLib;
@@ -24,7 +25,7 @@ namespace GObject
         /// <summary>
         /// Event triggered when a property value changes.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged = null!;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         #endregion
 
@@ -178,7 +179,7 @@ namespace GObject
         {
             ThrowIfDisposed();
 
-            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper closure))
+            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
                 UnregisterEvent(closure);
         }
 
@@ -186,7 +187,7 @@ namespace GObject
         {
             ThrowIfDisposed();
 
-            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper closure))
+            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
                 UnregisterEvent(closure);
         }
 
@@ -229,7 +230,7 @@ namespace GObject
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected internal static bool GetObject<T>(IntPtr handle, out T obj) where T : Object
+        protected internal static bool GetObject<T>(IntPtr handle, [MaybeNullWhen(false)] out T obj) where T : Object
         {
             if (Objects.TryGetValue(handle, out Object? foundObj))
             {
@@ -237,7 +238,7 @@ namespace GObject
                 return true;
             }
 
-            obj = default!;
+            obj = default;
             return false;
         }
 

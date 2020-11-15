@@ -36,19 +36,23 @@ namespace Gtk
         private void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name, IntPtr connect_object, GObject.ConnectFlags flags, IntPtr user_data)
         {
             //TODO Errorhandling
-            if(!GetObject(@object, out Widget signalsender) || !GetObject(connect_object, out Widget connector))
+            if(!GetObject<Widget>(@object, out var signalsender) || !GetObject<Widget>(connect_object, out var connector))
                 return;
 
-            var eventFlags = BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public;
+            MethodInfo? method = connector.GetType().GetMethod(handler_name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            EventInfo? senderEvent = signalsender.GetType().GetEvent(signal_name, BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public);
 
-            var method = connector.GetType().GetMethod(handler_name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            if (senderEvent is null || method is null)
+                return;
+            
+            Type? eventType = senderEvent.EventHandlerType;
 
-            var senderEvent = signalsender.GetType().GetEvent(signal_name, eventFlags);
-            var eventType = senderEvent.EventHandlerType;
+            if (eventType is null)
+                return;
 
             var del = Delegate.CreateDelegate(eventType, connector, method);
 
-            senderEvent.AddMethod.Invoke(signalsender, new object[] { del });
+            senderEvent.AddMethod?.Invoke(signalsender, new object[] { del });
         }
 
         private void ConnectFields(object obj)
@@ -74,12 +78,12 @@ namespace Gtk
                     .FirstOrDefault();
 
                 if(constructor is null)
-                    throw new Exception($"{field.ReflectedType.FullName} Field {field.Name}: Could not find a constructor with one parameter of {nameof(IntPtr)} to create a {field.FieldType.FullName}");
+                    throw new Exception($"{field.ReflectedType?.FullName} Field {field.Name}: Could not find a constructor with one parameter of {nameof(IntPtr)} to create a {field.FieldType.FullName}");
 
                 var ptr = GetObject(element);
 
                 if(ptr == IntPtr.Zero)
-                    throw new Exception($"{field.ReflectedType.FullName} Field {field.Name}: Could not find an element in the template with the name {element}");
+                    throw new Exception($"{field.ReflectedType?.FullName} Field {field.Name}: Could not find an element in the template with the name {element}");
 
                 var newElement = constructor.Invoke(new object[] {ptr});
                 field.SetValue(obj, newElement);

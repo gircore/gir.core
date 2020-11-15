@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace GObject
@@ -58,12 +59,12 @@ namespace GObject
             _callbackRefValues?.Invoke(ref param_values);
         }
 
-        public static bool TryGetByDelegate(Action action, out ClosureHelper closure)
+        public static bool TryGetByDelegate(Action action, [MaybeNullWhen(false)] out ClosureHelper closure)
         {
             return Handlers.TryGetValue(action, out closure);
         }
 
-        public static bool TryGetByDelegate(ActionRefValues action, out ClosureHelper closure)
+        public static bool TryGetByDelegate(ActionRefValues action, [MaybeNullWhen(false)] out ClosureHelper closure)
         {
             return Handlers.TryGetValue(action, out closure);
         }

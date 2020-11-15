@@ -113,7 +113,7 @@ namespace GObject
         public string GetString()
         {
             IntPtr ptr = Native.get_string(ref this);
-            return Marshal.PtrToStringAnsi(ptr);
+            return Marshal.PtrToStringAnsi(ptr) ?? "";
         }
 
         #endregion
