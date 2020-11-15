@@ -8,7 +8,7 @@ namespace Gst
         {
             IntPtr ret = Native.get_bus(Handle);
             
-            if (GetObject(ret, out Bus obj))
+            if (GetObject<Bus>(ret, out var obj))
                 return obj;
 
             if(ret == IntPtr.Zero)
