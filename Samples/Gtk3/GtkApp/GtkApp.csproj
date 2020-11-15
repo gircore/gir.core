@@ -10,20 +10,10 @@
     <ProjectReference Include="..\..\..\Libs\GtkChamplain\Core\GtkChamplain.Core.csproj" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="**\*.glade" />
     <EmbeddedResource Include="**\*.glade">
       <LogicalName>%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
-
-<PropertyGroup>
-    <Nullable>enable</Nullable>
-</PropertyGroup>
-
 </Project>

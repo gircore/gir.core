@@ -31,7 +31,7 @@ namespace GtkDemo
 
                 w.PropertyChanged += (s, a) =>
                     Trace.WriteLine(
-                        $"  => Property Changed On DemoWindow: {a.PropertyName} = {typeof(DemoWindow).GetProperty(a.PropertyName)?.GetValue(w)}");
+                        $"  => Property Changed On DemoWindow: {a.PropertyName} = {typeof(DemoWindow).GetProperty(a.PropertyName??"")?.GetValue(w)}");
 
                 w.ShowAll();
 

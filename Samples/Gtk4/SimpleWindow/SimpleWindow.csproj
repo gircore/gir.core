@@ -4,14 +4,4 @@
     <ProjectReference Include="..\..\..\Libs\GObject\Core\GObject.Core.csproj" />
     <ProjectReference Include="..\..\..\Libs\Gio\Core\Gio.Core.csproj" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
-
-<PropertyGroup>
-    <Nullable>enable</Nullable>
-</PropertyGroup>
-
 </Project>
