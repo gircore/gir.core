@@ -32,7 +32,7 @@ namespace Generator
 
         public string GetTypeString() => Attribute + (IsRef ? "ref " : string.Empty) + Type;
         public string GetFieldString() => Attribute + (IsRef ? "IntPtr" : Type);
-
+        public string GetDelegateString() => (IsRef ? "IntPtr" : Type);
         #endregion
 
         #region IEquatable<ResolvedType> Implementation
@@ -118,11 +118,10 @@ namespace Generator
         {
             ResolvedType returntype = Resolve(callback.ReturnValue ?? throw new Exception("Missing return for callback"));
 
-            List<ResolvedType> parameters = callback.Parameters?.AllParameters
-                                                        .Select(Resolve).ToList() ?? new ();
+            List<ResolvedType> parameters = callback.Parameters?.AllParameters.Select(Resolve).ToList() ?? new ();
             parameters.Add(returntype);
             
-            var parametersString = string.Join(", ", parameters.Select(x => x.ToString()));
+            var parametersString = string.Join(", ", parameters.Select(x => x.GetDelegateString()));
             return new ResolvedType($"unsafe delegate*<{parametersString}>");
         }
 
