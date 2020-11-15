@@ -90,6 +90,25 @@ namespace Gtk
 
         #endregion
 
+        //TODO: Remove this testcode
+        static Button()
+        {
+            var gtype = GTypeDescriptor.GType;
+            var ptr = gtype.GetClassPointer();
+
+            unsafe
+            {
+                var btnClass = (ButtonClass*) ptr;
+                btnClass->pressed = &P;
+            }
+        }
+
+        //TODO: Remove this testcode
+        public static void P(nint instance)
+        {
+            Console.WriteLine("button clicked");
+        }
+        
         public Button(string label)
             : this(
                 ConstructParameter.With(LabelProperty, label)

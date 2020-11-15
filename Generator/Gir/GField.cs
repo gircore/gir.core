@@ -33,26 +33,6 @@ namespace Gir
         [XmlElement("doc")]
         public GDoc? Doc { get; set; }
 
-        private GCallback? _callbackFixed;
-        public GCallback? CallbackFixed
-        {
-            get
-            {
-                if (Callback is { } && _callbackFixed is null)
-                {
-                    _callbackFixed = new GCallback()
-                    {
-                        Doc = Callback.Doc,
-                        Name = Callback.Name + "cb",
-                        Parameters = Callback.Parameters,
-                        ReturnValue = Callback.ReturnValue
-                    };   
-                }
-
-                return _callbackFixed;
-            }
-        }
-        
         #endregion
     }
 }
