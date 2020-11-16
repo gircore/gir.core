@@ -27,6 +27,10 @@ namespace GObject
         #region Properties
 
         protected internal IntPtr Handle { get; private set; }
+        
+        // We need to store a reference to WeakNotify to
+        // prevent the delegate from being collected by the GC
+        private WeakNotify? _onFinalized;
 
         protected bool Disposed { get; private set; }
 
@@ -135,7 +139,11 @@ namespace GObject
 
         // Modify this in the future to play nicely with virtual function support?
         private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
-        private void RegisterOnFinalized() => Native.weak_ref(Handle, OnFinalized, IntPtr.Zero);
+        private void RegisterOnFinalized()
+        {
+            _onFinalized = OnFinalized;
+            Native.weak_ref(Handle, _onFinalized, IntPtr.Zero);
+        }
 
         private void RegisterProperties()
         {
@@ -182,9 +190,7 @@ namespace GObject
             if (ret == 0)
                 throw new Exception($"Could not connect to event {eventName}");
 
-            // Add to our closures list so the callback
-            // doesn't get garbage collected.
-            // closures.Add(closure);
+            // Add to our closures list so the callback doesn't get garbage collected.
             Closures[closure] = ret;
         }
 
