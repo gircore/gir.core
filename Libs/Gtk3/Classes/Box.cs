@@ -7,7 +7,7 @@ namespace Gtk
     {
         // TODO: Temporary Property - Define in interface Gtk.Orientable
         public static readonly Property<Orientation> OrientationProperty = Property<Orientation>.Register<Box>(
-            "orientable", // FIXME: Don't use hardcoded properties
+            "orientation", // FIXME: Don't use hardcoded properties
             nameof(Orientation),
             (o) => o.Orientation,
             (o, v) => o.Orientation = v
