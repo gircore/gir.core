@@ -78,20 +78,22 @@ namespace GObject
             internal static void AddRecursive(System.Type type, Type gtype)
             {
                 AddSingle(type, gtype);
-                
+
                 // Register recursively
-                System.Type? baseType = type.BaseType;
+                System.Type? baseType = type == typeof(GObject.Object) ? null : type.BaseType;
                 while (baseType != null && !Contains(baseType))
                 {
-                    Console.WriteLine(baseType.Name);
+                    // If GObject, we are the most basic type, so return
+                    if (type == typeof(GObject.Object))
+                        return;
+                    
                     TypeDescriptor? typeDescriptor = GetTypeDescriptor(baseType);
 
                     if (typeDescriptor is null)
-                        throw new ArgumentException($"{type.Name} is unknown.", nameof(type));
+                        throw new ArgumentException($"{type.FullName} does not have a type descriptor.", nameof(type));
 
                     // Add to typedict for future use
                     AddSingle(baseType, typeDescriptor.GType);
-                    Console.WriteLine($"Adding {baseType.Name}");
 
                     baseType = baseType.BaseType;
                 }
@@ -305,7 +307,7 @@ namespace GObject
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 Array.Reverse(assemblies);
                 
-                Console.WriteLine($"SearchAssembliesForGType: Namespace: {nspace}, Type: {type}");
+                // Console.WriteLine($"SearchAssembliesForGType: Namespace: {nspace}, Type: {type}");
 
                 // TODO: Assembly Name is "G" when using GLib/GObject/Gio
                 // This breaks the lookup - Fix this
