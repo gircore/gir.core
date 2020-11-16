@@ -14,6 +14,9 @@ namespace Gir
         [XmlElement("constructor")]
         public List<GMethod> Constructors { get; set; } = default!;
 
+        [XmlElement("virtual-method")] 
+        public List<GVirtualMethod> VirtualMethods { get; set; } = default!;
+
         [XmlElement("signal", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public List<GSignal> Signals { get; set; } = default!;
 
