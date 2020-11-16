@@ -15,6 +15,7 @@ namespace GtkDemo
                 template: Assembly.GetExecutingAssembly().ReadResource("CompositeWidget.glade")
             );
             BindTemplateChild2(gClass, nameof(Button));
+            OnConnectEvent(gClass, type);
         }
 
         protected override void Initialize()
@@ -27,11 +28,12 @@ namespace GtkDemo
 
         public CompositeWidget()
         {
+            
         }
 
-        private void button_clicked(object obj, EventArgs args)
+        private static void button_clicked(Button sender, System.EventArgs args)
         {
-            Button.Label = "Clicked!";
+            sender.Label = "Clicked!";
         }
     }
 }

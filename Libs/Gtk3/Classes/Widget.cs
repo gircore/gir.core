@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using GLib;
 using GObject;
 using BindingFlags = System.Reflection.BindingFlags;
@@ -39,6 +40,57 @@ namespace Gtk
         {
             WidgetClass.Native.bind_template_child_full(gtype.GetClassPointer(), name, false, 0);
         }
+
+        protected static void OnConnectEvent(Type gtype, System.Type t)
+        {
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(gtype));
+            Marshal.StructureToPtr(gtype, ptr, true);
+            WidgetClass.Native.set_connect_func(gtype.GetClassPointer(), OnConnectEvent, ptr, DestroyConnectData);
+        }
+
+        private static void DestroyConnectData(IntPtr data)
+        {
+            //TODO clear connect data
+        }
+        
+        private static void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name,
+            IntPtr connect_object, ConnectFlags flags, IntPtr user_data)
+        {
+            if(!TryWrapPointerAs<Widget>(@object, out var signalsender))
+                return;
+
+            Type gclass = Marshal.PtrToStructure<Type>(user_data);
+            System.Type? tt = TypeDictionary.Get(gclass);
+
+            if (tt is null)
+                return;
+            
+            MethodInfo? callbackMethodInfo = tt.GetMethod(
+                name: handler_name, 
+                bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+            );
+            
+            if (callbackMethodInfo is null)
+                return;
+
+            EventInfo? targetEvent = signalsender.GetType().GetEvent(
+                name: "On" + signal_name,
+                bindingAttr: BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public
+            );
+
+            if (targetEvent is null)
+                return;
+
+            System.Type? targetEventEventHandlerType = targetEvent.EventHandlerType;
+
+            if (targetEventEventHandlerType is null)
+                return;
+            
+            var del = Delegate.CreateDelegate(targetEventEventHandlerType, signalsender, callbackMethodInfo);
+
+            targetEvent.AddMethod?.Invoke(signalsender, new object[] {del});
+        }
+
         #endregion
 
         #region Template with reflection
