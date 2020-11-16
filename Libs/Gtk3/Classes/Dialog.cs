@@ -1,9 +1,14 @@
-using GObject;
+﻿using GObject;
 
 namespace Gtk
 {
     public partial class Dialog
     {
+        /// <summary>
+        /// Creates a new dialog.
+        /// </summary>
+        public Dialog() { }
+        
         public Widget GetContentArea()
             => WrapPointerAs<Widget>(Native.get_content_area(Handle));
 

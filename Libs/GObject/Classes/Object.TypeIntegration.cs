@@ -37,7 +37,7 @@ namespace GObject
             Marshal.StructureToPtr(query, ptr, true);
 
             // Perform Query
-            Global.type_query(gtype, ptr);
+            Global.Native.type_query(gtype, ptr);
 
             // Marshal and Free Memory
             query = (TypeQuery) Marshal.PtrToStructure(ptr, typeof(TypeQuery));
@@ -94,7 +94,7 @@ namespace GObject
             // Perform Registration
             var qualifiedName = QualifyName(type);
             Console.WriteLine($"Registering type {type.Name} as {qualifiedName}");
-            var typeid = Global.type_register_static(boundaryTypeId, qualifiedName, ptr, 0);
+            var typeid = Global.Native.type_register_static(boundaryTypeId, qualifiedName, ptr, 0);
 
             if (typeid == 0)
                 throw new Exception("Type Registration Failed!");

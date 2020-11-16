@@ -10,7 +10,7 @@ namespace Gio
         
         public static DBusConnection Get(BusType busType)
         {
-            IntPtr handle = Global.bus_get_sync(busType, IntPtr.Zero, out IntPtr error);
+            IntPtr handle = Global.Native.bus_get_sync(busType, IntPtr.Zero, out IntPtr error);
             HandleError(error);
 
             if (GetObject(handle, out DBusConnection obj))
