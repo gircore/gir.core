@@ -217,6 +217,10 @@ namespace GObject
                     {
                         Console.WriteLine($"The System.Type for GType {gtype.ToString()} could not be found. Resorting to using type {foundType.FullName}. Unexpected behaviour may occur");
                         AddRecursive(foundType, gtype);
+
+                        if (!Global.Native.type_is_a(GetTypeDescriptor(foundType)!.GType.Value, gtype.Value))
+                            throw new Exception("Types not assignable. This is a fatal error");
+                        
                         return foundType;
                     }
                 }
