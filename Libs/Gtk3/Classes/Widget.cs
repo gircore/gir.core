@@ -56,39 +56,31 @@ namespace Gtk
         private static void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name,
             IntPtr connect_object, ConnectFlags flags, IntPtr user_data)
         {
-            if(!TryWrapPointerAs<Widget>(@object, out var signalsender))
+            if(!TryWrapPointerAs<Widget>(@object, out var eventSource))
                 return;
 
-            Type gclass = Marshal.PtrToStructure<Type>(user_data);
-            System.Type? tt = TypeDictionary.Get(gclass);
-
-            if (tt is null)
+            if(!TryWrapPointerAs<Widget>(connect_object, out var compositeWidget))
                 return;
-            
-            MethodInfo? callbackMethodInfo = tt.GetMethod(
+
+            MethodInfo? compositeWidgetCallbackMethodInfo = compositeWidget.GetType().GetMethod(
                 name: handler_name, 
-                bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
+                bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
             );
             
-            if (callbackMethodInfo is null)
+            if (compositeWidgetCallbackMethodInfo is null)
                 return;
 
-            EventInfo? targetEvent = signalsender.GetType().GetEvent(
+            EventInfo? sourceEvent = eventSource.GetType().GetEvent(
                 name: "On" + signal_name,
                 bindingAttr: BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public
             );
 
-            if (targetEvent is null)
-                return;
-
-            System.Type? targetEventEventHandlerType = targetEvent.EventHandlerType;
-
-            if (targetEventEventHandlerType is null)
+            if (sourceEvent?.EventHandlerType is null)
                 return;
             
-            var del = Delegate.CreateDelegate(targetEventEventHandlerType, signalsender, callbackMethodInfo);
+            var del = Delegate.CreateDelegate(sourceEvent.EventHandlerType, compositeWidget, compositeWidgetCallbackMethodInfo);
 
-            targetEvent.AddMethod?.Invoke(signalsender, new object[] {del});
+            sourceEvent.AddMethod?.Invoke(eventSource, new object[] { del });
         }
 
         #endregion

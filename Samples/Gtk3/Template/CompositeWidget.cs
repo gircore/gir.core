@@ -26,12 +26,7 @@ namespace GtkDemo
 
         private Button Button = default!;
 
-        public CompositeWidget()
-        {
-            
-        }
-
-        private static void button_clicked(Button sender, System.EventArgs args)
+        private void button_clicked(Button sender, System.EventArgs args)
         {
             sender.Label = "Clicked!";
         }
