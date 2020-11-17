@@ -70,3 +70,8 @@ The code in the library folder is not complete because the biggest part of the c
 [libchamplain]: https://wiki.gnome.org/Projects/libchamplain
 [GtkSharp]: https://github.com/GtkSharp/GtkSharp
 [sample_gtk_quickstart]: https://github.com/gircore/gir.core/tree/develop/Samples/Gtk3/Quickstart
+
+## Licensing terms
+Gir.Core is licensed under the terms of the MIT-License. Please see the [LICENSE](LICENSE) file for further information.
+
+The [Gir.Core logo](logo.svg) is build upon the work of the [original GTK logo](https://wiki.gnome.org/Projects/GTK/Logo) from Andreas Nilsson which is licensed under the [GNU Free Documentation License](https://www.gnu.org/licenses/fdl-1.3.txt) and was relicensed under CC BY-SA 3.0. Therefore the Gir.Core logo is licensed under the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.en), too.
