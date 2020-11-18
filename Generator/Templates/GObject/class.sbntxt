@@ -37,7 +37,7 @@ namespace {{ namespace }}
     public partial class {{ name }} {{ write_inheritance }}
     {
 {{if !fundamental}}
-        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ type_name }}", {{ name }}.Native.get_type);
+        internal protected static{{' new'|get_if_parent}} readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ type_name }}", {{ name }}.Native.get_type);
         
         #region Properties
 {{~ for property in properties

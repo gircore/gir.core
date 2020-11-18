@@ -5,9 +5,6 @@ namespace Gtk
 {
     public partial class Button
     {
-        //TODO: Workaround as long as typedict is not filled
-        public static GObject.Type Bla() => GTypeDescriptor.GType;
-        
         private static readonly unsafe delegate*<nint, void> _originalPressed;
         
         #region Properties

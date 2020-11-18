@@ -7,7 +7,7 @@ namespace GObject
         /// <summary>
         /// Describes a wrapper type.
         /// </summary>
-        protected internal sealed class TypeDescriptor
+        public sealed class TypeDescriptor
         {
             #region Fields
 
