@@ -301,9 +301,14 @@ namespace GObject
                 }
 
                 // DEBUG: Print Assembly Lookup
-                Console.WriteLine("FuzzySearchAssemblies: Looking up" + gtype.ToString() + "with components:");
+                Console.Write("FuzzySearchAssemblies: Looking up " + gtype.ToString() + " with components: ");
                 foreach (string word in words)
-                    Console.WriteLine(" * " + word);
+                {
+                    if (word == words[words.Length - 1])
+                        Console.Write(word + "\n");
+                    else
+                        Console.Write(word + " | ");
+                } // END DEBUG
 
                 // We must have at least two "words" to perform a lookup (one word implies the
                 // type is not prefixed, which we do not support).
@@ -372,33 +377,28 @@ namespace GObject
 
                 return null;
             }
-
+            
             private static string[] GetWords(Type gtype)
             {
-                return System.Text.RegularExpressions.Regex.Split(gtype.ToString(), @"(?<!^)(?=[A-Z])");
+                var typeName = gtype.ToString();
                 
-                // Gets the name of the GType and splits
-                // it into "Words", where each word starts
-                // with a capital letter.
-                // var gtypeName = gtype.ToString();
-                //
-                // List<string> words = default!;
-                //
-                // var lastIndex = 0;
-                // var curIndex = 0;
-                // foreach (char c in gtypeName)
-                // {
-                //     if (Char.IsUpper(c) && curIndex != 0)
-                //     {
-                //         words.Add(gtypeName.Substring(lastIndex, curIndex));
-                //         lastIndex = curIndex;
-                //     }
-                //
-                //     curIndex += 1;
-                // }
-                //
-                // return words.ToArray();
+                var result = new System.Text.StringBuilder();
+                foreach (var c in typeName)
+                {
+                    if (char.IsUpper(c) && result.Length > 0)
+                    {
+                        result.Append(";");
+                    }
+                    result.Append(c);
+                }
+                return result.ToString().Split(';');
             }
+
+            // // TODO: Profile - Is this Regex Version faster or slower?
+            // private static string[] GetWords(Type gtype)
+            // {
+            //     return System.Text.RegularExpressions.Regex.Split(gtype.ToString(), @"(?<!^)(?=[A-Z])");
+            // }
 
             private static void DebugPrintLoadedAssemblies()
             {
