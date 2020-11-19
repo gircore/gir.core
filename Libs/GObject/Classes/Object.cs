@@ -105,7 +105,7 @@ namespace GObject
         }
 
         /// <summary>
-        /// Initialises a wrapper for an existing object
+        /// Initializes a wrapper for an existing object
         /// </summary>
         /// <param name="handle"></param>
         protected Object(IntPtr handle)
@@ -129,12 +129,12 @@ namespace GObject
             RegisterProperties();
             RegisterOnFinalized();
 
-            // Allow subclasses to perform initialisation
+            // Allow subclasses to perform initialization
             Initialize();
         }
 
         /// <summary>
-        ///  Wrappers can override here to perform immediate initialisation
+        ///  Wrappers can override here to perform immediate initialization
         /// </summary>
         protected virtual void Initialize() { }
 
@@ -292,7 +292,7 @@ namespace GObject
             // as we ensure that subclass types always outlive their pointers
             // TODO: Toggle Refs ^^^
 
-            // Resolve gtype of object
+            // Resolve GType of object
             Type trueGType = TypeFromHandle(handle);
             System.Type? trueType = null;
 
