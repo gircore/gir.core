@@ -77,7 +77,7 @@ namespace GObject
                     values[i] = prop.Value;
                 }
 
-                // Create with propeties
+                // Create with properties
                 handle = Native.new_with_properties(
                     typeId.Value,
                     (uint) names.Length,
@@ -268,7 +268,7 @@ namespace GObject
             if (TryWrapPointerAs<T>(handle, out T obj))
                 return obj;
 
-            throw new Exception("Could not wrap handle");
+            throw new Exception($"Failed to wrap handle as type <{typeof(T).FullName}>");
         }
 
         protected internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
