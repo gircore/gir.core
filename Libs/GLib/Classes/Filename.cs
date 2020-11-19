@@ -9,7 +9,7 @@ namespace GLib
         {
             error = null;
 
-            var resPtr = Global.filename_to_uri(filename, hostname, out IntPtr errPtr);
+            var resPtr = Global.Native.filename_to_uri(filename, hostname, out IntPtr errPtr);
 
             if (errPtr != null)
                 error = Marshal.PtrToStructure<Error>(errPtr);
@@ -21,7 +21,7 @@ namespace GLib
         {
             error = null;
 
-            var resPtr = Global.filename_from_uri(uri, hostname, out IntPtr errPtr);
+            var resPtr = Global.Native.filename_from_uri(uri, hostname, out IntPtr errPtr);
 
             if (errPtr != null)
                 error = Marshal.PtrToStructure<Error>(errPtr);
