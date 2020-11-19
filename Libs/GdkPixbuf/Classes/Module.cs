@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Gtk
+namespace GdkPixbuf
 {
     internal partial class Module
     {

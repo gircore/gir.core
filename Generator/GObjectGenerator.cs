@@ -61,6 +61,17 @@ namespace Generator
                     scriptObject: scriptObject
                 );
             }
+            
+            ScriptObject? moduleScriptObject = GetScriptObject();
+            moduleScriptObject.Add("namespace", @namespace);
+            moduleScriptObject.Add("classes", classes);
+
+            Generate(
+                templateName: "module",
+                subfolder: "Classes",
+                fileName: "Module.RegisterClasses",
+                scriptObject: moduleScriptObject
+            );
         }
 
         protected override void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace)

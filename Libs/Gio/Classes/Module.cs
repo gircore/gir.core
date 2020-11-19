@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Gtk
+namespace Gio
 {
     internal partial class Module
     {

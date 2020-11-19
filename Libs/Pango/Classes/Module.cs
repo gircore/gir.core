@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Gtk
+namespace Pango
 {
     internal partial class Module
     {

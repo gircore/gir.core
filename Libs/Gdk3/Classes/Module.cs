@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Gtk
+namespace Gdk
 {
     internal partial class Module
     {

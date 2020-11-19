@@ -1,0 +1,20 @@
+using System.Runtime.CompilerServices;
+
+namespace {{ namespace }}
+{
+    internal partial class Module
+    {
+        static partial void RegisterClasses()
+        {
+            {{~ 
+            for class in classes 
+                if !(string.contains class.name 'Accessible') && !class.fundamental
+            ~}}
+            GObject.Object.TypeDictionary.Register(typeof({{ class.name }}), {{ class.name }}.GTypeDescriptor.GType);
+            {{~
+                end 
+            end 
+            ~}}
+        }
+    }
+}
