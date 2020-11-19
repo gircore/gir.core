@@ -86,7 +86,7 @@ namespace GObject
                     // If GObject, we are the most basic type, so return
                     if (type == typeof(GObject.Object))
                         return;
-                    
+
                     TypeDescriptor? typeDescriptor = GetTypeDescriptor(baseType);
 
                     if (typeDescriptor is null)
@@ -109,13 +109,20 @@ namespace GObject
             /// </returns>
             internal static System.Type Get(Type gtype)
             {
-                // TODO: Use Gir Namespace to create a "module initializer"
-                // We have name in the form of NamespaceType
+                // TODO: Rework the type dictionary. This kind of assembly search is
+                // both poorly designed and expensive. We should switch to a 'type-map'
+                // system like Xamarin, as we know Type-GType mappings at compile time.
+                
+                // We should set assembly metadata to indicate which library
+                // the assembly is wrapping. Therefore, we can reliably load (e.g.
+                // GtkSourceView could clash with Gtk3 if we load by name).
+
+                // This is a brief explanation of how type lookup currently works:
                 //
                 // 1. WrapPointerAs<T>(...) => Register the type parameter recursively
                 // 2. WrapPointerAs<T>(...) => If the type of the pointer matches the
                 //       descriptor of the Type Parameter, then return
-                // 3. TypeDict.Lookup(...) => Check registered types
+                // 3. TypeDict.Get(...) => Check registered types.
                 // 4. TypeDict.FuzzySearchLoaded(...) => Searches loaded assemblies for
                 //       namespaces that match the first 'Word' of the GType name. If
                 //       multiple assemblies match, check second word, etc. Perform type
@@ -139,64 +146,48 @@ namespace GObject
                 // - FuzzySearchAssemblies(string typeName, Assembly[] assemblies)
                 //       Searches each assembly in the array for Type 'typeName'.
                 //       Check Type Dictionary
-                
+
                 // Step 1: Check already registered types
                 if (GTypeDict.TryGetValue(gtype, out System.Type? type))
                     return type;
-                
+
                 // It is quite unlikely that we will need to perform a lookup
                 // for a type we haven't already registered. Most calls to Get(gtype)
                 // will originate from WrapPointerAs<T> which will register 'T' before
                 // calling. Therefore, this shouldn't be too prohibitively expensive.
-                
+
                 // Step 2: Search Loaded Assemblies
-                
-                // DEBUG: Log gtype namespace and type
-                PrintGTypeLookup(gtype);
 
-                // DEBUG: List all loadeed assemblies
-                Console.WriteLine($"Loaded Assemblies:");
-                foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-                    Console.WriteLine(" - " + asm.GetName());
+                // DEBUG: List all loaded assemblies
+                DebugPrintLoadedAssemblies();
 
-
-
-                // TODO: Recursive registration for GTypes so we don't have to
-                // repeat this expensive process again.
-
-                // FIXME: For unloaded assemblies, we should set assembly
-                // metadata to indicate which library the assembly is wrapping.
-                // Therefore, we can reliably load (e.g. GtkSourceView
-                // could clash with Gtk3 if we load by name).
-
-                System.Type? foundType;
-                
                 // Quick Path: Lookup type using type name and assembly to
                 // find an exact match. Hopefully this will happen in 80% of
                 // lookup cases. We can maybe optimise this further by looking
                 // up the assembly too rather than iterating.
-                
-                // TODO: Bulletproof this - Might not work properly
-                GetGTypeNameComponents(gtype, out var asmName, out var typeName);
-                foundType = SearchAssembliesForGType(asmName, typeName);
+
+                // Get assemblies starting from most recently used
+                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                Array.Reverse(assemblies);
+
+                // Search assemblies for the exact matching type
+                System.Type? foundType = FuzzySearchAssemblies(gtype, assemblies);
+
                 if (foundType != null)
                 {
-                    Console.WriteLine($"Found type. Using {foundType.FullName} = {gtype.ToString()}");
                     AddRecursive(foundType, gtype);
                     return foundType;
                 }
 
-                // Check every single GObject based type's type descriptor in
-                // each assembly to find out which type we want.
-                // foundType = MatchGTypeForAssemblies(gtype);
+                // TODO: Bulletproof this - Might not work properly
+                // GetGTypeNameComponents(gtype, out var asmName, out var typeName);
+                // foundType = SearchAssembliesForGType(asmName, typeName);
                 // if (foundType != null)
                 // {
                 //     Console.WriteLine($"Found type. Using {foundType.FullName} = {gtype.ToString()}");
-                //     Add(foundType, gtype);
+                //     AddRecursive(foundType, gtype);
                 //     return foundType;
                 // }
-
-                // TODO: This is incredibly expensive. Optimise
 
                 // We are unable to find an exact corresponding System.Type for this
                 // objects GType. Look though the type's inheritance chain to
@@ -212,22 +203,24 @@ namespace GObject
                     gtype = new Type(parent);
 
                     // Using the parent gtype, search for compatible System.Type.
-                    PrintGTypeLookup(gtype);
-                    GetGTypeNameComponents(gtype, out asmName, out typeName);
-                    foundType = SearchAssembliesForGType(asmName, typeName);
+                    // PrintGTypeLookup(gtype);
+                    // GetGTypeNameComponents(gtype, out asmName, out typeName);
+                    // foundType = SearchAssembliesForGType(asmName, typeName);
+
+                    foundType = FuzzySearchAssemblies(gtype, assemblies);
                     if (foundType != null)
                     {
-                        Console.WriteLine($"The System.Type for GType {gtype.ToString()} could not be found. Resorting to using type {foundType.FullName}. Unexpected behaviour may occur");
-                        AddRecursive(foundType, gtype);
-
-                        if (!Global.Native.type_is_a(GetTypeDescriptor(foundType)!.GType.Value, gtype.Value))
-                            throw new Exception("Types not assignable. This is a fatal error");
+                        Console.WriteLine(
+                            $"The System.Type for GType {gtype.ToString()} could not be found. Resorting to using type {foundType.FullName}. Unexpected behaviour may occur");
                         
+                        AddRecursive(foundType, gtype);
                         return foundType;
                     }
                 }
 
                 // TODO: Search through unloaded assemblies?
+                Console.WriteLine(
+                    $"Could not find the type {gtype.ToString()}. Returning a GObject. Unloaded assemblies were not searched.");
 
                 // All else fails, return a GObject
                 // Should we throw an exception?
@@ -278,8 +271,8 @@ namespace GObject
             // as opposed to wrapping an existing type.
             internal static bool IsSubclass(System.Type type)
                 => type != typeof(Object) &&
-                type != typeof(InitiallyUnowned) &&
-                GetTypeDescriptor(type) is null;
+                   type != typeof(InitiallyUnowned) &&
+                   GetTypeDescriptor(type) is null;
 
             // Returns the MethodInfo for the 'GetGType()' function
             // if the type in question implements it (i.e. a wrapper)
@@ -295,81 +288,208 @@ namespace GObject
                     | System.Reflection.BindingFlags.DeclaredOnly
                 );
 
-                var descriptor = (TypeDescriptor?)descriptorField?.GetValue(null);
+                var descriptor = (TypeDescriptor?) descriptorField?.GetValue(null);
                 DescriptorDict[type] = descriptor;
 
                 return descriptor;
             }
 
-            private static System.Type? SearchAssembliesForGType(string nspace, string type)
+            private static System.Type? FuzzySearchAssemblies(Type gtype, Assembly[] assemblies)
             {
-                // TODO: Unloaded assemblies are not considered
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                Array.Reverse(assemblies);
+                // NOTE: At present, the assembly name must contain the prefix (e.g. libhandy's
+                // assembly MUST be called Hdy to work). This is a major flaw with this approach
+                // which should be fixed by the type-map.
+
+                // Break up CamelCase GType name into individual "Words"
+                // For example, GdkWin32Screen becomes "Gdk" + "Win32" + "Screen"
+                string[] words = GetWords(gtype);
                 
-                // Console.WriteLine($"SearchAssembliesForGType: Namespace: {nspace}, Type: {type}");
-
-                // TODO: Assembly Name is "G" when using GLib/GObject/Gio
-                // This breaks the lookup - Fix this
-
-                foreach (var assembly in assemblies)
+                // HACK: If the type starts with the prefix 'G', it is in one of
+                // GLib/GObject/Gio. Therefore, only lookup in those three libraries.
+                if (words[0] == "G")
                 {
-                    var testType = assembly.GetType(nspace + "." + type);
-                    if (testType != null)
+                    // Get type name excluding the prefix 'G' (e.g. GDBusConnection -> DBusConnection)
+                    string typeName = String.Join("", words, 1, words.Length - 1);
+                    return FuzzySearchGLib(gtype, typeName, assemblies);
+                }
+
+                // DEBUG: Print Assembly Lookup
+                Console.WriteLine("FuzzySearchAssemblies: Looking up" + gtype.ToString() + "with components:");
+                foreach (string word in words)
+                    Console.WriteLine(" * " + word);
+
+                // We must have at least two "words" to perform a lookup (one word implies the
+                // type is not prefixed, which we do not support).
+                if (words.Length <= 1)
+                {
+                    Console.WriteLine($"Non prefixed type name {gtype.ToString()} - This is an error!");
+                    return null;
+                }
+
+                // Start lookup with the first word being the assembly name, and the remainder being the
+                // type. Then proceed to using two words as the assembly name, then three, and so on. This
+                // is to allow for libraries like GtkSourceView using 'GtkSource' as a prefix, which clashes
+                // with 'Gtk' itself.
+                for (var n = 1; n < words.Length; n += 1)
+                {
+                    // Get the Assembly and Type names
+                    var asmName = String.Join("", words, 0, n);
+                    var typeName = String.Join("", words, n, words.Length - n);
+                    
+                    // Iterate over assemblies
+                    foreach (Assembly asm in assemblies)
                     {
-                        Console.WriteLine($"SearchAssembliesForGType: Found Type: {testType.FullName}, Namespace: {testType.Namespace}");
-                        return testType;
+                        // Go to next assembly if it doesn't match the search term
+                        if (!asm.FullName.StartsWith(asmName))
+                            continue;
+
+                        // DEBUG: Print out found match
+                        Console.WriteLine(asm.FullName + " matches " + asmName);
+                        
+                        // Attempt to lookup type in assembly
+                        System.Type? foundType = asm.GetType(asmName + "." + typeName);
+
+                        // Go to next assembly if type not found
+                        if (foundType is null)
+                            continue;
+
+                        // Ensure the GType matches the provided type. Return if true
+                        if (GetTypeDescriptor(foundType)?.GType.Equals(gtype) ?? false)
+                            return foundType;
                     }
+                }
+
+                // Otherwise return null
+                return null;
+            }
+
+            private static System.Type? FuzzySearchGLib(Type gtype, string typeName, Assembly[] assemblies)
+            {
+                // Hack to lookup types in either GLib/GObject/Gio, as they use the
+                // prefix 'G'. This is to have a functional typedict in the mean time
+                // while the type-map approach is evaluated.
+                foreach (Assembly asm in assemblies)
+                {
+                    // GLib
+                    if (asm.FullName.StartsWith("GLib"))
+                        return asm.GetType($"GLib.{typeName}");
+                    
+                    // GObject
+                    if (asm.FullName.StartsWith("GObject"))
+                        return asm.GetType($"GObject.{typeName}");
+                    
+                    // Gio
+                    if (asm.FullName.StartsWith("Gio"))
+                        return asm.GetType($"Gio.{typeName}");
                 }
 
                 return null;
             }
 
-            private static System.Type? MatchGTypeForAssemblies(Type gtype)
+            // private static System.Type? SearchAssembliesForGType(string nspace, string type)
+            // {
+            //     // TODO: Unloaded assemblies are not considered
+            //     var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            //     Array.Reverse(assemblies);
+            //     
+            //     // Console.WriteLine($"SearchAssembliesForGType: Namespace: {nspace}, Type: {type}");
+            //
+            //     // TODO: Assembly Name is "G" when using GLib/GObject/Gio
+            //     // This breaks the lookup - Fix this
+            //
+            //     foreach (var assembly in assemblies)
+            //     {
+            //         var testType = assembly.GetType(nspace + "." + type);
+            //         if (testType != null)
+            //         {
+            //             Console.WriteLine($"SearchAssembliesForGType: Found Type: {testType.FullName}, Namespace: {testType.Namespace}");
+            //             return testType;
+            //         }
+            //     }
+            //
+            //     return null;
+            // }
+
+            // private static System.Type? MatchGTypeForAssemblies(Type gtype)
+            // {
+            //     var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            //     Array.Reverse(assemblies);
+            //
+            //     foreach (var assembly in assemblies)
+            //     {
+            //         foreach (var testType in assembly.GetExportedTypes())
+            //         {
+            //             if ((typeof(GObject.Object)).IsAssignableFrom(testType))
+            //             {
+            //                 var desc = GetTypeDescriptor(testType);
+            //                 if (desc?.GType.Equals(gtype) ?? false)
+            //                 {
+            //                     return testType;
+            //                 }
+            //             }
+            //         }
+            //     }
+            //
+            //     return null;
+            // }
+
+            private static string[] GetWords(Type gtype)
             {
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                Array.Reverse(assemblies);
-
-                foreach (var assembly in assemblies)
-                {
-                    foreach (var testType in assembly.GetExportedTypes())
-                    {
-                        if ((typeof(GObject.Object)).IsAssignableFrom(testType))
-                        {
-                            var desc = GetTypeDescriptor(testType);
-                            if (desc?.GType.Equals(gtype) ?? false)
-                            {
-                                return testType;
-                            }
-                        }
-                    }
-                }
-
-                return null;
+                return System.Text.RegularExpressions.Regex.Split(gtype.ToString(), @"(?<!^)(?=[A-Z])");
+                
+                // Gets the name of the GType and splits
+                // it into "Words", where each word starts
+                // with a capital letter.
+                // var gtypeName = gtype.ToString();
+                //
+                // List<string> words = default!;
+                //
+                // var lastIndex = 0;
+                // var curIndex = 0;
+                // foreach (char c in gtypeName)
+                // {
+                //     if (Char.IsUpper(c) && curIndex != 0)
+                //     {
+                //         words.Add(gtypeName.Substring(lastIndex, curIndex));
+                //         lastIndex = curIndex;
+                //     }
+                //
+                //     curIndex += 1;
+                // }
+                //
+                // return words.ToArray();
             }
 
-            private static void GetGTypeNameComponents(Type gtype, out string asmName, out string typeName)
-            {
-                // FIXME: Very hacky way of finding the namespace
-                // THIS WILL NOT WORK FOR NAMESPACES MORE THAN ONE WORD
-                // We should migrate to an assembly-metadata based system
-                // sooner rather than later.
-                var gtypeName = gtype.ToString();
-                int index = 0;
-                foreach (char c in gtypeName)
-                    if (Char.IsUpper(c) && (index != 0))
-                        break;
-                    else
-                        index += 1;
+            // private static void GetGTypeNameComponents(Type gtype, out string asmName, out string typeName)
+            // {
+            //     // FIXME: Very hacky way of finding the namespace
+            //     // THIS WILL NOT WORK FOR NAMESPACES MORE THAN ONE WORD
+            //     // We should migrate to an assembly-metadata based system
+            //     // sooner rather than later.
+            //     var gtypeName = gtype.ToString();
+            //     int index = 0;
+            //     foreach (char c in gtypeName)
+            //         if (Char.IsUpper(c) && (index != 0))
+            //             break;
+            //         else
+            //             index += 1;
+            //
+            //     asmName = gtypeName.Substring(0, index); // 0 to index
+            //     typeName = gtypeName.Substring(index); // index to end
+            // }
 
-                asmName = gtypeName.Substring(0, index); // 0 to index
-                typeName = gtypeName.Substring(index); // index to end
-            }
+            // private static void PrintGTypeLookup(Type gtype)
+            // {
+            //     GetGTypeNameComponents(gtype, out var asmName, out var typeName);
+            //     Console.WriteLine($"Assembly: {asmName}, Type: {typeName}");
+            // }
 
-            private static void PrintGTypeLookup(Type gtype)
+            private static void DebugPrintLoadedAssemblies()
             {
-                GetGTypeNameComponents(gtype, out var asmName, out var typeName);
-                Console.WriteLine($"Assembly: {asmName}, Type: {typeName}");
+                // Print all currently loaded assemblies
+                Console.WriteLine($"Loaded Assemblies:");
+                foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+                    Console.WriteLine(" - " + asm.GetName());
             }
 
             #endregion
