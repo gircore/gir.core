@@ -281,12 +281,15 @@ namespace GObject
                 return descriptor;
             }
 
+            // Tries to find Assemblies which match the possible type prefixes of a
+            // given gtype. For each assembly which is considered a possible candidate,
+            // a type lookup is performed using the prefix as a namespace.
+            //
+            // NOTE: At present, the assembly name must contain the prefix (e.g. libhandy's
+            // assembly MUST be called Hdy to work). This is a major flaw with this approach
+            // which should be fixed by the type-map.
             private static System.Type? FuzzySearchAssemblies(Type gtype, Assembly[] assemblies)
             {
-                // NOTE: At present, the assembly name must contain the prefix (e.g. libhandy's
-                // assembly MUST be called Hdy to work). This is a major flaw with this approach
-                // which should be fixed by the type-map.
-
                 // Break up CamelCase GType name into individual "Words"
                 // For example, GdkWin32Screen becomes "Gdk" + "Win32" + "Screen"
                 string[] words = GetWords(gtype);
