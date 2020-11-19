@@ -34,7 +34,7 @@ namespace Gtk
         }
 
         public void PackStart(Widget widget, bool expand, bool fill, uint padding)
-            => Native.pack_start(Handle, widget.Handle, expand, fill, padding);
+            => Native.pack_start(Handle, GetHandle(widget), expand, fill, padding);
 
         public Box(Orientation orientation) : this(orientation, 0) {}
 

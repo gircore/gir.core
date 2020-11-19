@@ -27,7 +27,7 @@ namespace GObject
 
         #region Properties
         
-        public IntPtr Handle { get; private set; }
+        protected internal IntPtr Handle { get; private set; }
         
         // We need to store a reference to WeakNotify to
         // prevent the delegate from being collected by the GC
