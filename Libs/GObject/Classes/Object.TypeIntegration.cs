@@ -37,7 +37,7 @@ namespace GObject
             Marshal.StructureToPtr(query, ptr, true);
 
             // Perform Query
-            Global.type_query(gtype, ptr);
+            Global.Native.type_query(gtype, ptr);
 
             // Marshal and Free Memory
             query = (TypeQuery) Marshal.PtrToStructure(ptr, typeof(TypeQuery));
@@ -67,8 +67,14 @@ namespace GObject
             if (!IsSubclass(type))
                 throw new Exception($"Error! Trying to register wrapper class {type} as new type");
 
-            if (type.BaseType is { } && IsSubclass(type.BaseType))
-                RegisterNativeType(type.BaseType);
+            if (type.BaseType is { })
+            {
+                if (IsSubclass((type.BaseType)))
+                    RegisterNativeType(type.BaseType);
+                else
+                    TypeDictionary.AddRecursive(type.BaseType);
+            }
+                
 
             var boundaryTypeId = GetBoundaryTypeId(type);
             TypeQuery query = QueryType(boundaryTypeId);
@@ -88,7 +94,7 @@ namespace GObject
             // Perform Registration
             var qualifiedName = QualifyName(type);
             Console.WriteLine($"Registering type {type.Name} as {qualifiedName}");
-            var typeid = Global.type_register_static(boundaryTypeId, qualifiedName, ptr, 0);
+            var typeid = Global.Native.type_register_static(boundaryTypeId, qualifiedName, ptr, 0);
 
             if (typeid == 0)
                 throw new Exception("Type Registration Failed!");
@@ -97,7 +103,7 @@ namespace GObject
             Marshal.FreeHGlobal(ptr);
 
             // Register type in type dictionary
-            TypeDictionary.Add(type, new Type(typeid));
+            TypeDictionary.AddSingle(type, new Type(typeid));
         }
 
         private static Type TypeFromHandle(IntPtr handle)

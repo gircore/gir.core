@@ -1,0 +1,15 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace {{ namespace }}
+{
+    public partial class Global
+    {
+        internal static class Native
+        {
+        {{~ for method in methods
+            include 'method.sbntxt' method
+        end ~}}
+        }
+    }
+}

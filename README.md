@@ -19,7 +19,7 @@ Currently supported libraries
 * [libhandy] (planed): Convergent UI-Widgets for [GTK] to support mobile phones
 * [dbus] (wip): Library for inter-process communication via [GIO]
 * [libchamplain] (planed): Library to display maps
-* [gstreamer] (planed): Multimedia Framework
+* [gstreamer] (wip): Multimedia Framework
 
 ## Status
 As we are currently figuring out the best way for this project the code is under heavy development and not ready for production. There is currently _no_ nuget package available.
@@ -70,3 +70,8 @@ The code in the library folder is not complete because the biggest part of the c
 [libchamplain]: https://wiki.gnome.org/Projects/libchamplain
 [GtkSharp]: https://github.com/GtkSharp/GtkSharp
 [sample_gtk_quickstart]: https://github.com/gircore/gir.core/tree/develop/Samples/Gtk3/Quickstart
+
+## Licensing terms
+Gir.Core is licensed under the terms of the MIT-License. Please see the [LICENSE](LICENSE) file for further information.
+
+The [Gir.Core logo](logo.svg) is built upon the [original GTK logo](https://wiki.gnome.org/Projects/GTK/Logo) by Andreas Nilsson which is licensed under the [GNU Free Documentation License](https://www.gnu.org/licenses/fdl-1.3.txt) and was relicensed under CC BY-SA 3.0. Therefore the Gir.Core logo is licensed under the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.en), too.
