@@ -19,19 +19,6 @@ namespace Gtk
             set => SetProperty(ApplicationProperty, value);
         }
 
-        public static readonly Property<bool> ResizableProperty = Property<bool>.Register<Window>(
-            Native.ResizableProperty,
-            nameof(Resizable),
-            get: (o) => o.Resizable,
-            set: (o, v) => o.Resizable = v
-        );
-
-        public bool Resizable
-        {
-            get => GetProperty(ResizableProperty);
-            set => SetProperty(ResizableProperty, value);
-        }
-
         public static readonly Property<string> TitleProperty = Property<string>.Register<Window>(
             Native.TitleProperty,
             nameof(Title),
@@ -71,7 +58,20 @@ namespace Gtk
             set => SetProperty(DefaultWidthProperty, value);
         }
 
-        #endregion
+        public static readonly Property<bool> ResizableProperty = Property<bool>.Register<Window>(
+            Native.ResizableProperty,
+            nameof(Resizable),
+            (o) => o.Resizable,
+            (o, v) => o.Resizable = v
+        );
+
+        public bool Resizable
+        {
+            get => GetProperty(ResizableProperty);
+            set => SetProperty(ResizableProperty, value);
+        }
+
+        #endregion Properties
 
         #region Constructors
 
@@ -82,12 +82,7 @@ namespace Gtk
         { }
 
         #endregion
-        
-        #region Methods
-        
         public void SetTitle(string title) => Native.set_title(Handle, title);
         public void Close() => Native.close(Handle);
-        
-        #endregion
     }
 }

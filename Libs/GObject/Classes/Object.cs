@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -25,14 +26,14 @@ namespace GObject
         #endregion
 
         #region Properties
-
+        
         protected internal IntPtr Handle { get; private set; }
         
         // We need to store a reference to WeakNotify to
         // prevent the delegate from being collected by the GC
         private WeakNotify? _onFinalized;
 
-        protected bool Disposed { get; private set; }
+        private bool Disposed { get; set; }
 
         #endregion
 
@@ -133,7 +134,7 @@ namespace GObject
         }
 
         /// <summary>
-        /// Wrappers can override here to perform immediate initialization.
+        ///  Wrappers can override here to perform immediate initialization
         /// </summary>
         protected virtual void Initialize() { }
 
@@ -261,7 +262,8 @@ namespace GObject
         // This function returns the proxy object to the provided handle
         // if it already exists, otherwise creates a new wrapper object
         // and returns it.
-        public static T WrapPointerAs<T>(IntPtr handle)
+        protected static T WrapPointerAs<T>(IntPtr handle)
+            where T : Object
         {
             if (TryWrapPointerAs<T>(handle, out T obj))
                 return obj;
@@ -270,10 +272,12 @@ namespace GObject
         }
 
         protected internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
+            where T : Object
         {
             o = default!;
 
             // Return false if T is not of type Object
+            // TODO: Remove this?
             if (!typeof(T).IsSubclassOf(typeof(Object)) && typeof(T) != typeof(Object))
                 return false;
 
@@ -284,23 +288,46 @@ namespace GObject
                 return true;
             }
 
-            // If it is not found, we can assume that it
-            // is NOT a subclass type, as we ensure that
-            // subclass types always outlive their pointers
+            // If it is not found, we can assume that it is NOT a subclass type,
+            // as we ensure that subclass types always outlive their pointers
             // TODO: Toggle Refs ^^^
 
             // Resolve GType of object
             Type trueGType = TypeFromHandle(handle);
-            System.Type? trueType = TypeDictionary.Get(trueGType);
+            System.Type? trueType = null;
+
+            // Ensure 'T' is registered in type dictionary for future use. It is an error for a
+            // wrapper type to not define a TypeDescriptor. 
+            TypeDescriptor desc = TypeDictionary.GetTypeDescriptor(typeof(T))
+                ?? throw new Exception($"Error: Type {typeof(T).FullName} does not define a TypeDescriptor.");
+            
+            TypeDictionary.AddRecursive(typeof(T), desc.GType);
+            
+            // Optimisation: Compare the gtype of 'T' to the GType of the pointer. If they are
+            // equal, we can skip the type dictionary's (possible) recursive lookup and return
+            // immediately.
+            if (desc.GType.Equals(trueGType))
+            {
+                // We are actually a type 'T'.
+                // The conversion will always be valid
+                trueType = typeof(T);
+            }
+            else
+            {
+                // We are some other representation of 'T' (e.g. a more derived type)
+                // Retrieve the normal way
+                trueType = TypeDictionary.Get(trueGType);
+                
+                // Ensure the conversion is valid
+                Type castGType = TypeDictionary.Get(typeof(T));
+                if (!Global.Native.type_is_a(trueGType.Value, castGType.Value))
+                    throw new InvalidCastException();
+            }
 
             // Ensure we are not constructing a subclass
+            // TODO: This can be removed once ToggleRefs are implemented
             if (IsSubclass(trueType))
                 throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
-
-            // Ensure the conversion is valid
-            Type castGType = TypeDictionary.Get(typeof(T));
-            if (!Global.Native.type_is_a(trueGType.Value, castGType.Value))
-                throw new InvalidCastException();
 
             // Create using 'IntPtr' constructor
             System.Reflection.ConstructorInfo? ctor = trueType.GetConstructor(
@@ -309,6 +336,9 @@ namespace GObject
                 | System.Reflection.BindingFlags.Instance,
                 null, new[] { typeof(IntPtr) }, null
             );
+            
+            if (ctor == null)
+                throw new Exception($"Type {trueType.FullName} does not define an IntPtr constructor. This could mean improperly defined bindings");
 
             o = (T) ctor.Invoke(new object[] { handle });
 
@@ -339,11 +369,11 @@ namespace GObject
 
                 Handle = IntPtr.Zero;
 
-                //TODO: Findout about closure release
+                // TODO: Find out about closure release
                 /*foreach(var closure in closures)
                     closure.Dispose();*/
 
-                //TODO activate: closures.Clear();
+                // TODO activate: closures.Clear();
             }
         }
 

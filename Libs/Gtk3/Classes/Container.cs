@@ -14,5 +14,10 @@ namespace Gtk
         {
             set => SetProperty(ChildProperty, value);
         }
+
+        public void Add(Widget widget) => Native.add(Handle, GetHandle(widget));
+        public void Remove(Widget widget) => Native.remove(Handle, GetHandle(widget));
+
+        public void SetBorderWidth(uint border_width) => Native.set_border_width(Handle, border_width);
     }
 }

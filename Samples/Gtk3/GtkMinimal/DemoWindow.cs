@@ -26,7 +26,7 @@ namespace GtkDemo
             notebook = new Notebook();
             Box.PackStart(notebook, true, true, 0);
 
-            var image = Image.FromFile("data/gtk.png");
+            var image = Image.NewFromFile("data/gtk.png");
             notebook.InsertPage("Image", image, 0);
 
             var label = new Label("Gtk and C# - Very exciting isn't it?");
