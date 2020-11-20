@@ -55,19 +55,6 @@ namespace GObject
             return Marshal.PtrToStringAnsi(Global.Native.type_name(_value));
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is Type && ((Type)obj)._value == _value)
-                return true;
-
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
         /*public IntPtr GetClassPointer()
         {
             var ptr = TypeClass.peek(value);

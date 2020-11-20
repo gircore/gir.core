@@ -59,13 +59,14 @@ namespace GObject
 
             /// <summary>
             /// Recursively register <c>type</c> in the type dictionary. Prefer
-            /// <see cref="AddRecursive(System.Type, Type)"/> if the gtype is already known.
+            /// <see cref="AddRecursive(System.Type, Type)"/> if the GType is already known.
             /// </summary>
             /// <param name="type">The C# type.</param>
             internal static void AddRecursive(System.Type type)
             {
-                Type gtype = GetTypeDescriptor(type)!.GType;
-                AddRecursive(type, gtype);
+                Type gType = GetTypeDescriptor(type)?.GType
+                    ?? throw new Exception($"Type {type.FullName} does not define a type descriptor. Is it a GObject?");
+                AddRecursive(type, gType);
             }
 
             /// <summary>

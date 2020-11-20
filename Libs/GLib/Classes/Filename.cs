@@ -5,26 +5,22 @@ namespace GLib
 {
     public static class Filename
     {
-        public static string ToUri(string filename, string hostname, out Error? error)
+        public static string ToUri(string filename, string hostname)
         {
-            error = null;
+            var resPtr = Global.Native.filename_to_uri(filename, hostname, out IntPtr error);
 
-            var resPtr = Global.Native.filename_to_uri(filename, hostname, out IntPtr errPtr);
-
-            if (errPtr != null)
-                error = Marshal.PtrToStructure<Error>(errPtr);
+            if (error != IntPtr.Zero)
+                throw new GLib.GException(error);
 
             return Marshal.PtrToStringAnsi(resPtr);
         }
 
-        public static string FromUri(string uri, string hostname, out Error? error)
+        public static string FromUri(string uri, string hostname)
         {
-            error = null;
+            var resPtr = Global.Native.filename_from_uri(uri, hostname, out IntPtr error);
 
-            var resPtr = Global.Native.filename_from_uri(uri, hostname, out IntPtr errPtr);
-
-            if (errPtr != null)
-                error = Marshal.PtrToStructure<Error>(errPtr);
+            if (error != IntPtr.Zero)
+                throw new GLib.GException(error);
 
             return Marshal.PtrToStringAnsi(resPtr);
         }
