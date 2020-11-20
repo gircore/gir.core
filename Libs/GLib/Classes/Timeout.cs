@@ -42,7 +42,7 @@ namespace GLib
             var data = new FuncData(function);
             IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(data));
             Marshal.StructureToPtr<FuncData>(data, ptr, false);
-            return Global.timeout_add(interval, TimeoutSourceFunction, ptr);
+            return Global.Native.timeout_add(interval, TimeoutSourceFunction, ptr);
         }
 
         private static bool TimeoutSourceFunction(IntPtr data)

@@ -23,6 +23,6 @@
         /// been reissued, leading to the operation being performed against the
         /// wrong source.
         /// </summary>
-        public static void Remove(uint tag) => Global.source_remove(tag);
+        public static void Remove(uint tag) => Global.Native.source_remove(tag);
     }
 }
