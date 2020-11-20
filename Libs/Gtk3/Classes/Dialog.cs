@@ -8,7 +8,7 @@ namespace Gtk
         /// Creates a new dialog.
         /// </summary>
         public Dialog() { }
-      
+        
         public Widget GetContentArea()
             => WrapPointerAs<Widget>(Native.get_content_area(Handle));
 

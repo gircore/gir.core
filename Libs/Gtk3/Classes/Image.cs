@@ -1,4 +1,4 @@
-using GObject;
+﻿using GObject;
 
 namespace Gtk
 {
@@ -9,10 +9,11 @@ namespace Gtk
                 ConstructParameter.With(IconNameProperty, iconName),
                 ConstructParameter.With(IconSizeProperty, (int)size)
             );
-      
-        // TODO: This is incorrect. Don't use @Native.new pattern
-        // public static Image FromFile(string filename)
-        //     => new Image(Native.new_from_file(filename));
+
+        public static Image NewFromFile(string filename)
+            => new Image(
+                ConstructParameter.With(FileProperty, filename)
+            );
 
         public static readonly Property<string> IconNameProperty = Property<string>.Register<Image>(
             Native.IconNameProperty,
@@ -26,7 +27,19 @@ namespace Gtk
             get => GetProperty(IconNameProperty);
             set => SetProperty(IconNameProperty, value);
         }
+        
+        public static readonly Property<string> FileProperty = Property<string>.Register<Image>(
+            Native.FileProperty,
+            nameof(File),
+            (o) => o.File,
+            (o, v) => o.File = v
+        );
 
+        public string File
+        {
+            get => GetProperty(FileProperty);
+            set => SetProperty(FileProperty, value);
+        }
 
         public static readonly Property<int> IconSizeProperty = Property<int>.Register<Image>(
             Native.IconSizeProperty,

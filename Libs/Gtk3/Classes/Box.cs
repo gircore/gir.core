@@ -7,7 +7,7 @@ namespace Gtk
     {
         // TODO: Temporary Property - Define in interface Gtk.Orientable
         public static readonly Property<Orientation> OrientationProperty = Property<Orientation>.Register<Box>(
-            Orientable.Native.OrientationProperty,
+            "orientation", // FIXME: Don't use hardcoded properties
             nameof(Orientation),
             (o) => o.Orientation,
             (o, v) => o.Orientation = v
@@ -34,7 +34,7 @@ namespace Gtk
         }
 
         public void PackStart(Widget widget, bool expand, bool fill, uint padding)
-            => Native.pack_start(Handle, widget.Handle, expand, fill, padding);
+            => Native.pack_start(Handle, GetHandle(widget), expand, fill, padding);
 
         public Box(Orientation orientation) : this(orientation, 0) {}
 
