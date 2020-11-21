@@ -21,7 +21,7 @@ namespace GObject
         /// <summary>
         /// Event triggered when a property value changes.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged = null!;
+        public event PropertyChangedEventHandler? PropertyChanged = null!;
 
         #endregion
 
@@ -199,16 +199,16 @@ namespace GObject
         {
             ThrowIfDisposed();
 
-            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper closure))
-                UnregisterEvent(closure);
+            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
+                UnregisterEvent(closure!);
         }
 
         protected internal void UnregisterEvent(Action callback)
         {
             ThrowIfDisposed();
 
-            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper closure))
-                UnregisterEvent(closure);
+            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
+                UnregisterEvent(closure!);
         }
 
         private void UnregisterEvent(ClosureHelper closure)

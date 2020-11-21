@@ -11,8 +11,8 @@ namespace GLib
 
             if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
-
-            return Marshal.PtrToStringAnsi(resPtr);
+            
+            return Marshal.PtrToStringAnsi(resPtr) ?? System.String.Empty;
         }
 
         public static string FromUri(string uri, string hostname)
@@ -21,8 +21,8 @@ namespace GLib
 
             if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
-
-            return Marshal.PtrToStringAnsi(resPtr);
+            
+            return Marshal.PtrToStringAnsi(resPtr) ?? System.String.Empty;
         }
     }
 }

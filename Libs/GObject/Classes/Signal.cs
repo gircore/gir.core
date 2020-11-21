@@ -249,7 +249,7 @@ namespace GObject
             if (action == null)
                 return;
 
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            if (!Handlers.TryGetValue(action, out ActionRefValues? callback))
             {
                 callback = (ref Value[] values) =>
                 {
@@ -273,7 +273,7 @@ namespace GObject
             if (action == null)
                 return;
 
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            if (!Handlers.TryGetValue(action, out ActionRefValues? callback))
                 return;
 
             o.UnregisterEvent(callback);
@@ -333,7 +333,7 @@ namespace GObject
             if (action == null)
                 return;
 
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            if (!Handlers.TryGetValue(action, out ActionRefValues? callback))
             {
                 callback = (ref Value[] _) => action(o, EventArgs.Empty);
             }
@@ -352,7 +352,7 @@ namespace GObject
             if (action == null)
                 return;
 
-            if (!Handlers.TryGetValue(action, out ActionRefValues callback))
+            if (!Handlers.TryGetValue(action, out ActionRefValues? callback))
                 return;
 
             o.UnregisterEvent(callback);

@@ -44,11 +44,14 @@ namespace Gtk
             var method = connector.GetType().GetMethod(handler_name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             var senderEvent = signalsender.GetType().GetEvent(signal_name, eventFlags);
-            var eventType = senderEvent.EventHandlerType;
+            var eventType = senderEvent?.EventHandlerType;
 
+            if (method == null || eventType == null)
+                throw new Exception("Could not connect event because either method or eventType were null!");
+            
             var del = Delegate.CreateDelegate(eventType, connector, method);
 
-            senderEvent.AddMethod.Invoke(signalsender, new object[] { del });
+            senderEvent?.AddMethod?.Invoke(signalsender, new object[] { del });
         }
 
         private void ConnectFields(object obj)
@@ -74,12 +77,12 @@ namespace Gtk
                     .FirstOrDefault();
 
                 if(constructor is null)
-                    throw new Exception($"{field.ReflectedType.FullName} Field {field.Name}: Could not find a constructor with one parameter of {nameof(IntPtr)} to create a {field.FieldType.FullName}");
+                    throw new Exception($"{field?.ReflectedType?.FullName} Field {field?.Name}: Could not find a constructor with one parameter of {nameof(IntPtr)} to create a {field?.FieldType.FullName}");
 
                 var ptr = GetObject(element);
 
                 if(ptr == IntPtr.Zero)
-                    throw new Exception($"{field.ReflectedType.FullName} Field {field.Name}: Could not find an element in the template with the name {element}");
+                    throw new Exception($"{field?.ReflectedType?.FullName} Field {field?.Name}: Could not find an element in the template with the name {element}");
 
                 var newElement = constructor.Invoke(new object[] {ptr});
                 field.SetValue(obj, newElement);

@@ -7,7 +7,7 @@ namespace GLib
     {
         #region Properties
 
-        public string Message => Marshal.PtrToStringAnsi(message);
+        public string Message => Marshal.PtrToStringAnsi(message) ?? System.String.Empty;
 
         #endregion
 

@@ -10,7 +10,7 @@ namespace Gtk
         public CssProvider() {}
 
         public override string ToString()
-            => Marshal.PtrToStringAnsi(Native.to_string(Handle));
+            => Marshal.PtrToStringAnsi(Native.to_string(Handle)) ?? String.Empty;
 
         public bool LoadFromData(string data, out GLib.Error? error)
         {

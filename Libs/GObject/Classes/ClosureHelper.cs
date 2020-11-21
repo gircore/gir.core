@@ -63,12 +63,12 @@ namespace GObject
             _callbackRefValues?.Invoke(ref paramValues);
         }
 
-        public static bool TryGetByDelegate(Action action, out ClosureHelper closure)
+        public static bool TryGetByDelegate(Action action, out ClosureHelper? closure)
         {
             return Handlers.TryGetValue(action, out closure);
         }
 
-        public static bool TryGetByDelegate(ActionRefValues action, out ClosureHelper closure)
+        public static bool TryGetByDelegate(ActionRefValues action, out ClosureHelper? closure)
         {
             return Handlers.TryGetValue(action, out closure);
         }

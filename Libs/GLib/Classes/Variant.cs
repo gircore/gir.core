@@ -80,12 +80,12 @@ namespace GLib
         {
             ulong length = 0;
             IntPtr strPtr = get_string(_handle, ref length);
-
-            return Marshal.PtrToStringAuto(strPtr);
+            
+            return Marshal.PtrToStringAuto(strPtr) ?? System.String.Empty;
         }
 
         public string Print(bool typeAnnotate)
-            => Marshal.PtrToStringAuto(print(_handle, typeAnnotate));
+            => Marshal.PtrToStringAuto(print(_handle, typeAnnotate)) ?? System.String.Empty;
 
         #endregion
     }
