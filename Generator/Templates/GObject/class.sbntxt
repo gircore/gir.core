@@ -22,6 +22,8 @@ func write_inheritance
     end
 end
 
+include 'helper.sbntxt'
+
 -}}
 
 using System;
@@ -40,9 +42,9 @@ namespace {{ namespace }}
         private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ type_name }}", {{ name }}.Native.get_type);
         
         #region Properties
-{{~ for property in properties
-    #include 'property.sbntxt' property
-end ~}}
+        {{~ for property in properties
+            #include 'property.sbntxt' property
+        end ~}}
         #endregion
 
         #region Signals
@@ -57,9 +59,9 @@ end ~}}
         }
         {{ end }}
         
-{{~ for signal in signals
-    include 'signal.sbntxt' signal
-end ~}}
+        {{~ for $signal in signals
+            include 'signal.sbntxt' $signal '        ' name
+        end ~}}
 
         #endregion
 
@@ -69,32 +71,30 @@ end ~}}
         protected internal {{ name }}(params ConstructParameter[] properties) : base(properties) {}
         #endregion
         {{ end }}
-        
-        #region Methods
-        protected static{{' new'|get_if_parent}} class Native
-        {
-{{if (string.size get_type_function) > 0 }}
-        [DllImport("{{ dll_import }}", EntryPoint = "{{ get_type_function }}")]
-        public static extern ulong get_type();
-{{ end
-else }}
-
-        #region Native
-        protected static{{' new'|get_if_parent}} class Native
-        {
 {{ end }}
-
-        #region Properties
-{{ for property in properties
-    include 'native_property.sbntxt' property
-end }}
-        #endregion
         
         #region Methods
-{{for method in all_methods
-    include 'method.sbntxt' method
-end }}
-        #endregion
+        protected static{{' new'|get_if_parent}} class Native
+        {
+        {{~if !fundamental && (string.size get_type_function) > 0 
+            get_type_function | write_dll_import dll_import '            '
+        ~}}
+            public static extern ulong get_type();
+        {{ end }}
+
+            #region Properties
+            {{ for $property in properties
+                include 'native_property.sbntxt' $property '            '
+            end }}
+            #endregion
+        
+            #region Methods
+            
+            {{~for $method in all_methods
+                include 'method.sbntxt' $method dll_import '            ' name
+            end ~}}
+            
+            #endregion
         }
         #endregion
     }

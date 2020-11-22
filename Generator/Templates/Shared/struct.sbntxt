@@ -18,7 +18,7 @@ this | write_obsolete_attribute '    '
         #region Fields
 
 {{~ for field in fields
-include 'field2.sbntxt' field '        '
+include 'field.sbntxt' field '        '
 end ~}}
 
         #endregion
@@ -28,7 +28,7 @@ end ~}}
         internal static class Native
         {
 {{~ for method in all_methods
-include 'method2.sbntxt' method dll_import '            ' name
+include 'method.sbntxt' method dll_import '            ' name
 end ~}}
         }
 

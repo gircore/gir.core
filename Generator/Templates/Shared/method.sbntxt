@@ -1,52 +1,27 @@
-{{-
-if (string.size method.identifier) == 0
-    debug "Ignoring method of " + name + " because it has no identifier"
+{{
+$method = $1
+$dll_import = $2
+$indent = $3 ?? ""
+$class_name = $4 ?? "??" #Optional
+
+include 'helper.sbntxt'
+
+if !verify $dll_import "Ignoring method because dll import is missing"
     ret
 end
 
-if (string.size method.name) == 0
-    debug "Ignoring method of " + name + " with identifier " + method.identifier + " because it has no name"
+if !verify $method?.identifier ("Ignoring method of " + $class_name + " with name " + $method?.name ?? "??" + " because it has no identifier")
     ret
 end
 
-func parameters
-    if $0
-        if $0.parameters
-            include 'parameters.sbntxt' $0.parameters
-        end
-
-        if $0.throws
-            if $0.parameters
-                ", "
-            end
-            "out IntPtr error"
-        end
-    end
+if !verify $method?.name ("Ignoring method of " + $class_name + " with identifier " + $method?.identifier ?? "??" + " because it has no name")
+    ret
 end
 
-func get_obsolete
-    if method && method.deprecated
-        text = ""
-        if method.doc_deprecated
-            text = method.doc_deprecated.text | make_single_line | escape_quotes
-        end
-        ret '[Obsolete("' + text + '")]'
-    end
-    ret ''
-end
-
-func get_new
-    if method.is_new 
-        ret 'new ' 
-    end
-end
--}}
-        {{~ if method.doc && method.doc.text ~}}
-        ///<summary>
-        {{~ method.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
-        ///</summary>
-        {{ end 
-        get_obsolete -}}
-        [DllImport("{{ dll_import }}", EntryPoint = "{{ $1.identifier }}")]
-        public static extern {{ method.return_value | resolve_type }} {{ method.name | fix_identifier }}({{ parameters method }});
+$method | write_summary $indent
+$method | write_obsolete_attribute $indent
+$method.identifier | write_dll_import $dll_import $indent
+$indent | write_indent
+~}}
+public static extern {{ $method.return_value | resolve_type }} {{ $method.name | fix_identifier }}({{ $method | write_parameters }});
 

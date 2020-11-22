@@ -49,34 +49,34 @@ namespace Generator
 
         protected override void GenerateClasses(IEnumerable<GClass> classes, string @namespace)
         {
-            // foreach (GClass? cls in classes)
-            // {
-            //     ScriptObject? scriptObject = GetScriptObject();
-            //     scriptObject.Import(cls);
-            //
-            //     Generate(
-            //         templateName: "class",
-            //         subfolder: "Classes",
-            //         fileName: cls.Name,
-            //         scriptObject: scriptObject
-            //     );
-            // }
+            foreach (GClass? cls in classes)
+            {
+                ScriptObject? scriptObject = GetScriptObject();
+                scriptObject.Import(cls);
+
+                Generate(
+                    templateName: "class",
+                    subfolder: "Classes",
+                    fileName: cls.Name,
+                    scriptObject: scriptObject
+                );
+            }
         }
 
         protected override void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace)
         {
-            // foreach (GInterface? iface in interfaces)
-            // {
-            //     ScriptObject? scriptObject = GetScriptObject();
-            //     scriptObject.Import(iface);
-            //
-            //     Generate(
-            //         templateName: "interface",
-            //         subfolder: "Interfaces",
-            //         fileName: iface.Name,
-            //         scriptObject: scriptObject
-            //     );
-            // }
+            foreach (GInterface? iface in interfaces)
+            {
+                ScriptObject? scriptObject = GetScriptObject();
+                scriptObject.Import(iface);
+
+                Generate(
+                    templateName: "interface",
+                    subfolder: "Interfaces",
+                    fileName: iface.Name,
+                    scriptObject: scriptObject
+                );
+            }
         }
 
         protected override void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags)
@@ -113,7 +113,7 @@ namespace Generator
         {
             ScriptObject? scriptObject = GetScriptObject();
             scriptObject.Add("constants", constants);
-            
+
             Generate(
                 templateName: "constants",
                 subfolder: "Classes",
