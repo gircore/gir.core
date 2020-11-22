@@ -72,22 +72,6 @@ namespace Generator
             }
         }
 
-        protected override void GenerateClasses(IEnumerable<GClass> classes, string @namespace)
-        {
-            foreach (GClass? cls in classes)
-            {
-                ScriptObject? scriptObject = GetScriptObject();
-                scriptObject.Import(cls);
-
-                Generate(
-                    templateName: "class",
-                    subfolder: "Classes",
-                    fileName: cls.Name,
-                    scriptObject: scriptObject
-                );
-            }
-        }
-
         protected override void GenerateEnums(IEnumerable<GEnumeration> enums, string @namespace, bool hasFlags)
         {
             foreach (GEnumeration? obj in enums)
