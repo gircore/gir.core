@@ -1,4 +1,12 @@
 {{
+$constant = $1
+$indent = $2 ?? ""
+
+include 'helper.sbntxt'
+
+$constant | write_summary $indent
+$indent | write_indent
+
 $type = $1.type | type_to_string
 
 $value = $1.value;
@@ -8,10 +16,6 @@ if string.ends_with $type 'Flags'
 else if $type == 'string'
     $value = '"' + $value + '"'
 end
-}}        
-        {{~ if $1.doc && $1.doc.text ~}}
-        /// <summary>
-        {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}
-        /// </summary>
-        {{ end }}
-        public static {{ $type }} {{ $1.name | fix_identifier }} = {{ $value }};
+
+~}}
+public static {{ $type }} {{ $1.name | fix_identifier }} = {{ $value }};

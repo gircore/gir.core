@@ -1,4 +1,4 @@
-        
+       
         {{~ if $1.doc && $1.doc.text ~}}
         /// <summary>
         {{~ $1.doc.text | comment_line_by_line_with_prefix '\t\t'~}}

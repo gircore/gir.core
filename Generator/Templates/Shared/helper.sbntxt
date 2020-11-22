@@ -1,4 +1,9 @@
 {{
+
+func write_indent(indent)
+    indent
+end
+
 func verify(value, error)
     if (value | string.size == 0)
         debug error
@@ -10,19 +15,23 @@ end
 
 func write_summary(obj, indent)
     if obj.doc?.text
-        indent + "///<summary>"
+        indent + "///<summary>\r\n"
         obj.doc.text | comment_line_by_line_with_prefix indent
-        indent + "///</summary>"
+        indent + "///</summary>\r\n"
     end
 end
 
-func write_obsolete_attribute(obj)
+func write_dll_import(entrypoint, dll_import, indent)
+    indent + '[DllImport("' + dll_import + '", EntryPoint = "' + entrypoint + '")]\r\n'
+end
+
+func write_obsolete_attribute(obj, indent)
     if obj?.deprecated
         $text = ""
         if obj.doc_deprecated
             $text = obj.doc_deprecated.text | make_single_line | escape_quotes
         end
-        '[Obsolete("' + $text + '")]'
+        indent + '[Obsolete("' + $text + '")]'
     end
 end
 

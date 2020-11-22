@@ -26,25 +26,25 @@ namespace Build
         {
             (new Project(GLIB, "GLib-2.0.gir"), typeof(GLibGenerator)),
             (new Project(GOBJECT, "GObject-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GIO, "Gio-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(CAIRO, "cairo-1.0.gir"), typeof(GObjectGenerator)),
-            //(new Project(XLIB, "xlib-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(PANGO, "Pango-1.0.gir"), typeof(GObjectGenerator)),
-            //(new Project(CLUTTER, "Clutter-1.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GDK3, "Gdk-3.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GDK_PIXBUF, "GdkPixbuf-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GTK3, "Gtk-3.0.gir"), typeof(GObjectGenerator)),
-            /*(JAVASCRIPT_CORE, JAVASCRIPT_CORE_GIR, "javascriptcoregtk-4.0.so", false),
-            (HANDY, HANDY_GIR, "libhandy-0.0.so.0", false),
-            (WEBKITGTK, WEBKITGTK_GIR, "libwebkit2gtk-4.0.so.37", true),
-            (WEBKIT2WEBEXTENSION, WEBKIT2WEBEXTENSION_GIR, "WEBEXTENSION", true),
-            (GTKCLUTTER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
-            (CHAMPLAIN, "Champlain-0.12.gir", "libchamplain-0.12", false),
-            (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),*/
-            (new Project(GST, "Gst-1.0.gir"), typeof(GObjectGenerator)),
-            /*(GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
-            (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
-            (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/
+            // (new Project(GIO, "Gio-2.0.gir"), typeof(GObjectGenerator)),
+            // (new Project(CAIRO, "cairo-1.0.gir"), typeof(GObjectGenerator)),
+            // //(new Project(XLIB, "xlib-2.0.gir"), typeof(GObjectGenerator)),
+            // (new Project(PANGO, "Pango-1.0.gir"), typeof(GObjectGenerator)),
+            // //(new Project(CLUTTER, "Clutter-1.0.gir"), typeof(GObjectGenerator)),
+            // (new Project(GDK3, "Gdk-3.0.gir"), typeof(GObjectGenerator)),
+            // (new Project(GDK_PIXBUF, "GdkPixbuf-2.0.gir"), typeof(GObjectGenerator)),
+            // (new Project(GTK3, "Gtk-3.0.gir"), typeof(GObjectGenerator)),
+            // /*(JAVASCRIPT_CORE, JAVASCRIPT_CORE_GIR, "javascriptcoregtk-4.0.so", false),
+            // (HANDY, HANDY_GIR, "libhandy-0.0.so.0", false),
+            // (WEBKITGTK, WEBKITGTK_GIR, "libwebkit2gtk-4.0.so.37", true),
+            // (WEBKIT2WEBEXTENSION, WEBKIT2WEBEXTENSION_GIR, "WEBEXTENSION", true),
+            // (GTKCLUTTER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
+            // (CHAMPLAIN, "Champlain-0.12.gir", "libchamplain-0.12", false),
+            // (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),*/
+            // (new Project(GST, "Gst-1.0.gir"), typeof(GObjectGenerator)),
+            // /*(GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
+            // (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
+            // (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/
         };
 
         #endregion
