@@ -1,0 +1,41 @@
+{{
+func verify(value, error)
+    if (value | string.size == 0)
+        debug error
+        ret false
+    else
+        ret true
+    end
+end
+
+func write_summary(obj, indent)
+    if obj.doc?.text
+        indent + "///<summary>"
+        obj.doc.text | comment_line_by_line_with_prefix indent
+        indent + "///</summary>"
+    end
+end
+
+func write_obsolete_attribute(obj)
+    if obj?.deprecated
+        $text = ""
+        if obj.doc_deprecated
+            $text = obj.doc_deprecated.text | make_single_line | escape_quotes
+        end
+        '[Obsolete("' + $text + '")]'
+    end
+end
+
+func write_parameters(method)
+    if method.parameters
+        include 'parameters.sbntxt' method.parameters
+    end
+
+    if method.throws
+        if method.parameters
+            ", "
+        end
+        "out IntPtr error"
+    end
+end
+}}
