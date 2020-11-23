@@ -49,18 +49,45 @@ namespace Generator
             Project = project ?? throw new ArgumentNullException(nameof(project));
 
             Repository = ReadRepository(project.Gir);
-
-            var aliases = new List<GAlias>();
-            aliases.AddRange(Repository.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
-
-            GRepository? repo = ReadRepository("../gir-files/GLib-2.0.gir");
-            if (repo.Namespace != Repository.Namespace)
-                aliases.AddRange(repo.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+            List<GAlias> aliases = ProcessAliases(Repository);
 
             var aliasResolver = new AliasResolver(aliases);
             _typeResolver = new TypeResolver(aliasResolver);
 
             FixRepository(Repository);
+        }
+
+        private static List<GAlias> ProcessAliases(GRepository? repo)
+        {
+            List<GAlias> aliases = new List<GAlias>();
+            aliases.AddRange(repo?.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+            ProcessAliasesRecursive(repo?.Namespace?.Name, repo?.Includes, ref aliases);
+            return aliases;
+        }
+
+        private static void ProcessAliasesRecursive(string? repoName, List<GInclude>? includes, ref List<GAlias> aliases)
+        {
+            if (repoName == null)
+                return;
+
+            // TODO: This is incredibly inefficient. We already need to load dependencies, so
+            // we should incrementally gather data and reuse it, rather than processing every
+            // dependency an extra time per library. Do this during the generator rewrite.
+            foreach (GInclude include in (includes ?? new List<GInclude>()))
+            {
+                try
+                {
+                    string filename = include.Name + "-" + include.Version + ".gir";
+                    GRepository? dependency = ReadRepository("../gir-files/" + filename);
+                    
+                    // Recursively process aliases for all includes
+                    ProcessAliasesRecursive(dependency?.Namespace?.Name, dependency?.Includes, ref aliases);
+                    
+                    // Also add toplevel aliases
+                    aliases.AddRange(dependency?.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
+                }
+                catch { }
+            }
         }
 
         #endregion
