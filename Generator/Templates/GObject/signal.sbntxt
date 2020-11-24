@@ -13,7 +13,7 @@ if signal.needs_signal_args
 end
 
 func get_obsolete
-    if signal.deprecated
+    if signal && signal.deprecated
         text = ""
         if signal.doc_deprecated
             text = signal.doc_deprecated.text | make_single_line | escape_quotes

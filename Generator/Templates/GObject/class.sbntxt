@@ -70,6 +70,17 @@ end ~}}
         #endregion
         {{ end }}
         
+        #region Fields
+                        
+        protected {{'new'|get_if_parent}} struct Fields : IObjectStruct
+        {        
+{{~ for field in fields
+    include 'field.sbntxt' field
+end ~}}
+        }
+                
+        #endregion
+        
         #region Methods
         protected static{{' new'|get_if_parent}} class Native
         {

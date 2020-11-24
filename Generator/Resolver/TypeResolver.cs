@@ -58,6 +58,13 @@ namespace Generator
         #endregion
     }
 
+    internal enum Direction
+    {
+        In,
+        Out,
+        InOut,
+    }
+
     internal class MyType
     {
         #region Properties
@@ -68,6 +75,8 @@ namespace Generator
         public bool IsPointer { get; set; }
         public bool IsValueType { get; set; }
         public bool IsParameter { get; set; }
+        
+        public Direction? Direction { get; set; }
 
         #endregion
 
@@ -102,9 +111,10 @@ namespace Generator
 
         public ResolvedType Resolve(IType typeInfo) => typeInfo switch
         {
+            // GParameter p when p.Direction is "out" or "inout" => new ResolvedType("IntPtr", true),
             GField f when f.Callback is { } => new ResolvedType("IntPtr"),
             { Array: { CType: { } n } } when n.EndsWith("**") => new ResolvedType("IntPtr", true),
-            { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter)),
+            { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter, typeInfo)),
             { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),
             { Array: { Length: { } length, Type: { Name: "utf8" } name } } => GetTypeName(StringArray(length, typeInfo is GParameter)),
             { Array: { } } => new ResolvedType("IntPtr"),
@@ -132,7 +142,7 @@ namespace Generator
             return type;
         }
 
-        private MyType ConvertGType(GType gtype, bool isParameter)
+        private MyType ConvertGType(GType gtype, bool isParameter, IType? typeInfo = null)
         {
             var ctype = gtype.CType;
             if (ctype is null)
@@ -147,6 +157,17 @@ namespace Generator
             MyType? result = ResolveCType(ctype);
             result.IsParameter = isParameter;
 
+            if (isParameter && typeInfo != null)
+            {
+                result.Direction = (typeInfo as GParameter)?.Direction switch
+                {
+                    "in" => Direction.In,
+                    "out" => Direction.Out,
+                    "inout" => Direction.InOut,
+                    _ => null
+                };   
+            }
+
             if (!result.IsValueType && gtype.Name is { })
             {
                 result.Type = resolvedName ?? gtype.Name;
@@ -160,9 +181,12 @@ namespace Generator
             {
                 { Type: "gpointer" } => new ResolvedType("IntPtr"),
                 { IsArray: false, Type: "void", IsPointer: true } => new ResolvedType("IntPtr"),
+                { IsArray: false, Direction: Direction.Out or Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string", true),  // TODO: Bulletproof this (ref string)
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),  //string in parameters are marshalled automatically
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => new ResolvedType("IntPtr"),
                 { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("string[]", attribute: GetMarshal(l)),
+                { IsArray: false, IsValueType: true, Direction: Direction.Out or Direction.InOut } => new ResolvedType(type.Type, true), // TODO: Bulletproof this
+                { IsArray: false, Direction: Direction.Out or Direction.InOut } => new ResolvedType("IntPtr", true), // TODO: Bulletproof this
                 { IsArray: false, IsPointer: true, IsValueType: true } => new ResolvedType(type.Type, true),
                 { IsArray: false, IsPointer: true, IsValueType: false } => new ResolvedType("IntPtr"),
                 { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("IntPtr", true), //string array

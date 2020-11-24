@@ -16,6 +16,9 @@ namespace Gir
 
         [XmlElement("signal", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public List<GSignal> Signals { get; set; } = default!;
+        
+        [XmlElement ("field")]
+        public List<GField> Fields { get; set; } = default!;
 
         [XmlAttribute("parent")]
         public string? Parent { get; set; }

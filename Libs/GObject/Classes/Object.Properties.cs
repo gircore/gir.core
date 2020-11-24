@@ -67,6 +67,16 @@ namespace GObject
             return value;
         }
 
+        // TODO: These two functions are for supporting GStreamer's string indexer. Decide on a less temporary measure
+        
+        [Obsolete("For GStreamer# compatibility. Do not use in newly written code")]
+        public Value GStreamerGlueGetProperty(string? name)
+            => GetGProperty(name);
+
+        [Obsolete("For GStreamer# compatibility. Do not use in newly written code")]
+        public void GStreamerGlueSetProperty(string? name, Value value)
+            => SetGProperty(value, name);
+
         #endregion
     }
 }

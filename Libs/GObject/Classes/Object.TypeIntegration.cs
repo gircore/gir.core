@@ -37,7 +37,8 @@ namespace GObject
             Marshal.StructureToPtr(query, ptr, true);
 
             // Perform Query
-            Global.Native.type_query(gtype, ptr);
+            // TODO: Is there any reason to do ref ptr?
+            Global.Native.type_query(gtype, ref ptr);
 
             // Marshal and Free Memory
             query = (TypeQuery) (Marshal.PtrToStructure(ptr, typeof(TypeQuery)) ??
@@ -121,6 +122,26 @@ namespace GObject
                 // TODO: Check if pointer is actually a GObject?
                 throw new Exception("Could not resolve type from pointer");
             }
+        }
+        
+        /// <summary>
+        /// Denotes a struct as being a GObject's member struct. This can then be marshalled
+        /// with <see cref="ObjectStructFromHandle(IntPtr)"/>. It serves to provide compile-time
+        /// checks when marshalling. 
+        /// </summary>
+        protected interface IObjectStruct { }
+
+        /// <summary>
+        /// Marshal a GObject as a struct of type <c>T</c> using the object's
+        /// Handle pointer. This allows access to object fields. 
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        protected static T? ObjectStructFromHandle<T>(IntPtr handle)
+            where T: struct, IObjectStruct
+        {
+            return Marshal.PtrToStructure<T>(handle);
         }
     }
 }
