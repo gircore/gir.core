@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace {{ namespace }}
 {
-    public partial class Constant
+    public partial class Constants
     {
 {{~ for constant in constants
     include 'constant.sbntxt' constant
