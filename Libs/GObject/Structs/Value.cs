@@ -109,6 +109,15 @@ namespace GObject
         public float GetFloat() => Native.get_float(ref this);
         public long GetFlags() => (long) Native.get_flags(ref this);
         public long GetEnum() => (long) Native.get_enum(ref this);
+        
+        // Implicit Conversions
+        // TODO: Figure out how we use Dispose in relation to this
+        // Do we unset values, or should we use e.g. reference counting?
+        public static implicit operator Value(string @string) => new Value(@string);
+        public static implicit operator Value(uint @uint) => new Value(@uint);
+        public static implicit operator Value(int @int) => new Value(@int);
+        public static implicit operator Value(double @double) => new Value(@double);
+        public static implicit operator Value(float @float) => new Value(@float);
 
         public string GetString()
         {
