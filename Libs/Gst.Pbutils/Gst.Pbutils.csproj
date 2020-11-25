@@ -8,10 +8,6 @@
     <ProjectReference Include="..\Gst.Video\Gst.Video.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Class1.cs" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
