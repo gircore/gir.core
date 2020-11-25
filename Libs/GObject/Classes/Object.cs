@@ -226,13 +226,9 @@ namespace GObject
                 throw new Exception("Object is disposed");
         }
 
-        protected static void HandleError(IntPtr error)
-        {
-            if (error != IntPtr.Zero)
-                throw new GLib.GException(error);
-        }
-
-        protected static IntPtr GetHandle(Object obj)
+        // This will likely need to remain public as we have to
+        // be able to access object handles from structs (GStreamer).
+        public static IntPtr GetHandle(Object obj)
             => obj.Handle;
 
         /// <summary>
@@ -262,19 +258,27 @@ namespace GObject
         // This function returns the proxy object to the provided handle
         // if it already exists, otherwise creates a new wrapper object
         // and returns it.
-        protected static T WrapPointerAs<T>(IntPtr handle)
+        public static T WrapPointerAs<T>(IntPtr handle)
             where T : Object
         {
             if (TryWrapPointerAs<T>(handle, out T obj))
                 return obj;
 
+            if (handle == IntPtr.Zero)
+                throw new Exception(
+                    "Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapPointerAs.");
+
             throw new Exception($"Failed to wrap handle as type <{typeof(T).FullName}>");
         }
 
-        protected internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
+        public static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
             where T : Object
         {
+            // TODO: Make this nullable?
             o = default!;
+
+            if (handle == IntPtr.Zero)
+                return false;
 
             // Return false if T is not of type Object
             // TODO: Remove this?

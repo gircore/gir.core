@@ -16,5 +16,11 @@ namespace GLib
         internal static void FreeError(IntPtr errorHandle) => Native.free(errorHandle);
 
         #endregion
+
+        public static void HandleError(IntPtr error)
+        {
+            if (error != IntPtr.Zero)
+                throw new GLib.GException(error);
+        }
     }
 }
