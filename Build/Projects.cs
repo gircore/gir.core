@@ -26,11 +26,16 @@ namespace Build
         public const string GTKCHAMPLAIN = "../Libs/GtkChamplain/";
         public const string CLUTTER = "../Libs/Clutter/";
         public const string GTKCLUTTER = "../Libs/GtkClutter/";
-        public const string GST = "../Libs/Gst/";
         public const string CAIRO = "../Libs/Cairo/";
         public const string GDK3 = "../Libs/Gdk3/";
         public const string PANGO = "../Libs/Pango/";
         public const string XLIB = "../Libs/Xlib/";
+        
+        public const string GST = "../Libs/Gst/";
+        public const string GST_BASE = "../Libs/Gst.Base/";
+        public const string GST_AUDIO = "../Libs/Gst.Audio/";
+        public const string GST_VIDEO = "../Libs/Gst.Video/";
+        public const string GST_PBUTILS = "../Libs/Gst.Pbutils/";
 
         private const string SAMPLE = "../Samples/";
         public const string DBUS_SAMPLE = SAMPLE + "DBus/";

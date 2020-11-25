@@ -19,7 +19,17 @@ namespace Gst
             if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
 
-            return new Element(ret); //Parse always returns a new object
+            return GObject.Object.WrapPointerAs<Element>(ret); //Parse always returns a new object
+        }
+
+        public static Element? BinFromDescription(string binDescription, bool ghostUnlinkedPads)
+        {
+            IntPtr ret = Global.Native.parse_bin_from_description(binDescription, ghostUnlinkedPads, out IntPtr error);
+            
+            if (error != IntPtr.Zero)
+                GLib.Error.HandleError(error);
+            
+            return GObject.Object.TryWrapPointerAs<Element>(ret, out Element element) ? element : null;
         }
     }
 }

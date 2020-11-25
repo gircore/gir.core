@@ -126,8 +126,8 @@ namespace GObject
         
         /// <summary>
         /// Denotes a struct as being a GObject's member struct. This can then be marshalled
-        /// with <see cref="ObjectStructFromHandle(IntPtr)"/>. It serves to provide compile-time
-        /// checks when marshalling. 
+        /// with <see cref="Object.GetObjectStruct{T}"/> and <see cref="Object.SetObjectStruct{T}"/>
+        /// respectively. It serves to provide compile-time checks when marshalling. 
         /// </summary>
         protected interface IObjectStruct { }
 
@@ -137,11 +137,27 @@ namespace GObject
         /// </summary>
         /// <param name="handle"></param>
         /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        protected static T? ObjectStructFromHandle<T>(IntPtr handle)
+        /// <returns>T?</returns>
+        /// <seealso cref="SetObjectStruct{T}"/>
+        protected T GetObjectStruct<T>()
             where T: struct, IObjectStruct
         {
-            return Marshal.PtrToStructure<T>(handle);
+            return Marshal.PtrToStructure<T>(Handle);
+        }
+
+        /// <summary>
+        /// Updates the member struct of a GObject with the given TypeStruct. This
+        /// allows for object fields to be set.
+        /// </summary>
+        /// <param name="objectStruct"></param>
+        /// <param name="obj"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <seealso cref="GetObjectStruct{T}"/>
+        protected void SetObjectStruct<T>(T objectStruct)
+            where T: struct, IObjectStruct
+        {
+            // TODO: Bulletproof this
+            Marshal.StructureToPtr(objectStruct, Handle, false);
         }
     }
 }

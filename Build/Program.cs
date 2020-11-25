@@ -42,6 +42,10 @@ namespace Build
             (CHAMPLAIN, "Champlain-0.12.gir", "libchamplain-0.12", false),
             (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),*/
             (new Project(GST, "Gst-1.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GST_AUDIO, "GstAudio-1.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GST_VIDEO, "GstVideo-1.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GST_PBUTILS, "GstPbutils-1.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GST_BASE, "GstBase-1.0.gir"), typeof(GObjectGenerator))
             /*(GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
             (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
             (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/

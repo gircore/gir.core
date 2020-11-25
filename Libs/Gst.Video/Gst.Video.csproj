@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gst\Gst.csproj" />
+    <ProjectReference Include="..\Gst.Base\Gst.Base.csproj" />
+    <ProjectReference Include="..\GObject\GObject.csproj" />
+    <ProjectReference Include="..\GLib\GLib.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>
