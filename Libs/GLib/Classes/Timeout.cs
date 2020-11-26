@@ -39,8 +39,9 @@ namespace GLib
         ///</summary>
         public static uint Add(uint interval, Func<bool> function)
         {
+            // TODO: This is broken (we cannot marshal FuncData)
             var data = new FuncData(function);
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(data));
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(FuncData)));
             Marshal.StructureToPtr<FuncData>(data, ptr, false);
             return Global.Native.timeout_add(interval, TimeoutSourceFunction, ptr);
         }

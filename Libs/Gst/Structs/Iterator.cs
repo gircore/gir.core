@@ -13,8 +13,9 @@ namespace Gst
             // TODO: Fix generator to properly marshal as ref struct
             var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, ptr, false);
-            
+
             elem = new Value();
+            
             var result = Native.next(ptr, ref elem);
             
             Marshal.PtrToStructure(ptr, this);

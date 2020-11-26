@@ -159,7 +159,7 @@ namespace GObject
                 // calling. Therefore, this shouldn't be too prohibitively expensive.
 
                 // DEBUG: List all loaded assemblies
-                DebugPrintLoadedAssemblies();
+                // DebugPrintLoadedAssemblies();
 
                 // Get assemblies starting from most recently used
                 Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -304,6 +304,7 @@ namespace GObject
                     return FuzzySearchGLib(gtype, typeName, assemblies);
                 }
 
+#if false
                 // DEBUG: Print Assembly Lookup
                 Console.Write("FuzzySearchAssemblies: Looking up " + gtype.ToString() + " with components: ");
                 foreach (string word in words)
@@ -313,6 +314,7 @@ namespace GObject
                     else
                         Console.Write(word + " | ");
                 } // END DEBUG
+#endif
 
                 // We must have at least two "words" to perform a lookup (one word implies the
                 // type is not prefixed, which we do not support).
@@ -340,7 +342,7 @@ namespace GObject
                             continue;
 
                         // DEBUG: Print out found match
-                        Console.WriteLine(asm.FullName + " matches " + asmName);
+                        // Console.WriteLine(asm.FullName + " matches " + asmName);
                         
                         // Attempt to lookup type in assembly
                         System.Type? foundType = asm.GetType(asmName + "." + typeName);

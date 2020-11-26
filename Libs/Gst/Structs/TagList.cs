@@ -15,8 +15,8 @@ namespace Gst
             // Native Call
             Native.@foreach(thisPtr, func, IntPtr.Zero);
 
-            // Update this structure
-            Marshal.PtrToStructure(thisPtr, this);
+            // Update this structure (TODO: Check for NULL)
+            this = (TagList)Marshal.PtrToStructure(thisPtr, GetType())!;
         }
         
         public void Add(TagMergeMode mode, string tag, params Value[] values)
@@ -38,8 +38,38 @@ namespace Gst
             // Native Call
             Native.add_value(thisPtr, mode, tag, ref value);
 
-            // Update this structure
-            Marshal.PtrToStructure(thisPtr, this);
+            // Update this structure (TODO: Check for NULL)
+            this = (TagList)Marshal.PtrToStructure(thisPtr, GetType())!;
+        }
+
+        public uint GetTagSize(string tag)
+        {
+            // Marshal this structure
+            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
+            Marshal.StructureToPtr(this, thisPtr, false);
+            
+            // Native Call
+            var result = Native.get_tag_size(thisPtr, tag);
+
+            // Update this structure (TODO: Check for NULL)
+            this = (TagList)Marshal.PtrToStructure(thisPtr, GetType())!;
+
+            return result;
+        }
+
+        public Value GetValueIndex(string tag, uint index)
+        {
+            // Marshal this structure
+            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
+            Marshal.StructureToPtr(this, thisPtr, false);
+            
+            // Native Call
+            var result = Native.get_value_index(thisPtr, tag, index);
+
+            // Update this structure (TODO: Check for NULL)
+            this = (TagList)Marshal.PtrToStructure(thisPtr, GetType())!;
+
+            return result;
         }
     }
 }

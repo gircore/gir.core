@@ -266,7 +266,7 @@ namespace GObject
 
             if (handle == IntPtr.Zero)
                 throw new Exception(
-                    "Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapPointerAs.");
+                    $"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapPointerAs.");
 
             throw new Exception($"Failed to wrap handle as type <{typeof(T).FullName}>");
         }

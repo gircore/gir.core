@@ -33,18 +33,17 @@ namespace GObject
             TypeQuery query = default;
 
             // Convert to Pointer
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(query));
-            Marshal.StructureToPtr(query, ptr, true);
+            // IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(query));
+            // Marshal.StructureToPtr(query, ptr, true);
 
             // Perform Query
-            // TODO: Is there any reason to do ref ptr?
-            Global.Native.type_query(gtype, ref ptr);
+            Global.Native.type_query(gtype, ref query);
 
             // Marshal and Free Memory
-            query = (TypeQuery) (Marshal.PtrToStructure(ptr, typeof(TypeQuery)) ??
-                                 throw new Exception("Type Query Failed"));
+            // query = (TypeQuery) (Marshal.PtrToStructure(ptr, typeof(TypeQuery)) ??
+            //                      throw new Exception("Type Query Failed"));
                 
-            Marshal.FreeHGlobal(ptr);
+            // Marshal.FreeHGlobal(ptr);
 
             return query;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GLib;
 
 namespace Gst
 {
@@ -29,6 +30,12 @@ namespace Gst
 
         public Element? GetParentElement() =>
             TryWrapPointerAs<Element>(Native.get_parent_element(Handle), out Element element) ? element : null;
+
+        public ulong AddProbe(PadProbeType mask, PadProbeCallback callback, DestroyNotify? notify = null)
+        {
+            // TODO: Can we use null-forgiving here? Fix generator
+            return Native.add_probe(Handle, mask, callback, IntPtr.Zero, notify!);
+        }
 
         public Caps? QueryCaps(Caps? filter)
         {

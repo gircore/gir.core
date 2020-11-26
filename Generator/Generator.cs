@@ -226,7 +226,7 @@ namespace Generator
             {
                 //TODO: Workaround for missing ATK!
                 Console.WriteLine(
-                    $"Skipping file {fileName} because it looks like an ATK class which is not supported.");
+                    $"Skipping file {fileName} because it looks like an ATK class which is not yet supported.");
                 return;
             }
 

@@ -29,8 +29,8 @@ namespace Gst
             // Native Call
             Native.set_name(thisPtr, structureName);
 
-            // Update this structure
-            Marshal.PtrToStructure(thisPtr, this);
+            // Update this structure (TODO: Check for NULL)
+            this = (Structure)Marshal.PtrToStructure(thisPtr, GetType())!;
         }
     }
 }

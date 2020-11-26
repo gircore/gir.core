@@ -20,16 +20,27 @@ namespace Gst
             }
         }
         
-        public Bus Bus
-        {
-            get => WrapPointerAs<Bus>(GetObjectStruct<Fields>().bus);
-            set
-            {
-                Fields fields = GetObjectStruct<Fields>();
-                fields.bus = GetHandle(value);
-                SetObjectStruct(fields);
-            }
-        }
+        // NOTE: Be careful about providing access to fields
+        // We should (almost) always go through methods, unless
+        // we have a good reason. This field accessor below caused
+        // severe memory corruption issues when used.
+        
+        // public Bus Bus
+        // {
+        //     get
+        //     {
+        //         Fields fields = GetObjectStruct<Fields>();
+        //         IntPtr bus = fields.bus;
+        //         return WrapPointerAs<Bus>(bus);
+        //         // WrapPointerAs<Bus>(GetObjectStruct<Fields>().bus);   
+        //     }
+        //     set
+        //     {
+        //         Fields fields = GetObjectStruct<Fields>();
+        //         fields.bus = GetHandle(value);
+        //         SetObjectStruct(fields);
+        //     }
+        // }
 
         #endregion
 
@@ -58,14 +69,14 @@ namespace Gst
 
         public bool AddPad(Pad pad) => Native.add_pad(Handle, GetHandle(pad));
 
-        public void SetState(State state) 
+        public StateChangeReturn SetState(State state) 
             => Native.set_state(Handle, state);
 
         public StateChangeReturn GetState(out State state, out State pending, ulong timeout)
         {
             IntPtr statePtr = IntPtr.Zero;
             IntPtr pendingPtr = IntPtr.Zero;
-            var result = Native.get_state(Handle, ref statePtr, ref pendingPtr, timeout);
+            var result = Native.get_state(Handle, out statePtr, out pendingPtr, timeout);
 
             state = Marshal.PtrToStructure<State>(statePtr);
             pending = Marshal.PtrToStructure<State>(pendingPtr);
@@ -81,14 +92,12 @@ namespace Gst
         
         public bool QueryPosition(Format format, out long cur)
         {
-            cur = 0;
-            return Native.query_position(Handle, format, ref cur);
+            return Native.query_position(Handle, format, out cur);
         }
         
         public bool QueryDuration(Format format, out long duration)
         {
-            duration = 0;
-            return Native.query_duration(Handle, format, ref duration);
+            return Native.query_duration(Handle, format, out duration);
         }
 
         public Pad GetStaticPad(string name)
@@ -104,25 +113,33 @@ namespace Gst
         public static bool Link(Element src, Element dest)
             => Native.link(GetHandle(src), GetHandle(dest));
 
+        // FIXME: This function is the culprit for wavparse0 errors
+        // TODO: Make this work properly, and additionally clean up
+        // the API in the process.
         public static bool Link(params Element[] elements)
         {
             // TODO: Should this return false?
             if (elements.Length < 2)
                 return false;
-            
-            Element el0 = elements[0];
+
+            Element prev = elements[0];
             foreach (var el in elements[1..])
             {
                 // TODO: Should we try and keep going?
-                if (!Link(el0, el))
+                if (!Link(prev, el))
                     return false;
+
+                prev = el;
             }
 
             return true;
         }
 
-        public Pad? GetRequestPad(string name) =>
-            TryWrapPointerAs(Native.get_request_pad(Handle, name), out Pad pad) ? pad : null;
+        public Pad? GetRequestPad(string name)
+            => TryWrapPointerAs(Native.get_request_pad(Handle, name), out Pad pad) ? pad : null;
+
+        public bool SyncStateWithParent()
+            => Native.sync_state_with_parent(Handle);
         
         // Banshee appears to use a string indexer to
         // lookup properties from GLib for GStreamer
@@ -158,7 +175,12 @@ namespace Gst
                 {
                     // We intentionally throw an exception if the type of value cannot be wrapped
                     // TODO: Support boxing arbitrary managed types
-                    var val = Value.From(value);
+                    Value val;
+                    if (value?.GetType().IsAssignableTo(typeof(GObject.Object)) ?? false)
+                        val = Value.From((Object) value!);
+                    else
+                        val = Value.From(value);
+                    
                     GStreamerGlueSetProperty(property, val);
                 }
                 catch (Exception e)

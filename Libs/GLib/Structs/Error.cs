@@ -8,6 +8,8 @@ namespace GLib
         #region Properties
 
         public string Message => Marshal.PtrToStringAnsi(message) ?? System.String.Empty;
+        public uint Domain => domain;
+        public int Code => code;
 
         #endregion
 
