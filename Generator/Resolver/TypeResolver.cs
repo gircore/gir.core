@@ -180,13 +180,14 @@ namespace Generator
             => type switch
             {
                 { Type: "gpointer" } => new ResolvedType("IntPtr"),
+                { Type: "guintptr" } => new ResolvedType("IntPtr"), // TODO: Should this be UIntPtr? (Maybe not: not CLS-compliant)
                 { IsArray: false, Type: "void", IsPointer: true } => new ResolvedType("IntPtr"),
-                { IsArray: false, Direction: Direction.Out or Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string", true),  // TODO: Bulletproof this (ref string)
+                { IsArray: false, Direction: Direction.Out or Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("IntPtr"),  // TODO: Bulletproof this (ref string)
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),  //string in parameters are marshalled automatically
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => new ResolvedType("IntPtr"),
                 { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("string[]", attribute: GetMarshal(l)),
                 { IsArray: false, IsValueType: true, Direction: Direction.Out or Direction.InOut } => new ResolvedType(type.Type, true), // TODO: Bulletproof this
-                { IsArray: false, Direction: Direction.Out or Direction.InOut } => new ResolvedType("IntPtr", true), // TODO: Bulletproof this
+                // { IsArray: false, Direction: Direction.Out or Direction.InOut } => new ResolvedType("IntPtr", true), // TODO: Bulletproof this
                 { IsArray: false, IsPointer: true, IsValueType: true } => new ResolvedType(type.Type, true),
                 { IsArray: false, IsPointer: true, IsValueType: false } => new ResolvedType("IntPtr"),
                 { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("IntPtr", true), //string array
