@@ -58,6 +58,34 @@ namespace Gtk
             get => GetProperty(HAlignProperty);
             set => SetProperty(HAlignProperty, value);
         }
+        
+        
+        public static readonly Property<int> HeightRequestProperty = Property<int>.Register<Widget>(
+            Native.HeightRequestProperty,
+            nameof(HeightRequest),
+            (o) => o.HeightRequest,
+            (o, v) => o.HeightRequest = v
+        );
+    
+        public int HeightRequest
+        {
+            get => GetProperty(HeightRequestProperty);
+            set => SetProperty(HeightRequestProperty, value);
+        }
+        
+        
+        public static readonly Property<int> WidthRequestProperty = Property<int>.Register<Widget>(
+            Native.WidthRequestProperty,
+            nameof(WidthRequest),
+            (o) => o.WidthRequest,
+            (o, v) => o.WidthRequest = v
+        );
+    
+        public int WidthRequest
+        {
+            get => GetProperty(WidthRequestProperty);
+            set => SetProperty(WidthRequestProperty, value);
+        }
 
 
         public void ShowAll() => Native.show_all(Handle);
