@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Gir;
 
 namespace Generator
@@ -226,43 +226,45 @@ namespace Generator
         //         { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => new ResolvedType("IntPtr"),
         //         _ => new ResolvedType(type.Type)
         //     };
-        
+
         private ResolvedType GetTypeName(MyType type)
             => type switch
             {
                 // Pointers
                 { Type: "gpointer" } => new ResolvedType("IntPtr"),
-                { Type: "guintptr" } => new ResolvedType("IntPtr"), // TODO: Should this be UIntPtr? (Maybe not: not CLS-compliant)
+                { Type: "guintptr" } => new ResolvedType("IntPtr"), // TODO: UIntPtr instead? (Maybe not: not CLS-compliant)
                 { IsArray: false, Type: "void", IsPointer: true } => new ResolvedType("IntPtr"),
 
                 // String Related Functions
-                { IsArray: false, Direction: Direction.OutCalleeAllocates, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.OutCalleeAllocates),  // TODO: Bulletproof this (ref string)
-                // { IsArray: false, Direction: Direction.In, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.In),
-                { IsArray: false, Direction: Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.InOut),  // TODO: Bulletproof this (ref string)
-                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),  //string in parameters are marshalled automatically
+                { IsArray: false, Direction: Direction.OutCalleeAllocates, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.OutCalleeAllocates),
+                { IsArray: false, Direction: Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.InOut),
+                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => new ResolvedType("IntPtr"),
                 { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("string[]", attribute: GetMarshal(l)),
-                
-                // Marshal Value Types 
+
+                // Value Type (Non-Pointer)
                 { IsArray: false, IsValueType: true, IsPointer: false } => new ResolvedType(type.Type, type.Direction),
-                
-                // Marshal Value Pointer Types
-                { IsArray: false, IsValueType: true, IsPointer: true, Direction: Direction.Value } => new ResolvedType(type.Type, Direction.InOut), // TODO: We are assuming ref by default - clarify 
+
+                // Value Type (Pointer)
+                { IsArray: false, IsValueType: true, IsPointer: true, Direction: Direction.Value } => new ResolvedType(type.Type, Direction.InOut), // Don't marshal pointers by value
                 { IsArray: false, IsValueType: true, IsPointer: true } => new ResolvedType(type.Type, type.Direction),
-                
-                { IsArray: false, Direction: Direction.In, IsPointer: true } => new ResolvedType("IntPtr", Direction.In),
-                { IsArray: false, IsPointer: true, /*IsValueType: false, */Direction: Direction.InOut } => new ResolvedType("IntPtr"),
+
+                // Reference Types
+                { IsArray: false, Direction: Direction.In, IsPointer: true } => new ResolvedType("IntPtr", Direction.In), // TODO: Do we need this one?
+                { IsArray: false, IsPointer: true, Direction: Direction.InOut } => new ResolvedType("IntPtr"), // Avoid ref
                 { IsArray: false, IsPointer: true, IsValueType: false, Direction: not Direction.Value } => new ResolvedType("IntPtr", type.Direction),
-                
-                // { IsArray: false, Direction: Direction.OutCalleeAllocates, IsPointer: true, IsValueType: true } => new ResolvedType("IntPtr", Direction.OutCalleeAllocates), // <-- This one overrides ref Type
-                // { IsArray: false, Direction: Direction.Out or Direction.InOut } => new ResolvedType("IntPtr", true), // TODO: Bulletproof this
-                // { IsArray: false, IsPointer: true, IsValueType: true } => new ResolvedType(type.Type, Direction.InOut),
+
+                // Fallback to plain IntPtr
                 { IsArray: false, IsPointer: true, IsValueType: false } => new ResolvedType("IntPtr"),
+
+                // Arrays
                 { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("IntPtr", Direction.InOut), //string array
                 { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("IntPtr[]", attribute: GetMarshal(l)),
                 { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType(type.Type + "[]", attribute: GetMarshal(l)),
                 { IsArray: true, IsValueType: true, ArrayLengthParameter: { } } => new ResolvedType(type.Type + "[]"),
                 { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => new ResolvedType("IntPtr"),
+
+                // Fallback to type name
                 _ => new ResolvedType(type.Type)
             };
 
@@ -281,7 +283,7 @@ namespace Generator
                 "gfloat" => Float(),
                 "float" => Float(),
 
-                //"GCallback" => ReferenceType("Delegate"), // Signature of a callback is determined by the context in which it is used               
+                //"GCallback" => ReferenceType("Delegate"), // Signature of a callback is determined by the context in which it is used
 
                 "gconstpointer" => IntPtr(),
                 "va_list" => IntPtr(),
@@ -291,12 +293,12 @@ namespace Generator
                 var t when t.StartsWith("Atk") => IntPtr(),
                 var t when t.StartsWith("Cogl") => IntPtr(),
 
-                // TODO: The generator rewrite will enable us to determine
-                // value from reference types, and thus use ref structs for
-                // all structs, rather than these select cases:
+                // TODO: We need to be able to designate any type as a value type, rather than
+                // hardcoding it into the generator. The generator rewrite should let us
+                // use ref structs for all structs, rather than these select cases:
                 "GValue" => Value(),
-                // "GError" => Error(),
                 "GTypeQuery" => TypeQuery(),
+                // "GError" => Error(),
                 // "GVariantType" => VariantType(),
 
                 "guint16" => UShort(),
