@@ -1,22 +1,3 @@
-{{-
-func has_parent
-    ret parent && (string.size parent) > 0
-end 
-func get_if_parent
-    if has_parent
-        ret $0 #': ' + parent
-    end
-    ret ''
-end
-
-func get_abstract
-    if abstract
-        ret ' abstract '
-    end
-    ret ' '
-end
--}}
-
 using System;
 using GObject;
 using System.Runtime.InteropServices;

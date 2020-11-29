@@ -1,1 +1,8 @@
-{{ $1.name | fix_identifier | make_pascal_case}} = {{$1.value}},
+{{
+include 'helper.sbntxt'
+$member = $1
+$indent = $2
+
+$indent | write_indent
+~}}
+{{$member.name | fix_identifier | make_pascal_case}} = {{ $member.value }},

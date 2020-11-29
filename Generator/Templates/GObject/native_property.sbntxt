@@ -1,3 +1,9 @@
-{{property_name = (property.name | make_pascal_case)
-property_descriptor_name = property_name + 'Property'}}
-        public const string {{ property_descriptor_name }} = "{{ property.name }}";
+{{~
+$property = $1
+$indent = $2
+
+property_name = ($property.name | make_pascal_case)
+property_descriptor_name = property_name + 'Property'
+$indent | write_indent
+~}}
+public const string {{ property_descriptor_name }} = "{{ $property.name }}";

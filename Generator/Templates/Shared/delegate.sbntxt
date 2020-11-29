@@ -1,21 +1,11 @@
-{{-
-func get_parameters
-    if parameters
-        include 'parameters.sbntxt' parameters
-    end
-end
--}}
-
-
 using System;
 using System.Runtime.InteropServices;
 
 namespace {{ namespace }}
 {
-    {{~ if doc && doc.text ~}}
-    ///<summary>
-    {{~ doc.text | comment_line_by_line_with_prefix '' ~}}
-    ///</summary>
-    {{~ end ~}}
-    public delegate {{ return_value | resolve_type }} {{ name | fix_identifier }}({{ get_parameters }});
+{{
+include 'helper.sbntxt'
+this | write_summary '    '
+~}}
+    public delegate {{ return_value | resolve_type }} {{ name | fix_identifier }}({{ this | write_parameters }});
 }
