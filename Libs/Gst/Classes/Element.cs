@@ -165,7 +165,7 @@ namespace Gst
                 }
                 catch (Exception e)
                 {
-                    throw new PropertyNotFoundException(e);
+                    throw new Exception($"Property Not Found", e);
                 }
             }
 
@@ -185,7 +185,7 @@ namespace Gst
                 }
                 catch (Exception e)
                 {
-                    throw new PropertyNotFoundException(e);
+                    throw new Exception($"Property Not Found", e);
                 }
             }
         }
