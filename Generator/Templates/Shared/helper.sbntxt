@@ -1,7 +1,10 @@
-{{
+{{~
 
-func write_indent(indent)
-    indent
+func get_header(obj)
+    $ret = ""
+    $ret = $ret + (obj | get_summary)
+    $ret = $ret + (obj | get_obsolete_attribute)
+    ret $ret
 end
 
 func verify(value, error)
@@ -13,38 +16,117 @@ func verify(value, error)
     end
 end
 
-func write_summary(obj, indent)
+func get_summary(obj)
+    $ret = ""
     if obj.doc?.text
-        indent + "/// <summary>\r\n"
-        obj.doc.text | comment_line_by_line_with_prefix indent
-        indent + "/// </summary>\r\n"
+        $ret = $ret + "/// <summary>\r\n"
+        $ret = $ret + (obj.doc.text | comment_line_by_line_with_prefix "")
+        $ret = $ret + "/// </summary>\r\n"
     end
+    
+    ret $ret
 end
 
-func write_dll_import(entrypoint, dll_import, indent)
-    indent + '[DllImport("' + dll_import + '", EntryPoint = "' + entrypoint + '")]\r\n'
-end
-
-func write_obsolete_attribute(obj, indent)
+func get_obsolete_attribute(obj)
+    $ret = ""
+    
     if obj?.deprecated
         $text = ""
         if obj.doc_deprecated
             $text = obj.doc_deprecated.text | make_single_line | escape_quotes
         end
-        indent + '[Obsolete("' + $text + '")]\r\n'
+        $ret = '[Obsolete("' + $text + '")]\r\n'
     end
+    
+    ret $ret
 end
 
-func write_parameters(method)
-    if method.parameters
-        include 'parameters.sbntxt' method.parameters
+func get_parameters(method)
+
+    func to_string(parameter)
+        ret (parameter | resolve_type) + " " + (parameter.name | fix_identifier)
     end
+
+    $ps = []
+    if method.parameters?.instance_parameter
+        $ps = [ (method.parameters.instance_parameter | to_string)]
+    end
+
+    if method.parameters?.parameters
+        for parameter in method.parameters.parameters
+            $ps = array.add $ps (parameter | to_string)
+        end 
+    end
+    
+    $ret = array.join $ps ", "
 
     if method.throws
         if method.parameters
-            ", "
+            $ret = $ret + ", "
         end
-        "out IntPtr error"
+        $ret = $ret + "out IntPtr error"
     end
+    
+    ret $ret
 end
-}}
+
+func get_dll_import(entrypoint, dll_import)
+    ret '[DllImport("' + dll_import + '", EntryPoint = "' + entrypoint + '")]\r\n'
+end
+
+func get_method(method, dll_import, prefix)
+    if !verify dll_import (prefix + "Ignoring method because dll import is missing")
+        ret ""
+    else if !verify method?.identifier (prefix + "Ignoring method with name " + method?.name ?? "??" + " because it has no identifier")
+        ret ""
+    else if !verify method?.name (prefix + "Ignoring method with identifier " + method?.identifier ?? "??" + " because it has no name")
+        ret ""
+    end
+    
+    $ret = ""
+    $ret = $ret + get_header(method)
+    $ret = $ret + (get_dll_import method.identifier dll_import)
+    $ret = $ret + 'public static extern ' + (method.return_value | resolve_type) + ' ' + (method.name | fix_identifier) + '(' + (method | get_parameters) + ');\r\n'
+
+    ret $ret
+end
+
+func get_field(field)
+    $ret = ""
+    $ret = $ret + get_header(field)
+
+    if field?.array?.fixed_size 
+        for $x  in 1 .. (field.array.fixed_size | string.to_int)
+            $ret = $ret + "public " + (field | resolve_field) + " " + ((field.name + $x) | fix_identifier) + ";\r\n"
+        end
+    else 
+        $ret = $ret + "public " + (field | resolve_field) + " " + (field.name | fix_identifier) + ";\r\n"
+    end
+    
+    ret $ret
+end
+
+func get_constant(constant)
+    $type = constant.type | type_to_string
+    $value = constant.value;
+
+    if string.ends_with $type 'Flags'
+        $value = '(' + $type + ')' + $value
+    else if $type == 'string'
+        $value = '"' + $value + '"'
+    end
+
+    $ret = ""
+    $ret = $ret + get_header(constant)
+    $ret = $ret + "public static " + $type + " " + (constant.name | fix_identifier) + " = " + $value + ";\r\n"
+
+    ret $ret
+end
+
+func get_native_property(property)
+    $property_name = (property.name | make_pascal_case)
+    $property_descriptor_name = $property_name + 'Property'
+
+    ret 'public const string ' + $property_descriptor_name + ' = "' + property.name + '";\r\n'
+end
+~}}

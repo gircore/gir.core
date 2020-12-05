@@ -1,9 +1,4 @@
 {{~
-$property = $1
-$indent = $2
-
-property_name = ($property.name | make_pascal_case)
-property_descriptor_name = property_name + 'Property'
-$indent | write_indent
+include 'helper.sbntxt'
+get_native_property($1)
 ~}}
-public const string {{ property_descriptor_name }} = "{{ $property.name }}";

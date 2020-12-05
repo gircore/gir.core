@@ -1,21 +1,4 @@
-{{
-$constant = $1
-$indent = $2 ?? ""
-
+{{~
 include 'helper.sbntxt'
-
-$constant | write_summary $indent
-$indent | write_indent
-
-$type = $1.type | type_to_string
-
-$value = $1.value;
-
-if string.ends_with $type 'Flags'
-    $value = '(' + $type + ')' + $value
-else if $type == 'string'
-    $value = '"' + $value + '"'
-end
-
+get_constant($1)
 ~}}
-public static {{ $type }} {{ $1.name | fix_identifier }} = {{ $value }};

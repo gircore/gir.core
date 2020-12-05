@@ -2,8 +2,7 @@
 include 'helper.sbntxt'
 
 $signal = $1
-$indent = $2
-$class_name = $3 ?? ""
+$class_name = $2 ?? ""
 
 if !verify $signal.name ($class_name + ': Can not create signal')
     ret
@@ -31,52 +30,48 @@ else
     $signal_generic_args = $class_name
 end
 ~}}
+#region Signal {{$signal_name}}
 
-        #region Signal {{$signal_name}}
-        
-        {{~ if $signal.needs_signal_args ~}}
-        ///<summary>
-        /// Indexer to connect {{ signal_descriptor_name }} with an SignalHandler<{{$signal_generic_args}}>
-        ///</summary>
-        public SignalHandler<{{ $signal_generic_args }}> this[Signal<{{ $signal_generic_args }}> signal]
-        {
-            set => signal.Connect(this, value, true);
-        }
-        
-        /// <summary>
-        /// Signal (Event) Arguments for {{signal_name}}
-        /// </summary>
-        public sealed class {{$signal_type}} : SignalArgs
-        {            
-            #region Properties
-            {{~ 
-            index = 0
-            for $param in $signal.parameters.parameters 
-                index = index + 1
-                $signal | write_summary ($indent + '    ')
-            ~}}
-            public {{ $param | write_type }} {{ $param.name | fix_identifier | make_pascal_case }} => Args[{{index}}].Extract<{{ $param | write_type }}>();
+{{~ if $signal.needs_signal_args ~}}
+///<summary>
+/// Indexer to connect {{ $signal_descriptor_name }} with an SignalHandler<{{$signal_generic_args}}>
+///</summary>
+public SignalHandler<{{ $signal_generic_args }}> this[Signal<{{ $signal_generic_args }}> signal]
+{
+    set => signal.Connect(this, value, true);
+}
 
-            {{~ end ~}}
-            #endregion
-        }
-        
-        {{~ end ~}}
-        /// <summary>
-        /// Signal Descriptor for {{$signal_name}}.
-        /// </summary>
-        {{~ $signal | write_obsolete_attribute $indent ~}}
-        public static readonly Signal<{{ $signal_generic_args }}> {{ $signal_descriptor_name }}
-            = Signal<{{ $signal_generic_args }}>.Wrap("{{ $signal.name }}");
-        
-        {{~
-        $signal | write_summary $indent
-        $signal | write_obsolete_attribute $indent
-        ~}}
-        public event SignalHandler<{{ $signal_generic_args }}> {{ $signal_name }}
-        {
-            add => {{ $signal_descriptor_name }}.Connect(this, value);
-            remove => {{ $signal_descriptor_name }}.Disconnect(this, value);
-        }
-        
-        #endregion
+/// <summary>
+/// Signal (Event) Arguments for {{$signal_name}}
+/// </summary>
+public sealed class {{$signal_type}} : SignalArgs
+{            
+    #region Properties
+    {{~ 
+    index = 0
+    for $param in $signal.parameters.parameters 
+        index = index + 1
+        '    ' + ($signal | get_summary)
+    ~}}
+    public {{ $param | write_type }} {{ $param.name | fix_identifier | make_pascal_case }} => Args[{{index}}].Extract<{{ $param | write_type }}>();
+
+    {{~ end ~}}
+    #endregion
+}
+
+{{~ end ~}}
+/// <summary>
+/// Signal Descriptor for {{$signal_name}}.
+/// </summary>
+{{~ $signal | get_obsolete_attribute ~}}
+public static readonly Signal<{{ $signal_generic_args }}> {{ $signal_descriptor_name }}
+    = Signal<{{ $signal_generic_args }}>.Wrap("{{ $signal.name }}");
+
+{{ include 'header.sbntxt' $signal}}
+public event SignalHandler<{{ $signal_generic_args }}> {{ $signal_name }}
+{
+    add => {{ $signal_descriptor_name }}.Connect(this, value);
+    remove => {{ $signal_descriptor_name }}.Disconnect(this, value);
+}
+
+#endregion

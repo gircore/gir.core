@@ -1,22 +1,4 @@
-
 {{~
-$field = $1
-$indent = $2 ?? ""
-
 include 'helper.sbntxt'
-
-$field | write_summary $indent
-$method | write_obsolete_attribute $indent
-
-if $field?.array?.fixed_size 
-    for $x  in 1 .. ($field.array.fixed_size | string.to_int)
-        $indent | write_indent
+get_field($1)
 ~}}
-public {{ $field | resolve_field }} {{ ($field.name + $x) | fix_identifier }};
-{{
-        end
-    else 
-        $indent | write_indent
-~}}
-public {{ $field | resolve_field }} {{ $field.name | fix_identifier }};
-{{ end ~}}

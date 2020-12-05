@@ -217,6 +217,7 @@ namespace Generator
             K loader = Activator.CreateInstance<K>();
             var context = new TemplateContext { TemplateLoader = loader };
             context.PushGlobal(scriptObject);
+            context.IndentWithInclude = true;
 
             var templateFile = loader.GetPath(null, default, templateName + ".sbntxt");
             if (fileName.Contains("Accessible"))
