@@ -4,6 +4,11 @@ func get_header(obj)
     $ret = ""
     $ret = $ret + (obj | get_summary)
     $ret = $ret + (obj | get_obsolete_attribute)
+    
+    if ($ret | string.size == 0)
+        $ret = "\r\n"
+    end
+    
     ret $ret
 end
 
@@ -16,12 +21,12 @@ func verify(value, error)
     end
 end
 
-func get_summary(obj)
+func get_summary(obj, prefix = "")
     $ret = ""
     if obj.doc?.text
-        $ret = $ret + "/// <summary>\r\n"
-        $ret = $ret + (obj.doc.text | comment_line_by_line_with_prefix "")
-        $ret = $ret + "/// </summary>\r\n"
+        $ret = $ret + prefix + "/// <summary>\r\n"
+        $ret = $ret + (obj.doc.text | comment_line_by_line_with_prefix prefix)
+        $ret = $ret + prefix + "/// </summary>\r\n"
     end
     
     ret $ret

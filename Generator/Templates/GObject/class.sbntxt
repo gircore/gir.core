@@ -42,8 +42,8 @@ namespace {{ namespace }}
         private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ type_name }}", {{ name }}.Native.get_type);
 
         #region Signals
-        
         {{~ if signals_have_event_args ~}}
+        
         /// <summary>
         /// Indexer to connect with an SignalHandler<{{name}}>
         /// </summary>
