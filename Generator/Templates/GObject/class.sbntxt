@@ -44,9 +44,9 @@ namespace {{ namespace }}
         #region Signals
         
         {{~ if signals_have_event_args ~}}
-        ///<summary>
+        /// <summary>
         /// Indexer to connect with an SignalHandler<{{name}}>
-        ///</summary>
+        /// </summary>
         public SignalHandler<{{ name }}> this[Signal<{{ name }}> signal]
         {
             set => signal.Connect(this, value, true);
@@ -72,7 +72,7 @@ namespace {{ namespace }}
         
         protected static{{' new'|get_if_parent}} class Native
         {
-        
+
             {{~if !fundamental && (string.size get_type_function) > 0 
                 '            ' + (get_type_function | get_dll_import dll_import)
             ~}}
@@ -93,6 +93,7 @@ namespace {{ namespace }}
             
             #endregion
         }
+        
         #endregion
     }
 }
