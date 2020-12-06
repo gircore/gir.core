@@ -68,7 +68,7 @@ namespace {{ namespace }}
         
         {{~ end ~}}
 {{~ end ~}}
-        #region Methods
+        #region Native
         
         protected static{{' new'|get_if_parent}} class Native
         {
