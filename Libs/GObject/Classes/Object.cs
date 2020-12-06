@@ -298,8 +298,7 @@ namespace GObject
 
             // Ensure 'T' is registered in type dictionary for future use. It is an error for a
             // wrapper type to not define a TypeDescriptor. 
-            TypeDescriptor desc = TypeDictionary.GetTypeDescriptor(typeof(T))
-                ?? throw new Exception($"Error: Type {typeof(T).FullName} does not define a TypeDescriptor.");
+            TypeDescriptor desc = TypeDescriptorRegistry.ResolveTypeDescriptorForType(typeof(T));
             
             TypeDictionary.AddRecursive(typeof(T), desc.GType);
             
