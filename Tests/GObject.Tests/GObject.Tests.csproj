@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libs\GObject\GObject.csproj" />
+  </ItemGroup>
+</Project>

@@ -24,7 +24,7 @@ namespace GObject
         #region Fields
 
         private const string Gtypedescriptor = "GTypeDescriptor";
-        private static readonly Dictionary<System.Type, Object.TypeDescriptor?> DescriptorDict;
+        private static IDictionary<System.Type, Object.TypeDescriptor> DescriptorDict;
 
         #endregion
 
@@ -32,12 +32,17 @@ namespace GObject
 
         static TypeDescriptorRegistry()
         {
-            DescriptorDict = new Dictionary<System.Type, Object.TypeDescriptor?>();
+            DescriptorDict = new Dictionary<System.Type, Object.TypeDescriptor>();
         }
 
         #endregion
 
         #region Methods
+
+        internal static void SetDictionary(IDictionary<System.Type, Object.TypeDescriptor> dict)
+        {
+            DescriptorDict = dict;
+        }
 
         //TODO: Properly define nullable attributes with .NET5
         public static bool TryResolveTypeDescriptorForType(System.Type type, out Object.TypeDescriptor descriptor)

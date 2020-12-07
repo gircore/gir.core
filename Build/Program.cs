@@ -12,6 +12,11 @@ namespace Build
 
         private static string Configuration = ConfDebug;
 
+        private static readonly string[] TestProjects =
+        {
+            GOBJECT_TEST
+        };
+        
         private static readonly string[] SampleProjects =
         {
             DBUS_SAMPLE,
@@ -87,6 +92,12 @@ namespace Build
                 DependsOn(Targets.Build),
                 ForEach(SampleProjects),
                 (project) => DotNet.Build(project, Configuration)
+            );
+            
+            Target(Targets.Test,
+                DependsOn(Targets.Build),
+                ForEach(TestProjects),
+                (project) => DotNet.Test(project, Configuration)
             );
 
             Target(Targets.Release, () => Configuration = ConfRelease);

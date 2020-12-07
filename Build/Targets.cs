@@ -13,6 +13,7 @@ namespace Build
         public const string Release = "release";
         public const string Pack = "pack";
         public const string Samples = "samples";
+        public const string Test = "test";
 
         #endregion
     }

@@ -12,6 +12,7 @@ namespace Build
         public const string Push = "push";
         public const string Restore = "restore";
         public const string Clean = "clean";
+        public const string Test = "test";
 
         #endregion
     }

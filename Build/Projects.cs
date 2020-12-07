@@ -32,6 +32,8 @@ namespace Build
         public const string PANGO = "../Libs/Pango/";
         public const string XLIB = "../Libs/Xlib/";
 
+        public const string GOBJECT_TEST = "../Tests/GObject.Tests/";
+        
         private const string SAMPLE = "../Samples/";
         public const string DBUS_SAMPLE = SAMPLE + "DBus/";
         public const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
