@@ -81,11 +81,11 @@ namespace GLib
             ulong length = 0;
             IntPtr strPtr = get_string(_handle, ref length);
 
-            return Marshal.PtrToStringAuto(strPtr);
+            return Marshal.PtrToStringAuto(strPtr) ?? string.Empty;
         }
 
         public string Print(bool typeAnnotate)
-            => Marshal.PtrToStringAuto(print(_handle, typeAnnotate));
+            => Marshal.PtrToStringAuto(print(_handle, typeAnnotate)) ?? string.Empty;
 
         #endregion
     }

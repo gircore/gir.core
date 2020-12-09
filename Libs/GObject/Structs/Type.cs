@@ -52,7 +52,7 @@ namespace GObject
         // Print out the name of the gtype (for debugging purposes)
         public override string ToString()
         {
-            return Marshal.PtrToStringAnsi(Global.Native.type_name(_value));
+            return Marshal.PtrToStringAnsi(Global.Native.type_name(_value)) ?? string.Empty;
         }
 
         /*public IntPtr GetClassPointer()
