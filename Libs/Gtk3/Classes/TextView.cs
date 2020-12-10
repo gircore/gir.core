@@ -1,9 +1,12 @@
+﻿using System;
 using GObject;
 
 namespace Gtk
 {
     public partial class TextView
     {
+        #region Properties
+
         public static readonly Property<TextBuffer> BufferProperty = Property<TextBuffer>.Register<TextView>(
             Native.BufferProperty,
             nameof(Buffer),
@@ -29,6 +32,16 @@ namespace Gtk
             get => GetProperty(EditableProperty);
             set => SetProperty(EditableProperty, value);
         }
+
+        #endregion
+
+        #region Constructors
+
+        public TextView()
+            : base(Array.Empty<ConstructParameter>())
+        { }
+
+        #endregion
 
         #region IScrollable Implementation
 
