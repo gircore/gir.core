@@ -45,9 +45,9 @@ public SignalHandler<{{ $signal_generic_args }}> this[Signal<{{ $signal_generic_
 /// Signal (Event) Arguments for {{$signal_name}}
 /// </summary>
 public sealed class {{$signal_type}} : SignalArgs
-{            
+{
     #region Properties
-    
+
     {{~
     index = 0
     for $param in $signal.parameters.parameters 
