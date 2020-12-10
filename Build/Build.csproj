@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bullseye" Version="3.5.0" />
-    <PackageReference Include="SimpleExec" Version="6.1.0" />
+    <PackageReference Include="SimpleExec" Version="6.3.0" />
     <ProjectReference Include="..\Generator\Generator.csproj" />
   </ItemGroup>
 
