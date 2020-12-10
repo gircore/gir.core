@@ -20,25 +20,24 @@ func get_obsolete
 end
 }}
         #region {{ property_descriptor_name }}
-        {{ get_obsolete 
-        }}
+
         /// <summary>
-        /// Property descriptor for <see cref="{{ property_name }}" />.
+        /// Property descriptor for the <see cref="{{ property_name }}"/> property.
         /// </summary>
+        {{- get_obsolete }}
         public static readonly Property<{{ property_type }}> {{ property_descriptor_name }} = Property<{{ property_type }}>.Wrap<{{ name }}>(
             Native.{{ property_descriptor_name }},
             nameof({{ property_name }}),
-            (o) => o.{{ property_name }}{{ if property.writeable }},
-            (o, v) => o.{{ property_name }} = v{{ end }}
+            get: (o) => o.{{ property_name }}{{ if property.writeable }},
+            set: (o, v) => o.{{ property_name }} = v{{ end }}
         );
 
         {{~ if $1.doc && $1.doc.text ~}}
         /// <summary>
         {{~ $1.doc.text | comment_line_by_line_with_prefix '    '~}}
         /// </summary>
-        {{ end 
-        get_obsolete 
-        }}
+        {{- end 
+        get_obsolete }}
         public {{ property_type }} {{ property_name }}
         {
             get => GetProperty({{ property_descriptor_name }});{{ if property.writeable }}
