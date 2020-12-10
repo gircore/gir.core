@@ -5,6 +5,44 @@ using GObject;
 
 namespace Gtk
 {
+    /// <summary>
+    /// <para>
+    /// The <see cref="AboutDialog" /> offers a simple way to display information about a program like its logo, name,
+    /// copyright, website and license. It is also possible to give credits to the authors, documenters, translators
+    /// and artists who have worked on the program. An about dialog is typically opened when the user selects the
+    /// About option from the Help menu. All parts of the dialog are optional.
+    /// </para>
+    /// <para>
+    /// About dialogs often contain links and email addresses. <see cref="AboutDialog" /> displays these as clickable
+    /// links. By default, it calls <see cref="Global.ShowURIOnWindow()" /> when a user clicks one. The behaviour can
+    /// be overridden with the <see cref="OnActivateLink" /> signal.
+    /// To specify a person with an email address, use a string like <value>"Edgar Allan Poe <edgar@poe.com>"</value>.
+    /// To specify a website with a title, use a string like <value>"GTK+ team http://www.gtk.org"</value>.
+    /// </para>
+    /// <para>
+    /// To make constructing a <see cref="AboutDialog" /> as convenient as possible, you can use the function
+    /// <see cref="Global.ShowAboutDialog()" /> which constructs and shows a dialog and keeps it around so that it
+    /// can be shown again.
+    /// </para>
+    /// <para>
+    /// Note that GTK+ sets a default title of _("About %s") on the dialog window (where %s is replaced by the name of
+    /// the application, but in order to ensure proper translation of the title, applications should set the title
+    /// property explicitly when constructing a <see cref="AboutDialog" />, as shown in the following example:
+    /// <example>
+    /// GdkPixbuf.Pixbuf exampleLogo = GdkPixbuf.Pixbuf.FromFile("./logo.png");
+    /// Gtk.Global.ShowAboutDialog(
+    ///     ConstructParameter.With(Gtk.AboutDialog.ProgramName, "ExampleCode"),
+    ///     ConstructParameter.With(Gtk.AboutDialog.Logo, exampleLogo),
+    ///     ConstructParameter.With(Gtk.Window.Title, _("About ExampleCode")),
+    /// );
+    /// </example>
+    /// </para>
+    /// <para>
+    /// It is also possible to show a <see cref="AboutDialog"/> like any other <see cref="Dialog"/>,
+    /// e.g. using <see cref="Dialog.Run()"/>. In this case, you might need to know that the “Close” button returns
+    /// the <see cref="ResponseType.Cancel"/> response id.
+    /// </para>
+    /// </summary>
     public partial class AboutDialog
     {
         #region Properties
