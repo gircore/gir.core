@@ -18,8 +18,6 @@ namespace Gtk
             (o, v) => o.Editable = v
         );
 
-        public TextView() { }
-
         public TextBuffer Buffer
         {
             get => GetProperty(BufferProperty);
