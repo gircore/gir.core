@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>Gir.CS.Gtk</PackageId>
   </PropertyGroup>
 </Project>
