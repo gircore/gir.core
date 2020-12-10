@@ -1,4 +1,6 @@
 {{~
+property = $1
+
 property_name = (property.name | make_pascal_case)
 property_descriptor_name = property_name + 'Property'
 property_type = ($1.type | type_to_string)
@@ -32,12 +34,6 @@ end
             (o, v) => o.{{ property_name }} = v{{ end }}
         );
 
-        {{~ if $1.doc && $1.doc.text ~}}
-        /// <summary>
-        {{~ $1.doc.text | comment_line_by_line_with_prefix '        '~}}
-        /// </summary>
-        {{- end 
-        get_obsolete }}
-        {{ property_type }} {{ property_name }} { get; set; }
+        {{ get_obsolete }}{{ property_type }} {{ property_name }} { get; set; }
 
         #endregion

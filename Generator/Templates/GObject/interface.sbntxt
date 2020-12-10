@@ -1,3 +1,5 @@
+{{- include 'helper.sbntxt' -}}
+
 using System;
 using GObject;
 using System.Runtime.InteropServices;
