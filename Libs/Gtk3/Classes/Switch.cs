@@ -1,8 +1,6 @@
 ﻿using System;
 using GLib;
 
-#pragma warning disable 618
-
 namespace Gtk
 {
     public partial class Switch

@@ -1,7 +1,5 @@
 ﻿using System;
 
-#pragma warning disable 618
-
 namespace Gtk
 {
     public partial class RecentChooserMenu

@@ -1,8 +1,6 @@
-using System;
+﻿using System;
 using GLib;
 using GObject;
-
-#pragma warning disable 618
 
 namespace Gtk
 {

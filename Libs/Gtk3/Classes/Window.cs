@@ -1,8 +1,6 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using GObject;
-
-#pragma warning disable 618
 
 namespace Gtk
 {
@@ -234,7 +232,8 @@ namespace Gtk
 
         /// <summary>
         /// Property descriptor for the <see cref="HasResizeGrip"/> property.
-        /// </summary>[Obsolete("Resize grips have been removed.")]
+        /// </summary>
+        [Obsolete("Resize grips have been removed.")]
         public static readonly Property<bool> HasResizeGripProperty = Property<bool>.Wrap<Window>(
             Native.HasResizeGripProperty,
             nameof(HasResizeGrip),
@@ -429,7 +428,8 @@ namespace Gtk
 
         /// <summary>
         /// Property descriptor for the <see cref="ResizeGripVisible"/> property.
-        /// </summary>[Obsolete("Resize grips have been removed.")]
+        /// </summary>
+        [Obsolete("Resize grips have been removed.")]
         public static readonly Property<bool> ResizeGripVisibleProperty = Property<bool>.Wrap<Window>(
             Native.ResizeGripVisibleProperty,
             nameof(ResizeGripVisible),
@@ -1018,10 +1018,11 @@ namespace Gtk
         public static void SetDefaultIcon(GdkPixbuf.Pixbuf icon) =>
             Native.set_default_icon(GetHandle(icon));
 
-        public static bool SetDefaultIconFromFile(string filename, out GLib.Error error)
+        public static bool SetDefaultIconFromFile(string filename)
         {
             var result = Native.set_default_icon_from_file(filename, out IntPtr e);
-            error = Marshal.PtrToStructure<GLib.Error>(e);
+            HandleError(e); // Throws if error
+
             return result;
         }
 
@@ -1039,10 +1040,11 @@ namespace Gtk
             Marshal.FreeHGlobal(listPtr);
         }
 
-        public bool SetIconFromFile(string filename, out GLib.Error error)
+        public bool SetIconFromFile(string filename)
         {
             var result = Native.set_icon_from_file(Handle, filename, out IntPtr e);
-            error = Marshal.PtrToStructure<GLib.Error>(e);
+            HandleError(e); // Throws if error.
+
             return result;
         }
 
@@ -1056,6 +1058,7 @@ namespace Gtk
         public double GetOpacity() =>
             Native.get_opacity(Handle);
 
+        [Obsolete("Use Widget.SetOpacity() instead.")]
         public void SetOpacity(double opacity) =>
             Native.set_opacity(Handle, opacity);
 
@@ -1121,5 +1124,3 @@ namespace Gtk
         #endregion
     }
 }
-
-#pragma warning restore 618
