@@ -1,0 +1,47 @@
+{{-
+property_name = (property.name | make_pascal_case)
+property_descriptor_name = property_name + 'Property'
+property_type = ($1.type | type_to_string)
+
+if !property_type 
+    debug name + ': Can not create property ' + property_name
+    ret # Quit function because we can not create this property
+end
+
+func get_obsolete
+    if property.deprecated
+        text = ""
+        if property.doc_deprecated
+            text = property.doc_deprecated.text | make_single_line | escape_quotes
+        end
+        ret '[Obsolete("' + text + '")]'
+    end
+    ret ''
+end
+}}
+        #region {{ property_descriptor_name }}
+
+        /// <summary>
+        /// Property descriptor for the <see cref="{{ property_name }}"/> property.
+        /// </summary>
+        {{- get_obsolete }}
+        public static readonly Property<{{ property_type }}> {{ property_descriptor_name }} = Property<{{ property_type }}>.Wrap<{{ name }}>(
+            Native.{{ property_descriptor_name }},
+            nameof({{ property_name }}),
+            get: (o) => o.{{ property_name }}{{ if property.writeable }},
+            set: (o, v) => o.{{ property_name }} = v{{ end }}
+        );
+
+        {{~ if $1.doc && $1.doc.text ~}}
+        /// <summary>
+        {{~ $1.doc.text | comment_line_by_line_with_prefix '    '~}}
+        /// </summary>
+        {{- end 
+        get_obsolete }}
+        public {{ property_type }} {{ property_name }}
+        {
+            get => GetProperty({{ property_descriptor_name }});{{ if property.writeable }}
+            set => SetProperty({{ property_descriptor_name }}, value);{{ end }}
+        }
+
+        #endregion

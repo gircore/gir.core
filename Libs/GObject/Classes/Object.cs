@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace GObject
 {
-    public partial class Object : INotifyPropertyChanged, IDisposable
+    public partial class Object : IObject, INotifyPropertyChanged, IDisposable
     {
         #region Fields
 
@@ -153,14 +153,15 @@ namespace GObject
                 | System.Reflection.BindingFlags.FlattenHierarchy;
 
             const System.Reflection.BindingFlags MethodFlags = System.Reflection.BindingFlags.Instance
-                | System.Reflection.BindingFlags.NonPublic;
+                                                               | System.Reflection.BindingFlags.NonPublic;
 
             foreach (System.Reflection.FieldInfo? field in GetType().GetFields(PropertyDescriptorFieldFlags))
             {
                 if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Property<>))
                 {
-                    System.Reflection.MethodInfo? method = field.FieldType.GetMethod(nameof(Property<Object>.RegisterNotifyEvent), MethodFlags);
-                    method?.Invoke(field.GetValue(this), new object[] { this });
+                    System.Reflection.MethodInfo? method =
+                        field.FieldType.GetMethod(nameof(Property<Object>.RegisterNotifyEvent), MethodFlags);
+                    method?.Invoke(field.GetValue(this), new object[] {this});
                 }
             }
         }
@@ -334,13 +335,13 @@ namespace GObject
                 System.Reflection.BindingFlags.NonPublic
                 | System.Reflection.BindingFlags.Public
                 | System.Reflection.BindingFlags.Instance,
-                null, new[] { typeof(IntPtr) }, null
+                null, new[] {typeof(IntPtr)}, null
             );
             
             if (ctor == null)
                 throw new Exception($"Type {trueType.FullName} does not define an IntPtr constructor. This could mean improperly defined bindings");
 
-            o = (T) ctor.Invoke(new object[] { handle });
+            o = (T) ctor.Invoke(new object[] {handle});
 
             return true;
         }
