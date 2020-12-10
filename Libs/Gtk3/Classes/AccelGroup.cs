@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using Gdk;
 using GObject;
-using Object = GObject.Object;
 
 namespace Gtk
 {
@@ -39,7 +38,7 @@ namespace Gtk
                 nameof(ModifierMask),
                 get: (o) => o.ModifierMask
             );
-        
+
         public Gdk.ModifierType ModifierMask
         {
             get => GetProperty(ModifierMaskProperty);
@@ -51,9 +50,11 @@ namespace Gtk
 
         #region Methods
 
+        // TODO: Find a solution about closures (#119)
+        /*
         public static AccelGroup FromAccelClosure(AccelGroupActivate closure) =>
             WrapPointerAs<AccelGroup>(Native.from_accel_closure(Marshal.GetFunctionPointerForDelegate(closure)));
-        
+
         public void Connect
         (
             uint accelKey,
@@ -82,6 +83,7 @@ namespace Gtk
             IntPtr ptr = closure is null ? IntPtr.Zero : Marshal.GetFunctionPointerForDelegate(closure);
             return Native.disconnect(Handle, ptr);
         }
+        */
 
         public bool DisconnectKey(uint accelKey, ModifierType accelMods) =>
             Native.disconnect_key(Handle, accelKey, accelMods);
@@ -89,7 +91,7 @@ namespace Gtk
         public bool DisconnectKey(AccelKey key) =>
             DisconnectKey(key.accel_key, key.accel_mods);
 
-        public bool Activate(uint accelQuark, Object acceleratable, uint accelKey, Gdk.ModifierType accelMods) =>
+        public bool Activate(uint accelQuark, GObject.Object acceleratable, uint accelKey, Gdk.ModifierType accelMods) =>
             Native.activate(Handle, accelQuark, GetHandle(acceleratable), accelKey, accelMods);
 
         public void Lock() => Native.@lock(Handle);
