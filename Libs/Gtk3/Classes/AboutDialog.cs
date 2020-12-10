@@ -352,7 +352,7 @@ namespace Gtk
         public string[] GetAuthors()
         {
             IntPtr ptr = Native.get_authors(Handle);
-            List<string> authors = new List<string>();
+            var authors = new List<string>();
             do
             {
                 authors.Add(Marshal.PtrToStringAnsi(ptr) ?? string.Empty);
@@ -378,7 +378,7 @@ namespace Gtk
         public string[] GetArtists()
         {
             IntPtr ptr = Native.get_artists(Handle);
-            List<string> artists = new List<string>();
+            var artists = new List<string>();
             do
             {
                 artists.Add(Marshal.PtrToStringAnsi(ptr) ?? string.Empty);
@@ -404,7 +404,7 @@ namespace Gtk
         public string[] GetDocumenters()
         {
             IntPtr ptr = Native.get_documenters(Handle);
-            List<string> documenters = new List<string>();
+            var documenters = new List<string>();
             do
             {
                 documenters.Add(Marshal.PtrToStringAnsi(ptr) ?? string.Empty);
