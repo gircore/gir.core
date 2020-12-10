@@ -355,7 +355,7 @@ namespace Gtk
             List<string> authors = new List<string>();
             do
             {
-                authors.Add(Marshal.PtrToStringAnsi(ptr));
+                authors.Add(Marshal.PtrToStringAnsi(ptr) ?? string.Empty);
                 ptr += 1;
             } while (ptr != IntPtr.Zero);
 
@@ -381,7 +381,7 @@ namespace Gtk
             List<string> artists = new List<string>();
             do
             {
-                artists.Add(Marshal.PtrToStringAnsi(ptr));
+                artists.Add(Marshal.PtrToStringAnsi(ptr) ?? string.Empty);
                 ptr += 1;
             } while (ptr != IntPtr.Zero);
 
@@ -407,7 +407,7 @@ namespace Gtk
             List<string> documenters = new List<string>();
             do
             {
-                documenters.Add(Marshal.PtrToStringAnsi(ptr));
+                documenters.Add(Marshal.PtrToStringAnsi(ptr) ?? string.Empty);
                 ptr += 1;
             } while (ptr != IntPtr.Zero);
 
