@@ -7,6 +7,7 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>Gir.CS.Gdk3</PackageId>
   </PropertyGroup>
 </Project>

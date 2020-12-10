@@ -4,6 +4,7 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>Gir.CS.GObject</PackageId>
   </PropertyGroup>
 </Project>
