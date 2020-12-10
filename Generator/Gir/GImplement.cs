@@ -11,7 +11,7 @@ namespace Gir
 
         #endregion
 
-        public override string ToString()
+        public override string? ToString()
         {
             return !string.IsNullOrEmpty(Name) ? Name : base.ToString();
         }

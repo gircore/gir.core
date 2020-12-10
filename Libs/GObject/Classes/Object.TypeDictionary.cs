@@ -310,7 +310,8 @@ namespace GObject
                     foreach (Assembly asm in assemblies)
                     {
                         // Go to next assembly if it doesn't match the search term
-                        if (!asm.FullName.StartsWith(asmName))
+                        var fullname = asm.FullName ?? string.Empty;
+                        if (!fullname.StartsWith(asmName))
                             continue;
 
                         // DEBUG: Print out found match
@@ -342,15 +343,16 @@ namespace GObject
                 foreach (Assembly asm in assemblies)
                 {
                     // GLib
-                    if (asm.FullName.StartsWith("GLib"))
+                    var fullname = asm.FullName ?? string.Empty;
+                    if (fullname.StartsWith("GLib"))
                         return asm.GetType($"GLib.{typeName}");
                     
                     // GObject
-                    if (asm.FullName.StartsWith("GObject"))
+                    if (fullname.StartsWith("GObject"))
                         return asm.GetType($"GObject.{typeName}");
                     
                     // Gio
-                    if (asm.FullName.StartsWith("Gio"))
+                    if (fullname.StartsWith("Gio"))
                         return asm.GetType($"Gio.{typeName}");
                 }
 
