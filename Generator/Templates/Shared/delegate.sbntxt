@@ -3,9 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace {{ namespace }}
 {
-{{
-include 'helper.sbntxt'
-this | write_summary '    '
-~}}
-    public delegate {{ return_value | resolve_type }} {{ name | fix_identifier }}({{ this | write_parameters }});
+    {{ include 'header.sbntxt' this ~}}
+    public delegate {{ return_value | resolve_type }} {{ name | fix_identifier }}({{ this | get_parameters }});
 }

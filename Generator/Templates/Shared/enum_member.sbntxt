@@ -1,8 +1,6 @@
-{{
+{{-
 include 'helper.sbntxt'
 $member = $1
-$indent = $2
-
-$indent | write_indent
-~}}
+-}}
+{{ include 'header.sbntxt' $member ~}}
 {{$member.name | fix_identifier | make_pascal_case}} = {{ $member.value }},
