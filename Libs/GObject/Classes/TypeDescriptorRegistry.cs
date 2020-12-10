@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace GObject
@@ -44,8 +45,7 @@ namespace GObject
             DescriptorDict = dict;
         }
 
-        //TODO: Properly define nullable attributes with .NET5
-        public static bool TryResolveTypeDescriptorForType(System.Type type, out Object.TypeDescriptor descriptor)
+        public static bool TryResolveTypeDescriptorForType(System.Type type, [MaybeNullWhen(false)] out Object.TypeDescriptor descriptor)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace GObject
             }
             catch
             {
-                descriptor = null!;
+                descriptor = null;
                 return false;
             }
         }
@@ -69,7 +69,7 @@ namespace GObject
         /// <exception cref="TypeDescriptorRegistryException">Thrown in case of an error.</exception>
         public static Object.TypeDescriptor ResolveTypeDescriptorForType(System.Type type)
         {
-            if (TryGetTypeDescriptor(type, out Object.TypeDescriptor cachedDescriptor))
+            if (TryGetTypeDescriptor(type, out Object.TypeDescriptor? cachedDescriptor))
                 return cachedDescriptor;
 
             Object.TypeDescriptor descriptor = FindTypeDescriptor(type);
@@ -78,10 +78,9 @@ namespace GObject
             return descriptor;
         }
 
-        //TODO: Properly define nullability attributes for out parameter with .NET5
-        private static bool TryGetTypeDescriptor(System.Type type, out Object.TypeDescriptor descriptor)
+        private static bool TryGetTypeDescriptor(System.Type type, [MaybeNullWhen(false)] out Object.TypeDescriptor descriptor)
         {
-            return DescriptorDict.TryGetValue(type, out descriptor!);
+            return DescriptorDict.TryGetValue(type, out descriptor);
         }
 
         private static Object.TypeDescriptor FindTypeDescriptor(System.Type type)
