@@ -8,3 +8,7 @@ updates:
     directory: "/Generator"
     schedule:
       interval: "daily"
+  - package-ecosystem: "nuget"
+    directory: "/Tests/GObject.Tests"
+    schedule:
+      interval: "daily"
