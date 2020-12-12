@@ -14,6 +14,7 @@ namespace Build
         public const string Pack = "pack";
         public const string Samples = "samples";
         public const string Test = "test";
+        public const string Comments = "comments";
 
         #endregion
     }

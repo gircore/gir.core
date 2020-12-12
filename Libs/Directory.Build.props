@@ -12,4 +12,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+  
+  <PropertyGroup Condition="$(Configuration.ToLower().Equals('release'))">
+    <nowarn>1591</nowarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
 </Project>

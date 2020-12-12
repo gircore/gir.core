@@ -11,6 +11,7 @@ namespace Build
         #region Fields
 
         private static string Configuration = ConfDebug;
+        private static bool GenerateComments = false;
 
         private static readonly string[] TestProjects =
         {
@@ -100,10 +101,15 @@ namespace Build
                 (project) => DotNet.Test(project, Configuration)
             );
 
+            Target(Targets.Comments, () => GenerateComments = true);
+            
             Target(Targets.Release, () => Configuration = ConfRelease);
-            Target(Targets.Debug, () => Configuration = ConfDebug);
+            Target(Targets.Debug,
+                DependsOn(Targets.Comments),
+                () => Configuration = ConfDebug
+            );
 
-            Target("default", DependsOn(Targets.Build));
+            Target("default", DependsOn(Targets.Debug, Targets.Build));
             RunTargetsAndExit(args);
         }
 
@@ -129,7 +135,10 @@ namespace Build
             project.Gir = $"../gir-files/{project.Gir}";
 
             if (Activator.CreateInstance(type, project) is IGenerator generator)
+            {
+                generator.GenerateComments = GenerateComments;
                 generator.Generate();
+            }
             else
                 throw new Exception($"{type.Name} is not a generator");
         }
