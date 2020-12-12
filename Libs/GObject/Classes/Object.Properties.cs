@@ -52,7 +52,7 @@ namespace GObject
         /// </summary>
         /// <param name="name">The property name.</param>
         /// <returns>
-        /// The native value of the property, wrapped is a <see cref="Sys.Value"/>.
+        /// The native value of the property, wrapped is a <see cref="Value"/>.
         /// </returns>
         private Value GetGProperty(string? name)
         {

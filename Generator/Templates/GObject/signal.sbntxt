@@ -34,7 +34,7 @@ end
 
 {{~ if $signal.needs_signal_args ~}}
 /// <summary>
-/// Indexer to connect {{ $signal_descriptor_name }} with an SignalHandler<{{$signal_generic_args}}>
+/// Indexer to connect {{ $signal_descriptor_name }} with a SignalHandler
 /// </summary>
 public SignalHandler<{{ $signal_generic_args }}> this[Signal<{{ $signal_generic_args }}> signal]
 {

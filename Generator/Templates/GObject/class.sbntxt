@@ -45,7 +45,7 @@ namespace {{ namespace }}
         {{~ if signals_have_event_args ~}}
 
         /// <summary>
-        /// Indexer to connect with an SignalHandler<{{name}}>
+        /// Indexer to connect with a SignalHandler
         /// </summary>
         public SignalHandler<{{ name }}> this[Signal<{{ name }}> signal]
         {
