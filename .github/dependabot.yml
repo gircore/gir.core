@@ -9,6 +9,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
-    directory: "/Tests/GObject.Tests"
+    directory: "/Tests"
     schedule:
       interval: "daily"
