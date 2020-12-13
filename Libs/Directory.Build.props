@@ -13,8 +13,8 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   
-  <PropertyGroup Condition="$(Configuration.ToLower().Equals('release'))">
-    <nowarn>1591</nowarn>
+  <PropertyGroup Condition="$(GirComments) == 'True'">
+    <NoWarn>1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 </Project>

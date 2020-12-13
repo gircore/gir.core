@@ -1,146 +1,75 @@
-﻿using System;
-using static Bullseye.Targets;
-using static Build.Projects;
-using System.IO;
-using Generator;
+﻿using Bullseye;
 
 namespace Build
 {
     public static class Program
     {
-        #region Fields
-
-        private static string Configuration = ConfDebug;
-        private static bool GenerateComments = false;
-
-        private static readonly string[] TestProjects =
-        {
-            GOBJECT_TEST
-        };
-        
-        private static readonly string[] SampleProjects =
-        {
-            DBUS_SAMPLE,
-            GSTREAMER_SAMPLE,
-            //GTK3_APP_SAMPLE,
-            GTK3_MINIMAL_SAMPLE,
-            GTK3_QUICKSTART,
-            //GTK4_SIMPLE_WINDOW_SAMPLE
-        };
-
-        private static readonly (Project Project, Type Type)[] LibraryProjects =
-        {
-            (new Project(GLIB, "GLib-2.0.gir"), typeof(GLibGenerator)),
-            (new Project(GOBJECT, "GObject-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GIO, "Gio-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(CAIRO, "cairo-1.0.gir"), typeof(GObjectGenerator)),
-            //(new Project(XLIB, "xlib-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(PANGO, "Pango-1.0.gir"), typeof(GObjectGenerator)),
-            //(new Project(CLUTTER, "Clutter-1.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GDK3, "Gdk-3.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GDK_PIXBUF, "GdkPixbuf-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GTK3, "Gtk-3.0.gir"), typeof(GObjectGenerator)),
-            /*(JAVASCRIPT_CORE, JAVASCRIPT_CORE_GIR, "javascriptcoregtk-4.0.so", false),
-            (HANDY, HANDY_GIR, "libhandy-0.0.so.0", false),
-            (WEBKITGTK, WEBKITGTK_GIR, "libwebkit2gtk-4.0.so.37", true),
-            (WEBKIT2WEBEXTENSION, WEBKIT2WEBEXTENSION_GIR, "WEBEXTENSION", true),
-            (GTKCLUTTER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
-            (CHAMPLAIN, "Champlain-0.12.gir", "libchamplain-0.12", false),
-            (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),*/
-            (new Project(GST, "Gst-1.0.gir"), typeof(GObjectGenerator)),
-            /*(GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
-            (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
-            (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/
-        };
-
-        #endregion
-
-        #region Constants
-
-        private const string ConfRelease = "Release";
-        private const string ConfDebug = "Debug";
-
-        #endregion
-
         #region Methods
 
-        public static void Main(string[] args)
+        /// <summary>Run or list targets.</summary>
+        /// <param name="release">Execute the targets with the Release configuration.</param>
+        /// <param name="comments">Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.</param>
+        /// <param name="xmlDocumentation">Generate the xml documentation.</param>
+        /// <param name="targets">A list of targets to run or list. To list the available targets use option --list-targets.</param>
+        /// <param name="clear">Clear the console before execution.</param>
+        /// <param name="dryRun">Do a dry run without executing actions.</param>
+        /// <param name="listDependencies">List all (or specified) targets and dependencies, then exit.</param>
+        /// <param name="listInputs">List all (or specified) targets and inputs, then exit.</param>
+        /// <param name="listTargets">List all (or specified) targets, then exit.</param>
+        /// <param name="listTree">List all (or specified) targets and dependency trees, then exit.</param>
+        /// <param name="noColor">Disable colored output.</param>
+        /// <param name="parallel">Run targets in parallel.</param>
+        /// <param name="skipDependencies">Do not run targets' dependencies.</param>
+        /// <param name="verbose">Enable verbose output.</param>
+        public static void Main(
+            bool release,
+            bool comments,
+            bool xmlDocumentation,
+            string[] targets,
+            bool clear,
+            bool dryRun,
+            bool listDependencies,
+            bool listInputs,
+            bool listTargets,
+            bool listTree,
+            bool noColor,
+            bool parallel,
+            bool skipDependencies,
+            bool verbose
+        )
         {
-            Target(Targets.Generate,
-                ForEach(LibraryProjects),
-                (l) => Generate(l.Project, l.Type)
-            );
-
-            Target(Targets.Build,
-                DependsOn(Targets.Generate),
-                ForEach(LibraryProjects),
-                (x) => DotNet.Build(x.Project.Folder, Configuration)
-            );
-
-            Target(Targets.CleanLibs,
-                ForEach(LibraryProjects),
-                (x) => CleanUp(x.Project.Folder, Configuration)
-            );
-
-            Target(Targets.CleanSamples,
-                ForEach(SampleProjects),
-                (project) => CleanUp(project, Configuration)
-            );
-
-            Target(Targets.Clean, DependsOn(Targets.CleanLibs, Targets.CleanSamples));
-
-            Target(Targets.Samples,
-                DependsOn(Targets.Build),
-                ForEach(SampleProjects),
-                (project) => DotNet.Build(project, Configuration)
-            );
-            
-            Target(Targets.Test,
-                DependsOn(Targets.Build),
-                ForEach(TestProjects),
-                (project) => DotNet.Test(project, Configuration)
-            );
-
-            Target(Targets.Comments, () => GenerateComments = true);
-            
-            Target(Targets.Release, () => Configuration = ConfRelease);
-            Target(Targets.Debug,
-                DependsOn(Targets.Comments),
-                () => Configuration = ConfDebug
-            );
-
-            Target("default", DependsOn(Targets.Debug, Targets.Build));
-            RunTargetsAndExit(args);
-        }
-
-        private static void CleanUp(string project, string configuration)
-        {
-            if (Directory.Exists(project))
+            var settings = new Settings()
             {
-                foreach (var d in Directory.EnumerateDirectories(project))
-                {
-                    foreach (var file in Directory.EnumerateFiles(d))
-                    {
-                        if (file.Contains(".Generated."))
-                            File.Delete(file);
-                    }
-                }
-            }
+                GenerateComments = comments,
+                GenerateXmlDocumentation = xmlDocumentation,
+                Configuration = release ? Configuration.Release : Configuration.Debug
+            };
 
-            DotNet.Clean(project, configuration);
-        }
-
-        private static void Generate(Project project, Type type)
-        {
-            project.Gir = $"../gir-files/{project.Gir}";
-
-            if (Activator.CreateInstance(type, project) is IGenerator generator)
+            var options = new Options
             {
-                generator.GenerateComments = GenerateComments;
-                generator.Generate();
-            }
-            else
-                throw new Exception($"{type.Name} is not a generator");
+                Clear = clear,
+                DryRun = dryRun,
+                ListDependencies = listDependencies,
+                ListInputs = listInputs,
+                ListTargets = listTargets,
+                ListTree = listTree,
+                NoColor = noColor,
+                Parallel = parallel,
+                SkipDependencies = skipDependencies,
+                Verbose = verbose,
+            };
+
+            var cleaner = new Cleaner(settings);
+            var generator = new Generator(settings);
+            var dotNetExecutor = new DotNetExecutor(settings);
+            
+            var runner = new Runner(
+                cleaner: cleaner, 
+                generator: generator, 
+                builder: dotNetExecutor, 
+                tester: dotNetExecutor
+            );
+            runner.Run(targets, options);
         }
 
         #endregion
