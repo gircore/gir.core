@@ -35,8 +35,9 @@ namespace Build
         private const string PANGO = "../Libs/Pango/";
         private const string XLIB = "../Libs/Xlib/";
 
+        private const string BUILD_Test = "../Tests/Build.Tests/";
         private const string GOBJECT_TEST = "../Tests/Libs/GObject.Tests/";
-        
+
         private const string SAMPLE = "../Samples/";
         private const string DBUS_SAMPLE = SAMPLE + "DBus/";
         private const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
@@ -49,7 +50,11 @@ namespace Build
         
         #region Fields
         
-        public static readonly string[] TestProjects = { GOBJECT_TEST };
+        public static readonly string[] TestProjects =
+        {
+            BUILD_Test,
+            GOBJECT_TEST
+        };
 
         public static readonly string[] SampleProjects =
         {

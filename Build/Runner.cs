@@ -23,7 +23,7 @@ namespace Build
         public void Run(IEnumerable<string> targets, Options options)
         {
             Bullseye.Targets targetColletion = CreateTargets();
-            targetColletion.RunAndExit(targets, options);
+            targetColletion.RunWithoutExiting(targets, options);
         }
         
         private Bullseye.Targets CreateTargets()
