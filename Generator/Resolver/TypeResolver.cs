@@ -194,39 +194,6 @@ namespace Generator
             return result;
         }
 
-        // TODO: Temporary Type Resolution Code - Clean this up 
-        // private ResolvedType GetTypeName(MyType type)
-        //     => type switch
-        //     {
-        //         // Pointers
-        //         { Type: "gpointer" } => new ResolvedType("IntPtr"),
-        //         { Type: "guintptr" } => new ResolvedType("IntPtr"),
-        //         { IsArray: false, Type: "void", IsPointer: true } => new ResolvedType("IntPtr"), // void* -> IntPtr
-        //         
-        //         
-        //         { IsArray: false, Direction: Direction.Out, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.Out),  // TODO: Bulletproof this (ref string)
-        //         // { IsArray: false, Direction: Direction.In, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.In),
-        //         { IsArray: false, Direction: Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.InOut),  // TODO: Bulletproof this (ref string)
-        //         { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),  //string in parameters are marshalled automatically
-        //         { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => new ResolvedType("IntPtr"),
-        //         { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("string[]", attribute: GetMarshal(l)),
-        //         { IsArray: false, IsValueType: true, Direction: Direction.In } => new ResolvedType(type.Type, Direction.In), // TODO: Bulletproof this
-        //         { IsArray: false, IsValueType: true, Direction: Direction.Out } => new ResolvedType(type.Type, Direction.Out), // TODO: Bulletproof this
-        //         { IsArray: false, IsValueType: true, Direction: Direction.InOut } => new ResolvedType(type.Type, Direction.InOut), // TODO: Bulletproof this
-        //         { IsArray: false, Direction: Direction.In, IsPointer: true } => new ResolvedType("IntPtr", Direction.In),
-        //         { IsArray: false, Direction: Direction.Out, IsPointer: true } => new ResolvedType("IntPtr", Direction.Out),
-        //         { IsArray: false, Direction: Direction.InOut, IsPointer: true } => new ResolvedType("IntPtr", Direction.InOut),
-        //         // { IsArray: false, Direction: Direction.Out or Direction.InOut } => new ResolvedType("IntPtr", true), // TODO: Bulletproof this
-        //         { IsArray: false, IsPointer: true, IsValueType: true } => new ResolvedType(type.Type, Direction.InOut),
-        //         { IsArray: false, IsPointer: true, IsValueType: false } => new ResolvedType("IntPtr"),
-        //         { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("IntPtr", Direction.InOut), //string array
-        //         { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("IntPtr[]", attribute: GetMarshal(l)),
-        //         { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType(type.Type + "[]", attribute: GetMarshal(l)),
-        //         { IsArray: true, IsValueType: true, ArrayLengthParameter: { } } => new ResolvedType(type.Type + "[]"),
-        //         { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => new ResolvedType("IntPtr"),
-        //         _ => new ResolvedType(type.Type)
-        //     };
-
         private ResolvedType GetTypeName(MyType type)
             => type switch
             {
