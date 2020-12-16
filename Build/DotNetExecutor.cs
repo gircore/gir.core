@@ -1,18 +1,24 @@
 ﻿using System;
+using Generator;
 
 namespace Build
 {
-    public interface IBuilder
+    public interface ILibraryBuilder
     {
-        void Build(string project);
+        void BuildLibraries();
+    }
+
+    public interface ISampleBuilder
+    {
+        void BuildSamples();
     }
 
     public interface ITester
     {
-        void Test(string project);
+        void Test();
     }
 
-    public class DotNetExecutor : IBuilder, ITester
+    public class DotNetExecutor : ILibraryBuilder, ITester, ISampleBuilder
     {
         private readonly Settings _settings;
 
@@ -21,14 +27,22 @@ namespace Build
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void Build(string project)
+        public void BuildLibraries()
         {
-            DotNet.Build(project, _settings.Configuration);
+            foreach((Project project, Type _) in Projects.LibraryProjects)
+                DotNet.Build(project.Folder, _settings.Configuration);
         }
         
-        public void Test(string project)
+        public void Test()
         {
-            DotNet.Test(project, _settings.Configuration);
+            foreach(var project in Projects.TestProjects)
+                DotNet.Test(project, _settings.Configuration);
+        }
+
+        public void BuildSamples()
+        {
+            foreach(var project in Projects.SampleProjects)
+                DotNet.Build(project, _settings.Configuration);
         }
     }
 }

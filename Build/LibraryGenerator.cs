@@ -3,25 +3,25 @@ using Generator;
 
 namespace Build
 {
-    public interface IGenerator
+    public interface ILibraryGenerator
     {
-        void Generate(Project project, Type type);
+        void GenerateLibraries();
     }
 
-    public class Generator : IGenerator
+    public class LibraryGenerator : ILibraryGenerator
     {
         private readonly Settings _settings;
         private const string EnvXmlDocumentation = "GirComments";
 
-        public Generator(Settings settings)
+        public LibraryGenerator(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
         
-        public void Generate(Project project, Type type)
+        public void GenerateLibraries()
         {
             SetEnvironmentVariableToGenerateXmlDocumentation();
-            RunGenerator(project, type);
+            RunGenerator();
         }
 
         private void SetEnvironmentVariableToGenerateXmlDocumentation()
@@ -32,14 +32,17 @@ namespace Build
                 Environment.SetEnvironmentVariable(EnvXmlDocumentation, null);
         }
 
-        private void RunGenerator(Project project, Type type)
+        private void RunGenerator()
         {
-            var generator = CreateGenerator(project, type);
-            generator.GenerateComments = _settings.GenerateComments;
-            generator.Generate();
+            foreach (var (project, type) in Projects.LibraryProjects)
+            {
+                var generator = CreateGenerator(project, type);
+                generator.GenerateComments = _settings.GenerateComments;
+                generator.Generate();
+            }
         }
 
-        private global::Generator.IGenerator CreateGenerator(Project project, Type type)
+        private static global::Generator.IGenerator CreateGenerator(Project project, Type type)
         {
             project.Gir = $"../gir-files/{project.Gir}";
 
