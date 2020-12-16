@@ -236,6 +236,7 @@ namespace Generator
                 { IsArray: false, Type: "void", IsPointer: true } => new ResolvedType("IntPtr"),
 
                 // String Related Functions
+                { Type: "utf8" } => new ResolvedType("string"), // TODO: We can possibly get rid of this depending on usage?
                 { IsArray: false, Direction: Direction.OutCalleeAllocates, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.OutCalleeAllocates),
                 { IsArray: false, Direction: Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.InOut),
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),
@@ -278,6 +279,11 @@ namespace Generator
 
             MyType? result = cType switch
             {
+                // TODO: We might not need these
+                // Some gir files seem to use them though?
+                "none" => ValueType("void"),
+                "any" => IntPtr(),
+                
                 "void" => ValueType("void"),
                 "gboolean" => ValueType("bool"),
                 "gfloat" => Float(),
