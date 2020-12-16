@@ -23,7 +23,7 @@ end
 
 func get_summary(obj, prefix = "")
     $ret = ""
-    if obj.doc?.text
+    if generate_comments && obj.doc?.text
         $ret = $ret + prefix + "/// <summary>\r\n"
         $ret = $ret + (obj.doc.text | comment_line_by_line_with_prefix prefix)
         $ret = $ret + prefix + "/// </summary>\r\n"
@@ -37,7 +37,7 @@ func get_obsolete_attribute(obj)
     
     if obj?.deprecated
         $text = ""
-        if obj.doc_deprecated
+        if generate_comments && obj.doc_deprecated
             $text = obj.doc_deprecated.text | make_single_line | escape_quotes
         end
         $ret = '[Obsolete("' + $text + '")]\r\n'

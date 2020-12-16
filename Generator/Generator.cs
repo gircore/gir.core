@@ -11,6 +11,12 @@ namespace Generator
 {
     public interface IGenerator
     {
+        #region Properties
+        
+        public bool GenerateComments { get; set; }
+        
+        #endregion
+        
         #region Methods
 
         void Generate();
@@ -36,6 +42,8 @@ namespace Generator
         #endregion
 
         #region Properties
+
+        public bool GenerateComments { get; set; }
 
         private GRepository Repository { get; }
         private Project Project { get; }
@@ -305,6 +313,11 @@ namespace Generator
                     return resolvedType.GetFieldString();
                 })
             );
+
+            scriptObject.Import("generate_comments",
+                new Func<bool>(() => GenerateComments)
+            );
+
             return scriptObject;
         }
 

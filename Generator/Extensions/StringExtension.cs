@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Security;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
 using Sf = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -13,7 +15,12 @@ namespace Generator
 
         public static string CommentLineByLine(this string str, string linePrefix = "")
         {
-            var sArray = str.Split("\n");
+            var escapedString = SecurityElement.Escape(str);
+
+            if (escapedString is null)
+                throw new Exception($"Could not escape string {str}");
+            
+            var sArray = escapedString.Split("\n");
             var sb = new StringBuilder();
 
             foreach (var s in sArray)

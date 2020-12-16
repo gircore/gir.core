@@ -31,7 +31,7 @@ steps:
   inputs:
     command: 'run'
     projects: 'Build/*.csproj'
-    arguments: '-- release test samples'
+    arguments: '-- --release --xml-documentation --targets test samples'
     workingDirectory: 'Build'
 
 - task: ArchiveFiles@2
