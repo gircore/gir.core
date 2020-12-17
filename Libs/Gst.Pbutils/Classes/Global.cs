@@ -10,7 +10,7 @@ namespace GstPbutils
             // Marshal this structure
             IntPtr msgPtr = Marshal.AllocHGlobal(Marshal.SizeOf(msg));
             Marshal.StructureToPtr(msg, msgPtr, false);
-            
+
             // Native Call
             var result = Native.is_missing_plugin_message(msgPtr);
 
@@ -25,7 +25,7 @@ namespace GstPbutils
             // Marshal this structure
             IntPtr msgPtr = Marshal.AllocHGlobal(Marshal.SizeOf(msg));
             Marshal.StructureToPtr(msg, msgPtr, false);
-            
+
             // Native Call
             IntPtr result = Native.missing_plugin_message_get_installer_detail(msgPtr);
 
@@ -40,7 +40,7 @@ namespace GstPbutils
             // Marshal this structure
             IntPtr msgPtr = Marshal.AllocHGlobal(Marshal.SizeOf(msg));
             Marshal.StructureToPtr(msg, msgPtr, false);
-            
+
             // Native Call
             IntPtr result = Native.missing_plugin_message_get_description(msgPtr);
 
@@ -57,7 +57,8 @@ namespace GstPbutils
             // that is for some reason being generated as a struct. Therefore, marshalling will have no effect
             // (because there are no fields) and the entire thing will simply blow up. Fix this ASAP.
             throw new NotImplementedException("This Function is not implemented");
-            
+
             // We will want to also find some way of dealing with async/await for Asynchronous GLib methods.
         }
+    }
 }
