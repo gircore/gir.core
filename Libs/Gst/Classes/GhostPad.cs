@@ -11,7 +11,6 @@ namespace Gst
         // not simply a wrapper for g_object_new and has essential logic inside
         // which *must* be run. Therefore our existing constructor design is
         // inadequate.
-        [Obsolete("Replace with constructor")]
         public static GhostPad New(string name, Pad target)
             => WrapPointerAs<GhostPad>(Native.@new(name, GetHandle(target)));
 
