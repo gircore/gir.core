@@ -31,7 +31,7 @@ namespace Generator
 
         // public string GetTypeString() => Attribute + (IsRef ? "ref " : string.Empty) + Type;
 
-        public string GetTypeString() => Direction switch
+        public string GetTypeString() => Attribute + Direction switch
         {
             Direction.Value => Type,
             Direction.In => "in " + Type,
@@ -41,7 +41,7 @@ namespace Generator
             _ => Type,
         };
         
-        public string GetFieldString() => Attribute + (Direction == Direction.Value ? Type : "IntPtr");
+        public string GetFieldString() => Direction == Direction.Value ? Type : "IntPtr";
 
         #endregion
 
