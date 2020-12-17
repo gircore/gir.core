@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using GLib;
 
 namespace GObject
 {
@@ -97,7 +97,7 @@ namespace GObject
                     typeId.Value,
                     0,
                     ref zero,
-                    Array.Empty<Value>()
+                    System.Array.Empty<Value>()
                 );
             }
 
@@ -139,7 +139,12 @@ namespace GObject
         protected virtual void Initialize() { }
 
         // Modify this in the future to play nicely with virtual function support?
-        private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
+        private void OnFinalized(IntPtr data, IntPtr where_the_object_was)
+        {
+            DisposeManagedState();
+            SetDisposed();
+        }
+
         private void RegisterOnFinalized()
         {
             _onFinalized = OnFinalized;
@@ -235,6 +240,9 @@ namespace GObject
 
         protected static IntPtr GetHandle(Object obj)
             => obj.Handle;
+        
+        protected static IntPtr GetHandle(Bytes bytes)
+            => bytes.Handle;
 
         /// <summary>
         /// Notify this object that a property has just changed.
@@ -355,27 +363,41 @@ namespace GObject
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
-            if (!Disposed)
-            {
-                Disposed = true;
+            if (Disposed)
+                return;
 
-                if (Handle != IntPtr.Zero)
-                {
-                    Native.unref(Handle);
-                    Objects.Remove(Handle);
-                }
+            if(disposing)
+                DisposeManagedState();
 
-                Handle = IntPtr.Zero;
-
-                // TODO: Find out about closure release
-                /*foreach(var closure in closures)
-                    closure.Dispose();*/
-
-                // TODO activate: closures.Clear();
-            }
+            DisposeUnmanagedState();
+            SetDisposed();
         }
+
+        protected void SetDisposed()
+        {
+            Disposed = true;
+        }
+
+        protected virtual void DisposeManagedState()
+        {
+            Handle = IntPtr.Zero;
+            Objects.Remove(Handle);
+            
+            // TODO: Find out about closure release
+            /*foreach(var closure in closures)
+                closure.Dispose();*/
+
+            // TODO activate: closures.Clear();
+        }
+        
+        protected virtual void DisposeUnmanagedState()
+        {
+            Native.unref(Handle);
+        }
+        
+
 
         #endregion
     }
