@@ -134,7 +134,6 @@ namespace GObject
         /// Marshal a GObject as a struct of type <c>T</c> using the object's
         /// Handle pointer. This allows access to object fields. 
         /// </summary>
-        /// <param name="handle"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns>T?</returns>
         /// <seealso cref="SetObjectStruct{T}"/>
@@ -149,13 +148,11 @@ namespace GObject
         /// allows for object fields to be set.
         /// </summary>
         /// <param name="objectStruct"></param>
-        /// <param name="obj"></param>
         /// <typeparam name="T"></typeparam>
         /// <seealso cref="GetObjectStruct{T}"/>
         protected void SetObjectStruct<T>(T objectStruct)
             where T: struct, IObjectStruct
         {
-            // TODO: Bulletproof this
             Marshal.StructureToPtr(objectStruct, Handle, false);
         }
     }
