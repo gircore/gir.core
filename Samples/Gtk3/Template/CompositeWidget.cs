@@ -15,7 +15,7 @@ namespace GtkDemo
                 template: Assembly.GetExecutingAssembly().ReadResource("CompositeWidget.glade")
             );
             BindTemplateChild(gClass, nameof(Button));
-            OnConnectEvent(gClass, type);
+            ConnectTemplateSignals(gClass, type);
         }
 
         protected override void Initialize()

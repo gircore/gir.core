@@ -37,14 +37,20 @@ namespace Gtk
             WidgetClass.Native.bind_template_child_full(classPtr, name, false, 0);
         }
         
-        protected static void OnConnectEvent(Type gtype, System.Type t)
+        protected static void ConnectTemplateSignals(Type gtype, System.Type t)
         {
             var classPtr = TypeHelper.GetClassPointer(gtype);
             
             IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(gtype));
-            Marshal.StructureToPtr(gtype, ptr, true);
-            
-            WidgetClass.Native.set_connect_func(classPtr, OnConnectEvent, ptr, DestroyConnectData);
+            try
+            {
+                Marshal.StructureToPtr(gtype, ptr, true);
+                WidgetClass.Native.set_connect_func(classPtr, OnConnectEvent, ptr, DestroyConnectData);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptr);
+            }
         }
         
         private static void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name,
