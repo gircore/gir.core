@@ -83,6 +83,15 @@ namespace Generator
         {
             foreach (GEnumeration? obj in enums)
             {
+                // We have a problem in some libraries (e.g. GstVideo) where we can
+                // get enums with the same member listed twice. As a workaround
+                // for this, we group enum members which share the same key then
+                // select one at random. Look at optimising in the future. 
+                obj.Members = obj.Members
+                    .GroupBy(s => s.Name)
+                    .Select(grp => grp.FirstOrDefault())
+                    .ToList();
+                
                 ScriptObject? scriptObject = GetScriptObject();
                 scriptObject.Import(obj);
                 scriptObject.Add("has_flags", hasFlags);
