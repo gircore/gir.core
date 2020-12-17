@@ -14,6 +14,9 @@ namespace Gir
 
         [XmlElement("type")]
         public GType? Type { get; set; }
+        
+        [XmlElement("doc")]
+        public GDoc? Doc { get; set; }
 
         #endregion
     }

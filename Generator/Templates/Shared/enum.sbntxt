@@ -2,13 +2,14 @@ using System;
 
 namespace {{ namespace }}
 {
+    {{ include 'header.sbntxt' this ~}}
     {{~ if has_flags ~}}
     [Flags]
     {{~ end ~}}
     public enum {{ name }} : long
     {
-        {{ for member in members
-            include 'enum_member.sbntxt' member
-        end }}
+        {{~ for member in members }}
+        {{ include 'enum_member.sbntxt' member ~}}
+        {{ end }}
     }
 }

@@ -5,8 +5,8 @@ namespace {{ namespace }}
 {
     public partial class Constants
     {
-{{~ for constant in constants
-    include 'constant.sbntxt' constant
-end ~}}
+        {{~ for constant in constants }}
+        {{ include 'constant.sbntxt' constant ~}}
+        {{ end }}
     }
 }

@@ -24,14 +24,14 @@ steps:
   displayName: 'Prepare dotnet core'
   inputs:
     packageType: 'sdk'
-    version: '3.1.x'
+    version: '5.0.x'
 
 - task: DotNetCoreCLI@2
   displayName: Run release build
   inputs:
     command: 'run'
     projects: 'Build/*.csproj'
-    arguments: '-- release build samples'
+    arguments: '-- --release --xml-documentation --targets test samples'
     workingDirectory: 'Build'
 
 - task: ArchiveFiles@2

@@ -7,9 +7,9 @@ namespace {{ namespace }}
     {
         internal static class Native
         {
-        {{~ for method in methods
-            include 'method.sbntxt' method
-        end ~}}
+            {{~ for method in methods }}
+            {{ include 'method.sbntxt' method dll_import 'Global' ~}}
+            {{ end ~}}
         }
     }
 }

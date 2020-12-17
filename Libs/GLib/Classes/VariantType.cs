@@ -31,7 +31,7 @@ namespace GLib
 
         #region Methods
 
-        public override string ToString()
+        public override string? ToString()
         {
             IntPtr variantType = dup_string(Handle);
             var t = Marshal.PtrToStringAnsi(variantType);

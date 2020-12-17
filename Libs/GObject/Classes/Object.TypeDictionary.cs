@@ -18,9 +18,6 @@ namespace GObject
             // TODO: Transition to using just a GType->Type dictionary
             private static readonly Dictionary<System.Type, Type> TypeDict;
             private static readonly Dictionary<Type, System.Type> GTypeDict;
-            
-            // Dictionary of type descriptors mapping System.Type->GType
-            private static readonly Dictionary<System.Type, TypeDescriptor?> DescriptorDict;
 
             #endregion
 
@@ -31,7 +28,7 @@ namespace GObject
                 // Initialise Dictionaries
                 TypeDict = new Dictionary<System.Type, Type>();
                 GTypeDict = new Dictionary<Type, System.Type>();
-                DescriptorDict = new Dictionary<System.Type, TypeDescriptor?>();
+                
 
                 // Add GObject and GInitiallyUnowned
                 AddSingle(typeof(Object), GTypeDescriptor.GType);
@@ -64,9 +61,8 @@ namespace GObject
             /// <param name="type">The C# type.</param>
             internal static void AddRecursive(System.Type type)
             {
-                Type gType = GetTypeDescriptor(type)?.GType
-                    ?? throw new Exception($"Type {type.FullName} does not define a type descriptor. Is it a GObject?");
-                AddRecursive(type, gType);
+                var descriptor = TypeDescriptorRegistry.ResolveTypeDescriptorForType(type);
+                AddRecursive(type, descriptor.GType);
             }
 
             /// <summary>
@@ -88,10 +84,7 @@ namespace GObject
                     if (type == typeof(GObject.Object))
                         return;
 
-                    TypeDescriptor? typeDescriptor = GetTypeDescriptor(baseType);
-
-                    if (typeDescriptor is null)
-                        throw new ArgumentException($"{type.FullName} does not have a type descriptor.", nameof(type));
+                    TypeDescriptor typeDescriptor = TypeDescriptorRegistry.ResolveTypeDescriptorForType(baseType);
 
                     // Add to typedict for future use
                     AddSingle(baseType, typeDescriptor.GType);
@@ -245,7 +238,8 @@ namespace GObject
                 }
 
                 // We are a wrapper. Add to type dictionary
-                AddRecursive(type, GetTypeDescriptor(type)!.GType);
+                TypeDescriptor descriptor = TypeDescriptorRegistry.ResolveTypeDescriptorForType(type);
+                AddRecursive(type, descriptor.GType);
 
                 // Return gtype for *this* type
                 return TypeDict[type];
@@ -260,27 +254,7 @@ namespace GObject
             internal static bool IsSubclass(System.Type type)
                 => type != typeof(Object) &&
                    type != typeof(InitiallyUnowned) &&
-                   GetTypeDescriptor(type) is null;
-
-            // Returns the MethodInfo for the 'GetGType()' function
-            // if the type in question implements it (i.e. a wrapper)
-            internal static TypeDescriptor? GetTypeDescriptor(System.Type type)
-            {
-                if (DescriptorDict.TryGetValue(type, out TypeDescriptor? cachedDescriptor))
-                    return cachedDescriptor;
-
-                System.Reflection.FieldInfo? descriptorField = type.GetField(
-                    nameof(GTypeDescriptor),
-                    System.Reflection.BindingFlags.NonPublic
-                    | System.Reflection.BindingFlags.Static
-                    | System.Reflection.BindingFlags.DeclaredOnly
-                );
-
-                var descriptor = (TypeDescriptor?) descriptorField?.GetValue(null);
-                DescriptorDict[type] = descriptor;
-
-                return descriptor;
-            }
+                   !TypeDescriptorRegistry.TryResolveTypeDescriptorForType(type, out var _);
 
             // Tries to find Assemblies which match the possible type prefixes of a
             // given gtype. For each assembly which is considered a possible candidate,
@@ -304,7 +278,6 @@ namespace GObject
                     return FuzzySearchGLib(gtype, typeName, assemblies);
                 }
 
-#if false
                 // DEBUG: Print Assembly Lookup
                 Console.Write("FuzzySearchAssemblies: Looking up " + gtype.ToString() + " with components: ");
                 foreach (string word in words)
@@ -314,7 +287,6 @@ namespace GObject
                     else
                         Console.Write(word + " | ");
                 } // END DEBUG
-#endif
 
                 // We must have at least two "words" to perform a lookup (one word implies the
                 // type is not prefixed, which we do not support).
@@ -338,11 +310,12 @@ namespace GObject
                     foreach (Assembly asm in assemblies)
                     {
                         // Go to next assembly if it doesn't match the search term
-                        if (!asm.FullName?.StartsWith(asmName) ?? false)
+                        var fullname = asm.FullName ?? string.Empty;
+                        if (!fullname.StartsWith(asmName))
                             continue;
 
                         // DEBUG: Print out found match
-                        // Console.WriteLine(asm.FullName + " matches " + asmName);
+                        Console.WriteLine(asm.FullName + " matches " + asmName);
                         
                         // Attempt to lookup type in assembly
                         System.Type? foundType = asm.GetType(asmName + "." + typeName);
@@ -352,8 +325,9 @@ namespace GObject
                             continue;
 
                         // Ensure the GType matches the provided type. Return if true
-                        if (GetTypeDescriptor(foundType)?.GType.Equals(gtype) ?? false)
-                            return foundType;
+                        if(TypeDescriptorRegistry.TryResolveTypeDescriptorForType(foundType, out var descriptor))
+                            if (descriptor.GType.Equals(gtype))
+                                return foundType;
                     }
                 }
 
@@ -369,15 +343,16 @@ namespace GObject
                 foreach (Assembly asm in assemblies)
                 {
                     // GLib
-                    if (asm.FullName?.StartsWith("GLib") ?? false)
+                    var fullname = asm.FullName ?? string.Empty;
+                    if (fullname.StartsWith("GLib"))
                         return asm.GetType($"GLib.{typeName}");
                     
                     // GObject
-                    if (asm.FullName?.StartsWith("GObject") ?? false)
+                    if (fullname.StartsWith("GObject"))
                         return asm.GetType($"GObject.{typeName}");
                     
                     // Gio
-                    if (asm.FullName?.StartsWith("Gio") ?? false)
+                    if (fullname.StartsWith("Gio"))
                         return asm.GetType($"Gio.{typeName}");
                 }
 

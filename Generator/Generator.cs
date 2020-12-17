@@ -11,6 +11,12 @@ namespace Generator
 {
     public interface IGenerator
     {
+        #region Properties
+        
+        public bool GenerateComments { get; set; }
+        
+        #endregion
+        
         #region Methods
 
         void Generate();
@@ -36,6 +42,8 @@ namespace Generator
         #endregion
 
         #region Properties
+
+        public bool GenerateComments { get; set; }
 
         private GRepository Repository { get; }
         private Project Project { get; }
@@ -99,7 +107,9 @@ namespace Generator
             var serializer = new XmlSerializer(typeof(GRepository), "http://www.gtk.org/introspection/core/1.0");
 
             using var fs = new FileStream(girFile, FileMode.Open);
-            return (GRepository) serializer.Deserialize(fs);
+            object? repository = serializer.Deserialize(fs);
+            
+            return repository as GRepository ?? throw new Exception($"Could not deserialize {girFile}");
         }
 
         protected ScriptObject GetScriptObject()
@@ -220,6 +230,7 @@ namespace Generator
             // enough for the number of constants some libraries define (e.g. Gdk).
             var context = new TemplateContext { TemplateLoader = loader, LoopLimit = 10000};
             context.PushGlobal(scriptObject);
+            context.IndentWithInclude = true;
 
             var templateFile = loader.GetPath(null, default, templateName + ".sbntxt");
             if (fileName.Contains("Accessible"))
@@ -305,6 +316,11 @@ namespace Generator
                     return resolvedType.GetFieldString();
                 })
             );
+
+            scriptObject.Import("generate_comments",
+                new Func<bool>(() => GenerateComments)
+            );
+
             return scriptObject;
         }
 

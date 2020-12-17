@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace GObject
 {
-    public partial class Object : INotifyPropertyChanged, IDisposable
+    public partial class Object : IObject, INotifyPropertyChanged, IDisposable
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace GObject
         /// <summary>
         /// Event triggered when a property value changes.
         /// </summary>
-        public event PropertyChangedEventHandler? PropertyChanged = null!;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         #endregion
 
@@ -159,8 +159,9 @@ namespace GObject
             {
                 if (field.FieldType.IsGenericType && field.FieldType.GetGenericTypeDefinition() == typeof(Property<>))
                 {
-                    System.Reflection.MethodInfo? method = field.FieldType.GetMethod(nameof(Property<Object>.RegisterNotifyEvent), MethodFlags);
-                    method?.Invoke(field.GetValue(this), new object[] { this });
+                    System.Reflection.MethodInfo? method =
+                        field.FieldType.GetMethod(nameof(Property<Object>.RegisterNotifyEvent), MethodFlags);
+                    method?.Invoke(field.GetValue(this), new object[] {this});
                 }
             }
         }
@@ -200,7 +201,7 @@ namespace GObject
             ThrowIfDisposed();
 
             if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
-                UnregisterEvent(closure!);
+                UnregisterEvent(closure);
         }
 
         protected internal void UnregisterEvent(Action callback)
@@ -208,7 +209,7 @@ namespace GObject
             ThrowIfDisposed();
 
             if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
-                UnregisterEvent(closure!);
+                UnregisterEvent(closure);
         }
 
         private void UnregisterEvent(ClosureHelper closure)
@@ -258,12 +259,13 @@ namespace GObject
         // This function returns the proxy object to the provided handle
         // if it already exists, otherwise creates a new wrapper object
         // and returns it.
+        // FIXME: Temporarily Public
         public static T WrapPointerAs<T>(IntPtr handle)
             where T : Object
         {
             if (TryWrapPointerAs<T>(handle, out T obj))
                 return obj;
-
+            
             if (handle == IntPtr.Zero)
                 throw new Exception(
                     $"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapPointerAs.");
@@ -302,8 +304,7 @@ namespace GObject
 
             // Ensure 'T' is registered in type dictionary for future use. It is an error for a
             // wrapper type to not define a TypeDescriptor. 
-            TypeDescriptor desc = TypeDictionary.GetTypeDescriptor(typeof(T))
-                ?? throw new Exception($"Error: Type {typeof(T).FullName} does not define a TypeDescriptor.");
+            TypeDescriptor desc = TypeDescriptorRegistry.ResolveTypeDescriptorForType(typeof(T));
             
             TypeDictionary.AddRecursive(typeof(T), desc.GType);
             

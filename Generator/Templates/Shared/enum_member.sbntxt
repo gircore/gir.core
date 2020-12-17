@@ -1,1 +1,6 @@
-{{ $1.name | fix_identifier | make_pascal_case}} = {{$1.value}},
+{{-
+include 'helper.sbntxt'
+$member = $1
+-}}
+{{ include 'header.sbntxt' $member ~}}
+{{$member.name | fix_identifier | make_pascal_case}} = {{ $member.value }},

@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\GObject\GObject.csproj" />
+    <ProjectReference Include="..\GLib\GLib.csproj" />
     <ProjectReference Include="..\Gio\Gio.csproj" />
     <ProjectReference Include="..\Gdk3\Gdk3.csproj" />
     <ProjectReference Include="..\GdkPixbuf\GdkPixbuf.csproj" />
+    <ProjectReference Include="..\Pango\Pango.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -25,24 +25,46 @@ Currently supported libraries
 As we are currently figuring out the best way for this project the code is under heavy development and not ready for production. There is currently _no_ nuget package available.
 
 ## Build & Use
-To build the project locally follow these steps:
+To build the project locally in debug mode follow these steps:
 
     $ git clone --recursive https://github.com/gircore/gir.core.git
     $ cd Build
-    $ dotnet run -- release build
+    $ dotnet run
 
-If you want to create a debug build just run
+### Options
 
-    $ dotnet run -- debug build
-    
-If you want to clean your debug build just run
+There are some options which can be used to influence the code generation:
 
-    $ dotnet run -- debug clean
+ - ```--release```: Execute the targets with the Release configuration. If not specified the Debug configuration is used.
+ - ```--xml-documentation```: Generate the xml documentation.
+ - ```--comments```: Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.
+ - ```--targets <targets>```: A list of targets to run or list.
 
-If you want to build the samples just run
+### Targets
 
-    $ dotnet run -- debug samples
-    
+Supported targets are:
+ - ```generate```: Generates the source code files. Recognizes ```comments``` option.
+ - ```build```: Builds the project with ```Debug``` or ```Release``` configuration. Recognizes ```xml-documentation``` option. Depends on ```generate``` target.
+ - ```test```: Execute unit tests with ```Debug``` or ```Release``` configuration. Depends on ```build```.
+- ```clean```:  Cleans ```samples``` and ```build``` output including generated source code files.
+- ```samples```: Builds the sample applications with ```Debug``` or ```Release``` configuration. Depends on ```build```.
+
+If not target is specified the ```build``` target is executed.
+
+### Examples
+
+If you want to clean your debug build just run:
+
+    $ dotnet run -- --targets clean
+
+If you want to generate the xml documentation, build the samples and run the test cases in debug mode just run:
+
+    $ dotnet run -- --xml-documentation --targets test samples
+
+If you want to build the wrappers in release mode just run
+
+    $ dotnet run -- --release
+
 To use the newly build libraries in your project just add a reference to the csproj file of the project you want to use, e.g:
 
     $ dotnet add reference [RepoPath]/Libs/Gtk/Gtk.csproj
