@@ -2,12 +2,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libs\Gtk3\Gtk3.csproj" />
+    <PackageReference Include="Generator" Version="1.0.0"
+                      OutputItemType="Analyzer"
+                      PrivateAssets="All"
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <RestoreSources>$(RestoreSources);../../../Nuget;https://api.nuget.org/v3/index.json</RestoreSources>
   </PropertyGroup>
 
   <ItemGroup>

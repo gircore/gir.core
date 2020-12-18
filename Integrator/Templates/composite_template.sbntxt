@@ -1,0 +1,26 @@
+using Type = GObject.Type;
+using System;
+using System.Reflection;
+using GObject;
+
+namespace GtkDemo
+{
+    public partial class {{ classname }}
+    {
+        private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
+        {
+            SetTemplate(
+                gtype: gClass, 
+                template: Assembly.GetExecutingAssembly().ReadResourceBytes({{ template }})
+            );
+            ConnectTemplateSignals(gClass, type);
+            BindTemplateChild(gClass, nameof(Button));
+        }
+
+        protected override void Initialize()
+        {
+            InitTemplate();
+            BindTemplateChild(nameof(Button), ref Button);
+        }
+    }
+}
