@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using GLib;
@@ -56,31 +57,49 @@ namespace Gtk
         private static void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name,
             IntPtr connect_object, ConnectFlags flags, IntPtr user_data)
         {
-            if(!TryWrapPointerAs<Widget>(@object, out var eventSource))
+            if(!TryWrapPointerAs<Widget>(@object, out var eventSender))
                 return;
 
+            if (!TryGetEvent(eventSender.GetType(), signal_name, out EventInfo? @event))
+                return;
+
+            if (@event.EventHandlerType is null)
+                return;
+            
             if(!TryWrapPointerAs<Widget>(connect_object, out var compositeWidget))
                 return;
 
-            MethodInfo? compositeWidgetCallbackMethodInfo = compositeWidget.GetType().GetMethod(
-                name: handler_name, 
-                bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
-            );
-            
-            if (compositeWidgetCallbackMethodInfo is null)
+            if (!TryGetMethod(compositeWidget.GetType(), handler_name, out MethodInfo? compositeWidgetEventHandler))
                 return;
 
-            EventInfo? sourceEvent = eventSource.GetType().GetEvent(
-                name: "On" + signal_name,
+            var eventHandlerDelegate = Delegate.CreateDelegate(@event.EventHandlerType, compositeWidget, compositeWidgetEventHandler);
+
+            ConnectEventWithDelegate(@event, eventSender, eventHandlerDelegate);
+        }
+
+        private static bool TryGetEvent(System.Type type, string eventName, [NotNullWhen(true)] out EventInfo? eventInfo)
+        {
+            eventInfo = type.GetEvent(
+                name: "On" + eventName,
                 bindingAttr: BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public
             );
 
-            if (sourceEvent?.EventHandlerType is null)
-                return;
-            
-            var del = Delegate.CreateDelegate(sourceEvent.EventHandlerType, compositeWidget, compositeWidgetCallbackMethodInfo);
+            return eventInfo is not null;
+        }
 
-            sourceEvent.AddMethod?.Invoke(eventSource, new object[] { del });
+        private static bool TryGetMethod(System.Type compositeWidgetType, string methodName, [NotNullWhen(true)] out MethodInfo? methodInfo)
+        {
+            methodInfo = compositeWidgetType.GetMethod(
+                name: methodName, 
+                bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+            );
+
+            return methodInfo is not null;
+        }
+
+        private static void ConnectEventWithDelegate(EventInfo eventInfo, object eventObject, Delegate del)
+        {
+            eventInfo.AddMethod?.Invoke(eventObject, new object[] { del });
         }
 
         private static void DestroyConnectData(IntPtr data)
