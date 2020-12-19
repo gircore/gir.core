@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Integrator.Gtk
@@ -9,11 +10,13 @@ namespace Integrator.Gtk
         #region Fields
         
         private readonly ClassDeclarationSyntax _classDeclarationSyntax;
+        private readonly Compilation _compilation;
 
         #endregion
         
         #region Properties
-        
+
+        public string Namespace => GetNamespace();
         public string ClassName => GetClassName();
         public string TemplateName => GetTemplateName();
         public IEnumerable<string> ConnectFields => GetConnectFields();
@@ -22,15 +25,27 @@ namespace Integrator.Gtk
         
         #region Constructors
         
-        public CompositeTemplateDataProvider(ClassDeclarationSyntax classDeclarationSyntax)
+        public CompositeTemplateDataProvider(ClassDeclarationSyntax classDeclarationSyntax, Compilation compilation)
         {
             _classDeclarationSyntax = classDeclarationSyntax ?? throw new ArgumentNullException(nameof(classDeclarationSyntax));
+            _compilation = compilation ?? throw new ArgumentNullException(nameof(compilation));
         }
 
         #endregion
         
         #region Methods
         
+        private string GetNamespace()
+        {
+            var model = _compilation.GetSemanticModel(_classDeclarationSyntax.SyntaxTree, true);
+            var type = model.GetDeclaredSymbol(_classDeclarationSyntax);
+
+            if (type?.ContainingNamespace is null)
+                throw new Exception("Could not determine namespace for class");
+
+            return type.ContainingNamespace.Name;
+        }
+
         private string GetClassName()
         {
             return _classDeclarationSyntax.Identifier.ValueText;

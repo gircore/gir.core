@@ -46,12 +46,6 @@ namespace GObject
             return query;
         }
 
-        // Class Initialiser
-        private static void ClassInit(IntPtr g_class, IntPtr class_data)
-        {
-            Console.WriteLine("class_init: Initialising custom subclass!");
-        }
-
         // TODO: Virtual Function
         private static void InstanceInit(IntPtr instance, IntPtr g_class)
         {

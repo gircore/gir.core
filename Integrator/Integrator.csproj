@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Scriban" Version="3.0.7" PrivateAssets="all" Pack="true"/>
+    <PackageReference Include="Scriban" Version="3.0.7" PrivateAssets="all" Pack="true" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2">
       <PrivateAssets>all</PrivateAssets>
@@ -18,15 +18,13 @@
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="@(None -&gt; WithMetadataValue('Extension', '.sbntxt'))" />
+    <None Remove="**\*.sbntxt" />
+    <EmbeddedResource Include="**\*.sbntxt">
+      <LogicalName>%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
-  <Target Name="AddPackDependencies"
-          Inputs="@(RuntimeCopyLocalItems)"
-          Outputs="%(RuntimeCopyLocalItems.NuGetPackageId)"
-          DependsOnTargets="ResolvePackageAssets"
-          BeforeTargets="GenerateNuspec"
-          AfterTargets="ResolvePackageAssets">
+  <Target Name="AddPackDependencies" Inputs="@(RuntimeCopyLocalItems)" Outputs="%(RuntimeCopyLocalItems.NuGetPackageId)" DependsOnTargets="ResolvePackageAssets" BeforeTargets="GenerateNuspec" AfterTargets="ResolvePackageAssets">
     <ItemGroup>
       <NuGetPackageId Include="@(RuntimeCopyLocalItems -> '%(NuGetPackageId)')" />
     </ItemGroup>

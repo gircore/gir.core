@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using GObject;
 
-namespace GtkDemo
+namespace {{ namespace }}
 {
     public partial class {{ class_name }}
     {

@@ -18,7 +18,7 @@ namespace Integrator.Gtk
             if (!TryGetClassDeclarationSyntax(context, out ClassDeclarationSyntax? classDeclarationSyntax))
                 return;
 
-            object dataProvider = GetDataProvider(classDeclarationSyntax);
+            object dataProvider = GetDataProvider(classDeclarationSyntax, context.Compilation);
             var template = GetTemplate(dataProvider);
             
             AddTemplateSourceToContext(context, template);
@@ -32,9 +32,9 @@ namespace Integrator.Gtk
             return classDeclarationSyntax is not null;
         }
         
-        private static object GetDataProvider(ClassDeclarationSyntax classDeclarationSyntax)
+        private static object GetDataProvider(ClassDeclarationSyntax classDeclarationSyntax, Compilation compilation)
         {
-            return new CompositeTemplateDataProvider(classDeclarationSyntax);
+            return new CompositeTemplateDataProvider(classDeclarationSyntax, compilation);
         }
 
         private static string GetTemplate(object dataProvider)
@@ -45,7 +45,7 @@ namespace Integrator.Gtk
 
         private static void AddTemplateSourceToContext(GeneratorExecutionContext context, string template)
         {
-            context.AddSource("myGeneratedFile.cs", SourceText.From(template, Encoding.UTF8));
+            context.AddSource("generated.cs", SourceText.From(template, Encoding.UTF8));
         }
     }
 }
