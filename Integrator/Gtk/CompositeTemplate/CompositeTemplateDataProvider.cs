@@ -1,18 +1,23 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Integrator.Gtk
 {
     public class CompositeTemplateDataProvider
     {
+        #region Fields
+        
         private readonly ClassDeclarationSyntax _classDeclarationSyntax;
 
+        #endregion
+        
         #region Properties
         
         public string ClassName => GetClassName();
         public string TemplateName => GetTemplateName();
-        
+        public IEnumerable<string> ConnectFields => GetConnectFields();
+
         #endregion
         
         #region Constructors
@@ -33,28 +38,31 @@ namespace Integrator.Gtk
 
         private string GetTemplateName()
         {
-            var attribute = GetClassAttribute("Template");
-            var firstArgument = GetFirstArgument(attribute);
+            var attributeSyntax = SyntaxHelper.GetAttributeSyntax(_classDeclarationSyntax, "Template");
+            var firstArgument = SyntaxHelper.GetFirstArgument(attributeSyntax);
             
             return firstArgument;
         }
 
-        private AttributeSyntax GetClassAttribute(string attributeName)
+        private IEnumerable<string> GetConnectFields()
         {
-            var attributes = _classDeclarationSyntax.AttributeLists.SelectMany(x => x.Attributes);
-            var attribute = attributes.First(x => x.Name.ToString() == attributeName);
-
-            return attribute;
-        }
-        
-        private string GetFirstArgument(AttributeSyntax attribute)
-        {
-            if (attribute.ArgumentList is null)
-                throw new Exception($"Class {ClassName} does not contain a \"Template\" attribute with arguments.");
+            var fieldSyntaxes = SyntaxHelper.GetFieldSyntaxes(_classDeclarationSyntax);
+            var fields = GetConnectFields(fieldSyntaxes);
             
-            return attribute.ArgumentList.Arguments.First().ToString();
+            return fields;
         }
-        
+ 
+        private IEnumerable<string> GetConnectFields(IEnumerable<FieldDeclarationSyntax> fieldSyntaxes)
+        {
+            foreach (var fieldSyntax in fieldSyntaxes)
+            {
+                if (SyntaxHelper.HasAttribute(fieldSyntax, "Connect"))
+                {
+                    yield return SyntaxHelper.GetFirstFieldName(fieldSyntax);
+                }
+            }
+        }
+
         #endregion
     }
 }
