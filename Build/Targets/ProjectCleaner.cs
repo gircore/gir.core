@@ -16,7 +16,7 @@ namespace Build
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
-        
+
         public void CleanProjects()
         {
             CleanSamples();

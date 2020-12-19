@@ -61,14 +61,16 @@ namespace Build
 
             var cleaner = new ProjectCleaner(settings);
             var generator = new LibraryGenerator(settings);
-            var dotNetExecutor = new DotNetExecutor(settings);
+            var libraryBuilder = new LibraryBuilder(settings);
+            var sampleBuilder = new SampleBuilder(settings);
+            var tester = new Tester(settings);
             
             var runner = new Runner(
                 projectCleaner: cleaner, 
                 libraryGenerator: generator, 
-                libraryBuilder: dotNetExecutor, 
-                sampleBuilder: dotNetExecutor,
-                tester: dotNetExecutor
+                libraryBuilder: libraryBuilder, 
+                sampleBuilder: sampleBuilder,
+                tester: tester
             );
             runner.Run(targets, options);
         }
