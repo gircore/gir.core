@@ -47,10 +47,15 @@ namespace Build
                 forEach: Projects.LibraryProjects,
                 action: ExecuteDotNetBuild
             );
+            
+            targets.Add(
+                name: Targets.Integration,
+                action: BuildIntegration
+            );
 
             targets.Add(
                 name: Targets.Samples,
-                dependsOn: new [] { Targets.Build },
+                dependsOn: new [] { Targets.Build, Targets.Integration },
                 forEach: Projects.SampleProjects,
                 action: ExecuteDotNetBuild
             );
@@ -94,6 +99,12 @@ namespace Build
         {
             _tester.Test(project);
         }
+
+        private void BuildIntegration()
+        {
+            foreach(var project in Projects.IntegrationProjects)
+                _builder.Build(project);
+        }
         
         #region Targets
         
@@ -107,6 +118,7 @@ namespace Build
             public const string Pack = "pack";
             public const string Samples = "samples";
             public const string Test = "test";
+            public const string Integration = "integration";
 
             #endregion
         }

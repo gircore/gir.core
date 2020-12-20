@@ -47,9 +47,16 @@ namespace Build
         private const string GTK3_COMPOSITE_TEMPLATE = SAMPLE + "Gtk3/Template";
         private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
 
+        private const string INTEGRATOR = "../Integrator/";
+        
         #endregion
         
         #region Fields
+
+        public static readonly string[] IntegrationProjects =
+        {
+            INTEGRATOR
+        };
         
         public static readonly string[] TestProjects =
         {
