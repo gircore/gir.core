@@ -3,21 +3,21 @@ using System.IO;
 
 namespace Build
 {
-    public interface ICleaner
+    public interface IProjectCleaner
     {
-        void Clean();
+        void CleanProjects();
     }
 
-    public class Cleaner : ICleaner
+    public class ProjectCleaner : IProjectCleaner
     {
         private readonly Settings _settings;
 
-        public Cleaner(Settings settings)
+        public ProjectCleaner(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
-        
-        public void Clean()
+
+        public void CleanProjects()
         {
             CleanSamples();
             CleanLibraries();
