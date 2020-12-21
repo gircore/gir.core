@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libs\Gtk3\Gtk3.csproj" />
-    <PackageReference Include="Integrator" Version="1.0.0"
+    <PackageReference Include="Integrator" Version="0.*"
                       OutputItemType="Analyzer"
                       PrivateAssets="All"
                       ReferenceOutputAssembly="false" />
