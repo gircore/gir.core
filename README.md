@@ -71,7 +71,7 @@ To use the newly build libraries in your project just add a reference to the csp
     $ dotnet add reference [RepoPath]/Libs/Gtk/Gtk.csproj
 
 ## How to help
-Anyone who wants to help is very welcome. Just create a pull request for new code or create an issue to get in contact.
+Anyone who wants to help is very welcome. If you want to get into the project take a look at our [Good First Issues](https://github.com/gircore/gir.core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or get in contact by starting a [Discussion](https://github.com/gircore/gir.core/discussions).
 
 ## Code structure
 The folder structure in this repository is organized like:

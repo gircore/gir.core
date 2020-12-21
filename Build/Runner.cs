@@ -7,16 +7,20 @@ namespace Build
 {
     public class Runner
     {
-        private readonly ICleaner _cleaner;
-        private readonly IGenerator _generator;
-        private readonly IBuilder _builder;
+        private readonly IProjectCleaner _projectCleaner;
+        private readonly ILibraryGenerator _libraryGenerator;
+        private readonly ILibraryBuilder _libraryBuilder;
+        private readonly ISampleBuilder _sampleBuilder;
         private readonly ITester _tester;
+        private readonly IIntegrationBuilder _integrationBuilder;
 
-        public Runner(ICleaner cleaner, IGenerator generator, IBuilder builder, ITester tester)
+        public Runner(IProjectCleaner projectCleaner, ILibraryGenerator libraryGenerator, ILibraryBuilder libraryBuilder, ISampleBuilder sampleBuilder, ITester tester, IIntegrationBuilder integrationBuilder)
         {
-            _cleaner = cleaner;
-            _generator = generator;
-            _builder = builder;
+            _projectCleaner = projectCleaner;
+            _libraryGenerator = libraryGenerator;
+            _libraryBuilder = libraryBuilder;
+            _sampleBuilder = sampleBuilder;
+            _integrationBuilder = integrationBuilder;
             _tester = tester;
         }
         
@@ -32,20 +36,18 @@ namespace Build
             
             targets.Add(
                 name: Targets.Clean,
-                action: ExecuteDotNetClean
+                action: CleanProjects
             );
             
             targets.Add(
-                name: Targets.Generate, 
-                forEach: Projects.LibraryProjects,
+                name: Targets.Generate,
                 action: ExecuteGenerator
             );
 
             targets.Add(
                 name: Targets.Build,
                 dependsOn: new []{ Targets.Generate },
-                forEach: Projects.LibraryProjects,
-                action: ExecuteDotNetBuild
+                action: BuildLibraries
             );
             
             targets.Add(
@@ -56,15 +58,13 @@ namespace Build
             targets.Add(
                 name: Targets.Samples,
                 dependsOn: new [] { Targets.Build, Targets.Integration },
-                forEach: Projects.SampleProjects,
-                action: ExecuteDotNetBuild
+                action: BuildSamples
             );
 
             targets.Add(
                 name: Targets.Test,
                 dependsOn: new [] { Targets.Build },
-                forEach: Projects.TestProjects,
-                action: ExecuteDotNetTest
+                action: TestLibraries
             );
             
             targets.Add(
@@ -75,35 +75,34 @@ namespace Build
             return targets;
         }
 
-        private void ExecuteGenerator((Project Project, Type Type) data)
+        private void ExecuteGenerator()
         {
-            _generator.Generate(data.Project, data.Type);
+            _libraryGenerator.GenerateLibraries();
         }
 
-        private void ExecuteDotNetClean()
+        private void CleanProjects()
         {
-            _cleaner.Clean();
+            _projectCleaner.CleanProjects();
         }
 
-        private void ExecuteDotNetBuild((Project Project, Type Type) data)
+        private void BuildLibraries()
         {
-            _builder.Build(data.Project.Folder);
+            _libraryBuilder.BuildLibraries();
         }
         
-        private void ExecuteDotNetBuild(string project)
+        private void BuildSamples()
         {
-            _builder.Build(project);
+            _sampleBuilder.BuildSamples();
         }
         
-        private void ExecuteDotNetTest(string project)
+        private void TestLibraries()
         {
-            _tester.Test(project);
+            _tester.Test();
         }
-
+        
         private void BuildIntegration()
         {
-            foreach(var project in Projects.IntegrationProjects)
-                _builder.Build(project);
+            _integrationBuilder.BuildIntegration();
         }
         
         #region Targets

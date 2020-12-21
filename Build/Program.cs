@@ -59,15 +59,20 @@ namespace Build
                 Verbose = verbose,
             };
 
-            var cleaner = new Cleaner(settings);
-            var generator = new Generator(settings);
-            var dotNetExecutor = new DotNetExecutor(settings);
+            var cleaner = new ProjectCleaner(settings);
+            var generator = new LibraryGenerator(settings);
+            var libraryBuilder = new LibraryBuilder(settings);
+            var sampleBuilder = new SampleBuilder(settings);
+            var integrationBuilder = new IntegrationBuilder(settings);
+            var tester = new Tester(settings);
             
             var runner = new Runner(
-                cleaner: cleaner, 
-                generator: generator, 
-                builder: dotNetExecutor, 
-                tester: dotNetExecutor
+                projectCleaner: cleaner, 
+                libraryGenerator: generator, 
+                libraryBuilder: libraryBuilder, 
+                sampleBuilder: sampleBuilder,
+                integrationBuilder: integrationBuilder,
+                tester: tester
             );
             runner.Run(targets, options);
         }
