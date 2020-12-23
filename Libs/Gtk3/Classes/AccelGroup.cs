@@ -92,7 +92,7 @@ namespace Gtk
             DisconnectKey(key.accel_key, key.accel_mods);
 
         public bool Activate(uint accelQuark, GObject.Object acceleratable, uint accelKey, Gdk.ModifierType accelMods) =>
-            Native.activate(Handle, accelQuark, GetHandle(acceleratable), accelKey, accelMods);
+            Native.activate(Handle, accelQuark, acceleratable.Handle, accelKey, accelMods);
 
         public void Lock() => Native.@lock(Handle);
 

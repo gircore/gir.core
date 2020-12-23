@@ -13,7 +13,7 @@ namespace Gtk
         protected static void SetTemplate(Type gtype, Bytes template)
         {
             IntPtr classPtr = TypeHelper.GetClassPointer(gtype);
-            IntPtr bytesHandle = GetHandle(template);
+            IntPtr bytesHandle = template.Handle;
             
             WidgetClass.Native.set_template(classPtr, bytesHandle);
         }

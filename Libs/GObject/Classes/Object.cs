@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using GLib;
+using GLib.Interfaces;
 
 namespace GObject
 {
-    public partial class Object : IObject, INotifyPropertyChanged, IDisposable
+    public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHandle
     {
         #region Fields
 
@@ -27,7 +28,7 @@ namespace GObject
 
         #region Properties
         
-        protected internal IntPtr Handle { get; private set; }
+        public IntPtr Handle { get; private set; }
         
         // We need to store a reference to WeakNotify to
         // prevent the delegate from being collected by the GC
@@ -237,12 +238,6 @@ namespace GObject
             if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
         }
-
-        protected static IntPtr GetHandle(Object obj)
-            => obj.Handle;
-        
-        protected static IntPtr GetHandle(Bytes bytes)
-            => bytes.Handle;
 
         /// <summary>
         /// Notify this object that a property has just changed.
