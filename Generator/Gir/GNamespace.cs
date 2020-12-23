@@ -76,6 +76,8 @@ namespace Gir
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return GetWindowsDllImport(name, version);
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                return GetOSXDllImport(name, version);
             else
                 return GetLinuxDllImport(name, version);
         }
@@ -87,6 +89,15 @@ namespace Gir
                 versionExtension = "-" + version;
 
             return name + versionExtension + ".dll";
+        }
+
+        private string GetOSXDllImport(string name, string version)
+        {
+            var versionExtension = "";
+            if (!string.IsNullOrEmpty(version))
+                versionExtension = "." + version;
+
+            return name + versionExtension + ".dylib";
         }
 
         private string GetLinuxDllImport(string name, string version)
