@@ -45,6 +45,7 @@ namespace Gtk
             try
             {
                 Marshal.StructureToPtr(gtype, ptr, true);
+                //TODO Verify if OnConnectEvent and DestroyConnectData get garbage collected
                 WidgetClass.Native.set_connect_func(classPtr, OnConnectEvent, ptr, DestroyConnectData);
             }
             finally
