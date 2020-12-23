@@ -12,7 +12,7 @@ namespace GtkDemo
         {
             SetTemplate(
                 gtype: gClass, 
-                template: Assembly.GetExecutingAssembly().ReadResource("CompositeWidget.glade")
+                template: Assembly.GetExecutingAssembly().ReadResource("CompositeWidget.ui")
             );
             BindTemplateChild(gClass, nameof(Button));
             ConnectTemplateSignals(gClass, type);
