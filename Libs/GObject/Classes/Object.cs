@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using GLib;
-using GLib.Interfaces;
 
 namespace GObject
 {

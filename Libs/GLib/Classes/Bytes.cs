@@ -1,5 +1,4 @@
 ﻿using System;
-using GLib.Interfaces;
 
 namespace GLib
 {

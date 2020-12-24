@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GLib.Interfaces
+namespace GLib
 {
     public interface IHandle
     {
