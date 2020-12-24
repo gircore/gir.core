@@ -8,9 +8,9 @@ namespace {{ namespace }}
     {
         #region Fields
         
-        private const string _windowsDllName = "";
-        private const string _linuxDllName = "";
-        private const string _osxDllName = "";
+        private const string _windowsDllName = "{{ windows_dll }}";
+        private const string _linuxDllName = "{{ linux_dll }}";
+        private const string _osxDllName = "{{ osx_dll }}";
 
         private static readonly string DllName;
 

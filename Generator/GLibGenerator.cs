@@ -89,6 +89,26 @@ namespace Generator
             }
         }
 
+        protected override void GenerateMiscellaneous(string @namespace)
+        {
+            ScriptObject? scriptObject = GetScriptObject();
+            AddOsDependentDllImports(scriptObject);
+
+            Generate(
+                templateName: "helper_dll_import",
+                subfolder: "Classes",
+                fileName: "DllImport",
+                scriptObject: scriptObject
+            );
+            
+            Generate(
+                templateName: "module_dll_import",
+                subfolder: "Classes",
+                fileName: "Module.DllImport",
+                scriptObject: scriptObject
+            );
+        }
+
         #endregion
     }
 }

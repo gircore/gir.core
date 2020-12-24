@@ -156,6 +156,7 @@ namespace Generator
             GenerateDelegates(Repository.Namespace.Callbacks, Repository.Namespace.Name);
             GenerateGlobals(Repository.Namespace.Functions, Repository.Namespace.Name);
             GenerateConstants(Repository.Namespace.Constants, Repository.Namespace.Name);
+            GenerateMiscellaneous(Repository.Namespace.Name);
         }
 
         protected virtual void GenerateInterfaces(IEnumerable<GInterface> interfaces, string @namespace) { }
@@ -165,6 +166,7 @@ namespace Generator
         protected virtual void GenerateDelegates(IEnumerable<GCallback> delegates, string @namespace) { }
         protected virtual void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace) { }
         protected virtual void GenerateConstants(IEnumerable<GConstant> constants, string @namespace) { }
+        protected virtual void GenerateMiscellaneous(string @namespace) { }
 
         private void FixRepository(GRepository repository)
         {
@@ -321,6 +323,27 @@ namespace Generator
             return scriptObject;
         }
 
+        private (string sharedLibrary, string namespaceName) GetNamspaceData()
+        {
+            if(string.IsNullOrEmpty(Repository.Namespace?.SharedLibrary))
+                throw new Exception("Missing shared Library");
+
+            if (string.IsNullOrEmpty(Repository.Namespace.Name))
+                throw new Exception("Missing namespace name");
+
+            return (Repository.Namespace.SharedLibrary, Repository.Namespace.Name);
+        }
+
+        protected void AddOsDependentDllImports(ScriptObject scriptObject)
+        {
+            (string sharedLibrary, string namespaceName) = GetNamspaceData();
+            var dllImportResolver = new DllImportResolver(sharedLibrary, namespaceName);
+            
+            scriptObject.Add("windows_dll", dllImportResolver.GetWindowsDllImport());
+            scriptObject.Add("osx_dll", dllImportResolver.GetOSXDllImport());
+            scriptObject.Add("linux_dll", dllImportResolver.GetLinuxDllImport());
+        }
+        
         #endregion
     }
 }

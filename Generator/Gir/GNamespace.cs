@@ -54,60 +54,13 @@ namespace Gir
         [XmlElement("constant")]
         public List<GConstant> Constants { get; set; } = default!;
 
-        // Determines the dll name from the shared library (based on msys2 gtk binaries)
-        // SEE: https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html
-        public string? GetDllImport(string namspaceName)
+
+        public string? GetDllImport(string @namespace)
         {
-            if (string.IsNullOrEmpty(SharedLibrary))
-                return null;
-
-            var lib = SharedLibrary;
-            if (SharedLibrary.Contains(","))
-            {
-                var libs = SharedLibrary.Split(',');
-                var result = Array.Find(libs, x => x.Contains(namspaceName, StringComparison.OrdinalIgnoreCase));
-
-                lib = result ?? throw new Exception($"Cant find dll import for {namspaceName}, no match found in: {SharedLibrary}");
-            }
-
-            var lastDot = lib.LastIndexOf('.');
-            var version = lib[(lastDot + 1)..];
-            var name = lib[..lastDot].Replace(".so", "");
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return GetWindowsDllImport(name, version);
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                return GetOSXDllImport(name, version);
-            else
-                return GetLinuxDllImport(name, version);
+            return @namespace;
         }
-
-        private string GetWindowsDllImport(string name, string version)
-        {
-            var versionExtension = "";
-            if (!string.IsNullOrEmpty(version))
-                versionExtension = "-" + version;
-
-            return name + versionExtension + ".dll";
-        }
-
-        private string GetOSXDllImport(string name, string version)
-        {
-            var versionExtension = "";
-            if (!string.IsNullOrEmpty(version))
-                versionExtension = "." + version;
-
-            return name + versionExtension + ".dylib";
-        }
-
-        private string GetLinuxDllImport(string name, string version)
-        {
-            var versionExtension = "";
-            if (!string.IsNullOrEmpty(version))
-                versionExtension = "." + version;
-
-            return name + ".so" + versionExtension;
-        }
+        
+        
 
         #endregion
     }
