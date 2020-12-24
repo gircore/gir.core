@@ -23,7 +23,7 @@ namespace Gtk
             Native.init_template(Handle);
         }
 
-        protected void BindTemplateChild<T>(string name, ref T field) where T : GObject.Object
+        protected void ConnectTemplateChildToField<T>(string name, ref T field) where T : GObject.Object
         {
             var systemType = GetType();
             var gtype = TypeDictionary.Get(systemType);
@@ -37,7 +37,7 @@ namespace Gtk
             WidgetClass.Native.bind_template_child_full(classPtr, name, false, 0);
         }
         
-        protected static void ConnectTemplateSignals(Type gtype, System.Type t)
+        protected static void BindTemplateSignals(Type gtype, System.Type t)
         {
             var classPtr = TypeHelper.GetClassPointer(gtype);
             

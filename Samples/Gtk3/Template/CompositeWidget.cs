@@ -15,13 +15,13 @@ namespace GtkDemo
                 template: Assembly.GetExecutingAssembly().ReadResource("CompositeWidget.ui")
             );
             BindTemplateChild(gClass, nameof(Button));
-            ConnectTemplateSignals(gClass, type);
+            BindTemplateSignals(gClass, type);
         }
 
         protected override void Initialize()
         {
             InitTemplate();
-            BindTemplateChild(nameof(Button), ref Button);
+            ConnectTemplateChildToField(nameof(Button), ref Button);
         }
 
         private Button Button = default!;
