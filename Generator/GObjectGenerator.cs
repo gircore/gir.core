@@ -121,6 +121,11 @@ namespace Generator
                 scriptObject: scriptObject
             );
         }
+        
+        protected override void GenerateMiscellaneous(string @namespace)
+        {
+            GenerateDllImportHelper();
+        }
 
         #endregion
     }

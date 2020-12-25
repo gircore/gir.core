@@ -54,14 +54,6 @@ namespace Gir
         [XmlElement("constant")]
         public List<GConstant> Constants { get; set; } = default!;
 
-
-        public string? GetDllImport(string @namespace)
-        {
-            return @namespace;
-        }
-        
-        
-
         #endregion
     }
 }

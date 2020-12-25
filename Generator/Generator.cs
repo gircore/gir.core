@@ -145,7 +145,7 @@ namespace Generator
             if (Repository.Namespace.Name is null)
                 throw new Exception("Could not create code. Namespace is missing a name.");
 
-            _dllImport = Repository.Namespace.GetDllImport(Repository.Namespace.Name) ?? throw new ArgumentNullException(nameof(_dllImport));
+            _dllImport = Repository.Namespace.Name ?? throw new ArgumentNullException(nameof(_dllImport));
 
             GenerateClasses(Repository.Namespace.Classes, Repository.Namespace.Name);
             GenerateInterfaces(Repository.Namespace.Interfaces, Repository.Namespace.Name);
@@ -323,6 +323,36 @@ namespace Generator
             return scriptObject;
         }
 
+        protected void GenerateDllImportHelper()
+        {
+            ScriptObject? scriptObject = GetScriptObject();
+            AddOsDependentDllImports(scriptObject);
+
+            Generate(
+                templateName: "helper_dll_import",
+                subfolder: "Classes",
+                fileName: "DllImport",
+                scriptObject: scriptObject
+            );
+            
+            Generate(
+                templateName: "module_dll_import",
+                subfolder: "Classes",
+                fileName: "Module.DllImport",
+                scriptObject: scriptObject
+            );
+        }
+
+        private void AddOsDependentDllImports(ScriptObject scriptObject)
+        {
+            (string sharedLibrary, string namespaceName) = GetNamspaceData();
+            var dllImportResolver = new DllImportResolver(sharedLibrary, namespaceName);
+            
+            scriptObject.Add("windows_dll", dllImportResolver.GetWindowsDllImport());
+            scriptObject.Add("osx_dll", dllImportResolver.GetOSXDllImport());
+            scriptObject.Add("linux_dll", dllImportResolver.GetLinuxDllImport());
+        }
+        
         private (string sharedLibrary, string namespaceName) GetNamspaceData()
         {
             if(string.IsNullOrEmpty(Repository.Namespace?.SharedLibrary))
@@ -332,16 +362,6 @@ namespace Generator
                 throw new Exception("Missing namespace name");
 
             return (Repository.Namespace.SharedLibrary, Repository.Namespace.Name);
-        }
-
-        protected void AddOsDependentDllImports(ScriptObject scriptObject)
-        {
-            (string sharedLibrary, string namespaceName) = GetNamspaceData();
-            var dllImportResolver = new DllImportResolver(sharedLibrary, namespaceName);
-            
-            scriptObject.Add("windows_dll", dllImportResolver.GetWindowsDllImport());
-            scriptObject.Add("osx_dll", dllImportResolver.GetOSXDllImport());
-            scriptObject.Add("linux_dll", dllImportResolver.GetLinuxDllImport());
         }
         
         #endregion
