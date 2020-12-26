@@ -9,6 +9,10 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
+    directory: "/Integrator"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "nuget"
     directory: "/Tests/Build.Tests"
     schedule:
       interval: "daily"
