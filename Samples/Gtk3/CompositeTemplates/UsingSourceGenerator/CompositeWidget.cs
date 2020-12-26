@@ -2,7 +2,7 @@
 
 namespace GtkDemo
 {
-    [Template("CompositeWidget.glade")]
+    [Template("CompositeWidget.ui")]
     public partial class CompositeWidget : Bin
     {
         [Connect]

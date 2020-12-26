@@ -13,7 +13,7 @@ namespace {{ namespace }}
                 gtype: gClass, 
                 template: Assembly.GetExecutingAssembly().ReadResourceBytes({{ template_name }})
             );
-            ConnectTemplateSignals(gClass, type);
+            BindTemplateSignals(gClass, type);
             {{~ for field in connect_fields ~}}
             BindTemplateChild(gClass, nameof({{ field }}));
             {{~ end ~}}
@@ -23,7 +23,7 @@ namespace {{ namespace }}
         {
             InitTemplate();
             {{~ for field in connect_fields ~}}
-            BindTemplateChild(nameof({{ field }}), ref {{ field }});
+            ConnectTemplateChildToField(nameof({{ field }}), ref {{ field }});
             {{~ end ~}}
         }
     }
