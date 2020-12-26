@@ -44,6 +44,7 @@ namespace Build
         private const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
         private const string GTK3_MINIMAL_SAMPLE = SAMPLE + "Gtk3/GtkMinimal";
         private const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
+        private const string GTK3_COMPOSITE_TEMPLATE = SAMPLE + "Gtk3/Template";
         private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
 
         #endregion
@@ -60,7 +61,9 @@ namespace Build
         {
             DBUS_SAMPLE, GSTREAMER_SAMPLE,
             //GTK3_APP_SAMPLE,
-            GTK3_MINIMAL_SAMPLE, GTK3_QUICKSTART,
+            GTK3_MINIMAL_SAMPLE, 
+            GTK3_QUICKSTART,
+            GTK3_COMPOSITE_TEMPLATE,
             //GTK4_SIMPLE_WINDOW_SAMPLE
         };
 

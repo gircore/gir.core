@@ -83,7 +83,7 @@ namespace GObject
             var typeInfo = new TypeInfo(
                 class_size: (ushort) query.class_size,
                 instance_size: (ushort) query.instance_size,
-                class_init: ClassInit,
+                class_init: TypeHelper.GetClassInitFunc(type),
                 instance_init: InstanceInit
             );
 

@@ -72,7 +72,7 @@ namespace Gtk
         public void InsertPage(string label, Widget child, int position)
         {
             var tabLabel = new Label(label);
-            Native.insert_page(Handle, GetHandle(child), GetHandle(tabLabel), position);
+            Native.insert_page(Handle, child.Handle, tabLabel.Handle, position);
         }
 
         public void RemovePage(Widget child)
@@ -83,13 +83,13 @@ namespace Gtk
 
         protected void RemovePage(int page) => Native.remove_page(Handle, page);
 
-        public int GetPageNum(Widget child) => Native.page_num(Handle, GetHandle(child));
+        public int GetPageNum(Widget child) => Native.page_num(Handle, child.Handle);
 
         public int GetPageCount() => Native.get_n_pages(Handle);
 
         public Widget this[string label]
         {
-            set => Native.append_page(Handle, GetHandle(value), GetHandle(new Label(label)));
+            set => Native.append_page(Handle, value.Handle, new Label(label).Handle);
         }
 
         #endregion
