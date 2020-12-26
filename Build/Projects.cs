@@ -44,7 +44,8 @@ namespace Build
         private const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
         private const string GTK3_MINIMAL_SAMPLE = SAMPLE + "Gtk3/GtkMinimal";
         private const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
-        private const string GTK3_COMPOSITE_TEMPLATE = SAMPLE + "Gtk3/Template";
+        private const string GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/UsingSourceGenerator";
+        private const string GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/NoSourceGenerator";
         private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
 
         private const string INTEGRATOR = "../Integrator/";
@@ -70,7 +71,8 @@ namespace Build
             //GTK3_APP_SAMPLE,
             GTK3_MINIMAL_SAMPLE, 
             GTK3_QUICKSTART,
-            GTK3_COMPOSITE_TEMPLATE,
+            GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR,
+            GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR,
             //GTK4_SIMPLE_WINDOW_SAMPLE
         };
 
