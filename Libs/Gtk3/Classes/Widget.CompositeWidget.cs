@@ -14,7 +14,7 @@ namespace Gtk
         protected static void SetTemplate(Type gtype, Bytes template)
         {
             IntPtr classPtr = TypeHelper.GetClassPointer(gtype);
-            IntPtr bytesHandle = GetHandle(template);
+            IntPtr bytesHandle = template.Handle;
             
             WidgetClass.Native.set_template(classPtr, bytesHandle);
         }
@@ -24,7 +24,7 @@ namespace Gtk
             Native.init_template(Handle);
         }
 
-        protected void BindTemplateChild<T>(string name, ref T field) where T : GObject.Object
+        protected void ConnectTemplateChildToField<T>(string name, ref T field) where T : GObject.Object
         {
             var systemType = GetType();
             var gtype = TypeDictionary.Get(systemType);
@@ -38,7 +38,7 @@ namespace Gtk
             WidgetClass.Native.bind_template_child_full(classPtr, name, false, 0);
         }
         
-        protected static void ConnectTemplateSignals(Type gtype, System.Type t)
+        protected static void BindTemplateSignals(Type gtype, System.Type t)
         {
             var classPtr = TypeHelper.GetClassPointer(gtype);
             
@@ -46,6 +46,7 @@ namespace Gtk
             try
             {
                 Marshal.StructureToPtr(gtype, ptr, true);
+                //TODO Verify if OnConnectEvent and DestroyConnectData get garbage collected
                 WidgetClass.Native.set_connect_func(classPtr, OnConnectEvent, ptr, DestroyConnectData);
             }
             finally

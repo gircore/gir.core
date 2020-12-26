@@ -1,5 +1,7 @@
 # Welcome to Gir.Core
 
+[![Continuous integration status](https://github.com/GirCore/gir.core/workflows/Continuous%20integration/badge.svg?branch=develop)](https://github.com/gircore/gir.core/actions)
+
 Gir.Core is a project which aims to provide C# wrapper for different [GObject] based libraries like [GTK] for user interfaces.
 
 <!-- If you want to get started with the library head over to http://gircore.tiede.org. If you want to get into more technical details just continue reading. -->

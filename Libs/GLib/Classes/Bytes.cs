@@ -2,11 +2,11 @@
 
 namespace GLib
 {
-    public partial class Bytes
+    public partial class Bytes : IHandle
     {
         #region Properties
 
-        internal IntPtr Handle { get; }
+        public IntPtr Handle { get; }
 
         #endregion
 

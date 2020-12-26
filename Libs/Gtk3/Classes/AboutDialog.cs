@@ -435,7 +435,7 @@ namespace Gtk
         public GdkPixbuf.Pixbuf GetLogo() => WrapPointerAs<GdkPixbuf.Pixbuf>(Native.get_logo(Handle));
 
         public void SetLogo(GdkPixbuf.Pixbuf? logo) =>
-            Native.set_logo(Handle, logo is null ? IntPtr.Zero : GetHandle(logo));
+            Native.set_logo(Handle, logo is null ? IntPtr.Zero : logo.Handle);
 
         public string? GetLogoIconName() => Marshal.PtrToStringAnsi(Native.get_logo_icon_name(Handle));
 

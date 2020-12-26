@@ -1,0 +1,28 @@
+name: 'Continuous integration'
+
+on:
+  push:
+    branches: 
+      - develop
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v2
+        with: 
+          submodules: 'true'
+
+      - name: Prepare .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Run release build
+        run: dotnet run -- --release --xml-documentation --targets test samples
+        working-directory: './Build'

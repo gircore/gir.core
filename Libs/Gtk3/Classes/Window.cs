@@ -703,10 +703,10 @@ namespace Gtk
             Native.get_resizable(Handle);
 
         public void AddAccelGroup(AccelGroup accelGroup) =>
-            Native.add_accel_group(Handle, GetHandle(accelGroup));
+            Native.add_accel_group(Handle, accelGroup.Handle);
 
         public void RemoveAccelGroup(AccelGroup accelGroup) =>
-            Native.remove_accel_group(Handle, GetHandle(accelGroup));
+            Native.remove_accel_group(Handle, accelGroup.Handle);
 
         public bool ActivateFocus() =>
             Native.activate_focus(Handle);
@@ -728,7 +728,7 @@ namespace Gtk
         {
             IntPtr geoPtr = Marshal.AllocHGlobal(Marshal.SizeOf(geometry));
             Marshal.StructureToPtr(geometry, geoPtr, true);
-            Native.set_geometry_hints(Handle, GetHandle(geometryWidget), geoPtr, geometryMask);
+            Native.set_geometry_hints(Handle, geometryWidget.Handle, geoPtr, geometryMask);
             Marshal.FreeHGlobal(geoPtr);
         }
 
@@ -742,10 +742,10 @@ namespace Gtk
             Native.set_position(Handle, position);
 
         public void SetTransientFor(Window? parent) =>
-            Native.set_transient_for(Handle, parent is null ? IntPtr.Zero : GetHandle(parent));
+            Native.set_transient_for(Handle, parent is null ? IntPtr.Zero : parent.Handle);
 
         public void SetAttachedTo(Widget? attachWidget) =>
-            Native.set_attached_to(Handle, attachWidget is null ? IntPtr.Zero : GetHandle(attachWidget));
+            Native.set_attached_to(Handle, attachWidget is null ? IntPtr.Zero : attachWidget.Handle);
 
         public void SetDestroyWithParent(bool setting) =>
             Native.set_destroy_with_parent(Handle, setting);
@@ -754,7 +754,7 @@ namespace Gtk
             Native.set_hide_titlebar_when_maximized(Handle, setting);
 
         public void SetScreen(Gdk.Screen screen) =>
-            Native.set_screen(Handle, GetHandle(screen));
+            Native.set_screen(Handle, screen.Handle);
 
         public new Gdk.Screen GetScreen() =>
             WrapPointerAs<Gdk.Screen>(Native.get_screen(Handle));
@@ -766,10 +766,10 @@ namespace Gtk
         }
 
         public void AddMnemonic(uint keyVal, Widget target) =>
-            Native.add_mnemonic(Handle, keyVal, GetHandle(target));
+            Native.add_mnemonic(Handle, keyVal, target.Handle);
 
         public void RemoveMnemonic(uint keyVal, Widget target) =>
-            Native.remove_mnemonic(Handle, keyVal, GetHandle(target));
+            Native.remove_mnemonic(Handle, keyVal, target.Handle);
 
         public bool MnemonicActivate(uint keyVal, Gdk.ModifierType modifierType) =>
             Native.mnemonic_activate(Handle, keyVal, modifierType);
@@ -804,10 +804,10 @@ namespace Gtk
         }
 
         public void SetFocus(Widget? focus) =>
-            Native.set_focus(Handle, focus is null ? IntPtr.Zero : GetHandle(focus));
+            Native.set_focus(Handle, focus is null ? IntPtr.Zero : focus.Handle);
 
         public void SetDefault(Widget? defaultWidget) =>
-            Native.set_default(Handle, defaultWidget is null ? IntPtr.Zero : GetHandle(defaultWidget));
+            Native.set_default(Handle, defaultWidget is null ? IntPtr.Zero : defaultWidget.Handle);
 
         public void Present() =>
             Native.present(Handle);
@@ -840,7 +840,7 @@ namespace Gtk
             Native.fullscreen(Handle);
 
         public void FullscreenOnMonitor(Gdk.Screen screen, int monitor) =>
-            Native.fullscreen_on_monitor(Handle, GetHandle(screen), monitor);
+            Native.fullscreen_on_monitor(Handle, screen.Handle, monitor);
 
         public void Unfullscreen() =>
             Native.unfullscreen(Handle);
@@ -1016,7 +1016,7 @@ namespace Gtk
         }
 
         public static void SetDefaultIcon(GdkPixbuf.Pixbuf icon) =>
-            Native.set_default_icon(GetHandle(icon));
+            Native.set_default_icon(icon.Handle);
 
         public static bool SetDefaultIconFromFile(string filename)
         {
@@ -1030,7 +1030,7 @@ namespace Gtk
             Native.set_default_icon_name(name);
 
         public void SetIcon(GdkPixbuf.Pixbuf? icon) =>
-            Native.set_icon(Handle, icon is null ? IntPtr.Zero : GetHandle(icon));
+            Native.set_icon(Handle, icon is null ? IntPtr.Zero : icon.Handle);
 
         public void SetIconList(GLib.List list)
         {
@@ -1104,13 +1104,13 @@ namespace Gtk
         }
 
         public void SetApplication(Application? application) =>
-            Native.set_application(Handle, application is null ? IntPtr.Zero : GetHandle(application));
+            Native.set_application(Handle, application is null ? IntPtr.Zero : application.Handle);
 
         public void SetHasUserRefCount(bool setting) =>
             Native.set_has_user_ref_count(Handle, setting);
 
         public void SetTitlebar(Widget? titlebar) =>
-            Native.set_titlebar(Handle, titlebar is null ? IntPtr.Zero : GetHandle(titlebar));
+            Native.set_titlebar(Handle, titlebar is null ? IntPtr.Zero : titlebar.Handle);
 
         public Widget? GetTitlebar()
         {
