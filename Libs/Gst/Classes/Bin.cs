@@ -16,11 +16,11 @@ namespace Gst
         public IEnumerable<Element> IterateRecurse()
         {
             IntPtr ptr = Native.iterate_recurse(Handle);
-            foreach (Value val in Marshal.PtrToStructure<Iterator>(ptr).GetValues())
+            foreach (object element in Marshal.PtrToStructure<Iterator>(ptr))
             {
-                Element el = val.Extract<Element>();
-                val.Dispose();
-                yield return el;
+                if (element.GetType().IsAssignableTo(typeof(Element)))
+                    throw new Exception("Iterator type was not Element! Fatal error");
+                yield return (Element)element;
             }
         }
     }
