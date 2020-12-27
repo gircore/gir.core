@@ -24,7 +24,8 @@ namespace Build
                 DotNet.Pack(
                     project: project.Folder,
                     configuration: _settings.Configuration,
-                    version: _settings.Version?.ToNormalizedString()
+                    version: _settings.Version?.ToNormalizedString(),
+                    outputDir: "../Nuget"
                 );
             }
         }

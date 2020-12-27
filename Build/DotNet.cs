@@ -36,12 +36,27 @@ namespace Build
             Command.Run(Commands.Dotnet, $"{Commands.Clean} --nologo -c {configuration}", project);
         }
 
-        public static void Pack(string project, Configuration configuration, string? version = null)
+        public static void Pack(string project, Configuration configuration, string? version = null, string? outputDir = null)
         {
             if (!TryGetVersionParameter(version, out var versionParameter))
                 versionParameter = "";
+
+            if (!TryGetOutputDirParameter(outputDir, out var outputDirParameter))
+                outputDirParameter = "";
             
-            Command.Run(Commands.Dotnet, $"{Commands.Pack} --nologo -c {configuration} {versionParameter} {project}");
+            Command.Run(Commands.Dotnet, $"{Commands.Pack} --nologo -c {configuration} {versionParameter} {outputDirParameter} {project}");
+        }
+
+        private static bool TryGetOutputDirParameter(string? outputDir, [NotNullWhen(true)] out string? dir)
+        {
+            if (outputDir is null)
+            {
+                dir = null;
+                return false;
+            }
+
+            dir = $"-o {outputDir}";
+            return true;
         }
         
         private static bool TryGetVersionParameter(string? version, [NotNullWhen(true)] out string? parameter)
