@@ -20,9 +20,9 @@ jobs:
           dotnet-version: '5.0.x'
 
       - name: Run release build and pack
-        run: dotnet run -- --release --xml-documentation --targets test pack
+        run: dotnet run -- --release --xml-documentation --targets test pack --version ${{ github.ref }}
         working-directory: './Build'
 
       - name: Publish to nuget org
-        run: dotnet nuget push "*.nupkg" -k {{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
         working-directory: './Nuget'
