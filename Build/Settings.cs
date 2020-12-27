@@ -1,4 +1,6 @@
-﻿namespace Build
+﻿using NuGet.Versioning;
+
+namespace Build
 {
     public class Settings
     {
@@ -7,7 +9,7 @@
         public Configuration Configuration { get; init; }
         public bool GenerateComments { get; init; }
         public bool GenerateXmlDocumentation { get; init; }
-        public string? Version { get; init; }
+        public SemanticVersion? Version { get; init; }
         
         #endregion
         

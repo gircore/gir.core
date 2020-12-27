@@ -1,4 +1,5 @@
 ﻿using Bullseye;
+using NuGet.Versioning;
 
 namespace Build
 {
@@ -45,7 +46,7 @@ namespace Build
                 GenerateComments = comments,
                 GenerateXmlDocumentation = xmlDocumentation,
                 Configuration = release ? Configuration.Release : Configuration.Debug,
-                Version = version
+                Version = GetSemanticVersion(version)
             };
 
             var options = new Options
@@ -76,6 +77,19 @@ namespace Build
                 tester: tester
             );
             runner.Run(targets, options);
+        }
+
+        /// <summary>
+        /// Ensures that a given version is parseable by nuget.
+        /// </summary>
+        private static SemanticVersion? GetSemanticVersion(string? version)
+        {
+            SemanticVersion? semanticVersion = default;
+
+            if (version is not null)
+                semanticVersion = SemanticVersion.Parse(version);
+
+            return semanticVersion;
         }
 
         #endregion
