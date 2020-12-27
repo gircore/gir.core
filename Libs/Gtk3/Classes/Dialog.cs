@@ -10,12 +10,12 @@ namespace Gtk
         public Dialog() { }
         
         public Widget GetContentArea()
-            => WrapPointerAs<Widget>(Native.get_content_area(Handle));
+            => WrapHandle<Widget>(Native.get_content_area(Handle));
 
         // TODO: Allow for arbitrary response IDs, not just
         // the ones in Gtk.ResponseType
         public Widget AddButton(string buttonText, ResponseType responseId)
-            => WrapPointerAs<Widget>(Native.add_button(Handle, buttonText, responseId));
+            => WrapHandle<Widget>(Native.add_button(Handle, buttonText, responseId));
 
         public int Run() => Native.run(Handle);
     }

@@ -12,7 +12,7 @@ namespace Gst
         // which *must* be run. Therefore our existing constructor design is
         // inadequate.
         public static GhostPad New(string name, Pad target)
-            => WrapPointerAs<GhostPad>(Native.@new(name, GetHandle(target)));
+            => WrapHandle<GhostPad>(Native.@new(name, GetHandle(target)));
 
         public bool SetTarget(Pad newTarget)
             => Native.set_target(Handle, GetHandle(newTarget));

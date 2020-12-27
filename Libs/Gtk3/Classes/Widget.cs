@@ -90,8 +90,8 @@ namespace Gtk
 
         public void ShowAll() => Native.show_all(Handle);
         public void Show() => Native.show(Handle);
-        public StyleContext GetStyleContext() => WrapPointerAs<StyleContext>(Native.get_style_context(Handle));
+        public StyleContext GetStyleContext() => WrapHandle<StyleContext>(Native.get_style_context(Handle));
 
-        public Gdk.Screen GetScreen() => WrapPointerAs<Gdk.Screen>(Native.get_screen(Handle));
+        public Gdk.Screen GetScreen() => WrapHandle<Gdk.Screen>(Native.get_screen(Handle));
     }
 }

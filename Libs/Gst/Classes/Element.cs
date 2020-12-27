@@ -31,8 +31,8 @@ namespace Gst
         //     {
         //         Fields fields = GetObjectStruct<Fields>();
         //         IntPtr bus = fields.bus;
-        //         return WrapPointerAs<Bus>(bus);
-        //         // WrapPointerAs<Bus>(GetObjectStruct<Fields>().bus);   
+        //         return WrapHandle<Bus>(bus);
+        //         // WrapHandle<Bus>(GetObjectStruct<Fields>().bus);   
         //     }
         //     set
         //     {
@@ -51,7 +51,7 @@ namespace Gst
             if (errPtr != IntPtr.Zero)
                 Error.HandleError(errPtr);
 
-            return TryWrapPointerAs(result, out Element element) ? element : null;
+            return TryWrapHandle(result, out Element? element) ? element : null;
         }
         
         public Bus GetBus()
@@ -101,7 +101,7 @@ namespace Gst
         }
 
         public Pad GetStaticPad(string name)
-            => WrapPointerAs<Pad>(Native.get_static_pad(Handle, name));
+            => WrapHandle<Pad>(Native.get_static_pad(Handle, name));
         
         public static void Unlink(Element src, Element dest)
             => Native.unlink(GetHandle(src), GetHandle(dest));
@@ -136,7 +136,7 @@ namespace Gst
         }
 
         public Pad? GetRequestPad(string name)
-            => TryWrapPointerAs(Native.get_request_pad(Handle, name), out Pad pad) ? pad : null;
+            => TryWrapHandle(Native.get_request_pad(Handle, name), out Pad? pad) ? pad : null;
 
         public bool SyncStateWithParent()
             => Native.sync_state_with_parent(Handle);

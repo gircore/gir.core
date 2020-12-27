@@ -17,7 +17,7 @@ namespace Gst
             if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
 
-            return GObject.Object.WrapPointerAs<Element>(ret);
+            return GObject.Object.WrapHandle<Element>(ret);
         }
 
         public static Element? BinFromDescription(string binDescription, bool ghostUnlinkedPads)
@@ -27,7 +27,7 @@ namespace Gst
             if (error != IntPtr.Zero)
                 GLib.Error.HandleError(error);
             
-            return GObject.Object.TryWrapPointerAs<Element>(ret, out Element element) ? element : null;
+            return GObject.Object.TryWrapHandle<Element>(ret, out Element? element) ? element : null;
         }
     }
 }

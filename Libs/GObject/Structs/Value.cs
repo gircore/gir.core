@@ -100,7 +100,7 @@ namespace GObject
         public IntPtr GetBoxed() => Native.get_boxed(ref this);
 
         public Object? GetObject()
-            => Object.TryWrapPointerAs(Native.get_object(ref this), out Object obj) ? obj : null;
+            => Object.TryWrapHandle(Native.get_object(ref this), out Object? obj) ? obj : null;
 
         public bool GetBool() => Native.get_boolean(ref this);
         public uint GetUint() => Native.get_uint(ref this);

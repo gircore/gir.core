@@ -53,7 +53,7 @@ namespace Gtk
         // TODO: Find a solution about closures (#119)
         /*
         public static AccelGroup FromAccelClosure(AccelGroupActivate closure) =>
-            WrapPointerAs<AccelGroup>(Native.from_accel_closure(Marshal.GetFunctionPointerForDelegate(closure)));
+            WrapHandle<AccelGroup>(Native.from_accel_closure(Marshal.GetFunctionPointerForDelegate(closure)));
 
         public void Connect
         (

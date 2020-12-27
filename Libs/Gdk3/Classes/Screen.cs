@@ -7,6 +7,6 @@ namespace Gdk
     public partial class Screen
     {
         public static Gdk.Screen GetDefault()
-            => WrapPointerAs<Gdk.Screen>(Native.get_default());
+            => WrapHandle<Gdk.Screen>(Native.get_default());
     }
 }

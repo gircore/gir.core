@@ -139,7 +139,7 @@ namespace Gst
 
         public Gst.Object Src
         {
-            get => GObject.Object.WrapPointerAs<Gst.Object>(src);
+            get => GObject.Object.WrapHandle<Gst.Object>(src);
             set => src = GObject.Object.GetHandle(value);
         }
     }

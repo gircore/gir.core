@@ -26,10 +26,10 @@ namespace Gst
 
         public Caps? QueryCaps() => QueryCaps(null);
 
-        public Pad? GetPeer() => TryWrapPointerAs<Pad>(Native.get_peer(Handle), out Pad pad) ? pad : null;
+        public Pad? GetPeer() => TryWrapHandle<Pad>(Native.get_peer(Handle), out Pad? pad) ? pad : null;
 
         public Element? GetParentElement() =>
-            TryWrapPointerAs<Element>(Native.get_parent_element(Handle), out Element element) ? element : null;
+            TryWrapHandle<Element>(Native.get_parent_element(Handle), out Element? element) ? element : null;
 
         public ulong AddProbe(PadProbeType mask, PadProbeCallback callback, DestroyNotify? notify = null)
         {

@@ -113,7 +113,7 @@ namespace GObject
 
                 // This is a brief explanation of how type lookup currently works:
 
-                // Firstly, in Object.WrapPointerAs<T>(...) we do the following things:
+                // Firstly, in Object.WrapHandle<T>(...) we do the following things:
 
                 // - Register the type parameter recursively to fill as much
                 //       of the type dictionary as we can.
@@ -148,7 +148,7 @@ namespace GObject
                 
                 // It is quite unlikely that we will need to perform a lookup
                 // for a type we haven't already registered. Most calls to Get(gtype)
-                // will originate from WrapPointerAs<T> which will register 'T' before
+                // will originate from WrapHandle<T> which will register 'T' before
                 // calling. Therefore, this shouldn't be too prohibitively expensive.
 
                 // DEBUG: List all loaded assemblies
