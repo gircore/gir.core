@@ -108,11 +108,7 @@ namespace Gst
             // Free Memory
             Marshal.FreeHGlobal(thisPtr);
         }
-        
-        // FIXME: This entire function is bad -> Causes memory corruption??
-        [DllImport("libgstreamer-1.0-0.dll", EntryPoint = "gst_message_parse_error")]
-        static extern void gst_message_parse_error (IntPtr msg, out IntPtr err, out IntPtr debug);
-        
+
         public void ParseError(out GLib.Error? error, out string? debug)
         {
             if (type != MessageType.Error)
@@ -126,7 +122,6 @@ namespace Gst
 
             // Native Call
             Native.parse_error(thisPtr, out IntPtr errPtr, out IntPtr strPtr);
-            // gst_message_parse_error(thisPtr, out errPtr, out strPtr);
 
             // Update structures (TODO: Check for NULL)
             this = (Message) Marshal.PtrToStructure(thisPtr, GetType())!;

@@ -273,9 +273,6 @@ namespace GObject
         public static T WrapHandle<T>(IntPtr handle)
             where T : GObject.Object
         {
-            // TODO: Make this nullable?
-            // o = default!;
-
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException(
                     $"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
