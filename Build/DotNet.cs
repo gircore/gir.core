@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using SimpleExec;
 
 namespace Build
@@ -12,9 +13,24 @@ namespace Build
     {
         #region Methods
 
-        public static void Build(string project, Configuration configuration)
+        public static void Build(string project, Configuration configuration, string? version = null)
         {
-            Command.Run(Commands.Dotnet, $"{Commands.Build} --nologo -c {configuration} {project}");
+            if (!TryGetVersionParameter(version, out var versionParameter))
+                versionParameter = "";
+            
+            Command.Run(Commands.Dotnet, $"{Commands.Build} --nologo -c {configuration} {versionParameter} {project}");
+        }
+
+        private static bool TryGetVersionParameter(string? version, [NotNullWhen(true)] out string? parameter)
+        {
+            if (version is null)
+            {
+                parameter = null;
+                return false;
+            }
+
+            parameter = $"/p:Version={version}";
+            return true;
         }
 
         public static void Run(string project, Configuration configuration)

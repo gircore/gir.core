@@ -41,6 +41,7 @@ There are some options which can be used to influence the code generation:
  - ```--xml-documentation```: Generate the xml documentation.
  - ```--comments```: Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.
  - ```--targets <targets>```: A list of targets to run or list.
+ - `--version <version>`: Specify the version number of the `build`.
 
 ### Targets
 

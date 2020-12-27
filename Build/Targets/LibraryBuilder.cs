@@ -20,7 +20,7 @@ namespace Build
         public void BuildLibraries()
         {
             foreach ((Project project, Type _) in Projects.LibraryProjects)
-                DotNet.Build(project.Folder, _settings.Configuration);
+                DotNet.Build(project.Folder, _settings.Configuration, _settings.Version);
         }
     }
 }

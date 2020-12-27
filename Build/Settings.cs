@@ -7,6 +7,7 @@
         public Configuration Configuration { get; init; }
         public bool GenerateComments { get; init; }
         public bool GenerateXmlDocumentation { get; init; }
+        public string? Version { get; init; }
         
         #endregion
         
