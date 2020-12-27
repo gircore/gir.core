@@ -67,7 +67,7 @@ namespace Gst
             return new Bus(ret);
         }
 
-        public bool AddPad(Pad pad) => Native.add_pad(Handle, GetHandle(pad));
+        public bool AddPad(Pad pad) => Native.add_pad(Handle, pad.Handle);
 
         public StateChangeReturn SetState(State state) 
             => Native.set_state(Handle, state);
@@ -104,14 +104,14 @@ namespace Gst
             => WrapHandle<Pad>(Native.get_static_pad(Handle, name));
         
         public static void Unlink(Element src, Element dest)
-            => Native.unlink(GetHandle(src), GetHandle(dest));
+            => Native.unlink(src.Handle, dest.Handle);
         
         public void Unlink(Element dest) => Unlink(this, dest);
 
         public bool Link(Element dest) => Link(this, dest);
 
         public static bool Link(Element src, Element dest)
-            => Native.link(GetHandle(src), GetHandle(dest));
+            => Native.link(src.Handle, dest.Handle);
 
         // FIXME: This function is the culprit for wavparse0 errors
         // TODO: Make this work properly, and additionally clean up

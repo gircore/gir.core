@@ -140,7 +140,7 @@ namespace Gst
         public Gst.Object Src
         {
             get => GObject.Object.WrapHandle<Gst.Object>(src);
-            set => src = GObject.Object.GetHandle(value);
+            set => src = value.Handle;
         }
     }
 }

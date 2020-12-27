@@ -13,7 +13,7 @@ namespace Gtk
         public string? GetUri()
         {
             var obj = (GObject.Object) this;
-            var ptr = Native.get_uri(GObject.Object.GetHandle(obj));
+            var ptr = Native.get_uri(obj.Handle);
             return Marshal.PtrToStringAnsi(ptr);
         }
     }

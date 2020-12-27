@@ -16,14 +16,9 @@ namespace Gtk
         {
             // Get as ANSI characters
             byte[] buf = Encoding.ASCII.GetBytes(data);
-            IntPtr ptr = Marshal.AllocHGlobal(buf.Length);
-            Marshal.Copy(buf, 0, ptr, buf.Length);
 
             // Unmanaged Call
-            bool result = Native.load_from_data(Handle, ptr, buf.Length, out var errPtr);
-
-            // Free string data
-            Marshal.FreeHGlobal(ptr);
+            bool result = Native.load_from_data(Handle, buf, buf.Length, out var errPtr);
 
             // Console.WriteLine(ToString()); <-- Testing
 

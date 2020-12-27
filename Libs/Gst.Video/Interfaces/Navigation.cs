@@ -11,13 +11,13 @@ namespace GstVideo
         {
             // TODO: Can we do this?
             Object obj = (Object) this;
-            Native.send_mouse_event(Object.GetHandle(obj), @event, button, x, y);
+            Native.send_mouse_event(obj.Handle, @event, button, x, y);
         }
 
         public void SendCommand(NavigationCommand command)
         {
             Object obj = (Object) this;
-            Native.send_command(Object.GetHandle(obj), command);
+            Native.send_command(obj.Handle, command);
         }
 
         public static NavigationMessageType MessageGetType(Message message)

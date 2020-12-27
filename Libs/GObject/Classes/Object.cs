@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using GLib;
 
 namespace GObject
 {
-    public partial class Object : IObject, INotifyPropertyChanged, IDisposable
+    public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHandle
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace GObject
 
         #region Properties
         
-        protected internal IntPtr Handle { get; private set; }
+        public IntPtr Handle { get; private set; }
         
         // We need to store a reference to WeakNotify to
         // prevent the delegate from being collected by the GC
@@ -98,7 +98,7 @@ namespace GObject
                     typeId.Value,
                     0,
                     ref zero,
-                    Array.Empty<Value>()
+                    System.Array.Empty<Value>()
                 );
             }
 
@@ -140,7 +140,12 @@ namespace GObject
         protected virtual void Initialize() { }
 
         // Modify this in the future to play nicely with virtual function support?
-        private void OnFinalized(IntPtr data, IntPtr where_the_object_was) => Dispose();
+        private void OnFinalized(IntPtr data, IntPtr where_the_object_was)
+        {
+            DisposeManagedState();
+            SetDisposed();
+        }
+
         private void RegisterOnFinalized()
         {
             _onFinalized = OnFinalized;
@@ -227,12 +232,7 @@ namespace GObject
             if (Disposed)
                 throw new Exception("Object is disposed");
         }
-
-        // This will likely need to remain public as we have to
-        // be able to access object handles from structs (GStreamer).
-        public static IntPtr GetHandle(Object obj)
-            => obj.Handle;
-
+        
         /// <summary>
         /// Notify this object that a property has just changed.
         /// </summary>
@@ -371,26 +371,38 @@ namespace GObject
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
-            if (!Disposed)
-            {
-                Disposed = true;
+            if (Disposed)
+                return;
 
-                if (Handle != IntPtr.Zero)
-                {
-                    Native.unref(Handle);
-                    Objects.Remove(Handle);
-                }
+            if(disposing)
+                DisposeManagedState();
 
-                Handle = IntPtr.Zero;
+            DisposeUnmanagedState();
+            SetDisposed();
+        }
 
-                // TODO: Find out about closure release
-                /*foreach(var closure in closures)
-                    closure.Dispose();*/
+        protected void SetDisposed()
+        {
+            Disposed = true;
+        }
 
-                // TODO activate: closures.Clear();
-            }
+        protected virtual void DisposeManagedState()
+        {
+            Handle = IntPtr.Zero;
+            Objects.Remove(Handle);
+            
+            // TODO: Find out about closure release
+            /*foreach(var closure in closures)
+                closure.Dispose();*/
+
+            // TODO activate: closures.Clear();
+        }
+        
+        protected virtual void DisposeUnmanagedState()
+        {
+            Native.unref(Handle);
         }
 
         #endregion

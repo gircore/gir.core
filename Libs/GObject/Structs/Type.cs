@@ -55,15 +55,6 @@ namespace GObject
             return Marshal.PtrToStringAnsi(Global.Native.type_name(_value)) ?? string.Empty;
         }
 
-        /*public IntPtr GetClassPointer()
-        {
-            var ptr = TypeClass.peek(value);
-            
-            if(ptr == IntPtr.Zero)
-                ptr = TypeClass.@ref(value);
-            return ptr;
-        }*/
-
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
     }
 

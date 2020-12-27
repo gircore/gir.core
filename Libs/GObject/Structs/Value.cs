@@ -50,7 +50,7 @@ namespace GObject
             string v7 => new Value(v7),
             IntPtr v8 => new Value(v8),
             Enum _ => new Value((long) value),
-            Object obj => new Value(Object.GetHandle(obj)),
+            Object obj => new Value(obj.Handle),
             _ => throw new NotSupportedException("Unable to create the value from the given type.")
         };
 

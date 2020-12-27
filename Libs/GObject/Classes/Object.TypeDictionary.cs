@@ -10,7 +10,7 @@ namespace GObject
         /// Type Dictionary for mapping C#'s System.Type
         /// and GLib GTypes.
         /// </summary>
-        internal static class TypeDictionary
+        internal protected  static class TypeDictionary
         {
             #region Fields
 
@@ -101,7 +101,7 @@ namespace GObject
             /// An instance of <see cref="System.Type"/> corresponding to the C# type of
             /// the given <paramref name="gtype"/>.
             /// </returns>
-            internal static System.Type Get(Type gtype)
+            public static System.Type Get(Type gtype)
             {
                 // TODO: Rework the type dictionary. This kind of assembly search is
                 // both poorly designed and expensive. We should switch to a 'type-map'
@@ -215,7 +215,7 @@ namespace GObject
             /// <returns>
             /// An instance of <see cref="Type"/> corresponding to the given C# <paramref name="type"/>.
             /// </returns>
-            internal static Type Get(System.Type type)
+            public static Type Get(System.Type type)
             {
                 // Check Type Dictionary
                 if (TypeDict.TryGetValue(type, out Type cachedGtype))
