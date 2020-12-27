@@ -25,8 +25,6 @@ namespace Gst
             {
                 AddValue(mode, tag, val);
             }
-            
-            // TODO: Free values afterwards?
         }
 
         public void AddValue(TagMergeMode mode, string tag, Value value)
@@ -40,6 +38,9 @@ namespace Gst
 
             // Update this structure (TODO: Check for NULL)
             this = (TagList)Marshal.PtrToStructure(thisPtr, GetType())!;
+            
+            // Dispose of Value afterwards
+            value.Dispose();
         }
 
         public uint GetTagSize(string tag)
