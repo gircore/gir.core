@@ -34,7 +34,7 @@ namespace {{ namespace }}
         
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            if (NativeLibrary.TryLoad(DllName, assembly, DllImportSearchPath.System32, out IntPtr libHandle))
+            if (NativeLibrary.TryLoad(DllName, assembly, DllImportSearchPath.LegacyBehavior, out IntPtr libHandle))
                 return libHandle;
             
             //Fall back to default dll search mechanic
