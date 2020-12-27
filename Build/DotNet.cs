@@ -21,18 +21,6 @@ namespace Build
             Command.Run(Commands.Dotnet, $"{Commands.Build} --nologo -c {configuration} {versionParameter} {project}");
         }
 
-        private static bool TryGetVersionParameter(string? version, [NotNullWhen(true)] out string? parameter)
-        {
-            if (version is null)
-            {
-                parameter = null;
-                return false;
-            }
-
-            parameter = $"/p:Version={version}";
-            return true;
-        }
-
         public static void Run(string project, Configuration configuration)
         {
             Command.Run(Commands.Dotnet, $"{Commands.Run} -c {configuration} {project}", project);
@@ -46,6 +34,26 @@ namespace Build
         public static void Clean(string project, Configuration configuration)
         {
             Command.Run(Commands.Dotnet, $"{Commands.Clean} --nologo -c {configuration}", project);
+        }
+
+        public static void Pack(string project, Configuration configuration, string? version = null)
+        {
+            if (!TryGetVersionParameter(version, out var versionParameter))
+                versionParameter = "";
+            
+            Command.Run(Commands.Dotnet, $"{Commands.Pack} --nologo -c {configuration} {versionParameter} {project}");
+        }
+        
+        private static bool TryGetVersionParameter(string? version, [NotNullWhen(true)] out string? parameter)
+        {
+            if (version is null)
+            {
+                parameter = null;
+                return false;
+            }
+
+            parameter = $"/p:Version={version}";
+            return true;
         }
 
         #endregion

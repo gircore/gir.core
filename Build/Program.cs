@@ -66,13 +66,15 @@ namespace Build
             var cleaner = new ProjectCleaner(settings);
             var generator = new LibraryGenerator(settings);
             var libraryBuilder = new LibraryBuilder(settings);
+            var librarypacker = new LibraryPacker(settings);
             var sampleBuilder = new SampleBuilder(settings);
             var tester = new Tester(settings);
             
             var runner = new Runner(
                 projectCleaner: cleaner, 
                 libraryGenerator: generator, 
-                libraryBuilder: libraryBuilder, 
+                libraryBuilder: libraryBuilder,
+                libraryPacker: librarypacker,
                 sampleBuilder: sampleBuilder,
                 tester: tester
             );
