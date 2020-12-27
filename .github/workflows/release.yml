@@ -1,0 +1,28 @@
+name: 'Publish release'
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v2
+        with: 
+          submodules: 'true'
+
+      - name: Prepare .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Run release build and pack
+        run: dotnet run -- --release --xml-documentation --targets test pack
+        working-directory: './Build'
+
+      - name: Publish to nuget org
+        run: dotnet nuget push "*.nupkg" -k {{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        working-directory: './Nuget'
