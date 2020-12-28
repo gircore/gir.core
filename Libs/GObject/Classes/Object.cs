@@ -342,7 +342,7 @@ namespace GObject
         /// <param name="o">A C# proxy object which wraps the native GObject.</param>
         /// <typeparam name="T"></typeparam>
         /// <returns><c>true</c> if the handle was wrapped, or <c>false</c> if something went wrong.</returns>
-        public static bool TryWrapHandle<T>(IntPtr handle, [MaybeNullWhen(false)] out T? o)
+        public static bool TryWrapHandle<T>(IntPtr handle, [NotNullWhen(true)] out T? o)
             where T : Object
         {
             o = null;

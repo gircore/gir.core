@@ -11,7 +11,7 @@ namespace GLib
 
             if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
-            
+
             return Marshal.PtrToStringAnsi(resPtr) ?? string.Empty;
         }
 

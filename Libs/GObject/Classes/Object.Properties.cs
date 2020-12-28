@@ -36,7 +36,7 @@ namespace GObject
         /// </summary>
         /// <param name="value">The property name.</param>
         /// <param name="name">The property value.</param>
-        public void SetProperty(string? name, Value value)
+        protected void SetProperty(string? name, Value value)
         {
             ThrowIfDisposed();
 
@@ -54,7 +54,7 @@ namespace GObject
         /// <returns>
         /// The native value of the property, wrapped as a <see cref="Value"/>.
         /// </returns>
-        public Value GetProperty(string? name)
+        protected Value GetProperty(string? name)
         {
             ThrowIfDisposed();
 

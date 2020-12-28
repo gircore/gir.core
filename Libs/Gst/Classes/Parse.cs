@@ -14,8 +14,7 @@ namespace Gst
         {
             IntPtr ret = Global.Native.parse_launch(pipelineDescription, out IntPtr error);
 
-            if (error != IntPtr.Zero)
-                throw new GLib.GException(error);
+            GLib.Error.HandleError(error);
 
             return GObject.Object.WrapHandle<Element>(ret);
         }
@@ -24,8 +23,7 @@ namespace Gst
         {
             IntPtr ret = Global.Native.parse_bin_from_description(binDescription, ghostUnlinkedPads, out IntPtr error);
             
-            if (error != IntPtr.Zero)
-                GLib.Error.HandleError(error);
+            GLib.Error.HandleError(error);
             
             return GObject.Object.TryWrapHandle<Element>(ret, out Element? element) ? element : null;
         }

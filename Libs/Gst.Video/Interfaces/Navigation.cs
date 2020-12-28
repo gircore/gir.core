@@ -29,7 +29,8 @@ namespace GstVideo
             // Native Call
             var result = Global.Native.navigation_message_get_type(messagePtr);
 
-            // Update message structure (Not necessary?)
+            // Update message structure
+            // TODO: Not necessary?
             Marshal.PtrToStructure(messagePtr, message);
 
             return result;

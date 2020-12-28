@@ -48,8 +48,7 @@ namespace Gst
         {
             IntPtr result = Native.make_from_uri(type, uri, elementName, out IntPtr errPtr);
 
-            if (errPtr != IntPtr.Zero)
-                Error.HandleError(errPtr);
+            Error.HandleError(errPtr);
 
             return TryWrapHandle(result, out Element? element) ? element : null;
         }
@@ -148,9 +147,10 @@ namespace Gst
         //
         // This is a rudimentary implementation of
         // a property indexer in order to help port over
-        // mono/gtk2 applications. We likely want to move this
-        // into GObject in the long term (e.g. via custom Property
-        // Descriptors).
+        // mono/gtk2 applications.
+        //
+        // TODO: We likely want to move this into GObject in the long term
+        // e.g. via custom Property Descriptors
         public object? this[string property]
         {
             get
