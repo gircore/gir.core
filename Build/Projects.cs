@@ -29,11 +29,16 @@ namespace Build
         private const string GTKCHAMPLAIN = "../Libs/GtkChamplain/";
         private const string CLUTTER = "../Libs/Clutter/";
         private const string GTKCLUTTER = "../Libs/GtkClutter/";
-        private const string GST = "../Libs/Gst/";
         private const string CAIRO = "../Libs/Cairo/";
         private const string GDK3 = "../Libs/Gdk3/";
         private const string PANGO = "../Libs/Pango/";
         private const string XLIB = "../Libs/Xlib/";
+        
+        public const string GST = "../Libs/Gst/";
+        public const string GST_BASE = "../Libs/Gst.Base/";
+        public const string GST_AUDIO = "../Libs/Gst.Audio/";
+        public const string GST_VIDEO = "../Libs/Gst.Video/";
+        public const string GST_PBUTILS = "../Libs/Gst.Pbutils/";
 
         private const string BUILD_Test = "../Tests/Build.Tests/";
         private const string GOBJECT_TEST = "../Tests/Libs/GObject.Tests/";
@@ -44,6 +49,7 @@ namespace Build
         private const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
         private const string GTK3_MINIMAL_SAMPLE = SAMPLE + "Gtk3/GtkMinimal";
         private const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
+        private const string GTK3_COMPOSITE_TEMPLATE = SAMPLE + "Gtk3/Template";
         private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
 
         #endregion
@@ -60,7 +66,9 @@ namespace Build
         {
             DBUS_SAMPLE, GSTREAMER_SAMPLE,
             //GTK3_APP_SAMPLE,
-            GTK3_MINIMAL_SAMPLE, GTK3_QUICKSTART,
+            GTK3_MINIMAL_SAMPLE, 
+            GTK3_QUICKSTART,
+            GTK3_COMPOSITE_TEMPLATE,
             //GTK4_SIMPLE_WINDOW_SAMPLE
         };
 
@@ -84,6 +92,10 @@ namespace Build
             (CHAMPLAIN, "Champlain-0.12.gir", "libchamplain-0.12", false),
             (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),*/
             (new Project(GST, "Gst-1.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GST_AUDIO, "GstAudio-1.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GST_VIDEO, "GstVideo-1.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GST_PBUTILS, "GstPbutils-1.0.gir"), typeof(GObjectGenerator)),
+            (new Project(GST_BASE, "GstBase-1.0.gir"), typeof(GObjectGenerator))
             /*(GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
             (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
             (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/

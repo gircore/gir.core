@@ -227,7 +227,10 @@ namespace Generator
             fileName = Path.Combine(subfolder, fileName + ".Generated.cs");
 
             K loader = Activator.CreateInstance<K>();
-            var context = new TemplateContext { TemplateLoader = loader };
+            
+            // Scriban has a Loop iteration limit of 1000 by default. This is nowhere near
+            // enough for the number of constants some libraries define (e.g. Gdk).
+            var context = new TemplateContext { TemplateLoader = loader, LoopLimit = 10000};
             context.PushGlobal(scriptObject);
             context.IndentWithInclude = true;
 
@@ -236,7 +239,7 @@ namespace Generator
             {
                 //TODO: Workaround for missing ATK!
                 Console.WriteLine(
-                    $"Skipping file {fileName} because it looks like an ATK class which is not supported.");
+                    $"Skipping file {fileName} because it looks like an ATK class which is not yet supported.");
                 return;
             }
 

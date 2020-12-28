@@ -126,9 +126,6 @@ namespace GtkDemo
         {
             // Close the window
             PopupWindow!.Close();
-
-            // Unset popupWindow
-            PopupWindow.Dispose();
             PopupWindow = null;
         }
 

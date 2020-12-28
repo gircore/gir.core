@@ -10,7 +10,7 @@ namespace GObject
         /// Type Dictionary for mapping C#'s System.Type
         /// and GLib GTypes.
         /// </summary>
-        internal static class TypeDictionary
+        internal protected  static class TypeDictionary
         {
             #region Fields
 
@@ -101,7 +101,7 @@ namespace GObject
             /// An instance of <see cref="System.Type"/> corresponding to the C# type of
             /// the given <paramref name="gtype"/>.
             /// </returns>
-            internal static System.Type Get(Type gtype)
+            public static System.Type Get(Type gtype)
             {
                 // TODO: Rework the type dictionary. This kind of assembly search is
                 // both poorly designed and expensive. We should switch to a 'type-map'
@@ -113,7 +113,7 @@ namespace GObject
 
                 // This is a brief explanation of how type lookup currently works:
 
-                // Firstly, in Object.WrapPointerAs<T>(...) we do the following things:
+                // Firstly, in Object.WrapHandle<T>(...) we do the following things:
 
                 // - Register the type parameter recursively to fill as much
                 //       of the type dictionary as we can.
@@ -148,11 +148,11 @@ namespace GObject
                 
                 // It is quite unlikely that we will need to perform a lookup
                 // for a type we haven't already registered. Most calls to Get(gtype)
-                // will originate from WrapPointerAs<T> which will register 'T' before
+                // will originate from WrapHandle<T> which will register 'T' before
                 // calling. Therefore, this shouldn't be too prohibitively expensive.
 
                 // DEBUG: List all loaded assemblies
-                DebugPrintLoadedAssemblies();
+                // DebugPrintLoadedAssemblies();
 
                 // Get assemblies starting from most recently used
                 Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -215,7 +215,7 @@ namespace GObject
             /// <returns>
             /// An instance of <see cref="Type"/> corresponding to the given C# <paramref name="type"/>.
             /// </returns>
-            internal static Type Get(System.Type type)
+            public static Type Get(System.Type type)
             {
                 // Check Type Dictionary
                 if (TypeDict.TryGetValue(type, out Type cachedGtype))

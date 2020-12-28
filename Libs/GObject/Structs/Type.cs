@@ -49,20 +49,11 @@ namespace GObject
 
         #endregion
 
-        // Print out the name of the gtype (for debugging purposes)
+        // Print out the name of the GType
         public override string ToString()
         {
             return Marshal.PtrToStringAnsi(Global.Native.type_name(_value)) ?? string.Empty;
         }
-
-        /*public IntPtr GetClassPointer()
-        {
-            var ptr = TypeClass.peek(value);
-            
-            if(ptr == IntPtr.Zero)
-                ptr = TypeClass.@ref(value);
-            return ptr;
-        }*/
 
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
     }

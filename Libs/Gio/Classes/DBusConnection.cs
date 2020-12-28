@@ -11,7 +11,7 @@ namespace Gio
         public static DBusConnection Get(BusType busType)
         {
             IntPtr handle = Global.Native.bus_get_sync(busType, IntPtr.Zero, out IntPtr error);
-            HandleError(error);
+            Error.ThrowOnError(error);
 
             if (GetObject(handle, out DBusConnection obj))
                 return obj;
@@ -31,7 +31,7 @@ namespace Gio
             void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
             {
                 IntPtr ret = Native.call_finish(sourceObject, res, out IntPtr error);
-                HandleError(error);
+                Error.ThrowOnError(error);
 
                 tcs.SetResult(new Variant(ret));
             }
@@ -47,7 +47,7 @@ namespace Gio
             IntPtr @params = parameters?.Handle ?? IntPtr.Zero;
             IntPtr ret = Native.call_sync(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.None, 9999, IntPtr.Zero, out IntPtr error);
 
-            HandleError(error);
+            Error.ThrowOnError(error);
 
             return new Variant(ret);
         }

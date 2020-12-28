@@ -79,7 +79,7 @@ namespace GLib
         public string GetString()
         {
             ulong length = 0;
-            IntPtr strPtr = get_string(_handle, ref length);
+            IntPtr strPtr = get_string(_handle, out length);
 
             return Marshal.PtrToStringAuto(strPtr) ?? string.Empty;
         }
