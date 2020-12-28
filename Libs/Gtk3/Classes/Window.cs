@@ -1021,7 +1021,7 @@ namespace Gtk
         public static bool SetDefaultIconFromFile(string filename)
         {
             var result = Native.set_default_icon_from_file(filename, out IntPtr e);
-            GLib.Error.HandleError(e); // Throws if error
+            GLib.Error.ThrowOnError(e);
 
             return result;
         }
@@ -1043,7 +1043,7 @@ namespace Gtk
         public bool SetIconFromFile(string filename)
         {
             var result = Native.set_icon_from_file(Handle, filename, out IntPtr e);
-            GLib.Error.HandleError(e); // Throws if error.
+            GLib.Error.ThrowOnError(e);
 
             return result;
         }

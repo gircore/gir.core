@@ -48,7 +48,7 @@ namespace Gst
         {
             IntPtr result = Native.make_from_uri(type, uri, elementName, out IntPtr errPtr);
 
-            Error.HandleError(errPtr);
+            Error.ThrowOnError(errPtr);
 
             return TryWrapHandle(result, out Element? element) ? element : null;
         }

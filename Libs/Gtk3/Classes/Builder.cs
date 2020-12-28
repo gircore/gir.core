@@ -15,7 +15,7 @@ namespace Gtk
             var templateContent = GetTemplate(Assembly.GetCallingAssembly(), template);
             var length = (ulong) Encoding.UTF8.GetByteCount(templateContent);
             Native.add_from_string(Handle, templateContent, length, out IntPtr error);
-            Error.HandleError(error);
+            Error.ThrowOnError(error);
         }
         #endregion
         

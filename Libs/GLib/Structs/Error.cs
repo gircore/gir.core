@@ -19,7 +19,7 @@ namespace GLib
 
         #endregion
 
-        public static void HandleError(IntPtr error)
+        public static void ThrowOnError(IntPtr error)
         {
             if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
