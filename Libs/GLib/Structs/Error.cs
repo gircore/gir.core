@@ -8,6 +8,8 @@ namespace GLib
         #region Properties
 
         public string Message => Marshal.PtrToStringAnsi(message) ?? string.Empty;
+        public uint Domain => domain;
+        public int Code => code;
 
         #endregion
 
@@ -16,5 +18,11 @@ namespace GLib
         internal static void FreeError(IntPtr errorHandle) => Native.free(errorHandle);
 
         #endregion
+
+        public static void ThrowOnError(IntPtr error)
+        {
+            if (error != IntPtr.Zero)
+                throw new GLib.GException(error);
+        }
     }
 }

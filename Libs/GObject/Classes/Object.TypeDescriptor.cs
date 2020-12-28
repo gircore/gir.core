@@ -4,10 +4,15 @@ namespace GObject
 {
     public partial class Object
     {
+        // TODO: Currently TypeDescriptor needs to be public in
+        // order for interfaces to access it. We could look at making
+        // separate Type and Interface Descriptors which derive from the
+        // same base (abstract) object?
+        
         /// <summary>
         /// Describes a wrapper type.
         /// </summary>
-        protected internal sealed class TypeDescriptor
+        public sealed class TypeDescriptor
         {
             #region Fields
 

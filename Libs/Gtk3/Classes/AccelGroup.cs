@@ -53,7 +53,7 @@ namespace Gtk
         // TODO: Find a solution about closures (#119)
         /*
         public static AccelGroup FromAccelClosure(AccelGroupActivate closure) =>
-            WrapPointerAs<AccelGroup>(Native.from_accel_closure(Marshal.GetFunctionPointerForDelegate(closure)));
+            WrapHandle<AccelGroup>(Native.from_accel_closure(Marshal.GetFunctionPointerForDelegate(closure)));
 
         public void Connect
         (
@@ -105,8 +105,8 @@ namespace Gtk
         public AccelKey Find(AccelGroupFindFunc findFunc) =>
             Marshal.PtrToStructure<AccelKey>(Native.find(Handle, findFunc, IntPtr.Zero));
 
-        public AccelGroupEntry Query(uint accelKey, ModifierType accelMods, ref uint entries) =>
-            Native.query(Handle, accelKey, accelMods, ref entries);
+        public AccelGroupEntry Query(uint accelKey, ModifierType accelMods, out uint entries) =>
+            Native.query(Handle, accelKey, accelMods, out entries);
 
         #endregion
     }

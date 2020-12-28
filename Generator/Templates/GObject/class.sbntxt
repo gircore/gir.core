@@ -67,6 +67,21 @@ namespace {{ namespace }}
         #endregion
 
         {{~ end ~}}
+        
+        #region Fields
+                
+        [StructLayout(LayoutKind.Sequential)]
+        protected {{'new'|get_if_parent}} struct Fields : IObjectStruct
+        {        
+            {{ if (has_parent) && (name != "InitiallyUnowned") && (fields.size > 0)
+                fields[0].type.name = string.append fields[0].type.name ".Fields" 
+            end}}
+            {{~ for $field in fields }}
+            {{ include 'field.sbntxt' $field }}
+            {{ end }}
+        }                        
+        #endregion
+        
 {{~ end ~}}
         #region Native
 

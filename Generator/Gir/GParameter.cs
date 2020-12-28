@@ -14,6 +14,9 @@ namespace Gir
 
         [XmlAttribute("direction")]
         public string? Direction { get; set; }
+        
+        [XmlAttribute ("caller-allocates")]
+        public bool CallerAllocates;
 
         [XmlElement("doc")]
         public GDoc? Doc { get; set; }
