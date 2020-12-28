@@ -2,8 +2,19 @@
 
 namespace GLib
 {
-    public partial class MainContext
+    public partial class MainContext : IHandle
     {
-        public readonly IntPtr Handle;
+        public IntPtr Handle { get; private set; }
+
+        private MainContext(IntPtr handle)
+        {
+            Handle = handle;
+        }
+
+        public static MainContext New()
+            => new MainContext(@new());
+        
+        public static MainContext Default()
+            => new MainContext(@default());
     }
 }
