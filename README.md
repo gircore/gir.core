@@ -37,22 +37,23 @@ To build the project locally in debug mode follow these steps:
 
 There are some options which can be used to influence the code generation:
 
- - ```--release```: Execute the targets with the Release configuration. If not specified the Debug configuration is used.
- - ```--xml-documentation```: Generate the xml documentation.
- - ```--comments```: Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.
- - ```--targets <targets>```: A list of targets to run or list.
- - `--version <version>`: Specify the version number of the `build`.
+* `--release`: Execute the targets with the Release configuration. If not specified the Debug configuration is used.
+* `--xml-documentation`: Generate the xml documentation.
+* `--comments`: Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.
+* `--targets <targets>`: A list of targets to run or list.
+* `--version <version>`: Specify the version number of the `build`.
 
 ### Targets
 
 Supported targets are:
- - ```generate```: Generates the source code files. Recognizes ```comments``` option.
- - ```build```: Builds the project with ```Debug``` or ```Release``` configuration. Recognizes ```xml-documentation``` option. Depends on ```generate``` target.
- - ```test```: Execute unit tests with ```Debug``` or ```Release``` configuration. Depends on ```build```.
-- ```clean```:  Cleans ```samples``` and ```build``` output including generated source code files.
-- ```samples```: Builds the sample applications with ```Debug``` or ```Release``` configuration. Depends on ```build```.
+* `generate`: Generates the source code files. Recognizes `comments` option.
+* `build`: Builds the project with `Debug` or `Release` configuration. Recognizes `xml-documentation` and `version` option. Depends on `generate` target.
+* `test`: Execute unit tests with `Debug` or `Release` configuration. Depends on `build`.
+* `pack`: Packs the libraries into the `Nuget` folder in the project root. Recognizes `version` option. Depends on `build`. 
+* `clean`:  Cleans `samples` and `build` output including generated source code files.
+* `samples`: Builds the sample applications with `Debug` or `Release` configuration. Depends on `build`.
 
-If not target is specified the ```build``` target is executed.
+If not target is specified the `build` target is executed.
 
 ### Examples
 
