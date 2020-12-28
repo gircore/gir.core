@@ -63,7 +63,7 @@ namespace Gtk
             if(!TryWrapHandle<Widget>(connect_object, out var compositeWidget))
                 return;
 
-            MethodInfo? compositeWidgetCallbackMethodInfo = compositeWidget?.GetType().GetMethod(
+            MethodInfo? compositeWidgetCallbackMethodInfo = compositeWidget.GetType().GetMethod(
                 name: handler_name, 
                 bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
             );
@@ -71,7 +71,7 @@ namespace Gtk
             if (compositeWidgetCallbackMethodInfo is null)
                 return;
 
-            EventInfo? sourceEvent = eventSource?.GetType().GetEvent(
+            EventInfo? sourceEvent = eventSource.GetType().GetEvent(
                 name: "On" + signal_name,
                 bindingAttr: BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public
             );

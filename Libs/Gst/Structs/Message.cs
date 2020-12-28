@@ -15,6 +15,12 @@ namespace Gst
     public partial struct Message
     {
         public MessageType Type => type;
+        
+        public Gst.Object Src
+        {
+            get => GObject.Object.WrapHandle<Gst.Object>(src);
+            set => src = value.Handle;
+        }
 
         public Structure GetStructure()
         {
@@ -22,14 +28,12 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             IntPtr ptr = Native.get_structure(thisPtr);
 
             // Update this structure (is this necessary?)
             // TODO: Check for NULL
             this = (Message)Marshal.PtrToStructure(thisPtr, GetType())!;
             
-            // Free Memory
             Marshal.FreeHGlobal(thisPtr);
 
             return Marshal.PtrToStructure<Structure>(ptr);
@@ -47,13 +51,10 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             Native.parse_state_changed(thisPtr, out oldStatePtr, out newStatePtr, out pendingStatePtr);
 
-            // Update this structure (TODO: Check for NULL)
+            // Update and free (TODO: Check for NULL)
             this = (Message)Marshal.PtrToStructure(thisPtr, GetType())!;
-            
-            // Free Memory
             Marshal.FreeHGlobal(thisPtr);
 
             // Assign out variables
@@ -74,13 +75,10 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             Native.parse_tag(thisPtr, out tagListPtr);
 
-            // Update this structure (TODO: Check for NULL)
+            // Update and free (TODO: Check for NULL)
             this = (Message)Marshal.PtrToStructure(thisPtr, GetType())!;
-            
-            // Free Memory
             Marshal.FreeHGlobal(thisPtr);
 
             // Assign out variables
@@ -99,13 +97,10 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             Native.parse_buffering(thisPtr, out percent);
 
-            // Update this structure (TODO: Check for NULL)
+            // Update and free (TODO: Check for NULL)
             this = (Message)Marshal.PtrToStructure(thisPtr, GetType())!;
-            
-            // Free Memory
             Marshal.FreeHGlobal(thisPtr);
         }
 
@@ -120,22 +115,13 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
 
-            // Native Call
             Native.parse_error(thisPtr, out IntPtr errPtr, out IntPtr strPtr);
 
-            // Update structures (TODO: Check for NULL)
+            // Update and free (TODO: Check for NULL)
             this = (Message) Marshal.PtrToStructure(thisPtr, GetType())!;
             debug = Marshal.PtrToStringAnsi(strPtr);
             error = Marshal.PtrToStructure<GLib.Error>(errPtr);
-
-            // Free Memory
             Marshal.FreeHGlobal(thisPtr);
-        }
-
-        public Gst.Object Src
-        {
-            get => GObject.Object.WrapHandle<Gst.Object>(src);
-            set => src = value.Handle;
         }
     }
 }

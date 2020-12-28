@@ -25,8 +25,7 @@ namespace GstVideo
             // Marshal message structure
             IntPtr messagePtr = Marshal.AllocHGlobal(Marshal.SizeOf(message));
             Marshal.StructureToPtr(message, messagePtr, false);
-
-            // Native Call
+            
             var result = Global.Native.navigation_message_get_type(messagePtr);
 
             // Update message structure

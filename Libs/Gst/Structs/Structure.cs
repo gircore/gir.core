@@ -11,11 +11,11 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             IntPtr result = Native.get_name(thisPtr);
 
-            // Update this structure (is this necessary?)
-            // Marshal.PtrToStructure(thisPtr, this);
+            // TODO: Do we need to update this structure?
+            // Probably just switch to using ref structs everywhere
+            // so we don't need to worry about it.
 
             return Marshal.PtrToStringAnsi(result);
         }
@@ -26,7 +26,6 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             Native.set_name(thisPtr, structureName);
 
             // Update this structure (TODO: Check for NULL)

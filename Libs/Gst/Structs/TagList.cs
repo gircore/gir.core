@@ -12,7 +12,6 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             Native.@foreach(thisPtr, func, IntPtr.Zero);
 
             // Update this structure (TODO: Check for NULL)
@@ -33,7 +32,6 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             Native.add_value(thisPtr, mode, tag, ref value);
 
             // Update this structure (TODO: Check for NULL)
@@ -49,7 +47,6 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             var result = Native.get_tag_size(thisPtr, tag);
 
             // Update this structure (TODO: Check for NULL)
@@ -64,7 +61,6 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
-            // Native Call
             var result = Native.get_value_index(thisPtr, tag, index);
 
             // Update this structure (TODO: Check for NULL)

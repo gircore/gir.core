@@ -11,7 +11,6 @@ namespace GstPbutils
             IntPtr msgPtr = Marshal.AllocHGlobal(Marshal.SizeOf(msg));
             Marshal.StructureToPtr(msg, msgPtr, false);
 
-            // Native Call
             var result = Native.is_missing_plugin_message(msgPtr);
 
             // Update this structure
@@ -26,7 +25,6 @@ namespace GstPbutils
             IntPtr msgPtr = Marshal.AllocHGlobal(Marshal.SizeOf(msg));
             Marshal.StructureToPtr(msg, msgPtr, false);
 
-            // Native Call
             IntPtr result = Native.missing_plugin_message_get_installer_detail(msgPtr);
 
             // Update this structure
@@ -41,7 +39,6 @@ namespace GstPbutils
             IntPtr msgPtr = Marshal.AllocHGlobal(Marshal.SizeOf(msg));
             Marshal.StructureToPtr(msg, msgPtr, false);
 
-            // Native Call
             IntPtr result = Native.missing_plugin_message_get_description(msgPtr);
 
             // Update this structure
