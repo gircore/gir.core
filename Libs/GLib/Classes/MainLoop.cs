@@ -2,12 +2,10 @@
 
 namespace GLib
 {
-    public sealed partial class MainLoop
+    public sealed partial class MainLoop : IHandle
     {
-        public readonly IntPtr Handle;
-        
-        // TODO: Generate main section doc comments for constructors?
-        
+        public IntPtr Handle { get; private set; }
+
         public MainLoop(MainContext context, bool isRunning = false)
             : this(context.Handle, isRunning) { }
         
