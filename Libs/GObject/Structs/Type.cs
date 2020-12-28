@@ -49,7 +49,7 @@ namespace GObject
 
         #endregion
 
-        // Print out the name of the gtype (for debugging purposes)
+        // Print out the name of the GType
         public override string ToString()
         {
             return Marshal.PtrToStringAnsi(Global.Native.type_name(_value)) ?? string.Empty;

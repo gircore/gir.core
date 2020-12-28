@@ -59,6 +59,10 @@ namespace GObject
         private void MarshalCallback(IntPtr closure, ref Value returnValue, uint nParamValues,
             Value[] paramValues, IntPtr invocationHint, IntPtr marshalData)
         {
+            // TODO: Temporary (maybe permanent?) assertion to ensure that we marshall every value
+            if (paramValues.Length != nParamValues)
+                throw new Exception("Values were not marshalled correctly. Breakage may occur");
+            
             _callback?.Invoke();
 
             _callbackRefValues?.Invoke(ref paramValues);

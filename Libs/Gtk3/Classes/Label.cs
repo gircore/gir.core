@@ -119,6 +119,6 @@ namespace Gtk
 
         #endregion
 
-        public Label(string text) : this(ConstructParameter.With(TextProperty, text)){ }
+        public Label(string text) : this(ConstructParameter.With(TextProperty, text)) { }
     }
 }

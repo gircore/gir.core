@@ -15,13 +15,18 @@ namespace GLib
             return Marshal.PtrToStringAnsi(resPtr) ?? string.Empty;
         }
 
-        public static string FromUri(string uri, string hostname)
+        public static string FromUri(string uri, out string? hostname)
         {
-            var resPtr = Global.Native.filename_from_uri(uri, hostname, out IntPtr error);
+            IntPtr hostnamePtr = default;
+            
+            // TODO: Can we actually pass hostname as a ref string? Does this even work?
+            var resPtr = Global.Native.filename_from_uri(uri, out hostnamePtr, out IntPtr error);
 
             if (error != IntPtr.Zero)
                 throw new GLib.GException(error);
 
+            hostname = Marshal.PtrToStringAnsi(hostnamePtr) ?? null;
+            
             return Marshal.PtrToStringAnsi(resPtr) ?? string.Empty;
         }
     }

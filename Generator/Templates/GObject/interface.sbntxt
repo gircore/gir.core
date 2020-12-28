@@ -2,6 +2,7 @@
 
 using System;
 using GObject;
+using TypeDescriptor = GObject.Object.TypeDescriptor;
 using System.Runtime.InteropServices;
 
 #nullable enable
@@ -12,31 +13,30 @@ namespace {{ namespace }}
 
     public partial interface {{ name }}: IObject
     {
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ type_name }}", Native.get_type);
+    
         #region Properties
 {{ for property in properties
         include 'interface_property.sbntxt' property
 end }}
         #endregion
 
-        #region Native
-
         protected static class Native
         {
-        #region Properties
-
+            [DllImport("{{ dll_import }}", EntryPoint = "{{ get_type_function }}")]
+            public static extern ulong get_type();
+            
+            #region Native Properties
 {{~ for property in properties
         include 'native_property.sbntxt' property
 end ~}}
-
-        #endregion
-
-        #region Methods
-{{ for method in all_methods
-        include 'method.sbntxt' method
-end }}
-        #endregion
+            #endregion
+    
+            #region Methods
+{{~ for $method in all_methods }}
+            {{ include 'method.sbntxt' $method dll_import name ~}}
+{{ end ~}}
+            #endregion
         }
-
-        #endregion
     }
 }

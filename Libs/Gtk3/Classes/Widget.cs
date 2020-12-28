@@ -58,12 +58,40 @@ namespace Gtk
             get => GetProperty(HAlignProperty);
             set => SetProperty(HAlignProperty, value);
         }
+        
+        
+        public static readonly Property<int> HeightRequestProperty = Property<int>.Register<Widget>(
+            Native.HeightRequestProperty,
+            nameof(HeightRequest),
+            (o) => o.HeightRequest,
+            (o, v) => o.HeightRequest = v
+        );
+    
+        public int HeightRequest
+        {
+            get => GetProperty(HeightRequestProperty);
+            set => SetProperty(HeightRequestProperty, value);
+        }
+        
+        
+        public static readonly Property<int> WidthRequestProperty = Property<int>.Register<Widget>(
+            Native.WidthRequestProperty,
+            nameof(WidthRequest),
+            (o) => o.WidthRequest,
+            (o, v) => o.WidthRequest = v
+        );
+    
+        public int WidthRequest
+        {
+            get => GetProperty(WidthRequestProperty);
+            set => SetProperty(WidthRequestProperty, value);
+        }
 
 
         public void ShowAll() => Native.show_all(Handle);
         public void Show() => Native.show(Handle);
-        public StyleContext GetStyleContext() => WrapPointerAs<StyleContext>(Native.get_style_context(Handle));
+        public StyleContext GetStyleContext() => WrapHandle<StyleContext>(Native.get_style_context(Handle));
 
-        public Gdk.Screen GetScreen() => WrapPointerAs<Gdk.Screen>(Native.get_screen(Handle));
+        public Gdk.Screen GetScreen() => WrapHandle<Gdk.Screen>(Native.get_screen(Handle));
     }
 }
