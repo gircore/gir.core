@@ -33,15 +33,17 @@ namespace GObject
             TypeQuery query = default;
 
             // Convert to Pointer
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(query));
-            Marshal.StructureToPtr(query, ptr, true);
+            // IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(query));
+            // Marshal.StructureToPtr(query, ptr, true);
 
             // Perform Query
-            Global.Native.type_query(gtype, ptr);
+            Global.Native.type_query(gtype, ref query);
 
             // Marshal and Free Memory
-            query = Marshal.PtrToStructure<TypeQuery>(ptr);
-            Marshal.FreeHGlobal(ptr);
+            // query = (TypeQuery) (Marshal.PtrToStructure(ptr, typeof(TypeQuery)) ??
+            //                      throw new Exception("Type Query Failed"));
+                
+            // Marshal.FreeHGlobal(ptr);
 
             return query;
         }
@@ -113,6 +115,39 @@ namespace GObject
                 // TODO: Check if pointer is actually a GObject?
                 throw new Exception("Could not resolve type from pointer");
             }
+        }
+        
+        /// <summary>
+        /// Denotes a struct as being a GObject's member struct. This can then be marshalled
+        /// with <see cref="Object.GetObjectStruct{T}"/> and <see cref="Object.SetObjectStruct{T}"/>
+        /// respectively. It serves to provide compile-time checks when marshalling. 
+        /// </summary>
+        protected interface IObjectStruct { }
+
+        /// <summary>
+        /// Marshal a GObject as a struct of type <c>T</c> using the object's
+        /// Handle pointer. This allows access to object fields. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>T?</returns>
+        /// <seealso cref="SetObjectStruct{T}"/>
+        protected T GetObjectStruct<T>()
+            where T: struct, IObjectStruct
+        {
+            return Marshal.PtrToStructure<T>(Handle);
+        }
+
+        /// <summary>
+        /// Updates the member struct of a GObject with the given TypeStruct. This
+        /// allows for object fields to be set.
+        /// </summary>
+        /// <param name="objectStruct"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <seealso cref="GetObjectStruct{T}"/>
+        protected void SetObjectStruct<T>(T objectStruct)
+            where T: struct, IObjectStruct
+        {
+            Marshal.StructureToPtr(objectStruct, Handle, false);
         }
     }
 }

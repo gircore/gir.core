@@ -117,7 +117,7 @@ namespace Generator
             Generate(
                 templateName: "constants",
                 subfolder: "Classes",
-                fileName: "Constant",
+                fileName: "Constants",
                 scriptObject: scriptObject
             );
         }

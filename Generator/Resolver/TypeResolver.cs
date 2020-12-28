@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Gir;
 
 namespace Generator
@@ -9,17 +9,18 @@ namespace Generator
 
         public string Type { get; }
         public string Attribute { get; }
-        public bool IsRef { get; }
+        
+        public Direction Direction { get; }
 
         #endregion
 
         #region Constructors
 
-        public ResolvedType(string type, bool isRef = false, string attribute = "")
+        public ResolvedType(string type, Direction dir = Direction.Value, string attribute = "")
         {
             Type = type;
             Attribute = attribute;
-            IsRef = isRef;
+            Direction = dir;
         }
 
         #endregion
@@ -28,8 +29,19 @@ namespace Generator
 
         public override string ToString() => GetTypeString();
 
-        public string GetTypeString() => Attribute + (IsRef ? "ref " : string.Empty) + Type;
-        public string GetFieldString() => Attribute + (IsRef ? "IntPtr" : Type);
+        // public string GetTypeString() => Attribute + (IsRef ? "ref " : string.Empty) + Type;
+
+        public string GetTypeString() => Attribute + Direction switch
+        {
+            Direction.Value => Type,
+            Direction.In => "in " + Type,
+            Direction.OutCalleeAllocates => "out " + Type,
+            Direction.OutCallerAllocates => "ref " + Type,
+            Direction.InOut => "ref " + Type,
+            _ => Type,
+        };
+        
+        public string GetFieldString() => Direction == Direction.Value ? Type : "IntPtr";
 
         #endregion
 
@@ -39,7 +51,7 @@ namespace Generator
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Type == other.Type && IsRef == other.IsRef;
+            return Type == other.Type && Direction == other.Direction;
         }
 
         public override bool Equals(object? obj)
@@ -52,10 +64,19 @@ namespace Generator
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Type, IsRef);
+            return HashCode.Combine(Type, Direction);
         }
 
         #endregion
+    }
+
+    public enum Direction
+    {
+        Value,
+        In,
+        OutCalleeAllocates,
+        OutCallerAllocates,
+        InOut,
     }
 
     internal class MyType
@@ -68,6 +89,8 @@ namespace Generator
         public bool IsPointer { get; set; }
         public bool IsValueType { get; set; }
         public bool IsParameter { get; set; }
+        
+        public Direction Direction { get; set; }
 
         #endregion
 
@@ -103,8 +126,8 @@ namespace Generator
         public ResolvedType Resolve(IType typeInfo) => typeInfo switch
         {
             GField f when f.Callback is { } => new ResolvedType("IntPtr"),
-            { Array: { CType: { } n } } when n.EndsWith("**") => new ResolvedType("IntPtr", true),
-            { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter)),
+            { Array: { CType: { } n } } when n.EndsWith("**") => new ResolvedType("IntPtr", Direction.InOut),
+            { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter, typeInfo)),
             { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),
             { Array: { Length: { } length, Type: { Name: "utf8" } name } } => GetTypeName(StringArray(length, typeInfo is GParameter)),
             { Array: { Length: "1", Type: {Name: "guint8"}}} => new ResolvedType("byte[]"),
@@ -133,7 +156,7 @@ namespace Generator
             return type;
         }
 
-        private MyType ConvertGType(GType gtype, bool isParameter)
+        private MyType ConvertGType(GType gtype, bool isParameter, IType? typeInfo = null)
         {
             var ctype = gtype.CType;
             if (ctype is null)
@@ -148,6 +171,22 @@ namespace Generator
             MyType? result = ResolveCType(ctype);
             result.IsParameter = isParameter;
 
+            // Read in Direction
+            if (isParameter && typeInfo != null)
+            {
+                var param = (GParameter) typeInfo;
+                result.Direction = param.Direction switch
+                {
+                    "in" => Direction.In,
+                    "out" => Direction.OutCalleeAllocates, // TODO: Should this be the default?
+                    "inout" => Direction.InOut,
+                    _ => Direction.Value
+                };
+
+                if (param.CallerAllocates)
+                    result.Direction = Direction.OutCallerAllocates;
+            }
+
             if (!result.IsValueType && gtype.Name is { })
             {
                 result.Type = resolvedName ?? gtype.Name;
@@ -159,18 +198,42 @@ namespace Generator
         private ResolvedType GetTypeName(MyType type)
             => type switch
             {
+                // Pointers
                 { Type: "gpointer" } => new ResolvedType("IntPtr"),
+                { Type: "guintptr" } => new ResolvedType("IntPtr"), // TODO: UIntPtr instead? (Maybe not: not CLS-compliant)
                 { IsArray: false, Type: "void", IsPointer: true } => new ResolvedType("IntPtr"),
-                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),  //string in parameters are marshalled automatically
+
+                // String Related Functions
+                { Type: "utf8" } => new ResolvedType("string"), // TODO: We can possibly get rid of this depending on usage?
+                { IsArray: false, Direction: Direction.OutCalleeAllocates, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.OutCalleeAllocates),
+                { IsArray: false, Direction: Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.InOut),
+                { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => new ResolvedType("IntPtr"),
                 { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("string[]", attribute: GetMarshal(l)),
-                { IsArray: false, IsPointer: true, IsValueType: true } => new ResolvedType(type.Type, true),
+
+                // Value Type (Non-Pointer)
+                { IsArray: false, IsValueType: true, IsPointer: false } => new ResolvedType(type.Type, type.Direction),
+
+                // Value Type (Pointer)
+                { IsArray: false, IsValueType: true, IsPointer: true, Direction: Direction.Value } => new ResolvedType(type.Type, Direction.InOut), // Don't marshal pointers by value
+                { IsArray: false, IsValueType: true, IsPointer: true } => new ResolvedType(type.Type, type.Direction),
+
+                // Reference Types
+                { IsArray: false, Direction: Direction.In, IsPointer: true } => new ResolvedType("IntPtr", Direction.In), // TODO: Do we need this one?
+                { IsArray: false, IsPointer: true, Direction: Direction.InOut } => new ResolvedType("IntPtr"), // Avoid ref
+                { IsArray: false, IsPointer: true, IsValueType: false, Direction: not Direction.Value } => new ResolvedType("IntPtr", type.Direction),
+
+                // Fallback to plain IntPtr
                 { IsArray: false, IsPointer: true, IsValueType: false } => new ResolvedType("IntPtr"),
-                { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("IntPtr", true), //string array
+
+                // Arrays
+                { IsArray: true, Type: "byte", IsPointer: true } => new ResolvedType("IntPtr", Direction.InOut), //string array
                 { IsArray: true, IsValueType: false, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("IntPtr[]", attribute: GetMarshal(l)),
                 { IsArray: true, IsValueType: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType(type.Type + "[]", attribute: GetMarshal(l)),
                 { IsArray: true, IsValueType: true, ArrayLengthParameter: { } } => new ResolvedType(type.Type + "[]"),
                 { IsArray: true, IsValueType: true, ArrayLengthParameter: null } => new ResolvedType("IntPtr"),
+
+                // Fallback to type name
                 _ => new ResolvedType(type.Type)
             };
 
@@ -184,12 +247,17 @@ namespace Generator
 
             MyType? result = cType switch
             {
+                // TODO: We might not need these
+                // Some gir files seem to use them though?
+                "none" => ValueType("void"),
+                "any" => IntPtr(),
+                
                 "void" => ValueType("void"),
                 "gboolean" => ValueType("bool"),
                 "gfloat" => Float(),
                 "float" => Float(),
 
-                //"GCallback" => ReferenceType("Delegate"), // Signature of a callback is determined by the context in which it is used               
+                //"GCallback" => ReferenceType("Delegate"), // Signature of a callback is determined by the context in which it is used
 
                 "gconstpointer" => IntPtr(),
                 "va_list" => IntPtr(),
@@ -199,9 +267,13 @@ namespace Generator
                 var t when t.StartsWith("Atk") => IntPtr(),
                 var t when t.StartsWith("Cogl") => IntPtr(),
 
+                // TODO: We need to be able to designate any type as a value type, rather than
+                // hardcoding it into the generator. The generator rewrite should let us
+                // use ref structs for all structs, rather than these select cases:
                 "GValue" => Value(),
-                //"GError" => Error(),
-                //"GVariantType" => VariantType(),
+                "GTypeQuery" => TypeQuery(),
+                // "GError" => Error(),
+                // "GVariantType" => VariantType(),
 
                 "guint16" => UShort(),
                 "gushort" => UShort(),
@@ -264,6 +336,7 @@ namespace Generator
         private MyType ULong() => ValueType("ulong");
         private MyType Float() => ValueType("float");
         private MyType Error() => ValueType("Error");
+        private MyType TypeQuery() => ValueType("TypeQuery");
         private MyType VariantType() => ValueType("VariantType");
 
         private MyType ValueType(string str) => new MyType(str) { IsValueType = true };

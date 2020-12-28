@@ -15,7 +15,7 @@ namespace GObject
         /// The value of the GProperty.
         /// </returns>
         protected T GetProperty<T>(Property<T> property)
-            => GetGProperty(property.Name).Extract<T>();
+            => GetProperty(property.Name).Extract<T>();
 
         /// <summary>
         /// Sets the <paramref name="value"/> of the GProperty described by <paramref name="property"/>.
@@ -26,17 +26,17 @@ namespace GObject
         protected void SetProperty<T>(Property<T> property, T value)
         {
             if (value is Object o)
-                SetGProperty(new Value(o.Handle), property.Name);
+                SetProperty(property.Name, new Value(o.Handle));
             else
-                SetGProperty(Value.From(value), property.Name);
+                SetProperty(property.Name, Value.From(value));
         }
 
         /// <summary>
-        /// Defines the value of a native GProperty given its <paramref name="name"/>
+        /// Assigns the value of a GObject's property given its <paramref name="name"/>
         /// </summary>
         /// <param name="value">The property name.</param>
         /// <param name="name">The property value.</param>
-        private void SetGProperty(Value value, string? name)
+        protected void SetProperty(string? name, Value value)
         {
             ThrowIfDisposed();
 
@@ -48,13 +48,13 @@ namespace GObject
         }
 
         /// <summary>
-        /// Gets the value of a native GProperty given its <paramref name="name"/>.
+        /// Gets the value of a GObject's property given its <paramref name="name"/>.
         /// </summary>
         /// <param name="name">The property name.</param>
         /// <returns>
-        /// The native value of the property, wrapped is a <see cref="Value"/>.
+        /// The native value of the property, wrapped as a <see cref="Value"/>.
         /// </returns>
-        private Value GetGProperty(string? name)
+        protected Value GetProperty(string? name)
         {
             ThrowIfDisposed();
 

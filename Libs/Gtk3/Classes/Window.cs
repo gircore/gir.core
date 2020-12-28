@@ -757,7 +757,7 @@ namespace Gtk
             Native.set_screen(Handle, screen.Handle);
 
         public new Gdk.Screen GetScreen() =>
-            WrapPointerAs<Gdk.Screen>(Native.get_screen(Handle));
+            WrapHandle<Gdk.Screen>(Native.get_screen(Handle));
 
         public GLib.List ListToplevels()
         {
@@ -800,7 +800,7 @@ namespace Gtk
         public T? GetFocus<T>() where T : Widget
         {
             IntPtr focusPtr = Native.get_focus(Handle);
-            return focusPtr == IntPtr.Zero ? null : WrapPointerAs<T>(focusPtr);
+            return focusPtr == IntPtr.Zero ? null : WrapHandle<T>(focusPtr);
         }
 
         public void SetFocus(Widget? focus) =>
@@ -908,7 +908,7 @@ namespace Gtk
         public void GetDefaultSize(out int width, out int height)
         {
             int w = 0, h = 0;
-            Native.get_default_size(Handle, ref w, ref h);
+            Native.get_default_size(Handle, out w, out h);
             width = w;
             height = h;
         }
@@ -920,7 +920,7 @@ namespace Gtk
             Native.get_hide_titlebar_when_maximized(Handle);
 
         public GdkPixbuf.Pixbuf GetIcon() =>
-            WrapPointerAs<GdkPixbuf.Pixbuf>(Native.get_icon(Handle));
+            WrapHandle<GdkPixbuf.Pixbuf>(Native.get_icon(Handle));
 
         public GLib.List GetIconList()
         {
@@ -940,7 +940,7 @@ namespace Gtk
         public void GetPosition(out int rootX, out int rootY)
         {
             int x = 0, y = 0;
-            Native.get_position(Handle, ref x, ref y);
+            Native.get_position(Handle, out x, out y);
             rootX = x;
             rootY = y;
         }
@@ -951,7 +951,7 @@ namespace Gtk
         public void GetSize(out int width, out int height)
         {
             int w = 0, h = 0;
-            Native.get_size(Handle, ref w, ref h);
+            Native.get_size(Handle, out w, out h);
             width = w;
             height = h;
         }
@@ -962,13 +962,13 @@ namespace Gtk
         public Window? GetTransientFor()
         {
             IntPtr windowPtr = Native.get_transient_for(Handle);
-            return windowPtr == IntPtr.Zero ? null : WrapPointerAs<Window>(windowPtr);
+            return windowPtr == IntPtr.Zero ? null : WrapHandle<Window>(windowPtr);
         }
 
         public Widget? GetAttachedTo()
         {
             IntPtr widgetPtr = Native.get_attached_to(Handle);
-            return widgetPtr == IntPtr.Zero ? null : WrapPointerAs<Widget>(widgetPtr);
+            return widgetPtr == IntPtr.Zero ? null : WrapHandle<Widget>(widgetPtr);
         }
 
         public Gdk.WindowTypeHint GetTypeHint() =>
@@ -1021,7 +1021,7 @@ namespace Gtk
         public static bool SetDefaultIconFromFile(string filename)
         {
             var result = Native.set_default_icon_from_file(filename, out IntPtr e);
-            HandleError(e); // Throws if error
+            GLib.Error.ThrowOnError(e);
 
             return result;
         }
@@ -1043,7 +1043,7 @@ namespace Gtk
         public bool SetIconFromFile(string filename)
         {
             var result = Native.set_icon_from_file(Handle, filename, out IntPtr e);
-            HandleError(e); // Throws if error.
+            GLib.Error.ThrowOnError(e);
 
             return result;
         }
@@ -1091,7 +1091,7 @@ namespace Gtk
         {
             rect = new Gdk.Rectangle();
             IntPtr rectPtr = Marshal.AllocHGlobal(Marshal.SizeOf(rect));
-            var result = Native.get_resize_grip_area(Handle, rectPtr);
+            var result = Native.get_resize_grip_area(Handle, ref rectPtr);
             rect = Marshal.PtrToStructure<Gdk.Rectangle>(rectPtr);
             Marshal.FreeHGlobal(rectPtr);
             return result;
@@ -1100,7 +1100,7 @@ namespace Gtk
         public Application? GetApplication()
         {
             IntPtr appPtr = Native.get_application(Handle);
-            return appPtr == IntPtr.Zero ? null : WrapPointerAs<Application>(appPtr);
+            return appPtr == IntPtr.Zero ? null : WrapHandle<Application>(appPtr);
         }
 
         public void SetApplication(Application? application) =>
@@ -1115,7 +1115,7 @@ namespace Gtk
         public Widget? GetTitlebar()
         {
             IntPtr ptr = Native.get_titlebar(Handle);
-            return ptr == IntPtr.Zero ? null : WrapPointerAs<Widget>(ptr);
+            return ptr == IntPtr.Zero ? null : WrapHandle<Widget>(ptr);
         }
 
         public static void SetInteractiveDebugging(bool enable) =>

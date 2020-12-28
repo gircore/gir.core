@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using GLib;
@@ -158,7 +159,7 @@ namespace GObject
                 | System.Reflection.BindingFlags.FlattenHierarchy;
 
             const System.Reflection.BindingFlags MethodFlags = System.Reflection.BindingFlags.Instance
-                                                               | System.Reflection.BindingFlags.NonPublic;
+                | System.Reflection.BindingFlags.NonPublic;
 
             foreach (System.Reflection.FieldInfo? field in GetType().GetFields(PropertyDescriptorFieldFlags))
             {
@@ -231,13 +232,7 @@ namespace GObject
             if (Disposed)
                 throw new Exception("Object is disposed");
         }
-
-        protected static void HandleError(IntPtr error)
-        {
-            if (error != IntPtr.Zero)
-                throw new GLib.GException(error);
-        }
-
+        
         /// <summary>
         /// Notify this object that a property has just changed.
         /// </summary>
@@ -262,34 +257,29 @@ namespace GObject
             return false;
         }
 
-        // This function returns the proxy object to the provided handle
-        // if it already exists, otherwise creates a new wrapper object
-        // and returns it.
-        protected static T WrapPointerAs<T>(IntPtr handle)
-            where T : Object
+        /// <summary>
+        /// This function returns the proxy object to the provided handle
+        /// if it already exists, otherwise creates a new wrapper object
+        /// and returns it. Note that <typeparamref name="T"/> is the type
+        /// the object should be returned. It is independent of the object's
+        /// actual type and is provided purely for convenience.
+        /// </summary>
+        /// <param name="handle">A pointer to the native GObject that should be wrapped.</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>A C# proxy object which wraps the native GObject.</returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="Exception"></exception>
+        public static T WrapHandle<T>(IntPtr handle)
+            where T : GObject.Object
         {
-            if (TryWrapPointerAs<T>(handle, out T obj))
-                return obj;
-
-            throw new Exception($"Failed to wrap handle as type <{typeof(T).FullName}>");
-        }
-
-        protected internal static bool TryWrapPointerAs<T>(IntPtr handle, out T o)
-            where T : Object
-        {
-            o = default!;
-
-            // Return false if T is not of type Object
-            // TODO: Remove this?
-            if (!typeof(T).IsSubclassOf(typeof(Object)) && typeof(T) != typeof(Object))
-                return false;
+            if (handle == IntPtr.Zero)
+                throw new NullReferenceException(
+                    $"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
 
             // Attempt to lookup the pointer in the object dictionary
             if (Objects.TryGetValue(handle, out Object? obj))
-            {
-                o = (T) (object) obj;
-                return true;
-            }
+                return (T) (object) obj;
 
             // If it is not found, we can assume that it is NOT a subclass type,
             // as we ensure that subclass types always outlive their pointers
@@ -336,15 +326,36 @@ namespace GObject
                 System.Reflection.BindingFlags.NonPublic
                 | System.Reflection.BindingFlags.Public
                 | System.Reflection.BindingFlags.Instance,
-                null, new[] {typeof(IntPtr)}, null
+                null, new[] { typeof(IntPtr) }, null
             );
             
             if (ctor == null)
                 throw new Exception($"Type {trueType.FullName} does not define an IntPtr constructor. This could mean improperly defined bindings");
 
-            o = (T) ctor.Invoke(new object[] {handle});
+            return (T) ctor.Invoke(new object[] { handle });
+        }
 
-            return true;
+        /// <summary>
+        /// A variant of <see cref="WrapHandle{T}"/> which fails gracefully if the pointer cannot be wrapped.
+        /// </summary>
+        /// <param name="handle">A pointer to the native GObject that should be wrapped.</param>
+        /// <param name="o">A C# proxy object which wraps the native GObject.</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns><c>true</c> if the handle was wrapped, or <c>false</c> if something went wrong.</returns>
+        public static bool TryWrapHandle<T>(IntPtr handle, [NotNullWhen(true)] out T? o)
+            where T : Object
+        {
+            o = null;
+            try
+            {
+                o = WrapHandle<T>(handle);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not wrap handle as type {typeof(T).FullName}: {e.Message}");
+                return false;
+            }
         }
 
         #endregion
@@ -390,8 +401,6 @@ namespace GObject
         {
             Native.unref(Handle);
         }
-        
-
 
         #endregion
     }

@@ -15,13 +15,13 @@ This project aims to provide:
 * An easy way to allow 3rd party developers to integrate into this stack to achieve interoperability between different [GObject] based libraries.
 
 Currently supported libraries
-* [GTK] (wip): UI-Toolkit (GTK3 + experimental GTK4)
-* [WebKitGTK] (planed): Browser-Engine
-* [JavaScriptCore] (planed): Javascript integration for [WebKitGTK]
-* [libhandy] (planed): Convergent UI-Widgets for [GTK] to support mobile phones
-* [dbus] (wip): Library for inter-process communication via [GIO]
-* [libchamplain] (planed): Library to display maps
-* [gstreamer] (wip): Multimedia Framework
+* [GTK] (partial support): UI-Toolkit (GTK3 + experimental GTK4)
+* [GStreamer] (partial support): Multimedia Framework
+* [DBus] (partial support): Library for inter-process communication via [GIO]
+* [WebKitGTK] (planned): Browser-Engine
+* [JavaScriptCore] (planned): Javascript integration for [WebKitGTK]
+* [libhandy] (planned): Convergent UI-Widgets for [GTK] to support mobile phones
+* [libchamplain] (planned): Library to display maps
 
 ## Status
 As we are currently figuring out the best way for this project the code is under heavy development and not ready for production. There is currently _no_ nuget package available.
