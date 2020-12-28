@@ -17,7 +17,7 @@ This project aims to provide:
 Currently supported libraries
 * [GTK] (partial support): UI-Toolkit (GTK3 + experimental GTK4)
 * [GStreamer] (partial support): Multimedia Framework
-* [DBus] (wip): Library for inter-process communication via [GIO]
+* [DBus] (partial support): Library for inter-process communication via [GIO]
 * [WebKitGTK] (planned): Browser-Engine
 * [JavaScriptCore] (planned): Javascript integration for [WebKitGTK]
 * [libhandy] (planned): Convergent UI-Widgets for [GTK] to support mobile phones
