@@ -53,7 +53,7 @@ namespace Build
         private const string GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/NoSourceGenerator";
         private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
 
-        private const string INTEGRATOR = "../Integrator/";
+        private const string INTEGRATION = "../Integration/";
         
         #endregion
         
@@ -61,7 +61,7 @@ namespace Build
 
         public static readonly string[] IntegrationProjects =
         {
-            INTEGRATOR
+            INTEGRATION
         };
         
         public static readonly string[] TestProjects =

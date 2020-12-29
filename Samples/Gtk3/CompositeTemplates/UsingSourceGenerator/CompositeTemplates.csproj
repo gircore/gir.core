@@ -7,7 +7,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Libs\Gtk3\Gtk3.csproj" />
-    <ProjectReference Include="..\..\..\..\Integrator\Integrator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\..\Integration\Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
