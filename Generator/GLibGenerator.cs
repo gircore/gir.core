@@ -89,6 +89,11 @@ namespace Generator
             }
         }
 
+        protected override void GenerateMiscellaneous(string @namespace)
+        {
+            GenerateDllImportHelper();
+        }
+
         #endregion
     }
 }
