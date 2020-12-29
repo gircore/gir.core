@@ -1,0 +1,60 @@
+using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+namespace {{ namespace }}
+{
+    internal static class DllImport
+    {
+        #region Fields
+        
+        private const string _windowsDllName = "{{ windows_dll }}";
+        private const string _linuxDllName = "{{ linux_dll }}";
+        private const string _osxDllName = "{{ osx_dll }}";
+
+        private static readonly string DllName;
+
+        #endregion
+        
+        #region Constructors
+        
+        static DllImport()
+        {
+            DllName = GetDllImport();
+        }
+        
+        #endregion
+            
+        #region Methods
+        
+        public static void Initialize()
+        {
+            NativeLibrary.SetDllImportResolver(typeof(DllImport).Assembly, ImportResolver);
+        }
+        
+        private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+        {
+            if (NativeLibrary.TryLoad(DllName, assembly, DllImportSearchPath.LegacyBehavior, out IntPtr libHandle))
+                return libHandle;
+            
+            //Fall back to default dll search mechanic
+            return IntPtr.Zero;
+        }
+        
+        private static string GetDllImport()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return _windowsDllName;
+            
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                return _osxDllName;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                return _linuxDllName;
+
+            throw new Exception("Unknown platform");
+        }
+        
+        #endregion
+    }
+}
