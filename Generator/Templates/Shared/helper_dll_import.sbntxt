@@ -1,10 +1,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-
-#nullable enable
 
 namespace {{ namespace }}
 {
@@ -16,7 +12,7 @@ namespace {{ namespace }}
         private const string _linuxDllName = "{{ linux_dll }}";
         private const string _osxDllName = "{{ osx_dll }}";
 
-        private static Dictionary<string, IntPtr> _cache;
+        private static readonly string DllName;
 
         #endregion
         
@@ -24,7 +20,7 @@ namespace {{ namespace }}
         
         static DllImport()
         {
-            _cache = new Dictionary<string, IntPtr>();
+            DllName = GetDllImport();
         }
         
         #endregion
@@ -38,40 +34,25 @@ namespace {{ namespace }}
         
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            if (_cache.TryGetValue(libraryName, out var cachedLibHandle))
-                return cachedLibHandle;
-        
-            if(!TryGetOsDependentLibraryName(libraryName, out var osDependentLibraryName))
-                return IntPtr.Zero;
-        
-            if (NativeLibrary.TryLoad(osDependentLibraryName, assembly, searchPath, out IntPtr libHandle))
-            {
-                _cache[libraryName] = libHandle;
+            if (NativeLibrary.TryLoad(DllName, assembly, DllImportSearchPath.LegacyBehavior, out IntPtr libHandle))
                 return libHandle;
-            }
-        
+            
             //Fall back to default dll search mechanic
             return IntPtr.Zero;
         }
         
-        private static bool TryGetOsDependentLibraryName(string libraryName, [NotNullWhen(true)] out string? osDependentLibraryName)
+        private static string GetDllImport()
         {
-            if (libraryName != "{{ dll_import }}")
-            {
-                osDependentLibraryName = null;
-                return false;
-            }
-        
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                osDependentLibraryName = _windowsDllName;
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                osDependentLibraryName = _osxDllName;
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                osDependentLibraryName = _linuxDllName;
-            else
-                throw new Exception("Unknown platform");
-        
-            return true;
+                return _windowsDllName;
+            
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                return _osxDllName;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                return _linuxDllName;
+
+            throw new Exception("Unknown platform");
         }
         
         #endregion
