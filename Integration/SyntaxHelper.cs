@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Integrator
+namespace Gir.Integration.CSharp
 {
     internal static class SyntaxHelper
     {

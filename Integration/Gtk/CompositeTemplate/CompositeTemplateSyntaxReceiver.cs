@@ -3,9 +3,9 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Integrator.Gtk
+namespace Gir.Integration.CSharp.Gtk
 {
-    public class CompositeTemplateSyntaxReceiver : ISyntaxReceiver
+    internal class CompositeTemplateSyntaxReceiver : ISyntaxReceiver
     {
         public ClassDeclarationSyntax? TemplateClass { get; private set; }
 

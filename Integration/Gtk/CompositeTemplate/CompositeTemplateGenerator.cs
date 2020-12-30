@@ -4,9 +4,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Integrator.Gtk
+namespace Gir.Integration.CSharp.Gtk
 {
-    public class CompositeTemplateGenerator : ISourceGenerator
+    internal class CompositeTemplateGenerator : ISourceGenerator
     {
         public void Initialize(GeneratorInitializationContext context)
         {

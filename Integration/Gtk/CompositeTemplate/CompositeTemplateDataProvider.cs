@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Integrator.Gtk
+namespace Gir.Integration.CSharp.Gtk
 {
-    public class CompositeTemplateDataProvider
+    internal class CompositeTemplateDataProvider
     {
         #region Fields
         

@@ -2,9 +2,9 @@
 using System.IO;
 using System.Reflection;
 
-namespace Integrator
+namespace Gir.Integration.CSharp
 {
-    public static class AssemblyExtension
+    internal static class AssemblyExtension
     {
         public static string ReadResourceAsString(this Assembly assembly, string resource)
         {

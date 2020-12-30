@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Integrator.Gtk;
+using Gir.Integration.CSharp.Gtk;
 using Microsoft.CodeAnalysis;
 
-namespace Integrator
+namespace Gir.Integration.CSharp
 {
     [Generator]
     public class Integrator : ISourceGenerator

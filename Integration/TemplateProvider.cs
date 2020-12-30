@@ -1,7 +1,7 @@
 ﻿using Scriban;
 using Scriban.Runtime;
 
-namespace Integrator
+namespace Gir.Integration.CSharp
 {
     public class TemplateProvider
     {

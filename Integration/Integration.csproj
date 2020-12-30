@@ -6,7 +6,7 @@
   <PropertyGroup>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageScribanIncludeSource>true</PackageScribanIncludeSource>
-    <PackageId>Gir.CS.Integration</PackageId>
+    <PackageId>Gir.Integration.CSharp</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
