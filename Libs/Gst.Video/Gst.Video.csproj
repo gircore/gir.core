@@ -8,6 +8,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.CS.GstVideo</PackageId>
+    <PackageId>Gir.GstVideo</PackageId>
   </PropertyGroup>
 </Project>
