@@ -30,7 +30,7 @@ As we are currently figuring out the best way for this project the code is under
 To build the project locally in debug mode follow these steps:
 
     $ git clone --recursive https://github.com/gircore/gir.core.git
-    $ cd Build
+    $ cd gir.core/Build
     $ dotnet run
 
 ### Options
@@ -42,6 +42,8 @@ There are some options which can be used to influence the code generation:
 * `--comments`: Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.
 * `--targets <targets>`: A list of targets to run or list.
 * `--version <version>`: Specify the version number of the `build`.
+
+To get a full list of available options use `--help`.
 
 ### Targets
 
