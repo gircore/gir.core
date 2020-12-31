@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Bullseye;
-using Generator;
 
 namespace Build
 {
@@ -12,9 +10,10 @@ namespace Build
         private readonly ILibraryBuilder _libraryBuilder;
         private readonly ISampleBuilder _sampleBuilder;
         private readonly ITester _tester;
+        private readonly ILibraryPacker _libraryPacker;
         private readonly IIntegrationBuilder _integrationBuilder;
 
-        public Runner(IProjectCleaner projectCleaner, ILibraryGenerator libraryGenerator, ILibraryBuilder libraryBuilder, ISampleBuilder sampleBuilder, ITester tester, IIntegrationBuilder integrationBuilder)
+        public Runner(IProjectCleaner projectCleaner, ILibraryGenerator libraryGenerator, ILibraryBuilder libraryBuilder, ILibraryPacker libraryPacker, ISampleBuilder sampleBuilder, ITester tester, IIntegrationBuilder integrationBuilder)
         {
             _projectCleaner = projectCleaner;
             _libraryGenerator = libraryGenerator;
@@ -22,6 +21,7 @@ namespace Build
             _sampleBuilder = sampleBuilder;
             _integrationBuilder = integrationBuilder;
             _tester = tester;
+            _libraryPacker = libraryPacker;
         }
         
         public void Run(IEnumerable<string> targets, Options options)
@@ -46,8 +46,14 @@ namespace Build
 
             targets.Add(
                 name: Targets.Build,
-                dependsOn: new []{ Targets.Generate },
+                dependsOn: new [] { Targets.Generate },
                 action: BuildLibraries
+            );
+            
+            targets.Add(
+                name: Targets.Pack,
+                dependsOn: new [] { Targets.Build },
+                action: PackLibraries
             );
             
             targets.Add(
@@ -98,6 +104,11 @@ namespace Build
         private void TestLibraries()
         {
             _tester.Test();
+        }
+
+        private void PackLibraries()
+        {
+            _libraryPacker.PackLibraries();
         }
         
         private void BuildIntegration()
