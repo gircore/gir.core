@@ -24,5 +24,5 @@ jobs:
         working-directory: './Build'
 
       - name: Publish to nuget org
-        run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s nuget.org
         working-directory: './Nuget'
