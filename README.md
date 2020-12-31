@@ -43,6 +43,8 @@ There are some options which can be used to influence the code generation:
 * `--targets <targets>`: A list of targets to run or list.
 * `--version <version>`: Specify the version number of the `build`.
 
+To get a full list of available options use `--help`.
+
 ### Targets
 
 Supported targets are:
