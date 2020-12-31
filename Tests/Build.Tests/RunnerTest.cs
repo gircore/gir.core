@@ -105,7 +105,7 @@ namespace Build.Test
         }
 
         [TestMethod]
-        public void InvokingSamplesTargetExecutesLibraryBuilderAndSampleBuilder()
+        public void InvokingSamplesTargetExecutesLibraryBuilderIntegrationBuilderSampleBuilder()
         {
             Runner runner = GetRunner(
                 out IProjectCleaner _, 
@@ -152,7 +152,7 @@ namespace Build.Test
                 out ILibraryBuilder builder, 
                 out ILibraryPacker packer,
                 out ISampleBuilder _, 
-                out ITester tester,
+                out ITester _,
                 out IIntegrationBuilder _
             );
 
