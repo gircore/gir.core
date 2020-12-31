@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Bullseye;
-using Generator;
 
 namespace Build
 {
@@ -12,14 +10,16 @@ namespace Build
         private readonly ILibraryBuilder _libraryBuilder;
         private readonly ISampleBuilder _sampleBuilder;
         private readonly ITester _tester;
+        private readonly ILibraryPacker _libraryPacker;
 
-        public Runner(IProjectCleaner projectCleaner, ILibraryGenerator libraryGenerator, ILibraryBuilder libraryBuilder, ISampleBuilder sampleBuilder, ITester tester)
+        public Runner(IProjectCleaner projectCleaner, ILibraryGenerator libraryGenerator, ILibraryBuilder libraryBuilder, ILibraryPacker libraryPacker, ISampleBuilder sampleBuilder, ITester tester)
         {
             _projectCleaner = projectCleaner;
             _libraryGenerator = libraryGenerator;
             _libraryBuilder = libraryBuilder;
             _sampleBuilder = sampleBuilder;
             _tester = tester;
+            _libraryPacker = libraryPacker;
         }
         
         public void Run(IEnumerable<string> targets, Options options)
@@ -44,8 +44,14 @@ namespace Build
 
             targets.Add(
                 name: Targets.Build,
-                dependsOn: new []{ Targets.Generate },
+                dependsOn: new [] { Targets.Generate },
                 action: BuildLibraries
+            );
+            
+            targets.Add(
+                name: Targets.Pack,
+                dependsOn: new [] { Targets.Build },
+                action: PackLibraries
             );
 
             targets.Add(
@@ -91,6 +97,11 @@ namespace Build
         private void TestLibraries()
         {
             _tester.Test();
+        }
+
+        private void PackLibraries()
+        {
+            _libraryPacker.PackLibraries();
         }
         
         #region Targets
