@@ -9,16 +9,16 @@ namespace Build.Test
     {
         #region Helper
 
-        private static Runner GetRunner(out IProjectCleaner projectCleaner, out ILibraryGenerator libraryGenerator,
-            out ILibraryBuilder libraryBuilder, out ISampleBuilder sampleBuilder, out ITester tester)
+        private static Runner GetRunner(out IProjectCleaner projectCleaner, out ILibraryGenerator libraryGenerator, out ILibraryBuilder libraryBuilder, out ILibraryPacker libraryPacker, out ISampleBuilder sampleBuilder, out ITester tester)
         {
             projectCleaner = Mock.Of<IProjectCleaner>();
             libraryGenerator = Mock.Of<ILibraryGenerator>();
             sampleBuilder = Mock.Of<ISampleBuilder>();
             libraryBuilder = Mock.Of<ILibraryBuilder>();
+            libraryPacker = Mock.Of<ILibraryPacker>();
             tester = Mock.Of<ITester>();
 
-            return new Runner(projectCleaner, libraryGenerator, libraryBuilder, sampleBuilder, tester);
+            return new Runner(projectCleaner, libraryGenerator, libraryBuilder, libraryPacker, sampleBuilder, tester);
         }
 
         private static void RunTarget(Runner runner, string target)
@@ -35,6 +35,7 @@ namespace Build.Test
                 out IProjectCleaner projectCleaner, 
                 out ILibraryGenerator _, 
                 out ILibraryBuilder _, 
+                out ILibraryPacker _,
                 out ISampleBuilder _, 
                 out ITester _
             );
@@ -51,6 +52,7 @@ namespace Build.Test
                 out IProjectCleaner _, 
                 out ILibraryGenerator generator, 
                 out ILibraryBuilder _, 
+                out ILibraryPacker _,
                 out ISampleBuilder _, 
                 out ITester _
             );
@@ -69,6 +71,7 @@ namespace Build.Test
                 out IProjectCleaner _, 
                 out ILibraryGenerator generator, 
                 out ILibraryBuilder builder, 
+                out ILibraryPacker _,
                 out ISampleBuilder _, 
                 out ITester _
             );
@@ -86,6 +89,7 @@ namespace Build.Test
                 out IProjectCleaner _, 
                 out ILibraryGenerator _, 
                 out ILibraryBuilder builder, 
+                out ILibraryPacker _,
                 out ISampleBuilder sampleBuilder, 
                 out ITester _
             );
@@ -103,6 +107,7 @@ namespace Build.Test
                 out IProjectCleaner _, 
                 out ILibraryGenerator _, 
                 out ILibraryBuilder builder, 
+                out ILibraryPacker _,
                 out ISampleBuilder _, 
                 out ITester tester
             );
@@ -111,6 +116,24 @@ namespace Build.Test
 
             Mock.Get(builder).Verify((x) => x.BuildLibraries(), Times.Once);
             Mock.Get(tester).Verify((x) => x.Test(), Times.Once);
+        }
+        
+        [TestMethod]
+        public void InvokingPackTargetExecutesLibraryBuilderAndPacker()
+        {
+            Runner runner = GetRunner(
+                out IProjectCleaner _, 
+                out ILibraryGenerator _, 
+                out ILibraryBuilder builder, 
+                out ILibraryPacker packer,
+                out ISampleBuilder _, 
+                out ITester tester
+            );
+
+            RunTarget(runner, "pack");
+
+            Mock.Get(builder).Verify((x) => x.BuildLibraries(), Times.Once);
+            Mock.Get(packer).Verify((x) => x.PackLibraries(), Times.Once);
         }
     }
 }

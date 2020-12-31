@@ -3,28 +3,29 @@ using Generator;
 
 namespace Build
 {
-    public interface ILibraryBuilder
+    public interface ILibraryPacker
     {
-        void BuildLibraries();
+        void PackLibraries();
     }
 
-    public class LibraryBuilder : ILibraryBuilder
+    public class LibraryPacker : ILibraryPacker
     {
         private readonly Settings _settings;
 
-        public LibraryBuilder(Settings settings)
+        public LibraryPacker(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void BuildLibraries()
+        public void PackLibraries()
         {
             foreach ((Project project, Type _) in Projects.LibraryProjects)
             {
-                DotNet.Build(
+                DotNet.Pack(
                     project: project.Folder,
                     configuration: _settings.Configuration,
-                    version: _settings.Version?.ToNormalizedString()
+                    version: _settings.Version?.ToNormalizedString(),
+                    outputDir: "../Nuget"
                 );
             }
         }

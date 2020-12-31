@@ -1,4 +1,5 @@
 ﻿using Bullseye;
+using NuGet.Versioning;
 
 namespace Build
 {
@@ -11,6 +12,7 @@ namespace Build
         /// <param name="comments">Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.</param>
         /// <param name="xmlDocumentation">Generate the xml documentation.</param>
         /// <param name="targets">A list of targets to run or list. To list the available targets use option --list-targets.</param>
+        /// <param name="version">The version number to use during build.</param>
         /// <param name="clear">Clear the console before execution.</param>
         /// <param name="dryRun">Do a dry run without executing actions.</param>
         /// <param name="listDependencies">List all (or specified) targets and dependencies, then exit.</param>
@@ -26,6 +28,7 @@ namespace Build
             bool comments,
             bool xmlDocumentation,
             string[] targets,
+            string? version,
             bool clear,
             bool dryRun,
             bool listDependencies,
@@ -42,7 +45,8 @@ namespace Build
             {
                 GenerateComments = comments,
                 GenerateXmlDocumentation = xmlDocumentation,
-                Configuration = release ? Configuration.Release : Configuration.Debug
+                Configuration = release ? Configuration.Release : Configuration.Debug,
+                Version = GetSemanticVersion(version)
             };
 
             var options = new Options
@@ -62,17 +66,32 @@ namespace Build
             var cleaner = new ProjectCleaner(settings);
             var generator = new LibraryGenerator(settings);
             var libraryBuilder = new LibraryBuilder(settings);
+            var librarypacker = new LibraryPacker(settings);
             var sampleBuilder = new SampleBuilder(settings);
             var tester = new Tester(settings);
             
             var runner = new Runner(
                 projectCleaner: cleaner, 
                 libraryGenerator: generator, 
-                libraryBuilder: libraryBuilder, 
+                libraryBuilder: libraryBuilder,
+                libraryPacker: librarypacker,
                 sampleBuilder: sampleBuilder,
                 tester: tester
             );
             runner.Run(targets, options);
+        }
+
+        /// <summary>
+        /// Ensures that a given version is parseable by nuget.
+        /// </summary>
+        private static SemanticVersion? GetSemanticVersion(string? version)
+        {
+            SemanticVersion? semanticVersion = default;
+
+            if (version is not null)
+                semanticVersion = SemanticVersion.Parse(version);
+
+            return semanticVersion;
         }
 
         #endregion
