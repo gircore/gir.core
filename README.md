@@ -30,7 +30,7 @@ As we are currently figuring out the best way for this project the code is under
 To build the project locally in debug mode follow these steps:
 
     $ git clone --recursive https://github.com/gircore/gir.core.git
-    $ cd Build
+    $ cd gir.core/Build
     $ dotnet run
 
 ### Options
