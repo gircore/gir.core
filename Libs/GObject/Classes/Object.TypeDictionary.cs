@@ -55,6 +55,20 @@ namespace GObject
             }
 
             /// <summary>
+            /// Adds a one-way mapping from <see cref="GObject.Type"/> to <see cref="System.Type"/>
+            /// so that a single C# type can act as a fallback for multiple GObject types.
+            /// For example, GdkWin32Screen, GdkX11Screen, and GdkWaylandScreen must all
+            /// be represented by a Gdk.Screen object. 
+            /// </summary>
+            /// <param name="type">The C# type to be registered</param>
+            /// <param name="gtype">The GType which aliases the C# type</param>
+            internal static void AddAlias(System.Type type, GObject.Type gtype)
+            {
+                if (!GTypeDict.ContainsKey(gtype))
+                    GTypeDict[gtype] = type;
+            }
+
+            /// <summary>
             /// Recursively register <c>type</c> in the type dictionary. Prefer
             /// <see cref="AddRecursive(System.Type, Type)"/> if the GType is already known.
             /// </summary>
@@ -176,7 +190,8 @@ namespace GObject
                 // find the first type that matches (e.g. GdkScreen for
                 // GdkWin32Screen). Effectively, the lowest-common-denominator
                 // of functionality will be exposed (which is fine in *most* cases).
-                
+
+                Type initialGType = gtype;
                 while (!Contains(gtype))
                 {
                     // Get parent type
@@ -194,16 +209,17 @@ namespace GObject
                     if (foundType != null)
                     {
                         AddRecursive(foundType, gtype);
+                        AddAlias(foundType, initialGType);
                         break;
                     }
                 }
 
                 // Get return type from typedict (The above loop guarantees a
                 // suitable fallback type is registered and available).
-                System.Type returnType = foundType ?? GTypeDict[gtype];
+                System.Type returnType = foundType ?? GTypeDict[initialGType];
                 
                 // Print warning message
-                Console.WriteLine($"The System.Type for GType {gtype.ToString()} could not be found (Unloaded assemblies were not searched). Resorting to using type {returnType.FullName}. Unexpected behaviour may occur");
+                Console.WriteLine($"The System.Type for GType {initialGType.ToString()} could not be found (Unloaded assemblies were not searched). Resorting to using type {returnType.FullName}. Unexpected behaviour may occur");
                 
                 return returnType;
             }
