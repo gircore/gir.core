@@ -55,7 +55,7 @@ Supported targets are:
 * `clean`:  Cleans `samples` and `build` output including generated source code files.
 * `samples`: Builds the sample applications with `Debug` or `Release` configuration. Depends on `build`.
 
-If not target is specified the `build` target is executed.
+If no target is specified the `build` target is executed.
 
 ### Examples
 
