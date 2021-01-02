@@ -1,2 +1,10 @@
-{{~ include 'helper.sbntxt' ~}}
-{{~ get_header($1) ~}}
+{{~ 
+include 'helper.sbntxt'
+
+$with_own_doc = true
+if $2 == 'without_own_doc'
+    $with_own_doc = false
+end
+
+get_header($1, $with_own_doc)
+~}}
