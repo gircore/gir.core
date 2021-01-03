@@ -28,7 +28,7 @@ namespace GstPbutils
                 // Update this structure
                 Marshal.PtrToStructure(msgPtr, msg);
 
-                return result.ToAnsiStringAndFree();
+                return StringHelper.ToAnsiStringAndFree(result);
             });
         }
 
@@ -41,7 +41,7 @@ namespace GstPbutils
                 // Update this structure
                 Marshal.PtrToStructure(msgPtr, msg);
 
-                return result.ToAnsiStringAndFree();
+                return StringHelper.ToAnsiStringAndFree(result);
             });
         }
 

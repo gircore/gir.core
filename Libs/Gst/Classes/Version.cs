@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GLib;
+using String = GLib.String;
 
 namespace Gst
 {
@@ -11,6 +13,6 @@ namespace Gst
         public static int Nano => Constants.VERSION_NANO;
 
         public static string VersionString
-            => Marshal.PtrToStringAnsi(Global.Native.version_string()) ?? String.Empty;
+            => StringHelper.ToAnsiStringAndFree(Global.Native.version_string());
     }
 }

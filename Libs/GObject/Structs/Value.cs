@@ -113,6 +113,7 @@ namespace GObject
         
         public string GetString()
         {
+            //Do not free ptr as the ownership is not transfered!
             IntPtr ptr = Native.get_string(ref this);
             return Marshal.PtrToStringAnsi(ptr) ?? throw new Exception("Could not get string value");
         }

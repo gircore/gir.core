@@ -11,12 +11,13 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
+            //Do not free result as ownership is not transered!
             IntPtr result = Native.get_name(thisPtr);
 
             // TODO: Do we need to update this structure?
             // Probably just switch to using ref structs everywhere
             // so we don't need to worry about it.
-
+            
             return Marshal.PtrToStringAnsi(result);
         }
         

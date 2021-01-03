@@ -896,7 +896,7 @@ namespace Gtk
             return Marshal.PtrToStructure<GLib.List>(listPtr);
         }
 
-        public static string? GetDefaultIconName() =>
+        public static string? GetDefaultIconName() => 
             Marshal.PtrToStringAnsi(Native.get_default_icon_name());
 
         public void GetDefaultSize(out int width, out int height)

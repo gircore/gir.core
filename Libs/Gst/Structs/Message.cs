@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GLib;
 
 namespace Gst
 {
@@ -119,7 +120,7 @@ namespace Gst
 
             // Update and free (TODO: Check for NULL)
             this = (Message) Marshal.PtrToStructure(thisPtr, GetType())!;
-            debug = Marshal.PtrToStringAnsi(strPtr);
+            debug = StringHelper.ToNullableAnsiStringAndFree(strPtr);
             error = Marshal.PtrToStructure<GLib.Error>(errPtr);
             Marshal.FreeHGlobal(thisPtr);
         }
