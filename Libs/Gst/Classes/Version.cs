@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using GLib;
-using String = GLib.String;
+﻿using GLib;
 
 namespace Gst
 {
