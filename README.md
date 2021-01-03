@@ -30,7 +30,7 @@ As we are currently figuring out the best way for this project the code is under
 To build the project locally in debug mode follow these steps:
 
     $ git clone --recursive https://github.com/gircore/gir.core.git
-    $ cd Build
+    $ cd gir.core/Build
     $ dotnet run
 
 ### Options
@@ -43,6 +43,8 @@ There are some options which can be used to influence the code generation:
 * `--targets <targets>`: A list of targets to run or list.
 * `--version <version>`: Specify the version number of the `build`.
 
+To get a full list of available options use `--help`.
+
 ### Targets
 
 Supported targets are:
@@ -54,7 +56,7 @@ Supported targets are:
 * `clean`:  Cleans `samples` and `build` output including generated source code files.
 * `samples`: Builds the sample applications with `Debug` or `Release` configuration. Depends on `build` and `integration`.
 
-If not target is specified the `build` target is executed.
+If no target is specified the `build` target is executed.
 
 ### Examples
 

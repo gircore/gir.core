@@ -68,7 +68,7 @@ public sealed class {{$signal_type}} : SignalArgs
 public static readonly Signal<{{ $signal_generic_args }}> {{ $signal_descriptor_name }}
     = Signal<{{ $signal_generic_args }}>.Wrap("{{ $signal.name }}");
 
-{{ include 'header.sbntxt' $signal~}}
+{{ include 'header.sbntxt' $signal 'without_own_doc' ~}}
 public event SignalHandler<{{ $signal_generic_args }}> {{ $signal_name }}
 {
     add => {{ $signal_descriptor_name }}.Connect(this, value);

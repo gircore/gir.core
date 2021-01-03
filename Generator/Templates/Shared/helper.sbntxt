@@ -1,8 +1,14 @@
 {{~
 
-func get_header(obj)
+func get_header(obj, with_own_doc=true)
     $ret = ""
     $ret = $ret + (obj | get_summary)
+    
+    if with_own_doc
+        $ret = $ret + (obj | get_params)
+        $ret = $ret + (obj | get_return)
+    end
+    
     $ret = $ret + (obj | get_obsolete_attribute)
     
     if ($ret | string.size == 0)
@@ -19,6 +25,49 @@ func verify(value, error)
     else
         ret true
     end
+end
+
+func get_return(obj, prefix = "")
+    $ret = "";
+    
+    if obj.return_value?.transfer_ownership
+        $ret = $ret + prefix + "/// <returns>Transfer ownership: " + obj.return_value.transfer_ownership + "</returns>\r\n"
+    end
+    
+    ret $ret;
+end
+
+func get_params(obj, prefix = "")
+    $ret = ""
+    
+    if obj.parameters?.instance_parameter
+        $ret = $ret + prefix + (obj.parameters.instance_parameter | get_param_text)
+    end
+    
+    if obj.parameters?.parameters
+        for $parameter in obj.parameters.parameters
+            $ret = $ret + prefix + ($parameter | get_param_text)
+        end
+    end
+    
+    if(obj.throws)
+        $ret = $ret + prefix + "/// <param name=\"error\">Pointer to an error or IntPtr.Zero</param>\r\n"
+    end
+    
+    ret $ret
+end
+
+func get_param_text(parameter)
+    $ret = ""
+    $ret = $ret + "/// <param name=\"" + parameter.name +"\">"
+    
+    if parameter.transfer_ownership
+        $ret = $ret + "Transfer ownership: " + parameter.transfer_ownership
+    end
+    
+    $ret = $ret + "</param>\r\n"
+    
+    ret $ret;
 end
 
 func get_summary(obj, prefix = "")
