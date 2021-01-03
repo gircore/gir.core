@@ -104,8 +104,15 @@ namespace GObject
             // Free Memory
             Marshal.FreeHGlobal(ptr);
 
+            var newType = new Type(typeid);
             // Register type in type dictionary
-            TypeDictionary.AddSingle(type, new Type(typeid));
+            TypeDictionary.AddSingle(type, newType);
+            
+            TypeHelper.InvokeStaticMethod(
+                type: type,
+                name: "RegisterInterfaces",
+                parameters: newType
+            );
         }
 
         private static Type TypeFromHandle(IntPtr handle)

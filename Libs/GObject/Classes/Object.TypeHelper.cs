@@ -31,7 +31,7 @@ namespace GObject
                 );
             };
             
-            private static void InvokeStaticMethod(IReflect type, string name, params object[] parameters)
+            public static void InvokeStaticMethod(IReflect type, string name, params object[] parameters)
             {
                 MethodInfo? method = type.GetMethod(
                     name: name,

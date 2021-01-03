@@ -15,12 +15,14 @@ namespace GtkDemo
         public static void Main(string[] args)
         {
             Global.Init();
-
+            var c = new CompositeWidget();
+            c.SetOrientation(Orientation.Horizontal);
+            
             var mainWindow = new Window("MyWindow")
             {
                 DefaultWidth = 300, 
                 DefaultHeight = 200, 
-                Child = new CompositeWidget(),
+                Child = c,
                 [Window.DestroySignal] = (o, e) => Global.MainQuit()
             };
             
