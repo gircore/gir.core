@@ -8,7 +8,7 @@ namespace GstPbutils
     {
         public static bool IsMissingPluginMessage(Gst.Message msg)
         {
-            return MarshalHelper.Execute(msg, (msgPtr) =>
+            return MarshalHelper.ToPtrAndFree(msg, (msgPtr) =>
             {
                 var result = Native.is_missing_plugin_message(msgPtr);
 
@@ -21,7 +21,7 @@ namespace GstPbutils
 
         public static string? MissingPluginMessageGetInstallerDetail(Gst.Message msg)
         {
-            return MarshalHelper.Execute(msg, (msgPtr) =>
+            return MarshalHelper.ToPtrAndFree(msg, (msgPtr) =>
             {
                 IntPtr result = Native.missing_plugin_message_get_installer_detail(msgPtr);
 
@@ -34,7 +34,7 @@ namespace GstPbutils
 
         public static string? MissingPluginMessageGetDescription(Gst.Message msg)
         {
-            return MarshalHelper.Execute(msg, (msgPtr) =>
+            return MarshalHelper.ToPtrAndFree(msg, (msgPtr) =>
             {
                 IntPtr result = Native.missing_plugin_message_get_description(msgPtr);
 

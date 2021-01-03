@@ -41,7 +41,7 @@ namespace Gtk
         {
             var classPtr = TypeHelper.GetClassPointer(gtype);
             
-            MarshalHelper.Execute(gtype, (ptr) => 
+            MarshalHelper.ToPtrAndFree(gtype, (ptr) => 
             {
                 //TODO Verify if OnConnectEvent and DestroyConnectData get garbage collected
                 WidgetClass.Native.set_connect_func(classPtr, OnConnectEvent, ptr, DestroyConnectData);

@@ -5,7 +5,7 @@ namespace GLib
 {
     public class MarshalHelper
     {
-        public static K Execute<T, K>(T s, Func<IntPtr, K> action)  where T : struct
+        public static K ToPtrAndFree<T, K>(T s, Func<IntPtr, K> action)  where T : struct
         {
             K result;
             IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(s));
@@ -22,7 +22,7 @@ namespace GLib
             return result;
         }
         
-        public static void Execute<T>(T s, Action<IntPtr> action) where T : struct
+        public static void ToPtrAndFree<T>(T s, Action<IntPtr> action) where T : struct
         {
             IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(s));
             try

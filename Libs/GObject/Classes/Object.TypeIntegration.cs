@@ -90,7 +90,7 @@ namespace GObject
                 instance_init: InstanceInit
             );
 
-            MarshalHelper.Execute(typeInfo, (ptr) => 
+            MarshalHelper.ToPtrAndFree(typeInfo, (ptr) => 
             {
                 // Perform Registration
                 var qualifiedName = QualifyName(type);

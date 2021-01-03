@@ -22,7 +22,7 @@ namespace GstVideo
 
         public static NavigationMessageType MessageGetType(Message message)
         {
-            return MarshalHelper.Execute(message, (messagePtr) =>
+            return MarshalHelper.ToPtrAndFree(message, (messagePtr) =>
             {
                 var result = Global.Native.navigation_message_get_type(messagePtr);
 
