@@ -9,7 +9,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
-    directory: "/Integrator"
+    directory: "/Integration"
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
