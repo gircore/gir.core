@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using GLib;
 
 namespace GObject
 {
@@ -89,23 +90,19 @@ namespace GObject
                 instance_init: InstanceInit
             );
 
-            // Convert to Pointer
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeInfo));
-            Marshal.StructureToPtr(typeInfo, ptr, true);
+            MarshalHelper.Execute(typeInfo, (ptr) => 
+            {
+                // Perform Registration
+                var qualifiedName = QualifyName(type);
+                Console.WriteLine($"Registering type {type.Name} as {qualifiedName}");
+                var typeid = Global.Native.type_register_static(boundaryTypeId, qualifiedName, ptr, 0);
 
-            // Perform Registration
-            var qualifiedName = QualifyName(type);
-            Console.WriteLine($"Registering type {type.Name} as {qualifiedName}");
-            var typeid = Global.Native.type_register_static(boundaryTypeId, qualifiedName, ptr, 0);
+                if (typeid == 0)
+                    throw new Exception("Type Registration Failed!");
 
-            if (typeid == 0)
-                throw new Exception("Type Registration Failed!");
-
-            // Free Memory
-            Marshal.FreeHGlobal(ptr);
-
-            // Register type in type dictionary
-            TypeDictionary.AddSingle(type, new Type(typeid));
+                // Register type in type dictionary
+                TypeDictionary.AddSingle(type, new Type(typeid));
+            });
         }
 
         private static Type TypeFromHandle(IntPtr handle)
