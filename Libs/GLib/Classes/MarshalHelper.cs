@@ -11,7 +11,7 @@ namespace GLib
             IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(structure));
             try
             {
-                Marshal.StructureToPtr(structure, ptr, true);
+                Marshal.StructureToPtr(structure, ptr, false);
                 result = action(ptr);
             }
             finally
@@ -27,7 +27,7 @@ namespace GLib
             IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(structure));
             try
             {
-                Marshal.StructureToPtr(structure, ptr, true);
+                Marshal.StructureToPtr(structure, ptr, false);
                 action(ptr);
             }
             finally
