@@ -9,7 +9,7 @@ namespace GLib
         {
             var resultString = Marshal.PtrToStringAnsi(ptr);
             Global.Native.free(ptr);
-            return resultString ?? "";
+            return resultString ?? string.Empty;
         }
     }
 }
