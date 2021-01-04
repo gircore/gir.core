@@ -20,6 +20,9 @@ namespace Gir
         [XmlElement ("field")]
         public List<GField> Fields { get; set; } = default!;
 
+        [XmlElement("virtual-method")] 
+        public List<GVirtualMethod> VirtualMethods { get; set; } = default!;
+
         [XmlAttribute("parent")]
         public string? Parent { get; set; }
 
