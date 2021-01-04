@@ -106,7 +106,7 @@ namespace GObject
         }
 
         /// <summary>
-        /// Initializes a wrapper for an existing object
+        /// Initializes a wrapper for an existing objectTypedes
         /// </summary>
         /// <param name="handle"></param>
         protected Object(IntPtr handle)

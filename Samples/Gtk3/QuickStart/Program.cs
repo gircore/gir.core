@@ -1,4 +1,7 @@
-﻿using Gtk;
+﻿using System;
+using System.Runtime.InteropServices;
+using GObject;
+using Gtk;
 using Global = Gtk.Global;
 
 namespace GtkDemo
@@ -46,7 +49,7 @@ namespace GtkDemo
 
                     // Add some widgets to the notebook
                     ["Page1"] = new Label("Hello C#"),
-                    ["Page2"] = new Button("Open")
+                    ["Page2"] = new MyButton("Open")
                     {
                         // Register a callback for the button
                         [Button.ClickedSignal] = OnOpenButtonClick,
@@ -130,5 +133,45 @@ namespace GtkDemo
         }
 
         #endregion
+    }
+    
+    public class MyButton : Button
+    {
+        private static Button.delPressed delPressedOrig;
+
+        private static unsafe void ClassInit(GObject.Type gClass, System.Type type, IntPtr classData)
+        {
+            var _buttonClass = (ButtonClass*) TypeHelper.GetClassPointer(gClass);
+            _buttonClass->pressed = Marshal.GetFunctionPointerForDelegate<delPressed>(StaticPressed);
+
+            var parent = GObject.Global.Native.type_parent(gClass.Value);
+            var parentbuttonClass = (ButtonClass*) TypeHelper.GetClassPointer(new GObject.Type(parent));
+            delPressedOrig = Marshal.GetDelegateForFunctionPointer<delPressed>(parentbuttonClass->pressed);
+        }
+
+        public MyButton(string label) : base(label)
+        {
+            
+        }
+
+        private static void StaticPressed(nint instance)
+        {
+            if (TryWrapHandle<MyButton>(instance, out var obj))
+            {
+                obj.Pressed();
+            }
+        }
+        
+        private void BasePressed()
+        {
+            delPressedOrig(Handle);
+        }
+        
+        //[Overrides(VirtualMethod.Pressed)]
+        public void Pressed()
+        {
+            BasePressed();
+            Console.WriteLine("bla");
+        }
     }
 }

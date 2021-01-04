@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Gir;
 
 namespace Generator
@@ -29,8 +31,6 @@ namespace Generator
 
         public override string ToString() => GetTypeString();
 
-        // public string GetTypeString() => Attribute + (IsRef ? "ref " : string.Empty) + Type;
-
         public string GetTypeString() => Attribute + Direction switch
         {
             Direction.Value => Type,
@@ -42,7 +42,6 @@ namespace Generator
         };
         
         public string GetFieldString() => Direction == Direction.Value ? Type : "IntPtr";
-
         #endregion
 
         #region IEquatable<ResolvedType> Implementation
@@ -125,7 +124,7 @@ namespace Generator
 
         public ResolvedType Resolve(IType typeInfo) => typeInfo switch
         {
-            GField f when f.Callback is { } => new ResolvedType("IntPtr"),
+            GField f when f.Callback is { } c => ResolveCallback(c),
             { Array: { CType: { } n } } when n.EndsWith("**") => new ResolvedType("IntPtr", Direction.InOut),
             { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter, typeInfo)),
             { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),
@@ -134,6 +133,17 @@ namespace Generator
             { Array: { } } => new ResolvedType("IntPtr"),
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
+        
+        private ResolvedType ResolveCallback(GCallback callback)
+        {
+            ResolvedType returntype = Resolve(callback.ReturnValue ?? throw new Exception("Missing return for callback"));
+
+            List<ResolvedType> parameters = callback.Parameters?.AllParameters.Select(Resolve).ToList() ?? new ();
+            parameters.Add(returntype);
+
+            var parametersString = string.Join(", ", parameters.Select(x => x.GetFieldString()));
+            return new ResolvedType($"unsafe delegate* unmanaged[Cdecl]<{parametersString}>");
+        }
 
         private MyType StringArray(string length, bool isParameter) => new MyType("byte")
         {

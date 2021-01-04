@@ -9,7 +9,7 @@ namespace {{ namespace }}
 
     {{ include 'header.sbntxt' this ~}}
     [StructLayout(LayoutKind.Sequential)]
-    public partial struct {{ name }}
+    public unsafe partial struct {{ name }}
     {
         #region Fields
         {{~ for field in fields }}
