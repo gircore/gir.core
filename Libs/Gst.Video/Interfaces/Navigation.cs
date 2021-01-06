@@ -1,5 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using GLib;
 using Gst;
 using Object = GObject.Object;
 
@@ -22,17 +22,16 @@ namespace GstVideo
 
         public static NavigationMessageType MessageGetType(Message message)
         {
-            // Marshal message structure
-            IntPtr messagePtr = Marshal.AllocHGlobal(Marshal.SizeOf(message));
-            Marshal.StructureToPtr(message, messagePtr, false);
-            
-            var result = Global.Native.navigation_message_get_type(messagePtr);
+            return MarshalHelper.ToPtrAndFree(message, (messagePtr) =>
+            {
+                var result = Global.Native.navigation_message_get_type(messagePtr);
 
-            // Update message structure
-            // TODO: Not necessary?
-            Marshal.PtrToStructure(messagePtr, message);
+                // Update message structure
+                // TODO: Not necessary?
+                Marshal.PtrToStructure(messagePtr, message);
 
-            return result;
+                return result;
+            });
         }
     }
 }

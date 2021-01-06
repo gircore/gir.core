@@ -2,6 +2,7 @@ using GObject;
 using System;
 using System.Text;
 using System.Runtime.InteropServices;
+using GLib;
 
 namespace Gtk
 {
@@ -10,7 +11,7 @@ namespace Gtk
         public CssProvider() {}
 
         public override string ToString()
-            => Marshal.PtrToStringAnsi(Native.to_string(Handle)) ?? string.Empty;
+            => StringHelper.ToAnsiStringAndFree(Native.to_string(Handle));
 
         public bool LoadFromData(string data, out GLib.Error? error)
         {
