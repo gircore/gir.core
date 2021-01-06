@@ -34,10 +34,7 @@ namespace GLib
         public override string? ToString()
         {
             IntPtr variantType = dup_string(Handle);
-            var t = Marshal.PtrToStringAnsi(variantType);
-            //TODO FREE variantType!!
-
-            return t ?? System.String.Empty;
+            return StringHelper.ToAnsiStringAndFree(variantType);
         }
 
         #endregion

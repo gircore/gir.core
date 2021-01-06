@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using GObject;
+﻿using GLib;
 
 namespace Gtk
 {
@@ -14,7 +8,7 @@ namespace Gtk
         {
             var obj = (GObject.Object) this;
             var ptr = Native.get_uri(obj.Handle);
-            return Marshal.PtrToStringAnsi(ptr);
+            return StringHelper.ToAnsiStringAndFree(ptr);
         }
     }
 }

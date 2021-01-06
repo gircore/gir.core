@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace GObject
@@ -52,7 +53,9 @@ namespace GObject
         // Print out the name of the GType
         public override string ToString()
         {
-            return Marshal.PtrToStringAnsi(Global.Native.type_name(_value)) ?? string.Empty;
+            //Do not free namePtr as the ownership is not transfered!
+            IntPtr namePtr = Global.Native.type_name(_value);
+            return Marshal.PtrToStringAnsi(namePtr) ?? string.Empty;
         }
 
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h

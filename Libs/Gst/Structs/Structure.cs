@@ -11,6 +11,7 @@ namespace Gst
             IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
             
+            // Do not free result as ownership is not transferred!
             IntPtr result = Native.get_name(thisPtr);
 
             // TODO: Do we need to update this structure?

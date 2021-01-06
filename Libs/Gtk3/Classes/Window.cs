@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GLib;
 using GObject;
 
 namespace Gtk
@@ -726,10 +727,9 @@ namespace Gtk
 
         public void SetGeometryHints(Widget geometryWidget, Gdk.Geometry geometry, Gdk.WindowHints geometryMask)
         {
-            IntPtr geoPtr = Marshal.AllocHGlobal(Marshal.SizeOf(geometry));
-            Marshal.StructureToPtr(geometry, geoPtr, true);
-            Native.set_geometry_hints(Handle, geometryWidget.Handle, geoPtr, geometryMask);
-            Marshal.FreeHGlobal(geoPtr);
+            MarshalHelper.ToPtrAndFree(geometry, (geoPtr)
+                => Native.set_geometry_hints(Handle, geometryWidget.Handle, geoPtr, geometryMask)
+            );
         }
 
         public void SetGravity(Gdk.Gravity gravity) =>
@@ -776,22 +776,16 @@ namespace Gtk
 
         public bool ActivateKey(Gdk.EventKey @event)
         {
-            IntPtr eventPtr = Marshal.AllocHGlobal(Marshal.SizeOf(@event));
-            Marshal.StructureToPtr(@event, eventPtr, true);
-            var result = Native.activate_key(Handle, eventPtr);
-            Marshal.FreeHGlobal(eventPtr);
-
-            return result;
+            return MarshalHelper.ToPtrAndFree(@event, (eventPtr) 
+                => Native.activate_key(Handle, eventPtr)
+            );
         }
 
         public bool PropagateKeyEvent(Gdk.EventKey @event)
         {
-            IntPtr eventPtr = Marshal.AllocHGlobal(Marshal.SizeOf(@event));
-            Marshal.StructureToPtr(@event, eventPtr, true);
-            var result = Native.propagate_key_event(Handle, eventPtr);
-            Marshal.FreeHGlobal(eventPtr);
-
-            return result;
+            return MarshalHelper.ToPtrAndFree(@event, (eventPtr)
+                => Native.propagate_key_event(Handle, eventPtr)
+            );
         }
 
         public Widget? GetFocus() =>
@@ -1009,10 +1003,7 @@ namespace Gtk
 
         public static void SetDefaultIconList(GLib.List list)
         {
-            IntPtr listPtr = Marshal.AllocHGlobal(Marshal.SizeOf(list));
-            Marshal.StructureToPtr(list, listPtr, true);
-            Native.set_default_icon_list(listPtr);
-            Marshal.FreeHGlobal(listPtr);
+            MarshalHelper.ToPtrAndFree(list, Native.set_default_icon_list);
         }
 
         public static void SetDefaultIcon(GdkPixbuf.Pixbuf icon) =>
@@ -1034,10 +1025,9 @@ namespace Gtk
 
         public void SetIconList(GLib.List list)
         {
-            IntPtr listPtr = Marshal.AllocHGlobal(Marshal.SizeOf(list));
-            Marshal.StructureToPtr(list, listPtr, true);
-            Native.set_icon_list(Handle, listPtr);
-            Marshal.FreeHGlobal(listPtr);
+            MarshalHelper.ToPtrAndFree(list, (listPtr)
+                => Native.set_icon_list(Handle, listPtr)
+            );
         }
 
         public bool SetIconFromFile(string filename)
@@ -1089,11 +1079,18 @@ namespace Gtk
         [Obsolete("Resize grips have been removed.")]
         public bool GetResizeGripArea(out Gdk.Rectangle rect)
         {
-            rect = new Gdk.Rectangle();
-            IntPtr rectPtr = Marshal.AllocHGlobal(Marshal.SizeOf(rect));
-            var result = Native.get_resize_grip_area(Handle, ref rectPtr);
-            rect = Marshal.PtrToStructure<Gdk.Rectangle>(rectPtr);
-            Marshal.FreeHGlobal(rectPtr);
+            IntPtr rectPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Gdk.Rectangle)));
+            
+            bool result;
+            try
+            {
+                result = Native.get_resize_grip_area(Handle, ref rectPtr);
+                rect = Marshal.PtrToStructure<Gdk.Rectangle>(rectPtr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(rectPtr);   
+            }
             return result;
         }
 
