@@ -7,6 +7,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.CS.GstBase</PackageId>
+    <PackageId>Gir.GstBase</PackageId>
   </PropertyGroup>
 </Project>

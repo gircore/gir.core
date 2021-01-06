@@ -11,13 +11,15 @@ namespace Build
         private readonly ISampleBuilder _sampleBuilder;
         private readonly ITester _tester;
         private readonly ILibraryPacker _libraryPacker;
+        private readonly IIntegrationBuilder _integrationBuilder;
 
-        public Runner(IProjectCleaner projectCleaner, ILibraryGenerator libraryGenerator, ILibraryBuilder libraryBuilder, ILibraryPacker libraryPacker, ISampleBuilder sampleBuilder, ITester tester)
+        public Runner(IProjectCleaner projectCleaner, ILibraryGenerator libraryGenerator, ILibraryBuilder libraryBuilder, ILibraryPacker libraryPacker, ISampleBuilder sampleBuilder, ITester tester, IIntegrationBuilder integrationBuilder)
         {
             _projectCleaner = projectCleaner;
             _libraryGenerator = libraryGenerator;
             _libraryBuilder = libraryBuilder;
             _sampleBuilder = sampleBuilder;
+            _integrationBuilder = integrationBuilder;
             _tester = tester;
             _libraryPacker = libraryPacker;
         }
@@ -53,10 +55,15 @@ namespace Build
                 dependsOn: new [] { Targets.Build },
                 action: PackLibraries
             );
+            
+            targets.Add(
+                name: Targets.Integration,
+                action: BuildIntegration
+            );
 
             targets.Add(
                 name: Targets.Samples,
-                dependsOn: new [] { Targets.Build },
+                dependsOn: new [] { Targets.Build, Targets.Integration },
                 action: BuildSamples
             );
 
@@ -104,6 +111,11 @@ namespace Build
             _libraryPacker.PackLibraries();
         }
         
+        private void BuildIntegration()
+        {
+            _integrationBuilder.BuildIntegration();
+        }
+        
         #region Targets
         
         private static class Targets
@@ -116,6 +128,7 @@ namespace Build
             public const string Pack = "pack";
             public const string Samples = "samples";
             public const string Test = "test";
+            public const string Integration = "integration";
 
             #endregion
         }

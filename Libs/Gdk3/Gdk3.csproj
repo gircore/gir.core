@@ -7,6 +7,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.CS.Gdk3</PackageId>
+    <PackageId>Gir.Gdk3</PackageId>
   </PropertyGroup>
 </Project>

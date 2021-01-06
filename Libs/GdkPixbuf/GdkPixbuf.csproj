@@ -5,6 +5,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.CS.GdkPixbuf</PackageId>
+    <PackageId>Gir.GdkPixbuf</PackageId>
   </PropertyGroup>
 </Project>

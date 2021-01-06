@@ -4,6 +4,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.CS.Gio</PackageId>
+    <PackageId>Gir.Gio</PackageId>
   </PropertyGroup>
 </Project>

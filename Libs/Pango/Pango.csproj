@@ -6,6 +6,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.CS.Pango</PackageId>
+    <PackageId>Gir.Pango</PackageId>
   </PropertyGroup>
 </Project>

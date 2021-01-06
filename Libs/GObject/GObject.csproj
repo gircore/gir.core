@@ -8,6 +8,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.CS.GObject</PackageId>
+    <PackageId>Gir.GObject</PackageId>
   </PropertyGroup>
 </Project>

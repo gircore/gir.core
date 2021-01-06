@@ -1,17 +1,6 @@
 <Project>
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-
-    <Authors>Marcel Tiede</Authors>
-    <Company>GirCore</Company>
-    <owners>badcel</owners>
-
-    <RepositoryUrl>https://github.com/GirCore/gir.core</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
+  <Import Project="../General.props" />
+  <Import Project="../Nuget.props" />
   
   <PropertyGroup Condition="$(GirComments) == 'True'">
     <NoWarn>1591</NoWarn>

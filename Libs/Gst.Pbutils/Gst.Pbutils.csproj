@@ -9,6 +9,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.CS.GstPbutils</PackageId>
+    <PackageId>Gir.GstPbutils</PackageId>
   </PropertyGroup>
 </Project>

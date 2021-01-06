@@ -9,6 +9,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.CS.Gtk</PackageId>
+    <PackageId>Gir.Gtk</PackageId>
   </PropertyGroup>
 </Project>

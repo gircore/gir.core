@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Gir.CS.GLib</PackageId>
+    <PackageId>Gir.GLib</PackageId>
   </PropertyGroup>
 </Project>

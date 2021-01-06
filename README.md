@@ -50,10 +50,11 @@ To get a full list of available options use `--help`.
 Supported targets are:
 * `generate`: Generates the source code files. Recognizes `comments` option.
 * `build`: Builds the project with `Debug` or `Release` configuration. Recognizes `xml-documentation` and `version` option. Depends on `generate` target.
+* `integration`: Builds the integration library.
 * `test`: Execute unit tests with `Debug` or `Release` configuration. Depends on `build`.
-* `pack`: Packs the libraries into the `Nuget` folder in the project root. Recognizes `version` option. Depends on `build`. 
+* `pack`: Packs the libraries into the `Nuget` folder in the project root. Recognizes `version` option. Depends on `build`.
 * `clean`:  Cleans `samples` and `build` output including generated source code files.
-* `samples`: Builds the sample applications with `Debug` or `Release` configuration. Depends on `build`.
+* `samples`: Builds the sample applications with `Debug` or `Release` configuration. Depends on `build` and `integration`.
 
 If no target is specified the `build` target is executed.
 

@@ -68,6 +68,7 @@ namespace Build
             var libraryBuilder = new LibraryBuilder(settings);
             var librarypacker = new LibraryPacker(settings);
             var sampleBuilder = new SampleBuilder(settings);
+            var integrationBuilder = new IntegrationBuilder(settings);
             var tester = new Tester(settings);
             
             var runner = new Runner(
@@ -76,6 +77,7 @@ namespace Build
                 libraryBuilder: libraryBuilder,
                 libraryPacker: librarypacker,
                 sampleBuilder: sampleBuilder,
+                integrationBuilder: integrationBuilder,
                 tester: tester
             );
             runner.Run(targets, options);
