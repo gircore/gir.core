@@ -11,7 +11,7 @@ namespace {{ namespace }}
         {
             SetTemplate(
                 gtype: gClass, 
-                template: Assembly.GetExecutingAssembly().ReadResourceBytes({{ template_name }})
+                template: Assembly.GetExecutingAssembly().ReadResourceAsBytes({{ template_name }})
             );
             BindTemplateSignals(gClass, type);
             {{~ for field in connect_fields ~}}

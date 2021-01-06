@@ -14,7 +14,7 @@ namespace GtkDemo
         {
             SetTemplate(
                 gtype: gClass, 
-                template: Assembly.GetExecutingAssembly().ReadResourceBytes("CompositeWidget.ui")
+                template: Assembly.GetExecutingAssembly().ReadResourceAsBytes("CompositeWidget.ui")
             );
             BindTemplateChild(gClass, nameof(Button));
             BindTemplateSignals(gClass, type);

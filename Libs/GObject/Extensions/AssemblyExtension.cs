@@ -7,7 +7,7 @@ namespace GObject
 {
     public static class AssemblyExtension
     {
-        public static Bytes ReadResourceBytes(this Assembly assembly, string resource)
+        public static Bytes ReadResourceAsBytes(this Assembly assembly, string resource)
         {
             Stream? stream = assembly.GetManifestResourceStream(resource);
 
