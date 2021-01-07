@@ -137,16 +137,15 @@ namespace GtkDemo
     
     public class MyButton : Button
     {
-        private static Button.delPressed delPressedOrig;
+        private unsafe static ButtonClass* buttonClass;
 
         private static unsafe void ClassInit(GObject.Type gClass, System.Type type, IntPtr classData)
         {
-            var _buttonClass = (ButtonClass*) TypeHelper.GetClassPointer(gClass);
-            _buttonClass->pressed = Marshal.GetFunctionPointerForDelegate<delPressed>(StaticPressed);
+            var myButtonClass = (ButtonClass*) TypeHelper.GetClassPointer(gClass);
+            myButtonClass->pressed = &StaticPressed;
 
-            var parent = GObject.Global.Native.type_parent(gClass.Value);
-            var parentbuttonClass = (ButtonClass*) TypeHelper.GetClassPointer(new GObject.Type(parent));
-            delPressedOrig = Marshal.GetDelegateForFunctionPointer<delPressed>(parentbuttonClass->pressed);
+            var buttonType = GObject.Global.GetParentType(gClass);
+            buttonClass = (ButtonClass*) TypeHelper.GetClassPointer(buttonType);
         }
 
         public MyButton(string label) : base(label)
@@ -154,6 +153,7 @@ namespace GtkDemo
             
         }
 
+        [UnmanagedCallersOnly]
         private static void StaticPressed(nint instance)
         {
             if (TryWrapHandle<MyButton>(instance, out var obj))
@@ -161,17 +161,16 @@ namespace GtkDemo
                 obj.Pressed();
             }
         }
-        
-        private void BasePressed()
-        {
-            delPressedOrig(Handle);
-        }
-        
+
+        //This could be a potential attribute to trigger code generation for virtual methods
         //[Overrides(VirtualMethod.Pressed)]
         public void Pressed()
         {
-            BasePressed();
-            Console.WriteLine("bla");
+            unsafe
+            {
+                buttonClass->pressed(Handle);   
+            }
+            Console.WriteLine("TestTest");
         }
     }
 }

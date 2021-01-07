@@ -142,7 +142,7 @@ namespace Generator
             parameters.Add(returntype);
 
             var parametersString = string.Join(", ", parameters.Select(x => x.GetFieldString()));
-            return new ResolvedType($"unsafe delegate* unmanaged[Cdecl]<{parametersString}>");
+            return new ResolvedType($"unsafe delegate* unmanaged<{parametersString}>");
         }
 
         private MyType StringArray(string length, bool isParameter) => new MyType("byte")
