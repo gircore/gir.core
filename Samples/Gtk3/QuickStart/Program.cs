@@ -162,14 +162,19 @@ namespace GtkDemo
             }
         }
 
-        //This could be a potential attribute to trigger code generation for virtual methods
-        //[Overrides(VirtualMethod.Pressed)]
-        public void Pressed()
+        private void BasePressed()
         {
             unsafe
             {
                 buttonClass->pressed(Handle);   
             }
+        }
+
+        //This could be a potential attribute to trigger code generation for virtual methods
+        //[Overrides(VirtualMethod.Pressed)]
+        public void Pressed()
+        {
+            BasePressed();
             Console.WriteLine("TestTest");
         }
     }
