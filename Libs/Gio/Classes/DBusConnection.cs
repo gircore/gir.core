@@ -13,10 +13,7 @@ namespace Gio
             IntPtr handle = Global.Native.bus_get_sync(busType, IntPtr.Zero, out IntPtr error);
             Error.ThrowOnError(error);
 
-            if (GetObject(handle, out DBusConnection obj))
-                return obj;
-
-            return new DBusConnection(handle);
+            return WrapHandle<DBusConnection>(handle, true);
         }
         
         #endregion

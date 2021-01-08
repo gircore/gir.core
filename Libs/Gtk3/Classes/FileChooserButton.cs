@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GObject;
+﻿using GObject;
 
 namespace Gtk
 {
@@ -110,6 +105,6 @@ namespace Gtk
             ConstructParameter.With(DialogProperty, dialog)) {}
 
         public static FileChooserButton New(string title, FileChooserAction action)
-            => new FileChooserButton(Native.@new(title, action));
+            => new FileChooserButton(Native.@new(title, action), false);
     }
 }

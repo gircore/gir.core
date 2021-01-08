@@ -10,7 +10,7 @@ namespace Gtk
     public partial class Builder
     {
         #region Constructors
-        public Builder(string template) : this(Native.@new())
+        public Builder(string template)
         {
             var templateContent = GetTemplate(Assembly.GetCallingAssembly(), template);
             var length = (ulong) Encoding.UTF8.GetByteCount(templateContent);

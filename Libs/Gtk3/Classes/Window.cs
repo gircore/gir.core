@@ -757,7 +757,7 @@ namespace Gtk
             Native.set_screen(Handle, screen.Handle);
 
         public new Gdk.Screen GetScreen() =>
-            WrapHandle<Gdk.Screen>(Native.get_screen(Handle));
+            WrapHandle<Gdk.Screen>(Native.get_screen(Handle), false);
 
         public GLib.List ListToplevels()
         {
@@ -913,8 +913,8 @@ namespace Gtk
         public bool GetHideTitlebarWhenMaximized() =>
             Native.get_hide_titlebar_when_maximized(Handle);
 
-        public GdkPixbuf.Pixbuf GetIcon() =>
-            WrapHandle<GdkPixbuf.Pixbuf>(Native.get_icon(Handle));
+        public GdkPixbuf.Pixbuf? GetIcon() =>
+            WrapNullableHandle<GdkPixbuf.Pixbuf>(Native.get_icon(Handle),false);
 
         public GLib.List GetIconList()
         {
@@ -955,14 +955,12 @@ namespace Gtk
 
         public Window? GetTransientFor()
         {
-            IntPtr windowPtr = Native.get_transient_for(Handle);
-            return windowPtr == IntPtr.Zero ? null : WrapHandle<Window>(windowPtr);
+            return WrapNullableHandle<Window>(Native.get_transient_for(Handle), false);
         }
 
         public Widget? GetAttachedTo()
         {
-            IntPtr widgetPtr = Native.get_attached_to(Handle);
-            return widgetPtr == IntPtr.Zero ? null : WrapHandle<Widget>(widgetPtr);
+            return WrapNullableHandle<Widget>(Native.get_attached_to(Handle), false);
         }
 
         public Gdk.WindowTypeHint GetTypeHint() =>
