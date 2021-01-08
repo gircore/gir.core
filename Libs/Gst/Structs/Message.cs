@@ -19,7 +19,7 @@ namespace Gst
         
         public Gst.Object Src
         {
-            get => GObject.Object.WrapHandle<Gst.Object>(src);
+            get => GObject.Object.WrapHandle<Gst.Object>(src, false);
             set => src = value.Handle;
         }
 

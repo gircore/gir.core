@@ -50,21 +50,11 @@ namespace Gst
 
             Error.ThrowOnError(errPtr);
 
-            return TryWrapHandle(result, out Element? element) ? element : null;
+            return WrapNullableHandle<Element>(result, false);
         }
         
-        public Bus GetBus()
-        {
-            IntPtr ret = Native.get_bus(Handle);
-            
-            if (GetObject(ret, out Bus obj))
-                return obj;
-
-            if(ret == IntPtr.Zero)
-                throw new Exception("Could not convert pointer to bus");
-            
-            return new Bus(ret);
-        }
+        public Bus? GetBus()
+            => WrapNullableHandle<Bus>(Native.get_bus(Handle), true);
 
         public bool AddPad(Pad pad) => Native.add_pad(Handle, pad.Handle);
 
@@ -99,8 +89,8 @@ namespace Gst
             return Native.query_duration(Handle, format, out duration);
         }
 
-        public Pad GetStaticPad(string name)
-            => WrapHandle<Pad>(Native.get_static_pad(Handle, name));
+        public Pad? GetStaticPad(string name)
+            => WrapNullableHandle<Pad>(Native.get_static_pad(Handle, name), true);
         
         public static void Unlink(Element src, Element dest)
             => Native.unlink(src.Handle, dest.Handle);
@@ -135,7 +125,7 @@ namespace Gst
         }
 
         public Pad? GetRequestPad(string name)
-            => TryWrapHandle(Native.get_request_pad(Handle, name), out Pad? pad) ? pad : null;
+            => WrapNullableHandle<Pad>(Native.get_request_pad(Handle, name), true);
 
         public bool SyncStateWithParent()
             => Native.sync_state_with_parent(Handle);
