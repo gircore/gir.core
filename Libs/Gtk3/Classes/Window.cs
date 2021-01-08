@@ -950,15 +950,11 @@ namespace Gtk
         public string? GetTitle() =>
             Marshal.PtrToStringAnsi(Native.get_title(Handle));
 
-        public Window? GetTransientFor()
-        {
-            return WrapNullableHandle<Window>(Native.get_transient_for(Handle), false);
-        }
+        public Window? GetTransientFor() =>
+            WrapNullableHandle<Window>(Native.get_transient_for(Handle), false);
 
-        public Widget? GetAttachedTo()
-        {
-            return WrapNullableHandle<Widget>(Native.get_attached_to(Handle), false);
-        }
+        public Widget? GetAttachedTo() =>
+            WrapNullableHandle<Widget>(Native.get_attached_to(Handle), false);
 
         public Gdk.WindowTypeHint GetTypeHint() =>
             Native.get_type_hint(Handle);
