@@ -96,7 +96,7 @@ namespace Gtk
                 if(ptr == IntPtr.Zero)
                     throw new Exception($"{field.ReflectedType?.FullName} Field {field.Name}: Could not find an element in the template with the name {element}");
 
-                var newElement = constructor.Invoke(new object[] {ptr});
+                var newElement = constructor.Invoke(new object[] { ptr, false});
                 field.SetValue(obj, newElement);
             }
         }
@@ -105,10 +105,13 @@ namespace Gtk
         {
             var parameters = constructorInfo.GetParameters();
 
-            if(parameters.Length != 1)
+            if (parameters.Length != 2)
                 return false;
 
-            if(parameters.First().ParameterType != typeof(IntPtr))
+            if (parameters[0].ParameterType != typeof(IntPtr))
+                return false;
+            
+            if(parameters[1].ParameterType != typeof(bool))
                 return false;
 
             return true;

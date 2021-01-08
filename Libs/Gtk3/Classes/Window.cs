@@ -791,11 +791,8 @@ namespace Gtk
         public Widget? GetFocus() =>
             GetFocus<Widget>();
 
-        public T? GetFocus<T>() where T : Widget
-        {
-            IntPtr focusPtr = Native.get_focus(Handle);
-            return focusPtr == IntPtr.Zero ? null : WrapHandle<T>(focusPtr);
-        }
+        public T? GetFocus<T>() where T : Widget =>
+            WrapNullableHandle<T>(Native.get_focus(Handle), false);
 
         public void SetFocus(Widget? focus) =>
             Native.set_focus(Handle, focus is null ? IntPtr.Zero : focus.Handle);
@@ -1092,11 +1089,8 @@ namespace Gtk
             return result;
         }
 
-        public Application? GetApplication()
-        {
-            IntPtr appPtr = Native.get_application(Handle);
-            return appPtr == IntPtr.Zero ? null : WrapHandle<Application>(appPtr);
-        }
+        public Application? GetApplication() =>
+            WrapNullableHandle<Application>(Native.get_application(Handle), false);
 
         public void SetApplication(Application? application) =>
             Native.set_application(Handle, application is null ? IntPtr.Zero : application.Handle);
@@ -1107,11 +1101,8 @@ namespace Gtk
         public void SetTitlebar(Widget? titlebar) =>
             Native.set_titlebar(Handle, titlebar is null ? IntPtr.Zero : titlebar.Handle);
 
-        public Widget? GetTitlebar()
-        {
-            IntPtr ptr = Native.get_titlebar(Handle);
-            return ptr == IntPtr.Zero ? null : WrapHandle<Widget>(ptr);
-        }
+        public Widget? GetTitlebar() =>
+            WrapNullableHandle<Widget>(Native.get_titlebar(Handle), false);
 
         public static void SetInteractiveDebugging(bool enable) =>
             Native.set_interactive_debugging(enable);

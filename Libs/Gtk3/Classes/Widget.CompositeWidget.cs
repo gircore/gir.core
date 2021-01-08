@@ -29,7 +29,7 @@ namespace Gtk
             var systemType = GetType();
             var gtype = TypeDictionary.Get(systemType);
             IntPtr ptr = Native.get_template_child(Handle, gtype.Value, name);
-            field = WrapHandle<T>(ptr);
+            field = WrapHandle<T>(ptr, false);
         }
 
         protected static void BindTemplateChild(Type gtype, string name)
@@ -52,7 +52,7 @@ namespace Gtk
         private static void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name,
             IntPtr connect_object, ConnectFlags flags, IntPtr user_data)
         {
-            if(!TryWrapHandle<Widget>(@object, out var eventSender))
+            if(!TryWrapHandle<Widget>(@object, false, out var eventSender))
                 return;
 
             if (!TryGetEvent(eventSender.GetType(), signal_name, out EventInfo? @event))
@@ -61,7 +61,7 @@ namespace Gtk
             if (@event.EventHandlerType is null)
                 return;
             
-            if(!TryWrapHandle<Widget>(connect_object, out var compositeWidget))
+            if(!TryWrapHandle<Widget>(connect_object, false, out var compositeWidget))
                 return;
 
             if (!TryGetMethod(compositeWidget.GetType(), handler_name, out MethodInfo? compositeWidgetEventHandler))

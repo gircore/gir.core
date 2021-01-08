@@ -58,11 +58,7 @@ namespace GObject
             var names = new IntPtr[properties.Length];
             var values = new Value[properties.Length];
 
-            IntPtr ptrFirstName = IntPtr.Zero;
             IntPtr handle;
-            
-            if (properties.Length > 0)
-                ptrFirstName = names[0];
 
             try
             {
@@ -74,6 +70,8 @@ namespace GObject
                     names[i] = Marshal.StringToHGlobalAnsi(prop.Name);
                     values[i] = prop.Value;
                 }
+               
+                IntPtr ptrFirstName = properties.Length > 0 ? names[0] : IntPtr.Zero;
 
                 // Create with properties: The new object is owned by us even in case of an object
                 // which inherits GInitially unowned.
@@ -103,12 +101,6 @@ namespace GObject
         /// <param name="ownedRef">Defines if the handle is owned by us. If not owned by us it is refed to keep it around.</param>
         protected Object(IntPtr handle, bool ownedRef)
         {
-            //This is never called if an object is created with new... from C#. It is only called for wrapped pointers.
-            
-            // TODO: Check to make sure the handle matches our
-            // wrapper type.
-            Initialize(handle);
-
             if (!ownedRef)
             {
                 // - Unowned GObjects need to be refed to bind them to this instance
@@ -124,6 +116,10 @@ namespace GObject
 
                 Debug.Assert(!Native.is_floating(handle), "Owned floating references are not possible.");
             }
+            
+            // TODO: Check to make sure the handle matches our
+            // wrapper type.
+            Initialize(handle);
         }
 
         ~Object() => Dispose(false);
@@ -361,7 +357,7 @@ namespace GObject
         /// <param name="ownedRef">Specify if the ref is owned by us, because ownership was transferred.</param>
         /// <typeparam name="T"></typeparam>
         /// <returns><c>true</c> if the handle was wrapped, or <c>false</c> if something went wrong.</returns>
-        public static bool TryWrapHandle<T>(IntPtr handle, bool ownedRef, [NotNullWhen(true)] out T? o)
+        public static bool TryWrapHandle<T>(IntPtr handle, bool ownedRef, [NotNullWhen(true)] out T? o) 
             where T : Object
         {
             o = null;
@@ -406,9 +402,9 @@ namespace GObject
 
         protected virtual void DisposeManagedState()
         {
-            Handle = IntPtr.Zero;
             Objects.Remove(Handle);
-            
+            Handle = IntPtr.Zero;
+
             // TODO: Find out about closure release
             /*foreach(var closure in closures)
                 closure.Dispose();*/
