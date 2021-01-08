@@ -45,8 +45,8 @@ namespace GObject
         /// Constructs a new object
         /// </summary>
         /// <param name="properties"></param>
-        /// <remarks>This constructor is protected to be sure that there is no caller (enduser) keeping a reference tothe
-        /// construct parameters as the contained values are freed at the end of this constructor.
+        /// <remarks>This constructor is protected to be sure that there is no caller (enduser) keeping a reference to
+        /// the construct parameters as the contained values are freed at the end of this constructor.
         /// If certain constructors are needed they need to be implemented with concrete constructor arguments in
         /// a higher layer.</remarks>
         protected Object(params ConstructParameter[] properties)
