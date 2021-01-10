@@ -25,6 +25,7 @@ namespace Gio
         {
             var tcs = new TaskCompletionSource<Variant>();
 
+            //TODO: This could be garbage collected and the callback would not work anymore
             void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
             {
                 IntPtr ret = Native.call_finish(sourceObject, res, out IntPtr error);
