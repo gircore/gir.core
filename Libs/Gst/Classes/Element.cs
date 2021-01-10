@@ -44,13 +44,13 @@ namespace Gst
 
         #endregion
 
-        public static Element? MakeFromUri(URIType type, string uri, string elementName)
+        public static Element MakeFromUri(URIType type, string uri, string elementName)
         {
             IntPtr result = Native.make_from_uri(type, uri, elementName, out IntPtr errPtr);
 
             Error.ThrowOnError(errPtr);
 
-            return WrapNullableHandle<Element>(result, false);
+            return WrapHandle<Element>(result, false);
         }
         
         public Bus? GetBus()
