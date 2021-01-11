@@ -17,6 +17,7 @@ namespace Gst
     {
         public MessageType Type => type;
         
+        //TODO: Clarify if this is needed, see: https://github.com/gircore/gir.core/pull/184#discussion_r554907963
         public Gst.Object Src
         {
             get => GObject.Object.WrapHandle<Gst.Object>(src, false);

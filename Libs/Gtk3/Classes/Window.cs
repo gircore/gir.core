@@ -911,7 +911,7 @@ namespace Gtk
             Native.get_hide_titlebar_when_maximized(Handle);
 
         public GdkPixbuf.Pixbuf? GetIcon() =>
-            WrapNullableHandle<GdkPixbuf.Pixbuf>(Native.get_icon(Handle),false);
+            WrapNullableHandle<GdkPixbuf.Pixbuf>(Native.get_icon(Handle), false);
 
         public GLib.List GetIconList()
         {

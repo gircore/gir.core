@@ -74,15 +74,15 @@ namespace GObject
                     names[i] = Marshal.StringToHGlobalAnsi(prop.Name);
                     values[i] = prop.Value;
                 }
-               
-                IntPtr ptrFirstName = properties.Length > 0 ? names[0] : IntPtr.Zero;
+
+                IntPtr zero = IntPtr.Zero;
 
                 // Create with properties: The new object is owned by us even in case of an object
                 // which inherits GInitially unowned.
                 handle = Native.new_with_properties(
                     typeId.Value,
                     (uint) properties.Length,
-                    ref ptrFirstName,
+                    ref (properties.Length > 0 ? ref names[0] : ref zero),
                     values
                 );
             }
@@ -91,7 +91,7 @@ namespace GObject
                 foreach (IntPtr ptr in names)
                     Marshal.FreeHGlobal(ptr);
 
-                foreach(Value value in values)
+                foreach (Value value in values)
                     value.Dispose();   
             }
 
