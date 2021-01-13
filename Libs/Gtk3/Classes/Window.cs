@@ -757,7 +757,7 @@ namespace Gtk
             Native.set_screen(Handle, screen.Handle);
 
         public new Gdk.Screen GetScreen() =>
-            WrapHandle<Gdk.Screen>(Native.get_screen(Handle));
+            WrapHandle<Gdk.Screen>(Native.get_screen(Handle), false);
 
         public GLib.List ListToplevels()
         {
@@ -791,11 +791,8 @@ namespace Gtk
         public Widget? GetFocus() =>
             GetFocus<Widget>();
 
-        public T? GetFocus<T>() where T : Widget
-        {
-            IntPtr focusPtr = Native.get_focus(Handle);
-            return focusPtr == IntPtr.Zero ? null : WrapHandle<T>(focusPtr);
-        }
+        public T? GetFocus<T>() where T : Widget =>
+            WrapNullableHandle<T>(Native.get_focus(Handle), false);
 
         public void SetFocus(Widget? focus) =>
             Native.set_focus(Handle, focus is null ? IntPtr.Zero : focus.Handle);
@@ -913,8 +910,8 @@ namespace Gtk
         public bool GetHideTitlebarWhenMaximized() =>
             Native.get_hide_titlebar_when_maximized(Handle);
 
-        public GdkPixbuf.Pixbuf GetIcon() =>
-            WrapHandle<GdkPixbuf.Pixbuf>(Native.get_icon(Handle));
+        public GdkPixbuf.Pixbuf? GetIcon() =>
+            WrapNullableHandle<GdkPixbuf.Pixbuf>(Native.get_icon(Handle), false);
 
         public GLib.List GetIconList()
         {
@@ -953,17 +950,11 @@ namespace Gtk
         public string? GetTitle() =>
             Marshal.PtrToStringAnsi(Native.get_title(Handle));
 
-        public Window? GetTransientFor()
-        {
-            IntPtr windowPtr = Native.get_transient_for(Handle);
-            return windowPtr == IntPtr.Zero ? null : WrapHandle<Window>(windowPtr);
-        }
+        public Window? GetTransientFor() =>
+            WrapNullableHandle<Window>(Native.get_transient_for(Handle), false);
 
-        public Widget? GetAttachedTo()
-        {
-            IntPtr widgetPtr = Native.get_attached_to(Handle);
-            return widgetPtr == IntPtr.Zero ? null : WrapHandle<Widget>(widgetPtr);
-        }
+        public Widget? GetAttachedTo() =>
+            WrapNullableHandle<Widget>(Native.get_attached_to(Handle), false);
 
         public Gdk.WindowTypeHint GetTypeHint() =>
             Native.get_type_hint(Handle);
@@ -1094,11 +1085,8 @@ namespace Gtk
             return result;
         }
 
-        public Application? GetApplication()
-        {
-            IntPtr appPtr = Native.get_application(Handle);
-            return appPtr == IntPtr.Zero ? null : WrapHandle<Application>(appPtr);
-        }
+        public Application? GetApplication() =>
+            WrapNullableHandle<Application>(Native.get_application(Handle), false);
 
         public void SetApplication(Application? application) =>
             Native.set_application(Handle, application is null ? IntPtr.Zero : application.Handle);
@@ -1109,11 +1097,8 @@ namespace Gtk
         public void SetTitlebar(Widget? titlebar) =>
             Native.set_titlebar(Handle, titlebar is null ? IntPtr.Zero : titlebar.Handle);
 
-        public Widget? GetTitlebar()
-        {
-            IntPtr ptr = Native.get_titlebar(Handle);
-            return ptr == IntPtr.Zero ? null : WrapHandle<Widget>(ptr);
-        }
+        public Widget? GetTitlebar() =>
+            WrapNullableHandle<Widget>(Native.get_titlebar(Handle), false);
 
         public static void SetInteractiveDebugging(bool enable) =>
             Native.set_interactive_debugging(enable);
