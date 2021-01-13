@@ -77,14 +77,15 @@ namespace GObject
 
                 IntPtr zero = IntPtr.Zero;
 
-                // Create with properties: The new object is owned by us even in case of an object
-                // which inherits GInitially unowned.
                 handle = Native.new_with_properties(
                     typeId.Value,
                     (uint) properties.Length,
                     ref (properties.Length > 0 ? ref names[0] : ref zero),
                     values
                 );
+
+                if (Native.is_floating(handle))
+                    Native.ref_sink(handle); //Make sure handle is owned by us
             }
             finally
             {
