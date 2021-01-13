@@ -36,8 +36,7 @@ namespace Gtk
 
         private void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name, IntPtr connect_object, GObject.ConnectFlags flags, IntPtr user_data)
         {
-            //TODO Errorhandling
-            if(!GetObject(@object, out Widget signalsender) || !GetObject(connect_object, out Widget connector))
+            if(!TryWrapHandle(@object, false, out Widget? signalsender) ||!TryWrapHandle(connect_object, false, out Widget? connector))
                 return;
 
             var eventFlags = BindingFlags.Instance | BindingFlags.IgnoreCase | BindingFlags.Public;
