@@ -418,6 +418,8 @@ namespace GObject
         protected virtual void DisposeManagedState()
         {
             WrapperObjects.Remove(Handle);
+            SubclassObjects.Remove(Handle);
+            
             Handle = IntPtr.Zero;
 
             // TODO: Find out about closure release
