@@ -134,7 +134,8 @@ namespace GObject
             Handle = ptr;
 
             RegisterObject();
-            RegisterProperties();
+            //TODO: Register properties breaks garbage collection
+            //RegisterProperties();
 
             Initialize();
         }
