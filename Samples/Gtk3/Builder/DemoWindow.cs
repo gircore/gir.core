@@ -14,7 +14,7 @@ namespace GtkDemo
         private Notebook notebook;
 
         public DemoWindow(Application application) : this(application, new Builder("demo_window.glade")) { }
-        private DemoWindow(Application application, Builder builder) : base(builder.GetObject("root"))
+        private DemoWindow(Application application, Builder builder) : base(builder.GetObject("root"), false)
         {
             Application = application;
             builder.Connect(this);

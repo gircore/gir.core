@@ -432,7 +432,7 @@ namespace Gtk
         public void SetTranslatorCredits(string translatorCredits) =>
             Native.set_translator_credits(Handle, translatorCredits);
 
-        public GdkPixbuf.Pixbuf GetLogo() => WrapHandle<GdkPixbuf.Pixbuf>(Native.get_logo(Handle));
+        public GdkPixbuf.Pixbuf GetLogo() => WrapHandle<GdkPixbuf.Pixbuf>(Native.get_logo(Handle), false);
 
         public void SetLogo(GdkPixbuf.Pixbuf? logo) =>
             Native.set_logo(Handle, logo is null ? IntPtr.Zero : logo.Handle);

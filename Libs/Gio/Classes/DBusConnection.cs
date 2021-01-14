@@ -13,10 +13,7 @@ namespace Gio
             IntPtr handle = Global.Native.bus_get_sync(busType, IntPtr.Zero, out IntPtr error);
             Error.ThrowOnError(error);
 
-            if (GetObject(handle, out DBusConnection obj))
-                return obj;
-
-            return new DBusConnection(handle);
+            return WrapHandle<DBusConnection>(handle, true);
         }
         
         #endregion
@@ -28,6 +25,7 @@ namespace Gio
         {
             var tcs = new TaskCompletionSource<Variant>();
 
+            //TODO: This could be garbage collected and the callback would not work anymore
             void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
             {
                 IntPtr ret = Native.call_finish(sourceObject, res, out IntPtr error);

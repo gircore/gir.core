@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -44,7 +45,11 @@ namespace GObject
         /// Constructs a new object
         /// </summary>
         /// <param name="properties"></param>
-        public Object(params ConstructParameter[] properties)
+        /// <remarks>This constructor is protected to be sure that there is no caller (enduser) keeping a reference to
+        /// the construct parameters as the contained values are freed at the end of this constructor.
+        /// If certain constructors are needed they need to be implemented with concrete constructor arguments in
+        /// a higher layer.</remarks>
+        protected Object(params ConstructParameter[] properties)
         {
             // This will automatically register our
             // type in the type dictionary. If the type is
@@ -54,21 +59,13 @@ namespace GObject
             Type typeId = TypeDictionary.Get(t);
             Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
 
-            // Pointer to GObject
+            var names = new IntPtr[properties.Length];
+            var values = new Value[properties.Length];
+
             IntPtr handle;
 
-            // Handle Properties
-            var nProps = properties.Length;
-
-            // TODO: Remove dual branches
-            if (nProps > 0)
+            try
             {
-                // We have properties
-                // Prepare Construct Properties
-                var names = new IntPtr[nProps];
-                var values = new Value[nProps];
-
-                // Populate arrays
                 for (var i = 0; i < properties.Length; i++)
                 {
                     ConstructParameter? prop = properties[i];
@@ -78,28 +75,25 @@ namespace GObject
                     values[i] = prop.Value;
                 }
 
-                // Create with properties
+                IntPtr zero = IntPtr.Zero;
+
                 handle = Native.new_with_properties(
                     typeId.Value,
-                    (uint) names.Length,
-                    ref names[0],
+                    (uint) properties.Length,
+                    ref (properties.Length > 0 ? ref names[0] : ref zero),
                     values
                 );
 
-                // Free strings
+                if (Native.is_floating(handle))
+                    Native.ref_sink(handle); //Make sure handle is owned by us
+            }
+            finally
+            {
                 foreach (IntPtr ptr in names)
                     Marshal.FreeHGlobal(ptr);
-            }
-            else
-            {
-                // Construct with no properties
-                IntPtr zero = IntPtr.Zero;
-                handle = Native.new_with_properties(
-                    typeId.Value,
-                    0,
-                    ref zero,
-                    System.Array.Empty<Value>()
-                );
+
+                foreach (Value value in values)
+                    value.Dispose();   
             }
 
             Initialize(handle);
@@ -109,8 +103,25 @@ namespace GObject
         /// Initializes a wrapper for an existing object
         /// </summary>
         /// <param name="handle"></param>
-        protected Object(IntPtr handle)
+        /// <param name="ownedRef">Defines if the handle is owned by us. If not owned by us it is refed to keep it around.</param>
+        protected Object(IntPtr handle, bool ownedRef)
         {
+            if (!ownedRef)
+            {
+                // - Unowned GObjects need to be refed to bind them to this instance
+                // - Unowned InitiallyUnowned floating objects need to be ref_sinked
+                // - Unowned InitiallyUnowned non-floating objects need to be refed
+                // As ref_sink behaves like ref in case of non floating instances we use it for all 3 cases
+                Native.ref_sink(handle);
+            }
+            else
+            {
+                //In case we own the ref because the ownership was fully transfered to us we
+                //do not need to ref the object at all.
+
+                Debug.Assert(!Native.is_floating(handle), "Owned floating references are not possible.");
+            }
+            
             // TODO: Check to make sure the handle matches our
             // wrapper type.
             Initialize(handle);
@@ -257,6 +268,14 @@ namespace GObject
             return false;
         }
 
+        public static T? WrapNullableHandle<T>(IntPtr handle, bool ownedRef) where T : Object
+        {
+            if (handle == IntPtr.Zero)
+                return null;
+
+            return WrapHandle<T>(handle, ownedRef);
+        }
+
         /// <summary>
         /// This function returns the proxy object to the provided handle
         /// if it already exists, otherwise creates a new wrapper object
@@ -265,13 +284,13 @@ namespace GObject
         /// actual type and is provided purely for convenience.
         /// </summary>
         /// <param name="handle">A pointer to the native GObject that should be wrapped.</param>
+        /// <param name="ownedRef">Specify if the ref is owned by us, because ownership was transferred.</param>
         /// <typeparam name="T"></typeparam>
         /// <returns>A C# proxy object which wraps the native GObject.</returns>
         /// <exception cref="NullReferenceException"></exception>
         /// <exception cref="InvalidCastException"></exception>
         /// <exception cref="Exception"></exception>
-        public static T WrapHandle<T>(IntPtr handle)
-            where T : GObject.Object
+        public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : Object
         {
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException(
@@ -326,13 +345,13 @@ namespace GObject
                 System.Reflection.BindingFlags.NonPublic
                 | System.Reflection.BindingFlags.Public
                 | System.Reflection.BindingFlags.Instance,
-                null, new[] { typeof(IntPtr) }, null
+                null, new[] { typeof(IntPtr), typeof(bool) }, null
             );
             
             if (ctor == null)
                 throw new Exception($"Type {trueType.FullName} does not define an IntPtr constructor. This could mean improperly defined bindings");
 
-            return (T) ctor.Invoke(new object[] { handle });
+            return (T) ctor.Invoke(new object[] { handle, ownedRef});
         }
 
         /// <summary>
@@ -340,15 +359,16 @@ namespace GObject
         /// </summary>
         /// <param name="handle">A pointer to the native GObject that should be wrapped.</param>
         /// <param name="o">A C# proxy object which wraps the native GObject.</param>
+        /// <param name="ownedRef">Specify if the ref is owned by us, because ownership was transferred.</param>
         /// <typeparam name="T"></typeparam>
         /// <returns><c>true</c> if the handle was wrapped, or <c>false</c> if something went wrong.</returns>
-        public static bool TryWrapHandle<T>(IntPtr handle, [NotNullWhen(true)] out T? o)
+        public static bool TryWrapHandle<T>(IntPtr handle, bool ownedRef, [NotNullWhen(true)] out T? o) 
             where T : Object
         {
             o = null;
             try
             {
-                o = WrapHandle<T>(handle);
+                o = WrapHandle<T>(handle, ownedRef);
                 return true;
             }
             catch (Exception e)
@@ -387,9 +407,9 @@ namespace GObject
 
         protected virtual void DisposeManagedState()
         {
-            Handle = IntPtr.Zero;
             Objects.Remove(Handle);
-            
+            Handle = IntPtr.Zero;
+
             // TODO: Find out about closure release
             /*foreach(var closure in closures)
                 closure.Dispose();*/

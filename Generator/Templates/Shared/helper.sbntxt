@@ -28,13 +28,8 @@ func verify(value, error)
 end
 
 func get_return(obj, prefix = "")
-    $ret = "";
-    
-    if obj.return_value?.transfer_ownership
-        $ret = $ret + prefix + "/// <returns>Transfer ownership: " + obj.return_value.transfer_ownership + "</returns>\r\n"
-    end
-    
-    ret $ret;
+    $data = obj.return_value | get_metadata 
+    ret prefix + "/// <returns>" + ($data | array.join "; ") + "</returns>\r\n"
 end
 
 func get_params(obj, prefix = "")
@@ -58,16 +53,8 @@ func get_params(obj, prefix = "")
 end
 
 func get_param_text(parameter)
-    $ret = ""
-    $ret = $ret + "/// <param name=\"" + parameter.name +"\">"
-    
-    if parameter.transfer_ownership
-        $ret = $ret + "Transfer ownership: " + parameter.transfer_ownership
-    end
-    
-    $ret = $ret + "</param>\r\n"
-    
-    ret $ret;
+    $data = parameter | get_metadata 
+    ret "/// <param name=\"" + parameter.name +"\">" + ($data | array.join "; ") + "</param>\r\n"
 end
 
 func get_summary(obj, prefix = "")
@@ -93,6 +80,20 @@ func get_obsolete_attribute(obj)
     end
     
     ret $ret
+end
+
+func get_metadata(obj)
+    $data = []
+    
+    if obj?.transfer_ownership
+        $data = $data | array.add ("Transfer ownership: " + obj.transfer_ownership)
+    end
+    
+    if obj?.nullable
+        $data = $data | array.add ("Nullable: " + obj.nullable)
+    end
+    
+    ret $data
 end
 
 func get_parameters(method)
