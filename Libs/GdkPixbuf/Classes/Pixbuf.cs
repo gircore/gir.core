@@ -6,7 +6,7 @@ namespace GdkPixbuf
 {
     public partial class Pixbuf
     {
-        /*
+
         #region Properties
         
         #region WidthProperty
@@ -43,7 +43,7 @@ namespace GdkPixbuf
         
         #endregion
         
-        #endregion*/
+        #endregion
         
         public static Pixbuf NewFromFile(string fileName)
         {
