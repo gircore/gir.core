@@ -15,8 +15,9 @@ namespace GLib
         private Bytes(IntPtr handle)
         {
             Handle = handle;
+            GC.AddMemoryPressure((long) get_size(handle));
         }
-        
+
         ~Bytes()
         {
             ReleaseUnmanagedResources();
@@ -36,7 +37,9 @@ namespace GLib
 
         private void ReleaseUnmanagedResources()
         {
+            var size = get_size(Handle);
             unref(Handle);
+            GC.RemoveMemoryPressure((long) size);
         }
 
         public void Dispose()

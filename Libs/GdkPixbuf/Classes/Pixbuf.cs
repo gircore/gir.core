@@ -6,6 +6,7 @@ namespace GdkPixbuf
 {
     public partial class Pixbuf
     {
+        /*
         #region Properties
         
         #region WidthProperty
@@ -42,8 +43,8 @@ namespace GdkPixbuf
         
         #endregion
         
+        #endregion*/
         
-        #endregion
         public static Pixbuf NewFromFile(string fileName)
         {
             IntPtr handle = Native.new_from_file(fileName, out IntPtr error);
@@ -52,5 +53,18 @@ namespace GdkPixbuf
             return WrapHandle<Pixbuf>(handle, true);
         }
 
+        protected override void Initialize()
+        {
+            base.Initialize();
+            var size = Native.get_byte_length(Handle);
+            GC.AddMemoryPressure((long)size);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            var size = Native.get_byte_length(Handle);
+            base.Dispose(disposing);
+            GC.RemoveMemoryPressure((long)size);
+        }
     }
 }
