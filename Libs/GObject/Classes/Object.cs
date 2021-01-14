@@ -31,12 +31,6 @@ namespace GObject
         #region Properties
         
         public IntPtr Handle { get; private set; }
-        
-        // We need to store a reference to WeakNotify to
-        // prevent the delegate from being collected by the GC
-        private WeakNotify? _onFinalized;
-
-        private bool Disposed { get; set; }
 
         #endregion
 
@@ -126,7 +120,10 @@ namespace GObject
             Initialize(handle);
         }
 
-        ~Object() => Dispose(false);
+        ~Object()
+        {
+            Dispose(false);
+        }
 
         #endregion
 
@@ -138,7 +135,6 @@ namespace GObject
 
             RegisterObject();
             RegisterProperties();
-            RegisterOnFinalized();
 
             Initialize();
         }
@@ -154,18 +150,6 @@ namespace GObject
                 SubclassObjects.Add(Handle, new ToggleRef<Object>(this));
             else
                 WrapperObjects.Add(Handle, new WeakReference<Object>(this));
-        }
-
-        private void OnFinalized(IntPtr data, IntPtr where_the_object_was)
-        {
-            DisposeManagedState();
-            SetDisposed();
-        }
-
-        private void RegisterOnFinalized()
-        {
-            _onFinalized = OnFinalized;
-            Native.weak_ref(Handle, _onFinalized, IntPtr.Zero);
         }
 
         private void RegisterProperties()
@@ -194,13 +178,11 @@ namespace GObject
 
         protected internal void RegisterEvent(string eventName, ActionRefValues callback, bool after = false)
         {
-            ThrowIfDisposed();
             RegisterEvent(eventName, new ClosureHelper(this, callback), after);
         }
 
         protected internal void RegisterEvent(string eventName, Action callback, bool after = false)
         {
-            ThrowIfDisposed();
             RegisterEvent(eventName, new ClosureHelper(this, callback), after);
         }
 
@@ -220,16 +202,12 @@ namespace GObject
 
         protected internal void UnregisterEvent(ActionRefValues callback)
         {
-            ThrowIfDisposed();
-
             if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
                 UnregisterEvent(closure);
         }
 
         protected internal void UnregisterEvent(Action callback)
         {
-            ThrowIfDisposed();
-
             if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
                 UnregisterEvent(closure);
         }
@@ -243,12 +221,6 @@ namespace GObject
             Closures.Remove(closure);
         }
 
-        protected void ThrowIfDisposed()
-        {
-            if (Disposed)
-                throw new Exception("Object is disposed");
-        }
-        
         /// <summary>
         /// Notify this object that a property has just changed.
         /// </summary>
@@ -398,40 +370,22 @@ namespace GObject
             GC.SuppressFinalize(this);
         }
 
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
-            if (Disposed)
-                return;
+            if (Handle != IntPtr.Zero)
+            {
+                // TODO: Find out about closure release
+                /*foreach(var closure in closures)
+                    closure.Dispose();*/
 
-            if(disposing)
-                DisposeManagedState();
+                // TODO activate: closures.Clear();
 
-            DisposeUnmanagedState();
-            SetDisposed();
-        }
+                WrapperObjects.Remove(Handle);
+                SubclassObjects.Remove(Handle);
 
-        protected void SetDisposed()
-        {
-            Disposed = true;
-        }
-
-        protected virtual void DisposeManagedState()
-        {
-            WrapperObjects.Remove(Handle);
-            SubclassObjects.Remove(Handle);
-            
-            Handle = IntPtr.Zero;
-
-            // TODO: Find out about closure release
-            /*foreach(var closure in closures)
-                closure.Dispose();*/
-
-            // TODO activate: closures.Clear();
-        }
-        
-        protected virtual void DisposeUnmanagedState()
-        {
-            Native.unref(Handle);
+                Native.unref(Handle);
+                Handle = IntPtr.Zero;
+            }
         }
 
         #endregion
