@@ -2,7 +2,7 @@
 
 namespace GLib
 {
-    public partial class Bytes : IHandle
+    public sealed partial class Bytes : IHandle, IDisposable
     {
         #region Properties
 
@@ -16,6 +16,11 @@ namespace GLib
         {
             Handle = handle;
         }
+        
+        ~Bytes()
+        {
+            ReleaseUnmanagedResources();
+        }
 
         #endregion
 
@@ -23,10 +28,21 @@ namespace GLib
 
         public static Bytes From(byte[] data)
         {
-            return new Bytes(@new(data, (ulong) data.Length));
+            var obj = new Bytes(@new(data, (ulong) data.Length));
+            return obj;
         }
 
         #endregion
 
+        private void ReleaseUnmanagedResources()
+        {
+            unref(Handle);
+        }
+
+        public void Dispose()
+        {
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
+        }
     }
 }
