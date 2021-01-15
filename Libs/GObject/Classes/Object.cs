@@ -15,8 +15,9 @@ namespace GObject
 
         private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
         private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
-        private static readonly Dictionary<ClosureHelper, ulong> Closures = new ();
-
+        
+        private readonly Dictionary<string, SignalHelper> _signals = new ();
+        
         #endregion
 
         #region Events
@@ -134,8 +135,7 @@ namespace GObject
             Handle = ptr;
 
             RegisterObject();
-            //TODO: Register properties breaks garbage collection
-            //RegisterProperties();
+            RegisterProperties();
 
             Initialize();
         }
@@ -173,53 +173,15 @@ namespace GObject
             }
         }
 
-        // Property Notify Events
-        protected internal void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback)
-            => RegisterEvent($"notify::{propertyName}", callback);
-
-        protected internal void RegisterEvent(string eventName, ActionRefValues callback, bool after = false)
+        protected internal SignalHelper GetSignalHelper(string name)
         {
-            RegisterEvent(eventName, new ClosureHelper(this, callback), after);
-        }
+            if(_signals.TryGetValue(name, out var signalHelper))
+                return signalHelper;
 
-        protected internal void RegisterEvent(string eventName, Action callback, bool after = false)
-        {
-            RegisterEvent(eventName, new ClosureHelper(this, callback), after);
-        }
-
-        private void RegisterEvent(string eventName, ClosureHelper closure, bool after)
-        {
-            if (Closures.TryGetValue(closure, out var id) && Global.Native.signal_handler_is_connected(Handle, id))
-                return; // Skip if the handler is already registered
-
-            var ret = Global.Native.signal_connect_closure(Handle, eventName, closure.Handle, after);
-
-            if (ret == 0)
-                throw new Exception($"Could not connect to event {eventName}");
-
-            // Add to our closures list so the callback doesn't get garbage collected.
-            Closures[closure] = ret;
-        }
-
-        protected internal void UnregisterEvent(ActionRefValues callback)
-        {
-            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
-                UnregisterEvent(closure);
-        }
-
-        protected internal void UnregisterEvent(Action callback)
-        {
-            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
-                UnregisterEvent(closure);
-        }
-
-        private void UnregisterEvent(ClosureHelper closure)
-        {
-            if (!Closures.TryGetValue(closure, out var id))
-                return;
-
-            Global.Native.signal_handler_disconnect(Handle, id);
-            Closures.Remove(closure);
+            signalHelper = new SignalHelper(this, name);
+            _signals.Add(name, signalHelper);
+            
+            return signalHelper;
         }
 
         /// <summary>
@@ -375,11 +337,10 @@ namespace GObject
         {
             if (Handle != IntPtr.Zero)
             {
-                // TODO: Find out about closure release
-                /*foreach(var closure in closures)
-                    closure.Dispose();*/
-
-                // TODO activate: closures.Clear();
+                foreach (var signalHelper in _signals.Values)
+                    signalHelper.Dispose();
+                
+                _signals.Clear();
 
                 WrapperObjects.Remove(Handle);
                 SubclassObjects.Remove(Handle);
