@@ -58,31 +58,13 @@ namespace GObject
         /// </summary>
         public string Name { get; }
 
-        /// <summary>
-        /// The signal flags.
-        /// </summary>
-        public SignalFlags Flags { get; }
-
-        /// <summary>
-        /// The return type of signal handlers.
-        /// </summary>
-        public Type ReturnType { get; }
-
-        /// <summary>
-        /// The type of parameters in signal handlers.
-        /// </summary>
-        public Type[] ParamTypes { get; }
-
         #endregion
 
         #region Constructors
 
-        internal Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes)
+        internal Signal(string name)
         {
             Name = name;
-            Flags = flags;
-            ReturnType = returnType;
-            ParamTypes = paramTypes;
         }
 
         #endregion
@@ -112,8 +94,7 @@ namespace GObject
     {
         #region Constructors
 
-        private Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes)
-            : base(name, flags, returnType, paramTypes)
+        private Signal(string name) : base(name)
         { }
 
         #endregion
@@ -129,8 +110,7 @@ namespace GObject
         /// </returns>
         public static Signal<TSender, TSignalArgs> Wrap(string name)
         {
-            // Here only the signal name is relevant, other parameters are not used.
-            return new Signal<TSender, TSignalArgs>(name, SignalFlags.RunLast, Type.None, Array.Empty<Type>());
+            return new Signal<TSender, TSignalArgs>(name);
         }
 
         /// <summary>
@@ -168,8 +148,7 @@ namespace GObject
     {
         #region Constructors
 
-        private Signal(string name, SignalFlags flags, Type returnType, Type[] paramTypes)
-            : base(name, flags, returnType, paramTypes)
+        private Signal(string name) : base(name)
         { }
 
         #endregion
@@ -185,8 +164,7 @@ namespace GObject
         /// </returns>
         public static Signal<TSender> Wrap(string name)
         {
-            // Here only the signal name is relevant, other parameters are not used.
-            return new Signal<TSender>(name, SignalFlags.RunLast, Type.None, Array.Empty<Type>());
+            return new Signal<TSender>(name);
         }
 
         /// <summary>
