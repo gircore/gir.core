@@ -16,7 +16,7 @@ namespace Gst
 
             GLib.Error.ThrowOnError(error);
 
-            return GObject.Object.WrapHandle<Element>(ret, false);
+            return GObject.Object.Wrapper.WrapHandle<Element>(ret, false);
         }
 
         public static Element BinFromDescription(string binDescription, bool ghostUnlinkedPads)
@@ -25,7 +25,7 @@ namespace Gst
             
             GLib.Error.ThrowOnError(error);
             
-            return GObject.Object.WrapHandle<Element>(ret, false);
+            return GObject.Object.Wrapper.WrapHandle<Element>(ret, false);
         }
     }
 }

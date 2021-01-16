@@ -12,7 +12,7 @@ namespace Gst
         // which *must* be run. Therefore our existing constructor design is
         // inadequate.
         public static GhostPad? New(string name, Pad target)
-            => WrapNullableHandle<GhostPad>(Native.@new(name, target.Handle), false);
+            => Wrapper.WrapNullableHandle<GhostPad>(Native.@new(name, target.Handle), false);
 
         public bool SetTarget(Pad newTarget)
             => Native.set_target(Handle, newTarget.Handle);

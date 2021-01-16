@@ -50,7 +50,7 @@ namespace GdkPixbuf
             IntPtr handle = Native.new_from_file(fileName, out IntPtr error);
             Error.ThrowOnError(error);
 
-            return WrapHandle<Pixbuf>(handle, true);
+            return Wrapper.WrapHandle<Pixbuf>(handle, true);
         }
 
         protected override void Initialize()
