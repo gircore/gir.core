@@ -8,14 +8,25 @@ namespace GObject
     {
         protected internal delegate void ActionRefValues(ref Value[] items);
 
-        protected internal class ClosureHelper : IDisposable
+        private class ClosureHelper : IDisposable
         {
+            #region Fields
+            
             // We need to store a reference to MarshalCallback to
             // prevent the delegate from being collected by the GC
             private ClosureMarshal? _marshalCallback;
             private ActionRefValues? _callback;
+            
+            #endregion
+            
+            #region Properties
+            
             public IntPtr Handle { get; private set; }
 
+            #endregion
+            
+            #region Constructors
+            
             public ClosureHelper(ActionRefValues action)
             {
                 _callback = action;
@@ -31,7 +42,11 @@ namespace GObject
             {
                 ReleaseUnmanagedResources();
             }
+            
+            #endregion
 
+            #region Methods
+            
             private void MarshalCallback(IntPtr closure, ref Value returnValue, uint nParamValues,
                 Value[] paramValues, IntPtr invocationHint, IntPtr marshalData)
             {
@@ -45,23 +60,25 @@ namespace GObject
 
             private void ReleaseUnmanagedResources()
             {
-                _callback = null;
-                _marshalCallback = null;
+                if (Handle != IntPtr.Zero)
+                {
+                    _callback = null;
+                    _marshalCallback = null;
 
-                Closure.Native.invalidate(Handle);
-                Closure.Native.unref(Handle);
+                    Closure.Native.invalidate(Handle);
+                    Closure.Native.unref(Handle);
 
-                Handle = IntPtr.Zero;
+                    Handle = IntPtr.Zero;
+                }
             }
 
             public void Dispose()
             {
-                if (Handle != IntPtr.Zero)
-                {
-                    ReleaseUnmanagedResources();
-                    GC.SuppressFinalize(this);
-                }
+                ReleaseUnmanagedResources();
+                GC.SuppressFinalize(this);
             }
+            
+            #endregion
         }
     }
 }
