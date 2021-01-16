@@ -13,9 +13,6 @@ namespace GObject
     {
         #region Fields
 
-        private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
-        private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
-        
         private readonly Dictionary<string, SignalHelper> _signals = new ();
         
         #endregion
@@ -134,7 +131,7 @@ namespace GObject
         {
             Handle = ptr;
 
-            RegisterObject();
+            ReferenceManager.RegisterObject(this);
             RegisterProperties();
 
             Initialize();
@@ -145,13 +142,7 @@ namespace GObject
         /// </summary>
         protected virtual void Initialize() { }
 
-        private void RegisterObject()
-        {
-            if(IsSubclass(GetType()))
-                SubclassObjects.Add(Handle, new ToggleRef<Object>(this));
-            else
-                WrapperObjects.Add(Handle, new WeakReference<Object>(this));
-        }
+
 
         private void RegisterProperties()
         {
@@ -224,7 +215,7 @@ namespace GObject
                 throw new NullReferenceException(
                     $"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
 
-            if (TryGetObject(handle, out T? obj))
+            if (ReferenceManager.TryGetObject(handle, out T? obj))
                 return obj;
 
             // Resolve GType of object
@@ -272,33 +263,6 @@ namespace GObject
             return (T) ctor.Invoke(new object[] { handle, ownedRef});
         }
 
-        private static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : Object
-        {
-            if (WrapperObjects.TryGetValue(handle, out WeakReference<Object>? weakRef))
-            {
-                if (weakRef.TryGetTarget(out Object? weakObj))
-                {
-                    obj = (T) weakObj;
-                    return true;
-                }
-
-                WrapperObjects.Remove(handle);
-            }
-            else if (SubclassObjects.TryGetValue(handle, out ToggleRef<Object>? toggleObj))
-            {
-                if (toggleObj.Object is not null)
-                {
-                    obj = (T) toggleObj.Object;
-                    return true;
-                }
-
-                SubclassObjects.Remove(handle);
-            }
-
-            obj = null;
-            return false;
-        }
-
         /// <summary>
         /// A variant of <see cref="WrapHandle{T}"/> which fails gracefully if the pointer cannot be wrapped.
         /// </summary>
@@ -342,8 +306,7 @@ namespace GObject
                 
                 _signals.Clear();
 
-                WrapperObjects.Remove(Handle);
-                SubclassObjects.Remove(Handle);
+                ReferenceManager.RemoveObject(this);
 
                 Native.unref(Handle);
                 Handle = IntPtr.Zero;
