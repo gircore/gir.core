@@ -8,13 +8,15 @@ namespace TestMemoryLeaks
     {
         public static void Main(string[] args)
         {
-            var imageBytes = File.ReadAllBytes("gtk.jpg");
-            int cycles = 50;
+            var cycles = 1000;
+            var fileName = "test.bmp";
             
+            var imageBytes = File.ReadAllBytes(fileName);
+
             Console.WriteLine("File: Memory can go up. GC.Collect() is called in the end which must free everything up.");
             for (int i = 0; i < cycles; i++)
             {
-                var a = Pixbuf.NewFromFile("gtk.jpg");
+                var a = Pixbuf.NewFromFile(fileName);
             }
             Collect();
             Done();
@@ -31,7 +33,7 @@ namespace TestMemoryLeaks
             
             for (int i = 0; i < cycles; i++)
             {
-                var a = Pixbuf.NewFromFile("gtk.jpg");
+                var a = Pixbuf.NewFromFile(fileName);
                 a.Dispose();
             }
             Done();
