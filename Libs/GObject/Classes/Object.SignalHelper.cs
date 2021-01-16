@@ -5,7 +5,7 @@ namespace GObject
 {
     public partial class Object
     {
-        protected internal class SignalHelper : IDisposable
+        protected internal sealed class SignalHelper : IDisposable
         {
             #region Fields
 
@@ -25,7 +25,7 @@ namespace GObject
 
             ~SignalHelper()
             {
-                Dispose(false);
+                ReleaseUnmanagedResources();
             }
 
             #endregion
@@ -61,13 +61,7 @@ namespace GObject
                 }
             }
 
-            public void Dispose()
-            {
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
-
-            private void Dispose(bool disposing)
+            private void ReleaseUnmanagedResources()
             {
                 foreach (var (handleId, closureHelper) in _connectedHandlers.Values)
                 {
@@ -78,6 +72,12 @@ namespace GObject
                 }
 
                 _connectedHandlers.Clear();
+            }
+            
+            public void Dispose()
+            {
+                ReleaseUnmanagedResources();
+                GC.SuppressFinalize(this);
             }
             
             #endregion
