@@ -6,7 +6,7 @@ namespace GLib
     {
         #region Properties
 
-        public IntPtr Handle { get; }
+        public IntPtr Handle { get; private set; }
 
         #endregion
 
@@ -33,13 +33,15 @@ namespace GLib
             return obj;
         }
 
-        #endregion
-
         private void ReleaseUnmanagedResources()
         {
-            var size = get_size(Handle);
-            unref(Handle);
-            GC.RemoveMemoryPressure((long) size);
+            if (Handle != IntPtr.Zero)
+            {
+                var size = get_size(Handle);
+                unref(Handle);
+                Handle = IntPtr.Zero;
+                GC.RemoveMemoryPressure((long) size);
+            }
         }
 
         public void Dispose()
@@ -47,5 +49,7 @@ namespace GLib
             ReleaseUnmanagedResources();
             GC.SuppressFinalize(this);
         }
+
+        #endregion
     }
 }
