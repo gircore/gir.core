@@ -29,12 +29,12 @@ namespace GtkDemo
 
             unsafe
             {
-                var myClass = (BinClass*) gclass;
+                var myClass = (ObjectClass*) gclass;
 
                 var setProp = Marshal.GetFunctionPointerForDelegate<PropAccess>(MySetProperty);
                 var getProp = Marshal.GetFunctionPointerForDelegate<PropAccess>(MyGetProperty);
-                myClass->parent_class.parent_class.parent_class.set_property = setProp;
-                myClass->parent_class.parent_class.parent_class.get_property = getProp;
+                myClass->set_property = setProp;
+                myClass->get_property = getProp;
                 
                 InstallProperty(
                     id: 1,
