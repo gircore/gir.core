@@ -16,9 +16,26 @@ namespace GtkDemo
         {
             Global.Init();
             var c = new CompositeWidget();
-            c.Orientation = Orientation.Vertical;
-            Console.WriteLine(c.Orientation);
 
+            /* In the generated code the orientable property needs to be defined like this:
+             
+             Some generated visiblity must probably be changed manually be adopted to be visible. I did not update the generator.
+             
+public static readonly Property<Orientation> OrientationProperty = Property<Orientation>.Wrap<Orientable>(
+    Native.OrientationProperty,
+    nameof(Orientation),
+    (o) => o.Orientation,
+    (o, v) => o.Orientation = v,
+    EnumHelper.GetOrientationType,
+    Types.Enum
+);
+             */
+            
+            c.Orientation = Orientation.Vertical; //Write Managed data
+            Console.WriteLine(c.OrientationInterfaceAccess); //Read via C world
+            c.OrientationInterfaceAccess = Orientation.Horizontal; //Write via C world
+            Console.WriteLine(c.Orientation); //Read managed data
+            
             var mainWindow = new Window("MyWindow")
             {
                 DefaultWidth = 300, 

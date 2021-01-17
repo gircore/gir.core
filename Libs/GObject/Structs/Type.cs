@@ -58,7 +58,7 @@ namespace GObject
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
     }
 
-    internal enum Types
+    public enum Types
     {
         Invalid = 0 << 2,
         None = 1 << 2,

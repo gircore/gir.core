@@ -20,6 +20,16 @@ namespace GObject
         /// </summary>
         private Action<IObject, T>? _set;
 
+        /// <summary>
+        /// The type getter
+        /// </summary>
+        private Func<Type>? _getType;
+
+        /// <summary>
+        /// Property kind.
+        /// </summary>
+        private Types _kind;
+        
         #endregion
 
         #region Properties
@@ -45,6 +55,8 @@ namespace GObject
         /// </summary>
         public bool IsWriteable => _set != null;
 
+        public Types Kind => _kind;
+        
         #endregion
 
         #region Constructors
@@ -68,6 +80,8 @@ namespace GObject
 
         #region Methods
 
+        public Type? GetGType() => _getType?.Invoke();
+        
         /// <summary>
         /// Registers this property descriptor and creates the correct GProperty
         /// into the GLib type of <typeparamref name="TObject"/>.
@@ -76,17 +90,21 @@ namespace GObject
         /// <param name="propertyName">The name of the C# property which serves as the proxy of this GProperty</param>
         /// <param name="get">The function called when retrieving the value of this property in bindings.</param>
         /// <param name="set">The function called when defining the value of this property in bindings.</param>
+        /// <param name="getType">The function called to get the type of this property</param>
+        /// <param name="kind">The kind of this property</param>
         /// <typeparam name="TObject">The type of the object on which this property will be registered.</typeparam>
         /// <returns>
         /// An instance of <see cref="Property{T}"/> representing the GProperty description.
         /// </returns>
-        public static Property<T> Register<TObject>(string name, string propertyName, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
+        public static Property<T> Register<TObject>(string name, string propertyName, Func<TObject, T>? get = null, Action<TObject, T>? set = null, Func<Type>? getType = null, Types kind = Types.Invalid)
             where TObject : Object
         {
             return new Property<T>(name, propertyName)
             {
                 _get = get is null ? null : new Func<IObject, T>((o) => get((TObject) o)),
                 _set = set is null ? null : new Action<IObject, T>((o, v) => set((TObject) o, v)),
+                _getType = getType,
+                _kind = kind
             };
         }
 
@@ -98,17 +116,21 @@ namespace GObject
         /// <param name="propertyName">The name of the C# property which serves as the proxy of this GProperty</param>
         /// <param name="get">The function called when retrieving the value of this property in bindings.</param>
         /// <param name="set">The function called when defining the value of this property in bindings.</param>
+        /// <param name="getType">The function called to get the type of this property</param>
+        /// <param name="kind">The kind of this property</param>
         /// <typeparam name="TObject">The type of the object on which this property will be wrapped.</typeparam>
         /// <returns>
         /// An instance of <see cref="Property{T}"/> representing the GProperty description.
         /// </returns>
-        public static Property<T> Wrap<TObject>(string name, string propertyName, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
+        public static Property<T> Wrap<TObject>(string name, string propertyName, Func<TObject, T>? get = null, Action<TObject, T>? set = null, Func<Type>? getType = null, Types kind = Types.Invalid)
             where TObject : IObject
         {
             return new Property<T>(name, propertyName)
             {
                 _get = get is null ? null : new Func<IObject, T>((o) => get((TObject) o)),
                 _set = set is null ? null : new Action<IObject, T>((o, v) => set((TObject) o, v)),
+                _getType = getType,
+                _kind = kind
             };
         }
 

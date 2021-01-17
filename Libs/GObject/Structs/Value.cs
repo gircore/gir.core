@@ -117,6 +117,11 @@ namespace GObject
             return Marshal.PtrToStringAnsi(ptr) ?? throw new Exception("Could not get string value");
         }
 
+        public void SetEnum<T>(T value) where T : Enum
+        {
+            Native.set_enum(ref this, Convert.ToInt32(value));
+        }
+
         #endregion
 
         #region IDisposable Implementation

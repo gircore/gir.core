@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace GObject
 {
@@ -67,10 +68,39 @@ namespace GObject
             return value;
         }
 
-        protected static void InstallPropertyEnum(IntPtr objectClass, uint id, string name, string nick, string blurb, Type enumType, int defaultValue, ParamFlags flags)
+        protected static void InstallProperty<T>(uint id, IntPtr objectClass, Property<T> property)
         {
-            var spec = Global.Native.param_spec_enum(name, nick, blurb, enumType.Value, defaultValue, flags);
+            var spec = GetParamSpec(property);   
             ObjectClass.Native.install_property(objectClass, id, spec);
+        }
+
+        private static IntPtr GetParamSpec<T>(Property<T> property)
+        {
+            var name = property.Name;
+            var nick = property.PropertyName;
+            var blurb = "The " + nick + " property";
+
+            ParamFlags flags = default;
+
+            if (property.IsReadable)
+                flags |= ParamFlags.Readable;
+            if (property.IsWriteable)
+                flags |= ParamFlags.Writable;
+
+            return property.Kind switch
+            {
+                Types.Enum => Global.Native.param_spec_enum(name, nick, blurb, GetType(property), 0, flags),
+                _ => throw new NotSupportedException("Unknown property type")
+            };
+        }
+
+        private static ulong GetType<T>(Property<T> property)
+        {
+            Type? type = property.GetGType();
+            if (type is null)
+                throw new Exception($"Can not register property {property.Name}. Type is not specified");
+
+            return type.Value.Value;
         }
 
         #endregion
