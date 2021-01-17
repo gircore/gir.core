@@ -9,7 +9,7 @@ namespace Generator
     {
         static int Main(string[] args)
         {
-            string girFile = "Gsk-4.0.gir";
+            string girFile = "Gst-1.0.gir";
 
             Project[] projects = {(new Project("Gst", girFile))};
             

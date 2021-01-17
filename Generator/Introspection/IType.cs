@@ -1,4 +1,4 @@
-namespace Introspection
+namespace Generator.Introspection
 {
     public interface IType
     {

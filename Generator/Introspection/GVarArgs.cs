@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Introspection
+namespace Generator.Introspection
 {
     public class GVarArgs
     {

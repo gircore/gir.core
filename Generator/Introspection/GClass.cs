@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace Introspection
+namespace Generator.Introspection
 {
     public class GClass : GInterface
     {

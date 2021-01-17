@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 
-namespace Introspection
+namespace Generator.Introspection
 {
     public class GNamespace
     {

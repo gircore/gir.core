@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Introspection
+namespace Generator.Introspection
 {
     [XmlRoot(ElementName = "repository")]
     public class GRepository
