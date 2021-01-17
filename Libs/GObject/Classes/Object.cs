@@ -358,6 +358,27 @@ namespace GObject
             }
         }
 
+        protected static void RegisterInterface(Type gClass, Type interfaceType)
+        {
+            var interfaceStruct = new InterfaceInfo(
+                initFunc: InterfaceInit);
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(interfaceStruct));
+            try
+            {
+                Marshal.StructureToPtr(interfaceStruct, ptr, true);
+                Global.Native.type_add_interface_static(gClass.Value, interfaceType.Value, ptr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptr);
+            }
+        }
+        
+        private static void InterfaceInit(IntPtr g_iface, IntPtr iface_data)
+        {
+    
+        }
+        
         #endregion
 
         #region IDisposable Implementation

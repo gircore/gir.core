@@ -67,6 +67,12 @@ namespace GObject
             return value;
         }
 
+        protected static void InstallPropertyEnum(IntPtr objectClass, uint id, string name, string nick, string blurb, Type enumType, int defaultValue, ParamFlags flags)
+        {
+            var spec = Global.Native.param_spec_enum(name, nick, blurb, enumType.Value, defaultValue, flags);
+            ObjectClass.Native.install_property(objectClass, id, spec);
+        }
+
         #endregion
     }
 }

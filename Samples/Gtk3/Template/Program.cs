@@ -16,8 +16,9 @@ namespace GtkDemo
         {
             Global.Init();
             var c = new CompositeWidget();
-            c.SetOrientation(Orientation.Horizontal);
-            
+            c.Orientation = Orientation.Vertical;
+            Console.WriteLine(c.Orientation);
+
             var mainWindow = new Window("MyWindow")
             {
                 DefaultWidth = 300, 

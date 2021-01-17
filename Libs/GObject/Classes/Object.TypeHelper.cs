@@ -27,7 +27,7 @@ namespace GObject
                 InvokeStaticMethod(
                     type: type,
                     name: "ClassInit",
-                    parameters: new object[] {gtype, type, classData}
+                    parameters: new object[] {gtype, type, gClass, classData}
                 );
             };
             
