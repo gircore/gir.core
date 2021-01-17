@@ -1,8 +1,0 @@
-{{~
-$method = $1
-$dll_import = $2
-$prefix = $3 ?? "??" #Optional
-
-include 'helper.sbntxt'
-get_method($method, $dll_import, $prefix)
-~}}
