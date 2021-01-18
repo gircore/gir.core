@@ -52,8 +52,10 @@ namespace Generator
             _resolver = new Resolver(_loadedProjects);
         }
 
-        public IEnumerable<LoadedProject> GetOrderedList()
-            => _resolver.GetOrderedList().Cast<LoadedProject>();
+        public List<LoadedProject> GetOrderedList()
+            => _resolver.GetOrderedList()
+                .Cast<LoadedProject>()
+                .ToList();
 
         private void LoadProjectRecursive(Project proj)
             => LoadProjectRecursive(proj, out LoadedProject loadedProj);
