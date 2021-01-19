@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -13,8 +14,8 @@ namespace GObject
     {
         #region Fields
 
-        private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
-        private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
+        private static readonly ConcurrentDictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
+        private static readonly ConcurrentDictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
         
         private readonly Dictionary<string, SignalHelper> _signals = new ();
         
@@ -147,10 +148,16 @@ namespace GObject
 
         private void RegisterObject()
         {
-            if(IsSubclass(GetType()))
-                SubclassObjects.Add(Handle, new ToggleRef<Object>(this));
+            if (IsSubclass(GetType()))
+            {
+                if (!SubclassObjects.TryAdd(Handle, new ToggleRef<Object>(this)))
+                    throw new Exception($"Could not save subclass handle {Handle}. It is already present");
+            }
             else
-                WrapperObjects.Add(Handle, new WeakReference<Object>(this));
+            {
+                if (!WrapperObjects.TryAdd(Handle, new WeakReference<Object>(this)))
+                    throw new Exception($"Could not save wrapper handle {Handle}. It is already present");
+            }
         }
 
         private void RegisterProperties()
@@ -281,8 +288,6 @@ namespace GObject
                     obj = (T) weakObj;
                     return true;
                 }
-
-                WrapperObjects.Remove(handle);
             }
             else if (SubclassObjects.TryGetValue(handle, out ToggleRef<Object>? toggleObj))
             {
@@ -291,8 +296,6 @@ namespace GObject
                     obj = (T) toggleObj.Object;
                     return true;
                 }
-
-                SubclassObjects.Remove(handle);
             }
 
             obj = null;
@@ -335,19 +338,20 @@ namespace GObject
 
         protected virtual void Dispose(bool disposing)
         {
-            if (Handle != IntPtr.Zero)
+            if (Handle == IntPtr.Zero)
+                return;
+
+            if (disposing)
             {
                 foreach (var signalHelper in _signals.Values)
                     signalHelper.Dispose();
-                
-                _signals.Clear();
-
-                WrapperObjects.Remove(Handle);
-                SubclassObjects.Remove(Handle);
-
-                Native.unref(Handle);
-                Handle = IntPtr.Zero;
             }
+
+            WrapperObjects.TryRemove(Handle, out _); 
+            SubclassObjects.TryRemove(Handle, out _);
+
+            Native.unref(Handle);
+            Handle = IntPtr.Zero;
         }
 
         #endregion
