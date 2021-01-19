@@ -15,6 +15,12 @@ namespace Generator
 
         private const string GENERATOR_VERSION = "0.2.0"; 
         
+        /// <summary>
+        /// The main interface used to generate source files from GObject
+        /// Introspection (GIR) data. Create a Generator object and then
+        /// call <see cref="WriteAsync"/> in order to output generated code.
+        /// </summary>
+        /// <param name="projects"></param>
         public Generator(Project[] projects)
         {
             Log.Information($"Initialising generator with {projects.Length} toplevel project(s)");
@@ -87,6 +93,7 @@ namespace Generator
             TypeDict.AddSymbol(symbol);
         }
 
+        // TODO: Add more configuration options to Writer
         public async Task<int> WriteAsync()
         {
             var writer = new Writer(ServiceManager, TypeDict, LoadedProjects);
