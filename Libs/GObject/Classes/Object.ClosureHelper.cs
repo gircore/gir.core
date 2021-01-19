@@ -14,8 +14,8 @@ namespace GObject
             
             // We need to store a reference to MarshalCallback to
             // prevent the delegate from being collected by the GC
-            private ClosureMarshal? _marshalCallback;
-            private ActionRefValues? _callback;
+            private readonly ClosureMarshal? _marshalCallback;
+            private readonly ActionRefValues? _callback;
             
             #endregion
             
@@ -62,9 +62,6 @@ namespace GObject
             {
                 if (Handle != IntPtr.Zero)
                 {
-                    _callback = null;
-                    _marshalCallback = null;
-
                     Closure.Native.invalidate(Handle);
                     Closure.Native.unref(Handle);
 
