@@ -6,6 +6,12 @@ namespace TestMemoryLeaks
 {
     public static class Program
     {
+        // This is NOT a demo of the Pixbuf library. The intended users of this sample are developers.
+        //
+        // This uses pixbufs to load a lot of images and discard them afterwards. It tests if the C# garbage
+        // collector is freeing the managed and unmanaged resources properly. To verify it is necessary
+        // to check the used system resources.
+        
         public static void Main(string[] args)
         {
             var cycles = 1000;
