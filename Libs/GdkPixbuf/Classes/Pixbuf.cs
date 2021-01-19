@@ -6,6 +6,11 @@ namespace GdkPixbuf
 {
     public partial class Pixbuf
     {
+        #region Fields
+
+        private long _size;
+        
+        #endregion
 
         #region Properties
         
@@ -56,15 +61,14 @@ namespace GdkPixbuf
         protected override void Initialize()
         {
             base.Initialize();
-            var size = Native.get_byte_length(Handle);
-            GC.AddMemoryPressure((long)size);
+            _size = (long) Native.get_byte_length(Handle);
+            GC.AddMemoryPressure(_size);
         }
 
         protected override void Dispose(bool disposing)
         {
-            var size = Native.get_byte_length(Handle);
             base.Dispose(disposing);
-            GC.RemoveMemoryPressure((long)size);
+            GC.RemoveMemoryPressure(_size);
         }
     }
 }

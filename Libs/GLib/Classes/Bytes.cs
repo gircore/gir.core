@@ -4,6 +4,12 @@ namespace GLib
 {
     public sealed partial class Bytes : IHandle, IDisposable
     {
+        #region Fields
+
+        private readonly long _size;
+        
+        #endregion
+        
         #region Properties
 
         public IntPtr Handle { get; private set; }
@@ -15,7 +21,8 @@ namespace GLib
         private Bytes(IntPtr handle)
         {
             Handle = handle;
-            GC.AddMemoryPressure((long) get_size(handle));
+            _size = (long) get_size(handle);
+            GC.AddMemoryPressure(_size);
         }
 
         ~Bytes()
@@ -37,10 +44,9 @@ namespace GLib
         {
             if (Handle != IntPtr.Zero)
             {
-                var size = get_size(Handle);
                 unref(Handle);
                 Handle = IntPtr.Zero;
-                GC.RemoveMemoryPressure((long) size);
+                GC.RemoveMemoryPressure(_size);
             }
         }
 
