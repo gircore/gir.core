@@ -23,11 +23,6 @@ namespace GObject
                 _object = obj;
             }
 
-            ~SignalHelper()
-            {
-                ReleaseUnmanagedResources();
-            }
-
             #endregion
 
             #region Methods
@@ -61,26 +56,13 @@ namespace GObject
                 }
             }
 
-            private void ReleaseUnmanagedResources()
-            {
-                foreach (var (handleId, closureHelper) in _connectedHandlers.Values)
-                {
-                    if (Global.Native.signal_handler_is_connected(_object.Handle, handleId))
-                        Global.Native.signal_handler_disconnect(_object.Handle, handleId);
+            #endregion
 
-                    closureHelper.Dispose();
-                }
-
-                _connectedHandlers.Clear();
-            }
-            
             public void Dispose()
             {
-                ReleaseUnmanagedResources();
-                GC.SuppressFinalize(this);
+                foreach (var (_, closureHelper) in _connectedHandlers.Values)
+                    closureHelper.Dispose();
             }
-            
-            #endregion
         }
     }
 }
