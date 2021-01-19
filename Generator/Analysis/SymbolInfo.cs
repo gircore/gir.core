@@ -11,14 +11,17 @@ namespace Generator.Analysis
 
     public record QualifiedName
     {
-        public string nspace;
-        public string type;
+        public string Namespace { get; set; }
+        public string Type { get; set; }
 
         public QualifiedName(string nspace, string type)
         {
-            this.nspace = nspace;
-            this.type = type;
+            Namespace = nspace;
+            Type = type;
         }
+
+        public override string ToString()
+            => $"{Namespace}.{Type}";
     }
 
     public enum SymbolType

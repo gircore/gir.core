@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -68,7 +69,7 @@ namespace Generator
             // Opportunity for user to transform non-fixed data
 
             // Prefix interface names with 'I'
-            symbol.ManagedName.type = "I" + symbol.ManagedName.type;
+            symbol.ManagedName.Type = "I" + symbol.ManagedName.Type;
 
             TypeDict.AddSymbol(symbol);
         }
@@ -111,6 +112,33 @@ namespace Generator
             }
         }
 
+        private string TestServiceWriteInheritance(ObjectSymbol obj)
+        {
+            GClass classInfo = obj.ClassInfo;
+            if (classInfo.Parent is null)
+                return string.Empty;
+
+            // Parent Object
+            var result = $": {classInfo.Parent}";
+
+            // Interfaces
+            foreach (GImplement impl in classInfo.Implements)
+            {
+                InterfaceSymbol ifaceSymbol;
+                
+                // If the name contains a dot, it is qualified
+                // TODO: Make a 'IsQualified()' method
+                if (impl.Name.Contains('.'))
+                    ifaceSymbol = (InterfaceSymbol) TypeDict.GetSymbol(impl.Name);
+                else
+                    ifaceSymbol = (InterfaceSymbol) TypeDict.GetSymbol(obj.NativeName.Namespace, impl.Name);
+                
+                result += $", {ifaceSymbol.ManagedName}";
+            }
+
+            return result;
+        }
+
         public async Task WriteObjects(LoadedProject proj, GNamespace nspace)
         {
             // Read generic template
@@ -129,12 +157,15 @@ namespace Generator
                     continue;
                 
                 var symbolInfo = (ObjectSymbol)TypeDict.GetSymbol(nspace.Name, cls.Name);
-                    
+
+                Debug.Assert(symbolInfo.ClassInfo == cls, "SymbolInfo/GClass mismatch");
+
                 // These contain: Object, Signals, Fields, Native: {Properties, Methods}
                 var result = await template.RenderAsync(new
                 {
                     Namespace = nspace.Name,
-                    Name = symbolInfo.ManagedName.type
+                    Name = symbolInfo.ManagedName.Type,
+                    Inheritance = TestServiceWriteInheritance(symbolInfo),
                 });
 
                 var path = Path.Combine(dir, $"{cls.Name}.Generated.cs");
