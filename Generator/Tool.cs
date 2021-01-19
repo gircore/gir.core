@@ -11,7 +11,7 @@ namespace Generator
         {
             string girFile = "Gst-1.0.gir";
 
-            Project[] projects = {(new Project("Gst", girFile))};
+            Project[] projects = {(new Project(girFile))};
             
             return new Generator(projects)
                 .WriteAsync().Result;

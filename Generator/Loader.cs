@@ -17,11 +17,13 @@ namespace Generator
         string INode.Name => ProjectData.Gir;
         
         public Project ProjectData { get; }
+        public string ProjectName { get; }
         public GRepository Repository { get; }
 
-        public LoadedProject(Project data, GRepository repo, IEnumerable<LoadedProject> dependencies)
+        public LoadedProject(Project data, string name, GRepository repo, IEnumerable<LoadedProject> dependencies)
         {
             ProjectData = data;
+            ProjectName = name;
             Repository = repo;
             (this as INode).Dependencies.AddRange(dependencies);
         }
@@ -68,34 +70,39 @@ namespace Generator
             {
                 // Serialize introspection data (xml)
                 GRepository repo = SerializeGirFile(proj.Gir);
+
+                if (repo.Namespace == null)
+                    throw new InvalidDataException($"File '{proj.Gir} does not define a namespace.");
                 
+                var projName = $"{repo.Namespace.Name}-{repo.Namespace.Version}";
+
                 // Load dependencies recursively
                 List<LoadedProject> dependencies = new();
                 foreach (GInclude include in repo.Includes)
                 {
                     // Construct filename: e.g. "Gsk-4.0.gir"
-                    var filename = $"{include.Name}-{include.Version}.gir";
+                    var depName = $"{include.Name}-{include.Version}";
                     
                     // Skip if already loaded
-                    if (_loadedProjects.Any(lp => lp.ProjectData.Gir == filename))
+                    if (_loadedProjects.Any(lp => lp.ProjectName == depName))
                         continue;
 
                     // Load recursively
-                    var dep = new Project(include.Name, filename);
+                    var dep = new Project(depName + ".gir");
                     var result = LoadProjectRecursive(dep, out LoadedProject loadedDep);
                     dependencies.Add(loadedDep);
 
                     if (!result)
                     {
-                        Log.Error($"Could not resolve '{filename}' (dependency of '{proj.Gir}')");
+                        Log.Error($"Could not resolve '{depName}' (dependency of '{projName}')");
                         failureFlag = true;
                         return false;
                     }
                 }
-
-                loadedProj = new LoadedProject(proj, repo, dependencies);
+                
+                loadedProj = new LoadedProject(proj, projName, repo, dependencies);
                 _loadedProjects.Add(loadedProj);
-                Log.Information($"Loaded '{proj.Gir}'");
+                Log.Information($"Loaded '{projName}' (provided by '{proj.Gir}')");
                 
                 return true;
             }

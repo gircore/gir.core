@@ -2,13 +2,11 @@
 {
     public class Project
     {
-        public string Folder { get; }
         public string Gir { get; }
 
-        public Project(string folder, string gir)
+        public Project(string girFile)
         {
-            Folder = folder;
-            Gir = gir;
+            Gir = girFile;
         }
     }
 }

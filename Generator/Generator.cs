@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Generator.Analysis;
 using Generator.Introspection;
+using Scriban;
 
 namespace Generator
 {
     public class Generator
     {
-        public readonly Dictionary<Project, GRepository> LoadedProjects = new();
         public readonly TypeDictionary TypeDict = new();
+        public readonly List<LoadedProject> LoadedProjects = new();
+
+        private const string GENERATOR_VERSION = "0.2.0"; 
         
         public Generator(Project[] projects)
         {
@@ -23,7 +28,7 @@ namespace Generator
             
             // Sorts dependencies in order of base -> top level. Will throw if
             // a circular dependency is found.
-            List<LoadedProject> loadedProjects = loader.GetOrderedList();
+            LoadedProjects = loader.GetOrderedList();
             
             // Processing - We need to transform raw gir data to create a more
             // ergonomic C# API. This includes prefixing interfaces, storing rich
@@ -32,11 +37,13 @@ namespace Generator
             TypeDict = new TypeDictionary();
 
             // Process symbols (Add delegate to hook into symbol processing)
-            foreach (LoadedProject proj in loadedProjects)
+            foreach (LoadedProject proj in LoadedProjects)
             {
                 GNamespace nspace = proj.Repository.Namespace;
-                Log.Information($"Reading symbols for library '{nspace.Name}-{nspace.Version}' (provided by '{proj.ProjectData.Gir}')");
+                Log.Information($"Reading symbols for library '{proj.ProjectName}'");
 
+                // TODO: Add, then Process?
+                
                 // Add Objects
                 foreach (GClass cls in nspace?.Classes)
                     AddClassSymbol(nspace, cls);
@@ -45,6 +52,8 @@ namespace Generator
                     AddInterfaceSymbol(nspace, iface);
             }
             
+            // TODO: Services/Codegen
+
             Log.Information("Finished");
         }
 
@@ -80,8 +89,71 @@ namespace Generator
 
         public async Task<int> WriteAsync()
         {
-            // foreach...
-            return 0;
+            List<Task> AsyncTasks = new();
+            
+            foreach (LoadedProject proj in LoadedProjects)
+            {
+                GNamespace nspace = proj.Repository.Namespace;
+
+                // Generate Asynchronously
+                AsyncTasks.Add(WriteObjects(proj, nspace));
+            }
+            
+            try
+            {
+                Task.WaitAll(AsyncTasks.ToArray());
+                Log.Information("Writing completed successfully");
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Log.Exception(e);
+                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
+                return -1;
+            }
+        }
+
+        public async Task WriteObjects(LoadedProject proj, GNamespace nspace)
+        {
+            // Read generic template
+            var objTemplate = ReadTemplate("object.sbntxt");
+            var template = Template.Parse(objTemplate);
+            
+            // Create Directory
+            var dir = $"output/{proj.ProjectName}/Classes/";
+            Directory.CreateDirectory(dir);
+            
+            // Generate a file for each class
+            foreach (GClass cls in nspace?.Classes ?? new List<GClass>())
+            {
+                // Skip GObject, GInitiallyUnowned
+                if (cls.Name == "Object" || cls.Name == "InitiallyUnowned")
+                    continue;
+                
+                SymbolInfo symbolInfo = TypeDict.GetSymbol(nspace.Name, cls.Name);
+                    
+                // These contain: Object, Signals, Fields, Native: {Properties, Methods}
+                var result = await template.RenderAsync(new
+                {
+                    Namespace = nspace.Name,
+                    Name = symbolInfo.managedName.type
+                });
+
+                var path = Path.Combine(dir, $"{cls.Name}.Generated.cs");
+                File.WriteAllText(path, result);
+            }
+        }
+
+        private static string ReadTemplate(string resource)
+        {
+            Stream? stream = Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream($"Generator.Templates.{resource}");
+
+            if (stream == null)
+                throw new IOException($"Cannot get template resource file '{resource}'");
+
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
         }
     }
 }
