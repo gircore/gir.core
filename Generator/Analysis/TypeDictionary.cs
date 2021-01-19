@@ -5,17 +5,17 @@ namespace Generator.Analysis
 {
     public class TypeDictionary
     {
-        private readonly Dictionary<QualifiedName, SymbolInfo> _typeDict = new();
+        private readonly Dictionary<QualifiedName, ISymbolInfo> _typeDict = new();
 
-        public void AddSymbol(SymbolInfo info)
+        public void AddSymbol(ISymbolInfo info)
         {
-            _typeDict.Add(info.nativeName, info);
+            _typeDict.Add(info.NativeName, info);
         }
 
-        public SymbolInfo GetSymbol(QualifiedName nativeName)
+        public ISymbolInfo GetSymbol(QualifiedName nativeName)
             => _typeDict[nativeName];
 
-        public SymbolInfo GetSymbol(string nspace, string type)
+        public ISymbolInfo GetSymbol(string nspace, string type)
         {
             if (nspace.Contains('.'))
                 throw new ArgumentException("Provided string should not contain '.' character", nameof(nspace));
@@ -26,7 +26,7 @@ namespace Generator.Analysis
             return GetSymbol(new QualifiedName(nspace, type));
         }
         
-        public SymbolInfo GetSymbol(string qualifiedName)
+        public ISymbolInfo GetSymbol(string qualifiedName)
         {
             if (!qualifiedName.Contains('.'))
                 throw new ArgumentException("Provided string must be in format 'Namespace.Type': e.g. 'Gdk.Screen'", nameof(qualifiedName));

@@ -62,14 +62,13 @@ namespace Generator
         {
             var nativeName = new QualifiedName(nspace.Name, iface.Name);
             var managedName = new QualifiedName(nspace.Name, iface.Name);
-            var classification = Classification.Reference;
 
-            var symbol = new SymbolInfo(SymbolType.Interface, nativeName, managedName, classification);
+            var symbol = new InterfaceSymbol(nativeName, managedName, iface);
             
             // Opportunity for user to transform non-fixed data
 
             // Prefix interface names with 'I'
-            symbol.managedName.type = "I" + symbol.managedName.type;
+            symbol.ManagedName.type = "I" + symbol.ManagedName.type;
 
             TypeDict.AddSymbol(symbol);
         }
@@ -78,9 +77,8 @@ namespace Generator
         {
             var nativeName = new QualifiedName(nspace.Name, cls.Name);
             var managedName = new QualifiedName(nspace.Name, cls.Name);
-            var classification = Classification.Reference;
 
-            var symbol = new SymbolInfo(SymbolType.Object, nativeName, managedName, classification);
+            var symbol = new ObjectSymbol(nativeName, managedName, cls);
             
             // Opportunity for user to transform non-fixed data
 
@@ -130,13 +128,13 @@ namespace Generator
                 if (cls.Name == "Object" || cls.Name == "InitiallyUnowned")
                     continue;
                 
-                SymbolInfo symbolInfo = TypeDict.GetSymbol(nspace.Name, cls.Name);
+                var symbolInfo = (ObjectSymbol)TypeDict.GetSymbol(nspace.Name, cls.Name);
                     
                 // These contain: Object, Signals, Fields, Native: {Properties, Methods}
                 var result = await template.RenderAsync(new
                 {
                     Namespace = nspace.Name,
-                    Name = symbolInfo.managedName.type
+                    Name = symbolInfo.ManagedName.type
                 });
 
                 var path = Path.Combine(dir, $"{cls.Name}.Generated.cs");

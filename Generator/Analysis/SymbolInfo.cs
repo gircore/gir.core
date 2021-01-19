@@ -1,4 +1,7 @@
-﻿namespace Generator.Analysis
+﻿using System;
+using Generator.Introspection;
+
+namespace Generator.Analysis
 {
     public enum Classification
     {
@@ -32,25 +35,54 @@
     // Replace with ISymbolInfo interface and
     // concrete types for each symbol.
     // For example: InterfaceSymbol, ObjectSymbol, etc
-    public record SymbolInfo
+    public interface ISymbolInfo
     {
         // Fixed Information
-        public readonly SymbolType type;
-        public readonly QualifiedName nativeName;
-        public readonly Classification classification;
+        public SymbolType Type { get; }
+        public QualifiedName NativeName { get; }
+        public Classification Classification { get; }
         
         // Transformable Information
-        public QualifiedName managedName;
+        public QualifiedName ManagedName { get; }
+    }
 
-        public SymbolInfo(SymbolType type,
-            QualifiedName nativeName,
-            QualifiedName managedName,
-            Classification classification)
+    public record ObjectSymbol : ISymbolInfo
+    {
+        // Fixed Information
+        public SymbolType Type => SymbolType.Object;
+        public Classification Classification => Classification.Reference;
+        public QualifiedName NativeName { get; }
+        public GClass ClassInfo { get; }
+        
+        // Transformable Information
+        public QualifiedName ManagedName { get; }
+
+        public ObjectSymbol(QualifiedName nativeName, QualifiedName managedName, GClass classInfo)
         {
-            this.type = type;
-            this.nativeName = nativeName;
-            this.managedName = managedName;
-            this.classification = classification;
+            NativeName = nativeName;
+            ManagedName = managedName;
+            ClassInfo = classInfo;
         }
     }
+    
+    public record InterfaceSymbol : ISymbolInfo
+    {
+        // Fixed Information
+        public SymbolType Type => SymbolType.Interface;
+        public Classification Classification => Classification.Reference;
+        public QualifiedName NativeName { get; }
+        public GInterface InterfaceInfo { get; }
+        
+        // Transformable Information
+        public QualifiedName ManagedName { get; }
+        
+        public InterfaceSymbol(QualifiedName nativeName, QualifiedName managedName, GInterface interfaceInfo)
+        {
+            NativeName = nativeName;
+            ManagedName = managedName;
+            InterfaceInfo = interfaceInfo;
+        }
+    }
+    
+    
 }
