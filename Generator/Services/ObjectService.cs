@@ -17,14 +17,7 @@ namespace Generator.Services
             // Interfaces
             foreach (GImplement impl in classInfo.Implements)
             {
-                InterfaceSymbol ifaceSymbol;
-                
-                // If the name contains a dot, it is qualified
-                // TODO: Make a 'IsQualified()' method
-                if (impl.Name.Contains('.'))
-                    ifaceSymbol = (InterfaceSymbol) TypeDict.GetSymbol(impl.Name);
-                else
-                    ifaceSymbol = (InterfaceSymbol) TypeDict.GetSymbol(obj.NativeName.Namespace, impl.Name);
+                var ifaceSymbol = (InterfaceSymbol) TypeDict.GetSymbol(obj.NativeName.Namespace, impl.Name);
                 
                 result += $", {ifaceSymbol.ManagedName}";
             }

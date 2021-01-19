@@ -15,77 +15,101 @@ namespace Generator
 {
     public class Writer
     {
-        public ServiceManager ServiceManager;
-        public TypeDictionary TypeDict;
-        public List<LoadedProject> Projects = new();
+        public readonly TypeDictionary TypeDict;
+        
+        public readonly ServiceManager ServiceManager;
+        public readonly LoadedProject Project;
+        public readonly GNamespace Namespace;
+        public string CurrentNamespace => Namespace.Name;
 
-        public Writer(ServiceManager services, TypeDictionary typeDict, IEnumerable<LoadedProject> projects)
+        public Writer(LoadedProject project, TypeDictionary typeDict)
         {
             TypeDict = typeDict;
-            ServiceManager = services;
-            Projects.AddRange(projects);
+            Project = project;
+            Namespace = project.Repository!.Namespace;
+            
+            // Create service manager with our loaded symbol dictionary
+            ServiceManager = new ServiceManager(TypeDict, Namespace!.Name);
+            
+            // Add services
+            ServiceManager.Add(new ObjectService());
+            ServiceManager.Add(new UncategorisedService());
         }
 
-        public async Task<int> WriteAsync()
+        public IEnumerable<Task> GetAsyncTasks()
         {
-            List<Task> AsyncTasks = new();
+            List<Task> asyncTasks = new();
             
-            foreach (LoadedProject proj in Projects)
-            {
-                GNamespace nspace = proj.Repository.Namespace;
+            asyncTasks.Add(WriteObjectFiles());
+            asyncTasks.Add(WriteDelegateFiles());
 
-                // Generate Asynchronously
-                AsyncTasks.Add(WriteObjects(proj, nspace));
-            }
-            
-            try
-            {
-                Task.WaitAll(AsyncTasks.ToArray());
-                Log.Information("Writing completed successfully");
-                return 0;
-            }
-            catch (Exception e)
-            {
-                Log.Exception(e);
-                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
-                return -1;
-            }
+            return asyncTasks;
         }
 
-        public async Task WriteObjects(LoadedProject proj, GNamespace nspace)
+        private async Task WriteObjectFiles()
         {
             // Read generic template
             var objTemplate = ReadTemplate("object.sbntxt");
             var template = Template.Parse(objTemplate);
             
             // Create Directory
-            var dir = $"output/{proj.ProjectName}/Classes/";
+            var dir = $"output/{Project.ProjectName}/Classes/";
             Directory.CreateDirectory(dir);
             
             // Generate a file for each class
-            foreach (GClass cls in nspace?.Classes ?? new List<GClass>())
+            foreach (GClass cls in Namespace.Classes ?? new List<GClass>())
             {
                 // Skip GObject, GInitiallyUnowned
                 if (cls.Name == "Object" || cls.Name == "InitiallyUnowned")
                     continue;
                 
-                var symbolInfo = (ObjectSymbol)TypeDict.GetSymbol(nspace.Name, cls.Name);
+                var symbolInfo = (ObjectSymbol)TypeDict.GetSymbol(Namespace.Name, cls.Name);
 
                 Debug.Assert(symbolInfo.ClassInfo == cls, "SymbolInfo/GClass mismatch");
 
                 // These contain: Object, Signals, Fields, Native: {Properties, Methods}
                 var result = await template.RenderAsync(new
                 {
-                    Namespace = nspace.Name,
+                    Namespace = CurrentNamespace,
                     Name = symbolInfo.ManagedName.Type,
                     Inheritance = ServiceManager.Get<ObjectService>().WriteInheritance(symbolInfo),
+                    TypeName = cls.TypeName,
                 });
 
                 var path = Path.Combine(dir, $"{cls.Name}.Generated.cs");
-                File.WriteAllText(path, result);
+                await File.WriteAllTextAsync(path, result);
             }
         }
         
+        private async Task WriteDelegateFiles()
+        {
+            // Read generic template
+            var dlgTemplate = ReadTemplate("delegate.sbntxt");
+            var template = Template.Parse(dlgTemplate);
+            
+            // Create Directory
+            var dir = $"output/{Project.ProjectName}/Delegates/";
+            Directory.CreateDirectory(dir);
+            
+            // Generate a file for each class
+            foreach (GCallback dlg in Namespace?.Callbacks ?? new List<GCallback>())
+            {
+                var dlgSymbol = (DelegateSymbol)TypeDict.GetSymbol(Namespace.Name, dlg.Name);
+
+                var result = await template.RenderAsync(new
+                {
+                    Namespace = CurrentNamespace,
+                    ReturnValue = ServiceManager.Get<UncategorisedService>().WriteReturnValue(dlgSymbol, Namespace.Name),
+                    WrapperType = dlg.Name,
+                    WrappedType = dlgSymbol.ManagedName.Type,
+                    ManagedParameters = ServiceManager.Get<UncategorisedService>().WriteParameters(dlgSymbol),
+                });
+
+                var path = Path.Combine(dir, $"{dlg.Name}.Generated.cs");
+                await File.WriteAllTextAsync(path, result);
+            }
+        }
+
         private static string ReadTemplate(string resource)
         {
             Stream? stream = Assembly.GetExecutingAssembly()

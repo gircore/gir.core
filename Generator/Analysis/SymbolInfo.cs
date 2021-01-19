@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Generator.Introspection;
 
 namespace Generator.Analysis
@@ -6,7 +7,8 @@ namespace Generator.Analysis
     public enum Classification
     {
         Value,
-        Reference
+        Reference,
+        Closure // TODO: Should this be a classification?
     }
 
     public record QualifiedName
@@ -21,11 +23,17 @@ namespace Generator.Analysis
         }
 
         public override string ToString()
-            => $"{Namespace}.{Type}";
+        {
+            if (!string.IsNullOrEmpty(Namespace))
+                return $"{Namespace}.{Type}";
+
+            return Type;
+        }
     }
 
     public enum SymbolType
     {
+        Basic,
         Object,
         Interface,
         Record,
@@ -35,9 +43,7 @@ namespace Generator.Analysis
         Method
     }
     
-    // Replace with ISymbolInfo interface and
-    // concrete types for each symbol.
-    // For example: InterfaceSymbol, ObjectSymbol, etc
+    // TODO: Add CType property?
     public interface ISymbolInfo
     {
         // Fixed Information
@@ -47,6 +53,25 @@ namespace Generator.Analysis
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
+    }
+
+    // For C# Built-in/Keyword Types
+    public record BasicSymbol : ISymbolInfo
+    {
+        // Fixed Information
+        public SymbolType Type => SymbolType.Basic;
+        public QualifiedName NativeName { get; }
+        public Classification Classification => Classification.Value;
+        
+        // Transformable Information
+        public QualifiedName ManagedName { get; }
+
+        public BasicSymbol(string nativeType, string managedType)
+        {
+            Debug.Assert(!nativeType.Contains('.'), "Basic types names cannot be qualified");
+            NativeName = new QualifiedName(string.Empty, nativeType);
+            ManagedName = new QualifiedName(string.Empty, managedType);
+        }
     }
 
     public record ObjectSymbol : ISymbolInfo
@@ -68,6 +93,65 @@ namespace Generator.Analysis
         }
     }
     
+    public record EnumSymbol : ISymbolInfo
+    {
+        // Fixed Information
+        public SymbolType Type => SymbolType.Enumeration;
+        public Classification Classification => Classification.Value;
+        public QualifiedName NativeName { get; }
+        public GEnumeration EnumInfo { get; }
+        public bool Flags { get;  }
+        
+        // Transformable Information
+        public QualifiedName ManagedName { get; }
+
+        public EnumSymbol(QualifiedName nativeName, QualifiedName managedName, GEnumeration enumInfo, bool flags = false)
+        {
+            NativeName = nativeName;
+            ManagedName = managedName;
+            EnumInfo = enumInfo;
+            Flags = flags;
+        }
+    }
+    
+    public record RecordSymbol : ISymbolInfo
+    {
+        // Fixed Information
+        public SymbolType Type => SymbolType.Record;
+        public Classification Classification => Classification.Value;
+        public QualifiedName NativeName { get; }
+        public GRecord RecordInfo { get; }
+        
+        // Transformable Information
+        public QualifiedName ManagedName { get; }
+
+        public RecordSymbol(QualifiedName nativeName, QualifiedName managedName, GRecord recordInfo)
+        {
+            NativeName = nativeName;
+            ManagedName = managedName;
+            RecordInfo = recordInfo;
+        }
+    }
+
+    public record DelegateSymbol : ISymbolInfo
+    {
+        // Fixed Information
+        public SymbolType Type => SymbolType.Delegate;
+        public Classification Classification => Classification.Closure;
+        public QualifiedName NativeName { get; }
+        public GCallback DelegateInfo { get; }
+        
+        // Transformable Information
+        public QualifiedName ManagedName { get; }
+
+        public DelegateSymbol(QualifiedName nativeName, QualifiedName managedName, GCallback delegateInfo)
+        {
+            NativeName = nativeName;
+            ManagedName = managedName;
+            DelegateInfo = delegateInfo;
+        }
+    }
+    
     public record InterfaceSymbol : ISymbolInfo
     {
         // Fixed Information
@@ -86,6 +170,4 @@ namespace Generator.Analysis
             InterfaceInfo = interfaceInfo;
         }
     }
-    
-    
 }

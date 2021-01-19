@@ -16,8 +16,7 @@ namespace Generator
                 new Project(girFile)
             };
             
-            return new Generator(projects)
-                .WriteAsync().Result;
+            return new Generator(projects).WriteAsync();
         }
     }
 }

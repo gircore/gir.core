@@ -10,6 +10,6 @@ namespace {{ namespace }}
 
     public partial class {{ name }} {{ inheritance }}
     {
-        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ c_type }}", {{ name }}.Native.get_type);
+        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ type_name }}", {{ name }}.Native.get_type);
     }
 }

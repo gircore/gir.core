@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Generator.Analysis;
 using Generator.Introspection;
-using Generator.Services;
 
 namespace Generator
 {
@@ -11,10 +12,7 @@ namespace Generator
     {
         private readonly TypeDictionary TypeDict = new();
         private readonly List<LoadedProject> LoadedProjects = new();
-        private readonly ServiceManager ServiceManager;
 
-        private const string GENERATOR_VERSION = "0.2.0"; 
-        
         /// <summary>
         /// The main interface used to generate source files from GObject
         /// Introspection (GIR) data. Create a Generator object and then
@@ -40,29 +38,39 @@ namespace Generator
             
             TypeDict = new TypeDictionary();
 
-            // Process symbols (Add delegate to hook into symbol processing)
+            // TODO: Add, then Process?
+            // TODO: Add delegate to hook into symbol processing?
+            
             foreach (LoadedProject proj in LoadedProjects)
             {
                 GNamespace nspace = proj.Repository.Namespace;
                 Log.Information($"Reading symbols for library '{proj.ProjectName}'");
 
-                // TODO: Add, then Process?
+                // Register Aliases
+                foreach (GAlias alias in nspace?.Aliases ?? Enumerable.Empty<GAlias>())
+                    AddAlias(nspace, alias);
                 
-                // Add Objects
-                foreach (GClass cls in nspace?.Classes)
+                // Register Symbols
+                foreach (GClass cls in nspace?.Classes ?? Enumerable.Empty<GClass>())
                     AddClassSymbol(nspace, cls);
 
-                foreach (GInterface iface in nspace?.Interfaces)
+                foreach (GInterface iface in nspace?.Interfaces ?? Enumerable.Empty<GInterface>())
                     AddInterfaceSymbol(nspace, iface);
+                
+                foreach (GCallback dlg in nspace?.Callbacks ?? Enumerable.Empty<GCallback>())
+                    AddDelegateSymbol(nspace, dlg);
+                
+                foreach (GEnumeration @enum in nspace?.Enumerations ?? Enumerable.Empty<GEnumeration>())
+                    AddEnumSymbol(nspace, @enum, false);
+                
+                foreach (GEnumeration @enum in nspace?.Bitfields ?? Enumerable.Empty<GEnumeration>())
+                    AddEnumSymbol(nspace, @enum, true);
+                
+                foreach (GRecord @record in nspace?.Records ?? Enumerable.Empty<GRecord>())
+                    AddRecordSymbol(nspace, @record);
             }
-            
-            // Create service manager with our loaded symbol dictionary
-            ServiceManager = new ServiceManager(TypeDict);
-            
-            // Add services
-            ServiceManager.Add(new ObjectService());
 
-            Log.Information("Finished");
+            Log.Information("Ready to Write");
         }
 
         // TODO: Move these to an analyse module
@@ -80,6 +88,30 @@ namespace Generator
 
             TypeDict.AddSymbol(symbol);
         }
+        
+        private void AddEnumSymbol(GNamespace nspace, GEnumeration @enum, bool isBitfield)
+        {
+            var nativeName = new QualifiedName(nspace.Name, @enum.Name);
+            var managedName = new QualifiedName(nspace.Name, @enum.Name);
+
+            var symbol = new EnumSymbol(nativeName, managedName, @enum, isBitfield);
+            
+            // Opportunity for user to transform non-fixed data
+
+            TypeDict.AddSymbol(symbol);
+        }
+
+        private void AddRecordSymbol(GNamespace nspace, GRecord @record)
+        {
+            var nativeName = new QualifiedName(nspace.Name, @record.Name);
+            var managedName = new QualifiedName(nspace.Name, @record.Name);
+
+            var symbol = new RecordSymbol(nativeName, managedName, @record);
+            
+            // Opportunity for user to transform non-fixed data
+
+            TypeDict.AddSymbol(symbol);
+        }
 
         private void AddClassSymbol(GNamespace nspace, GClass cls)
         {
@@ -92,12 +124,58 @@ namespace Generator
 
             TypeDict.AddSymbol(symbol);
         }
+        
+        private void AddDelegateSymbol(GNamespace nspace, GCallback dlg)
+        {
+            var nativeName = new QualifiedName(nspace.Name, dlg.Name);
+            var managedName = new QualifiedName(nspace.Name, dlg.Name);
+
+            var symbol = new DelegateSymbol(nativeName, managedName, dlg);
+            
+            // Opportunity for user to transform non-fixed data
+
+            // Suffix with 'Native'
+            symbol.ManagedName.Type += "Native";
+
+            TypeDict.AddSymbol(symbol);
+        }
+        
+        private void AddAlias(GNamespace nspace, GAlias alias)
+        {
+            var aliasName = new QualifiedName(nspace.Name, alias.Name);
+
+            QualifiedName targetName;
+            if (alias.For!.Name!.Contains('.'))
+            {
+                var components = alias.For.Name.Split('.', 2);
+                targetName = new QualifiedName(components[0], components[1]);
+            }
+            else
+                targetName = new QualifiedName(nspace.Name, alias.For.Name);
+
+            TypeDict.AddAlias(aliasName, targetName);
+        }
 
         // TODO: Add more configuration options to Writer
-        public async Task<int> WriteAsync()
+        public int WriteAsync()
         {
-            var writer = new Writer(ServiceManager, TypeDict, LoadedProjects);
-            return await writer.WriteAsync();
+            List<Task> AsyncTasks = new();
+
+            foreach (LoadedProject proj in LoadedProjects)
+                AsyncTasks.AddRange(new Writer(proj, TypeDict).GetAsyncTasks());
+
+            try
+            {
+                Task.WaitAll(AsyncTasks.ToArray());
+                Log.Information("Writing completed successfully");
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Log.Exception(e);
+                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
+                return -1;
+            }
         }
     }
 }
