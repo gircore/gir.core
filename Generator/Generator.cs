@@ -7,14 +7,16 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Generator.Analysis;
 using Generator.Introspection;
+using Generator.Services;
 using Scriban;
 
 namespace Generator
 {
     public class Generator
     {
-        public readonly TypeDictionary TypeDict = new();
-        public readonly List<LoadedProject> LoadedProjects = new();
+        private readonly TypeDictionary TypeDict = new();
+        private readonly List<LoadedProject> LoadedProjects = new();
+        private readonly ServiceManager ServiceManager;
 
         private const string GENERATOR_VERSION = "0.2.0"; 
         
@@ -53,7 +55,11 @@ namespace Generator
                     AddInterfaceSymbol(nspace, iface);
             }
             
-            // TODO: Services/Codegen
+            // Create service manager with our loaded symbol dictionary
+            ServiceManager = new ServiceManager(TypeDict);
+            
+            // Add services
+            ServiceManager.Add(new ObjectService());
 
             Log.Information("Finished");
         }
@@ -112,33 +118,6 @@ namespace Generator
             }
         }
 
-        private string TestServiceWriteInheritance(ObjectSymbol obj)
-        {
-            GClass classInfo = obj.ClassInfo;
-            if (classInfo.Parent is null)
-                return string.Empty;
-
-            // Parent Object
-            var result = $": {classInfo.Parent}";
-
-            // Interfaces
-            foreach (GImplement impl in classInfo.Implements)
-            {
-                InterfaceSymbol ifaceSymbol;
-                
-                // If the name contains a dot, it is qualified
-                // TODO: Make a 'IsQualified()' method
-                if (impl.Name.Contains('.'))
-                    ifaceSymbol = (InterfaceSymbol) TypeDict.GetSymbol(impl.Name);
-                else
-                    ifaceSymbol = (InterfaceSymbol) TypeDict.GetSymbol(obj.NativeName.Namespace, impl.Name);
-                
-                result += $", {ifaceSymbol.ManagedName}";
-            }
-
-            return result;
-        }
-
         public async Task WriteObjects(LoadedProject proj, GNamespace nspace)
         {
             // Read generic template
@@ -165,7 +144,7 @@ namespace Generator
                 {
                     Namespace = nspace.Name,
                     Name = symbolInfo.ManagedName.Type,
-                    Inheritance = TestServiceWriteInheritance(symbolInfo),
+                    Inheritance = ServiceManager.Get<ObjectService>().WriteInheritance(symbolInfo),
                 });
 
                 var path = Path.Combine(dir, $"{cls.Name}.Generated.cs");
