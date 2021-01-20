@@ -1,58 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 #nullable enable
 
 namespace Generator.Analysis
 {
-    // Maps Symbol Name -> Introspection Data
-    // Namespace-specific
-    internal class SymbolDictionary
-    {
-        private readonly Dictionary<string, ISymbolInfo> _symbolDict = new();
-        internal string Namespace { get; }
-
-        public SymbolDictionary(string nspace)
-        {
-            Namespace = nspace;
-        }
-
-        public void AddSymbol(string name, ISymbolInfo info)
-            => _symbolDict.Add(name, info);
-
-        public ISymbolInfo GetSymbol(string name)
-            => _symbolDict[name];
-
-        public bool TryGetSymbol(string name, [NotNullWhen(true)] out ISymbolInfo symbol)
-            => _symbolDict.TryGetValue(name, out symbol);
-    }
-
-    // Maps Alias -> Symbol Name
-    // Namespace-specific
-    internal class AliasDictionary
-    {
-        private readonly Dictionary<string, string> _aliasDict = new();
-        internal string Namespace { get; }
-
-        public AliasDictionary(string nspace)
-        {
-            Namespace = nspace;
-        }
-        
-        public void AddAlias(string from, string to)
-            => _aliasDict.Add(from, to);
-        
-        public string GetAlias(string name)
-            => _aliasDict[name];
-        
-        public bool TryGetAlias(string name, [NotNullWhen(true)] out string alias)
-            => _aliasDict.TryGetValue(name, out alias);
-    }
-    
-    public class TypeDictionary
+    public partial class TypeDictionary
     {
         private readonly Dictionary<string, SymbolDictionary> _symbolDictionaries = new();
         private readonly Dictionary<string, AliasDictionary> _aliasDictionaries = new();
@@ -220,43 +174,6 @@ namespace Generator.Analysis
 
             // Check Normal
             return GetSymbolInternal(symbolDict, symbol);
-        }
-    }
-
-    // A view of the type dictionary from a specific namespace (Immutable access only)
-    public class TypeDictionaryView
-    {
-        public TypeDictionary TypeDict { get; }
-        public string Namespace { get; }
-        
-        public TypeDictionaryView(TypeDictionary typeDict, string nspace)
-        {
-            TypeDict = typeDict;
-            Namespace = nspace;
-        }
-
-        /// <summary>
-        /// Looks up <see cref="symbolName"/> from the perspective of the
-        /// <see cref="TypeDictionaryView"/>'s namespace. Unqualified types
-        /// are looked up in the current namespace, while Qualified types
-        /// are searched globally. Fundamental types take priority over any
-        /// other type name.
-        /// </summary>
-        /// <param name="symbolName">Name of the symbol. May be qualified or unqualified</param>
-        /// <returns>Information about the symbol</returns>
-        public ISymbolInfo LookupSymbol(string symbolName)
-        {
-            if (symbolName.Contains('.'))
-            {
-                // We are in the form 'Namespace.Type'
-                var components = symbolName.Split('.', 2);
-                return TypeDict.GetSymbol(components[0], components[1]);
-            }
-
-            // We are not qualified by a namespace, so assume this one.
-            // It might also be a fundamental type, but the type dict
-            // takes care of this.
-            return TypeDict.GetSymbol(Namespace, symbolName);
         }
     }
 }
