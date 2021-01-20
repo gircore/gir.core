@@ -2,10 +2,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GParameter : IType
+    public class ParameterInfo : IType
     {
-        #region Properties
-
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -19,20 +17,18 @@ namespace Generator.Introspection
         public bool CallerAllocates;
 
         [XmlElement("doc")]
-        public GDoc? Doc { get; set; }
+        public DocInfo? Doc { get; set; }
 
         [XmlElement("type")]
-        public GType? Type { get; set; }
+        public TypeInfo? Type { get; set; }
 
         [XmlElement("array")]
-        public GArray? Array { get; set; }
+        public ArrayInfo? Array { get; set; }
 
         [XmlElement("varargs")]
-        public GVarArgs? VarArgs { get; set; }
+        public VarArgsInfo? VarArgs { get; set; }
 
         [XmlAttribute("nullable")]
         public bool Nullable;
-
-        #endregion
     }
 }

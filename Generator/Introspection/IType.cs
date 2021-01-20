@@ -2,12 +2,10 @@ namespace Generator.Introspection
 {
     public interface IType
     {
-        #region Properties
+        TypeInfo? Type { get; set; }
 
-        GType? Type { get; set; }
+        ArrayInfo? Array { get; set; }
 
-        GArray? Array { get; set; }
-
-        #endregion
+        public bool IsArray => Array is not null;
     }
 }

@@ -2,10 +2,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GCallback
+    public class CallbackInfo
     {
-        #region Properties
-
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -13,14 +11,12 @@ namespace Generator.Introspection
         public string? Type { get; set; }
 
         [XmlElement("return-value")]
-        public GReturnValue? ReturnValue { get; set; }
+        public ReturnValueInfo? ReturnValue { get; set; }
 
         [XmlElement("doc", Namespace = "http://www.gtk.org/introspection/core/1.0")]
-        public GDoc? Doc { get; set; }
+        public DocInfo? Doc { get; set; }
 
         [XmlElement("parameters")]
-        public GParameters? Parameters { get; set; }
-
-        #endregion
+        public ParametersInfo? Parameters { get; set; }
     }
 }

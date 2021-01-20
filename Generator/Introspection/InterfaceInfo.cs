@@ -3,15 +3,13 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GInterface
+    public class InterfaceInfo
     {
-        #region Properties
-
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
         [XmlElement("doc")]
-        public GDoc? Doc { get; set; }
+        public DocInfo? Doc { get; set; }
 
         [XmlAttribute("type", Namespace = "http://www.gtk.org/introspection/c/1.0")]
         public string? Type { get; set; }
@@ -20,26 +18,12 @@ namespace Generator.Introspection
         public string? TypeName { get; set; }
 
         [XmlElement("method")]
-        public List<GMethod> Methods { get; set; } = default!;
+        public List<MethodInfo> Methods { get; set; } = default!;
 
         [XmlAttribute("get-type", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public string? GetTypeFunction { get; set; }
 
         [XmlElement("property")]
-        public List<GProperty> Properties { get; set; } = default!;
-
-        public virtual IEnumerable<GMethod> AllMethods
-        {
-            get
-            {
-                foreach (GMethod? method in Methods)
-                {
-                    if (!method.HasVariadicParameter())
-                        yield return method;
-                }
-            }
-        }
-
-        #endregion
+        public List<PropertyInfo> Properties { get; set; } = default!;
     }
 }

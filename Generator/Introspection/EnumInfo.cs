@@ -3,10 +3,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GEnumeration
+    public class EnumInfo
     {
-        #region Properties
-
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -17,11 +15,9 @@ namespace Generator.Introspection
         public string? TypeName { get; set; }
 
         [XmlElement("doc")]
-        public GDoc? Doc { get; set; }
+        public DocInfo? Doc { get; set; }
 
         [XmlElement("member")]
-        public List<GMember> Members { get; set; } = default!;
-
-        #endregion
+        public List<MemberInfo> Members { get; set; } = default!;
     }
 }

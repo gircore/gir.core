@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GVarArgs
+    public class VarArgsInfo
     {
     }
 }

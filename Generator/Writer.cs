@@ -19,7 +19,7 @@ namespace Generator
         
         public readonly ServiceManager ServiceManager;
         public readonly LoadedProject Project;
-        public readonly GNamespace Namespace;
+        public readonly NamespaceInfo Namespace;
         public string CurrentNamespace => Namespace.Name;
 
         public Writer(LoadedProject project, TypeDictionary typeDict)
@@ -57,7 +57,7 @@ namespace Generator
             Directory.CreateDirectory(dir);
             
             // Generate a file for each class
-            foreach (GClass cls in Namespace.Classes ?? new List<GClass>())
+            foreach (ClassInfo cls in Namespace.Classes ?? new List<ClassInfo>())
             {
                 // Skip GObject, GInitiallyUnowned
                 if (cls.Name == "Object" || cls.Name == "InitiallyUnowned")
@@ -92,7 +92,7 @@ namespace Generator
             Directory.CreateDirectory(dir);
             
             // Generate a file for each class
-            foreach (GCallback dlg in Namespace?.Callbacks ?? new List<GCallback>())
+            foreach (CallbackInfo dlg in Namespace?.Callbacks ?? new List<CallbackInfo>())
             {
                 var dlgSymbol = (DelegateSymbol)TypeDict.GetSymbol(Namespace.Name, dlg.Name);
 

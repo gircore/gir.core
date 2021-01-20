@@ -80,12 +80,12 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Object;
         public Classification Classification => Classification.Reference;
         public QualifiedName NativeName { get; }
-        public GClass ClassInfo { get; }
+        public ClassInfo ClassInfo { get; }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
 
-        public ObjectSymbol(QualifiedName nativeName, QualifiedName managedName, GClass classInfo)
+        public ObjectSymbol(QualifiedName nativeName, QualifiedName managedName, ClassInfo classInfo)
         {
             NativeName = nativeName;
             ManagedName = managedName;
@@ -99,13 +99,13 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Enumeration;
         public Classification Classification => Classification.Value;
         public QualifiedName NativeName { get; }
-        public GEnumeration EnumInfo { get; }
+        public EnumInfo EnumInfo { get; }
         public bool Flags { get;  }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
 
-        public EnumSymbol(QualifiedName nativeName, QualifiedName managedName, GEnumeration enumInfo, bool flags = false)
+        public EnumSymbol(QualifiedName nativeName, QualifiedName managedName, EnumInfo enumInfo, bool flags = false)
         {
             NativeName = nativeName;
             ManagedName = managedName;
@@ -120,12 +120,12 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Record;
         public Classification Classification => Classification.Value;
         public QualifiedName NativeName { get; }
-        public GRecord RecordInfo { get; }
+        public RecordInfo RecordInfo { get; }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
 
-        public RecordSymbol(QualifiedName nativeName, QualifiedName managedName, GRecord recordInfo)
+        public RecordSymbol(QualifiedName nativeName, QualifiedName managedName, RecordInfo recordInfo)
         {
             NativeName = nativeName;
             ManagedName = managedName;
@@ -139,12 +139,12 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Delegate;
         public Classification Classification => Classification.Closure;
         public QualifiedName NativeName { get; }
-        public GCallback DelegateInfo { get; }
+        public CallbackInfo DelegateInfo { get; }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
 
-        public DelegateSymbol(QualifiedName nativeName, QualifiedName managedName, GCallback delegateInfo)
+        public DelegateSymbol(QualifiedName nativeName, QualifiedName managedName, CallbackInfo delegateInfo)
         {
             NativeName = nativeName;
             ManagedName = managedName;
@@ -158,12 +158,12 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Interface;
         public Classification Classification => Classification.Reference;
         public QualifiedName NativeName { get; }
-        public GInterface InterfaceInfo { get; }
+        public InterfaceInfo InterfaceInfo { get; }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
         
-        public InterfaceSymbol(QualifiedName nativeName, QualifiedName managedName, GInterface interfaceInfo)
+        public InterfaceSymbol(QualifiedName nativeName, QualifiedName managedName, InterfaceInfo interfaceInfo)
         {
             NativeName = nativeName;
             ManagedName = managedName;

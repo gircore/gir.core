@@ -2,10 +2,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GProperty
+    public class PropertyInfo
     {
-        #region Properties
-
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -25,14 +23,12 @@ namespace Generator.Introspection
         public string? DeprecatedVersion { get; set; }
 
         [XmlElement("doc")]
-        public GDoc? Doc { get; set; }
+        public DocInfo? Doc { get; set; }
 
         [XmlElement("doc-deprecated")]
-        public GDoc? DocDeprecated { get; set; }
+        public DocInfo? DocDeprecated { get; set; }
 
         [XmlElement("type")]
-        public GType? Type { get; set; }
-
-        #endregion
+        public TypeInfo? Type { get; set; }
     }
 }

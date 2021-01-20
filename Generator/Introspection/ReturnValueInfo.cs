@@ -2,10 +2,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GReturnValue : IType
+    public class ReturnValueInfo : IType
     {
-        #region Properties
-
         [XmlAttribute("transfer-ownership")]
         public string? TransferOwnership { get; set; }
 
@@ -13,14 +11,12 @@ namespace Generator.Introspection
         public bool Nullable { get; set; }
 
         [XmlElement("doc")]
-        public GDoc? Doc { get; set; }
+        public DocInfo? Doc { get; set; }
 
         [XmlElement("type")]
-        public GType? Type { get; set; }
+        public TypeInfo? Type { get; set; }
 
         [XmlElement("array")]
-        public GArray? Array { get; set; }
-
-        #endregion
+        public ArrayInfo? Array { get; set; }
     }
 }

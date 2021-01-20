@@ -18,9 +18,9 @@ namespace Generator
         
         public Project ProjectData { get; }
         public string ProjectName { get; }
-        public GRepository Repository { get; }
+        public RepositoryInfo Repository { get; }
 
-        public LoadedProject(Project data, string name, GRepository repo, IEnumerable<LoadedProject> dependencies)
+        public LoadedProject(Project data, string name, RepositoryInfo repo, IEnumerable<LoadedProject> dependencies)
         {
             ProjectData = data;
             ProjectName = name;
@@ -69,7 +69,7 @@ namespace Generator
             try
             {
                 // Serialize introspection data (xml)
-                GRepository repo = SerializeGirFile(proj.Gir);
+                RepositoryInfo repo = SerializeGirFile(proj.Gir);
 
                 if (repo.Namespace == null)
                     throw new InvalidDataException($"File '{proj.Gir} does not define a namespace.");
@@ -78,7 +78,7 @@ namespace Generator
 
                 // Load dependencies recursively
                 List<LoadedProject> dependencies = new();
-                foreach (GInclude include in repo.Includes)
+                foreach (IncludeInfo include in repo.Includes)
                 {
                     // Construct filename: e.g. "Gsk-4.0.gir"
                     var depName = $"{include.Name}-{include.Version}";
@@ -116,10 +116,10 @@ namespace Generator
         }
         
         
-        private GRepository SerializeGirFile(string girFile)
+        private RepositoryInfo SerializeGirFile(string girFile)
         {
             var serializer = new XmlSerializer(
-                type: typeof(GRepository),
+                type: typeof(RepositoryInfo),
                 defaultNamespace: "http://www.gtk.org/introspection/core/1.0");
 
             // First check current directory, then built-in cache
@@ -131,7 +131,7 @@ namespace Generator
             
             using var fs = new FileStream(path, FileMode.Open);
             
-            return (GRepository)serializer.Deserialize(fs);
+            return (RepositoryInfo)serializer.Deserialize(fs);
         }
     }
 }

@@ -3,10 +3,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GMethod
+    public class MethodInfo
     {
-        #region Properties
-
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -23,29 +21,18 @@ namespace Generator.Introspection
         public string? DeprecatedVersion { get; set; }
 
         [XmlElement("return-value")]
-        public GReturnValue? ReturnValue { get; set; }
+        public ReturnValueInfo? ReturnValue { get; set; }
 
         [XmlElement("doc")]
-        public GDoc? Doc { get; set; }
+        public DocInfo? Doc { get; set; }
 
         [XmlElement("doc-deprecated")]
-        public GDoc? DocDeprecated { get; set; }
+        public DocInfo? DocDeprecated { get; set; }
 
         [XmlElement("parameters")]
-        public GParameters? Parameters { get; set; }
+        public ParametersInfo? Parameters { get; set; }
 
         [XmlAttribute("moved-to")]
         public string? MovedTo { get; set; }
-
-        public bool IsNew { get; set; }
-
-        public bool HasVariadicParameter()
-        {
-            static bool IsVariadic(GParameter p) => p.VarArgs is { };
-
-            return Parameters?.Parameters.Any(IsVariadic) ?? false;
-        }
-
-        #endregion
     }
 }

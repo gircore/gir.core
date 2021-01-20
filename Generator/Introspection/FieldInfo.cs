@@ -2,10 +2,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GField : IType
+    public class FieldInfo : IType
     {
-        #region Properties
-
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -22,17 +20,15 @@ namespace Generator.Introspection
         public int Bits { get; set; }
 
         [XmlElement("callback")]
-        public GCallback? Callback { get; set; }
+        public CallbackInfo? Callback { get; set; }
 
         [XmlElement("type")]
-        public GType? Type { get; set; }
+        public TypeInfo? Type { get; set; }
 
         [XmlElement("array")]
-        public GArray? Array { get; set; }
+        public ArrayInfo? Array { get; set; }
 
         [XmlElement("doc")]
-        public GDoc? Doc { get; set; }
-
-        #endregion
+        public DocInfo? Doc { get; set; }
     }
 }

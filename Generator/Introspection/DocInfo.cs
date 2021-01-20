@@ -2,13 +2,9 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GDoc
+    public class DocInfo
     {
-        #region Properties
-
         [XmlText]
         public string? Text { get; set; }
-
-        #endregion
     }
 }

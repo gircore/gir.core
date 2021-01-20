@@ -7,7 +7,7 @@ namespace Generator.Services
     {
         public string WriteInheritance(ObjectSymbol obj)
         {
-            GClass classInfo = obj.ClassInfo;
+            ClassInfo classInfo = obj.ClassInfo;
             if (classInfo.Parent is null)
                 return string.Empty;
 
@@ -15,7 +15,7 @@ namespace Generator.Services
             var result = $": {classInfo.Parent}";
 
             // Interfaces
-            foreach (GImplement impl in classInfo.Implements)
+            foreach (ImplementInfo impl in classInfo.Implements)
             {
                 var ifaceSymbol = (InterfaceSymbol) TypeDict.GetSymbol(obj.NativeName.Namespace, impl.Name);
                 

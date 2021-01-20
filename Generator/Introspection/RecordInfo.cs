@@ -3,10 +3,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GRecord : GClass
+    public class RecordInfo : ClassInfo
     {
-        #region Properties
-
         [XmlAttribute("is-gtype-struct-for", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public string? GLibIsGTypeStructFor;
 
@@ -15,7 +13,5 @@ namespace Generator.Introspection
 
         [XmlAttribute("introspectable")]
         public bool Introspectable = true;
-
-        #endregion
     }
 }

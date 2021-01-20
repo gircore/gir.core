@@ -43,30 +43,30 @@ namespace Generator
             
             foreach (LoadedProject proj in LoadedProjects)
             {
-                GNamespace nspace = proj.Repository.Namespace;
+                NamespaceInfo nspace = proj.Repository.Namespace;
                 Log.Information($"Reading symbols for library '{proj.ProjectName}'");
 
                 // Register Aliases
-                foreach (GAlias alias in nspace?.Aliases ?? Enumerable.Empty<GAlias>())
+                foreach (AliasInfo alias in nspace?.Aliases ?? Enumerable.Empty<AliasInfo>())
                     AddAlias(nspace, alias);
                 
                 // Register Symbols
-                foreach (GClass cls in nspace?.Classes ?? Enumerable.Empty<GClass>())
+                foreach (ClassInfo cls in nspace?.Classes ?? Enumerable.Empty<ClassInfo>())
                     AddClassSymbol(nspace, cls);
 
-                foreach (GInterface iface in nspace?.Interfaces ?? Enumerable.Empty<GInterface>())
+                foreach (InterfaceInfo iface in nspace?.Interfaces ?? Enumerable.Empty<InterfaceInfo>())
                     AddInterfaceSymbol(nspace, iface);
                 
-                foreach (GCallback dlg in nspace?.Callbacks ?? Enumerable.Empty<GCallback>())
+                foreach (CallbackInfo dlg in nspace?.Callbacks ?? Enumerable.Empty<CallbackInfo>())
                     AddDelegateSymbol(nspace, dlg);
                 
-                foreach (GEnumeration @enum in nspace?.Enumerations ?? Enumerable.Empty<GEnumeration>())
+                foreach (EnumInfo @enum in nspace?.Enumerations ?? Enumerable.Empty<EnumInfo>())
                     AddEnumSymbol(nspace, @enum, false);
                 
-                foreach (GEnumeration @enum in nspace?.Bitfields ?? Enumerable.Empty<GEnumeration>())
+                foreach (EnumInfo @enum in nspace?.Bitfields ?? Enumerable.Empty<EnumInfo>())
                     AddEnumSymbol(nspace, @enum, true);
                 
-                foreach (GRecord @record in nspace?.Records ?? Enumerable.Empty<GRecord>())
+                foreach (RecordInfo @record in nspace?.Records ?? Enumerable.Empty<RecordInfo>())
                     AddRecordSymbol(nspace, @record);
             }
 
@@ -74,7 +74,7 @@ namespace Generator
         }
 
         // TODO: Move these to an analyse module
-        private void AddInterfaceSymbol(GNamespace nspace, GInterface iface)
+        private void AddInterfaceSymbol(NamespaceInfo nspace, InterfaceInfo iface)
         {
             var nativeName = new QualifiedName(nspace.Name, iface.Name);
             var managedName = new QualifiedName(nspace.Name, iface.Name);
@@ -89,7 +89,7 @@ namespace Generator
             TypeDict.AddSymbol(symbol);
         }
         
-        private void AddEnumSymbol(GNamespace nspace, GEnumeration @enum, bool isBitfield)
+        private void AddEnumSymbol(NamespaceInfo nspace, EnumInfo @enum, bool isBitfield)
         {
             var nativeName = new QualifiedName(nspace.Name, @enum.Name);
             var managedName = new QualifiedName(nspace.Name, @enum.Name);
@@ -101,7 +101,7 @@ namespace Generator
             TypeDict.AddSymbol(symbol);
         }
 
-        private void AddRecordSymbol(GNamespace nspace, GRecord @record)
+        private void AddRecordSymbol(NamespaceInfo nspace, RecordInfo @record)
         {
             var nativeName = new QualifiedName(nspace.Name, @record.Name);
             var managedName = new QualifiedName(nspace.Name, @record.Name);
@@ -113,7 +113,7 @@ namespace Generator
             TypeDict.AddSymbol(symbol);
         }
 
-        private void AddClassSymbol(GNamespace nspace, GClass cls)
+        private void AddClassSymbol(NamespaceInfo nspace, ClassInfo cls)
         {
             var nativeName = new QualifiedName(nspace.Name, cls.Name);
             var managedName = new QualifiedName(nspace.Name, cls.Name);
@@ -125,7 +125,7 @@ namespace Generator
             TypeDict.AddSymbol(symbol);
         }
         
-        private void AddDelegateSymbol(GNamespace nspace, GCallback dlg)
+        private void AddDelegateSymbol(NamespaceInfo nspace, CallbackInfo dlg)
         {
             var nativeName = new QualifiedName(nspace.Name, dlg.Name);
             var managedName = new QualifiedName(nspace.Name, dlg.Name);
@@ -140,18 +140,18 @@ namespace Generator
             TypeDict.AddSymbol(symbol);
         }
         
-        private void AddAlias(GNamespace nspace, GAlias alias)
+        private void AddAlias(NamespaceInfo nspace, AliasInfo aliasInfo)
         {
-            var aliasName = new QualifiedName(nspace.Name, alias.Name);
+            var aliasName = new QualifiedName(nspace.Name, aliasInfo.Name);
 
             QualifiedName targetName;
-            if (alias.For!.Name!.Contains('.'))
+            if (aliasInfo.For!.Name!.Contains('.'))
             {
-                var components = alias.For.Name.Split('.', 2);
+                var components = aliasInfo.For.Name.Split('.', 2);
                 targetName = new QualifiedName(components[0], components[1]);
             }
             else
-                targetName = new QualifiedName(nspace.Name, alias.For.Name);
+                targetName = new QualifiedName(nspace.Name, aliasInfo.For.Name);
 
             TypeDict.AddAlias(aliasName, targetName);
         }

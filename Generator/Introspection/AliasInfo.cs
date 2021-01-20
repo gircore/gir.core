@@ -2,10 +2,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GAlias
+    public class AliasInfo
     {
-        #region Properties
-
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
@@ -13,11 +11,9 @@ namespace Generator.Introspection
         public string? Type { get; set; }
 
         [XmlElement("doc")]
-        public GDoc? Doc { get; set; }
+        public DocInfo? Doc { get; set; }
 
         [XmlElement("type")]
-        public GType? For { get; set; }
-
-        #endregion
+        public TypeInfo? For { get; set; }
     }
 }

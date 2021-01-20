@@ -2,10 +2,8 @@ using System.Xml.Serialization;
 
 namespace Generator.Introspection
 {
-    public class GArray
+    public class ArrayInfo
     {
-        #region Properties
-
         [XmlAttribute("length")]
         public string? Length { get; set; }
 
@@ -19,8 +17,6 @@ namespace Generator.Introspection
         public string? CType { get; set; }
 
         [XmlElement("type")]
-        public GType? Type { get; set; }
-
-        #endregion
+        public TypeInfo? Type { get; set; }
     }
 }
