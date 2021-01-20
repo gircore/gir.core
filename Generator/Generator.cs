@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,6 +41,7 @@ namespace Generator
 
             // TODO: Add, then Process?
             // TODO: Add delegate to hook into symbol processing?
+            // TODO: Add symbols under the active namespace. Then allow processing of limited data
             
             foreach (LoadedProject proj in LoadedProjects)
             {
@@ -86,7 +88,7 @@ namespace Generator
             // Prefix interface names with 'I'
             symbol.ManagedName.Type = "I" + symbol.ManagedName.Type;
 
-            TypeDict.AddSymbol(symbol);
+            TypeDict.AddSymbol(nspace.Name, symbol);
         }
         
         private void AddEnumSymbol(NamespaceInfo nspace, EnumInfo @enum, bool isBitfield)
@@ -98,7 +100,7 @@ namespace Generator
             
             // Opportunity for user to transform non-fixed data
 
-            TypeDict.AddSymbol(symbol);
+            TypeDict.AddSymbol(nspace.Name, symbol);
         }
 
         private void AddRecordSymbol(NamespaceInfo nspace, RecordInfo @record)
@@ -110,7 +112,7 @@ namespace Generator
             
             // Opportunity for user to transform non-fixed data
 
-            TypeDict.AddSymbol(symbol);
+            TypeDict.AddSymbol(nspace.Name, symbol);
         }
 
         private void AddClassSymbol(NamespaceInfo nspace, ClassInfo cls)
@@ -122,7 +124,7 @@ namespace Generator
             
             // Opportunity for user to transform non-fixed data
 
-            TypeDict.AddSymbol(symbol);
+            TypeDict.AddSymbol(nspace.Name, symbol);
         }
         
         private void AddDelegateSymbol(NamespaceInfo nspace, CallbackInfo dlg)
@@ -137,23 +139,20 @@ namespace Generator
             // Suffix with 'Native'
             symbol.ManagedName.Type += "Native";
 
-            TypeDict.AddSymbol(symbol);
+            TypeDict.AddSymbol(nspace.Name, symbol);
         }
         
         private void AddAlias(NamespaceInfo nspace, AliasInfo aliasInfo)
         {
-            var aliasName = new QualifiedName(nspace.Name, aliasInfo.Name);
+            TypeInfo targetType = aliasInfo.For;
 
-            QualifiedName targetName;
-            if (aliasInfo.For!.Name!.Contains('.'))
+            if (targetType == null)
             {
-                var components = aliasInfo.For.Name.Split('.', 2);
-                targetName = new QualifiedName(components[0], components[1]);
+                Log.Warning($"Alias '{nspace.Name}.{aliasInfo.Name}' does not define a target");
+                return;
             }
-            else
-                targetName = new QualifiedName(nspace.Name, aliasInfo.For.Name);
 
-            TypeDict.AddAlias(aliasName, targetName);
+            TypeDict.AddAlias(nspace.Name, aliasInfo.Name, targetType.Name);
         }
 
         // TODO: Add more configuration options to Writer
@@ -162,7 +161,12 @@ namespace Generator
             List<Task> AsyncTasks = new();
 
             foreach (LoadedProject proj in LoadedProjects)
-                AsyncTasks.AddRange(new Writer(proj, TypeDict).GetAsyncTasks());
+            {
+                TypeDictionaryView view = TypeDict.GetView(proj.Repository!.Namespace!.Name);
+                
+                var writer = new Writer(proj, view);
+                AsyncTasks.AddRange(writer.GetAsyncTasks());
+            }
 
             try
             {

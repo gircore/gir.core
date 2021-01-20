@@ -17,7 +17,7 @@ namespace Generator.Services
             // Interfaces
             foreach (ImplementInfo impl in classInfo.Implements)
             {
-                var ifaceSymbol = (InterfaceSymbol) TypeDict.GetSymbol(obj.NativeName.Namespace, impl.Name);
+                var ifaceSymbol = (InterfaceSymbol) TypeDict.LookupSymbol(impl.Name);
                 
                 result += $", {ifaceSymbol.ManagedName}";
             }

@@ -15,14 +15,14 @@ namespace Generator
 {
     public class Writer
     {
-        public readonly TypeDictionary TypeDict;
+        public readonly TypeDictionaryView TypeDict;
         
         public readonly ServiceManager ServiceManager;
         public readonly LoadedProject Project;
         public readonly NamespaceInfo Namespace;
         public string CurrentNamespace => Namespace.Name;
 
-        public Writer(LoadedProject project, TypeDictionary typeDict)
+        public Writer(LoadedProject project, TypeDictionaryView typeDict)
         {
             TypeDict = typeDict;
             Project = project;
@@ -63,7 +63,7 @@ namespace Generator
                 if (cls.Name == "Object" || cls.Name == "InitiallyUnowned")
                     continue;
                 
-                var symbolInfo = (ObjectSymbol)TypeDict.GetSymbol(Namespace.Name, cls.Name);
+                var symbolInfo = (ObjectSymbol)TypeDict.LookupSymbol(cls.Name);
 
                 Debug.Assert(symbolInfo.ClassInfo == cls, "SymbolInfo/GClass mismatch");
 
@@ -94,12 +94,12 @@ namespace Generator
             // Generate a file for each class
             foreach (CallbackInfo dlg in Namespace?.Callbacks ?? new List<CallbackInfo>())
             {
-                var dlgSymbol = (DelegateSymbol)TypeDict.GetSymbol(Namespace.Name, dlg.Name);
+                var dlgSymbol = (DelegateSymbol)TypeDict.LookupSymbol(dlg.Name);
 
                 var result = await template.RenderAsync(new
                 {
                     Namespace = CurrentNamespace,
-                    ReturnValue = ServiceManager.Get<UncategorisedService>().WriteReturnValue(dlgSymbol, Namespace.Name),
+                    ReturnValue = ServiceManager.Get<UncategorisedService>().WriteReturnValue(dlgSymbol),
                     WrapperType = dlg.Name,
                     WrappedType = dlgSymbol.ManagedName.Type,
                     ManagedParameters = ServiceManager.Get<UncategorisedService>().WriteParameters(dlgSymbol),

@@ -9,10 +9,10 @@ namespace Generator.Services
     [Obsolete("Purely for testing - incrementally restructure")]
     public class UncategorisedService : Service
     {
-        public string WriteReturnValue(DelegateSymbol delegateSymbol, string nspace)
+        public string WriteReturnValue(DelegateSymbol delegateSymbol)
         {
             var returnValType = delegateSymbol.DelegateInfo.ReturnValue.Type;
-            ISymbolInfo returnValSymbol = TypeDict.GetSymbol(nspace, returnValType.Name);
+            ISymbolInfo returnValSymbol = TypeDict.LookupSymbol(returnValType.Name);
             return returnValSymbol.ManagedName.ToString();
         }
         
@@ -30,7 +30,7 @@ namespace Generator.Services
             foreach (ParameterInfo param in parameters)
             {
                 var name = param.Name;
-                var type = ResolveType(delegateSymbol.ManagedName.Namespace, param);
+                var type = ResolveType(param);
                 result += first ? $"{type} {name}" : $", {type} {name}";
                 first = false;
             }
@@ -38,17 +38,17 @@ namespace Generator.Services
             return result;
         }
 
-        public string ResolveType(string nspace, IType type)
+        public string ResolveType(IType type)
         {
             // TODO: Replace with complex type resolution logic
             if (type.Array != null)
             {
-                ISymbolInfo symbolInfo  = TypeDict.GetSymbol(nspace, type.Array.Type.Name);
+                ISymbolInfo symbolInfo  = TypeDict.LookupSymbol(type.Array.Type.Name);
                 return $"{symbolInfo.ManagedName}[]";
             }
             else
             {
-                ISymbolInfo symbolInfo  = TypeDict.GetSymbol(nspace, type.Type.Name);
+                ISymbolInfo symbolInfo  = TypeDict.LookupSymbol(type.Type.Name);
                 return $"{symbolInfo.ManagedName}";
             }
         }

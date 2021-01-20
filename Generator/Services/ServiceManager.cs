@@ -7,7 +7,7 @@ namespace Generator.Services
     public abstract class Service
     {
         // Service resources (add here if relevant to all services)
-        public TypeDictionary TypeDict { get; set; }
+        public TypeDictionaryView TypeDict { get; set; }
         public string CurrentNamespace { get; set; }
     }
     
@@ -15,10 +15,10 @@ namespace Generator.Services
     {
         private readonly Dictionary<Type, Service> serviceDict = new();
 
-        private readonly TypeDictionary typeDict;
+        private readonly TypeDictionaryView typeDict;
         private readonly string nspace;
 
-        public ServiceManager(TypeDictionary typeDict, string nspace)
+        public ServiceManager(TypeDictionaryView typeDict, string nspace)
         {
             this.typeDict = typeDict;
             this.nspace = nspace;
