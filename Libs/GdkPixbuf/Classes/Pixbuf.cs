@@ -65,9 +65,9 @@ namespace GdkPixbuf
             GC.AddMemoryPressure(_size);
         }
 
-        protected override void Dispose(bool disposing)
+        public override void Dispose()
         {
-            base.Dispose(disposing);
+            base.Dispose();
             GC.RemoveMemoryPressure(_size);
         }
     }

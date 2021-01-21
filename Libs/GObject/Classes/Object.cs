@@ -14,11 +14,11 @@ namespace GObject
     {
         #region Fields
 
-        //TODO: Use SafeHandle to get rid of concurrent dictionaries and finalizer code
-        private static readonly ConcurrentDictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
-        private static readonly ConcurrentDictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
+        private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
+        private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
         
         private readonly Dictionary<string, SignalHelper> _signals = new ();
+        private ObjectSafeHandle _safeHandle;
         
         #endregion
 
@@ -32,8 +32,8 @@ namespace GObject
         #endregion
 
         #region Properties
-        
-        public IntPtr Handle { get; private set; }
+
+        public IntPtr Handle => _safeHandle?.DangerousGetHandle() ?? IntPtr.Zero;
 
         #endregion
 
@@ -123,18 +123,14 @@ namespace GObject
             Initialize(handle);
         }
 
-        ~Object()
-        {
-            Dispose(false);
-        }
-
         #endregion
 
         #region Methods
 
+        [MemberNotNull(nameof(_safeHandle))]
         private void Initialize(IntPtr ptr)
         {
-            Handle = ptr;
+            _safeHandle = new ObjectSafeHandle(ptr);
 
             RegisterObject();
             RegisterProperties();
@@ -151,13 +147,17 @@ namespace GObject
         {
             if (IsSubclass(GetType()))
             {
-                if (!SubclassObjects.TryAdd(Handle, new ToggleRef<Object>(this)))
-                    throw new Exception($"Could not save subclass handle {Handle}. It is already present");
+                lock (SubclassObjects)
+                {
+                    SubclassObjects[Handle] = new ToggleRef<Object>(this);
+                }
             }
             else
             {
-                if (!WrapperObjects.TryAdd(Handle, new WeakReference<Object>(this)))
-                    throw new Exception($"Could not save wrapper handle {Handle}. It is already present");
+                lock (WrapperObjects)
+                {
+                    WrapperObjects[Handle] = new WeakReference<Object>(this);
+                }
             }
         }
 
@@ -327,34 +327,15 @@ namespace GObject
             }
         }
 
+        public virtual void Dispose()
+        {
+            foreach (var signalHelper in _signals.Values)
+                signalHelper.Dispose();
+
+            _safeHandle.Dispose();
+        }
+        
         #endregion
 
-        #region IDisposable Implementation
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (Handle == IntPtr.Zero)
-                return;
-
-            if (disposing)
-            {
-                foreach (var signalHelper in _signals.Values)
-                    signalHelper.Dispose();
-            }
-
-            WrapperObjects.TryRemove(Handle, out _); 
-            SubclassObjects.TryRemove(Handle, out _);
-
-            Native.unref(Handle);
-            Handle = IntPtr.Zero;
-        }
-
-        #endregion
     }
 }
