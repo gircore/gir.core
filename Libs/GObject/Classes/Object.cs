@@ -14,6 +14,7 @@ namespace GObject
     {
         #region Fields
 
+        //TODO: Use SafeHandle to get rid of concurrent dictionaries and finalizer code
         private static readonly ConcurrentDictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
         private static readonly ConcurrentDictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
         
