@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using GdkPixbuf;
 
 namespace TestMemoryLeaks
@@ -14,12 +15,37 @@ namespace TestMemoryLeaks
         
         public static void Main(string[] args)
         {
-            var cycles = 1000;
+            var cycles = 10000;
             var fileName = "test.bmp";
             
             var imageBytes = File.ReadAllBytes(fileName);
+            Task[] tasks = new Task[cycles];
+            
+            Console.WriteLine("Concurrent file finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
+            for (int i = 0; i < cycles; i++)
+            {
+                tasks[i] = Task.Run(() =>
+                {
+                    PixbufLoader.FromBytes(imageBytes);
+                });
+            }
+            Task.WaitAll(tasks);
+            Collect();
+            Done();
 
-            Console.WriteLine("File: Memory can go up. GC.Collect() is called in the end which must free everything up.");
+            Console.WriteLine("Concurrent bytes finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
+            for (int i = 0; i < cycles; i++)
+            {
+                tasks[i] = Task.Run(() =>
+                {
+                    Pixbuf.NewFromFile(fileName);
+                });
+            }
+            Task.WaitAll(tasks);
+            Collect();
+            Done();
+            
+            Console.WriteLine("File finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
             for (int i = 0; i < cycles; i++)
             {
                 var a = Pixbuf.NewFromFile(fileName);
@@ -27,15 +53,14 @@ namespace TestMemoryLeaks
             Collect();
             Done();
             
-            Console.WriteLine("Bytes: Memory can go up. GC.Collect() is called in the end which must free everything up.");
-
+            Console.WriteLine("Bytes finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
             for (int i = 0; i < cycles; i++)
             {
                 var p = PixbufLoader.FromBytes(imageBytes);
             }
             Done();
 
-            Console.WriteLine("File: Memory should not go up as it is freed explicity via Dispose().");
+            Console.WriteLine("File dispose: Memory should not go up as it is freed explicity via Dispose().");
             
             for (int i = 0; i < cycles; i++)
             {
@@ -45,7 +70,7 @@ namespace TestMemoryLeaks
             Done();
             
 
-            Console.WriteLine("Bytes: Memory should not go up as it is freed explicity via Dispose().");
+            Console.WriteLine("Bytes dispose: Memory should not go up as it is freed explicity via Dispose().");
             
             for (int i = 0; i < cycles; i++)
             {
