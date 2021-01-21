@@ -3,36 +3,30 @@ using System.Runtime.InteropServices;
 
 namespace GLib
 {
-    public partial class GException : Exception
+    public sealed partial class GException : Exception, IDisposable
     {
         #region Fields
 
-        private readonly IntPtr _errorHandle;
+        private readonly GExceptionSafeHandle _errorHandle;
 
         #endregion
 
         #region Constructors
 
-        public GException(IntPtr errorHandle) : base(Marshal.PtrToStructure<Error>(errorHandle).Message)
+        internal GException(IntPtr errorHandle) : base(Marshal.PtrToStructure<Error>(errorHandle).Message)
         {
-            _errorHandle = errorHandle;
+            _errorHandle = new GExceptionSafeHandle(errorHandle);
         }
-
-        public GException()
-        { }
-
-        public GException(string message) : base(message)
-        { }
-
-        public GException(string message, Exception innerException) : base(message, innerException)
-        { }
 
         #endregion
 
         #region Methods
 
-        private void Free() => Error.FreeError(_errorHandle);
-
+        public void Dispose()
+        {
+            _errorHandle.Dispose();
+        }
+        
         #endregion
     }
 }

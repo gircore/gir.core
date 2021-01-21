@@ -16,12 +16,13 @@ namespace GObject
             // prevent the delegate from being collected by the GC
             private readonly ClosureMarshal? _marshalCallback;
             private readonly ActionRefValues? _callback;
+            private readonly Closure.ClosureSafeHandle _safeHandle; 
             
             #endregion
             
             #region Properties
-            
-            public IntPtr Handle { get; private set; }
+
+            public IntPtr Handle => _safeHandle?.DangerousGetHandle() ?? IntPtr.Zero;
 
             #endregion
             
@@ -32,17 +33,14 @@ namespace GObject
                 _callback = action;
                 _marshalCallback = MarshalCallback;
 
-                Handle = Closure.Native.new_simple((uint) Marshal.SizeOf(typeof(Closure)), IntPtr.Zero);
+                var handle = Closure.Native.new_simple((uint) Marshal.SizeOf(typeof(Closure)), IntPtr.Zero);
+                _safeHandle = new Closure.ClosureSafeHandle(handle);
+
                 Closure.Native.@ref(Handle);
                 Closure.Native.sink(Handle);
                 Closure.Native.set_marshal(Handle, _marshalCallback);
             }
 
-            ~ClosureHelper()
-            {
-                ReleaseUnmanagedResources();
-            }
-            
             #endregion
 
             #region Methods
@@ -58,21 +56,9 @@ namespace GObject
                 _callback?.Invoke(ref paramValues);
             }
 
-            private void ReleaseUnmanagedResources()
-            {
-                if (Handle != IntPtr.Zero)
-                {
-                    Closure.Native.invalidate(Handle);
-                    Closure.Native.unref(Handle);
-
-                    Handle = IntPtr.Zero;
-                }
-            }
-
             public void Dispose()
             {
-                ReleaseUnmanagedResources();
-                GC.SuppressFinalize(this);
+                _safeHandle.Dispose();
             }
             
             #endregion

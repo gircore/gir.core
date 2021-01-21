@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace GLib
 {
-    public partial class GException
+    public partial class Bytes
     {
-        private class GExceptionSafeHandle : SafeHandle
+        private class BytesSafeHandle : SafeHandle
         {
-            public GExceptionSafeHandle(IntPtr handle) : base(IntPtr.Zero, true)
+            public BytesSafeHandle(IntPtr handle) : base(IntPtr.Zero, true)
             {
                 SetHandle(handle);
             }
@@ -16,7 +16,7 @@ namespace GLib
 
             protected sealed override bool ReleaseHandle()
             {
-                Error.FreeError(handle);
+                unref(handle);
                 return true;
             }
         }

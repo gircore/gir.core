@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
-namespace GLib
+namespace GObject
 {
-    public partial class GException
+    public partial struct Closure
     {
-        private class GExceptionSafeHandle : SafeHandle
+        internal class ClosureSafeHandle : SafeHandle
         {
-            public GExceptionSafeHandle(IntPtr handle) : base(IntPtr.Zero, true)
+            public ClosureSafeHandle(IntPtr handle) : base(IntPtr.Zero, true)
             {
                 SetHandle(handle);
             }
@@ -16,7 +16,8 @@ namespace GLib
 
             protected sealed override bool ReleaseHandle()
             {
-                Error.FreeError(handle);
+                Native.invalidate(handle);
+                Native.unref(handle);
                 return true;
             }
         }
