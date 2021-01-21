@@ -3,7 +3,7 @@ using System.IO;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 
-namespace Generator
+namespace Repository.Xml
 {
     public class Tool
     {

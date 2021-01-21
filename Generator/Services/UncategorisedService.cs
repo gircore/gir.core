@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Generator.Analysis;
-using Generator.Introspection;
+using Repository.Xml.Introspection;
+using Repository.Xml.Analysis;
 
-namespace Generator.Services
+namespace Repository.Xml.Services
 {
     // Miscellaneous Services
     [Obsolete("Purely for testing - incrementally restructure")]

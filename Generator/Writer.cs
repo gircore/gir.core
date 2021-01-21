@@ -4,14 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-
-using Generator.Analysis;
-using Generator.Introspection;
-using Generator.Services;
-
+using Repository.Xml.Introspection;
+using Repository.Xml.Analysis;
+using Repository.Xml.Services;
 using Scriban;
 
-namespace Generator
+namespace Repository.Xml
 {
     public class Writer
     {

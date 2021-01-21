@@ -1,7 +1,7 @@
-﻿using Generator.Analysis;
-using Generator.Introspection;
+﻿using Repository.Xml.Introspection;
+using Repository.Xml.Analysis;
 
-namespace Generator.Services
+namespace Repository.Xml.Services
 {
     public class ObjectService : Service
     {

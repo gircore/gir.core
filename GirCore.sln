@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkMinimal", "Samples\Gtk3\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Generator.csproj", "{28F5A326-D1F9-42E7-985F-C69E01DB4C4E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{8385F95E-E778-44EF-96F2-8F357B1B6348}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -378,6 +380,18 @@ Global
 		{28F5A326-D1F9-42E7-985F-C69E01DB4C4E}.Release|x64.Build.0 = Release|Any CPU
 		{28F5A326-D1F9-42E7-985F-C69E01DB4C4E}.Release|x86.ActiveCfg = Release|Any CPU
 		{28F5A326-D1F9-42E7-985F-C69E01DB4C4E}.Release|x86.Build.0 = Release|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Debug|x64.Build.0 = Debug|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Debug|x86.Build.0 = Debug|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Release|x64.ActiveCfg = Release|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Release|x64.Build.0 = Release|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Release|x86.ActiveCfg = Release|Any CPU
+		{8385F95E-E778-44EF-96F2-8F357B1B6348}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BF7F9B0B-CB43-4161-BFAD-C6EE479FC86B} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}

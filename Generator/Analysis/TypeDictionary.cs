@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 #nullable enable
 
-namespace Generator.Analysis
+namespace Repository.Xml.Analysis
 {
     public partial class TypeDictionary
     {

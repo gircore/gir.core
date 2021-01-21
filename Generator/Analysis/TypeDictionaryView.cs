@@ -1,4 +1,6 @@
-﻿namespace Generator.Analysis
+﻿using System;
+
+namespace Repository.Xml.Analysis
 {
     // A view of the type dictionary from a specific namespace (Immutable access only)
     public class TypeDictionaryView
@@ -23,6 +25,9 @@
         /// <returns>Information about the symbol</returns>
         public ISymbolInfo LookupSymbol(string symbolName)
         {
+            if (string.IsNullOrEmpty(symbolName))
+                throw new ArgumentNullException(nameof(symbolName), "Provided lookup cannot be null or empty");
+            
             if (symbolName.Contains('.'))
             {
                 // We are in the form 'Namespace.Type'

@@ -1,4 +1,4 @@
-﻿namespace Generator
+﻿namespace Repository.Xml
 {
     public class Project
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-using Generator;
+using Repository.Xml;
 
 namespace Build
 {
@@ -42,14 +42,14 @@ namespace Build
             }
         }
 
-        private static global::Generator.IGenerator CreateGenerator(Project project, Type type)
+        private static global::Repository.Xml.IGenerator CreateGenerator(Project project, Type type)
         {
             project.Gir = $"../gir-files/{project.Gir}";
 
-            if (Activator.CreateInstance(type, project) is global::Generator.IGenerator generator)
+            if (Activator.CreateInstance(type, project) is global::Repository.Xml.IGenerator generator)
                 return generator;
 
-            throw new Exception($"{type.Name} is not a {nameof(global::Generator.IGenerator)}");
+            throw new Exception($"{type.Name} is not a {nameof(global::Repository.Xml.IGenerator)}");
         }
     }
 }

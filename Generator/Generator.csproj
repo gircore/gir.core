@@ -18,4 +18,8 @@
       <EmbeddedResource Include="Templates\**" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Shared" />
+    </ItemGroup>
+
 </Project>

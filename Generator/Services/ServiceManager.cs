@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Generator.Analysis;
+using Repository.Xml.Analysis;
 
-namespace Generator.Services
+namespace Repository.Xml.Services
 {
     public abstract class Service
     {

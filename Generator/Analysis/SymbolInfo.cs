@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using Generator.Introspection;
 
-namespace Generator.Analysis
+namespace Repository.Xml.Analysis
 {
     public enum Classification
     {
@@ -80,16 +79,14 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Object;
         public Classification Classification => Classification.Reference;
         public QualifiedName NativeName { get; }
-        public ClassInfo ClassInfo { get; }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
 
-        public ObjectSymbol(QualifiedName nativeName, QualifiedName managedName, ClassInfo classInfo)
+        public ObjectSymbol(QualifiedName nativeName, QualifiedName managedName)
         {
             NativeName = nativeName;
             ManagedName = managedName;
-            ClassInfo = classInfo;
         }
     }
     
@@ -99,17 +96,15 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Enumeration;
         public Classification Classification => Classification.Value;
         public QualifiedName NativeName { get; }
-        public EnumInfo EnumInfo { get; }
         public bool Flags { get;  }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
 
-        public EnumSymbol(QualifiedName nativeName, QualifiedName managedName, EnumInfo enumInfo, bool flags = false)
+        public EnumSymbol(QualifiedName nativeName, QualifiedName managedName, bool flags = false)
         {
             NativeName = nativeName;
             ManagedName = managedName;
-            EnumInfo = enumInfo;
             Flags = flags;
         }
     }
@@ -120,16 +115,14 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Record;
         public Classification Classification => Classification.Value;
         public QualifiedName NativeName { get; }
-        public RecordInfo RecordInfo { get; }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
 
-        public RecordSymbol(QualifiedName nativeName, QualifiedName managedName, RecordInfo recordInfo)
+        public RecordSymbol(QualifiedName nativeName, QualifiedName managedName)
         {
             NativeName = nativeName;
             ManagedName = managedName;
-            RecordInfo = recordInfo;
         }
     }
 
@@ -139,16 +132,14 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Delegate;
         public Classification Classification => Classification.Closure;
         public QualifiedName NativeName { get; }
-        public CallbackInfo DelegateInfo { get; }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
 
-        public DelegateSymbol(QualifiedName nativeName, QualifiedName managedName, CallbackInfo delegateInfo)
+        public DelegateSymbol(QualifiedName nativeName, QualifiedName managedName)
         {
             NativeName = nativeName;
             ManagedName = managedName;
-            DelegateInfo = delegateInfo;
         }
     }
     
@@ -158,16 +149,14 @@ namespace Generator.Analysis
         public SymbolType Type => SymbolType.Interface;
         public Classification Classification => Classification.Reference;
         public QualifiedName NativeName { get; }
-        public InterfaceInfo InterfaceInfo { get; }
         
         // Transformable Information
         public QualifiedName ManagedName { get; }
         
-        public InterfaceSymbol(QualifiedName nativeName, QualifiedName managedName, InterfaceInfo interfaceInfo)
+        public InterfaceSymbol(QualifiedName nativeName, QualifiedName managedName)
         {
             NativeName = nativeName;
             ManagedName = managedName;
-            InterfaceInfo = interfaceInfo;
         }
     }
 }

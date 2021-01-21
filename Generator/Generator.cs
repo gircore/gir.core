@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Repository.Xml.Introspection;
+using Repository.Xml.Analysis;
 
-using Generator.Analysis;
-using Generator.Introspection;
-
-namespace Generator
+namespace Repository.Xml
 {
     public class Generator
     {

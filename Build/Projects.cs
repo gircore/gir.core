@@ -1,5 +1,5 @@
 using System;
-using Generator;
+using Repository.Xml;
 
 namespace Build
 {
