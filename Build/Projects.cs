@@ -52,6 +52,7 @@ namespace Build
         private const string GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/UsingSourceGenerator";
         private const string GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/NoSourceGenerator";
         private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
+        private const string GDKPIXBUF_TEST_MEMORY_LEAKS = SAMPLE + "GdkPixbuf/TestMemoryLeaks";
 
         private const string INTEGRATION = "../Integration/";
         
@@ -80,6 +81,7 @@ namespace Build
             GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR,
             GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR,
             //GTK4_SIMPLE_WINDOW_SAMPLE
+            GDKPIXBUF_TEST_MEMORY_LEAKS
         };
 
         public static readonly (Project Project, Type Type)[] LibraryProjects =

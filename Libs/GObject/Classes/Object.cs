@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -12,10 +13,12 @@ namespace GObject
     public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHandle
     {
         #region Fields
-
-        private static readonly Dictionary<IntPtr, Object> Objects = new Dictionary<IntPtr, Object>();
-        private static readonly Dictionary<ClosureHelper, ulong> Closures = new Dictionary<ClosureHelper, ulong>();
-
+        
+        private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
+        private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
+        
+        private readonly Dictionary<string, SignalHelper> _signals = new ();
+        
         #endregion
 
         #region Events
@@ -30,12 +33,6 @@ namespace GObject
         #region Properties
         
         public IntPtr Handle { get; private set; }
-        
-        // We need to store a reference to WeakNotify to
-        // prevent the delegate from being collected by the GC
-        private WeakNotify? _onFinalized;
-
-        private bool Disposed { get; set; }
 
         #endregion
 
@@ -121,13 +118,14 @@ namespace GObject
 
                 Debug.Assert(!Native.is_floating(handle), "Owned floating references are not possible.");
             }
-            
-            // TODO: Check to make sure the handle matches our
-            // wrapper type.
+
             Initialize(handle);
         }
 
-        ~Object() => Dispose(false);
+        ~Object()
+        {
+            Dispose(false);
+        }
 
         #endregion
 
@@ -136,31 +134,34 @@ namespace GObject
         private void Initialize(IntPtr ptr)
         {
             Handle = ptr;
-            //TODO
-            Objects.Add(ptr, this);
-            RegisterProperties();
-            RegisterOnFinalized();
 
-            // Allow subclasses to perform initialization
+            RegisterObject();
+            RegisterProperties();
+
             Initialize();
         }
 
         /// <summary>
-        ///  Wrappers can override here to perform immediate initialization
+        /// Wrapper and subclasses can override here to perform immediate initialization
         /// </summary>
         protected virtual void Initialize() { }
 
-        // Modify this in the future to play nicely with virtual function support?
-        private void OnFinalized(IntPtr data, IntPtr where_the_object_was)
+        private void RegisterObject()
         {
-            DisposeManagedState();
-            SetDisposed();
-        }
-
-        private void RegisterOnFinalized()
-        {
-            _onFinalized = OnFinalized;
-            Native.weak_ref(Handle, _onFinalized, IntPtr.Zero);
+            if (IsSubclass(GetType()))
+            {
+                lock (SubclassObjects)
+                {
+                    SubclassObjects[Handle] = new ToggleRef<Object>(this);
+                }
+            }
+            else
+            {
+                lock (WrapperObjects)
+                {
+                    WrapperObjects[Handle] = new WeakReference<Object>(this);   
+                }
+            }
         }
 
         private void RegisterProperties()
@@ -183,67 +184,17 @@ namespace GObject
             }
         }
 
-        // Property Notify Events
-        protected internal void RegisterNotifyPropertyChangedEvent(string propertyName, Action callback)
-            => RegisterEvent($"notify::{propertyName}", callback);
-
-        protected internal void RegisterEvent(string eventName, ActionRefValues callback, bool after = false)
+        protected internal SignalHelper GetSignalHelper(string name)
         {
-            ThrowIfDisposed();
-            RegisterEvent(eventName, new ClosureHelper(this, callback), after);
+            if(_signals.TryGetValue(name, out var signalHelper))
+                return signalHelper;
+
+            signalHelper = new SignalHelper(this, name);
+            _signals.Add(name, signalHelper);
+            
+            return signalHelper;
         }
 
-        protected internal void RegisterEvent(string eventName, Action callback, bool after = false)
-        {
-            ThrowIfDisposed();
-            RegisterEvent(eventName, new ClosureHelper(this, callback), after);
-        }
-
-        private void RegisterEvent(string eventName, ClosureHelper closure, bool after)
-        {
-            if (Closures.TryGetValue(closure, out var id) && Global.Native.signal_handler_is_connected(Handle, id))
-                return; // Skip if the handler is already registered
-
-            var ret = Global.Native.signal_connect_closure(Handle, eventName, closure.Handle, after);
-
-            if (ret == 0)
-                throw new Exception($"Could not connect to event {eventName}");
-
-            // Add to our closures list so the callback doesn't get garbage collected.
-            Closures[closure] = ret;
-        }
-
-        protected internal void UnregisterEvent(ActionRefValues callback)
-        {
-            ThrowIfDisposed();
-
-            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
-                UnregisterEvent(closure);
-        }
-
-        protected internal void UnregisterEvent(Action callback)
-        {
-            ThrowIfDisposed();
-
-            if (ClosureHelper.TryGetByDelegate(callback, out ClosureHelper? closure))
-                UnregisterEvent(closure);
-        }
-
-        private void UnregisterEvent(ClosureHelper closure)
-        {
-            if (!Closures.TryGetValue(closure, out var id))
-                return;
-
-            Global.Native.signal_handler_disconnect(Handle, id);
-            Closures.Remove(closure);
-        }
-
-        protected void ThrowIfDisposed()
-        {
-            if (Disposed)
-                throw new Exception("Object is disposed");
-        }
-        
         /// <summary>
         /// Notify this object that a property has just changed.
         /// </summary>
@@ -254,18 +205,6 @@ namespace GObject
                 return;
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected internal static bool GetObject<T>(IntPtr handle, out T obj) where T : Object
-        {
-            if (Objects.TryGetValue(handle, out Object? foundObj))
-            {
-                obj = (T) foundObj;
-                return true;
-            }
-
-            obj = default!;
-            return false;
         }
 
         public static T? WrapNullableHandle<T>(IntPtr handle, bool ownedRef) where T : Object
@@ -296,13 +235,8 @@ namespace GObject
                 throw new NullReferenceException(
                     $"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
 
-            // Attempt to lookup the pointer in the object dictionary
-            if (Objects.TryGetValue(handle, out Object? obj))
-                return (T) (object) obj;
-
-            // If it is not found, we can assume that it is NOT a subclass type,
-            // as we ensure that subclass types always outlive their pointers
-            // TODO: Toggle Refs ^^^
+            if (TryGetObject(handle, out T? obj))
+                return obj;
 
             // Resolve GType of object
             Type trueGType = TypeFromHandle(handle);
@@ -335,11 +269,6 @@ namespace GObject
                     throw new InvalidCastException();
             }
 
-            // Ensure we are not constructing a subclass
-            // TODO: This can be removed once ToggleRefs are implemented
-            if (IsSubclass(trueType))
-                throw new Exception("Encountered foreign subclass pointer! This is a fatal error");
-
             // Create using 'IntPtr' constructor
             System.Reflection.ConstructorInfo? ctor = trueType.GetConstructor(
                 System.Reflection.BindingFlags.NonPublic
@@ -352,6 +281,29 @@ namespace GObject
                 throw new Exception($"Type {trueType.FullName} does not define an IntPtr constructor. This could mean improperly defined bindings");
 
             return (T) ctor.Invoke(new object[] { handle, ownedRef});
+        }
+
+        private static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : Object
+        {
+            if (WrapperObjects.TryGetValue(handle, out WeakReference<Object>? weakRef))
+            {
+                if (weakRef.TryGetTarget(out Object? weakObj))
+                {
+                    obj = (T) weakObj;
+                    return true;
+                }
+            }
+            else if (SubclassObjects.TryGetValue(handle, out ToggleRef<Object>? toggleObj))
+            {
+                if (toggleObj.Object is not null)
+                {
+                    obj = (T) toggleObj.Object;
+                    return true;
+                }
+            }
+
+            obj = null;
+            return false;
         }
 
         /// <summary>
@@ -388,38 +340,29 @@ namespace GObject
             GC.SuppressFinalize(this);
         }
 
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
-            if (Disposed)
+            if (Handle == IntPtr.Zero)
                 return;
 
-            if(disposing)
-                DisposeManagedState();
+            if (disposing)
+            {
+                foreach (var signalHelper in _signals.Values)
+                    signalHelper.Dispose();
+            }
 
-            DisposeUnmanagedState();
-            SetDisposed();
-        }
+            lock (WrapperObjects)
+            {
+                WrapperObjects.Remove(Handle); 
+            }
 
-        protected void SetDisposed()
-        {
-            Disposed = true;
-        }
+            lock (SubclassObjects)
+            {
+                SubclassObjects.Remove(Handle);
+            }
 
-        protected virtual void DisposeManagedState()
-        {
-            Objects.Remove(Handle);
-            Handle = IntPtr.Zero;
-
-            // TODO: Find out about closure release
-            /*foreach(var closure in closures)
-                closure.Dispose();*/
-
-            // TODO activate: closures.Clear();
-        }
-        
-        protected virtual void DisposeUnmanagedState()
-        {
             Native.unref(Handle);
+            Handle = IntPtr.Zero;
         }
 
         #endregion
