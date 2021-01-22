@@ -47,7 +47,7 @@ namespace Build
         private const string DBUS_SAMPLE = SAMPLE + "DBus/";
         private const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
         private const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
-        private const string GTK3_MINIMAL_SAMPLE = SAMPLE + "Gtk3/GtkMinimal";
+        private const string GTK3_BUILDER_SAMPLE = SAMPLE + "Gtk3/Builder";
         private const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
         private const string GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/UsingSourceGenerator";
         private const string GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/NoSourceGenerator";
@@ -73,9 +73,10 @@ namespace Build
 
         public static readonly string[] SampleProjects =
         {
-            DBUS_SAMPLE, GSTREAMER_SAMPLE,
+            DBUS_SAMPLE, 
+            GSTREAMER_SAMPLE,
             //GTK3_APP_SAMPLE,
-            GTK3_MINIMAL_SAMPLE, 
+            GTK3_BUILDER_SAMPLE, 
             GTK3_QUICKSTART,
             GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR,
             GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR,

@@ -334,7 +334,7 @@ namespace GObject
 
             _safeHandle.Dispose();
         }
-        
+
         #endregion
 
     }
