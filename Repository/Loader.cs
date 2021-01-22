@@ -37,12 +37,13 @@ namespace Repository
 
         // Where 'projects' are toplevel projects. Loader resolves
         // dependent gir libraries automatically.
-        public Loader(string[] targets, string prefix)
+        public Loader(Target[] targets, ResolveFileFunc lookupFunc, string prefix)
         {
             _loadedProjects = new List<LoadedProject>();
+            _lookupFunc = lookupFunc;
             
-            foreach (var target in targets)
-                LoadRecursive(target);
+            foreach (Target target in targets)
+                LoadTarget(target);
             
             if (failureFlag)
                 Log.Warning($"Failed to load some projects. Please check the log for more information.");
@@ -55,8 +56,11 @@ namespace Repository
                 .Cast<LoadedProject>()
                 .ToList();
 
-        private void LoadRecursive(string target)
-            => LoadRecursive(new FileInfo(target), out LoadedProject loadedProj);
+        private void LoadTarget(Target target)
+        {
+            FileInfo info = _lookupFunc(target.Name, target.Version);
+            LoadRecursive(info, out LoadedProject loadedProj);   
+        }
 
         private bool LoadRecursive(FileInfo target, [NotNullWhen(true)] out LoadedProject loadedProj)
         {

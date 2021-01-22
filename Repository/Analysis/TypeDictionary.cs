@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Repository.Model;
 
 #nullable enable
 
-namespace Repository.Xml.Analysis
+namespace Repository.Analysis
 {
     public partial class TypeDictionary
     {
@@ -85,9 +86,9 @@ namespace Repository.Xml.Analysis
         /// </summary>
         /// <param name="nspace"></param>
         /// <param name="info"></param>
-        public void AddSymbol(string nspace, ISymbolInfo info)
+        public void AddSymbol(string nspace, ISymbol info)
         {
-            GetSymbolDict(nspace).AddSymbol(info.NativeName.Type, info);
+            GetSymbolDict(nspace).AddSymbol(info.NativeName, info);
         }
 
         /// <summary>
@@ -132,13 +133,13 @@ namespace Repository.Xml.Analysis
         
         private void AddBasicSymbol(BasicSymbol basicSymbol)
         {
-            _defaultDict.AddSymbol(basicSymbol.NativeName.Type, basicSymbol);
+            _defaultDict.AddSymbol(basicSymbol.NativeName, basicSymbol);
         }
         
-        private ISymbolInfo GetSymbolInternal(SymbolDictionary symbolDict, string symbol)
+        private ISymbol GetSymbolInternal(SymbolDictionary symbolDict, string symbol)
         {
             // Check Fundamental Types
-            if (_defaultDict.TryGetSymbol(symbol, out ISymbolInfo info))
+            if (_defaultDict.TryGetSymbol(symbol, out ISymbol info))
                 return info;
 
             // Check Normal
@@ -154,7 +155,7 @@ namespace Repository.Xml.Analysis
         /// <param name="nspace">Namespace to search</param>
         /// <param name="symbol">Unqualified name of symbol (i.e. does not contain '.')</param>
         /// <returns>Information about the symbol</returns>
-        public ISymbolInfo GetSymbol(string? nspace, string symbol)
+        public ISymbol GetSymbol(string? nspace, string symbol)
         {
             Debug.Assert(
                 condition: !symbol.Contains('.'),

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+#nullable enable
+
 namespace Repository.Xml
 {
     [XmlRoot(ElementName = "repository")]
-    internal class RepositoryInfo
+    public class RepositoryInfo
     {
         [XmlAttribute("version")]
         public string? Version { get; set; }

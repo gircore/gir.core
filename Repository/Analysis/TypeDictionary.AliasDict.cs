@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Repository.Xml.Analysis
+namespace Repository.Analysis
 {
     public partial class TypeDictionary
     {

@@ -1,8 +1,10 @@
 using System.Xml.Serialization;
 
+#nullable enable
+
 namespace Repository.Xml
 {
-    internal class DocInfo
+    public class DocInfo
     {
         [XmlText]
         public string? Text { get; set; }

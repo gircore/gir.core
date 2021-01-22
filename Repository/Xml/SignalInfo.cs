@@ -1,8 +1,10 @@
 using System.Xml.Serialization;
 
+#nullable enable
+
 namespace Repository.Xml
 {
-    internal class SignalInfo
+    public class SignalInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

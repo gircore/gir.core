@@ -1,6 +1,7 @@
 ﻿using System;
+using Repository.Model;
 
-namespace Repository.Xml.Analysis
+namespace Repository.Analysis
 {
     // A view of the type dictionary from a specific namespace (Immutable access only)
     public class TypeDictionaryView
@@ -23,7 +24,7 @@ namespace Repository.Xml.Analysis
         /// </summary>
         /// <param name="symbolName">Name of the symbol. May be qualified or unqualified</param>
         /// <returns>Information about the symbol</returns>
-        public ISymbolInfo LookupSymbol(string symbolName)
+        public ISymbol LookupSymbol(string symbolName)
         {
             if (string.IsNullOrEmpty(symbolName))
                 throw new ArgumentNullException(nameof(symbolName), "Provided lookup cannot be null or empty");

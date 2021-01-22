@@ -1,8 +1,10 @@
 using System.Xml.Serialization;
 
+#nullable enable
+
 namespace Repository.Xml
 {
-    internal class AliasInfo
+    public class AliasInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

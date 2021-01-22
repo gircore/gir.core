@@ -1,9 +1,11 @@
 using System.Linq;
 using System.Xml.Serialization;
 
+#nullable enable
+
 namespace Repository.Xml
 {
-    internal class MethodInfo
+    public class MethodInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

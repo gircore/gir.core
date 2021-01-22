@@ -1,8 +1,10 @@
 using System.Xml.Serialization;
 
+#nullable enable
+
 namespace Repository.Xml
 {
-    internal class ReturnValueInfo
+    public class ReturnValueInfo
     {
         [XmlAttribute("transfer-ownership")]
         public string? TransferOwnership { get; set; }

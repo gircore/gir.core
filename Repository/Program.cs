@@ -44,7 +44,11 @@ namespace Repository
         {
             // Hypothetical example usage
 
-            var targets = new[] {"Gtk-3.0.gir", "Gst-1.0.gir", "Gtk-4.0.gir", "Handy-1.0.gir"};
+            var targets = new[]
+            {
+                new Target("Gst", "1.0")
+            };
+            
             var repo = new Repository(ResolveFile, targets);
 
             // foreach (Project project in repo.GetOrderedProjects())

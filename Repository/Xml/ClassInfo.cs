@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
+#nullable enable
+
 namespace Repository.Xml
 {
-    internal class ClassInfo : InterfaceInfo
+    public class ClassInfo : InterfaceInfo
     {
         [XmlElement("function")]
         public List<MethodInfo> Functions { get; set; } = default!;

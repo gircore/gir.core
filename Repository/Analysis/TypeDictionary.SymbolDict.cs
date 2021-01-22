@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Repository.Model;
 
-namespace Repository.Xml.Analysis
+namespace Repository.Analysis
 {
     public partial class TypeDictionary
     {
@@ -9,7 +10,7 @@ namespace Repository.Xml.Analysis
         // Namespace-specific
         private class SymbolDictionary
         {
-            private readonly Dictionary<string, ISymbolInfo> _symbolDict = new();
+            private readonly Dictionary<string, ISymbol> _symbolDict = new();
             private string Namespace { get; }
 
             public SymbolDictionary(string nspace)
@@ -17,13 +18,13 @@ namespace Repository.Xml.Analysis
                 Namespace = nspace;
             }
 
-            public void AddSymbol(string name, ISymbolInfo info)
+            public void AddSymbol(string name, ISymbol info)
                 => _symbolDict.Add(name, info);
 
-            public ISymbolInfo GetSymbol(string name)
+            public ISymbol GetSymbol(string name)
                 => _symbolDict[name];
 
-            public bool TryGetSymbol(string name, [NotNullWhen(true)] out ISymbolInfo symbol)
+            public bool TryGetSymbol(string name, [NotNullWhen(true)] out ISymbol symbol)
                 => _symbolDict.TryGetValue(name, out symbol);
         }
     }

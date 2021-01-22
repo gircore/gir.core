@@ -1,8 +1,10 @@
 using System.Xml.Serialization;
 
+#nullable enable
+
 namespace Repository.Xml
 {
-    internal class IncludeInfo
+    public class IncludeInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

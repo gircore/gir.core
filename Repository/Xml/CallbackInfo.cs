@@ -1,8 +1,10 @@
 using System.Xml.Serialization;
 
+#nullable enable
+
 namespace Repository.Xml
 {
-    internal class CallbackInfo
+    public class CallbackInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

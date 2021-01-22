@@ -5,8 +5,4 @@
         <OutputType>Exe</OutputType>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Analysis" />
-    </ItemGroup>
-
 </Project>
