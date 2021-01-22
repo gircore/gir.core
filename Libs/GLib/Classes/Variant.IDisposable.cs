@@ -18,7 +18,7 @@ namespace GLib
                         disposable.Dispose();
                 }
 
-                unref(_handle);
+                Native.unref(_handle);
                 _disposedValue = true;
             }
         }

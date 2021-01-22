@@ -12,9 +12,9 @@ namespace GLib
         }
 
         public static MainContext New()
-            => new MainContext(@new());
+            => new MainContext(Native.@new());
         
         public static MainContext Default()
-            => new MainContext(@default());
+            => new MainContext(Native.@default());
     }
 }

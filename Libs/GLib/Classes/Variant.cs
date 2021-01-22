@@ -44,22 +44,22 @@ namespace GLib
         {
             _children = new Variant[0];
             _handle = handle;
-            ref_sink(handle);
+            Native.ref_sink(handle);
         }
 
         #endregion
 
         #region Methods
 
-        public static Variant Create(int i) => new Variant(new_int32(i));
-        public static Variant Create(uint ui) => new Variant(new_uint32(ui));
-        public static Variant Create(string str) => new Variant(new_string(str));
-        public static Variant Create(params string[] strs) => new Variant(new_strv(strs, strs.Length));
+        public static Variant Create(int i) => new Variant(Native.new_int32(i));
+        public static Variant Create(uint ui) => new Variant(Native.new_uint32(ui));
+        public static Variant Create(string str) => new Variant(Native.new_string(str));
+        public static Variant Create(params string[] strs) => new Variant(Native.new_strv(strs, strs.Length));
 
         public static Variant CreateEmptyDictionary(VariantType key, VariantType value)
         {
-            IntPtr childType = VariantType.new_dict_entry(key.Handle, value.Handle);
-            return new Variant(new_array(childType, new IntPtr[0], 0));
+            IntPtr childType = VariantType.Native.new_dict_entry(key.Handle, value.Handle);
+            return new Variant(Native.new_array(childType, new IntPtr[0], 0));
         }
 
         private void Init(out IntPtr handle, params Variant[] children)
@@ -72,20 +72,20 @@ namespace GLib
             for (var i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle;
 
-            handle = new_tuple(ptrs, (ulong) count);
-            ref_sink(handle);
+            handle = Native.new_tuple(ptrs, (ulong) count);
+            Native.ref_sink(handle);
         }
 
         public string GetString()
         {
             ulong length = 0;
-            IntPtr strPtr = get_string(_handle, out length);
+            IntPtr strPtr = Native.get_string(_handle, out length);
 
             return Marshal.PtrToStringAuto(strPtr) ?? string.Empty;
         }
 
         public string Print(bool typeAnnotate)
-            => Marshal.PtrToStringAuto(print(_handle, typeAnnotate)) ?? string.Empty;
+            => Marshal.PtrToStringAuto(Native.print(_handle, typeAnnotate)) ?? string.Empty;
 
         #endregion
     }
