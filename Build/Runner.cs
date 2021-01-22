@@ -36,46 +36,54 @@ namespace Build
             
             targets.Add(
                 name: Targets.Clean,
-                action: CleanProjects
+                action: CleanProjects,
+                description: "Cleans samples and build output including generated source code files."
             );
             
             targets.Add(
                 name: Targets.Generate,
-                action: ExecuteGenerator
+                action: ExecuteGenerator,
+                description: "Generates the source code files."
             );
 
             targets.Add(
                 name: Targets.Build,
                 dependsOn: new [] { Targets.Generate },
-                action: BuildLibraries
+                action: BuildLibraries,
+                description: "Builds the project."
             );
             
             targets.Add(
                 name: Targets.Pack,
                 dependsOn: new [] { Targets.Build },
-                action: PackLibraries
+                action: PackLibraries,
+                description: "Packs the libraries into the 'Nuget' folder in the project root."
             );
             
             targets.Add(
                 name: Targets.Integration,
-                action: BuildIntegration
+                action: BuildIntegration,
+                description: "Builds the integration library."
             );
 
             targets.Add(
                 name: Targets.Samples,
                 dependsOn: new [] { Targets.Build, Targets.Integration },
-                action: BuildSamples
+                action: BuildSamples,
+                description: "Builds the sample applications."
             );
 
             targets.Add(
                 name: Targets.Test,
                 dependsOn: new [] { Targets.Build },
-                action: TestLibraries
+                action: TestLibraries,
+                description: "Execute all unit tests."
             );
             
             targets.Add(
                 name: "default",
-                dependsOn: new [] { Targets.Build }
+                dependsOn: new [] { Targets.Build },
+                description: "Depends on 'build'."
             );
             
             return targets;
