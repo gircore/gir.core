@@ -2,21 +2,16 @@
 
 namespace Build
 {
-    public interface ISampleBuilder
-    {
-        void BuildSamples();
-    }
-    
-    public class SampleBuilder : ISampleBuilder
+    public class Samples : ITarget
     {
         private readonly Settings _settings;
 
-        public SampleBuilder(Settings settings)
+        public Samples(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void BuildSamples()
+        public void Execute()
         {
             foreach(var project in Projects.SampleProjects)
                 DotNet.Build(project, _settings.Configuration);

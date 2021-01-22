@@ -5,23 +5,23 @@ namespace Build
 {
     public class Runner
     {
-        private readonly IProjectCleaner _projectCleaner;
-        private readonly ILibraryGenerator _libraryGenerator;
-        private readonly ILibraryBuilder _libraryBuilder;
-        private readonly ISampleBuilder _sampleBuilder;
-        private readonly ITester _tester;
-        private readonly ILibraryPacker _libraryPacker;
-        private readonly IIntegrationBuilder _integrationBuilder;
+        private readonly ITarget _clean;
+        private readonly ITarget _generate;
+        private readonly ITarget _build;
+        private readonly ITarget _samples;
+        private readonly ITarget _test;
+        private readonly ITarget _pack;
+        private readonly ITarget _integration;
 
-        public Runner(IProjectCleaner projectCleaner, ILibraryGenerator libraryGenerator, ILibraryBuilder libraryBuilder, ILibraryPacker libraryPacker, ISampleBuilder sampleBuilder, ITester tester, IIntegrationBuilder integrationBuilder)
+        public Runner(ITarget clean, ITarget generate, ITarget build, ITarget pack, ITarget samples, ITarget test, ITarget integration)
         {
-            _projectCleaner = projectCleaner;
-            _libraryGenerator = libraryGenerator;
-            _libraryBuilder = libraryBuilder;
-            _sampleBuilder = sampleBuilder;
-            _integrationBuilder = integrationBuilder;
-            _tester = tester;
-            _libraryPacker = libraryPacker;
+            _clean = clean;
+            _generate = generate;
+            _build = build;
+            _samples = samples;
+            _integration = integration;
+            _test = test;
+            _pack = pack;
         }
         
         public void Run(IEnumerable<string> targets, Options options)
@@ -36,47 +36,47 @@ namespace Build
             
             targets.Add(
                 name: Targets.Clean,
-                action: CleanProjects,
+                action: _clean.Execute,
                 description: "Cleans samples and build output including generated source code files."
             );
             
             targets.Add(
                 name: Targets.Generate,
-                action: ExecuteGenerator,
+                action: _generate.Execute,
                 description: "Generates the source code files."
             );
 
             targets.Add(
                 name: Targets.Build,
                 dependsOn: new [] { Targets.Generate },
-                action: BuildLibraries,
+                action: _build.Execute,
                 description: "Builds the project."
             );
             
             targets.Add(
                 name: Targets.Pack,
                 dependsOn: new [] { Targets.Build },
-                action: PackLibraries,
+                action: _pack.Execute,
                 description: "Packs the libraries into the 'Nuget' folder in the project root."
             );
             
             targets.Add(
                 name: Targets.Integration,
-                action: BuildIntegration,
+                action: _integration.Execute,
                 description: "Builds the integration library."
             );
 
             targets.Add(
                 name: Targets.Samples,
                 dependsOn: new [] { Targets.Build, Targets.Integration },
-                action: BuildSamples,
+                action: _samples.Execute,
                 description: "Builds the sample applications."
             );
 
             targets.Add(
                 name: Targets.Test,
                 dependsOn: new [] { Targets.Build },
-                action: TestLibraries,
+                action: _test.Execute,
                 description: "Execute all unit tests."
             );
             
@@ -89,41 +89,6 @@ namespace Build
             return targets;
         }
 
-        private void ExecuteGenerator()
-        {
-            _libraryGenerator.GenerateLibraries();
-        }
-
-        private void CleanProjects()
-        {
-            _projectCleaner.CleanProjects();
-        }
-
-        private void BuildLibraries()
-        {
-            _libraryBuilder.BuildLibraries();
-        }
-        
-        private void BuildSamples()
-        {
-            _sampleBuilder.BuildSamples();
-        }
-        
-        private void TestLibraries()
-        {
-            _tester.Test();
-        }
-
-        private void PackLibraries()
-        {
-            _libraryPacker.PackLibraries();
-        }
-        
-        private void BuildIntegration()
-        {
-            _integrationBuilder.BuildIntegration();
-        }
-        
         #region Targets
         
         private static class Targets
