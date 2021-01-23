@@ -6,8 +6,6 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ develop ]
-  #schedule:
-  #  - cron: '22 10 * * 3'
 
 jobs:
   analyze:
@@ -29,6 +27,7 @@ jobs:
       uses: github/codeql-action/init@v1
       with:
         languages: ${{ matrix.language }}
+        queries: security-and-quality
         # If you wish to specify custom queries, you can do so here or in a config file.
         # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
@@ -40,7 +39,7 @@ jobs:
         dotnet-version: '5.0.x'
 
     - name: Run release build
-      run: dotnet run -- --release --xml-documentation --targets test samples
+      run: dotnet run -- --release
       working-directory: './Build'
 
     - name: Perform CodeQL Analysis
