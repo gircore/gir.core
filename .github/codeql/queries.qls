@@ -8,7 +8,7 @@
     query filename: 
       - CallsUnmanagedCode.ql
       - UnmanagedCodeCheck.ql
-      - XmlDocMissingSummary.ql
+      - XmldocMissingSummary.ql
       - SameNameAsSuper.ql
       - CompilerError.ql
       - ExtractorError.ql
