@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build and analyse
     runs-on: ubuntu-latest
 
     steps:
@@ -23,43 +23,19 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-
-      - name: Run release build
-        run: dotnet run -- --release --xml-documentation --targets test samples
-        working-directory: './Build'
-      
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: artifact
-          path: |
-            ./
-            !gir-files
           
-  analyze:
-    name: Analyze
-    needs: build
-    runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'csharp' ]
-        
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: artifact
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with:
-          languages: ${{ matrix.language }}
+          languages: csharp
           # If you wish to specify custom queries, you can do so here or in a config file.
           # By default, queries listed here will override any specified in a config file.
           # Prefix the list here with "+" to use these queries and those in the config file.
           # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
+      - name: Run release build
+        run: dotnet run -- --release --xml-documentation --targets test samples
+        working-directory: './Build'
+      
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
