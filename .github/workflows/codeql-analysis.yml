@@ -35,9 +35,9 @@ jobs:
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
     - name: Prepare .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '5.0.x'
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
 
     - name: Run release build
       run: dotnet run -- --release --xml-documentation --targets test samples
