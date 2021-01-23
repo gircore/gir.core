@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build and analyse
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -23,19 +23,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-          
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v1
-        with:
-          languages: csharp
-          # If you wish to specify custom queries, you can do so here or in a config file.
-          # By default, queries listed here will override any specified in a config file.
-          # Prefix the list here with "+" to use these queries and those in the config file.
-          # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
       - name: Run release build
         run: dotnet run -- --release --xml-documentation --targets test samples
         working-directory: './Build'
-      
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
