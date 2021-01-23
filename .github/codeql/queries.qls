@@ -1,3 +1,5 @@
-- qlpack: codeql-csharp
+#- qlpack: codeql-csharp
+- import: csharp-security-and-quality.qls
+  from: codeql-csharp
 - exclude:
-    query: call-to-unmanaged-code.ql
+    query: CallsUnmanagedCode.ql
