@@ -32,7 +32,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: !gir-files
+          path: |
+            ./
+            !gir-files
           
   analyze:
     name: Analyze
