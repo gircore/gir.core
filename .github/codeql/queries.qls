@@ -5,4 +5,11 @@
 - apply: codeql-suites/exclude-dependency-queries.yml
   from: codeql-csharp
 - exclude:
-    query filename: CallsUnmanagedCode.ql
+    query filename: 
+      - CallsUnmanagedCode.ql
+      - UnmanagedCodeCheck.ql
+      - XmlDocMissingSummary.ql
+      - SameNameAsSuper.ql
+      - CompilerError.ql
+      - ExtractorError.ql
+      - ExtractorMessage.ql
