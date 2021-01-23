@@ -1,4 +1,8 @@
-- import: codeql-suites/csharp-security-and-quality.qls
+- description: Security-and-quality queries for C#
+- qlpack: codeql-csharp
+- apply: security-and-quality-selectors.yml
+  from: codeql-suite-helpers
+- apply: codeql-suites/exclude-dependency-queries.yml
   from: codeql-csharp
 - exclude:
-    query: /(.+?)\.ql$/
+    query filename: CallsUnmanagedCode.ql
