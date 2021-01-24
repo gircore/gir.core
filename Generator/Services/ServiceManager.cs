@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Repository.Xml.Analysis;
 
-namespace Repository.Xml.Services
+using Repository.Analysis;
+
+namespace Generator.Services
 {
     public abstract class Service
     {
         // Service resources (add here if relevant to all services)
-        public TypeDictionaryView TypeDict { get; set; }
         public string CurrentNamespace { get; set; }
     }
     
@@ -18,9 +18,8 @@ namespace Repository.Xml.Services
         private readonly TypeDictionaryView typeDict;
         private readonly string nspace;
 
-        public ServiceManager(TypeDictionaryView typeDict, string nspace)
+        public ServiceManager(string nspace)
         {
-            this.typeDict = typeDict;
             this.nspace = nspace;
         }
 
@@ -28,7 +27,6 @@ namespace Repository.Xml.Services
             where T: Service
         {
             // Set Service Resources
-            service.TypeDict = typeDict;
             service.CurrentNamespace = nspace;
             
             serviceDict.Add(typeof(T), service);

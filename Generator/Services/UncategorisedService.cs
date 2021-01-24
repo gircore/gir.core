@@ -1,62 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using Repository.Xml.Introspection;
-using Repository.Xml.Analysis;
+using Repository.Analysis;
+using Repository.Model;
 
-namespace Repository.Xml.Services
+namespace Generator.Services
 {
     // Miscellaneous Services
     [Obsolete("Purely for testing - incrementally restructure")]
     public class UncategorisedService : Service
     {
-        public string WriteReturnValue(DelegateSymbol delegateSymbol)
-        {
-            var returnValType = delegateSymbol.DelegateInfo.ReturnValue.Type;
-            ISymbolInfo returnValSymbol = TypeDict.LookupSymbol(returnValType.Name);
-            return returnValSymbol.ManagedName.ToString();
-        }
+        public string WriteReturnValue(Callback callback)
+            => callback.ReturnValue.Type.ToString();
         
-        public string WriteParameters(DelegateSymbol delegateSymbol)
+        public string WriteParameters(Callback callback)
         {
-            CallbackInfo delegateInfo = delegateSymbol.DelegateInfo;
-            List<ParameterInfo> parameters = delegateInfo?.Parameters?.Parameters;
+            // List<ParameterInfo> parameters = delegateInfo?.Parameters?.Parameters;
+            //
+            // // We have no parameters -> Empty brackets
+            // if (parameters is null)
+            //     return string.Empty;
+            //
+            // var first = true;
+            // var result = string.Empty;
+            // foreach (ParameterInfo param in parameters)
+            // {
+            //     var name = param.Name;
+            //     var type = ResolveType(param);
+            //     result += first ? $"{type} {name}" : $", {type} {name}";
+            //     first = false;
+            // }
 
-            // We have no parameters -> Empty brackets
-            if (parameters is null)
-                return string.Empty;
-
-            var first = true;
-            var result = string.Empty;
-            foreach (ParameterInfo param in parameters)
-            {
-                var name = param.Name;
-                var type = ResolveType(param);
-                result += first ? $"{type} {name}" : $", {type} {name}";
-                first = false;
-            }
-
-            return result;
+            return "some parameters";
         }
 
-        public string ResolveType(IType type)
+        public static string PrintTypeIdentifier(TypeReference type)
         {
-            // TODO: Replace with complex type resolution logic
-            if (type.Array != null)
-            {
-                ISymbolInfo symbolInfo  = TypeDict.LookupSymbol(type.Array.Type.Name);
-                return $"{symbolInfo.ManagedName}[]";
-            }
-            else
-            {
-                ISymbolInfo symbolInfo  = TypeDict.LookupSymbol(type.Type.Name);
-                return $"{symbolInfo.ManagedName}";
-            }
-        }
-        
-        // TODO: Move to Marshal Service
-        public string MarshalParameter(ISymbolInfo symbolInfo)
-        {
-            return string.Empty;
+            // External Type
+            if (type.IsForeign)
+                return $"{type.Type.Namespace}.{type.Type.ManagedName}";
+
+            // Internal Type
+            return type.Type.ManagedName;
         }
     }
 }

@@ -4,30 +4,28 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using Repository.Xml.Introspection;
-using Repository.Xml.Analysis;
-using Repository.Xml.Services;
+using Repository;
+using Repository.Analysis;
+using Repository.Model;
+using Generator.Services;
 using Scriban;
 
-namespace Repository.Xml
+namespace Generator
 {
     public class Writer
     {
-        public readonly TypeDictionaryView TypeDict;
-        
         public readonly ServiceManager ServiceManager;
         public readonly LoadedProject Project;
-        public readonly NamespaceInfo Namespace;
+        public readonly Namespace Namespace;
         public string CurrentNamespace => Namespace.Name;
 
-        public Writer(LoadedProject project, TypeDictionaryView typeDict)
+        public Writer(LoadedProject project)
         {
-            TypeDict = typeDict;
             Project = project;
-            Namespace = project.Repository!.Namespace;
+            Namespace = project.Namespace;
             
             // Create service manager with our loaded symbol dictionary
-            ServiceManager = new ServiceManager(TypeDict, Namespace!.Name);
+            ServiceManager = new ServiceManager(Namespace.Name);
             
             // Add services
             ServiceManager.Add(new ObjectService());
@@ -55,26 +53,22 @@ namespace Repository.Xml
             Directory.CreateDirectory(dir);
             
             // Generate a file for each class
-            foreach (ClassInfo cls in Namespace.Classes ?? new List<ClassInfo>())
+            foreach (Class cls in Namespace.Classes)
             {
                 // Skip GObject, GInitiallyUnowned
-                if (cls.Name == "Object" || cls.Name == "InitiallyUnowned")
+                if (cls.NativeName == "Object" || cls.NativeName == "InitiallyUnowned")
                     continue;
                 
-                var symbolInfo = (ObjectSymbol)TypeDict.LookupSymbol(cls.Name);
-
-                Debug.Assert(symbolInfo.ClassInfo == cls, "SymbolInfo/GClass mismatch");
-
                 // These contain: Object, Signals, Fields, Native: {Properties, Methods}
                 var result = await template.RenderAsync(new
                 {
                     Namespace = CurrentNamespace,
-                    Name = symbolInfo.ManagedName.Type,
-                    Inheritance = ServiceManager.Get<ObjectService>().WriteInheritance(symbolInfo),
-                    TypeName = cls.TypeName,
+                    Name = cls.ManagedName,
+                    Inheritance = ServiceManager.Get<ObjectService>().WriteInheritance(cls),
+                    TypeName = cls.CType,
                 });
 
-                var path = Path.Combine(dir, $"{cls.Name}.Generated.cs");
+                var path = Path.Combine(dir, $"{cls.ManagedName}.Generated.cs");
                 await File.WriteAllTextAsync(path, result);
             }
         }
@@ -90,20 +84,18 @@ namespace Repository.Xml
             Directory.CreateDirectory(dir);
             
             // Generate a file for each class
-            foreach (CallbackInfo dlg in Namespace?.Callbacks ?? new List<CallbackInfo>())
+            foreach (Callback dlg in Namespace.Callbacks)
             {
-                var dlgSymbol = (DelegateSymbol)TypeDict.LookupSymbol(dlg.Name);
-
                 var result = await template.RenderAsync(new
                 {
                     Namespace = CurrentNamespace,
-                    ReturnValue = ServiceManager.Get<UncategorisedService>().WriteReturnValue(dlgSymbol),
-                    WrapperType = dlg.Name,
-                    WrappedType = dlgSymbol.ManagedName.Type,
-                    ManagedParameters = ServiceManager.Get<UncategorisedService>().WriteParameters(dlgSymbol),
+                    ReturnValue = ServiceManager.Get<UncategorisedService>().WriteReturnValue(dlg),
+                    WrapperType = dlg.NativeName,
+                    WrappedType = dlg.ManagedName,
+                    ManagedParameters = ServiceManager.Get<UncategorisedService>().WriteParameters(dlg),
                 });
 
-                var path = Path.Combine(dir, $"{dlg.Name}.Generated.cs");
+                var path = Path.Combine(dir, $"{dlg.ManagedName}.Generated.cs");
                 await File.WriteAllTextAsync(path, result);
             }
         }

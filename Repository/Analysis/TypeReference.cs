@@ -1,4 +1,5 @@
-﻿using Repository.Model;
+﻿using System;
+using Repository.Model;
 
 namespace Repository.Analysis
 {
@@ -22,6 +23,33 @@ namespace Repository.Analysis
             UnresolvedName = unresolvedName;
             IsResolved = false;
             IsArray = isArray;
+        }
+
+        public override string ToString()
+        {
+            // TODO: More advanced type resolution logic?
+
+            if (!IsResolved)
+                throw new InvalidOperationException("The Type Reference has not been resolved. It cannot be printed.");
+            
+            // Fundamental Type
+            if (Type.Namespace == null)
+                return Type.ManagedName;
+            
+            // External Array
+            if (IsForeign && IsArray)
+                return $"{Type.Namespace}.{Type.ManagedName}[]";
+            
+            // External Type
+            if (IsForeign)
+                return $"{Type.Namespace}.{Type.ManagedName}";
+            
+            // Internal Array
+            if (IsArray)
+                return $"{Type.ManagedName}[]";
+            
+            // Internal Type
+            return Type.ManagedName;
         }
 
         internal void ResolveAs(ISymbol symbol, ReferenceType type)

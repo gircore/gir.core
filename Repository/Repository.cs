@@ -8,16 +8,13 @@ using Repository.Model;
 namespace Repository
 {
     public delegate FileInfo ResolveFileFunc(string name, string version);
-    public record Target(string Name, string Version);
     
     public class Repository
     {
-        private readonly Loader Loader;
-        private readonly List<LoadedProject> LoadedProjects = new();
+        public readonly List<LoadedProject> LoadedProjects;
+        public readonly TypeDictionary TypeDict;
         
-        private readonly TypeDictionary TypeDict;
-
-        public Repository(ResolveFileFunc fileFunc, Target[] targets)
+        public Repository(ResolveFileFunc fileFunc, string[] targets)
         {
             Log.Information($"Initialising generator with {targets.Length} toplevel project(s)");
             

@@ -1,26 +1,21 @@
-﻿using Repository.Xml.Introspection;
-using Repository.Xml.Analysis;
+﻿using Repository.Analysis;
+using Repository.Model;
 
-namespace Repository.Xml.Services
+namespace Generator.Services
 {
     public class ObjectService : Service
     {
-        public string WriteInheritance(ObjectSymbol obj)
+        public string WriteInheritance(Class obj)
         {
-            ClassInfo classInfo = obj.ClassInfo;
-            if (classInfo.Parent is null)
+            if (obj.Parent is null)
                 return string.Empty;
 
             // Parent Object
-            var result = $": {classInfo.Parent}";
+            var result = $": {obj.Parent}";
 
             // Interfaces
-            foreach (ImplementInfo impl in classInfo.Implements)
-            {
-                var ifaceSymbol = (InterfaceSymbol) TypeDict.LookupSymbol(impl.Name);
-                
-                result += $", {ifaceSymbol.ManagedName}";
-            }
+            foreach (TypeReference impl in obj.Implements)
+                result += $", {impl}";
 
             return result;
         }

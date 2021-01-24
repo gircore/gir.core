@@ -79,9 +79,19 @@ namespace Repository
                 {
                     Namespace = _nspace,
                     NativeName = cls.Name,
-                    ManagedName = cls.Name
+                    ManagedName = cls.Name,
+                    
+                    CType = cls.TypeName,
+                    Parent = (cls.Parent != null) ? CreateReference(cls.Parent, false) : null,
+                    Implements = ParseImplements(cls.Implements).ToList(),
                 };
             }
+        }
+
+        private IEnumerable<TypeReference> ParseImplements(IEnumerable<ImplementInfo> implements)
+        {
+            foreach (ImplementInfo impl in implements)
+                yield return CreateReference(impl.Name!, false);
         }
         
         private IEnumerable<Callback> ParseCallbacks(NamespaceInfo nspace, IEnumerable<CallbackInfo> callbacks)
@@ -92,7 +102,9 @@ namespace Repository
                 {
                     Namespace = _nspace,
                     NativeName = callback.Name,
-                    ManagedName = callback.Name
+                    ManagedName = callback.Name,
+                    
+                    ReturnValue = new ReturnValue() { Type = ParseTypeOrArray(callback.ReturnValue) }
                 };
             }
         }
@@ -151,33 +163,27 @@ namespace Repository
             }
         }
 
+        private TypeReference CreateReference(string type, bool isArray)
+        {
+            var reference = new TypeReference(type, false);
+            _references.Add(reference);
+            return reference;
+        }
+
         private TypeReference ParseTypeOrArray(ITypeOrArray? typeOrArray)
         {
-            TypeReference reference;
-            
             // Check for Type
             var type = typeOrArray?.Type?.Name ?? null;
             if (type != null)
-            {
-                reference = new TypeReference(type, false);
-                _references.Add(reference);
-                return reference;
-            }
+                return CreateReference(type, false);
 
             // Check for Array
             var array = typeOrArray?.Array?.Type?.Name ?? null;
             if (array != null)
-            {
-                reference = new TypeReference(array, true);
-                _references.Add(reference);
-                return reference;
-            }
+                return CreateReference(array, true);
 
             // No Type (i.e. void)
-            reference = new TypeReference("none", false);
-            _references.Add(reference);
-
-            return reference;
+            return CreateReference("none", false);
         }
         
         private static RepositoryInfo Deserialize(FileInfo girFile)

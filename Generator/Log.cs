@@ -33,7 +33,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Repository.Xml
+namespace Generator
 {
     public delegate void LogNotifyHandler (LogNotifyArgs args);
 

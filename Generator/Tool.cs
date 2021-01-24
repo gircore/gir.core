@@ -3,17 +3,17 @@ using System.IO;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 
-namespace Repository.Xml
+namespace Generator
 {
     public class Tool
     {
         static int Main(string[] args)
         {
-            string girFile = "Gst-1.0.gir";
+            string girFile = "../gir-files/Gst-1.0.gir";
 
-            Project[] projects =
+            string[] projects =
             {
-                new Project(girFile)
+                girFile
             };
             
             return new Generator(projects).WriteAsync();

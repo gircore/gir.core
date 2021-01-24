@@ -17,7 +17,7 @@ namespace Repository
         
         public string ProjectName { get; }
         public Namespace Namespace { get; }
-        public List<TypeReference> UnresolvedReferences { get; } = new();
+        internal List<TypeReference> UnresolvedReferences { get; } = new();
 
         public LoadedProject(string name, Namespace nspace, 
             IEnumerable<TypeReference> references, 
@@ -42,12 +42,12 @@ namespace Repository
 
         // Where 'projects' are toplevel projects. Loader resolves
         // dependent gir libraries automatically.
-        public Loader(Target[] targets, ResolveFileFunc lookupFunc, string prefix)
+        public Loader(string[] targets, ResolveFileFunc lookupFunc, string prefix)
         {
             _loadedProjects = new List<LoadedProject>();
             _lookupFunc = lookupFunc;
             
-            foreach (Target target in targets)
+            foreach (var target in targets)
                 LoadTarget(target);
             
             if (failureFlag)
@@ -61,10 +61,18 @@ namespace Repository
                 .Cast<LoadedProject>()
                 .ToList();
 
-        private void LoadTarget(Target target)
+        private void LoadTarget(string target)
         {
-            FileInfo info = _lookupFunc(target.Name, target.Version);
-            LoadRecursive(info, out LoadedProject loadedProj);   
+            try
+            {
+                var info = new FileInfo(target);
+                LoadRecursive(info, out LoadedProject loadedProj);
+            }
+            catch (Exception e)
+            {
+                failureFlag = true;
+                Log.Exception(e);
+            }
         }
 
         private bool LoadRecursive(FileInfo target, [NotNullWhen(true)] out LoadedProject loadedProj)
