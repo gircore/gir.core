@@ -1,8 +1,26 @@
-﻿namespace Repository.Model
+﻿using System.Collections.Generic;
+
+namespace Repository.Model
 {
     public record Namespace
     {
-        public string Name;
-        public string Version;
+        // Basic Info
+        public string Name { get; set; }
+        public string Version { get; set; }
+        
+        // Aliases
+        public List<Alias> Aliases { get; internal set; } = new();
+        
+        // Symbols
+        public List<Callback> Callbacks { get; internal set; } = new();
+        public List<Class> Classes { get; internal set; } = new();
+        public List<Enumeration> Enumerations { get; internal set; } = new();
+        public List<Enumeration> Bitfields { get; internal set; } = new();
+        public List<Interface> Interfaces { get; internal set; } = new();
+        public List<Record> Records { get; internal set; } = new();
+        
+        // Miscellaneous
+        public List<Method> Functions { get; internal set; } = new();
+        
     }
 }

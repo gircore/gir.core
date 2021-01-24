@@ -78,6 +78,7 @@ namespace Repository.Analysis
             AddBasicSymbol(new BasicSymbol("gulong", "ulong"));
             
             AddBasicSymbol(new BasicSymbol("utf8", "string"));
+            AddBasicSymbol(new BasicSymbol("filename", "string"));
             // AddBasicSymbol(new BasicSymbol("Window", "ulong"));
         }
         
@@ -169,9 +170,19 @@ namespace Repository.Analysis
             SymbolDictionary symbolDict = GetSymbolDict(nspace);
             AliasDictionary aliasDict = GetAliasDict(nspace);
             
-            // Check Aliases
+            // Check Aliases (TODO: Should this use type references?)
             if (aliasDict.TryGetAlias(symbol, out var alias))
-                return GetSymbolInternal(symbolDict, alias);
+            {
+                if (alias.Contains('.'))
+                {
+                    // Reference to other namespace
+                    var components = alias.Split('.', 2);
+                    return GetSymbol(nspace: components[0], symbol: components[1]);
+                }
+                
+                // Within this namespace
+                return GetSymbolInternal(symbolDict, alias);   
+            }
 
             // Check Normal
             return GetSymbolInternal(symbolDict, symbol);

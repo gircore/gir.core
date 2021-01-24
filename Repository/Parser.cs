@@ -1,42 +1,183 @@
 ﻿using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
+using Repository.Analysis;
 using Repository.Xml;
 using Repository.Model;
+
+#nullable enable
 
 namespace Repository
 {
     public class Parser
     {
-        private readonly RepositoryInfo repoInfo;
-        private readonly FileInfo girFile;
+        private readonly RepositoryInfo _repoInfo;
+        private readonly FileInfo _girFile;
+        
+        private readonly List<TypeReference> _references;
+        private readonly Namespace _nspace;
         
         public Parser(FileInfo girFile)
         {
-            repoInfo = Deserialize(girFile);
+            _repoInfo = Deserialize(girFile);
+            _girFile = girFile;
+            _references = new List<TypeReference>();
+            _nspace = new Namespace();
         }
         
         public IEnumerable<(string, string)> GetDependencies()
         {
-            foreach (IncludeInfo includeInfo in repoInfo.Includes)
+            foreach (IncludeInfo includeInfo in _repoInfo.Includes)
             {
-                yield return (includeInfo.Name, includeInfo.Version);
+                yield return (includeInfo.Name!, includeInfo.Version!);
             }
         }
 
-        public Namespace Parse()
+        public (Namespace, IEnumerable<TypeReference>) Parse()
         {
-            if (repoInfo.Namespace == null)
-                throw new InvalidDataException($"File '{girFile} does not define a namespace.");
+            if (_repoInfo.Namespace == null)
+                throw new InvalidDataException($"File '{_girFile} does not define a namespace.");
 
-            NamespaceInfo nspace = repoInfo.Namespace;
+            NamespaceInfo nspaceInfo = _repoInfo.Namespace;
 
-            return new Namespace()
+            // Basic Info
+            _nspace.Name = nspaceInfo.Name;
+            _nspace.Version = nspaceInfo.Version;
+            
+            // Aliases
+            _nspace.Aliases = ParseAliases(nspaceInfo, nspaceInfo.Aliases).ToList();
+            
+            // Symbols
+            _nspace.Classes = ParseClasses(nspaceInfo, nspaceInfo.Classes).ToList();
+            _nspace.Callbacks = ParseCallbacks(nspaceInfo, nspaceInfo.Callbacks).ToList();
+            _nspace.Enumerations = ParseEnumerations(nspaceInfo, nspaceInfo.Enumerations, false).ToList();
+            _nspace.Bitfields = ParseEnumerations(nspaceInfo, nspaceInfo.Bitfields, true).ToList();
+            _nspace.Interfaces = ParseInterfaces(nspaceInfo, nspaceInfo.Interfaces).ToList();
+            _nspace.Records = ParseRecords(nspaceInfo, nspaceInfo.Records).ToList();
+            
+            // Misc
+            _nspace.Functions = ParseFunctions(nspaceInfo, nspaceInfo.Functions).ToList();
+
+            return (_nspace, _references);
+        }
+
+        private IEnumerable<Alias> ParseAliases(NamespaceInfo nspace, IEnumerable<AliasInfo> aliases)
+        {
+            foreach (AliasInfo alias in aliases)
             {
-                Name = nspace.Name,
-                Version = nspace.Version
-            };
+                yield return new Alias(alias.Name, alias.For!.Name);
+            }
+        }
+        
+        private IEnumerable<Class> ParseClasses(NamespaceInfo nspace, IEnumerable<ClassInfo> classes)
+        {
+            foreach (ClassInfo cls in classes)
+            {
+                yield return new Class()
+                {
+                    Namespace = _nspace,
+                    NativeName = cls.Name,
+                    ManagedName = cls.Name
+                };
+            }
+        }
+        
+        private IEnumerable<Callback> ParseCallbacks(NamespaceInfo nspace, IEnumerable<CallbackInfo> callbacks)
+        {
+            foreach (CallbackInfo callback in callbacks)
+            {
+                yield return new Callback()
+                {
+                    Namespace = _nspace,
+                    NativeName = callback.Name,
+                    ManagedName = callback.Name
+                };
+            }
+        }
+        
+        private IEnumerable<Enumeration> ParseEnumerations(NamespaceInfo nspace, IEnumerable<EnumInfo> enumerations, bool isBitfield)
+        {
+            foreach (EnumInfo @enum in enumerations)
+            {
+                yield return new Enumeration()
+                {
+                    Namespace = _nspace,
+                    NativeName = @enum.Name,
+                    ManagedName = @enum.Name,
+                    
+                    HasFlags = isBitfield,
+                };
+            }
+        }
+        
+        private IEnumerable<Interface> ParseInterfaces(NamespaceInfo nspace, IEnumerable<InterfaceInfo> ifaces)
+        {
+            foreach (InterfaceInfo iface in ifaces)
+            {
+                yield return new Interface()
+                {
+                    Namespace = _nspace,
+                    NativeName = iface.Name,
+                    ManagedName = iface.Name
+                };
+            }
+        }
+        
+        private IEnumerable<Record> ParseRecords(NamespaceInfo nspace, IEnumerable<RecordInfo> records)
+        {
+            foreach (RecordInfo @record in records)
+            {
+                yield return new Record()
+                {
+                    Namespace = _nspace,
+                    NativeName = @record.Name,
+                    ManagedName = @record.Name
+                };
+            }
+        }
+
+        private IEnumerable<Method> ParseFunctions(NamespaceInfo nspace, IEnumerable<MethodInfo> functions)
+        {
+            foreach (MethodInfo info in functions)
+            {
+                var returnVal = new ReturnValue() {Type = ParseTypeOrArray(info.ReturnValue)};
+                
+                yield return new Method()
+                {
+                    ReturnValue = returnVal,
+                };
+            }
+        }
+
+        private TypeReference ParseTypeOrArray(ITypeOrArray? typeOrArray)
+        {
+            TypeReference reference;
+            
+            // Check for Type
+            var type = typeOrArray?.Type?.Name ?? null;
+            if (type != null)
+            {
+                reference = new TypeReference(type, false);
+                _references.Add(reference);
+                return reference;
+            }
+
+            // Check for Array
+            var array = typeOrArray?.Array?.Type?.Name ?? null;
+            if (array != null)
+            {
+                reference = new TypeReference(array, true);
+                _references.Add(reference);
+                return reference;
+            }
+
+            // No Type (i.e. void)
+            reference = new TypeReference("none", false);
+            _references.Add(reference);
+
+            return reference;
         }
         
         private static RepositoryInfo Deserialize(FileInfo girFile)

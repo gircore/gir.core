@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
+using Repository.Analysis;
 using Repository.Graph;
 using Repository.Model;
 
@@ -16,11 +17,15 @@ namespace Repository
         
         public string ProjectName { get; }
         public Namespace Namespace { get; }
+        public List<TypeReference> UnresolvedReferences { get; } = new();
 
-        public LoadedProject(string name, Namespace nspace, IEnumerable<LoadedProject> dependencies)
+        public LoadedProject(string name, Namespace nspace, 
+            IEnumerable<TypeReference> references, 
+            IEnumerable<LoadedProject> dependencies)
         {
             ProjectName = name;
             Namespace = nspace;
+            UnresolvedReferences.AddRange(references);
             (this as INode).Dependencies.AddRange(dependencies);
         }
     }
@@ -70,7 +75,7 @@ namespace Repository
             {
                 // Serialize introspection data (xml)
                 var parser = new Parser(target);
-                var nspace = parser.Parse();
+                var (nspace, references) = parser.Parse();
 
                 var projName = $"{nspace.Name}-{nspace.Version}";
 
@@ -98,7 +103,7 @@ namespace Repository
                     }
                 }
                 
-                loadedProj = new LoadedProject(projName, nspace, dependencies);
+                loadedProj = new LoadedProject(projName, nspace, references, dependencies);
                 _loadedProjects.Add(loadedProj);
                 
                 Log.Information($"Loaded '{projName}' (provided by '{target.Name}')");
