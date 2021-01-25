@@ -63,22 +63,14 @@ namespace Build
                 Verbose = verbose,
             };
 
-            var cleaner = new ProjectCleaner(settings);
-            var generator = new LibraryGenerator(settings);
-            var libraryBuilder = new LibraryBuilder(settings);
-            var librarypacker = new LibraryPacker(settings);
-            var sampleBuilder = new SampleBuilder(settings);
-            var integrationBuilder = new IntegrationBuilder(settings);
-            var tester = new Tester(settings);
-            
             var runner = new Runner(
-                projectCleaner: cleaner, 
-                libraryGenerator: generator, 
-                libraryBuilder: libraryBuilder,
-                libraryPacker: librarypacker,
-                sampleBuilder: sampleBuilder,
-                integrationBuilder: integrationBuilder,
-                tester: tester
+                clean: new Clean(settings), 
+                generate: new Generate(settings), 
+                build: new Build(settings),
+                pack: new Pack(settings),
+                samples: new Samples(settings),
+                integration: new Integration(settings),
+                test: new Test(settings)
             );
             runner.Run(targets, options);
         }
