@@ -70,7 +70,8 @@ namespace Build
                 pack: new Pack(settings),
                 samples: new Samples(settings),
                 integration: new Integration(settings),
-                test: new Test(settings)
+                test: new Test(settings),
+                docs: new Docs(settings)
             );
             runner.Run(targets, options);
         }

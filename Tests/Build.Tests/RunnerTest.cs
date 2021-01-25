@@ -9,7 +9,7 @@ namespace Build.Test
     {
         #region Helper
 
-        private static Runner GetRunner(ITarget? clean = null, ITarget? generate = null, ITarget? build = null, ITarget? pack = null, ITarget? samples = null, ITarget? test = null, ITarget? integration = null)
+        private static Runner GetRunner(ITarget? clean = null, ITarget? generate = null, ITarget? build = null, ITarget? pack = null, ITarget? samples = null, ITarget? test = null, ITarget? integration = null, ITarget? docs = null)
         {
             clean ??= Mock.Of<ITarget>();
             generate ??= Mock.Of<ITarget>();
@@ -18,8 +18,9 @@ namespace Build.Test
             pack ??= Mock.Of<ITarget>();
             test ??= Mock.Of<ITarget>();
             integration ??= Mock.Of<ITarget>();
+            docs ??= Mock.Of<ITarget>();
 
-            return new Runner(clean, generate, build, pack, samples, test, integration);
+            return new Runner(clean, generate, build, pack, samples, test, integration, docs);
         }
 
         private static void RunTarget(Runner runner, string target)
@@ -142,6 +143,23 @@ namespace Build.Test
 
             Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
             Mock.Get(pack).Verify((x) => x.Execute(), Times.Once);
+        }
+        
+        [TestMethod]
+        public void InvokingPackDocsExecutesDocsAndBuild()
+        {
+            var build = Mock.Of<ITarget>();
+            var docs = Mock.Of<ITarget>();
+            
+            Runner runner = GetRunner(
+                build: build,
+                docs: docs
+            );
+
+            RunTarget(runner, "docs");
+
+            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
+            Mock.Get(docs).Verify((x) => x.Execute(), Times.Once);
         }
     }
 }
