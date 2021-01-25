@@ -162,7 +162,7 @@ namespace Generator
             if (ctype is null)
             {
                 Console.WriteLine($"GType is missing CType. Assuming {gtype.Name} as CType");
-                ctype = gtype.Name ?? throw new Exception($"GType {gtype.Name} is missing CType");
+                ctype = gtype.Name ?? throw new Exception($"GType is missing CType");
             }
 
             if (_aliasResolver.TryGetForCType(ctype, out var resolvedCType, out var resolvedName))
@@ -205,8 +205,8 @@ namespace Generator
 
                 // String Related Functions
                 { Type: "utf8" } => new ResolvedType("string"), // TODO: We can possibly get rid of this depending on usage?
-                { IsArray: false, Direction: Direction.OutCalleeAllocates, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.OutCalleeAllocates),
-                { IsArray: false, Direction: Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } t => new ResolvedType("IntPtr", Direction.InOut),
+                { IsArray: false, Direction: Direction.OutCalleeAllocates, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("IntPtr", Direction.OutCalleeAllocates),
+                { IsArray: false, Direction: Direction.InOut, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("IntPtr", Direction.InOut),
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: true } => new ResolvedType("string"),
                 { IsArray: false, Type: "byte", IsPointer: true, IsParameter: false } => new ResolvedType("IntPtr"),
                 { IsArray: true, Type: "byte", IsPointer: true, IsParameter: true, ArrayLengthParameter: { } l } => new ResolvedType("string[]", attribute: GetMarshal(l)),

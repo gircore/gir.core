@@ -14,8 +14,7 @@ namespace GLib
             {
                 foreach (Variant? child in _children)
                 {
-                    if (child is IDisposable disposable)
-                        disposable.Dispose();
+                    child.Dispose();
                 }
 
                 Native.unref(_handle);
