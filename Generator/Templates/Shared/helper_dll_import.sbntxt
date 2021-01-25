@@ -16,17 +16,8 @@ namespace {{ namespace }}
         private const string _linuxDllName = "{{ linux_dll }}";
         private const string _osxDllName = "{{ osx_dll }}";
 
-        private static Dictionary<string, IntPtr> _cache;
+        private static readonly Dictionary<string, IntPtr> _cache = new ();
 
-        #endregion
-        
-        #region Constructors
-        
-        static DllImport()
-        {
-            _cache = new Dictionary<string, IntPtr>();
-        }
-        
         #endregion
             
         #region Methods
