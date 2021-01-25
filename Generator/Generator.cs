@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Repository;
-using Repository.Analysis;
 using Repository.Model;
 
 namespace Generator
@@ -31,6 +29,9 @@ namespace Generator
             try
             {
                 Log.Information("Processing introspection data");
+                
+                // TODO: Do we want LoadedProject to contain an index of all symbols?
+                // e.g. We could use linq queries on it to fetch certain symbols
                 
                 // Process Data
                 foreach (LoadedProject proj in LoadedProjects)

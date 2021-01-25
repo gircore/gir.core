@@ -7,7 +7,7 @@ namespace Generator.Services
 {
     // Miscellaneous Services
     [Obsolete("Purely for testing - incrementally restructure")]
-    public class UncategorisedService : Service
+    public class UncategorisedService
     {
         public string WriteReturnValue(Callback callback)
             => callback.ReturnValue.Type.ToString();

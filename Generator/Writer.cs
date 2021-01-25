@@ -1,35 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+
 using Repository;
-using Repository.Analysis;
 using Repository.Model;
-using Generator.Services;
+
 using Scriban;
+
+using Generator.Services;
 
 namespace Generator
 {
     public class Writer
     {
-        public readonly ServiceManager ServiceManager;
         public readonly LoadedProject Project;
         public readonly Namespace Namespace;
         public string CurrentNamespace => Namespace.Name;
+        
+        // Services
+        private readonly ObjectService _objectService;
+        private readonly UncategorisedService _uncategorisedService;
 
         public Writer(LoadedProject project)
         {
             Project = project;
             Namespace = project.Namespace;
             
-            // Create service manager with our loaded symbol dictionary
-            ServiceManager = new ServiceManager(Namespace.Name);
-            
             // Add services
-            ServiceManager.Add(new ObjectService());
-            ServiceManager.Add(new UncategorisedService());
+            _objectService = new ObjectService();
+            _uncategorisedService = new UncategorisedService();
         }
 
         public IEnumerable<Task> GetAsyncTasks()
@@ -64,7 +64,7 @@ namespace Generator
                 {
                     Namespace = CurrentNamespace,
                     Name = cls.ManagedName,
-                    Inheritance = ServiceManager.Get<ObjectService>().WriteInheritance(cls),
+                    Inheritance = _objectService.WriteInheritance(cls),
                     TypeName = cls.CType,
                 });
 
@@ -89,10 +89,10 @@ namespace Generator
                 var result = await template.RenderAsync(new
                 {
                     Namespace = CurrentNamespace,
-                    ReturnValue = ServiceManager.Get<UncategorisedService>().WriteReturnValue(dlg),
+                    ReturnValue = _uncategorisedService.WriteReturnValue(dlg),
                     WrapperType = dlg.NativeName,
                     WrappedType = dlg.ManagedName,
-                    ManagedParameters = ServiceManager.Get<UncategorisedService>().WriteParameters(dlg),
+                    ManagedParameters = _uncategorisedService.WriteParameters(dlg),
                 });
 
                 var path = Path.Combine(dir, $"{dlg.ManagedName}.Generated.cs");

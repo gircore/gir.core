@@ -3,7 +3,7 @@ using Repository.Model;
 
 namespace Generator.Services
 {
-    public class ObjectService : Service
+    public class ObjectService
     {
         public string WriteInheritance(Class obj)
         {
