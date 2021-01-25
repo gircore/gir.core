@@ -162,7 +162,7 @@ namespace Generator
             if (ctype is null)
             {
                 Console.WriteLine($"GType is missing CType. Assuming {gtype.Name} as CType");
-                ctype = gtype.Name ?? throw new Exception($"GType {gtype.Name} is missing CType");
+                ctype = gtype.Name ?? throw new Exception($"GType is missing CType");
             }
 
             if (_aliasResolver.TryGetForCType(ctype, out var resolvedCType, out var resolvedName))
