@@ -13,3 +13,4 @@
       - CompilerError.ql
       - ExtractorError.ql
       - ExtractorMessage.ql
+      - TooManyRefParameters.ql

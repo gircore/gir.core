@@ -219,7 +219,7 @@ namespace GObject
                 System.Type returnType = foundType ?? GTypeDict[initialGType];
                 
                 // Print warning message
-                Console.WriteLine($"The System.Type for GType {initialGType.ToString()} could not be found (Unloaded assemblies were not searched). Resorting to using type {returnType.FullName}. Unexpected behaviour may occur");
+                Console.WriteLine($"The System.Type for GType {initialGType} could not be found (Unloaded assemblies were not searched). Resorting to using type {returnType.FullName}. Unexpected behaviour may occur");
                 
                 return returnType;
             }
@@ -295,7 +295,7 @@ namespace GObject
                 }
 
                 // DEBUG: Print Assembly Lookup
-                Console.Write("FuzzySearchAssemblies: Looking up " + gtype.ToString() + " with components: ");
+                Console.Write("FuzzySearchAssemblies: Looking up " + gtype + " with components: ");
                 foreach (string word in words)
                 {
                     if (word == words[words.Length - 1])
@@ -308,7 +308,7 @@ namespace GObject
                 // type is not prefixed, which we do not support).
                 if (words.Length <= 1)
                 {
-                    Console.WriteLine($"Non prefixed type name {gtype.ToString()} - This is an error!");
+                    Console.WriteLine($"Non prefixed type name {gtype} - This is an error!");
                     return null;
                 }
 
