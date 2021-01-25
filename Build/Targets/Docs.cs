@@ -23,7 +23,7 @@ namespace Build
                 {
                     VisibilityLevel = XmlDocVisibilityLevel.Public,
                     ShouldClean = true,
-                    GenerateToc = false
+                    GenerateToc = true
                 };
 
                 XmlDocMarkdownResult result = XmlDocMarkdownGenerator.Generate(
