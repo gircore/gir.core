@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Repository.Analysis;
-using Repository.Model;
+﻿using Repository.Model;
 
 namespace Generator.Services
 {
-    // Miscellaneous Services
-    [Obsolete("Purely for testing - incrementally restructure")]
-    public class UncategorisedService
+    public static class CallableService
     {
-        public string WriteReturnValue(Callback callback)
+        public static string WriteReturnValue(Callback callback)
             => callback.ReturnValue.Type.ToString();
         
-        public string WriteParameters(Callback callback)
+        public static string WriteParameters(Callback callback)
         {
             // List<ParameterInfo> parameters = delegateInfo?.Parameters?.Parameters;
             //
@@ -31,16 +26,6 @@ namespace Generator.Services
             // }
 
             return "some parameters";
-        }
-
-        public static string PrintTypeIdentifier(TypeReference type)
-        {
-            // External Type
-            if (type.IsForeign)
-                return $"{type.Type.Namespace}.{type.Type.ManagedName}";
-
-            // Internal Type
-            return type.Type.ManagedName;
         }
     }
 }

@@ -17,25 +17,23 @@ namespace Generator
         public readonly LoadedProject Project;
         public readonly Namespace Namespace;
         public string CurrentNamespace => Namespace.Name;
-        
-        // Services
-        private readonly ObjectService _objectService;
-        private readonly UncategorisedService _uncategorisedService;
 
-        public Writer(LoadedProject project)
+        public Dictionary<string, object> Metadata;
+
+        public Writer(LoadedProject project, Dictionary<string, object> metadata)
         {
             Project = project;
             Namespace = project.Namespace;
-            
-            // Add services
-            _objectService = new ObjectService();
-            _uncategorisedService = new UncategorisedService();
+            Metadata = metadata;
         }
 
         public IEnumerable<Task> GetAsyncTasks()
         {
             List<Task> asyncTasks = new();
             
+            // As a rule of thumb, define one task per source file
+            // you wish to generate. Tasks should not modify data as
+            // they run asynchronously.
             asyncTasks.Add(WriteObjectFiles());
             asyncTasks.Add(WriteDelegateFiles());
 
@@ -52,20 +50,30 @@ namespace Generator
             var dir = $"output/{Project.ProjectName}/Classes/";
             Directory.CreateDirectory(dir);
             
+            // Get ClassStruct Dict
+            var classStructDict = (Dictionary<Class, Record>)Metadata[Project.ProjectName + ".ClassDict"];
+            
             // Generate a file for each class
+            // TODO: We could avoid await here and return tasks instead
             foreach (Class cls in Namespace.Classes)
             {
                 // Skip GObject, GInitiallyUnowned
                 if (cls.NativeName == "Object" || cls.NativeName == "InitiallyUnowned")
                     continue;
                 
+                // Try get class
+                classStructDict.TryGetValue(cls, out Record classStruct);
+
                 // These contain: Object, Signals, Fields, Native: {Properties, Methods}
                 var result = await template.RenderAsync(new
                 {
                     Namespace = CurrentNamespace,
                     Name = cls.ManagedName,
-                    Inheritance = _objectService.WriteInheritance(cls),
+                    Inheritance = ObjectService.WriteInheritance(cls),
                     TypeName = cls.CType,
+                    
+                    ClassStruct = classStruct, // May be null
+                    ClassStructName = classStruct?.ManagedName.Split('.', 2)[1],
                 });
 
                 var path = Path.Combine(dir, $"{cls.ManagedName}.Generated.cs");
@@ -89,10 +97,10 @@ namespace Generator
                 var result = await template.RenderAsync(new
                 {
                     Namespace = CurrentNamespace,
-                    ReturnValue = _uncategorisedService.WriteReturnValue(dlg),
+                    ReturnValue = CallableService.WriteReturnValue(dlg),
                     WrapperType = dlg.NativeName,
                     WrappedType = dlg.ManagedName,
-                    ManagedParameters = _uncategorisedService.WriteParameters(dlg),
+                    ManagedParameters = CallableService.WriteParameters(dlg),
                 });
 
                 var path = Path.Combine(dir, $"{dlg.ManagedName}.Generated.cs");
@@ -102,7 +110,7 @@ namespace Generator
 
         private static string ReadTemplate(string resource)
         {
-            Stream? stream = Assembly.GetExecutingAssembly()
+            Stream stream = Assembly.GetExecutingAssembly()
                 .GetManifestResourceStream($"Generator.Templates.{resource}");
 
             if (stream == null)

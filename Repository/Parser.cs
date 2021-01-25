@@ -145,7 +145,9 @@ namespace Repository
                 {
                     Namespace = _nspace,
                     NativeName = @record.Name,
-                    ManagedName = @record.Name
+                    ManagedName = @record.Name,
+                    
+                    GLibClassStructFor = (record.GLibIsGTypeStructFor != null) ? CreateReference(record.GLibIsGTypeStructFor, false) : null
                 };
             }
         }

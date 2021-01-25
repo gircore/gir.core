@@ -11,5 +11,13 @@ namespace {{ namespace }}
     public partial class {{ name }} {{ inheritance }}
     {
         private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ type_name }}", {{ name }}.Native.get_type);
+        
+        {{~ if class_struct ~}}
+        // Object Class Struct
+        public struct {{ class_struct_name }}
+        {
+            
+        }
+        {{~ end ~}}
     }
 }

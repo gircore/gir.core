@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Repository;
+using Repository.Analysis;
 using Repository.Model;
 
 namespace Generator
@@ -11,6 +13,7 @@ namespace Generator
     public class Generator
     {
         private static string _cacheDir = "../gir-files";
+        private Dictionary<string, object> _metadata = new();
 
         public readonly List<LoadedProject> LoadedProjects;
 
@@ -39,6 +42,25 @@ namespace Generator
                     // Prefix Interfaces with 'I'
                     foreach (Interface iface in proj.Namespace.Interfaces)
                         iface.ManagedName = 'I' + iface.ManagedName;
+                    
+                    // Reparent Object Class Structs
+                    var classStructDict = new Dictionary<Class, Record>();
+                    
+                    List<Record> records = proj.Namespace.Records;
+                    foreach (Record classStruct in records.Where(record => record.GLibClassStructFor != null))
+                    {
+                        ISymbol type = classStruct.GLibClassStructFor!.Type;
+                        if (type is not Class)
+                            continue;
+                        
+                        classStruct.ManagedName = $"{type.ManagedName}.{classStruct.ManagedName}";
+                        classStructDict[(Class)type] = classStruct;
+                    }
+
+                    // TODO: This is an example of how we could attach metadata to a project/symbol/etc
+                    // In the actual generator we'd have a nice convenient wrapper for this, probably on a
+                    // per-project basis. E.g. proj.AddMetadata("key", value)/proj.GetMetadata("key").
+                    _metadata[proj.ProjectName + ".ClassDict"] = classStructDict;
                 }
             }
             catch (Exception e)
@@ -57,7 +79,7 @@ namespace Generator
 
             foreach (LoadedProject proj in LoadedProjects)
             {
-                var writer = new Writer(proj);
+                var writer = new Writer(proj, _metadata);
                 AsyncTasks.AddRange(writer.GetAsyncTasks());
             }
 

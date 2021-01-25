@@ -3,9 +3,9 @@ using Repository.Model;
 
 namespace Generator.Services
 {
-    public class ObjectService
+    public static class ObjectService
     {
-        public string WriteInheritance(Class obj)
+        public static string WriteInheritance(Class obj)
         {
             if (obj.Parent is null)
                 return string.Empty;
