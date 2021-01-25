@@ -18,13 +18,10 @@ namespace Generator
         public readonly Namespace Namespace;
         public string CurrentNamespace => Namespace.Name;
 
-        public Dictionary<string, object> Metadata;
-
-        public Writer(LoadedProject project, Dictionary<string, object> metadata)
+        public Writer(LoadedProject project)
         {
             Project = project;
             Namespace = project.Namespace;
-            Metadata = metadata;
         }
 
         public IEnumerable<Task> GetAsyncTasks()
@@ -50,9 +47,6 @@ namespace Generator
             var dir = $"output/{Project.ProjectName}/Classes/";
             Directory.CreateDirectory(dir);
             
-            // Get ClassStruct Dict
-            var classStructDict = (Dictionary<Class, Record>)Metadata[Project.ProjectName + ".ClassDict"];
-            
             // Generate a file for each class
             // TODO: We could avoid await here and return tasks instead
             foreach (Class cls in Namespace.Classes)
@@ -61,8 +55,8 @@ namespace Generator
                 if (cls.NativeName == "Object" || cls.NativeName == "InitiallyUnowned")
                     continue;
                 
-                // Try get class
-                classStructDict.TryGetValue(cls, out Record classStruct);
+                // GObject Class Struct
+                cls.TryGetMetadata<Record>("ClassStruct", out Record classStruct);
 
                 // These contain: Object, Signals, Fields, Native: {Properties, Methods}
                 var result = await template.RenderAsync(new

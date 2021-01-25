@@ -13,7 +13,6 @@ namespace Generator
     public class Generator
     {
         private static string _cacheDir = "../gir-files";
-        private Dictionary<string, object> _metadata = new();
 
         public readonly List<LoadedProject> LoadedProjects;
 
@@ -44,8 +43,6 @@ namespace Generator
                         iface.ManagedName = 'I' + iface.ManagedName;
                     
                     // Reparent Object Class Structs
-                    var classStructDict = new Dictionary<Class, Record>();
-                    
                     List<Record> records = proj.Namespace.Records;
                     foreach (Record classStruct in records.Where(record => record.GLibClassStructFor != null))
                     {
@@ -54,13 +51,8 @@ namespace Generator
                             continue;
                         
                         classStruct.ManagedName = $"{type.ManagedName}.{classStruct.ManagedName}";
-                        classStructDict[(Class)type] = classStruct;
+                        type.AddMetadata("ClassStruct", classStruct);
                     }
-
-                    // TODO: This is an example of how we could attach metadata to a project/symbol/etc
-                    // In the actual generator we'd have a nice convenient wrapper for this, probably on a
-                    // per-project basis. E.g. proj.AddMetadata("key", value)/proj.GetMetadata("key").
-                    _metadata[proj.ProjectName + ".ClassDict"] = classStructDict;
                 }
             }
             catch (Exception e)
@@ -79,7 +71,7 @@ namespace Generator
 
             foreach (LoadedProject proj in LoadedProjects)
             {
-                var writer = new Writer(proj, _metadata);
+                var writer = new Writer(proj);
                 AsyncTasks.AddRange(writer.GetAsyncTasks());
             }
 
