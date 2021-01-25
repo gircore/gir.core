@@ -11,10 +11,16 @@ namespace {{ namespace }}
     {{ include 'header.sbntxt' this ~}}
     public partial class {{ name }}
     {
-        #region Methods
-        {{~ for method in all_methods }}
-        {{ include 'method.sbntxt' method dll_import (name + ": ") ~}}
-        {{ end ~}}
+        #region Native
+
+        internal static class Native
+        {
+            {{~ for method in all_methods }}
+            {{ include 'method.sbntxt' method dll_import (name + ": ") ~}}
+            {{ end ~}}
+
+        }
+
         #endregion
     }
 }
