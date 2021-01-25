@@ -21,7 +21,7 @@ namespace GLib
         private Bytes(IntPtr handle)
         {
             Handle = handle;
-            _size = (long) get_size(handle);
+            _size = (long) Native.get_size(handle);
             GC.AddMemoryPressure(_size);
         }
 
@@ -36,7 +36,7 @@ namespace GLib
 
         public static Bytes From(byte[] data)
         {
-            var obj = new Bytes(@new(data, (ulong) data.Length));
+            var obj = new Bytes(Native.@new(data, (ulong) data.Length));
             return obj;
         }
 
@@ -44,7 +44,7 @@ namespace GLib
         {
             if (Handle != IntPtr.Zero)
             {
-                unref(Handle);
+                Native.unref(Handle);
                 Handle = IntPtr.Zero;
                 GC.RemoveMemoryPressure(_size);
             }
