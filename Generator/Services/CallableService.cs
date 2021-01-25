@@ -9,6 +9,11 @@ namespace Generator.Services
         
         public static string WriteParameters(Callback callback)
         {
+            // TODO: We will need some kind of parameter marshalling logic
+            // This should take into account Type, Direction, Lifetime, Transfer,
+            // Marshalling Behaviour (e.g. Value or Reference), and many other
+            // factors. It could probably be its own dedicated service.
+            
             // List<ParameterInfo> parameters = delegateInfo?.Parameters?.Parameters;
             //
             // // We have no parameters -> Empty brackets
