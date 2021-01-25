@@ -38,8 +38,6 @@ namespace GObject
         /// <param name="name">The property value.</param>
         protected void SetProperty(string? name, Value value)
         {
-            ThrowIfDisposed();
-
             if (name is null)
                 return;
 
@@ -56,8 +54,6 @@ namespace GObject
         /// </returns>
         protected Value GetProperty(string? name)
         {
-            ThrowIfDisposed();
-
             if (name is null)
                 return default;
 
