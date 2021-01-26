@@ -22,6 +22,7 @@ Currently supported libraries
 * [JavaScriptCore] (planned): Javascript integration for [WebKitGTK]
 * [libhandy] (planned): Convergent UI-Widgets for [GTK] to support mobile phones
 * [libchamplain] (planned): Library to display maps
+* [GdkPixbuf] (partial support): Load images in various formats
 
 ## Status
 As we are currently figuring out the best way for this project the code is under heavy development and not ready for production. There is currently _no_ nuget package available.
@@ -99,6 +100,7 @@ The code in the library folder is not complete because the biggest part of the c
 [libchamplain]: https://wiki.gnome.org/Projects/libchamplain
 [GtkSharp]: https://github.com/GtkSharp/GtkSharp
 [sample_gtk_quickstart]: https://github.com/gircore/gir.core/tree/develop/Samples/Gtk3/Quickstart
+[GdkPixbuf]: https://gitlab.gnome.org/GNOME/gdk-pixbuf
 
 ## Licensing terms
 Gir.Core is licensed under the terms of the MIT-License. Please see the [LICENSE](LICENSE) file for further information.

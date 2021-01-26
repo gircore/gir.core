@@ -14,11 +14,10 @@ namespace GLib
             {
                 foreach (Variant? child in _children)
                 {
-                    if (child is IDisposable disposable)
-                        disposable.Dispose();
+                    child.Dispose();
                 }
 
-                unref(_handle);
+                Native.unref(_handle);
                 _disposedValue = true;
             }
         }

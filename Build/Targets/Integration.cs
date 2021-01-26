@@ -2,21 +2,16 @@
 
 namespace Build
 {
-    public interface IIntegrationBuilder
-    {
-        void BuildIntegration();
-    }
-
-    public class IntegrationBuilder : IIntegrationBuilder
+    public class Integration : ITarget
     {
         private readonly Settings _settings;
 
-        public IntegrationBuilder(Settings settings)
+        public Integration(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void BuildIntegration()
+        public void Execute()
         {
             foreach (var project in Projects.IntegrationProjects)
                 DotNet.Build(project, _settings.Configuration);

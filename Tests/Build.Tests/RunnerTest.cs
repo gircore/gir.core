@@ -9,17 +9,18 @@ namespace Build.Test
     {
         #region Helper
 
-        private static Runner GetRunner(out IProjectCleaner projectCleaner, out ILibraryGenerator libraryGenerator, out ILibraryBuilder libraryBuilder, out ILibraryPacker libraryPacker, out ISampleBuilder sampleBuilder, out ITester tester, out IIntegrationBuilder integrationBuilder)
+        private static Runner GetRunner(ITarget? clean = null, ITarget? generate = null, ITarget? build = null, ITarget? pack = null, ITarget? samples = null, ITarget? test = null, ITarget? integration = null, ITarget? docs = null)
         {
-            projectCleaner = Mock.Of<IProjectCleaner>();
-            libraryGenerator = Mock.Of<ILibraryGenerator>();
-            sampleBuilder = Mock.Of<ISampleBuilder>();
-            libraryBuilder = Mock.Of<ILibraryBuilder>();
-            libraryPacker = Mock.Of<ILibraryPacker>();
-            tester = Mock.Of<ITester>();
-            integrationBuilder = Mock.Of<IIntegrationBuilder>();
+            clean ??= Mock.Of<ITarget>();
+            generate ??= Mock.Of<ITarget>();
+            samples ??= Mock.Of<ITarget>();
+            build ??= Mock.Of<ITarget>();
+            pack ??= Mock.Of<ITarget>();
+            test ??= Mock.Of<ITarget>();
+            integration ??= Mock.Of<ITarget>();
+            docs ??= Mock.Of<ITarget>();
 
-            return new Runner(projectCleaner, libraryGenerator, libraryBuilder, libraryPacker, sampleBuilder, tester, integrationBuilder);
+            return new Runner(clean, generate, build, pack, samples, test, integration, docs);
         }
 
         private static void RunTarget(Runner runner, string target)
@@ -32,55 +33,43 @@ namespace Build.Test
         [TestMethod]
         public void InvokingCleanTargetExecutesProjectCleaner()
         {
+            var target = Mock.Of<ITarget>();
+
             Runner runner = GetRunner(
-                out IProjectCleaner projectCleaner, 
-                out ILibraryGenerator _, 
-                out ILibraryBuilder _, 
-                out ILibraryPacker _,
-                out ISampleBuilder _, 
-                out ITester _,
-                out IIntegrationBuilder _
+                clean: target
             );
 
             RunTarget(runner, "clean");
 
-            Mock.Get(projectCleaner).Verify((x) => x.CleanProjects(), Times.Once);
+            Mock.Get(target).Verify((x) => x.Execute(), Times.Once);
         }
 
         [TestMethod]
         public void InvokingGenerateTargetExecutesLibraryGenerator()
         {
+            var target = Mock.Of<ITarget>();
+
             Runner runner = GetRunner(
-                out IProjectCleaner _, 
-                out ILibraryGenerator generator, 
-                out ILibraryBuilder _, 
-                out ILibraryPacker _,
-                out ISampleBuilder _, 
-                out ITester _,
-                out IIntegrationBuilder _
+                generate: target
             );
 
             RunTarget(runner, "generate");
 
-            Mock.Get(generator).Verify((x) => x.GenerateLibraries(), Times.Once);
+            Mock.Get(target).Verify((x) => x.Execute(), Times.Once);
         }
         
         [TestMethod]
         public void InvokingIntegrationTargetExecutesIntegrationBuilder()
         {
+            var target = Mock.Of<ITarget>();
+
             Runner runner = GetRunner(
-                out IProjectCleaner _, 
-                out ILibraryGenerator _, 
-                out ILibraryBuilder _, 
-                out ILibraryPacker _,
-                out ISampleBuilder _, 
-                out ITester _,
-                out IIntegrationBuilder integrationBuilder
+                integration: target
             );
 
             RunTarget(runner, "integration");
 
-            Mock.Get(integrationBuilder).Verify((x) => x.BuildIntegration(), Times.Once);
+            Mock.Get(target).Verify((x) => x.Execute(), Times.Once);
         }
 
         [TestMethod]
@@ -88,78 +77,89 @@ namespace Build.Test
         [DataRow("default")] //Default target is equal to build target
         public void InvokingBuildTargetExecutesLibraryGeneratorAndLibraryBuilder(string target)
         {
+            var generate = Mock.Of<ITarget>();
+            var build = Mock.Of<ITarget>();
+
             Runner runner = GetRunner(
-                out IProjectCleaner _, 
-                out ILibraryGenerator generator, 
-                out ILibraryBuilder builder, 
-                out ILibraryPacker _,
-                out ISampleBuilder _, 
-                out ITester _,
-                out IIntegrationBuilder _
+                generate: generate,
+                build: build
             );
 
             RunTarget(runner, target);
 
-            Mock.Get(generator).Verify((x) => x.GenerateLibraries(), Times.Once);
-            Mock.Get(builder).Verify((x) => x.BuildLibraries(), Times.Once);
+            Mock.Get(generate).Verify((x) => x.Execute(), Times.Once);
+            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
         }
 
         [TestMethod]
         public void InvokingSamplesTargetExecutesLibraryBuilderIntegrationBuilderSampleBuilder()
         {
+            var samples = Mock.Of<ITarget>();
+            var build = Mock.Of<ITarget>();
+            var integration = Mock.Of<ITarget>();
+            
             Runner runner = GetRunner(
-                out IProjectCleaner _, 
-                out ILibraryGenerator _, 
-                out ILibraryBuilder builder, 
-                out ILibraryPacker _,
-                out ISampleBuilder sampleBuilder, 
-                out ITester _,
-                out IIntegrationBuilder integrationBuilder
+                build: build,
+                samples: samples,
+                integration: integration
             );
 
             RunTarget(runner, "samples");
 
-            Mock.Get(integrationBuilder).Verify(x => x.BuildIntegration(), Times.Once);
-            Mock.Get(builder).Verify((x) => x.BuildLibraries(), Times.Once);
-            Mock.Get(sampleBuilder).Verify((x) => x.BuildSamples(), Times.Once);
+            Mock.Get(integration).Verify(x => x.Execute(), Times.Once);
+            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
+            Mock.Get(samples).Verify((x) => x.Execute(), Times.Once);
         }
         
         [TestMethod]
         public void InvokingTestTargetExecutesLibraryBuilderAndTester()
         {
+            var build = Mock.Of<ITarget>();
+            var test = Mock.Of<ITarget>();
+            
             Runner runner = GetRunner(
-                out IProjectCleaner _, 
-                out ILibraryGenerator _, 
-                out ILibraryBuilder builder, 
-                out ILibraryPacker _,
-                out ISampleBuilder _, 
-                out ITester tester,
-                out IIntegrationBuilder _
+                build: build,
+                test: test
             );
 
             RunTarget(runner, "test");
 
-            Mock.Get(builder).Verify((x) => x.BuildLibraries(), Times.Once);
-            Mock.Get(tester).Verify((x) => x.Test(), Times.Once);
+            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
+            Mock.Get(test).Verify((x) => x.Execute(), Times.Once);
         }
         
         [TestMethod]
         public void InvokingPackTargetExecutesLibraryBuilderAndPacker()
         {
+            var build = Mock.Of<ITarget>();
+            var pack = Mock.Of<ITarget>();
+            
             Runner runner = GetRunner(
-                out IProjectCleaner _, 
-                out ILibraryGenerator _, 
-                out ILibraryBuilder builder, 
-                out ILibraryPacker packer,
-                out ISampleBuilder _, 
-                out ITester _,
-                out IIntegrationBuilder _
+                build: build,
+                pack: pack
             );
 
             RunTarget(runner, "pack");
 
-            Mock.Get(builder).Verify((x) => x.BuildLibraries(), Times.Once);
-            Mock.Get(packer).Verify((x) => x.PackLibraries(), Times.Once);
+            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
+            Mock.Get(pack).Verify((x) => x.Execute(), Times.Once);
+        }
+        
+        [TestMethod]
+        public void InvokingPackDocsExecutesDocsAndBuild()
+        {
+            var build = Mock.Of<ITarget>();
+            var docs = Mock.Of<ITarget>();
+            
+            Runner runner = GetRunner(
+                build: build,
+                docs: docs
+            );
+
+            RunTarget(runner, "docs");
+
+            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
+            Mock.Get(docs).Verify((x) => x.Execute(), Times.Once);
         }
     }
 }

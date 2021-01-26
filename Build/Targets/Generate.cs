@@ -3,22 +3,17 @@ using Repository.Xml;
 
 namespace Build
 {
-    public interface ILibraryGenerator
-    {
-        void GenerateLibraries();
-    }
-
-    public class LibraryGenerator : ILibraryGenerator
+    public class Generate : ITarget
     {
         private readonly Settings _settings;
         private const string EnvXmlDocumentation = "GirComments";
 
-        public LibraryGenerator(Settings settings)
+        public Generate(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void GenerateLibraries()
+        public void Execute()
         {
             SetEnvironmentVariableToGenerateXmlDocumentation();
             RunGenerator();
