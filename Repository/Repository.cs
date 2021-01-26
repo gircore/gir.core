@@ -95,7 +95,7 @@ namespace Repository
                 }
             }
             
-            Log.Information($"Repository initialised with {targets.Length} top-level projects and {LoadedProjects.Count - targets.Length} dependencies.");
+            Log.Information($"Repository initialised with {targets.Length} top-level project(s) and {LoadedProjects.Count - targets.Length} dependencies.");
         }
     }
 }

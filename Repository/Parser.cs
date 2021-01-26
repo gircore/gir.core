@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -104,7 +105,46 @@ namespace Repository
                     NativeName = callback.Name,
                     ManagedName = callback.Name,
                     
-                    ReturnValue = new ReturnValue() { Type = ParseTypeOrArray(callback.ReturnValue) }
+                    ReturnValue = new ReturnValue() { Type = ParseTypeOrArray(callback.ReturnValue) },
+                    Arguments = (callback.Parameters != null)
+                        ? ParseArguments(nspace, callback.Parameters!).ToList()
+                        : new List<Argument>(),
+                };
+            }
+        }
+
+        private IEnumerable<Argument> ParseArguments(NamespaceInfo nspace, ParametersInfo parameters)
+        {
+            foreach (ParameterInfo arg in parameters.Parameters)
+            {
+                // Direction (for determining in/out/ref)
+                var callerAllocates = arg.CallerAllocates;
+                Direction direction = arg.Direction switch
+                {
+                    "in" => Direction.In,
+                    "out" when callerAllocates => Direction.OutCallerAllocates,
+                    "out" when !callerAllocates => Direction.OutCalleeAllocates,
+                    "inout" => Direction.Ref,
+                    _ => Direction.Default
+                };
+
+                // Memory Management information
+                Transfer transfer = arg.TransferOwnership switch
+                {
+                    "none" => Transfer.None,
+                    "container" => Transfer.Container,
+                    "full" => Transfer.Full,
+                    "floating" => Transfer.None,
+                    _ => Transfer.Full // TODO: Good default value? 
+                };
+                
+                yield return new Argument()
+                {
+                    Name = arg.Name,
+                    Type = ParseTypeOrArray(arg),
+                    Direction = direction,
+                    Transfer = transfer,
+                    Nullable = arg.Nullable
                 };
             }
         }

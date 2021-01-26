@@ -1,4 +1,6 @@
-﻿namespace Repository.Model
+﻿using System.Collections.Generic;
+
+namespace Repository.Model
 {
     public record Callback : ISymbol
     {
@@ -7,5 +9,6 @@
         public string NativeName { get; init; }
 
         public ReturnValue ReturnValue { get; init; }
+        public List<Argument> Arguments { get; init; }
     }
 }

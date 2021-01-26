@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    public class ParameterInfo
+    public class ParameterInfo : ITypeOrArray
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
