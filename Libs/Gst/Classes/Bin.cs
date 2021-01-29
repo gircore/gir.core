@@ -11,7 +11,7 @@ namespace Gst
 
         public bool Add(Element element) => Native.add(Handle, element.Handle);
         public bool Remove(Element element) => Native.remove(Handle, element.Handle);
-        
+
         public IEnumerable<Element> IterateRecurse()
         {
             throw new NotImplementedException();

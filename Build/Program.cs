@@ -64,8 +64,8 @@ namespace Build
             };
 
             var runner = new Runner(
-                clean: new Clean(settings), 
-                generate: new Generate(settings), 
+                clean: new Clean(settings),
+                generate: new Generate(settings),
                 build: new Build(settings),
                 pack: new Pack(settings),
                 samples: new Samples(settings),

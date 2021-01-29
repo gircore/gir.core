@@ -1,4 +1,4 @@
-namespace Gir
+﻿namespace Gir
 {
     public interface IType
     {

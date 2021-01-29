@@ -1,11 +1,11 @@
-using GObject;
+﻿using GObject;
 
 namespace Gtk
 {
     public partial class TextBuffer
     {
         // TODO: Support GtkTextTagTable constructor
-        public TextBuffer() {}
+        public TextBuffer() { }
 
         public static readonly Property<string> TextProperty = Property<string>.Register<TextBuffer>(
             Native.TextProperty,

@@ -1,5 +1,5 @@
+﻿using System;
 using Gio;
-using System;
 using GLib;
 
 namespace Sample

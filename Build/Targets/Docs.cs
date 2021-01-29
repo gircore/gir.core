@@ -27,12 +27,12 @@ namespace Build
                 };
 
                 XmlDocMarkdownResult result = XmlDocMarkdownGenerator.Generate(
-                    inputPath: GetAssemblyFile(project.Folder), 
-                    outputPath: "../Docs/Api", 
+                    inputPath: GetAssemblyFile(project.Folder),
+                    outputPath: "../Docs/Api",
                     settings: settings
                 );
-                
-                foreach(var message in result.Messages)
+
+                foreach (var message in result.Messages)
                     Console.WriteLine(message);
             }
         }

@@ -13,7 +13,7 @@ namespace GLib
 
         public static MainContext New()
             => new MainContext(Native.@new());
-        
+
         public static MainContext Default()
             => new MainContext(Native.@default());
     }

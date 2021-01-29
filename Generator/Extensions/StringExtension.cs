@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security;
 using System.Text;
@@ -19,7 +19,7 @@ namespace Generator
 
             if (escapedString is null)
                 throw new Exception($"Could not escape string {str}");
-            
+
             var sArray = escapedString.Split("\n");
             var sb = new StringBuilder();
 

@@ -8,12 +8,12 @@ namespace GLib
 
         private readonly long _size;
         private readonly BytesSafeHandle _safeHandle;
-        
+
         #endregion
         
         #region Properties
 
-        public IntPtr Handle => _safeHandle.IsInvalid ? IntPtr.Zero : _safeHandle.DangerousGetHandle();
+        public IntPtr Handle { get; private set; }
 
         #endregion
 
@@ -21,10 +21,14 @@ namespace GLib
 
         private Bytes(IntPtr handle)
         {
-            _safeHandle = new BytesSafeHandle(handle);
+            Handle = handle;
             _size = (long) Native.get_size(handle);
-
             GC.AddMemoryPressure(_size);
+        }
+
+        ~Bytes()
+        {
+            ReleaseUnmanagedResources();
         }
 
         #endregion
@@ -37,10 +41,20 @@ namespace GLib
             return obj;
         }
 
+        private void ReleaseUnmanagedResources()
+        {
+            if (Handle != IntPtr.Zero)
+            {
+                Native.unref(Handle);
+                Handle = IntPtr.Zero;
+                GC.RemoveMemoryPressure(_size);
+            }
+        }
+
         public void Dispose()
         {
-            _safeHandle.Dispose();
-            GC.RemoveMemoryPressure(_size);
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
         }
 
         #endregion

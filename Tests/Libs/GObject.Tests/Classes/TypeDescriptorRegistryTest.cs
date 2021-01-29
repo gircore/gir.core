@@ -12,7 +12,7 @@ namespace GObject.Test
         {
             return new Dictionary<System.Type, Object.TypeDescriptor>();
         }
-        
+
         private static Object.TypeDescriptor GetTypeDescriptor()
         {
             return Object.TypeDescriptor.For(
@@ -28,12 +28,12 @@ namespace GObject.Test
 
             TypeDescriptorRegistry.SetDictionary(dictionary);
         }
-        
+
         private static Object.TypeDescriptor ResolveTypeWithDescriptor(Object.TypeDescriptor descriptor, IDictionary<System.Type, Object.TypeDescriptor> dictionary)
         {
             ClassWithTypeDescriptor.SetGTypeDescriptor(descriptor);
             TypeDescriptorRegistry.SetDictionary(dictionary);
-            
+
             return TypeDescriptorRegistry.ResolveTypeDescriptorForType(typeof(ClassWithTypeDescriptor));
         }
 

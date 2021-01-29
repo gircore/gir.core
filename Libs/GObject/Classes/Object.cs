@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,10 +16,10 @@ namespace GObject
 
         private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
         private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
-        
+
         private readonly Dictionary<string, SignalHelper> _signals = new ();
         private ObjectSafeHandle _safeHandle;
-        
+
         #endregion
 
         #region Events
@@ -91,7 +91,7 @@ namespace GObject
                     Marshal.FreeHGlobal(ptr);
 
                 foreach (Value value in values)
-                    value.Dispose();   
+                    value.Dispose();
             }
 
             Initialize(handle);
@@ -121,6 +121,11 @@ namespace GObject
             }
 
             Initialize(handle);
+        }
+
+        ~Object()
+        {
+            Dispose(false);
         }
 
         #endregion
@@ -176,19 +181,19 @@ namespace GObject
                 {
                     System.Reflection.MethodInfo? method =
                         field.FieldType.GetMethod(nameof(Property<Object>.RegisterNotifyEvent), MethodFlags);
-                    method?.Invoke(field.GetValue(this), new object[] {this});
+                    method?.Invoke(field.GetValue(this), new object[] { this });
                 }
             }
         }
 
         protected internal SignalHelper GetSignalHelper(string name)
         {
-            if(_signals.TryGetValue(name, out var signalHelper))
+            if (_signals.TryGetValue(name, out var signalHelper))
                 return signalHelper;
 
             signalHelper = new SignalHelper(this, name);
             _signals.Add(name, signalHelper);
-            
+
             return signalHelper;
         }
 
@@ -242,9 +247,9 @@ namespace GObject
             // Ensure 'T' is registered in type dictionary for future use. It is an error for a
             // wrapper type to not define a TypeDescriptor. 
             TypeDescriptor desc = TypeDescriptorRegistry.ResolveTypeDescriptorForType(typeof(T));
-            
+
             TypeDictionary.AddRecursive(typeof(T), desc.GType);
-            
+
             // Optimisation: Compare the gtype of 'T' to the GType of the pointer. If they are
             // equal, we can skip the type dictionary's (possible) recursive lookup and return
             // immediately.
@@ -259,7 +264,7 @@ namespace GObject
                 // We are some other representation of 'T' (e.g. a more derived type)
                 // Retrieve the normal way
                 trueType = TypeDictionary.Get(trueGType);
-                
+
                 // Ensure the conversion is valid
                 Type castGType = TypeDictionary.Get(typeof(T));
                 if (!Global.Native.type_is_a(trueGType.Value, castGType.Value))
@@ -273,11 +278,11 @@ namespace GObject
                 | System.Reflection.BindingFlags.Instance,
                 null, new[] { typeof(IntPtr), typeof(bool) }, null
             );
-            
+
             if (ctor == null)
                 throw new Exception($"Type {trueType.FullName} does not define an IntPtr constructor. This could mean improperly defined bindings");
 
-            return (T) ctor.Invoke(new object[] { handle, ownedRef});
+            return (T) ctor.Invoke(new object[] { handle, ownedRef });
         }
 
         private static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : Object
@@ -311,7 +316,7 @@ namespace GObject
         /// <param name="ownedRef">Specify if the ref is owned by us, because ownership was transferred.</param>
         /// <typeparam name="T"></typeparam>
         /// <returns><c>true</c> if the handle was wrapped, or <c>false</c> if something went wrong.</returns>
-        public static bool TryWrapHandle<T>(IntPtr handle, bool ownedRef, [NotNullWhen(true)] out T? o) 
+        public static bool TryWrapHandle<T>(IntPtr handle, bool ownedRef, [NotNullWhen(true)] out T? o)
             where T : Object
         {
             o = null;

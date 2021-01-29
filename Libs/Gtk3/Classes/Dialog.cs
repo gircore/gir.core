@@ -1,4 +1,4 @@
-using GObject;
+﻿using GObject;
 
 namespace Gtk
 {
@@ -8,7 +8,7 @@ namespace Gtk
         /// Creates a new dialog.
         /// </summary>
         public Dialog() { }
-        
+
         public Widget GetContentArea()
             => WrapHandle<Box>(Native.get_content_area(Handle), false);
 

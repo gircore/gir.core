@@ -9,7 +9,7 @@ namespace Generator
 
         public string Type { get; }
         public string Attribute { get; }
-        
+
         public Direction Direction { get; }
 
         #endregion
@@ -40,7 +40,7 @@ namespace Generator
             Direction.InOut => "ref " + Type,
             _ => Type,
         };
-        
+
         public string GetFieldString() => Direction == Direction.Value ? Type : "IntPtr";
 
         #endregion
@@ -89,7 +89,7 @@ namespace Generator
         public bool IsPointer { get; set; }
         public bool IsValueType { get; set; }
         public bool IsParameter { get; set; }
-        
+
         public Direction Direction { get; set; }
 
         #endregion
@@ -130,7 +130,7 @@ namespace Generator
             { Type: { } gtype } => GetTypeName(ConvertGType(gtype, typeInfo is GParameter, typeInfo)),
             { Array: { Length: { } length, Type: { CType: { } } gtype } } => GetTypeName(ResolveArrayType(gtype, typeInfo is GParameter, length)),
             { Array: { Length: { } length, Type: { Name: "utf8" } name } } => GetTypeName(StringArray(length, typeInfo is GParameter)),
-            { Array: { Length: "1", Type: {Name: "guint8"}}} => new ResolvedType("byte[]"),
+            { Array: { Length: "1", Type: { Name: "guint8" } } } => new ResolvedType("byte[]"),
             { Array: { } } => new ResolvedType("IntPtr"),
             _ => throw new NotSupportedException("Type is missing supported Type information")
         };
@@ -251,7 +251,7 @@ namespace Generator
                 // Some gir files seem to use them though?
                 "none" => ValueType("void"),
                 "any" => IntPtr(),
-                
+
                 "void" => ValueType("void"),
                 "gboolean" => ValueType("bool"),
                 "gfloat" => Float(),

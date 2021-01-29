@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Generator;
 
 namespace Build
@@ -33,7 +33,7 @@ namespace Build
         private const string GDK3 = "../Libs/Gdk3/";
         private const string PANGO = "../Libs/Pango/";
         private const string XLIB = "../Libs/Xlib/";
-        
+
         public const string GST = "../Libs/Gst/";
         public const string GST_BASE = "../Libs/Gst.Base/";
         public const string GST_AUDIO = "../Libs/Gst.Audio/";
@@ -55,16 +55,16 @@ namespace Build
         private const string GDKPIXBUF_TEST_MEMORY_LEAKS = SAMPLE + "GdkPixbuf/TestMemoryLeaks";
 
         private const string INTEGRATION = "../Integration/";
-        
+
         #endregion
-        
+
         #region Fields
 
         public static readonly string[] IntegrationProjects =
         {
             INTEGRATION
         };
-        
+
         public static readonly string[] TestProjects =
         {
             BUILD_Test,
@@ -73,10 +73,10 @@ namespace Build
 
         public static readonly string[] SampleProjects =
         {
-            DBUS_SAMPLE, 
+            DBUS_SAMPLE,
             GSTREAMER_SAMPLE,
             //GTK3_APP_SAMPLE,
-            GTK3_BUILDER_SAMPLE, 
+            GTK3_BUILDER_SAMPLE,
             GTK3_QUICKSTART,
             GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR,
             GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR,
@@ -112,7 +112,7 @@ namespace Build
             (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
             (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/
         };
-        
+
         #endregion
     }
 }
