@@ -20,7 +20,7 @@ namespace Gir.Integration.CSharp.Gtk
 
             object dataProvider = GetDataProvider(classDeclarationSyntax, context.Compilation);
             var template = GetTemplate(dataProvider);
-            
+
             AddTemplateSourceToContext(context, template);
         }
 
@@ -31,7 +31,7 @@ namespace Gir.Integration.CSharp.Gtk
 
             return classDeclarationSyntax is not null;
         }
-        
+
         private static object GetDataProvider(ClassDeclarationSyntax classDeclarationSyntax, Compilation compilation)
         {
             return new CompositeTemplateDataProvider(classDeclarationSyntax, compilation);

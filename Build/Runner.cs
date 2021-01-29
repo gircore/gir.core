@@ -50,14 +50,14 @@ namespace Build
 
             targets.Add(
                 name: Targets.Build,
-                dependsOn: new[] {Targets.Generate},
+                dependsOn: new[] { Targets.Generate },
                 action: _build.Execute,
                 description: "Builds the project."
             );
 
             targets.Add(
                 name: Targets.Pack,
-                dependsOn: new[] {Targets.Build},
+                dependsOn: new[] { Targets.Build },
                 action: _pack.Execute,
                 description: "Packs the libraries into the 'Nuget' folder in the project root."
             );
@@ -70,28 +70,28 @@ namespace Build
 
             targets.Add(
                 name: Targets.Samples,
-                dependsOn: new[] {Targets.Build, Targets.Integration},
+                dependsOn: new[] { Targets.Build, Targets.Integration },
                 action: _samples.Execute,
                 description: "Builds the sample applications."
             );
 
             targets.Add(
                 name: Targets.Test,
-                dependsOn: new[] {Targets.Build},
+                dependsOn: new[] { Targets.Build },
                 action: _test.Execute,
                 description: "Execute all unit tests."
             );
 
             targets.Add(
                 name: Targets.Docs,
-                dependsOn: new[] {Targets.Build},
+                dependsOn: new[] { Targets.Build },
                 action: _docs.Execute,
                 description: "Generate API documentation."
             );
 
             targets.Add(
                 name: "default",
-                dependsOn: new[] {Targets.Build},
+                dependsOn: new[] { Targets.Build },
                 description: "Depends on 'build'."
             );
 

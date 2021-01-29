@@ -1,5 +1,5 @@
+﻿using System;
 using Gio;
-using System;
 using GLib;
 
 namespace Sample
@@ -10,12 +10,12 @@ namespace Sample
         {
             Console.WriteLine("Press enter to show applications...");
             Console.ReadLine();
-            
+
             var bus = DBusConnection.Get(BusType.Session);
             using Variant ret = await bus.CallAsync(
-                busName: "org.gnome.Panel", 
-                objectPath: "/org/gnome/Shell", 
-                interfaceName: "org.gnome.Shell", 
+                busName: "org.gnome.Panel",
+                objectPath: "/org/gnome/Shell",
+                interfaceName: "org.gnome.Shell",
                 methodName: "ShowApplications"
             );
 

@@ -12,15 +12,15 @@ namespace TestMemoryLeaks
         // This uses pixbufs to load a lot of images and discard them afterwards. It tests if the C# garbage
         // collector is freeing the managed and unmanaged resources properly. To verify it is necessary
         // to check the used system resources.
-        
+
         public static void Main(string[] args)
         {
             var cycles = 10000;
             var fileName = "test.bmp";
-            
+
             var imageBytes = File.ReadAllBytes(fileName);
             Task[] tasks = new Task[cycles];
-            
+
             Console.WriteLine("Concurrent file finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
             for (int i = 0; i < cycles; i++)
             {
@@ -44,7 +44,7 @@ namespace TestMemoryLeaks
             Task.WaitAll(tasks);
             Collect();
             Done();
-            
+
             Console.WriteLine("File finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
             for (int i = 0; i < cycles; i++)
             {
@@ -52,7 +52,7 @@ namespace TestMemoryLeaks
             }
             Collect();
             Done();
-            
+
             Console.WriteLine("Bytes finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
             for (int i = 0; i < cycles; i++)
             {
@@ -61,17 +61,17 @@ namespace TestMemoryLeaks
             Done();
 
             Console.WriteLine("File dispose: Memory should not go up as it is freed explicity via Dispose().");
-            
+
             for (int i = 0; i < cycles; i++)
             {
                 var a = Pixbuf.NewFromFile(fileName);
                 a.Dispose();
             }
             Done();
-            
+
 
             Console.WriteLine("Bytes dispose: Memory should not go up as it is freed explicity via Dispose().");
-            
+
             for (int i = 0; i < cycles; i++)
             {
                 var p = PixbufLoader.FromBytes(imageBytes);
@@ -86,7 +86,7 @@ namespace TestMemoryLeaks
             GC.WaitForPendingFinalizers();
             GC.Collect();
         }
-        
+
         private static void Done()
         {
             Console.WriteLine("DONE.");

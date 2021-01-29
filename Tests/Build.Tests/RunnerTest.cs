@@ -25,7 +25,7 @@ namespace Build.Test
 
         private static void RunTarget(Runner runner, string target)
         {
-            runner.Run(new[] {target}, null!);
+            runner.Run(new[] { target }, null!);
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace Build.Test
 
             Mock.Get(target).Verify((x) => x.Execute(), Times.Once);
         }
-        
+
         [TestMethod]
         public void InvokingIntegrationTargetExecutesIntegrationBuilder()
         {
@@ -97,7 +97,7 @@ namespace Build.Test
             var samples = Mock.Of<ITarget>();
             var build = Mock.Of<ITarget>();
             var integration = Mock.Of<ITarget>();
-            
+
             Runner runner = GetRunner(
                 build: build,
                 samples: samples,
@@ -110,13 +110,13 @@ namespace Build.Test
             Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
             Mock.Get(samples).Verify((x) => x.Execute(), Times.Once);
         }
-        
+
         [TestMethod]
         public void InvokingTestTargetExecutesLibraryBuilderAndTester()
         {
             var build = Mock.Of<ITarget>();
             var test = Mock.Of<ITarget>();
-            
+
             Runner runner = GetRunner(
                 build: build,
                 test: test
@@ -127,13 +127,13 @@ namespace Build.Test
             Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
             Mock.Get(test).Verify((x) => x.Execute(), Times.Once);
         }
-        
+
         [TestMethod]
         public void InvokingPackTargetExecutesLibraryBuilderAndPacker()
         {
             var build = Mock.Of<ITarget>();
             var pack = Mock.Of<ITarget>();
-            
+
             Runner runner = GetRunner(
                 build: build,
                 pack: pack
@@ -144,13 +144,13 @@ namespace Build.Test
             Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
             Mock.Get(pack).Verify((x) => x.Execute(), Times.Once);
         }
-        
+
         [TestMethod]
         public void InvokingPackDocsExecutesDocsAndBuild()
         {
             var build = Mock.Of<ITarget>();
             var docs = Mock.Of<ITarget>();
-            
+
             Runner runner = GetRunner(
                 build: build,
                 docs: docs

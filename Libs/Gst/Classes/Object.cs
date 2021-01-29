@@ -16,7 +16,7 @@ namespace Gst
             get => GetProperty(NameProperty);
             set => SetProperty(NameProperty, value);
         }
-        
+
         public void SetName(string name)
             => Native.set_name(Handle, name);
 

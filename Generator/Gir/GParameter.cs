@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Gir
 {
@@ -14,8 +14,8 @@ namespace Gir
 
         [XmlAttribute("direction")]
         public string? Direction { get; set; }
-        
-        [XmlAttribute ("caller-allocates")]
+
+        [XmlAttribute("caller-allocates")]
         public bool CallerAllocates;
 
         [XmlElement("doc")]

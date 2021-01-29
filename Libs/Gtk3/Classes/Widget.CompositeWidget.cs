@@ -15,10 +15,10 @@ namespace Gtk
         {
             IntPtr classPtr = TypeHelper.GetClassPointer(gtype);
             IntPtr bytesHandle = template.Handle;
-            
+
             WidgetClass.Native.set_template(classPtr, bytesHandle);
         }
-        
+
         protected void InitTemplate()
         {
             Native.init_template(Handle);
@@ -37,22 +37,22 @@ namespace Gtk
             IntPtr classPtr = TypeHelper.GetClassPointer(gtype);
             WidgetClass.Native.bind_template_child_full(classPtr, name, false, 0);
         }
-        
+
         protected static void BindTemplateSignals(Type gtype, System.Type t)
         {
             var classPtr = TypeHelper.GetClassPointer(gtype);
-            
-            MarshalHelper.ToPtrAndFree(gtype, (ptr) => 
+
+            MarshalHelper.ToPtrAndFree(gtype, (ptr) =>
             {
                 //TODO Verify if OnConnectEvent and DestroyConnectData get garbage collected
                 WidgetClass.Native.set_connect_func(classPtr, OnConnectEvent, ptr, DestroyConnectData);
             });
         }
-        
+
         private static void OnConnectEvent(IntPtr builder, IntPtr @object, string signal_name, string handler_name,
             IntPtr connect_object, ConnectFlags flags, IntPtr user_data)
         {
-            if(!TryWrapHandle<Widget>(@object, false, out var eventSender))
+            if (!TryWrapHandle<Widget>(@object, false, out var eventSender))
                 return;
 
             if (!TryGetEvent(eventSender.GetType(), signal_name, out EventInfo? @event))
@@ -60,8 +60,8 @@ namespace Gtk
 
             if (@event.EventHandlerType is null)
                 return;
-            
-            if(!TryWrapHandle<Widget>(connect_object, false, out var compositeWidget))
+
+            if (!TryWrapHandle<Widget>(connect_object, false, out var compositeWidget))
                 return;
 
             if (!TryGetMethod(compositeWidget.GetType(), handler_name, out MethodInfo? compositeWidgetEventHandler))
@@ -85,7 +85,7 @@ namespace Gtk
         private static bool TryGetMethod(System.Type compositeWidgetType, string methodName, [NotNullWhen(true)] out MethodInfo? methodInfo)
         {
             methodInfo = compositeWidgetType.GetMethod(
-                name: methodName, 
+                name: methodName,
                 bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
             );
 

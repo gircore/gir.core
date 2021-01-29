@@ -21,7 +21,7 @@ namespace GObject
                     return null;
                 }
             }
-            
+
             /// <summary>
             /// Initializes a toggle ref. The given object must be already owned by C# as the owned
             /// reference is exchanged with a toggling reference.
@@ -54,6 +54,6 @@ namespace GObject
 
                 }
             }
-        }   
+        }
     }
 }

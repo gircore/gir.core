@@ -12,7 +12,7 @@ namespace Generator
             _sharedLibrary = sharedLibrary ?? throw new ArgumentNullException(nameof(sharedLibrary));
             _namespaceName = namespaceName ?? throw new ArgumentNullException(nameof(namespaceName));
         }
-        
+
         public string GetWindowsDllImport()
         {
             (string name, string version) = ExtractLibraryData();
@@ -36,11 +36,11 @@ namespace Generator
             var lib = GetLibraryName();
             return ExtractData(lib);
         }
-        
+
         private string GetLibraryName()
         {
             var lib = _sharedLibrary;
-            
+
             if (_sharedLibrary.Contains(","))
             {
                 var libs = _sharedLibrary.Split(',');

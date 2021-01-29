@@ -5,7 +5,7 @@ namespace Gst
 {
     public partial class GhostPad
     {
-        
+
         // TODO: Replace with constructor once we've found a pattern for
         // implementing constructor logic. Note that gst_ghost_pad_new is
         // not simply a wrapper for g_object_new and has essential logic inside

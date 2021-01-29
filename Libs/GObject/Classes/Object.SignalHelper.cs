@@ -26,7 +26,7 @@ namespace GObject
             #endregion
 
             #region Methods
-            
+
             public void Connect<T>(T action, bool after, Func<T, ActionRefValues> mapping) where T : Delegate
             {
                 if (_connectedHandlers.ContainsKey(action))

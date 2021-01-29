@@ -1,4 +1,4 @@
-namespace Generator
+﻿namespace Generator
 {
     public class Project
     {

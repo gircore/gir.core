@@ -7,7 +7,7 @@ namespace Gtk
         public static Image NewFromIconName(string iconName, IconSize size)
             => new Image(
                 ConstructParameter.With(IconNameProperty, iconName),
-                ConstructParameter.With(IconSizeProperty, (int)size)
+                ConstructParameter.With(IconSizeProperty, (int) size)
             );
 
         public static Image NewFromFile(string filename)
@@ -27,7 +27,7 @@ namespace Gtk
             get => GetProperty(IconNameProperty);
             set => SetProperty(IconNameProperty, value);
         }
-        
+
         public static readonly Property<string> FileProperty = Property<string>.Register<Image>(
             Native.FileProperty,
             nameof(File),

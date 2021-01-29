@@ -7,9 +7,9 @@ namespace GLib
         #region Fields
 
         private readonly long _size;
-        
+
         #endregion
-        
+
         #region Properties
 
         public IntPtr Handle { get; private set; }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Gst
 {
@@ -22,9 +22,9 @@ namespace Gst
         public static Element BinFromDescription(string binDescription, bool ghostUnlinkedPads)
         {
             IntPtr ret = Global.Native.parse_bin_from_description(binDescription, ghostUnlinkedPads, out IntPtr error);
-            
+
             GLib.Error.ThrowOnError(error);
-            
+
             return GObject.Object.WrapHandle<Element>(ret, false);
         }
     }

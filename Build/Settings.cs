@@ -10,16 +10,16 @@ namespace Build
         public bool GenerateComments { get; init; }
         public bool GenerateXmlDocumentation { get; init; }
         public SemanticVersion? Version { get; init; }
-        
+
         #endregion
-        
+
         #region Constructors
 
         public Settings()
         {
             Configuration = Configuration.Debug;
         }
-        
+
         #endregion
     }
 }

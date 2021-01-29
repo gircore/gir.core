@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using GLib;
 using GObject;
@@ -19,12 +19,12 @@ namespace Gst
                 SetObjectStruct(fields);
             }
         }
-        
+
         // NOTE: Be careful about providing access to fields
         // We should (almost) always go through methods, unless
         // we have a good reason. This field accessor below caused
         // severe memory corruption issues when used.
-        
+
         // public Bus Bus
         // {
         //     get
@@ -52,13 +52,13 @@ namespace Gst
 
             return WrapHandle<Element>(result, false);
         }
-        
+
         public Bus? GetBus()
             => WrapNullableHandle<Bus>(Native.get_bus(Handle), true);
 
         public bool AddPad(Pad pad) => Native.add_pad(Handle, pad.Handle);
 
-        public StateChangeReturn SetState(State state) 
+        public StateChangeReturn SetState(State state)
             => Native.set_state(Handle, state);
 
         public StateChangeReturn GetState(out State state, out State pending, ulong timeout)
@@ -69,7 +69,7 @@ namespace Gst
 
             state = Marshal.PtrToStructure<State>(statePtr);
             pending = Marshal.PtrToStructure<State>(pendingPtr);
-            
+
             Marshal.FreeHGlobal(statePtr);
             Marshal.FreeHGlobal(pendingPtr);
 
@@ -78,12 +78,12 @@ namespace Gst
 
         public bool SeekSimple(Format format, SeekFlags seekFlags, long seekPos)
             => Native.seek_simple(Handle, format, seekFlags, seekPos);
-        
+
         public bool QueryPosition(Format format, out long cur)
         {
             return Native.query_position(Handle, format, out cur);
         }
-        
+
         public bool QueryDuration(Format format, out long duration)
         {
             return Native.query_duration(Handle, format, out duration);
@@ -91,10 +91,10 @@ namespace Gst
 
         public Pad? GetStaticPad(string name)
             => WrapNullableHandle<Pad>(Native.get_static_pad(Handle, name), true);
-        
+
         public static void Unlink(Element src, Element dest)
             => Native.unlink(src.Handle, dest.Handle);
-        
+
         public void Unlink(Element dest) => Unlink(this, dest);
 
         public bool Link(Element dest) => Link(this, dest);
@@ -129,7 +129,7 @@ namespace Gst
 
         public bool SyncStateWithParent()
             => Native.sync_state_with_parent(Handle);
-        
+
         // Some older mono applications appear to use a
         // string indexer to lookup properties from GLib
         // for GStreamer objects, as we do not know plugin
@@ -168,7 +168,7 @@ namespace Gst
                         val = Value.From((Object) value!);
                     else
                         val = Value.From(value);
-                    
+
                     SetProperty(property, val);
                 }
                 catch (Exception e)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -11,22 +11,22 @@ namespace GObject
         private class ClosureHelper : IDisposable
         {
             #region Fields
-            
+
             // We need to store a reference to MarshalCallback to
             // prevent the delegate from being collected by the GC
             private readonly ClosureMarshal? _marshalCallback;
             private readonly ActionRefValues? _callback;
-            
+
             #endregion
-            
+
             #region Properties
-            
+
             public IntPtr Handle { get; private set; }
 
             #endregion
-            
+
             #region Constructors
-            
+
             public ClosureHelper(ActionRefValues action)
             {
                 _callback = action;
@@ -42,11 +42,11 @@ namespace GObject
             {
                 ReleaseUnmanagedResources();
             }
-            
+
             #endregion
 
             #region Methods
-            
+
             private void MarshalCallback(IntPtr closure, ref Value returnValue, uint nParamValues,
                 Value[] paramValues, IntPtr invocationHint, IntPtr marshalData)
             {
@@ -74,7 +74,7 @@ namespace GObject
                 ReleaseUnmanagedResources();
                 GC.SuppressFinalize(this);
             }
-            
+
             #endregion
         }
     }
