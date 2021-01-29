@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using SimpleExec;
 
 namespace Build
@@ -8,7 +8,7 @@ namespace Build
         Release,
         Debug
     }
-    
+
     public static class DotNet
     {
         #region Methods
@@ -17,7 +17,7 @@ namespace Build
         {
             if (!TryGetVersionParameter(version, out var versionParameter))
                 versionParameter = "";
-            
+
             Command.Run(Commands.Dotnet, $"{Commands.Build} --nologo -c {configuration} {versionParameter} {project}");
         }
 
@@ -43,7 +43,7 @@ namespace Build
 
             if (!TryGetOutputDirParameter(outputDir, out var outputDirParameter))
                 outputDirParameter = "";
-            
+
             Command.Run(Commands.Dotnet, $"{Commands.Pack} --nologo -c {configuration} {versionParameter} {outputDirParameter} {project}");
         }
 
@@ -58,7 +58,7 @@ namespace Build
             dir = $"-o {outputDir}";
             return true;
         }
-        
+
         private static bool TryGetVersionParameter(string? version, [NotNullWhen(true)] out string? parameter)
         {
             if (version is null)
@@ -72,9 +72,9 @@ namespace Build
         }
 
         #endregion
-        
+
         #region Commands
-        
+
         private static class Commands
         {
             #region Constants
@@ -91,7 +91,7 @@ namespace Build
 
             #endregion
         }
-        
+
         #endregion
     }
 }

@@ -19,18 +19,18 @@ namespace GObject
 
                 return ptr;
             }
-            
+
             internal static ClassInitFunc GetClassInitFunc(IReflect type) => (gClass, classData) =>
             {
                 Type gtype = GetGTypeFromTypeClass(gClass);
-                
+
                 InvokeStaticMethod(
                     type: type,
                     name: "ClassInit",
-                    parameters: new object[] {gtype, type, classData}
+                    parameters: new object[] { gtype, type, classData }
                 );
             };
-            
+
             private static void InvokeStaticMethod(IReflect type, string name, params object[] parameters)
             {
                 MethodInfo? method = type.GetMethod(
@@ -43,7 +43,7 @@ namespace GObject
 
                 method?.Invoke(null, parameters);
             }
-            
+
             private static Type GetGTypeFromTypeClass(IntPtr typeClassPtr)
             {
                 try
@@ -51,7 +51,7 @@ namespace GObject
                     TypeClass typeClass = Marshal.PtrToStructure<TypeClass>(typeClassPtr);
                     return new Type(typeClass.g_type);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     // TODO: Check if pointer is actually a GObject?
                     throw new Exception("Could not resolve type from pointer" + ex.Message);

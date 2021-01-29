@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using GLib;
 
@@ -43,7 +43,7 @@ namespace GObject
             // Marshal and Free Memory
             // query = (TypeQuery) (Marshal.PtrToStructure(ptr, typeof(TypeQuery)) ??
             //                      throw new Exception("Type Query Failed"));
-                
+
             // Marshal.FreeHGlobal(ptr);
 
             return query;
@@ -71,7 +71,7 @@ namespace GObject
                 else
                     TypeDictionary.AddRecursive(type.BaseType);
             }
-                
+
 
             var boundaryTypeId = GetBoundaryTypeId(type);
             TypeQuery query = QueryType(boundaryTypeId);
@@ -84,7 +84,7 @@ namespace GObject
                 instance_init: InstanceInit
             );
 
-            MarshalHelper.ToPtrAndFree(typeInfo, (ptr) => 
+            MarshalHelper.ToPtrAndFree(typeInfo, (ptr) =>
             {
                 // Perform Registration
                 var qualifiedName = QualifyName(type);
@@ -113,7 +113,7 @@ namespace GObject
                 throw new Exception("Could not resolve type from pointer");
             }
         }
-        
+
         /// <summary>
         /// Denotes a struct as being a GObject's member struct. This can then be marshalled
         /// with <see cref="Object.GetObjectStruct{T}"/> and <see cref="Object.SetObjectStruct{T}"/>
@@ -129,7 +129,7 @@ namespace GObject
         /// <returns>T?</returns>
         /// <seealso cref="SetObjectStruct{T}"/>
         protected T GetObjectStruct<T>()
-            where T: struct, IObjectStruct
+            where T : struct, IObjectStruct
         {
             return Marshal.PtrToStructure<T>(Handle);
         }
@@ -142,7 +142,7 @@ namespace GObject
         /// <typeparam name="T"></typeparam>
         /// <seealso cref="GetObjectStruct{T}"/>
         protected void SetObjectStruct<T>(T objectStruct)
-            where T: struct, IObjectStruct
+            where T : struct, IObjectStruct
         {
             Marshal.StructureToPtr(objectStruct, Handle, false);
         }

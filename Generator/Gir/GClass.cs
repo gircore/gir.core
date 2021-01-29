@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -16,8 +16,8 @@ namespace Gir
 
         [XmlElement("signal", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public List<GSignal> Signals { get; set; } = default!;
-        
-        [XmlElement ("field")]
+
+        [XmlElement("field")]
         public List<GField> Fields { get; set; } = default!;
 
         [XmlAttribute("parent")]
@@ -33,9 +33,9 @@ namespace Gir
         public List<GImplement> Implements { get; set; } = default!;
 
         //TODO: Workaround as long as no ATK is supported
-        public List<GImplement> ImplementsWithoutAtk 
-            => Implements.Where(x => x.Name is {} && !x.Name.Contains("Atk")).ToList();
-        
+        public List<GImplement> ImplementsWithoutAtk
+            => Implements.Where(x => x.Name is { } && !x.Name.Contains("Atk")).ToList();
+
         public override IEnumerable<GMethod> AllMethods
         {
             get

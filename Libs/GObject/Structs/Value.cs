@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace GObject
@@ -90,7 +90,7 @@ namespace GObject
 
             if (Global.Native.type_is_a(gtype, (ulong) Types.Flags))
                 return GetFlags();
-            
+
             throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
         }
 
@@ -110,7 +110,7 @@ namespace GObject
         public float GetFloat() => Native.get_float(ref this);
         public long GetFlags() => (long) Native.get_flags(ref this);
         public long GetEnum() => (long) Native.get_enum(ref this);
-        
+
         public string GetString()
         {
             //Do not free ptr as the ownership is not transfered!

@@ -7,15 +7,15 @@ namespace Gst
     public partial class Pad
     {
         #region Fields
-        
+
         #endregion
 
         public static PadLinkReturn Link(Pad sourcePad, Pad sinkPad)
             => Native.link(sourcePad.Handle, sinkPad.Handle);
-        
+
         public static bool Unlink(Pad sourcePad, Pad sinkPad)
             => Native.unlink(sourcePad.Handle, sinkPad.Handle);
-        
+
         public PadLinkReturn Link(Pad sinkPad) => Link(this, sinkPad);
         public bool Unlink(Pad sinkPad) => Unlink(this, sinkPad);
 
@@ -42,16 +42,16 @@ namespace Gst
             IntPtr ptr = IntPtr.Zero;
             if (filter != null)
             {
-                ptr = Marshal.AllocHGlobal(Marshal.SizeOf(filter)); 
-                Marshal.StructureToPtr(filter, ptr, false);   
+                ptr = Marshal.AllocHGlobal(Marshal.SizeOf(filter));
+                Marshal.StructureToPtr(filter, ptr, false);
             }
 
             IntPtr ret = Native.query_caps(Handle, ptr);
-            
+
             Marshal.FreeHGlobal(ptr);
-        
+
             // TODO: Should/can this return null?
-            return (Caps?)Marshal.PtrToStructure(ret, typeof(Caps));
+            return (Caps?) Marshal.PtrToStructure(ret, typeof(Caps));
         }
     }
 }

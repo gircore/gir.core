@@ -776,7 +776,7 @@ namespace Gtk
 
         public bool ActivateKey(Gdk.EventKey @event)
         {
-            return MarshalHelper.ToPtrAndFree(@event, (eventPtr) 
+            return MarshalHelper.ToPtrAndFree(@event, (eventPtr)
                 => Native.activate_key(Handle, eventPtr)
             );
         }
@@ -1071,7 +1071,7 @@ namespace Gtk
         public bool GetResizeGripArea(out Gdk.Rectangle rect)
         {
             IntPtr rectPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(Gdk.Rectangle)));
-            
+
             bool result;
             try
             {
@@ -1080,7 +1080,7 @@ namespace Gtk
             }
             finally
             {
-                Marshal.FreeHGlobal(rectPtr);   
+                Marshal.FreeHGlobal(rectPtr);
             }
             return result;
         }

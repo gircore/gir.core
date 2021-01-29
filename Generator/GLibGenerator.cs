@@ -1,6 +1,6 @@
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gir;
 using Scriban.Runtime;
 
@@ -31,7 +31,7 @@ namespace Generator
                 );
             }
         }
-        
+
         protected override void GenerateGlobals(IEnumerable<GMethod> methods, string @namespace)
         {
             ScriptObject? scriptObject = GetScriptObject();

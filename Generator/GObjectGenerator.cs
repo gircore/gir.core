@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Gir;
 using Scriban.Runtime;
@@ -121,7 +121,7 @@ namespace Generator
                 scriptObject: scriptObject
             );
         }
-        
+
         protected override void GenerateMiscellaneous(string @namespace)
         {
             GenerateDllImportHelper();

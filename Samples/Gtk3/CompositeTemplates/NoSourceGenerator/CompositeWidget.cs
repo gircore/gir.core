@@ -13,7 +13,7 @@ namespace GtkDemo
         private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
         {
             SetTemplate(
-                gtype: gClass, 
+                gtype: gClass,
                 template: Assembly.GetExecutingAssembly().ReadResourceAsBytes("CompositeWidget.ui")
             );
             BindTemplateChild(gClass, nameof(Button));
@@ -25,7 +25,7 @@ namespace GtkDemo
             InitTemplate();
             ConnectTemplateChildToField(nameof(Button), ref Button);
         }
-        
+
         private void button_clicked(Button sender, System.EventArgs args)
         {
             sender.Label = "Clicked!";

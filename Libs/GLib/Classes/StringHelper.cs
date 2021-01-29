@@ -11,7 +11,7 @@ namespace GLib
             Global.Native.free(ptr);
             return resultString;
         }
-        
+
         public static string ToAnsiStringAndFree(IntPtr ptr)
             => ToNullableAnsiStringAndFree(ptr) ?? string.Empty;
     }

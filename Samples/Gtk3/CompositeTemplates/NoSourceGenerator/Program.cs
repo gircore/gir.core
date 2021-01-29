@@ -11,19 +11,19 @@ namespace GtkDemo
     public static class Program
     {
         #region Methods
-        
+
         public static void Main(string[] args)
         {
             Global.Init();
 
             var mainWindow = new Window("MyWindow")
             {
-                DefaultWidth = 300, 
-                DefaultHeight = 200, 
+                DefaultWidth = 300,
+                DefaultHeight = 200,
                 Child = new CompositeWidget(),
                 [Window.DestroySignal] = (o, e) => Global.MainQuit()
             };
-            
+
             mainWindow.ShowAll();
             Global.Main();
         }

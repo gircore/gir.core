@@ -9,7 +9,7 @@ namespace GLib
         // solution is to simply generate managed and unmanaged signature
         // delegates appropriately, and provide helpers for marshalling
         // between them (i.e. like TSignalArgs).
-        
+
         public static uint Add(uint interval, Func<bool> function)
         {
             // TODO: This is broken (we cannot marshal FuncData)
@@ -34,7 +34,7 @@ namespace GLib
 
             return result;
         }
-        
+
         internal struct FuncData
         {
             internal readonly Func<bool> managedFunction;

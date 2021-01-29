@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,11 +12,11 @@ namespace Generator
     public interface IGenerator
     {
         #region Properties
-        
+
         public bool GenerateComments { get; set; }
-        
+
         #endregion
-        
+
         #region Methods
 
         void Generate();
@@ -87,10 +87,10 @@ namespace Generator
                 {
                     string filename = include.Name + "-" + include.Version + ".gir";
                     GRepository? dependency = ReadRepository("../gir-files/" + filename);
-                    
+
                     // Recursively process aliases for all includes
                     ProcessAliasesRecursive(dependency?.Namespace?.Name, dependency?.Includes, ref aliases);
-                    
+
                     // Also add toplevel aliases
                     aliases.AddRange(dependency?.Namespace?.Aliases ?? Enumerable.Empty<GAlias>());
                 }
@@ -108,7 +108,7 @@ namespace Generator
 
             using var fs = new FileStream(girFile, FileMode.Open);
             object? repository = serializer.Deserialize(fs);
-            
+
             return repository as GRepository ?? throw new Exception($"Could not deserialize {girFile}");
         }
 
@@ -227,10 +227,10 @@ namespace Generator
             fileName = Path.Combine(subfolder, fileName + ".Generated.cs");
 
             K loader = Activator.CreateInstance<K>();
-            
+
             // Scriban has a Loop iteration limit of 1000 by default. This is nowhere near
             // enough for the number of constants some libraries define (e.g. Gdk).
-            var context = new TemplateContext { TemplateLoader = loader, LoopLimit = 10000};
+            var context = new TemplateContext { TemplateLoader = loader, LoopLimit = 10000 };
             context.PushGlobal(scriptObject);
             context.IndentWithInclude = true;
 
@@ -337,7 +337,7 @@ namespace Generator
                 fileName: "DllImport",
                 scriptObject: scriptObject
             );
-            
+
             Generate(
                 templateName: "module_dll_import",
                 subfolder: "Classes",
@@ -350,15 +350,15 @@ namespace Generator
         {
             (string sharedLibrary, string namespaceName) = GetNamspaceData();
             var dllImportResolver = new DllImportResolver(sharedLibrary, namespaceName);
-            
+
             scriptObject.Add("windows_dll", dllImportResolver.GetWindowsDllImport());
             scriptObject.Add("osx_dll", dllImportResolver.GetOSXDllImport());
             scriptObject.Add("linux_dll", dllImportResolver.GetLinuxDllImport());
         }
-        
+
         private (string sharedLibrary, string namespaceName) GetNamspaceData()
         {
-            if(string.IsNullOrEmpty(Repository.Namespace?.SharedLibrary))
+            if (string.IsNullOrEmpty(Repository.Namespace?.SharedLibrary))
                 throw new Exception("Missing shared Library");
 
             if (string.IsNullOrEmpty(Repository.Namespace.Name))
@@ -366,7 +366,7 @@ namespace Generator
 
             return (Repository.Namespace.SharedLibrary, Repository.Namespace.Name);
         }
-        
+
         #endregion
     }
 }

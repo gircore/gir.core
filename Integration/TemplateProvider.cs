@@ -9,7 +9,7 @@ namespace Gir.Integration.CSharp
         {
             var templateContent = GetTemplateContent(templateName);
             var template = Template.Parse(templateContent);
-            
+
             TemplateContext context = GetTemplateContext(data);
             var content = template.Render(context);
 
@@ -20,7 +20,7 @@ namespace Gir.Integration.CSharp
         {
             var scriptObject = new ScriptObject();
             scriptObject.Import(data);
-            
+
             var context = new TemplateContext();
             context.PushGlobal(scriptObject);
             context.IndentWithInclude = true;

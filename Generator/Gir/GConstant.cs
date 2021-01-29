@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Gir
 {
@@ -14,7 +14,7 @@ namespace Gir
 
         [XmlElement("type")]
         public GType? Type { get; set; }
-        
+
         [XmlElement("doc")]
         public GDoc? Doc { get; set; }
 
