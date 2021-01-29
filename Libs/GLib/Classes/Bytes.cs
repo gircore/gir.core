@@ -10,7 +10,7 @@ namespace GLib
         private readonly BytesSafeHandle _safeHandle;
 
         #endregion
-        
+
         #region Properties
 
         public IntPtr Handle { get; private set; }
