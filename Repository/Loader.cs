@@ -82,14 +82,14 @@ namespace Repository
             try
             {
                 // Serialize introspection data (xml)
-                var parser = new Parser(target);
-                var (nspace, references) = parser.Parse();
+                Parser parser = null!;//new Parser(target);
+                var (nspace, references) = parser.Parse(target);
 
                 var projName = $"{nspace.Name}-{nspace.Version}";
 
                 // Load dependencies recursively
                 var dependencies = new List<LoadedProject>();
-                foreach (var (name, version) in parser.GetDependencies())
+                /*foreach (var (name, version) in parser.GetDependencies())
                 {
                     // Skip if already loaded
                     var canonicalName = $"{name}-{version}";
@@ -115,7 +115,7 @@ namespace Repository
                 _loadedProjects.Add(loadedProj);
                 
                 Log.Information($"Loaded '{projName}' (provided by '{target.Name}')");
-                
+                */
                 return true;
             }
             catch (Exception e)

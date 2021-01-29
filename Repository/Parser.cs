@@ -2,10 +2,10 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
-
 using Repository.Analysis;
+using Repository.Services;
 using Repository.Model;
+using Repository.Xml;
 
 #nullable enable
 
@@ -13,78 +13,66 @@ namespace Repository
 {
     public class Parser
     {
-        private readonly RepositoryInfo _repoInfo;
-        private readonly FileInfo _girFile;
-        
-        private readonly List<TypeReference> _references;
-        private readonly Namespace _nspace;
-        
-        public Parser(FileInfo girFile)
+        private readonly IXmlService _xmlService;
+        private readonly HashSet<TypeReference> _references;
+
+        public Parser(IXmlService xmlService)
         {
-            _repoInfo = Deserialize(girFile);
-            _girFile = girFile;
-            _references = new List<TypeReference>();
-            _nspace = new Namespace();
+            _xmlService = xmlService ?? throw new ArgumentNullException(nameof(xmlService));
+            _references = new HashSet<TypeReference>();
         }
         
-        public IEnumerable<(string, string)> GetDependencies()
+        public (Namespace, IEnumerable<TypeReference>) Parse(FileInfo girFile)
         {
-            foreach (IncludeInfo includeInfo in _repoInfo.Includes)
+            _references.Clear();
+            var repoInfo = _xmlService.Deserialize<RepositoryInfo>(girFile);
+            
+            if (repoInfo.Namespace == null)
+                throw new InvalidDataException($"File '{girFile} does not define a namespace.");
+
+            NamespaceInfo nspaceInfo = repoInfo.Namespace;
+            var nspace = new Namespace()
             {
-                yield return (includeInfo.Name!, includeInfo.Version!);
-            }
+                Name = nspaceInfo.Name, 
+                Version  = nspaceInfo.Version
+            };
+
+            SetAliases(nspace, nspaceInfo.Aliases);
+            SetClasses(nspace, nspaceInfo.Classes);
+            SetCallbacks(nspace, nspaceInfo.Callbacks);
+            SetEnumerations(nspace, nspaceInfo.Enumerations, false);
+            SetEnumerations(nspace, nspaceInfo.Bitfields, true);
+            SetInterfaces(nspace, nspaceInfo.Interfaces);
+            SetRecords(nspace, nspaceInfo.Records);
+            SetFunctions(nspace, nspaceInfo.Functions);
+
+            return (nspace, _references);
         }
 
-        public (Namespace, IEnumerable<TypeReference>) Parse()
+        private static void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
         {
-            if (_repoInfo.Namespace == null)
-                throw new InvalidDataException($"File '{_girFile} does not define a namespace.");
-
-            NamespaceInfo nspaceInfo = _repoInfo.Namespace;
-
-            // Basic Info
-            _nspace.Name = nspaceInfo.Name;
-            _nspace.Version = nspaceInfo.Version;
-            
-            // Aliases
-            _nspace.Aliases = ParseAliases(nspaceInfo, nspaceInfo.Aliases).ToList();
-            
-            // Symbols
-            _nspace.Classes = ParseClasses(nspaceInfo, nspaceInfo.Classes).ToList();
-            _nspace.Callbacks = ParseCallbacks(nspaceInfo, nspaceInfo.Callbacks).ToList();
-            _nspace.Enumerations = ParseEnumerations(nspaceInfo, nspaceInfo.Enumerations, false).ToList();
-            _nspace.Bitfields = ParseEnumerations(nspaceInfo, nspaceInfo.Bitfields, true).ToList();
-            _nspace.Interfaces = ParseInterfaces(nspaceInfo, nspaceInfo.Interfaces).ToList();
-            _nspace.Records = ParseRecords(nspaceInfo, nspaceInfo.Records).ToList();
-            
-            // Misc
-            _nspace.Functions = ParseFunctions(nspaceInfo, nspaceInfo.Functions).ToList();
-
-            return (_nspace, _references);
-        }
-
-        private IEnumerable<Alias> ParseAliases(NamespaceInfo nspace, IEnumerable<AliasInfo> aliases)
-        {
+            nspace.Aliases = new List<Alias>();
             foreach (AliasInfo alias in aliases)
             {
-                yield return new Alias(alias.Name, alias.For!.Name);
+                nspace.Aliases.Add(new Alias(alias.Name, alias.For!.Name));
             }
         }
-        
-        private IEnumerable<Class> ParseClasses(NamespaceInfo nspace, IEnumerable<ClassInfo> classes)
+
+        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes)
         {
+            nspace.Classes = new List<Class>();
+            
             foreach (ClassInfo cls in classes)
             {
-                yield return new Class()
+                nspace.Classes.Add(new Class()
                 {
-                    Namespace = _nspace,
+                    Namespace = nspace,
                     NativeName = cls.Name,
                     ManagedName = cls.Name,
-                    
                     CType = cls.TypeName,
                     Parent = (cls.Parent != null) ? CreateReference(cls.Parent, false) : null,
                     Implements = ParseImplements(cls.Implements).ToList(),
-                };
+                });
             }
         }
 
@@ -93,27 +81,30 @@ namespace Repository
             foreach (ImplementInfo impl in implements)
                 yield return CreateReference(impl.Name!, false);
         }
-        
-        private IEnumerable<Callback> ParseCallbacks(NamespaceInfo nspace, IEnumerable<CallbackInfo> callbacks)
+
+        private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks)
         {
-            foreach (CallbackInfo callback in callbacks)
+            nspace.Callbacks = new List<Callback>();
+            foreach (CallbackInfo callbackInfo in callbacks)
             {
-                yield return new Callback()
+                nspace.Callbacks.Add(new Callback()
                 {
-                    Namespace = _nspace,
-                    NativeName = callback.Name,
-                    ManagedName = callback.Name,
-                    
-                    ReturnValue = new ReturnValue() { Type = ParseTypeOrArray(callback.ReturnValue) },
-                    Arguments = (callback.Parameters != null)
-                        ? ParseArguments(nspace, callback.Parameters!).ToList()
-                        : new List<Argument>(),
-                };
+                    Namespace = nspace,
+                    NativeName = callbackInfo.Name,
+                    ManagedName = callbackInfo.Name,
+                    ReturnValue = new ReturnValue() { Type = ParseTypeOrArray(callbackInfo.ReturnValue) },
+                    Arguments = GetArguments(callbackInfo.Parameters)
+                });
             }
         }
 
-        private IEnumerable<Argument> ParseArguments(NamespaceInfo nspace, ParametersInfo parameters)
+        private List<Argument> GetArguments(ParametersInfo? parameters)
         {
+            var list = new List<Argument>();
+
+            if (parameters is null)
+                return list;
+
             foreach (ParameterInfo arg in parameters.Parameters)
             {
                 // Direction (for determining in/out/ref)
@@ -136,71 +127,76 @@ namespace Repository
                     "floating" => Transfer.None,
                     _ => Transfer.Full // TODO: Good default value? 
                 };
-                
-                yield return new Argument()
+
+                list.Add(new Argument()
                 {
                     Name = arg.Name,
                     Type = ParseTypeOrArray(arg),
                     Direction = direction,
                     Transfer = transfer,
                     Nullable = arg.Nullable
-                };
+                });
             }
+
+            return list;
         }
-        
-        private IEnumerable<Enumeration> ParseEnumerations(NamespaceInfo nspace, IEnumerable<EnumInfo> enumerations, bool isBitfield)
+
+        private static void SetEnumerations(Namespace nspace, IEnumerable<EnumInfo> enumerations, bool isBitfield)
         {
+            var list = new List<Enumeration>();
+            
             foreach (EnumInfo @enum in enumerations)
             {
-                yield return new Enumeration()
+                list.Add(new Enumeration()
                 {
-                    Namespace = _nspace,
-                    NativeName = @enum.Name,
-                    ManagedName = @enum.Name,
-                    
-                    HasFlags = isBitfield,
-                };
+                    Namespace = nspace, NativeName = @enum.Name, ManagedName = @enum.Name, HasFlags = isBitfield,
+                });
             }
+
+            if (isBitfield)
+                nspace.Bitfields = list;
+            else
+                nspace.Enumerations = list;
         }
-        
-        private IEnumerable<Interface> ParseInterfaces(NamespaceInfo nspace, IEnumerable<InterfaceInfo> ifaces)
+
+        private static void SetInterfaces(Namespace nspace, IEnumerable<InterfaceInfo> ifaces)
         {
+            nspace.Interfaces = new List<Interface>();
             foreach (InterfaceInfo iface in ifaces)
             {
-                yield return new Interface()
-                {
-                    Namespace = _nspace,
-                    NativeName = iface.Name,
-                    ManagedName = iface.Name
-                };
-            }
-        }
-        
-        private IEnumerable<Record> ParseRecords(NamespaceInfo nspace, IEnumerable<RecordInfo> records)
-        {
-            foreach (RecordInfo @record in records)
-            {
-                yield return new Record()
-                {
-                    Namespace = _nspace,
-                    NativeName = @record.Name,
-                    ManagedName = @record.Name,
-                    
-                    GLibClassStructFor = (record.GLibIsGTypeStructFor != null) ? CreateReference(record.GLibIsGTypeStructFor, false) : null
-                };
+                nspace.Interfaces.Add(new Interface() {Namespace = nspace, NativeName = iface.Name, ManagedName = iface.Name});
             }
         }
 
-        private IEnumerable<Method> ParseFunctions(NamespaceInfo nspace, IEnumerable<MethodInfo> functions)
+        private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records)
         {
+            nspace.Records = new List<Record>();
+            foreach (RecordInfo @record in records)
+            {
+                nspace.Records.Add(new Record()
+                {
+                    Namespace = nspace, 
+                    NativeName = @record.Name, 
+                    ManagedName = @record.Name, 
+                    GLibClassStructFor = (record.GLibIsGTypeStructFor != null) ? CreateReference(record.GLibIsGTypeStructFor, false) : null
+                });
+            }
+        }
+
+        private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions)
+        {
+            nspace.Functions = new List<Method>();
             foreach (MethodInfo info in functions)
             {
-                var returnVal = new ReturnValue() {Type = ParseTypeOrArray(info.ReturnValue)};
-                
-                yield return new Method()
+                var returnVal = new ReturnValue()
+                {
+                    Type = ParseTypeOrArray(info.ReturnValue)
+                };
+
+                nspace.Functions.Add(new Method()
                 {
                     ReturnValue = returnVal,
-                };
+                });
             }
         }
 
@@ -225,17 +221,6 @@ namespace Repository
 
             // No Type (i.e. void)
             return CreateReference("none", false);
-        }
-        
-        private static RepositoryInfo Deserialize(FileInfo girFile)
-        {
-            var serializer = new XmlSerializer(
-                type: typeof(RepositoryInfo),
-                defaultNamespace: "http://www.gtk.org/introspection/core/1.0");
-
-            using FileStream fs = girFile.OpenRead();
-            
-            return (RepositoryInfo)serializer.Deserialize(fs);
         }
     }
 }

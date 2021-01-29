@@ -1,6 +1,8 @@
 ﻿using System;
 using Repository.Model;
 
+#nullable enable
+
 namespace Repository.Analysis
 {
     public enum ReferenceType
@@ -9,19 +11,17 @@ namespace Repository.Analysis
         External
     }
     
-    public class TypeReference
+    public class TypeReference : IEquatable<TypeReference>
     {
-        public ISymbol Type { get; private set; }
+        public ISymbol? Type { get; private set; }
         public bool IsForeign { get; private set; }
         public bool IsArray { get; }
 
         internal string UnresolvedName { get; }
-        internal bool IsResolved { get; private set; }
 
         public TypeReference(string unresolvedName, bool isArray)
         {
             UnresolvedName = unresolvedName;
-            IsResolved = false;
             IsArray = isArray;
         }
 
@@ -29,7 +29,7 @@ namespace Repository.Analysis
         {
             // TODO: More advanced type resolution logic?
 
-            if (!IsResolved)
+            if (Type is null)
                 throw new InvalidOperationException("The Type Reference has not been resolved. It cannot be printed.");
             
             // Fundamental Type
@@ -54,13 +54,36 @@ namespace Repository.Analysis
 
         internal void ResolveAs(ISymbol symbol, ReferenceType type)
         {
-            if (!IsResolved)
+            if (Type is null) //TODO: If obsolete?
             {
                 Type = symbol;
                 IsForeign = (type == ReferenceType.External);
             }
-            
-            IsResolved = true;
+        }
+
+        public bool Equals(TypeReference? other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+
+            if (ReferenceEquals(this, other))
+                return true;
+
+            return IsArray == other.IsArray 
+                   && UnresolvedName == other.UnresolvedName;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj?.GetType() != this.GetType())
+                return false;
+
+            return Equals((TypeReference) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(IsArray, UnresolvedName);
         }
     }
 }

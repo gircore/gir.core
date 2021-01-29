@@ -2,6 +2,8 @@
 using System.IO;
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.Linq;
+using Repository;
 
 namespace Generator
 {
@@ -24,6 +26,8 @@ namespace Generator
                     return -1;
                 }   
             }
+            
+            Test.Testi(new FileInfo(args.First()));
 
             return new Generator(args).WriteAsync();
         }
