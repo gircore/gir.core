@@ -123,11 +123,6 @@ namespace GObject
             Initialize(handle);
         }
 
-        ~Object()
-        {
-            Dispose(false);
-        }
-
         #endregion
 
         #region Methods
