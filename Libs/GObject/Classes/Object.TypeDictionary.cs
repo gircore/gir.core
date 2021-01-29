@@ -198,7 +198,7 @@ namespace GObject
                     var parent = Global.Native.type_parent(gtype.Value);
                     if (parent == 0)
                     {
-                        throw new Exception($"Could not get parent type for GType {gtype.ToString()}");
+                        throw new Exception($"Could not get parent type for GType {gtype}");
                     }
                     gtype = new Type(parent);
 

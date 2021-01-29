@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Gir
@@ -29,16 +30,10 @@ namespace Gir
         public List<GProperty> Properties { get; set; } = default!;
 
         public virtual IEnumerable<GMethod> AllMethods
-        {
-            get
-            {
-                foreach (GMethod? method in Methods)
-                {
-                    if (!method.HasVariadicParameter())
-                        yield return method;
-                }
-            }
-        }
+            => Methods.Where(MethodHasNoVariadicParameter);
+
+        private static bool MethodHasNoVariadicParameter(GMethod method)
+            => !method.HasVariadicParameter();
 
         #endregion
     }
