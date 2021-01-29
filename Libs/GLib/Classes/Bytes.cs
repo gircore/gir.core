@@ -22,7 +22,7 @@ namespace GLib
         private Bytes(IntPtr handle)
         {
             _safeHandle = new BytesSafeHandle(handle);
-            _size = (long) get_size(handle);
+            _size = (long) Native.get_size(handle);
 
             GC.AddMemoryPressure(_size);
         }
