@@ -13,7 +13,7 @@ namespace GLib
         
         #region Properties
 
-        public IntPtr Handle => _safeHandle?.DangerousGetHandle() ?? IntPtr.Zero;
+        public IntPtr Handle => _safeHandle.IsInvalid ? IntPtr.Zero : _safeHandle.DangerousGetHandle();
 
         #endregion
 
