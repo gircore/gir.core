@@ -23,6 +23,7 @@ namespace GLib
         {
             _safeHandle = new BytesSafeHandle(handle);
             _size = (long) get_size(handle);
+
             GC.AddMemoryPressure(_size);
         }
 
@@ -32,7 +33,7 @@ namespace GLib
 
         public static Bytes From(byte[] data)
         {
-            var obj = new Bytes(@new(data, (ulong) data.Length));
+            var obj = new Bytes(Native.@new(data, (ulong) data.Length));
             return obj;
         }
 

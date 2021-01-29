@@ -7,7 +7,7 @@ namespace Gst
     public class MessageTypeMismatchException : Exception
     {
         public MessageTypeMismatchException(MessageType actual, MessageType expected)
-            : base($"Expected message type of {expected.ToString()} but received ${actual.ToString()}.")
+            : base($"Expected message type of {expected} but received ${actual}.")
         {
             
         }

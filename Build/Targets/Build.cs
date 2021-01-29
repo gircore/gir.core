@@ -3,21 +3,16 @@ using Generator;
 
 namespace Build
 {
-    public interface ILibraryBuilder
-    {
-        void BuildLibraries();
-    }
-
-    public class LibraryBuilder : ILibraryBuilder
+    public class Build : ITarget
     {
         private readonly Settings _settings;
 
-        public LibraryBuilder(Settings settings)
+        public Build(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void BuildLibraries()
+        public void Execute()
         {
             foreach ((Project project, Type _) in Projects.LibraryProjects)
             {
