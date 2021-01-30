@@ -33,7 +33,7 @@ namespace Repository
     public class Loader
     {
         private readonly List<LoadedProject> _loadedProjects;
-        private readonly Resolver _resolver;
+        private readonly IResolver _resolver;
         
         private readonly ResolveFileFunc _lookupFunc;
 
@@ -42,7 +42,7 @@ namespace Repository
 
         // Where 'projects' are toplevel projects. Loader resolves
         // dependent gir libraries automatically.
-        public Loader(string[] targets, ResolveFileFunc lookupFunc, string prefix)
+        public Loader(string[] targets, ResolveFileFunc lookupFunc, string prefix, IResolver resolver)
         {
             _loadedProjects = new List<LoadedProject>();
             _lookupFunc = lookupFunc;
@@ -53,11 +53,11 @@ namespace Repository
             if (failureFlag)
                 Log.Warning($"Failed to load some projects. Please check the log for more information.");
 
-            _resolver = new Resolver(_loadedProjects);
+            _resolver = resolver;
         }
 
         public List<LoadedProject> GetOrderedList()
-            => _resolver.GetOrderedList()
+            => _resolver.ResolveOrdered(_loadedProjects)
                 .Cast<LoadedProject>()
                 .ToList();
 

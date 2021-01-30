@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Repository.Analysis;
+using Repository.Graph;
 using Repository.Model;
 
 namespace Repository
@@ -21,7 +21,7 @@ namespace Repository
             // Loading - Serialise all gir files into the LoadedProjects
             // dictionary. We attempt to continue regardless of whether all
             // files are loaded successfully.
-            var loader = new Loader(targets, fileFunc, "../gir-files");
+            var loader = new Loader(targets, fileFunc, "../gir-files", new Resolver());
             
             // Sorts dependencies in order of base -> top level. Will throw if
             // a circular dependency is found.
