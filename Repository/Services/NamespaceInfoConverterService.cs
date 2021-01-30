@@ -14,12 +14,12 @@ namespace Repository
         (Namespace, IEnumerable<ITypeReference>) Convert(NamespaceInfo repoinfo);
     }
 
-    public class NamespaceInfoConverterServiceService : INamespaceInfoConverterService
+    public class NamespaceInfoConverterService : INamespaceInfoConverterService
     {
         private readonly ITypeReferenceFactory _typeReferenceFactory;
         private readonly HashSet<ITypeReference> _references;
 
-        public NamespaceInfoConverterServiceService(ITypeReferenceFactory typeReferenceFactory)
+        public NamespaceInfoConverterService(ITypeReferenceFactory typeReferenceFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _references = new HashSet<ITypeReference>();

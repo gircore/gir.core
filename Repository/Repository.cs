@@ -28,7 +28,7 @@ namespace Repository
             LoadedProjects = loader.GetOrderedList();
             
             // Resolve References
-            // The NamespaceInfoConverterServiceService creates unresolved references. We need to crawl through
+            // The NamespaceInfoConverterService creates unresolved references. We need to crawl through
             // project data and resolve each reference relative to the current
             // namespace.
 

@@ -82,7 +82,7 @@ namespace Repository
             try
             {/*
                 // Serialize introspection data (xml)
-                NamespaceInfoConverterServiceService namespaceInfoConverterServiceService = new NamespaceInfoConverterServiceService(target);
+                NamespaceInfoConverterService namespaceInfoConverterServiceService = new NamespaceInfoConverterService(target);
                 var (nspace, references) = namespaceInfoConverterServiceService.Convert(target);
 
                 var projName = $"{nspace.Name}-{nspace.Version}";
