@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Repository.Xml;
 
@@ -16,7 +15,7 @@ namespace Repository.Services
 
         public RepositoryInfoService(IXmlService xmlService)
         {
-            _xmlService = xmlService ?? throw new ArgumentNullException(nameof(xmlService));
+            _xmlService = xmlService;
         }
 
         public IEnumerable<(string, string)> GetDependencies(FileInfo girFile)

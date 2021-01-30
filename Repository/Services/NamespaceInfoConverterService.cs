@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Repository.Analysis;
 using Repository.Model;
@@ -22,7 +21,7 @@ namespace Repository
 
         public NamespaceInfoConverterServiceService(ITypeReferenceFactory typeReferenceFactory)
         {
-            _typeReferenceFactory = typeReferenceFactory ?? throw new ArgumentNullException(nameof(typeReferenceFactory));
+            _typeReferenceFactory = typeReferenceFactory;
             _references = new HashSet<ITypeReference>();
         }
 
@@ -189,7 +188,7 @@ namespace Repository
             }
         }
 
-        private ITypeReference? CreateAndCacheReference(ITypeOrArray? typeOrArray)
+        private ITypeReference CreateAndCacheReference(ITypeOrArray? typeOrArray)
         {
             var reference = _typeReferenceFactory.Create(typeOrArray);
             _references.Add(reference);

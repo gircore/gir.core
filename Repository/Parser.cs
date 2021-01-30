@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Repository.Analysis;
 using Repository.Model;
@@ -17,8 +16,8 @@ namespace Repository
 
         public Parser(IXmlService xmlService, INamespaceInfoConverterService namespaceInfoConverterService)
         {
-            _xmlService = xmlService ?? throw new ArgumentNullException(nameof(xmlService));
-            _namespaceInfoConverterService = namespaceInfoConverterService ?? throw new ArgumentNullException(nameof(namespaceInfoConverterService));
+            _xmlService = xmlService;
+            _namespaceInfoConverterService = namespaceInfoConverterService;
         }
 
         public (Namespace, IEnumerable<ITypeReference>) Parse(FileInfo girFile)
