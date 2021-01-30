@@ -26,8 +26,6 @@ namespace Generator
                     return -1;
                 }   
             }
-            
-            Test.Testi(new FileInfo(args.First()));
 
             return new Generator(args).WriteAsync();
         }

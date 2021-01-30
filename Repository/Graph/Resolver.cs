@@ -5,24 +5,24 @@ using System.Collections.Generic;
 
 namespace Repository.Graph
 {
-    public interface IResolver
+    public interface IResolver<T> where T : INode<T>
     {
-        IEnumerable<INode> ResolveOrdered(IEnumerable<INode> nodeList);
+        IEnumerable<INode<T>> ResolveOrdered(IEnumerable<INode<T>> nodeList);
     }
 
     // Dependency Resolver Algorithm
     // https://www.electricmonk.nl/docs/dependency_resolving_algorithm/dependency_resolving_algorithm.html
-    public class Resolver : IResolver
+    public class Resolver<T> : IResolver<T> where T : INode<T>
     {
-        private List<INode> _resolvedNodes = new ();
-        private List<INode> _unresolvedNodes = new ();
+        private List<INode<T>> _resolvedNodes = new ();
+        private List<INode<T>> _unresolvedNodes = new ();
 
-        public IEnumerable<INode> ResolveOrdered(IEnumerable<INode> nodeList)
+        public IEnumerable<INode<T>> ResolveOrdered(IEnumerable<INode<T>> nodeList)
         {
-            _resolvedNodes = new List<INode>();
-            _unresolvedNodes = new List<INode>();
+            _resolvedNodes = new List<INode<T>>();
+            _unresolvedNodes = new List<INode<T>>();
 
-            foreach (INode node in nodeList)
+            foreach (INode<T> node in nodeList)
             {
                 if (!_resolvedNodes.Contains(node))
                     ResolveDependenciesRecursive(node);
@@ -31,11 +31,11 @@ namespace Repository.Graph
             return _resolvedNodes;
         }
 
-        private void ResolveDependenciesRecursive(INode node)
+        private void ResolveDependenciesRecursive(INode<T> node)
         {
             _unresolvedNodes.Add(node);
 
-            foreach (INode dep in node.Dependencies)
+            foreach (T dep in node.Dependencies)
             {
                 if (_resolvedNodes.Contains(dep))
                     continue;

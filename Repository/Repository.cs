@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Repository.Analysis;
 using Repository.Graph;
 using Repository.Model;
+using StrongInject;
 
 namespace Repository
 {
@@ -17,7 +19,10 @@ namespace Repository
         public Repository(ResolveFileFunc fileFunc, string[] targets)
         {
             Log.Information($"Initialising generator with {targets.Length} toplevel project(s)");
-            
+
+            var bla = new Container().Run(loader1 => loader1.LoadOrdered(targets, fileFunc));
+
+            /*
             // Loading - Serialise all gir files into the LoadedProjects
             // dictionary. We attempt to continue regardless of whether all
             // files are loaded successfully.
@@ -95,7 +100,9 @@ namespace Repository
                 }
             }
             
-            Log.Information($"Repository initialised with {targets.Length} top-level project(s) and {LoadedProjects.Count - targets.Length} dependencies.");
+            Log.Information($"Repository initialised with {targets.Length} top-level project(s) and {LoadedProjects.Count - targets.Length} dependencies."); */
         }
+        
+       
     }
 }

@@ -22,5 +22,7 @@ namespace Repository.Model
         // Miscellaneous
         public List<Method> Functions { get; internal set; } = new();
         
+        public string ToCanonicalName() => $"{Name}-{Version}";
+        
     }
 }

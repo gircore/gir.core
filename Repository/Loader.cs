@@ -3,129 +3,135 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-
-using Repository.Analysis;
 using Repository.Graph;
-using Repository.Model;
+using Repository.Services;
+using Repository.Xml;
+
+#nullable enable
 
 namespace Repository
 {
-    public record LoadedProject : INode
-    {
-        List<INode> INode.Dependencies { get; } = new();
-        string INode.Name => ProjectName;
-        
-        public string ProjectName { get; }
-        public Namespace Namespace { get; }
-        internal List<TypeReference> UnresolvedReferences { get; } = new();
-
-        public LoadedProject(string name, Namespace nspace, 
-            IEnumerable<TypeReference> references, 
-            IEnumerable<LoadedProject> dependencies)
-        {
-            ProjectName = name;
-            Namespace = nspace;
-            UnresolvedReferences.AddRange(references);
-            (this as INode).Dependencies.AddRange(dependencies);
-        }
-    }
-    
     public class Loader
     {
-        private readonly List<LoadedProject> _loadedProjects;
-        private readonly IResolver _resolver;
-        
-        private readonly ResolveFileFunc _lookupFunc;
+        private readonly IResolver<ILoadedProject> _resolver;
+        private readonly IRepositoryInfoDataFactory _repositoryInfoDataFactory;
+        private readonly IXmlService _xmlService;
+        private readonly INamespaceInfoConverterService _namespaceInfoConverterService;
+        private ResolveFileFunc? _lookupFunc;
 
-        // Set to true to signify a library has failed to load
-        private bool failureFlag = false;
+        private bool _projectLoadFailed;
 
-        // Where 'projects' are toplevel projects. Loader resolves
-        // dependent gir libraries automatically.
-        public Loader(string[] targets, ResolveFileFunc lookupFunc, string prefix, IResolver resolver)
+        public Loader(IResolver<ILoadedProject> resolver, IRepositoryInfoDataFactory repositoryInfoDataFactory, IXmlService xmlService, INamespaceInfoConverterService namespaceInfoConverterService)
         {
-            _loadedProjects = new List<LoadedProject>();
+            _resolver = resolver;
+            _repositoryInfoDataFactory = repositoryInfoDataFactory;
+            _xmlService = xmlService;
+            _namespaceInfoConverterService = namespaceInfoConverterService;
+        }
+
+        // Where 'targets' are toplevel projects. Loader resolves
+        // dependent gir libraries automatically.
+        public IEnumerable<ILoadedProject> LoadOrdered(IEnumerable<string> targets, ResolveFileFunc lookupFunc)
+        {
             _lookupFunc = lookupFunc;
-            
+            var loadedProjects = new List<ILoadedProject>();
+
             foreach (var target in targets)
-                LoadTarget(target);
-            
-            if (failureFlag)
+                LoadAndAddProjects(loadedProjects, target);
+
+            if (_projectLoadFailed)
                 Log.Warning($"Failed to load some projects. Please check the log for more information.");
 
-            _resolver = resolver;
+            return _resolver.ResolveOrdered(loadedProjects).Cast<ILoadedProject>();
         }
 
-        public List<LoadedProject> GetOrderedList()
-            => _resolver.ResolveOrdered(_loadedProjects)
-                .Cast<LoadedProject>()
-                .ToList();
+        private void LoadAndAddProjects(ICollection<ILoadedProject> loadedProjects, string target)
+        {
+            var info = new FileInfo(target);
+            _ = LoadRecursive(loadedProjects, info);
+        }
 
-        private void LoadTarget(string target)
+        private ILoadedProject? LoadRecursive(ICollection<ILoadedProject> loadedProjects, FileInfo target)
         {
             try
             {
-                var info = new FileInfo(target);
-                LoadRecursive(info, out LoadedProject loadedProj);
+                var repoinfo = LoadRepositoryInfo(target);
+                var repositoryInfoData = _repositoryInfoDataFactory.GetData(repoinfo.Namespace);
+
+                if (TryLoadProject(loadedProjects, repositoryInfoData, out ILoadedProject? project))
+                    return project;
+
+                var dependencies = LoadDependencies(loadedProjects, repoinfo);
+                
+                //TODO: References obsolete?
+                var (nspace, references) = _namespaceInfoConverterService.Convert(repoinfo.Namespace);
+                
+                project = new LoadedProject(nspace.ToCanonicalName(), nspace, dependencies);
+                loadedProjects.Add(project);
+                Log.Information($"Loaded '{nspace.ToCanonicalName()}' (provided by '{target.Name}')");
+
+                return project;
             }
             catch (Exception e)
             {
-                failureFlag = true;
-                Log.Exception(e);
-            }
-        }
-
-        private bool LoadRecursive(FileInfo target, [NotNullWhen(true)] out LoadedProject loadedProj)
-        {
-            loadedProj = null;
-            
-            try
-            {/*
-                // Serialize introspection data (xml)
-                NamespaceInfoConverterService namespaceInfoConverterServiceService = new NamespaceInfoConverterService(target);
-                var (nspace, references) = namespaceInfoConverterServiceService.Convert(target);
-
-                var projName = $"{nspace.Name}-{nspace.Version}";
-
-                // Load dependencies recursively
-                var dependencies = new List<LoadedProject>();
-                foreach (var (name, version) in namespaceInfoConverterServiceService.GetDependencies())
-                {
-                    // Skip if already loaded
-                    var canonicalName = $"{name}-{version}";
-                    if (_loadedProjects.Any(lp => lp.ProjectName == canonicalName))
-                        continue;
-                    
-                    // Attempt to resolve file
-                    FileInfo dependency = _lookupFunc(name, version);
-
-                    // Load recursively
-                    var result = LoadRecursive(dependency, out LoadedProject loadedDep);
-                    dependencies.Add(loadedDep);
-
-                    if (!result)
-                    {
-                        Log.Error($"Could not resolve '{canonicalName}' (dependency of '{projName}')");
-                        failureFlag = true;
-                        return false;
-                    }
-                }
-                
-                loadedProj = new LoadedProject(projName, nspace, references, dependencies);
-                _loadedProjects.Add(loadedProj);
-                
-                Log.Information($"Loaded '{projName}' (provided by '{target.Name}')");
-                */
-                return true;
-            }
-            catch (Exception e)
-            {
-                // Log and attempt to continue
                 Log.Error($"Failed to load gir file '{target.Name}'.");
                 Log.Exception(e);
-                failureFlag = true;
-                return false;
+                _projectLoadFailed = true;
+
+                return null;
             }
+        }
+
+        private IEnumerable<ILoadedProject> LoadDependencies(ICollection<ILoadedProject> loadedProjects, RepositoryInfo repoinfo)
+        {
+            var dependencies = new List<ILoadedProject>();
+            foreach (var dependency in _repositoryInfoDataFactory.GetDependencies(repoinfo))
+            {
+                FileInfo dependentGirFile = GetGirFileInfo(dependency);
+                var dependentProject = LoadRecursive(loadedProjects, dependentGirFile);
+
+                if (dependentProject is not null)
+                    dependencies.Add(dependentProject);
+            }
+
+            return dependencies;
+        }
+
+        private bool TryLoadProject(IEnumerable<ILoadedProject> loadedProjects, RepositoryInfoData repo, [NotNullWhen(true)] out ILoadedProject? loadedProject)
+        {
+            var foundProjects = loadedProjects.Where(x => NameMatches(x, repo)).ToArray();
+            switch (foundProjects.Length)
+            {
+                case 0:
+                    loadedProject = null;
+                    return false;
+                case 1:
+                    loadedProject = foundProjects[0];
+                    return true;
+                default:
+                    throw new Exception("Inconsistent data. Projects are loaded multiple times. Aborting");
+            }
+        }
+
+        private bool NameMatches(ILoadedProject loadedProject, RepositoryInfoData repo)
+            => loadedProject.Name == repo.ToCanonicalName();
+
+        private FileInfo GetGirFileInfo(RepositoryInfoData data)
+        {
+            if (_lookupFunc is null)
+                throw new Exception("Lookup func is not initialized");
+
+            return _lookupFunc(data.Name, data.Version);
+        }
+
+        private RepositoryInfo LoadRepositoryInfo(FileInfo target)
+        {
+            var repoInfo = _xmlService.Deserialize<RepositoryInfo>(target);
+
+            if (repoInfo.Namespace == null)
+                throw new InvalidDataException($"File '{target} does not define a namespace.");
+
+            return repoInfo;
         }
     }
 }

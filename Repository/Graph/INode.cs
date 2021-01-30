@@ -2,9 +2,9 @@
 
 namespace Repository.Graph
 {
-    public interface INode
+    public interface INode<out T> where T : INode<T>
     {
-        public List<INode> Dependencies { get; }
+        public IEnumerable<T> Dependencies { get; }
         public string Name { get; }
     }
 }

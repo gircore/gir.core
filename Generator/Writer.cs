@@ -44,7 +44,7 @@ namespace Generator
             var template = Template.Parse(objTemplate);
             
             // Create Directory
-            var dir = $"output/{Project.ProjectName}/Classes/";
+            var dir = $"output/{Project.Name}/Classes/";
             Directory.CreateDirectory(dir);
             
             // Generate a file for each class
@@ -82,7 +82,7 @@ namespace Generator
             var template = Template.Parse(dlgTemplate);
             
             // Create Directory
-            var dir = $"output/{Project.ProjectName}/Delegates/";
+            var dir = $"output/{Project.Name}/Delegates/";
             Directory.CreateDirectory(dir);
             
             // Generate a file for each class
