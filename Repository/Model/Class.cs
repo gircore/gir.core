@@ -12,7 +12,7 @@ namespace Repository.Model
         public string NativeName { get; init; }
         
         public string CType { get; init; }
-        public TypeReference? Parent { get; init; }
-        public List<TypeReference> Implements { get; init; }
+        public ITypeReference? Parent { get; init; }
+        public List<ITypeReference> Implements { get; init; }
     }
 }

@@ -21,7 +21,7 @@ namespace Repository
             _namespaceInfoConverterService = namespaceInfoConverterService ?? throw new ArgumentNullException(nameof(namespaceInfoConverterService));
         }
 
-        public (Namespace, IEnumerable<TypeReference>) Parse(FileInfo girFile)
+        public (Namespace, IEnumerable<ITypeReference>) Parse(FileInfo girFile)
         {
             var repoInfo = _xmlService.Deserialize<RepositoryInfo>(girFile);
             

@@ -10,8 +10,15 @@ namespace Repository.Analysis
         Internal,
         External
     }
-    
-    public class TypeReference : IEquatable<TypeReference>
+
+    public interface ITypeReference
+    {
+        ISymbol? Type { get;  }
+        bool IsForeign { get;  }
+        bool IsArray { get; }
+    }
+
+    public class TypeReference : IEquatable<TypeReference>, ITypeReference
     {
         public ISymbol? Type { get; private set; }
         public bool IsForeign { get; private set; }

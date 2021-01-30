@@ -10,7 +10,7 @@ namespace Repository
     {
         public static void Testi(FileInfo fileInfo)
         {
-            (Namespace, IEnumerable<TypeReference>) r = new Container().Run((p) => p.Parse(fileInfo));
+            (Namespace, IEnumerable<ITypeReference>) r = new Container().Run((p) => p.Parse(fileInfo));
         }
     }
 }

@@ -12,21 +12,21 @@ namespace Repository
 {
     public interface INamespaceInfoConverterService
     {
-        (Namespace, IEnumerable<TypeReference>) Convert(NamespaceInfo repoinfo);
+        (Namespace, IEnumerable<ITypeReference>) Convert(NamespaceInfo repoinfo);
     }
 
     public class NamespaceInfoConverterServiceService : INamespaceInfoConverterService
     {
         private readonly ITypeReferenceFactory _typeReferenceFactory;
-        private readonly HashSet<TypeReference> _references;
+        private readonly HashSet<ITypeReference> _references;
 
         public NamespaceInfoConverterServiceService(ITypeReferenceFactory typeReferenceFactory)
         {
             _typeReferenceFactory = typeReferenceFactory ?? throw new ArgumentNullException(nameof(typeReferenceFactory));
-            _references = new HashSet<TypeReference>();
+            _references = new HashSet<ITypeReference>();
         }
 
-        public (Namespace, IEnumerable<TypeReference>) Convert(NamespaceInfo namespaceInfo)
+        public (Namespace, IEnumerable<ITypeReference>) Convert(NamespaceInfo namespaceInfo)
         {
             _references.Clear();
 
@@ -77,7 +77,7 @@ namespace Repository
             }
         }
 
-        private IEnumerable<TypeReference> ParseImplements(IEnumerable<ImplementInfo> implements)
+        private IEnumerable<ITypeReference> ParseImplements(IEnumerable<ImplementInfo> implements)
         {
             foreach (ImplementInfo impl in implements)
                 yield return CreateAndCacheReference(impl.Name!, false);
@@ -189,17 +189,17 @@ namespace Repository
             }
         }
 
-        private TypeReference CreateAndCacheReference(ITypeOrArray? typeOrArray)
+        private ITypeReference? CreateAndCacheReference(ITypeOrArray? typeOrArray)
         {
-            TypeReference reference = _typeReferenceFactory.Create(typeOrArray);
+            var reference = _typeReferenceFactory.Create(typeOrArray);
             _references.Add(reference);
 
             return reference;
         }
         
-        private TypeReference CreateAndCacheReference(string type, bool isArray)
+        private ITypeReference CreateAndCacheReference(string type, bool isArray)
         {
-            TypeReference reference = _typeReferenceFactory.Create(type, isArray);
+            var reference = _typeReferenceFactory.Create(type, isArray);
             _references.Add(reference);
 
             return reference;

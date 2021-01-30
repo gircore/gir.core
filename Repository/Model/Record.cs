@@ -8,6 +8,6 @@ namespace Repository.Model
         public string ManagedName { get; set; }
         public string NativeName { get; init; }
         
-        public TypeReference? GLibClassStructFor { get; init; }
+        public ITypeReference? GLibClassStructFor { get; init; }
     }
 }
