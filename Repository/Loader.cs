@@ -80,16 +80,16 @@ namespace Repository
             loadedProj = null;
             
             try
-            {
+            {/*
                 // Serialize introspection data (xml)
-                Parser parser = null!;//new Parser(target);
-                var (nspace, references) = parser.Parse(target);
+                NamespaceInfoConverterServiceService namespaceInfoConverterServiceService = new NamespaceInfoConverterServiceService(target);
+                var (nspace, references) = namespaceInfoConverterServiceService.Convert(target);
 
                 var projName = $"{nspace.Name}-{nspace.Version}";
 
                 // Load dependencies recursively
                 var dependencies = new List<LoadedProject>();
-                /*foreach (var (name, version) in parser.GetDependencies())
+                foreach (var (name, version) in namespaceInfoConverterServiceService.GetDependencies())
                 {
                     // Skip if already loaded
                     var canonicalName = $"{name}-{version}";
