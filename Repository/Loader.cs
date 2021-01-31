@@ -14,17 +14,17 @@ namespace Repository
     public class Loader
     {
         private readonly IResolver<ILoadedProject> _resolver;
-        private readonly IRepositoryInfoDataFactory _repositoryInfoDataFactory;
+        private readonly IInfoFactory _infoFactory;
         private readonly IXmlService _xmlService;
         private readonly INamespaceInfoConverterService _namespaceInfoConverterService;
         private ResolveFileFunc? _lookupFunc;
 
         private bool _projectLoadFailed;
 
-        public Loader(IResolver<ILoadedProject> resolver, IRepositoryInfoDataFactory repositoryInfoDataFactory, IXmlService xmlService, INamespaceInfoConverterService namespaceInfoConverterService)
+        public Loader(IResolver<ILoadedProject> resolver, IInfoFactory infoFactory, IXmlService xmlService, INamespaceInfoConverterService namespaceInfoConverterService)
         {
             _resolver = resolver;
-            _repositoryInfoDataFactory = repositoryInfoDataFactory;
+            _infoFactory = infoFactory;
             _xmlService = xmlService;
             _namespaceInfoConverterService = namespaceInfoConverterService;
         }
@@ -56,7 +56,7 @@ namespace Repository
             try
             {
                 var repoinfo = LoadRepositoryInfo(target);
-                var repositoryInfoData = _repositoryInfoDataFactory.GetData(repoinfo.Namespace);
+                var repositoryInfoData = _infoFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
 
                 if (TryLoadProject(loadedProjects, repositoryInfoData, out ILoadedProject? project))
                     return project;
@@ -85,7 +85,7 @@ namespace Repository
         private IEnumerable<ILoadedProject> LoadDependencies(ICollection<ILoadedProject> loadedProjects, RepositoryInfo repoinfo)
         {
             var dependencies = new List<ILoadedProject>();
-            foreach (var dependency in _repositoryInfoDataFactory.GetDependencies(repoinfo))
+            foreach (var dependency in _infoFactory.CreateFromRepositoryInfo(repoinfo))
             {
                 FileInfo dependentGirFile = GetGirFileInfo(dependency);
                 var dependentProject = LoadRecursive(loadedProjects, dependentGirFile);
@@ -97,7 +97,7 @@ namespace Repository
             return dependencies;
         }
 
-        private bool TryLoadProject(IEnumerable<ILoadedProject> loadedProjects, RepositoryInfoData repo, [NotNullWhen(true)] out ILoadedProject? loadedProject)
+        private bool TryLoadProject(IEnumerable<ILoadedProject> loadedProjects, Info repo, [NotNullWhen(true)] out ILoadedProject? loadedProject)
         {
             var foundProjects = loadedProjects.Where(x => NameMatches(x, repo)).ToArray();
             switch (foundProjects.Length)
@@ -113,10 +113,10 @@ namespace Repository
             }
         }
 
-        private bool NameMatches(ILoadedProject loadedProject, RepositoryInfoData repo)
+        private bool NameMatches(ILoadedProject loadedProject, Info repo)
             => loadedProject.Name == repo.ToCanonicalName();
 
-        private FileInfo GetGirFileInfo(RepositoryInfoData data)
+        private FileInfo GetGirFileInfo(Info data)
         {
             if (_lookupFunc is null)
                 throw new Exception("Lookup func is not initialized");

@@ -8,7 +8,7 @@ namespace Repository
     [Register(typeof(XmlService), typeof(IXmlService))]
     [Register(typeof(NamespaceInfoConverterService), typeof(INamespaceInfoConverterService))]
     [Register(typeof(TypeReferenceFactory), typeof(ITypeReferenceFactory))]
-    [Register(typeof(RepositoryInfoDataFactory), typeof(IRepositoryInfoDataFactory))]
+    [Register(typeof(InfoFactory), typeof(IInfoFactory))]
     public partial class Container : IContainer<Loader>
     {
         [Factory]
