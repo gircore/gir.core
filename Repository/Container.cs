@@ -19,6 +19,7 @@ namespace Repository
     [Register(typeof(EnumartionFactory), typeof(IEnumartionFactory))]
     [Register(typeof(InterfaceFactory), typeof(IInterfaceFactory))]
     [Register(typeof(RecordFactory), typeof(IRecordFactory))]
+    [Register(typeof(MethodFactory), typeof(IMethodFactory))]
     public partial class Container : IContainer<Loader>
     {
         [Factory]
