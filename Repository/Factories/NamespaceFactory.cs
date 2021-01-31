@@ -22,15 +22,17 @@ namespace Repository
         private readonly IAliasFactory _aliasFactory;
         private readonly ICallbackFactory _callbackFactory;
         private readonly IEnumartionFactory _enumartionFactory;
+        private readonly IInterfaceFactory _interfaceFactory;
         private readonly HashSet<ITypeReference> _references;
 
-        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory)
+        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory, IInterfaceFactory interfaceFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;
             _callbackFactory = callbackFactory;
             _enumartionFactory = enumartionFactory;
+            _interfaceFactory = interfaceFactory;
             _references = new HashSet<ITypeReference>();
         }
 
@@ -54,11 +56,7 @@ namespace Repository
 
         private void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
         {
-            nspace.Aliases = new List<Alias>();
-            foreach (AliasInfo alias in aliases)
-            {
-                nspace.Aliases.Add(_aliasFactory.Create(alias));
-            }
+            nspace.Aliases = aliases.Select(alias => _aliasFactory.Create(alias)).ToList();
         }
 
         private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes)
@@ -100,13 +98,9 @@ namespace Repository
                 nspace.Enumerations = list;
         }
 
-        private static void SetInterfaces(Namespace nspace, IEnumerable<InterfaceInfo> ifaces)
+        private void SetInterfaces(Namespace nspace, IEnumerable<InterfaceInfo> ifaces)
         {
-            nspace.Interfaces = new List<Interface>();
-            foreach (InterfaceInfo iface in ifaces)
-            {
-                nspace.Interfaces.Add(new Interface() {Namespace = nspace, NativeName = iface.Name, ManagedName = iface.Name});
-            }
+            nspace.Interfaces = ifaces.Select(x => _interfaceFactory.Create(x, nspace)).ToList();
         }
 
         private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records)
