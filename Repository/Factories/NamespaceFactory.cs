@@ -21,14 +21,16 @@ namespace Repository
         private readonly IClassFactory _classFactory;
         private readonly IAliasFactory _aliasFactory;
         private readonly ICallbackFactory _callbackFactory;
+        private readonly IEnumartionFactory _enumartionFactory;
         private readonly HashSet<ITypeReference> _references;
 
-        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory)
+        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;
             _callbackFactory = callbackFactory;
+            _enumartionFactory = enumartionFactory;
             _references = new HashSet<ITypeReference>();
         }
 
@@ -86,17 +88,11 @@ namespace Repository
             }
         }
 
-        private static void SetEnumerations(Namespace nspace, IEnumerable<EnumInfo> enumerations, bool isBitfield)
+        private void SetEnumerations(Namespace nspace, IEnumerable<EnumInfo> enumerations, bool isBitfield)
         {
-            var list = new List<Enumeration>();
-
-            foreach (EnumInfo @enum in enumerations)
-            {
-                list.Add(new Enumeration()
-                {
-                    Namespace = nspace, NativeName = @enum.Name, ManagedName = @enum.Name, HasFlags = isBitfield,
-                });
-            }
+            var list = enumerations.Select(@enum => 
+                _enumartionFactory.Create(@enum, nspace, isBitfield)
+            ).ToList();
 
             if (isBitfield)
                 nspace.Bitfields = list;

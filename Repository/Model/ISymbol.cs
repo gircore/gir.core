@@ -8,7 +8,7 @@ namespace Repository.Model
     {
         Namespace? Namespace { get; init; }
         string NativeName { get; init; }
-        string ManagedName { get; set; }
+        string ManagedName { get; set; } //TODO: Should not be setable. Records are changed via "with". If this is not desired the types should be classes instead of records.
     }
 
     public record BasicSymbol : ISymbol
