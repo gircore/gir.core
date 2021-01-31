@@ -16,17 +16,17 @@ namespace Repository
         private readonly IResolver<ILoadedProject> _resolver;
         private readonly IInfoFactory _infoFactory;
         private readonly IXmlService _xmlService;
-        private readonly INamespaceInfoConverterService _namespaceInfoConverterService;
+        private readonly INamespaceFactory _namespaceFactory;
         private ResolveFileFunc? _lookupFunc;
 
         private bool _projectLoadFailed;
 
-        public Loader(IResolver<ILoadedProject> resolver, IInfoFactory infoFactory, IXmlService xmlService, INamespaceInfoConverterService namespaceInfoConverterService)
+        public Loader(IResolver<ILoadedProject> resolver, IInfoFactory infoFactory, IXmlService xmlService, INamespaceFactory namespaceFactory)
         {
             _resolver = resolver;
             _infoFactory = infoFactory;
             _xmlService = xmlService;
-            _namespaceInfoConverterService = namespaceInfoConverterService;
+            _namespaceFactory = namespaceFactory;
         }
 
         // Where 'targets' are toplevel projects. Loader resolves
@@ -64,7 +64,7 @@ namespace Repository
                 var dependencies = LoadDependencies(loadedProjects, repoinfo.Includes);
                 
                 //TODO: References obsolete?
-                var (nspace, references) = _namespaceInfoConverterService.Convert(repoinfo.Namespace);
+                var (nspace, references) = _namespaceFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
                 
                 project = new LoadedProject(nspace.ToCanonicalName(), nspace, dependencies);
                 loadedProjects.Add(project);

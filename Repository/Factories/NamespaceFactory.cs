@@ -9,23 +9,23 @@ using Repository.Xml;
 
 namespace Repository
 {
-    public interface INamespaceInfoConverterService
+    public interface INamespaceFactory
     {
-        (Namespace, IEnumerable<ITypeReference>) Convert(NamespaceInfo repoinfo);
+        (Namespace, IEnumerable<ITypeReference>) CreateFromNamespaceInfo(NamespaceInfo repoinfo);
     }
 
-    public class NamespaceInfoConverterService : INamespaceInfoConverterService
+    public class NamespaceFactory : INamespaceFactory
     {
         private readonly ITypeReferenceFactory _typeReferenceFactory;
         private readonly HashSet<ITypeReference> _references;
 
-        public NamespaceInfoConverterService(ITypeReferenceFactory typeReferenceFactory)
+        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _references = new HashSet<ITypeReference>();
         }
 
-        public (Namespace, IEnumerable<ITypeReference>) Convert(NamespaceInfo namespaceInfo)
+        public (Namespace, IEnumerable<ITypeReference>) CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
         {
             _references.Clear();
 
