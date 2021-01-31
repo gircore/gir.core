@@ -18,12 +18,14 @@ namespace Repository
     {
         private readonly ITypeReferenceFactory _typeReferenceFactory;
         private readonly IClassFactory _classFactory;
+        private readonly IAliasFactory _aliasFactory;
         private readonly HashSet<ITypeReference> _references;
 
-        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory)
+        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _classFactory = classFactory;
+            _aliasFactory = aliasFactory;
             _references = new HashSet<ITypeReference>();
         }
 
@@ -45,12 +47,12 @@ namespace Repository
             return (nspace, _references);
         }
 
-        private static void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
+        private void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
         {
             nspace.Aliases = new List<Alias>();
             foreach (AliasInfo alias in aliases)
             {
-                nspace.Aliases.Add(new Alias(alias.Name, alias.For!.Name));
+                nspace.Aliases.Add(_aliasFactory.Create(alias));
             }
         }
 
