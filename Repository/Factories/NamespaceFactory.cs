@@ -23,9 +23,10 @@ namespace Repository
         private readonly ICallbackFactory _callbackFactory;
         private readonly IEnumartionFactory _enumartionFactory;
         private readonly IInterfaceFactory _interfaceFactory;
+        private readonly IRecordFactory _recordFactory;
         private readonly HashSet<ITypeReference> _references;
 
-        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory, IInterfaceFactory interfaceFactory)
+        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory, IInterfaceFactory interfaceFactory, IRecordFactory recordFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _classFactory = classFactory;
@@ -33,6 +34,7 @@ namespace Repository
             _callbackFactory = callbackFactory;
             _enumartionFactory = enumartionFactory;
             _interfaceFactory = interfaceFactory;
+            _recordFactory = recordFactory;
             _references = new HashSet<ITypeReference>();
         }
 
@@ -106,9 +108,13 @@ namespace Repository
         private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records)
         {
             nspace.Records = new List<Record>();
-            foreach (RecordInfo @record in records)
+
+            foreach (RecordInfo recordInfo in records)
             {
-                nspace.Records.Add(new Record() {Namespace = nspace, NativeName = @record.Name, ManagedName = @record.Name, GLibClassStructFor = (record.GLibIsGTypeStructFor != null) ? CreateAndCacheReference(record.GLibIsGTypeStructFor, false) : null});
+                var record = _recordFactory.Create(recordInfo, nspace);
+                nspace.Records.Add(record);
+                
+                AddReference(record.GLibClassStructFor);
             }
         }
 

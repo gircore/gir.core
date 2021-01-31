@@ -8,7 +8,8 @@ namespace Repository.Services
     public interface ITypeReferenceFactory
     {
         ITypeReference Create(string type, bool isArray);
-        ITypeReference Create(ITypeOrArray? typeOrArray);
+        ITypeReference Create(ITypeOrArray typeOrArray);
+        ITypeReference? CreateWithNull(string? type, bool isArry);
     }
 
     public class TypeReferenceFactory : ITypeReferenceFactory
@@ -18,7 +19,7 @@ namespace Repository.Services
             return new TypeReference(type, false);
         }
         
-        public ITypeReference Create(ITypeOrArray? typeOrArray)
+        public ITypeReference Create(ITypeOrArray typeOrArray)
         {
             // Check for Type
             var type = typeOrArray?.Type?.Name ?? null;
@@ -32,6 +33,11 @@ namespace Repository.Services
 
             // No Type (i.e. void)
             return Create("none", false);
+        }
+
+        public ITypeReference? CreateWithNull(string? type, bool isArray)
+        {
+            return type is null ? null : Create(type, isArray);
         }
     }
 }
