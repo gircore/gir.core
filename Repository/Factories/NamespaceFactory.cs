@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Repository.Analysis;
+using Repository.Factories;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -17,11 +17,13 @@ namespace Repository
     public class NamespaceFactory : INamespaceFactory
     {
         private readonly ITypeReferenceFactory _typeReferenceFactory;
+        private readonly IClassFactory _classFactory;
         private readonly HashSet<ITypeReference> _references;
 
-        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory)
+        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
+            _classFactory = classFactory;
             _references = new HashSet<ITypeReference>();
         }
 
@@ -56,30 +58,14 @@ namespace Repository
         {
             nspace.Classes = new List<Class>();
 
-            foreach (ClassInfo cls in classes)
+            foreach (var classInfo in classes)
             {
-                if (cls.Name is null || cls.TypeName is null)
-                {
-                    Log.Warning($"Ignoring class {cls.Name} / {cls.TypeName}: Data is missing.");
-                    continue;
-                }
-
-                nspace.Classes.Add(new Class()
-                {
-                    Namespace = nspace,
-                    NativeName = cls.Name,
-                    ManagedName = cls.Name,
-                    CType = cls.TypeName,
-                    Parent = (cls.Parent != null) ? CreateAndCacheReference(cls.Parent, false) : null,
-                    Implements = ParseImplements(cls.Implements).ToList(),
-                });
+                var cls = _classFactory.Create(classInfo, nspace);
+                nspace.Classes.Add(cls);
+                
+                AddReference(cls.Parent);
+                AddReferences(cls.Implements);
             }
-        }
-
-        private IEnumerable<ITypeReference> ParseImplements(IEnumerable<ImplementInfo> implements)
-        {
-            foreach (ImplementInfo impl in implements)
-                yield return CreateAndCacheReference(impl.Name!, false);
         }
 
         private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks)
@@ -202,6 +188,20 @@ namespace Repository
             _references.Add(reference);
 
             return reference;
+        }
+
+        private void AddReference(ITypeReference? reference)
+        {
+            if (reference is null)
+                return;
+
+            _references.Add(reference);
+        }
+
+        private void AddReferences(IEnumerable<ITypeReference> references)
+        {
+            foreach (var reference in references)
+                _references.Add(reference);
         }
     }
 }
