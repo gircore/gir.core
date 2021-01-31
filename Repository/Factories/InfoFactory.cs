@@ -13,7 +13,7 @@ namespace Repository.Services
 
     public interface IInfoFactory
     {
-        IEnumerable<Info> CreateFromRepositoryInfo(RepositoryInfo repositoryInfo);
+        IEnumerable<Info> CreateFromIncludes(IEnumerable<IncludeInfo> includes);
 
         Info CreateFromNamespaceInfo(NamespaceInfo repositoryInfo);
     }
@@ -23,9 +23,9 @@ namespace Repository.Services
         public Info CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
             => new Info(namespaceInfo.Name, namespaceInfo.Version);
         
-        public IEnumerable<Info> CreateFromRepositoryInfo(RepositoryInfo repoInfo)
+        public IEnumerable<Info> CreateFromIncludes(IEnumerable<IncludeInfo> includes)
         {
-            foreach (IncludeInfo includeInfo in repoInfo.Includes)
+            foreach (IncludeInfo includeInfo in includes)
             {
                 yield return new Info(includeInfo.Name, includeInfo.Version);
             }

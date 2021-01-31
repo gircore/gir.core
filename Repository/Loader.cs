@@ -61,7 +61,7 @@ namespace Repository
                 if (TryLoadProject(loadedProjects, repositoryInfoData, out ILoadedProject? project))
                     return project;
 
-                var dependencies = LoadDependencies(loadedProjects, repoinfo);
+                var dependencies = LoadDependencies(loadedProjects, repoinfo.Includes);
                 
                 //TODO: References obsolete?
                 var (nspace, references) = _namespaceInfoConverterService.Convert(repoinfo.Namespace);
@@ -82,10 +82,10 @@ namespace Repository
             }
         }
 
-        private IEnumerable<ILoadedProject> LoadDependencies(ICollection<ILoadedProject> loadedProjects, RepositoryInfo repoinfo)
+        private IEnumerable<ILoadedProject> LoadDependencies(ICollection<ILoadedProject> loadedProjects, IEnumerable<IncludeInfo> includes)
         {
             var dependencies = new List<ILoadedProject>();
-            foreach (var dependency in _infoFactory.CreateFromRepositoryInfo(repoinfo))
+            foreach (var dependency in _infoFactory.CreateFromIncludes(includes))
             {
                 FileInfo dependentGirFile = GetGirFileInfo(dependency);
                 var dependentProject = LoadRecursive(loadedProjects, dependentGirFile);
