@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Repository.Analysis;
-using Repository.Graph;
-using Repository.Model;
 using StrongInject;
 
 namespace Repository
@@ -13,14 +8,19 @@ namespace Repository
     
     public class Repository
     {
-        public readonly List<LoadedProject> LoadedProjects;
-        public readonly TypeDictionary TypeDict;
+        //public readonly List<LoadedProject> LoadedProjects;
+        //public readonly TypeDictionary TypeDict;
+
+        public Repository()
+        {
+            
+        }
         
-        public Repository(ResolveFileFunc fileFunc, string[] targets)
+        public IEnumerable<ILoadedProject> Load(ResolveFileFunc fileFunc, string[] targets)
         {
             Log.Information($"Initialising generator with {targets.Length} toplevel project(s)");
 
-            var bla = new Container().Run(loader1 => loader1.LoadOrdered(targets, fileFunc));
+            return new Container().Run(loader1 => loader1.LoadOrdered(targets, fileFunc));
 
             /*
             // Loading - Serialise all gir files into the LoadedProjects

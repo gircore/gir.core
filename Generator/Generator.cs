@@ -14,7 +14,7 @@ namespace Generator
     {
         private static string _cacheDir = "../gir-files";
 
-        public readonly List<LoadedProject> LoadedProjects;
+        public readonly List<ILoadedProject> LoadedProjects;
 
         /// <summary>
         /// The main interface used to generate source files from GObject
@@ -25,9 +25,9 @@ namespace Generator
         public Generator(string[] projects)
         {
             // Repository does its own logging and error handling
-            var repository = new Repository.Repository(ResolveFile, projects);
-            LoadedProjects = repository.LoadedProjects;
-            
+            var repository = new Repository.Repository();
+            LoadedProjects = repository.Load(ResolveFile, projects).ToList();
+
             try
             {
                 Log.Information("Processing introspection data");
