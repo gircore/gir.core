@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Repository.Analysis;
 using Repository.Factories;
 using Repository.Model;
@@ -19,13 +20,15 @@ namespace Repository
         private readonly ITypeReferenceFactory _typeReferenceFactory;
         private readonly IClassFactory _classFactory;
         private readonly IAliasFactory _aliasFactory;
+        private readonly ICallbackFactory _callbackFactory;
         private readonly HashSet<ITypeReference> _references;
 
-        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory)
+        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;
+            _callbackFactory = callbackFactory;
             _references = new HashSet<ITypeReference>();
         }
 
@@ -75,58 +78,12 @@ namespace Repository
             nspace.Callbacks = new List<Callback>();
             foreach (CallbackInfo callbackInfo in callbacks)
             {
-                nspace.Callbacks.Add(new Callback()
-                {
-                    Namespace = nspace,
-                    NativeName = callbackInfo.Name,
-                    ManagedName = callbackInfo.Name,
-                    ReturnValue = new ReturnValue() { Type = CreateAndCacheReference(callbackInfo.ReturnValue) },
-                    Arguments = GetArguments(callbackInfo.Parameters)
-                });
+                var callback = _callbackFactory.Create(callbackInfo, nspace);
+                nspace.Callbacks.Add(callback);
+                
+                AddReference(callback.ReturnValue.Type);
+                AddReferences(callback.Arguments.Select(x => x.Type));
             }
-        }
-
-        private List<Argument> GetArguments(ParametersInfo? parameters)
-        {
-            var list = new List<Argument>();
-
-            if (parameters is null)
-                return list;
-
-            foreach (ParameterInfo arg in parameters.Parameters)
-            {
-                // Direction (for determining in/out/ref)
-                var callerAllocates = arg.CallerAllocates;
-                Direction direction = arg.Direction switch
-                {
-                    "in" => Direction.In,
-                    "out" when callerAllocates => Direction.OutCallerAllocates,
-                    "out" when !callerAllocates => Direction.OutCalleeAllocates,
-                    "inout" => Direction.Ref,
-                    _ => Direction.Default
-                };
-
-                // Memory Management information
-                Transfer transfer = arg.TransferOwnership switch
-                {
-                    "none" => Transfer.None,
-                    "container" => Transfer.Container,
-                    "full" => Transfer.Full,
-                    "floating" => Transfer.None,
-                    _ => Transfer.Full // TODO: Good default value? 
-                };
-
-                list.Add(new Argument()
-                {
-                    Name = arg.Name,
-                    Type = CreateAndCacheReference(arg),
-                    Direction = direction,
-                    Transfer = transfer,
-                    Nullable = arg.Nullable
-                });
-            }
-
-            return list;
         }
 
         private static void SetEnumerations(Namespace nspace, IEnumerable<EnumInfo> enumerations, bool isBitfield)

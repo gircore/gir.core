@@ -2,12 +2,11 @@
 
 namespace Repository.Model
 {
-    public record Argument
-    {
-        public string Name { get; set; }
-        public ITypeReference Type { get; init; }
-        public Direction Direction { get; init; }
-        public Transfer Transfer { get; init; }
-        public bool Nullable { get; init; }
-    }
+    public record Argument(
+        string Name, 
+        ITypeReference Type, 
+        Direction Direction, 
+        Transfer Transfer, 
+        bool Nullable
+    );
 }

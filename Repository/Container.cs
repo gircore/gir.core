@@ -12,6 +12,10 @@ namespace Repository
     [Register(typeof(InfoFactory), typeof(IInfoFactory))]
     [Register(typeof(ClassFactory), typeof(IClassFactory))]
     [Register(typeof(AliasFactory), typeof(IAliasFactory))]
+    [Register(typeof(ReturnValueFactory), typeof(IReturnValueFactory))]
+    [Register(typeof(ArgumentFactory), typeof(IArgumentFactory))]
+    [Register(typeof(ArgumentsFactory), typeof(IArgumentFactory))]
+    [Register(typeof(CallbackFactory), typeof(ICallbackFactory))]
     public partial class Container : IContainer<Loader>
     {
         [Factory]
