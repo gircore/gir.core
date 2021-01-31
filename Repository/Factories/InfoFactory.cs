@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Repository.Xml;
 
 #nullable enable
@@ -21,12 +22,20 @@ namespace Repository.Services
     public class InfoFactory : IInfoFactory
     {
         public Info CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
-            => new Info(namespaceInfo.Name, namespaceInfo.Version);
-        
+        {
+            if (namespaceInfo.Name is null || namespaceInfo.Version is null)
+                throw new Exception("Can't create info because data is missing");
+            
+            return new Info(namespaceInfo.Name, namespaceInfo.Version);
+        }
+
         public IEnumerable<Info> CreateFromIncludes(IEnumerable<IncludeInfo> includes)
         {
             foreach (IncludeInfo includeInfo in includes)
             {
+                if (includeInfo.Name is null || includeInfo.Version is null)
+                    throw new Exception("Can't create info because data is missing");
+                
                 yield return new Info(includeInfo.Name, includeInfo.Version);
             }
         }
