@@ -35,13 +35,10 @@ namespace Repository.Factories
                 NativeName = cls.Name,
                 ManagedName = cls.Name,
                 CType = cls.TypeName,
-                Parent = GetTypeReference(cls.Parent),
+                Parent = _typeReferenceFactory.CreateWithNull(cls.Parent, false),
                 Implements = GetTypeReferences(cls.Implements).ToList(),
             };
         }
-
-        private ITypeReference? GetTypeReference(string? name) 
-            => name is null ? null : _typeReferenceFactory.Create(name, false);
 
         private IEnumerable<ITypeReference> GetTypeReferences(IEnumerable<ImplementInfo> implements)
         {
