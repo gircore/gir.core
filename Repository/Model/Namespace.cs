@@ -2,6 +2,7 @@
 
 namespace Repository.Model
 {
+    //TODO: Records should not be changeable. All lists will be altered during runtime
     public record Namespace
     {
         // Basic Info
