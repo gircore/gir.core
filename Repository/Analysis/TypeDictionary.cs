@@ -108,9 +108,6 @@ namespace Repository.Analysis
 
         private SymbolDictionary GetSymbolDict(string nspace)
         {
-            if (nspace == null)
-                throw new NullReferenceException("Namespace should not be null");
-
             if (_symbolDictionaries.TryGetValue(nspace, out SymbolDictionary? symbolDict))
                 return symbolDict;
 
@@ -121,9 +118,6 @@ namespace Repository.Analysis
         
         private AliasDictionary GetAliasDict(string nspace)
         {
-            if (nspace == null)
-                throw new NullReferenceException("Namespace should not be null");
-            
             if (_aliasDictionaries.TryGetValue(nspace, out AliasDictionary? aliasDict))
                 return aliasDict;
 

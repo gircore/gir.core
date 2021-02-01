@@ -19,10 +19,7 @@ namespace Repository.Analysis
         
             public void AddAlias(string from, string to)
                 => _aliasDict.Add(from, to);
-        
-            public string GetAlias(string name)
-                => _aliasDict[name];
-        
+
             public bool TryGetAlias(string name, [NotNullWhen(true)] out string alias)
                 => _aliasDict.TryGetValue(name, out alias);
         }
