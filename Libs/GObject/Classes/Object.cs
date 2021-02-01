@@ -14,10 +14,11 @@ namespace GObject
     {
         #region Fields
 
-        private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new();
-        private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new();
+        private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
+        private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
 
-        private readonly Dictionary<string, SignalHelper> _signals = new();
+        private readonly Dictionary<string, SignalHelper> _signals = new ();
+        private ObjectSafeHandle _safeHandle;
 
         #endregion
 
@@ -32,7 +33,7 @@ namespace GObject
 
         #region Properties
 
-        public IntPtr Handle { get; private set; }
+        public IntPtr Handle => _safeHandle.IsInvalid ? IntPtr.Zero : _safeHandle.DangerousGetHandle();
 
         #endregion
 
@@ -122,18 +123,14 @@ namespace GObject
             Initialize(handle);
         }
 
-        ~Object()
-        {
-            Dispose(false);
-        }
-
         #endregion
 
         #region Methods
 
+        [MemberNotNull(nameof(_safeHandle))]
         private void Initialize(IntPtr ptr)
         {
-            Handle = ptr;
+            _safeHandle = new ObjectSafeHandle(ptr);
 
             RegisterObject();
             RegisterProperties();
@@ -330,41 +327,15 @@ namespace GObject
             }
         }
 
-        #endregion
-
-        #region IDisposable Implementation
-
-        public void Dispose()
+        public virtual void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+            foreach (var signalHelper in _signals.Values)
+                signalHelper.Dispose();
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (Handle == IntPtr.Zero)
-                return;
-
-            if (disposing)
-            {
-                foreach (var signalHelper in _signals.Values)
-                    signalHelper.Dispose();
-            }
-
-            lock (WrapperObjects)
-            {
-                WrapperObjects.Remove(Handle);
-            }
-
-            lock (SubclassObjects)
-            {
-                SubclassObjects.Remove(Handle);
-            }
-
-            Native.unref(Handle);
-            Handle = IntPtr.Zero;
+            _safeHandle.Dispose();
         }
 
         #endregion
+
     }
 }
