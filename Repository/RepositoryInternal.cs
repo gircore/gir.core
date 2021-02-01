@@ -23,7 +23,7 @@ namespace Repository
             // Loading - Serialise all gir files into the LoadedProjects
             // dictionary. We attempt to continue regardless of whether all
             // files are loaded successfully.
-            var loader = new LoaderService(targets, fileFunc, "../gir-files", new Resolver());
+            var loader = new LoaderService(targets, fileFunc, "../gir-files", new DependencyResolverService());
             
             // Sorts dependencies in order of base -> top level. Will throw if
             // a circular dependency is found.

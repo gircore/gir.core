@@ -24,7 +24,7 @@ namespace Repository
     public partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]
-        public static IResolver<T> GetResolver<T>() where T : INode<T> => new Resolver<T>();
+        public static IDependencyResolverService<T> GetResolver<T>() where T : INode<T> => new DependencyResolverService<T>();
 
     }
 }

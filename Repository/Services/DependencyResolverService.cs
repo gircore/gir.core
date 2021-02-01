@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace Repository.Graph
 {
-    public interface IResolver<T> where T : INode<T>
+    public interface IDependencyResolverService<T> where T : INode<T>
     {
         IEnumerable<INode<T>> ResolveOrdered(IEnumerable<INode<T>> nodeList);
     }
 
     // Dependency Resolver Algorithm
     // https://www.electricmonk.nl/docs/dependency_resolving_algorithm/dependency_resolving_algorithm.html
-    public class Resolver<T> : IResolver<T> where T : INode<T>
+    public class DependencyResolverService<T> : IDependencyResolverService<T> where T : INode<T>
     {
         private List<INode<T>> _resolvedNodes = new ();
         private List<INode<T>> _unresolvedNodes = new ();

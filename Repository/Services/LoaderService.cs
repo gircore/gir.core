@@ -18,7 +18,7 @@ namespace Repository
 
     public class LoaderService : ILoaderService
     {
-        private readonly IResolver<ILoadedProject> _resolver;
+        private readonly IDependencyResolverService<ILoadedProject> _dependencyResolverService;
         private readonly IInfoFactory _infoFactory;
         private readonly IXmlService _xmlService;
         private readonly INamespaceFactory _namespaceFactory;
@@ -26,9 +26,9 @@ namespace Repository
 
         private bool _projectLoadFailed;
 
-        public LoaderService(IResolver<ILoadedProject> resolver, IInfoFactory infoFactory, IXmlService xmlService, INamespaceFactory namespaceFactory)
+        public LoaderService(IDependencyResolverService<ILoadedProject> dependencyResolverService, IInfoFactory infoFactory, IXmlService xmlService, INamespaceFactory namespaceFactory)
         {
-            _resolver = resolver;
+            _dependencyResolverService = dependencyResolverService;
             _infoFactory = infoFactory;
             _xmlService = xmlService;
             _namespaceFactory = namespaceFactory;
@@ -47,7 +47,7 @@ namespace Repository
             if (_projectLoadFailed)
                 Log.Warning($"Failed to load some projects. Please check the log for more information.");
 
-            return _resolver.ResolveOrdered(loadedProjects).Cast<ILoadedProject>();
+            return _dependencyResolverService.ResolveOrdered(loadedProjects).Cast<ILoadedProject>();
         }
 
         private void LoadAndAddProjects(ICollection<ILoadedProject> loadedProjects, string target)
