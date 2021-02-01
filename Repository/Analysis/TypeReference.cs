@@ -13,14 +13,14 @@ namespace Repository.Analysis
 
     public interface ITypeReference
     {
-        ISymbol? Type { get;  }
+        IType? Type { get;  }
         bool IsForeign { get;  }
         bool IsArray { get; }
     }
 
     public class TypeReference : IEquatable<TypeReference>, ITypeReference
     {
-        public ISymbol? Type { get; private set; }
+        public IType? Type { get; private set; }
         public bool IsForeign { get; private set; }
         public bool IsArray { get; }
 
@@ -59,12 +59,12 @@ namespace Repository.Analysis
             return Type.ManagedName;
         }
 
-        internal void ResolveAs(ISymbol symbol, ReferenceType type)
+        internal void ResolveAs(IType type, ReferenceType referenceType)
         {
             if (Type is null) //TODO: If obsolete?
             {
-                Type = symbol;
-                IsForeign = (type == ReferenceType.External);
+                Type = type;
+                IsForeign = (referenceType == ReferenceType.External);
             }
         }
 

@@ -46,7 +46,7 @@ namespace Generator
                     List<Record> records = proj.Namespace.Records;
                     foreach (Record classStruct in records.Where(record => record.GLibClassStructFor != null))
                     {
-                        ISymbol type = classStruct.GLibClassStructFor!.Type;
+                        IType type = classStruct.GLibClassStructFor!.Type;
                         if (type is not Class)
                             continue;
                         

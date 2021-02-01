@@ -2,7 +2,7 @@
 
 namespace Repository.Model
 {
-    public record Callback : ISymbol
+    public record Callback : IType
     {
         public Namespace Namespace { get; init; }
         public string ManagedName { get; set; }

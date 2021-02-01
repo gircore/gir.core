@@ -1,6 +1,6 @@
 ﻿namespace Repository.Model
 {
-    public record Interface : ISymbol
+    public record Interface : IType
     {
         public Namespace Namespace { get; init; }
         public string ManagedName { get; set; }

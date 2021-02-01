@@ -1,6 +1,6 @@
 ﻿namespace Repository.Model
 {
-    public record Enumeration : ISymbol
+    public record Enumeration : IType
     {
         public Namespace Namespace { get; init; }
         public string ManagedName { get; set; }

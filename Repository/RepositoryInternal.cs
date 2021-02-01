@@ -78,7 +78,7 @@ namespace Repository
                     TypeDictionaryView view = TypeDict.GetView(nspace.Name);
 
                     // Resolve References
-                    foreach (TypeReference reference in proj.UnresolvedReferences)
+                    foreach (SymbolReference reference in proj.UnresolvedReferences)
                     {
                         ISymbol symbol = view.LookupSymbol(reference.UnresolvedName);
                     

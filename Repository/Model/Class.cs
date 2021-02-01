@@ -5,7 +5,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public record Class : ISymbol
+    public record Class : IType
     {
         public Namespace? Namespace { get; init; }
         public string ManagedName { get; set; }
