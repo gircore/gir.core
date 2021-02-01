@@ -5,7 +5,7 @@ using StrongInject;
 
 namespace Repository
 {
-    [Register(typeof(Loader))]
+    [Register(typeof(RepositoryInternal))]
     [Register(typeof(XmlService), typeof(IXmlService))]
     [Register(typeof(NamespaceFactory), typeof(INamespaceFactory))]
     [Register(typeof(TypeReferenceFactory), typeof(ITypeReferenceFactory))]
@@ -20,7 +20,8 @@ namespace Repository
     [Register(typeof(InterfaceFactory), typeof(IInterfaceFactory))]
     [Register(typeof(RecordFactory), typeof(IRecordFactory))]
     [Register(typeof(MethodFactory), typeof(IMethodFactory))]
-    public partial class Container : IContainer<Loader>
+    [Register(typeof(LoaderService), typeof(ILoaderService))]
+    public partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]
         public static IResolver<T> GetResolver<T>() where T : INode<T> => new Resolver<T>();

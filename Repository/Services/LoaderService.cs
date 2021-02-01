@@ -11,7 +11,12 @@ using Repository.Xml;
 
 namespace Repository
 {
-    public class Loader
+    public interface ILoaderService
+    {
+        IEnumerable<ILoadedProject> LoadOrdered(IEnumerable<string> targets, ResolveFileFunc lookupFunc);
+    }
+
+    public class LoaderService : ILoaderService
     {
         private readonly IResolver<ILoadedProject> _resolver;
         private readonly IInfoFactory _infoFactory;
@@ -21,7 +26,7 @@ namespace Repository
 
         private bool _projectLoadFailed;
 
-        public Loader(IResolver<ILoadedProject> resolver, IInfoFactory infoFactory, IXmlService xmlService, INamespaceFactory namespaceFactory)
+        public LoaderService(IResolver<ILoadedProject> resolver, IInfoFactory infoFactory, IXmlService xmlService, INamespaceFactory namespaceFactory)
         {
             _resolver = resolver;
             _infoFactory = infoFactory;
@@ -29,7 +34,7 @@ namespace Repository
             _namespaceFactory = namespaceFactory;
         }
 
-        // Where 'targets' are toplevel projects. Loader resolves
+        // Where 'targets' are toplevel projects. LoaderService resolves
         // dependent gir libraries automatically.
         public IEnumerable<ILoadedProject> LoadOrdered(IEnumerable<string> targets, ResolveFileFunc lookupFunc)
         {
