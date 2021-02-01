@@ -9,7 +9,11 @@ namespace Repository
     public interface ILoadedProject : INode<ILoadedProject>
     {
         Namespace Namespace { get; }
+        
+        //TODO Implement interface
+        //IEnumerable<ITypeReference> TypeReferences { get; }
     }
+
     public class LoadedProject : ILoadedProject
     {
         public string Name { get; }
