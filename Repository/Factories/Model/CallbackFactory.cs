@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Repository.Model;
 using Repository.Xml;
 
@@ -24,14 +25,19 @@ namespace Repository.Factories
         
         public Callback Create(CallbackInfo callbackInfo, Namespace @namespace)
         {
-            return new Callback()
-            {
-                Namespace = @namespace,
-                NativeName = callbackInfo.Name,
-                ManagedName = callbackInfo.Name,
-                ReturnValue = _returnValueFactory.Create(callbackInfo.ReturnValue),
-                Arguments = _argumentsFactory.Create(callbackInfo.Parameters).ToList()
-            };
+            if (callbackInfo.Name is null)
+                throw new Exception("Callback is missing a name");
+
+            if (callbackInfo.ReturnValue is null)
+                throw new Exception($"Callback {callbackInfo.Name} is  missing a return value");
+            
+            return new Callback(
+                @namespace: @namespace,
+                nativeName: callbackInfo.Name,
+                managedName: callbackInfo.Name,
+                returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue),
+                arguments: _argumentsFactory.Create(callbackInfo.Parameters).ToList()
+            );
         }
     }
 }

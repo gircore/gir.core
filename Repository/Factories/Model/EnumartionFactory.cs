@@ -14,13 +14,12 @@ namespace Repository.Factories
     {
         public Enumeration Create(EnumInfo @enum, Namespace @namespace, bool hasFlags)
         {
-            return new Enumeration()
-            {
-                Namespace = @namespace, 
-                NativeName = @enum.Name, 
-                ManagedName = @enum.Name, 
-                HasFlags = hasFlags,
-            };
+            return new Enumeration(
+                @namespace: @namespace, 
+                nativeName: @enum.Name, 
+                managedName: @enum.Name, 
+                hasFlags: hasFlags
+            );
         }
     }
 }

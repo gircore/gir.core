@@ -36,6 +36,7 @@ namespace Generator
                 // e.g. We could use linq queries on it to fetch certain symbols
                 
                 // Process Data
+                /*
                 foreach (LoadedProject proj in LoadedProjects)
                 {
                     // Prefix Interfaces with 'I'
@@ -53,7 +54,7 @@ namespace Generator
                         classStruct.ManagedName = $"{type.ManagedName}.{classStruct.ManagedName}";
                         type.AddMetadata("ClassStruct", classStruct);
                     }
-                }
+                }*/
             }
             catch (Exception e)
             {

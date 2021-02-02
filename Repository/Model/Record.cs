@@ -1,13 +1,16 @@
 ﻿using Repository.Analysis;
 
+#nullable enable
+
 namespace Repository.Model
 {
-    public record Record : IType
+    public class Record : BasicType
     {
-        public Namespace Namespace { get; init; }
-        public string ManagedName { get; set; }
-        public string NativeName { get; init; }
+        public ITypeReference? GLibClassStructFor { get; }
         
-        public ITypeReference? GLibClassStructFor { get; init; }
+        public Record(Namespace @namespace, string nativeName, string managedName, ITypeReference? gLibClassStructFor) : base(@namespace, nativeName, managedName)
+        {
+            GLibClassStructFor = gLibClassStructFor;
+        }
     }
 }

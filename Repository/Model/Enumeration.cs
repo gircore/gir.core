@@ -1,11 +1,14 @@
-﻿namespace Repository.Model
+﻿#nullable enable
+
+namespace Repository.Model
 {
-    public record Enumeration : IType
+    public class Enumeration : BasicType
     {
-        public Namespace Namespace { get; init; }
-        public string ManagedName { get; set; }
-        public string NativeName { get; init; }
-        
-        public bool HasFlags { get; init; }
+        public bool HasFlags { get; }
+     
+        public Enumeration(Namespace @namespace, string nativeName, string managedName, bool hasFlags) : base(@namespace, nativeName, managedName)
+        {
+            HasFlags = hasFlags;
+        }
     }
 }

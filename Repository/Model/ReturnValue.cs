@@ -2,8 +2,5 @@
 
 namespace Repository.Model
 {
-    public class ReturnValue
-    {
-        public ITypeReference Type;
-    }
+    public record ReturnValue(ITypeReference Type);
 }

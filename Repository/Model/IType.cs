@@ -2,24 +2,33 @@
 
 namespace Repository.Model
 {
-    // A symbol is considered to be any instantiable type
-    // This includes Objects, Interfaces, Delegates, Enums, etc
+    /// <summary>
+    /// A type is considered to be any instantiable type
+    /// This includes Objects, Interfaces, Delegates, Enums, etc
+    /// </summary>
     public interface IType
     {
-        Namespace? Namespace { get; init; }
-        string NativeName { get; init; }
-        string ManagedName { get; set; } //TODO: Should not be setable. Records are changed via "with". If this is not desired the types should be classes instead of records.
+        Namespace? Namespace { get; }
+        string NativeName { get; }
+        string? ManagedName { get; set; }
     }
 
-    public record BasicType : IType
+    public class BasicType : IType
     {
-        // TODO: Override init accessors here
-        public Namespace? Namespace { get; init; }
-        public string NativeName { get; init; }
-        public string ManagedName { get; set; }
+        public Namespace? Namespace { get; }
+        public string NativeName { get; }
+        public string? ManagedName { get; set; }
 
+        public BasicType(Namespace @namespace, string nativeName, string managedName)
+        {
+            Namespace = @namespace;
+            NativeName = nativeName;
+            ManagedName = managedName;
+        }
+        
         public BasicType(string from, string to)
         {
+            Namespace = default;
             NativeName = from;
             ManagedName = to;
         }

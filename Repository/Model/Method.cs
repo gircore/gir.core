@@ -1,7 +1,4 @@
 ﻿namespace Repository.Model
 {
-    public class Method
-    {
-        public ReturnValue ReturnValue;
-    }
+    public record Method(ReturnValue ReturnValue);
 }

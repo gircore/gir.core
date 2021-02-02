@@ -1,9 +1,11 @@
-﻿namespace Repository.Model
+﻿#nullable enable
+
+namespace Repository.Model
 {
-    public record Interface : IType
+    public class Interface : BasicType
     {
-        public Namespace Namespace { get; init; }
-        public string ManagedName { get; set; }
-        public string NativeName { get; init; }
+        public Interface(Namespace @namespace, string nativeName, string managedName) : base(@namespace, nativeName, managedName)
+        {
+        }
     }
 }

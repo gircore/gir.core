@@ -1,6 +1,4 @@
-﻿using Repository.Analysis;
-
-#nullable enable
+﻿#nullable enable
 
 namespace Repository.Model
 {

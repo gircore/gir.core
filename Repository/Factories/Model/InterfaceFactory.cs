@@ -14,12 +14,11 @@ namespace Repository.Factories
     {
         public Interface Create(InterfaceInfo iface, Namespace @namespace)
         {
-            return new Interface()
-            {
-                Namespace = @namespace, 
-                NativeName = iface.Name, 
-                ManagedName = iface.Name
-            };
+            return new Interface(
+                @namespace: @namespace, 
+                nativeName: iface.Name, 
+                managedName: iface.Name
+            );
         }
     }
 }

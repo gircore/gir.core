@@ -1,4 +1,5 @@
-﻿using Repository.Model;
+﻿using System;
+using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
 
@@ -22,13 +23,15 @@ namespace Repository.Factories
 
         public Record Create(RecordInfo @record, Namespace @namespace)
         {
-            return new Record()
-            {
-                Namespace = @namespace, 
-                NativeName = @record.Name, 
-                ManagedName = @record.Name, 
-                GLibClassStructFor = _typeReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor, false)
-            };
+            if (@record.Name is null)
+                throw new Exception("Record is missing a name");
+            
+            return new Record(
+                @namespace: @namespace, 
+                nativeName: @record.Name, 
+                managedName: @record.Name, 
+                gLibClassStructFor: _typeReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor, false)
+            );
         }
     }
 }

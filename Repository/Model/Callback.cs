@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
 
+#nullable enable
+
 namespace Repository.Model
 {
-    public record Callback : IType
+    public class Callback : BasicType
     {
-        public Namespace Namespace { get; init; }
-        public string ManagedName { get; set; }
-        public string NativeName { get; init; }
+        public ReturnValue ReturnValue { get; }
+        public IEnumerable<Argument> Arguments { get; }
 
-        public ReturnValue ReturnValue { get; init; }
-        public List<Argument> Arguments { get; init; }
+        public Callback(Namespace @namespace, string nativeName, string managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(@namespace, nativeName, managedName)
+        {
+            ReturnValue = returnValue;
+            Arguments = arguments;
+        }
     }
 }

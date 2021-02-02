@@ -5,14 +5,17 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public record Class : IType
+    public class Class : BasicType
     {
-        public Namespace? Namespace { get; init; }
-        public string ManagedName { get; set; }
-        public string NativeName { get; init; }
-        
-        public string CType { get; init; }
-        public ITypeReference? Parent { get; init; }
-        public List<ITypeReference> Implements { get; init; }
+        public string CType { get; }
+        public ITypeReference? Parent { get; }
+        public IEnumerable<ITypeReference> Implements { get; }
+
+        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, ITypeReference? parent, IEnumerable<ITypeReference> implements) : base(@namespace, nativeName, managedName)
+        {
+            Parent = parent;
+            Implements = implements;
+            CType = ctype;
+        }
     }
 }

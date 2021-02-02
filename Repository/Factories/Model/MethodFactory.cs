@@ -23,10 +23,9 @@ namespace Repository.Factories
             if (methodInfo.ReturnValue is null)
                 throw new Exception("Methods ReturnValue is null");
 
-            return new Method()
-            {
-                ReturnValue = _returnValueFactory.Create(methodInfo.ReturnValue)
-            };
+            return new Method(
+                ReturnValue: _returnValueFactory.Create(methodInfo.ReturnValue)
+            );
         }
     }
 }

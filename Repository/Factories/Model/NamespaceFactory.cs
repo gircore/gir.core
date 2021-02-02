@@ -42,13 +42,16 @@ namespace Repository
         {
             var references = new HashSet<ITypeReference>();
 
-            var nspace = new Namespace() {Name = namespaceInfo.Name, Version  = namespaceInfo.Version};
+            var nspace = new Namespace(
+                name: namespaceInfo.Name, 
+                version: namespaceInfo.Version
+            );
 
             SetAliases(nspace, namespaceInfo.Aliases);
             SetClasses(nspace, namespaceInfo.Classes, references);
             SetCallbacks(nspace, namespaceInfo.Callbacks, references);
-            SetEnumerations(nspace, namespaceInfo.Enumerations, false);
-            SetEnumerations(nspace, namespaceInfo.Bitfields, true);
+            SetEnumerations(nspace, namespaceInfo.Enumerations);
+            SetBitfields(nspace, namespaceInfo.Bitfields);
             SetInterfaces(nspace, namespaceInfo.Interfaces);
             SetRecords(nspace, namespaceInfo.Records, references);
             SetFunctions(nspace, namespaceInfo.Functions, references);
@@ -58,17 +61,16 @@ namespace Repository
 
         private void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
         {
-            nspace.Aliases = aliases.Select(alias => _aliasFactory.Create(alias)).ToList();
+            foreach(var alias in aliases)
+                nspace.AddAlias(_aliasFactory.Create(alias));
         }
 
         private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes, HashSet<ITypeReference> references)
         {
-            nspace.Classes = new List<Class>();
-
             foreach (var classInfo in classes)
             {
                 var cls = _classFactory.Create(classInfo, nspace);
-                nspace.Classes.Add(cls);
+                nspace.AddClass(cls);
                 
                 AddReference(references, cls.Parent);
                 AddReferences(references, cls.Implements);
@@ -77,42 +79,41 @@ namespace Repository
 
         private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks, HashSet<ITypeReference> references)
         {
-            nspace.Callbacks = new List<Callback>();
             foreach (CallbackInfo callbackInfo in callbacks)
             {
                 var callback = _callbackFactory.Create(callbackInfo, nspace);
-                nspace.Callbacks.Add(callback);
+                nspace.AddCallback(callback);
                 
                 AddReference(references, callback.ReturnValue.Type);
                 AddReferences(references, callback.Arguments.Select(x => x.Type));
             }
         }
-
-        private void SetEnumerations(Namespace nspace, IEnumerable<EnumInfo> enumerations, bool isBitfield)
+        
+        private void SetEnumerations(Namespace nspace, IEnumerable<EnumInfo> enumerations)
         {
-            var list = enumerations.Select(@enum => 
-                _enumartionFactory.Create(@enum, nspace, isBitfield)
-            ).ToList();
+            foreach (var enumInfo in enumerations)
+                nspace.AddEnumeration(_enumartionFactory.Create(enumInfo, nspace, false));
 
-            if (isBitfield)
-                nspace.Bitfields = list;
-            else
-                nspace.Enumerations = list;
+        }
+
+        private void SetBitfields(Namespace nspace, IEnumerable<EnumInfo> enumerations)
+        {
+            foreach (var enumInfo in enumerations)
+                nspace.AddBitfield(_enumartionFactory.Create(enumInfo, nspace, true));
         }
 
         private void SetInterfaces(Namespace nspace, IEnumerable<InterfaceInfo> ifaces)
         {
-            nspace.Interfaces = ifaces.Select(x => _interfaceFactory.Create(x, nspace)).ToList();
+            foreach(var iface in ifaces)
+                nspace.AddInterface(_interfaceFactory.Create(iface, nspace));
         }
 
         private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records, HashSet<ITypeReference> references)
         {
-            nspace.Records = new List<Record>();
-
             foreach (RecordInfo recordInfo in records)
             {
                 var record = _recordFactory.Create(recordInfo, nspace);
-                nspace.Records.Add(record);
+                nspace.AddRecord(record);
                 
                 AddReference(references, record.GLibClassStructFor);
             }
@@ -120,11 +121,10 @@ namespace Repository
 
         private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions, HashSet<ITypeReference> references)
         {
-            nspace.Functions = new List<Method>();
             foreach (MethodInfo info in functions)
             {
                 var method = _methodFactory.Create(info, nspace);
-                nspace.Functions.Add(method);
+                nspace.AddFunction(method);
                 
                 AddReference(references, method.ReturnValue.Type);
             }

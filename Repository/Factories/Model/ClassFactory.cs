@@ -29,15 +29,14 @@ namespace Repository.Factories
             if (cls.Name is null || cls.TypeName is null)
                 throw new Exception("Class is missing data");
             
-            return new Class()
-            {
-                Namespace = @namespace,
-                NativeName = cls.Name,
-                ManagedName = cls.Name,
-                CType = cls.TypeName,
-                Parent = _typeReferenceFactory.CreateWithNull(cls.Parent, false),
-                Implements = GetTypeReferences(cls.Implements).ToList(),
-            };
+            return new Class(
+                @namespace: @namespace,
+                nativeName: cls.Name,
+                managedName: cls.Name,
+                ctype: cls.TypeName,
+                parent: _typeReferenceFactory.CreateWithNull(cls.Parent, false),
+                implements: GetTypeReferences(cls.Implements).ToList()
+            );
         }
 
         private IEnumerable<ITypeReference> GetTypeReferences(IEnumerable<ImplementInfo> implements)
