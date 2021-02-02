@@ -1,4 +1,5 @@
-﻿using Repository.Model;
+﻿using System;
+using Repository.Model;
 using Repository.Xml;
 
 #nullable enable
@@ -10,14 +11,17 @@ namespace Repository.Factories
         Enumeration Create(EnumInfo @enum, Namespace @namespace, bool hasFlags);
     }
 
-    public class EnumartionFactory : IEnumartionFactory
+    public class EnumerationFactory : IEnumartionFactory
     {
         public Enumeration Create(EnumInfo @enum, Namespace @namespace, bool hasFlags)
         {
+            if (@enum.Name is null)
+                throw new Exception("Enum has no name");
+
             return new Enumeration(
-                @namespace: @namespace, 
-                nativeName: @enum.Name, 
-                managedName: @enum.Name, 
+                @namespace: @namespace,
+                nativeName: @enum.Name,
+                managedName: @enum.Name,
                 hasFlags: hasFlags
             );
         }

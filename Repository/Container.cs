@@ -16,7 +16,7 @@ namespace Repository
     [Register(typeof(ArgumentFactory), typeof(IArgumentFactory))]
     [Register(typeof(ArgumentsFactory), typeof(IArgumentsFactory))]
     [Register(typeof(CallbackFactory), typeof(ICallbackFactory))]
-    [Register(typeof(EnumartionFactory), typeof(IEnumartionFactory))]
+    [Register(typeof(EnumerationFactory), typeof(IEnumartionFactory))]
     [Register(typeof(InterfaceFactory), typeof(IInterfaceFactory))]
     [Register(typeof(RecordFactory), typeof(IRecordFactory))]
     [Register(typeof(MethodFactory), typeof(IMethodFactory))]
