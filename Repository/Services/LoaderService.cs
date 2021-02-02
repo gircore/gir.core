@@ -67,11 +67,9 @@ namespace Repository
                     return project;
 
                 var dependencies = LoadDependencies(loadedProjects, repoinfo.Includes);
-                
-                //TODO: References obsolete?
                 var (nspace, references) = _namespaceFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
                 
-                project = new LoadedProject(nspace.ToCanonicalName(), nspace, dependencies);
+                project = new LoadedProject(nspace.ToCanonicalName(), nspace, dependencies, references);
                 loadedProjects.Add(project);
                 Log.Information($"Loaded '{nspace.ToCanonicalName()}' (provided by '{target.Name}')");
 

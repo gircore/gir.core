@@ -25,7 +25,6 @@ namespace Repository
         private readonly IInterfaceFactory _interfaceFactory;
         private readonly IRecordFactory _recordFactory;
         private readonly IMethodFactory _methodFactory;
-        private readonly HashSet<ITypeReference> _references;
 
         public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory, IInterfaceFactory interfaceFactory, IRecordFactory recordFactory, IMethodFactory methodFactory)
         {
@@ -37,25 +36,24 @@ namespace Repository
             _interfaceFactory = interfaceFactory;
             _recordFactory = recordFactory;
             _methodFactory = methodFactory;
-            _references = new HashSet<ITypeReference>();
         }
 
         public (Namespace, IEnumerable<ITypeReference>) CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
         {
-            _references.Clear();
+            var references = new HashSet<ITypeReference>();
 
             var nspace = new Namespace() {Name = namespaceInfo.Name, Version  = namespaceInfo.Version};
 
             SetAliases(nspace, namespaceInfo.Aliases);
-            SetClasses(nspace, namespaceInfo.Classes);
-            SetCallbacks(nspace, namespaceInfo.Callbacks);
+            SetClasses(nspace, namespaceInfo.Classes, references);
+            SetCallbacks(nspace, namespaceInfo.Callbacks, references);
             SetEnumerations(nspace, namespaceInfo.Enumerations, false);
             SetEnumerations(nspace, namespaceInfo.Bitfields, true);
             SetInterfaces(nspace, namespaceInfo.Interfaces);
-            SetRecords(nspace, namespaceInfo.Records);
-            SetFunctions(nspace, namespaceInfo.Functions);
+            SetRecords(nspace, namespaceInfo.Records, references);
+            SetFunctions(nspace, namespaceInfo.Functions, references);
 
-            return (nspace, _references);
+            return (nspace, references);
         }
 
         private void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
@@ -63,7 +61,7 @@ namespace Repository
             nspace.Aliases = aliases.Select(alias => _aliasFactory.Create(alias)).ToList();
         }
 
-        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes)
+        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes, HashSet<ITypeReference> references)
         {
             nspace.Classes = new List<Class>();
 
@@ -72,12 +70,12 @@ namespace Repository
                 var cls = _classFactory.Create(classInfo, nspace);
                 nspace.Classes.Add(cls);
                 
-                AddReference(cls.Parent);
-                AddReferences(cls.Implements);
+                AddReference(references, cls.Parent);
+                AddReferences(references, cls.Implements);
             }
         }
 
-        private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks)
+        private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks, HashSet<ITypeReference> references)
         {
             nspace.Callbacks = new List<Callback>();
             foreach (CallbackInfo callbackInfo in callbacks)
@@ -85,8 +83,8 @@ namespace Repository
                 var callback = _callbackFactory.Create(callbackInfo, nspace);
                 nspace.Callbacks.Add(callback);
                 
-                AddReference(callback.ReturnValue.Type);
-                AddReferences(callback.Arguments.Select(x => x.Type));
+                AddReference(references, callback.ReturnValue.Type);
+                AddReferences(references, callback.Arguments.Select(x => x.Type));
             }
         }
 
@@ -107,7 +105,7 @@ namespace Repository
             nspace.Interfaces = ifaces.Select(x => _interfaceFactory.Create(x, nspace)).ToList();
         }
 
-        private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records)
+        private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records, HashSet<ITypeReference> references)
         {
             nspace.Records = new List<Record>();
 
@@ -116,11 +114,11 @@ namespace Repository
                 var record = _recordFactory.Create(recordInfo, nspace);
                 nspace.Records.Add(record);
                 
-                AddReference(record.GLibClassStructFor);
+                AddReference(references, record.GLibClassStructFor);
             }
         }
 
-        private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions)
+        private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions, HashSet<ITypeReference> references)
         {
             nspace.Functions = new List<Method>();
             foreach (MethodInfo info in functions)
@@ -128,22 +126,22 @@ namespace Repository
                 var method = _methodFactory.Create(info, nspace);
                 nspace.Functions.Add(method);
                 
-                AddReference(method.ReturnValue.Type);
+                AddReference(references, method.ReturnValue.Type);
             }
         }
 
-        private void AddReference(ITypeReference? reference)
+        private void AddReference(HashSet<ITypeReference> references, ITypeReference? reference)
         {
             if (reference is null)
                 return;
 
-            _references.Add(reference);
+            references.Add(reference);
         }
 
-        private void AddReferences(IEnumerable<ITypeReference> references)
+        private void AddReferences(HashSet<ITypeReference> referencesSet, IEnumerable<ITypeReference> references)
         {
             foreach (var reference in references)
-                _references.Add(reference);
+                referencesSet.Add(reference);
         }
     }
 }
