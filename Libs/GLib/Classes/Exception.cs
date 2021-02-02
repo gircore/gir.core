@@ -26,7 +26,7 @@ namespace GLib
         {
             _errorHandle.Dispose();
         }
-        
+
         #endregion
     }
 }

@@ -16,7 +16,7 @@ namespace GObject
             // prevent the delegate from being collected by the GC
             private readonly ClosureMarshal? _marshalCallback;
             private readonly ActionRefValues? _callback;
-            private readonly Closure.ClosureSafeHandle _safeHandle; 
+            private readonly Closure.ClosureSafeHandle _safeHandle;
 
             #endregion
 
