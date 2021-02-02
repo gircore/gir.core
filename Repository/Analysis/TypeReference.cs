@@ -16,19 +16,24 @@ namespace Repository.Analysis
         IType? Type { get;  }
         bool IsForeign { get;  }
         bool IsArray { get; }
+        string Name { get; }
     }
 
-    public class TypeReference : IEquatable<TypeReference>, ITypeReference
+    internal interface IResolveable : ITypeReference
+    {
+        void ResolveAs(IType type, ReferenceType referenceType);
+    }
+    
+    public class TypeReference : IEquatable<TypeReference>, ITypeReference, IResolveable
     {
         public IType? Type { get; private set; }
         public bool IsForeign { get; private set; }
         public bool IsArray { get; }
-
-        internal string UnresolvedName { get; }
+        public string Name { get; }
 
         public TypeReference(string unresolvedName, bool isArray)
         {
-            UnresolvedName = unresolvedName;
+            Name = unresolvedName;
             IsArray = isArray;
         }
 
@@ -38,34 +43,31 @@ namespace Repository.Analysis
 
             if (Type is null)
                 throw new InvalidOperationException("The Type Reference has not been resolved. It cannot be printed.");
-            
+
             // Fundamental Type
             if (Type.Namespace == null)
                 return Type.ManagedName;
-            
+
             // External Array
             if (IsForeign && IsArray)
                 return $"{Type.Namespace}.{Type.ManagedName}[]";
-            
+
             // External Type
             if (IsForeign)
                 return $"{Type.Namespace}.{Type.ManagedName}";
-            
+
             // Internal Array
             if (IsArray)
                 return $"{Type.ManagedName}[]";
-            
+
             // Internal Type
             return Type.ManagedName;
         }
 
-        internal void ResolveAs(IType type, ReferenceType referenceType)
+        public void ResolveAs(IType type, ReferenceType referenceType)
         {
-            if (Type is null) //TODO: If obsolete?
-            {
-                Type = type;
-                IsForeign = (referenceType == ReferenceType.External);
-            }
+            Type = type;
+            IsForeign = (referenceType == ReferenceType.External);
         }
 
         public bool Equals(TypeReference? other)
@@ -76,8 +78,8 @@ namespace Repository.Analysis
             if (ReferenceEquals(this, other))
                 return true;
 
-            return IsArray == other.IsArray 
-                   && UnresolvedName == other.UnresolvedName;
+            return IsArray == other.IsArray
+                   && Name == other.Name;
         }
 
         public override bool Equals(object? obj)
@@ -90,7 +92,7 @@ namespace Repository.Analysis
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(IsArray, UnresolvedName);
+            return HashCode.Combine(IsArray, Name);
         }
     }
 }

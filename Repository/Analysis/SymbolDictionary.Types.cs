@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Repository.Model;
 
+#nullable enable
+
 namespace Repository.Analysis
 {
     public partial class SymbolDictionary
@@ -24,7 +26,7 @@ namespace Repository.Analysis
             public IType GetType(string name)
                 => _typeDict[name];
 
-            public bool TryGetType(string name, [NotNullWhen(true)] out IType type)
+            public bool TryGetType(string name, [NotNullWhen(true)] out IType? type)
                 => _typeDict.TryGetValue(name, out type);
         }
     }

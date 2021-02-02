@@ -137,7 +137,7 @@ namespace Repository.Analysis
         private IType GetTypeInternal(TypeDictionary symbolDict, string symbol)
         {
             // Check Fundamental Types
-            if (_defaultDict.TryGetType(symbol, out IType info))
+            if (_defaultDict.TryGetType(symbol, out IType? info))
                 return info;
 
             // Check Normal

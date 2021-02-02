@@ -1,18 +1,25 @@
 ﻿using System;
 using Repository.Model;
 
+#nullable enable
+
 namespace Repository.Analysis
 {
-    // A view of the type dictionary from a specific namespace (Immutable access only)
+    /// <summary>
+    /// A TypeDictionaryView allows us to query qualified and unqualified names
+    /// from the perspective of a given namespace. Unqualified names are assumed to be defined in the current namespace. For project 'Gtk':
+    ///  - 'Application'     resolves to 'Gtk.Application' (Internal)
+    ///  - 'Gio.Application' resolves to 'Gio.Application' (External)
+    /// </summary>
     public class SymbolDictionaryView
     {
-        public SymbolDictionary SymbolDict { get; }
-        public string Namespace { get; }
+        private readonly SymbolDictionary _symbolDict;
+        private readonly string _namespace;
         
         public SymbolDictionaryView(SymbolDictionary symbolDict, string nspace)
         {
-            SymbolDict = symbolDict;
-            Namespace = nspace;
+            _symbolDict = symbolDict;
+            _namespace = nspace;
         }
 
         /// <summary>
@@ -33,13 +40,13 @@ namespace Repository.Analysis
             {
                 // We are in the form 'Namespace.Type'
                 var components = typeName.Split('.', 2);
-                return SymbolDict.GetType(components[0], components[1]);
+                return _symbolDict.GetType(components[0], components[1]);
             }
 
             // We are not qualified by a namespace, so assume this one.
             // It might also be a fundamental type, but the type dict
             // takes care of this.
-            return SymbolDict.GetType(Namespace, typeName);
+            return _symbolDict.GetType(_namespace, typeName);
         }
     }
 }
