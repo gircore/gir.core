@@ -14,10 +14,10 @@ namespace GObject
     {
         #region Fields
 
-        private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new ();
-        private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new ();
+        private static readonly Dictionary<IntPtr, ToggleRef<Object>> SubclassObjects = new();
+        private static readonly Dictionary<IntPtr, WeakReference<Object>> WrapperObjects = new();
 
-        private readonly Dictionary<string, SignalHelper> _signals = new ();
+        private readonly Dictionary<string, SignalHelper> _signals = new();
         private ObjectSafeHandle _safeHandle;
 
         #endregion
