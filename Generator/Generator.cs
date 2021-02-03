@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Repository;
 using Repository.Analysis;
 using Repository.Model;
+using StrongInject;
 
 namespace Generator
 {
@@ -28,6 +29,8 @@ namespace Generator
             var repository = new Repository.Repository();
             LoadedProjects = repository.Load(ResolveFile, projects).ToList();
 
+            WriteAsync();
+            
             try
             {
                 Log.Information("Processing introspection data");
@@ -68,17 +71,18 @@ namespace Generator
         // TODO: Add more configuration options to Writer
         public int WriteAsync()
         {
-            List<Task> AsyncTasks = new();
-
-            foreach (LoadedProject proj in LoadedProjects)
+            var writerService = new Container().Resolve().Value;
+            
+            List<Task> asyncTasks = new();
+            foreach (ILoadedProject proj in LoadedProjects)
             {
-                var writer = new Writer(proj);
-                AsyncTasks.AddRange(writer.GetAsyncTasks());
+                var task = writerService.WriteAsync(proj);
+                asyncTasks.Add(task);
             }
 
             try
             {
-                Task.WaitAll(AsyncTasks.ToArray());
+                Task.WaitAll(asyncTasks.ToArray());
                 Log.Information("Writing completed successfully");
                 return 0;
             }

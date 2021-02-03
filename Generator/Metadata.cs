@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+
+#nullable enable
 
 namespace Generator
 {
@@ -10,7 +13,7 @@ namespace Generator
 
         private static Dictionary<string, object> GetDictOrDefault(object key)
         {
-            if (_metadataDict.TryGetValue(key, out Dictionary<string, object> dict))
+            if (_metadataDict.TryGetValue(key, out Dictionary<string, object>? dict))
                 return dict;
 
             _metadataDict[key] = new Dictionary<string, object>();
@@ -26,13 +29,13 @@ namespace Generator
         public static T GetMetadata<T>(this object obj, string key)
             => (T)GetDictOrDefault(obj)[key];
         
-        public static bool TryGetMetadata(this object obj, string key, out object value)
+        public static bool TryGetMetadata(this object obj, string key, [NotNullWhen(true)] out object? value)
             => GetDictOrDefault(obj).TryGetValue(key, out value);
 
-        public static bool TryGetMetadata<T>(this object obj, string key, out T value)
+        public static bool TryGetMetadata<T>(this object obj, string key, [NotNullWhen(true)] out T? value)
         {
-            var result = GetDictOrDefault(obj).TryGetValue(key, out object val);
-            value = (T) val;
+            var result = GetDictOrDefault(obj).TryGetValue(key, out object? val);
+            value = (T?) val;
 
             return result;
         }

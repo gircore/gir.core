@@ -1,8 +1,6 @@
 ﻿using System;
 using Repository.Model;
 
-#nullable enable
-
 namespace Repository.Analysis
 {
     public enum ReferenceType
@@ -24,16 +22,16 @@ namespace Repository.Analysis
         void ResolveAs(IType type, ReferenceType referenceType);
     }
     
-    public class TypeReference : IEquatable<TypeReference>, ITypeReference, IResolveable
+    public record TypeReference : ITypeReference, IResolveable
     {
         public IType? Type { get; private set; }
         public bool IsForeign { get; private set; }
         public bool IsArray { get; }
         public string Name { get; }
 
-        public TypeReference(string unresolvedName, bool isArray)
+        public TypeReference(string name, bool isArray)
         {
-            Name = unresolvedName;
+            Name = name;
             IsArray = isArray;
         }
 
@@ -42,7 +40,7 @@ namespace Repository.Analysis
             // TODO: More advanced type resolution logic?
 
             if (Type is null)
-                throw new InvalidOperationException("The Type Reference has not been resolved. It cannot be printed.");
+                throw new InvalidOperationException($"The Type for {Name} Reference has not been resolved. It cannot be printed.");
 
             // Fundamental Type
             if (Type.Namespace == null)
@@ -68,31 +66,6 @@ namespace Repository.Analysis
         {
             Type = type;
             IsForeign = (referenceType == ReferenceType.External);
-        }
-
-        public bool Equals(TypeReference? other)
-        {
-            if (ReferenceEquals(null, other))
-                return false;
-
-            if (ReferenceEquals(this, other))
-                return true;
-
-            return IsArray == other.IsArray
-                   && Name == other.Name;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj?.GetType() != this.GetType())
-                return false;
-
-            return Equals((TypeReference) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(IsArray, Name);
         }
     }
 }

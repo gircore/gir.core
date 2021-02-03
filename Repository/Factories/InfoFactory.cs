@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Repository.Xml;
 
-#nullable enable
-
 namespace Repository.Services
 {
     public record Info(string Name, string Version)

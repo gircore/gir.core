@@ -6,8 +6,6 @@ using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
 
-#nullable enable
-
 namespace Repository.Factories
 {
     public interface IClassFactory

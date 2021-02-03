@@ -10,11 +10,6 @@ namespace Repository.Services
 
     public class XmlService : IXmlService
     {
-        public XmlService()
-        {
-            
-        }
-        
         public T Deserialize<T>(FileInfo girFile)
         {
             var serializer = new XmlSerializer(

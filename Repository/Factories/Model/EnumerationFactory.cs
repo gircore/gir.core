@@ -2,8 +2,6 @@
 using Repository.Model;
 using Repository.Xml;
 
-#nullable enable
-
 namespace Repository.Factories
 {
     public interface IEnumartionFactory

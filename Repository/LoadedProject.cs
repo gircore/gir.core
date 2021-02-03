@@ -3,8 +3,6 @@ using Repository.Analysis;
 using Repository.Graph;
 using Repository.Model;
 
-#nullable enable
-
 namespace Repository
 {
     public interface ILoadedProject : INode<ILoadedProject>

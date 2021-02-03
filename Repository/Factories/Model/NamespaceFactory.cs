@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Repository.Analysis;
 using Repository.Factories;
 using Repository.Model;
-using Repository.Services;
 using Repository.Xml;
-
-#nullable enable
 
 namespace Repository
 {
@@ -17,7 +15,6 @@ namespace Repository
 
     public class NamespaceFactory : INamespaceFactory
     {
-        private readonly ITypeReferenceFactory _typeReferenceFactory;
         private readonly IClassFactory _classFactory;
         private readonly IAliasFactory _aliasFactory;
         private readonly ICallbackFactory _callbackFactory;
@@ -26,9 +23,8 @@ namespace Repository
         private readonly IRecordFactory _recordFactory;
         private readonly IMethodFactory _methodFactory;
 
-        public NamespaceFactory(ITypeReferenceFactory typeReferenceFactory, IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory, IInterfaceFactory interfaceFactory, IRecordFactory recordFactory, IMethodFactory methodFactory)
+        public NamespaceFactory(IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory, IInterfaceFactory interfaceFactory, IRecordFactory recordFactory, IMethodFactory methodFactory)
         {
-            _typeReferenceFactory = typeReferenceFactory;
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;
             _callbackFactory = callbackFactory;
@@ -40,8 +36,14 @@ namespace Repository
 
         public (Namespace, IEnumerable<ITypeReference>) CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
         {
-            var references = new HashSet<ITypeReference>();
+            var references = new List<ITypeReference>();
 
+            if (namespaceInfo.Name is null)
+                throw new Exception("Namespace does not have a name");
+
+            if (namespaceInfo.Version is null)
+                throw new Exception($"Namespace {namespaceInfo.Name} does not have version");
+            
             var nspace = new Namespace(
                 name: namespaceInfo.Name, 
                 version: namespaceInfo.Version
@@ -65,7 +67,7 @@ namespace Repository
                 nspace.AddAlias(_aliasFactory.Create(alias));
         }
 
-        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes, HashSet<ITypeReference> references)
+        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes, List<ITypeReference> references)
         {
             foreach (var classInfo in classes)
             {
@@ -77,7 +79,7 @@ namespace Repository
             }
         }
 
-        private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks, HashSet<ITypeReference> references)
+        private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks, List<ITypeReference> references)
         {
             foreach (CallbackInfo callbackInfo in callbacks)
             {
@@ -108,7 +110,7 @@ namespace Repository
                 nspace.AddInterface(_interfaceFactory.Create(iface, nspace));
         }
 
-        private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records, HashSet<ITypeReference> references)
+        private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records, List<ITypeReference> references)
         {
             foreach (RecordInfo recordInfo in records)
             {
@@ -119,18 +121,18 @@ namespace Repository
             }
         }
 
-        private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions, HashSet<ITypeReference> references)
+        private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions, List<ITypeReference> references)
         {
             foreach (MethodInfo info in functions)
             {
-                var method = _methodFactory.Create(info, nspace);
+                var method = _methodFactory.Create(info);
                 nspace.AddFunction(method);
                 
                 AddReference(references, method.ReturnValue.Type);
             }
         }
 
-        private void AddReference(HashSet<ITypeReference> references, ITypeReference? reference)
+        private void AddReference(List<ITypeReference> references, ITypeReference? reference)
         {
             if (reference is null)
                 return;
@@ -138,7 +140,7 @@ namespace Repository
             references.Add(reference);
         }
 
-        private void AddReferences(HashSet<ITypeReference> referencesSet, IEnumerable<ITypeReference> references)
+        private void AddReferences(List<ITypeReference> referencesSet, IEnumerable<ITypeReference> references)
         {
             foreach (var reference in references)
                 referencesSet.Add(reference);

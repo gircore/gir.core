@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable enable
-
 namespace Repository.Graph
 {
     public interface IDependencyResolverService<T> where T : INode<T>

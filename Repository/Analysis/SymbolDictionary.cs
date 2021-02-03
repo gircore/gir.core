@@ -2,8 +2,6 @@
 using System.Diagnostics;
 using Repository.Model;
 
-#nullable enable
-
 namespace Repository.Analysis
 {
     public partial class SymbolDictionary

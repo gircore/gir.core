@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Repository.Xml
+﻿namespace Repository.Xml
 {
     public interface ITypeOrArray
     {

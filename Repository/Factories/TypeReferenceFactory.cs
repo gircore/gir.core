@@ -1,8 +1,6 @@
 ﻿using Repository.Analysis;
 using Repository.Xml;
 
-#nullable enable
-
 namespace Repository.Services
 {
     public interface ITypeReferenceFactory

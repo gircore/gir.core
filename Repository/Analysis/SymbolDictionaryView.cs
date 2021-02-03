@@ -1,8 +1,6 @@
 ﻿using System;
 using Repository.Model;
 
-#nullable enable
-
 namespace Repository.Analysis
 {
     /// <summary>

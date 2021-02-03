@@ -1,7 +1,4 @@
-using System.Linq;
 using System.Xml.Serialization;
-
-#nullable enable
 
 namespace Repository.Xml
 {

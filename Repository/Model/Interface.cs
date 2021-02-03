@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-namespace Repository.Model
+﻿namespace Repository.Model
 {
     public class Interface : BasicType
     {

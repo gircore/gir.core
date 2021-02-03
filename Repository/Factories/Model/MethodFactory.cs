@@ -6,7 +6,7 @@ namespace Repository.Factories
 {
     public interface IMethodFactory
     {
-        Method Create(MethodInfo methodInfo, Namespace @namespace);
+        Method Create(MethodInfo methodInfo);
     }
 
     public class MethodFactory : IMethodFactory
@@ -18,7 +18,7 @@ namespace Repository.Factories
             _returnValueFactory = returnValueFactory;
         }
 
-        public Method Create(MethodInfo methodInfo, Namespace @namespace)
+        public Method Create(MethodInfo methodInfo)
         {
             if (methodInfo.ReturnValue is null)
                 throw new Exception("Methods ReturnValue is null");

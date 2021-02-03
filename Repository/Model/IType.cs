@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-namespace Repository.Model
+﻿namespace Repository.Model
 {
     /// <summary>
     /// A type is considered to be any instantiable type

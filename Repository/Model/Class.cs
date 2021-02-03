@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Repository.Analysis;
 
-#nullable enable
-
 namespace Repository.Model
 {
     public class Class : BasicType

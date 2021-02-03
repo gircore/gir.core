@@ -2,8 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Repository.Model;
 
-#nullable enable
-
 namespace Repository.Analysis
 {
     public partial class SymbolDictionary
@@ -13,9 +11,9 @@ namespace Repository.Analysis
         private class TypeDictionary
         {
             private readonly Dictionary<string, IType> _typeDict = new();
-            private string Namespace { get; }
+            private string? Namespace { get; }
 
-            public TypeDictionary(string nspace)
+            public TypeDictionary(string? nspace)
             {
                 Namespace = nspace;
             }

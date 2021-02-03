@@ -1,7 +1,5 @@
 ﻿using Repository.Analysis;
 
-#nullable enable
-
 namespace Repository.Model
 {
     public class Record : BasicType
