@@ -1,10 +1,13 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Generator.Services;
 using Repository;
+using Repository.Analysis;
 using Repository.Model;
 using Scriban;
+using Scriban.Runtime;
 
 #nullable enable
 
@@ -33,6 +36,13 @@ namespace Generator
                     subfolder: "Delegates",
                     objects: loadedProject.Namespace.Callbacks
                 );
+
+                await WriteTypes(
+                    projectName: loadedProject.Name,
+                    templateName: "class.sbntxt",
+                    subfolder: "Classes",
+                    objects: loadedProject.Namespace.Classes
+                );
             });
         }
         
@@ -56,9 +66,19 @@ namespace Generator
             // Generate a file for each class
             foreach (IType obj in objects)
             {
-                var result = await template.RenderAsync(new
+                var scriptObject = new ScriptObject();
+                scriptObject.Import(obj);
+                scriptObject.Import("write_arguments", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteArguments));
+                scriptObject.Import("write_typereference", new Func<ITypeReference, string>(TemplateWriter.WriteTypeReference));
+                scriptObject.Import("write_inheritance", new Func<ITypeReference?, IEnumerable<ITypeReference>, string>(TemplateWriter.WriteInheritance));
+                
+                var templateContext = new TemplateContext
                 {
-                });
+                    IndentWithInclude = true
+                };
+
+                templateContext.PushGlobal(scriptObject);
+                var result = await template.RenderAsync(templateContext);
 
                 var path = Path.Combine(folder, $"{obj.ManagedName}.Generated.cs");
                 await File.WriteAllTextAsync(path, result);

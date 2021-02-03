@@ -35,33 +35,6 @@ namespace Repository.Analysis
             IsArray = isArray;
         }
 
-        public override string ToString()
-        {
-            // TODO: More advanced type resolution logic?
-
-            if (Type is null)
-                throw new InvalidOperationException($"The Type for {Name} Reference has not been resolved. It cannot be printed.");
-
-            // Fundamental Type
-            if (Type.Namespace == null)
-                return Type.ManagedName;
-
-            // External Array
-            if (IsForeign && IsArray)
-                return $"{Type.Namespace}.{Type.ManagedName}[]";
-
-            // External Type
-            if (IsForeign)
-                return $"{Type.Namespace}.{Type.ManagedName}";
-
-            // Internal Array
-            if (IsArray)
-                return $"{Type.ManagedName}[]";
-
-            // Internal Type
-            return Type.ManagedName;
-        }
-
         public void ResolveAs(IType type, ReferenceType referenceType)
         {
             Type = type;
