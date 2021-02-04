@@ -12,10 +12,12 @@ namespace Repository.Factories
     public class MethodFactory : IMethodFactory
     {
         private readonly IReturnValueFactory _returnValueFactory;
+        private readonly IArgumentsFactory _argumentsFactory;
 
-        public MethodFactory(IReturnValueFactory returnValueFactory)
+        public MethodFactory(IReturnValueFactory returnValueFactory, IArgumentsFactory argumentsFactory)
         {
             _returnValueFactory = returnValueFactory;
+            _argumentsFactory = argumentsFactory;
         }
 
         public Method Create(MethodInfo methodInfo)
@@ -28,7 +30,8 @@ namespace Repository.Factories
 
             return new Method(
                 name: methodInfo.Name,
-                returnValue: _returnValueFactory.Create(methodInfo.ReturnValue)
+                returnValue: _returnValueFactory.Create(methodInfo.ReturnValue),
+                arguments: _argumentsFactory.Create(methodInfo.Parameters)
             );
         }
     }

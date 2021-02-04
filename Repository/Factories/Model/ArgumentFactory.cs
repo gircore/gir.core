@@ -1,4 +1,5 @@
-﻿using Repository.Model;
+﻿using System;
+using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
 
@@ -41,12 +42,15 @@ namespace Repository.Factories
                 _ => Transfer.Full // TODO: Good default value? 
             };
 
+            if (parameterInfo.Name is null)
+                throw new Exception("Argument name is null");
+            
             return new Argument(
-                Name: parameterInfo.Name,
-                Type: _typeReferenceFactory.Create(parameterInfo),
-                Direction: direction,
-                Transfer: transfer,
-                Nullable: parameterInfo.Nullable
+                name: parameterInfo.Name,
+                typeReference: _typeReferenceFactory.Create(parameterInfo),
+                direction: direction,
+                transfer: transfer,
+                nullable: parameterInfo.Nullable
             );
         }
     }

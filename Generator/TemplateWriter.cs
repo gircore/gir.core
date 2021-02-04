@@ -13,7 +13,7 @@ namespace Generator
     {
         public static string WriteArguments(IEnumerable<Argument> arguments)
         {
-            var args = arguments.Select(x => WriteTypeReference(x.Type) + " " + x.Name);
+            var args = arguments.Select(x => WriteTypeReference(x.TypeReference) + " " + x.Name);
             return string.Join(", ", args);
         }
 
@@ -65,7 +65,7 @@ namespace Generator
         public static string WriteMethod(Method method)
         {
             var returnValue = WriteTypeReference(method.ReturnValue.TypeReference);
-            return $"public static extern {returnValue} {method.Name}();\r\n";
+            return $"public static extern {returnValue} {method.Name}({WriteArguments(method.Arguments)});\r\n";
         }
     }
 }

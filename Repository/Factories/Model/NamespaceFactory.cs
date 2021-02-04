@@ -74,9 +74,12 @@ namespace Repository
                 var cls = _classFactory.Create(classInfo, nspace);
                 nspace.AddClass(cls);
                 
+                //TODO: The following calls are somehow bad code. We need to know the type references of 
+                //each object in the class structure. This should somehow work automatically
                 AddReference(references, cls.Parent);
                 AddReferences(references, cls.Implements);
                 AddReferences(references, cls.Methods.Select(x => x.ReturnValue.TypeReference));
+                AddReferences(references, cls.Methods.SelectMany(x => x.Arguments).Select(x => x.TypeReference));
             }
         }
 
@@ -88,7 +91,7 @@ namespace Repository
                 nspace.AddCallback(callback);
                 
                 AddReference(references, callback.ReturnValue.TypeReference);
-                AddReferences(references, callback.Arguments.Select(x => x.Type));
+                AddReferences(references, callback.Arguments.Select(x => x.TypeReference));
             }
         }
         

@@ -18,13 +18,20 @@ namespace Repository.Factories
         {
             _argumentFactory = argumentFactory;
         }
-        
+
         public IEnumerable<Argument> Create(ParametersInfo? parameters)
         {
-            if (parameters is null)
-                return Enumerable.Empty<Argument>();
+            var list = new List<Argument>();
 
-            return parameters.Parameters.Select(arg => _argumentFactory.Create(arg));
+            if (parameters is { })
+            {
+                if (parameters.InstanceParameter is { })
+                    list.Add(_argumentFactory.Create(parameters.InstanceParameter));
+
+                list.AddRange(parameters.Parameters.Select(arg => _argumentFactory.Create(arg)));
+            }
+
+            return list;
         }
     }
 }
