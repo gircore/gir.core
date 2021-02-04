@@ -74,7 +74,8 @@ namespace Generator
                 
                 var templateContext = new TemplateContext
                 {
-                    IndentWithInclude = true
+                    IndentWithInclude = true,
+                    TemplateLoader = new TemplateLoader()
                 };
 
                 templateContext.PushGlobal(scriptObject);

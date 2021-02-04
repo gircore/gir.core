@@ -29,8 +29,6 @@ namespace Generator
             var repository = new Repository.Repository();
             LoadedProjects = repository.Load(ResolveFile, projects).ToList();
 
-            WriteAsync();
-            
             try
             {
                 Log.Information("Processing introspection data");
