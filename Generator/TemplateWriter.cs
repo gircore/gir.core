@@ -61,5 +61,11 @@ namespace Generator
             builder.Append(string.Join(", ", refs.Select(WriteTypeReference)));
             return builder.ToString();
         }
+
+        public static string WriteMethod(Method method)
+        {
+            var returnValue = WriteTypeReference(method.ReturnValue.TypeReference);
+            return $"public static extern {returnValue} {method.Name}();\r\n";
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Repository.Model;
+﻿using Repository.Model;
 
 namespace Repository.Analysis
 {
@@ -22,7 +21,7 @@ namespace Repository.Analysis
         void ResolveAs(IType type, ReferenceType referenceType);
     }
     
-    public record TypeReference : ITypeReference, IResolveable
+    public class TypeReference : ITypeReference, IResolveable
     {
         public IType? Type { get; private set; }
         public bool IsForeign { get; private set; }

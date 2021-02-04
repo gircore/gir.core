@@ -7,7 +7,7 @@ namespace Generator.Services
     public static class CallableService
     {
         public static string WriteReturnValue(Callback callback)
-            => callback.ReturnValue.Type.ToString();
+            => callback.ReturnValue.TypeReference.ToString();
         
         public static string WriteParameters(Callback callback)
         {

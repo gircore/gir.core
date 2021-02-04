@@ -71,16 +71,16 @@ namespace Generator
         {
             var writerService = new Container().Resolve().Value;
             
-            List<Task> asyncTasks = new();
+            //List<Task> asyncTasks = new();
             foreach (ILoadedProject proj in LoadedProjects)
             {
-                var task = writerService.WriteAsync(proj);
-                asyncTasks.Add(task);
+                writerService.Write(proj);
+                //asyncTasks.Add(task);
             }
 
             try
             {
-                Task.WaitAll(asyncTasks.ToArray());
+                //Task.WaitAll(asyncTasks.ToArray());
                 Log.Information("Writing completed successfully");
                 return 0;
             }

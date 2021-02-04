@@ -16,10 +16,12 @@ namespace Repository.Factories
     public class ClassFactory : IClassFactory
     {
         private readonly ITypeReferenceFactory _typeReferenceFactory;
+        private readonly IMethodFactory _methodFactory;
 
-        public ClassFactory(ITypeReferenceFactory typeReferenceFactory)
+        public ClassFactory(ITypeReferenceFactory typeReferenceFactory, IMethodFactory methodFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
+            _methodFactory = methodFactory;
         }
         
         public Class Create(ClassInfo cls, Namespace @namespace)
@@ -33,19 +35,30 @@ namespace Repository.Factories
                 managedName: cls.Name,
                 ctype: cls.TypeName,
                 parent: _typeReferenceFactory.CreateWithNull(cls.Parent, false),
-                implements: GetTypeReferences(cls.Implements).ToList()
+                implements: GetTypeReferences(cls.Implements),
+                methods: GetMethods(cls.Methods)
             );
         }
 
         private IEnumerable<ITypeReference> GetTypeReferences(IEnumerable<ImplementInfo> implements)
         {
+            var list = new List<ITypeReference>();
+            
             foreach (ImplementInfo implement in implements)
             {
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
                 
-                yield return _typeReferenceFactory.Create(implement.Name, false);
+                list.Add(_typeReferenceFactory.Create(implement.Name, false));
             }
+
+            return list;
+        }
+
+        private IEnumerable<Method> GetMethods(IEnumerable<MethodInfo> methods)
+        {
+            //Call ToList() is important. If it is skipped each access to methods will create new method objects
+            return methods.Select(method => _methodFactory.Create(method)).ToList();
         }
     }
 }

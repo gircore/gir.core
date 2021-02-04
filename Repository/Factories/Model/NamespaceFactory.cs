@@ -76,6 +76,7 @@ namespace Repository
                 
                 AddReference(references, cls.Parent);
                 AddReferences(references, cls.Implements);
+                AddReferences(references, cls.Methods.Select(x => x.ReturnValue.TypeReference));
             }
         }
 
@@ -86,7 +87,7 @@ namespace Repository
                 var callback = _callbackFactory.Create(callbackInfo, nspace);
                 nspace.AddCallback(callback);
                 
-                AddReference(references, callback.ReturnValue.Type);
+                AddReference(references, callback.ReturnValue.TypeReference);
                 AddReferences(references, callback.Arguments.Select(x => x.Type));
             }
         }
@@ -128,7 +129,7 @@ namespace Repository
                 var method = _methodFactory.Create(info);
                 nspace.AddFunction(method);
                 
-                AddReference(references, method.ReturnValue.Type);
+                AddReference(references, method.ReturnValue.TypeReference);
             }
         }
 

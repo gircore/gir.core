@@ -20,11 +20,15 @@ namespace Repository.Factories
 
         public Method Create(MethodInfo methodInfo)
         {
+            if (methodInfo.Name is null)
+                throw new Exception("Methodinfo name is null");
+            
             if (methodInfo.ReturnValue is null)
-                throw new Exception("Methods ReturnValue is null");
+                throw new Exception($"{nameof(MethodInfo)} {methodInfo.Name} {nameof(methodInfo.ReturnValue)} is null");
 
             return new Method(
-                ReturnValue: _returnValueFactory.Create(methodInfo.ReturnValue)
+                name: methodInfo.Name,
+                returnValue: _returnValueFactory.Create(methodInfo.ReturnValue)
             );
         }
     }

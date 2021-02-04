@@ -26,31 +26,34 @@ namespace Generator
         {
             _templateReaderService = templateReaderService;
         }
+
         public Task WriteAsync(ILoadedProject loadedProject)
         {
-            return Task.Run(async () =>
-            {
-                await WriteTypes(
-                    projectName: loadedProject.Name,
-                    templateName: "delegate.sbntxt",
-                    subfolder: "Delegates",
-                    objects: loadedProject.Namespace.Callbacks
-                );
+            return Task.Run(() => Write(loadedProject));
+        }
 
-                await WriteTypes(
-                    projectName: loadedProject.Name,
-                    templateName: "class.sbntxt",
-                    subfolder: "Classes",
-                    objects: loadedProject.Namespace.Classes
-                );
-            });
+        public void Write(ILoadedProject loadedProject)
+        {
+            WriteTypes(
+                projectName: loadedProject.Name,
+                templateName: "delegate.sbntxt",
+                subfolder: "Delegates",
+                objects: loadedProject.Namespace.Callbacks
+            );
+
+            WriteTypes(
+                projectName: loadedProject.Name,
+                templateName: "class.sbntxt",
+                subfolder: "Classes",
+                objects: loadedProject.Namespace.Classes
+            );
         }
         
-        private async Task WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<IType> objects)
+        private void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<IType> objects)
         {
             var template = _templateReaderService. ReadGenericTemplate(templateName);
             var dir = CreateSubfolder(projectName, subfolder);
-            await GenerateTypes(template, dir, objects);
+            GenerateTypes(template, dir, objects);
         }
 
         private static string CreateSubfolder(string projectName, string subfolder)
@@ -61,7 +64,7 @@ namespace Generator
             return dir;
         }
 
-        private static async Task GenerateTypes(Template template, string folder, IEnumerable<IType> objects)
+        private static void GenerateTypes(Template template, string folder, IEnumerable<IType> objects)
         {
             // Generate a file for each class
             foreach (IType obj in objects)
@@ -69,8 +72,9 @@ namespace Generator
                 var scriptObject = new ScriptObject();
                 scriptObject.Import(obj);
                 scriptObject.Import("write_arguments", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteArguments));
-                scriptObject.Import("write_typereference", new Func<ITypeReference, string>(TemplateWriter.WriteTypeReference));
+                scriptObject.Import("write_type_reference", new Func<ITypeReference, string>(TemplateWriter.WriteTypeReference));
                 scriptObject.Import("write_inheritance", new Func<ITypeReference?, IEnumerable<ITypeReference>, string>(TemplateWriter.WriteInheritance));
+                scriptObject.Import("write_method", new Func<Method, string>(TemplateWriter.WriteMethod));
                 
                 var templateContext = new TemplateContext
                 {
@@ -79,10 +83,10 @@ namespace Generator
                 };
 
                 templateContext.PushGlobal(scriptObject);
-                var result = await template.RenderAsync(templateContext);
+                var result = template.Render(templateContext);
 
                 var path = Path.Combine(folder, $"{obj.ManagedName}.Generated.cs");
-                await File.WriteAllTextAsync(path, result);
+                File.WriteAllText(path, result);
             }
         }
 

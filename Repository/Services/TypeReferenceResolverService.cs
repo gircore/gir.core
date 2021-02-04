@@ -21,7 +21,7 @@ namespace Repository.Services
             {
                 Log.Information($"Analysing '{proj.Name}'.");
                 FillSymbolDictionary(symbolDictionary, proj.Namespace);
-                
+
                 Log.Information("Resolving symbol references.");
                 ResolveReferences(symbolDictionary, proj);
             }
@@ -30,7 +30,7 @@ namespace Repository.Services
         private void FillSymbolDictionary(SymbolDictionary symbolDictionary, Namespace @namespace)
         {
             AddAliases(symbolDictionary, @namespace);
-                
+
             symbolDictionary.AddTypes(@namespace.Name, @namespace.Classes);
             symbolDictionary.AddTypes(@namespace.Name, @namespace.Interfaces);
             symbolDictionary.AddTypes(@namespace.Name, @namespace.Callbacks);
@@ -46,12 +46,12 @@ namespace Repository.Services
             foreach (var reference in proj.TypeReferences)
             {
                 var symbol = view.LookupType(reference.Name);
-                    
+
                 ReferenceType kind = (symbol?.Namespace?.Name == proj.Namespace.Name)
                     ? ReferenceType.Internal
                     : ReferenceType.External;
-                
-                if(reference is IResolveable resolveable)
+
+                if (reference is IResolveable resolveable)
                     resolveable.ResolveAs(symbol, kind);
             }
         }

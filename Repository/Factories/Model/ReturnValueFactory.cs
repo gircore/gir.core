@@ -21,7 +21,7 @@ namespace Repository.Factories
         public ReturnValue Create(ReturnValueInfo returnValueInfo)
         {
             return new ReturnValue(
-                Type: _typeReferenceFactory.Create(returnValueInfo)
+                typeReference: _typeReferenceFactory.Create(returnValueInfo)
             );
         }
     }

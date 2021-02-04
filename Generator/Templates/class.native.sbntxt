@@ -1,4 +1,6 @@
 protected static class Native
 {
+    //public static extern ulong get_type();
 
+    {{ include 'methods.sbntxt' methods }}
 }

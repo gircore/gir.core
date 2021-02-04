@@ -2,5 +2,13 @@
 
 namespace Repository.Model
 {
-    public record ReturnValue(ITypeReference Type);
+    public class ReturnValue
+    {
+        public ITypeReference TypeReference { get; }
+
+        public ReturnValue(ITypeReference typeReference)
+        {
+            TypeReference = typeReference;
+        }
+    }
 }
