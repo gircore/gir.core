@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Repository.Analysis;
@@ -30,22 +29,15 @@ namespace Generator
 
         public static string WriteNativeSymbolReference(ISymbolReference symbolReference)
         {
-            if (symbolReference.Symbol is null)
-                throw new InvalidOperationException($"The symbolreference for {symbolReference.Name} Reference has not been resolved. It cannot be printed.");
-
-            if (symbolReference.Symbol is IType)
-                return "IntPtr";
-
-            return symbolReference.Symbol.ManagedName;
+            ISymbol symbol = symbolReference.GetSymbol();
+            return symbol is IType ? "IntPtr" : symbol.ManagedName;
         }
 
         public static string WriteManagedSymbolReference(ISymbolReference symbolReference)
         {
-            if (symbolReference.Symbol is null)
-                throw new InvalidOperationException($"The Type for {symbolReference.Name} Reference has not been resolved. It cannot be printed.");
-
-            if (symbolReference.Symbol is not IType type)
-                return symbolReference.Symbol.ManagedName;
+            ISymbol symbol = symbolReference.GetSymbol();
+            if (symbol is not IType type)
+                return symbol.ManagedName;
 
             return symbolReference switch
             {
