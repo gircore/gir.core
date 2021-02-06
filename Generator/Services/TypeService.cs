@@ -11,7 +11,7 @@ namespace Generator.Services
             //    return $"{symbol.Type.Namespace}.{symbol.Type.ManagedName}";
 
             // Internal Type
-            return symbol.Symbol.ManagedName;
+            return ""; //symbol.Symbol.ManagedName;
         }
     }
 }

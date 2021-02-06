@@ -18,19 +18,21 @@ namespace Generator
 
         public static string WriteNativeArguments(IEnumerable<Argument> arguments)
         {
-            var builder = new StringBuilder();
-
-            foreach (Argument argument in arguments)
-            {
-            }
-
-            return builder.ToString();
+            var args = arguments.Select(x => WriteNativeSymbolReference(x.SymbolReference) + " " + x.Name);
+            return string.Join(", ", args);
         }
 
         public static string WriteNativeSymbolReference(ISymbolReference symbolReference)
         {
             ISymbol symbol = symbolReference.GetSymbol();
-            return symbol is IType ? "IntPtr" : symbol.ManagedName;
+
+            if (symbol is IType)
+                return "IntPtr";
+
+            if (symbolReference.IsArray)
+                return InternalArray(symbol);
+
+            return InternalType(symbol);
         }
 
         public static string WriteManagedSymbolReference(ISymbolReference symbolReference)
@@ -54,10 +56,10 @@ namespace Generator
         private static string ExternalArray(IType type)
             => $"{type.Namespace.Name}.{type.ManagedName}[]";
 
-        private static string InternalArray(IType type)
+        private static string InternalArray(ISymbol type)
             => $"{type.ManagedName}[]";
 
-        private static string InternalType(IType type)
+        private static string InternalType(ISymbol type)
             => type.ManagedName;
 
         public static string WriteInheritance(ISymbolReference? parent, IEnumerable<ISymbolReference> implements)
@@ -81,7 +83,7 @@ namespace Generator
         public static string WriteNativeMethod(Method method)
         {
             var returnValue = WriteNativeSymbolReference(method.ReturnValue.SymbolReference);
-            return $"public static extern {returnValue} {method.Name}({WriteManagedArguments(method.Arguments)});\r\n";
+            return $"public static extern {returnValue} {method.Name}({WriteNativeArguments(method.Arguments)});\r\n";
         }
     }
 }
