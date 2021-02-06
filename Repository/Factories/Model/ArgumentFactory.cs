@@ -14,11 +14,13 @@ namespace Repository.Factories
     {
         private readonly ISymbolReferenceFactory _symbolReferenceFactory;
         private readonly ITransferFactory _transferFactory;
+        private readonly IIdentifierConverter _identifierConverter;
 
-        public ArgumentFactory(ISymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory)
+        public ArgumentFactory(ISymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory, IIdentifierConverter identifierConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;
+            _identifierConverter = identifierConverter;
         }
         
         public Argument Create(ParameterInfo parameterInfo)
@@ -41,7 +43,7 @@ namespace Repository.Factories
                 throw new Exception("Argument name is null");
             
             return new Argument(
-                name: parameterInfo.Name,
+                name: _identifierConverter.Convert(parameterInfo.Name),
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo),
                 direction: direction,
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),

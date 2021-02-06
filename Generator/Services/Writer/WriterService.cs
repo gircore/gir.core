@@ -4,7 +4,7 @@ using Repository;
 
 #nullable enable
 
-namespace Generator
+namespace Generator.Services.Writer
 {
     public interface IWriterService
     {
@@ -43,6 +43,13 @@ namespace Generator
                 templateName: "class.sbntxt",
                 subfolder: "Classes",
                 objects: loadedProject.Namespace.Classes
+            );
+            
+            _writeTypesService.WriteTypes(
+                projectName: loadedProject.Name,
+                templateName: "enum.sbntxt",
+                subfolder: "Enums",
+                objects: loadedProject.Namespace.Enumerations
             );
         }
     }

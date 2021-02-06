@@ -5,7 +5,7 @@ using Scriban.Runtime;
 
 #nullable enable
 
-namespace Generator.Writer
+namespace Generator.Services.Writer
 {
     public interface IWriteHelperService
     {

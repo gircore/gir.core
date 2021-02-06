@@ -12,13 +12,13 @@ namespace Generator
     {
         public static string WriteManagedArguments(IEnumerable<Argument> arguments)
         {
-            var args = arguments.Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.Name.FixIdentifier());
+            var args = arguments.Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.Name);
             return string.Join(", ", args);
         }
 
         public static string WriteNativeArguments(IEnumerable<Argument> arguments)
         {
-            var args = arguments.Select(x => WriteNativeSymbolReference(x.SymbolReference) + " " + x.Name.FixIdentifier());
+            var args = arguments.Select(x => WriteNativeSymbolReference(x.SymbolReference) + " " + x.Name);
             return string.Join(", ", args);
         }
 

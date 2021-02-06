@@ -23,6 +23,9 @@ namespace Repository
     [Register(typeof(LoaderService), typeof(ILoaderService))]
     [Register(typeof(TypeReferenceResolverService), typeof(ITypeReferenceResolverService))]
     [Register(typeof(TransferFactory), typeof(ITransferFactory))]
+    [Register(typeof(MemberFactory), typeof(IMemberFactory))]
+    [Register(typeof(PascalCaseConverter), typeof(IPascalCaseConverter))]
+    [Register(typeof(IdentifierConverter), typeof(IIdentifierConverter))]
     public partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]

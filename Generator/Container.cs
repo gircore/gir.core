@@ -1,8 +1,6 @@
-﻿using Generator;
-using Generator.Factories;
+﻿using Generator.Factories;
 using Generator.Services;
 using Generator.Services.Writer;
-using Generator.Writer;
 using StrongInject;
 
 namespace Repository

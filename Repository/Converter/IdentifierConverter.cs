@@ -5,13 +5,16 @@ using Sf = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Sk = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 using St = Microsoft.CodeAnalysis.SyntaxToken;
 
-namespace Generator
+namespace Repository
 {
-    public static class StringExtension
+    public interface IIdentifierConverter
     {
-        #region Methods
+        string Convert(string identifier);
+    }
 
-        public static string FixIdentifier(this string identifier)
+    public class IdentifierConverter : IIdentifierConverter
+    {
+        public string Convert(string identifier)
         {
             identifier = FixFirstCharIfNumber(identifier);
             identifier = FixIfIdentifierIsKeyword(identifier);
@@ -62,7 +65,5 @@ namespace Generator
 
             return identifier;
         }
-
-        #endregion
     }
 }
