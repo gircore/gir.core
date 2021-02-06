@@ -71,10 +71,10 @@ namespace Generator
             {
                 var scriptObject = new ScriptObject();
                 scriptObject.Import(obj);
-                scriptObject.Import("write_arguments", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteArguments));
+                scriptObject.Import("write_arguments", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteManagedArguments));
                 scriptObject.Import("write_symbol_reference", new Func<ISymbolReference, string>(TemplateWriter.WriteManagedSymbolReference));
                 scriptObject.Import("write_inheritance", new Func<ISymbolReference?, IEnumerable<ISymbolReference>, string>(TemplateWriter.WriteInheritance));
-                scriptObject.Import("write_method", new Func<Method, string>(TemplateWriter.WriteMethod));
+                scriptObject.Import("write_method", new Func<Method, string>(TemplateWriter.WriteNativeMethod));
                 
                 var templateContext = new TemplateContext
                 {

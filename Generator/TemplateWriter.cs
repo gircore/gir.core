@@ -11,19 +11,38 @@ namespace Generator
 {
     public static class TemplateWriter
     {
-        public static string WriteArguments(IEnumerable<Argument> arguments)
+        public static string WriteManagedArguments(IEnumerable<Argument> arguments)
         {
             var args = arguments.Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.Name);
             return string.Join(", ", args);
+        }
+
+        public static string WriteNativeArguments(IEnumerable<Argument> arguments)
+        {
+            var builder = new StringBuilder();
+
+            foreach (Argument argument in arguments)
+            {
+            }
+
+            return builder.ToString();
+        }
+
+        public static string WriteNativeSymbolReference(ISymbolReference symbolReference)
+        {
+            if (symbolReference.Symbol is null)
+                throw new InvalidOperationException($"The symbolreference for {symbolReference.Name} Reference has not been resolved. It cannot be printed.");
+
+            if (symbolReference.Symbol is IType)
+                return "IntPtr";
+
+            return symbolReference.Symbol.ManagedName;
         }
 
         public static string WriteManagedSymbolReference(ISymbolReference symbolReference)
         {
             if (symbolReference.Symbol is null)
                 throw new InvalidOperationException($"The Type for {symbolReference.Name} Reference has not been resolved. It cannot be printed.");
-
-            if (symbolReference.Symbol.ManagedName is null)
-                throw new Exception($"The type for {symbolReference.Name} was resolved but is missing a managed name.");
 
             if (symbolReference.Symbol is not IType type)
                 return symbolReference.Symbol.ManagedName;
@@ -39,7 +58,7 @@ namespace Generator
 
         private static string ExternalType(IType type)
             => $"{type.Namespace.Name}.{type.ManagedName}";
-        
+
         private static string ExternalArray(IType type)
             => $"{type.Namespace.Name}.{type.ManagedName}[]";
 
@@ -47,7 +66,7 @@ namespace Generator
             => $"{type.ManagedName}[]";
 
         private static string InternalType(IType type)
-            => type.ManagedName!;
+            => type.ManagedName;
 
         public static string WriteInheritance(ISymbolReference? parent, IEnumerable<ISymbolReference> implements)
         {
@@ -67,10 +86,10 @@ namespace Generator
             return builder.ToString();
         }
 
-        public static string WriteMethod(Method method)
+        public static string WriteNativeMethod(Method method)
         {
-            var returnValue = WriteManagedSymbolReference(method.ReturnValue.SymbolReference);
-            return $"public static extern {returnValue} {method.Name}({WriteArguments(method.Arguments)});\r\n";
+            var returnValue = WriteNativeSymbolReference(method.ReturnValue.SymbolReference);
+            return $"public static extern {returnValue} {method.Name}({WriteManagedArguments(method.Arguments)});\r\n";
         }
     }
 }
