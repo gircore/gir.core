@@ -129,10 +129,17 @@ namespace Repository
         {
             foreach (MethodInfo info in functions)
             {
-                var method = _methodFactory.Create(info);
-                nspace.AddFunction(method);
-                
-                AddReference(references, method.ReturnValue.SymbolReference);
+                try
+                {
+                    var method = _methodFactory.Create(info);
+                    nspace.AddFunction(method);
+
+                    AddReference(references, method.ReturnValue.SymbolReference);
+                }
+                catch (ArgumentFactory.VarArgsNotSupportedException ex)
+                {
+                    Log.Information($"Method {info.Name} could not be created: {ex.Message}");
+                }
             }
         }
 

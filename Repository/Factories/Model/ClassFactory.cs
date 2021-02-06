@@ -57,8 +57,20 @@ namespace Repository.Factories
 
         private IEnumerable<Method> GetMethods(IEnumerable<MethodInfo> methods)
         {
-            //Call ToList() is important. If it is skipped each access to methods will create new method objects
-            return methods.Select(method => _methodFactory.Create(method)).ToList();
+            var list = new List<Method>();
+            foreach (var method in methods)
+            {
+                try
+                {
+                    list.Add(_methodFactory.Create(method));
+                }
+                catch (ArgumentFactory.VarArgsNotSupportedException ex)
+                {
+                    Log.Information($"Method {method.Name} could not be created: {ex.Message}");
+                }
+            }
+
+            return list;
         }
     }
 }

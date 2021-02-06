@@ -21,6 +21,9 @@ namespace Repository.Factories
         
         public Argument Create(ParameterInfo parameterInfo)
         {
+            if (parameterInfo.VarArgs is { })
+                throw new VarArgsNotSupportedException("Arguments containing variadic paramters are not supported.");
+            
             // Direction (for determining in/out/ref)
             var callerAllocates = parameterInfo.CallerAllocates;
             Direction direction = parameterInfo.Direction switch
@@ -52,6 +55,14 @@ namespace Repository.Factories
                 transfer: transfer,
                 nullable: parameterInfo.Nullable
             );
+        }
+
+        public class VarArgsNotSupportedException : Exception
+        {
+            public VarArgsNotSupportedException(string message) : base(message)
+            {
+                
+            }
         }
     }
 }
