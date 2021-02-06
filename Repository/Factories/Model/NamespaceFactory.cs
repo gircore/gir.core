@@ -138,7 +138,7 @@ namespace Repository
                 }
                 catch (ArgumentFactory.VarArgsNotSupportedException ex)
                 {
-                    Log.Information($"Method {info.Name} could not be created: {ex.Message}");
+                    Log.Debug($"Method {info.Name} could not be created: {ex.Message}");
                 }
             }
         }
