@@ -131,7 +131,7 @@ namespace Repository
             {
                 try
                 {
-                    var method = _methodFactory.Create(info);
+                    var method = _methodFactory.Create(info, nspace);
                     nspace.AddFunction(method);
 
                     AddReference(references, method.ReturnValue.SymbolReference);

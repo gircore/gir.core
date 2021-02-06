@@ -6,7 +6,7 @@ namespace Repository.Factories
 {
     public interface IMethodFactory
     {
-        Method Create(MethodInfo methodInfo);
+        Method Create(MethodInfo methodInfo, Namespace @namespace);
     }
 
     public class MethodFactory : IMethodFactory
@@ -20,7 +20,7 @@ namespace Repository.Factories
             _argumentsFactory = argumentsFactory;
         }
 
-        public Method Create(MethodInfo methodInfo)
+        public Method Create(MethodInfo methodInfo, Namespace @namespace)
         {
             if (methodInfo.Name is null)
                 throw new Exception("Methodinfo name is null");
@@ -28,8 +28,13 @@ namespace Repository.Factories
             if (methodInfo.ReturnValue is null)
                 throw new Exception($"{nameof(MethodInfo)} {methodInfo.Name} {nameof(methodInfo.ReturnValue)} is null");
 
+            if(methodInfo.Identifier is null)
+                throw new Exception($"{nameof(MethodInfo)} {methodInfo.Name} is missing {nameof(methodInfo.Identifier)} value");
+            
             return new Method(
-                name: methodInfo.Name,
+                @namespace: @namespace,
+                nativeName: methodInfo.Identifier,
+                managedName: methodInfo.Name,
                 returnValue: _returnValueFactory.Create(methodInfo.ReturnValue),
                 arguments: _argumentsFactory.Create(methodInfo.Parameters)
             );

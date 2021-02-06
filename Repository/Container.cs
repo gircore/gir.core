@@ -22,6 +22,7 @@ namespace Repository
     [Register(typeof(MethodFactory), typeof(IMethodFactory))]
     [Register(typeof(LoaderService), typeof(ILoaderService))]
     [Register(typeof(TypeReferenceResolverService), typeof(ITypeReferenceResolverService))]
+    [Register(typeof(TransferFactory), typeof(ITransferFactory))]
     public partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]

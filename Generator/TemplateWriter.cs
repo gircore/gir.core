@@ -83,7 +83,26 @@ namespace Generator
         public static string WriteNativeMethod(Method method)
         {
             var returnValue = WriteNativeSymbolReference(method.ReturnValue.SymbolReference);
-            return $"public static extern {returnValue} {method.Name}({WriteNativeArguments(method.Arguments)});\r\n";
+
+            var summaryText = WriteNativeSummary(method);
+            var dllImportText = $"[DllImport(\"{method.Namespace.Name}\", EntryPoint = \"{method.NativeName}\")]\r\n";
+            var methodText = $"public static extern {returnValue} {method.ManagedName}({WriteNativeArguments(method.Arguments)});\r\n";
+            
+            return summaryText + dllImportText + methodText;
+        }
+
+        public static string WriteNativeSummary(Method method)
+        {
+            var builder = new StringBuilder();
+
+            foreach (var argument in method.Arguments)
+            {
+                builder.Append($"/// <param name=\"{argument.Name}\">Transfer ownership: {argument.Transfer} Nullable: {argument.Nullable}</param>\r\n");
+            }
+
+            builder.Append($"/// <returns>Transfer ownership: {method.ReturnValue.Transfer} Nullable: {method.ReturnValue.Nullable}</returns>\r\n");
+            
+            return builder.ToString();
         }
     }
 }

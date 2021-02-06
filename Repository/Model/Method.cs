@@ -2,15 +2,13 @@
 
 namespace Repository.Model
 {
-    public class Method
+    public class Method : Type
     {
-        public string Name { get; }
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
 
-        public Method(string name, ReturnValue returnValue, IEnumerable<Argument> arguments)
+        public Method(Namespace @namespace, string nativeName, string managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(@namespace, nativeName, managedName)
         {
-            Name = name;
             ReturnValue = returnValue;
             Arguments = arguments;
         }

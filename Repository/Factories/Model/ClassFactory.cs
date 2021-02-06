@@ -36,7 +36,7 @@ namespace Repository.Factories
                 ctype: cls.TypeName,
                 parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, false),
                 implements: GetTypeReferences(cls.Implements),
-                methods: GetMethods(cls.Methods)
+                methods: GetMethods(cls.Methods, @namespace)
             );
         }
 
@@ -55,14 +55,14 @@ namespace Repository.Factories
             return list;
         }
 
-        private IEnumerable<Method> GetMethods(IEnumerable<MethodInfo> methods)
+        private IEnumerable<Method> GetMethods(IEnumerable<MethodInfo> methods, Namespace @namespace)
         {
             var list = new List<Method>();
             foreach (var method in methods)
             {
                 try
                 {
-                    list.Add(_methodFactory.Create(method));
+                    list.Add(_methodFactory.Create(method, @namespace));
                 }
                 catch (ArgumentFactory.VarArgsNotSupportedException ex)
                 {

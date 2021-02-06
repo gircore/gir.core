@@ -13,10 +13,12 @@ namespace Repository.Factories
     public class ArgumentFactory : IArgumentFactory
     {
         private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly ITransferFactory _transferFactory;
 
-        public ArgumentFactory(ISymbolReferenceFactory symbolReferenceFactory)
+        public ArgumentFactory(ISymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
+            _transferFactory = transferFactory;
         }
         
         public Argument Create(ParameterInfo parameterInfo)
@@ -35,16 +37,6 @@ namespace Repository.Factories
                 _ => Direction.Default
             };
 
-            // Memory Management information
-            Transfer transfer = parameterInfo.TransferOwnership switch
-            {
-                "none" => Transfer.None,
-                "container" => Transfer.Container,
-                "full" => Transfer.Full,
-                "floating" => Transfer.None,
-                _ => Transfer.Full // TODO: Good default value? 
-            };
-
             if (parameterInfo.Name is null)
                 throw new Exception("Argument name is null");
             
@@ -52,7 +44,7 @@ namespace Repository.Factories
                 name: parameterInfo.Name,
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo),
                 direction: direction,
-                transfer: transfer,
+                transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
                 nullable: parameterInfo.Nullable
             );
         }
