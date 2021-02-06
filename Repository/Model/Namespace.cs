@@ -10,6 +10,8 @@ namespace Repository.Model
         public string Name { get; }
         public string Version { get; }
         
+        public string SharedLibrary { get; }
+        
         // Aliases
         private readonly List<Symbol> _aliases = new();
         public IEnumerable<Symbol> Aliases => _aliases;
@@ -34,15 +36,16 @@ namespace Repository.Model
         public IEnumerable<Record> Records => _records;
         
         // Miscellaneous
-        private List<Method> _functions = new();
+        private readonly List<Method> _functions = new();
         public IEnumerable<Method> Functions => _functions;
 
         #endregion
         
-        public Namespace(string name, string version)
+        public Namespace(string name, string version, string sharedLibrary)
         {
             Name = name;
             Version = version;
+            SharedLibrary = sharedLibrary;
         }
 
         public void AddAlias(Symbol symbol)
