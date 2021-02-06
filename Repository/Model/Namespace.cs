@@ -11,8 +11,8 @@ namespace Repository.Model
         public string Version { get; }
         
         // Aliases
-        private readonly List<Alias> _aliases = new();
-        public IEnumerable<Alias> Aliases => _aliases;
+        private readonly List<Symbol> _aliases = new();
+        public IEnumerable<Symbol> Aliases => _aliases;
         
         // Symbols
         private readonly List<Callback> _callbacks = new();
@@ -45,8 +45,8 @@ namespace Repository.Model
             Version = version;
         }
 
-        public void AddAlias(Alias alias)
-            => _aliases.Add(alias);
+        public void AddAlias(Symbol symbol)
+            => _aliases.Add(symbol);
 
         public void AddCallback(Callback callback)
             => _callbacks.Add(callback);

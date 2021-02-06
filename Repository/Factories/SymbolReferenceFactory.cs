@@ -3,21 +3,21 @@ using Repository.Xml;
 
 namespace Repository.Services
 {
-    public interface ITypeReferenceFactory
+    public interface ISymbolReferenceFactory
     {
-        ITypeReference Create(string type, bool isArray);
-        ITypeReference Create(ITypeOrArray typeOrArray);
-        ITypeReference? CreateWithNull(string? type, bool isArry);
+        ISymbolReference Create(string type, bool isArray);
+        ISymbolReference Create(ITypeOrArray typeOrArray);
+        ISymbolReference? CreateWithNull(string? type, bool isArry);
     }
 
-    public class TypeReferenceFactory : ITypeReferenceFactory
+    public class SymbolReferenceFactory : ISymbolReferenceFactory
     {
-        public ITypeReference Create(string type, bool isArray)
+        public ISymbolReference Create(string type, bool isArray)
         {
-            return new TypeReference(type, false);
+            return new SymbolReference(type, false);
         }
         
-        public ITypeReference Create(ITypeOrArray typeOrArray)
+        public ISymbolReference Create(ITypeOrArray typeOrArray)
         {
             // Check for Type
             var type = typeOrArray?.Type?.Name ?? null;
@@ -33,7 +33,7 @@ namespace Repository.Services
             return Create("none", false);
         }
 
-        public ITypeReference? CreateWithNull(string? type, bool isArray)
+        public ISymbolReference? CreateWithNull(string? type, bool isArray)
         {
             return type is null ? null : Create(type, isArray);
         }

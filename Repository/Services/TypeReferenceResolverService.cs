@@ -31,35 +31,38 @@ namespace Repository.Services
         {
             AddAliases(symbolDictionary, @namespace);
 
-            symbolDictionary.AddTypes(@namespace.Name, @namespace.Classes);
-            symbolDictionary.AddTypes(@namespace.Name, @namespace.Interfaces);
-            symbolDictionary.AddTypes(@namespace.Name, @namespace.Callbacks);
-            symbolDictionary.AddTypes(@namespace.Name, @namespace.Enumerations);
-            symbolDictionary.AddTypes(@namespace.Name, @namespace.Bitfields);
-            symbolDictionary.AddTypes(@namespace.Name, @namespace.Records);
+            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Classes);
+            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Interfaces);
+            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Callbacks);
+            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Enumerations);
+            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Bitfields);
+            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Records);
         }
 
         private void ResolveReferences(SymbolDictionary symbolDictionary, ILoadedProject proj)
         {
             var view = symbolDictionary.GetView(proj.Namespace.Name);
 
-            foreach (var reference in proj.TypeReferences)
+            foreach (var reference in proj.SymbolReferences)
             {
                 var symbol = view.LookupType(reference.Name);
 
-                ReferenceType kind = (symbol?.Namespace?.Name == proj.Namespace.Name)
-                    ? ReferenceType.Internal
-                    : ReferenceType.External;
 
-                if (reference is IResolveable resolveable)
+                ReferenceType kind = symbol switch
+                {
+                    IType t when t.Namespace.Name == proj.Namespace.Name => ReferenceType.Internal,
+                    _ => ReferenceType.External
+                };
+
+                if (reference is IResolveableSymbolReference resolveable)
                     resolveable.ResolveAs(symbol, kind);
             }
         }
 
-        private void AddAliases(SymbolDictionary symbolDictionary, Namespace @namespace)
+        private static void AddAliases(SymbolDictionary symbolDictionary, Namespace @namespace)
         {
-            foreach (Alias alias in @namespace.Aliases)
-                symbolDictionary.AddAlias(@namespace.Name, alias.From, alias.To);
+            foreach (var alias in @namespace.Aliases)
+                symbolDictionary.AddAlias(@namespace.Name, alias.NativeName, alias.ManagedName);
         }
     }
 }

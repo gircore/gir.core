@@ -2,7 +2,7 @@
 
 namespace Repository.Model
 {
-    public class Callback : BasicType
+    public class Callback : Type
     {
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }

@@ -6,12 +6,12 @@ namespace Repository.Factories
 {
     public interface IAliasFactory
     {
-        Alias Create(AliasInfo aliasInfo);
+        Symbol Create(AliasInfo aliasInfo);
     }
 
     public class AliasFactory : IAliasFactory
     {
-        public Alias Create(AliasInfo aliasInfo)
+        public Symbol Create(AliasInfo aliasInfo)
         {
             if (aliasInfo.Name is null)
                 throw new Exception("Alias is missing name");
@@ -19,7 +19,7 @@ namespace Repository.Factories
             if (aliasInfo.For?.Name is null)
                 throw new Exception($"Alias {aliasInfo.Name} is missing target");
 
-            return new Alias(aliasInfo.Name, aliasInfo.For.Name);
+            return new Symbol(aliasInfo.Name, aliasInfo.For.Name);
         }
     }
 }

@@ -17,62 +17,62 @@ namespace Repository.Analysis
             // Fundamental types are accessible regardless of namespace and
             // take priority over any namespaced variant.
 
-            AddBasicType(new BasicType("none", "void"));
-            AddBasicType(new BasicType("any", "IntPtr"));
+            AddSymbol(new Symbol("none", "void"));
+            AddSymbol(new Symbol("any", "IntPtr"));
 
-            AddBasicType(new BasicType("void", "void"));
-            AddBasicType(new BasicType("gboolean", "bool"));
-            AddBasicType(new BasicType("gfloat", "float"));
-            AddBasicType(new BasicType("float", "float"));
+            AddSymbol(new Symbol("void", "void"));
+            AddSymbol(new Symbol("gboolean", "bool"));
+            AddSymbol(new Symbol("gfloat", "float"));
+            AddSymbol(new Symbol("float", "float"));
 
-            AddBasicType(new BasicType("gconstpointer", "IntPtr"));
-            AddBasicType(new BasicType("va_list", "IntPtr"));
-            AddBasicType(new BasicType("gpointer", "IntPtr"));
-            AddBasicType(new BasicType("GType", "IntPtr"));
-            AddBasicType(new BasicType("tm", "IntPtr"));
+            AddSymbol(new Symbol("gconstpointer", "IntPtr"));
+            AddSymbol(new Symbol("va_list", "IntPtr"));
+            AddSymbol(new Symbol("gpointer", "IntPtr"));
+            AddSymbol(new Symbol("GType", "IntPtr"));
+            AddSymbol(new Symbol("tm", "IntPtr"));
 
-            AddBasicType(new BasicType("guint16", "ushort"));
-            AddBasicType(new BasicType("gushort", "ushort"));
+            AddSymbol(new Symbol("guint16", "ushort"));
+            AddSymbol(new Symbol("gushort", "ushort"));
 
-            AddBasicType(new BasicType("gint16", "short"));
-            AddBasicType(new BasicType("gshort", "short"));
+            AddSymbol(new Symbol("gint16", "short"));
+            AddSymbol(new Symbol("gshort", "short"));
 
-            AddBasicType(new BasicType("double", "double"));
-            AddBasicType(new BasicType("gdouble", "double"));
-            AddBasicType(new BasicType("long double", "double"));
+            AddSymbol(new Symbol("double", "double"));
+            AddSymbol(new Symbol("gdouble", "double"));
+            AddSymbol(new Symbol("long double", "double"));
 
             // AddBasicSymbol(new BasicSymbol("cairo_format_t", "int"));
-            AddBasicType(new BasicType("int", "int"));
-            AddBasicType(new BasicType("gint", "int"));
-            AddBasicType(new BasicType("gint32", "int"));
-            AddBasicType(new BasicType("pid_t", "int"));
+            AddSymbol(new Symbol("int", "int"));
+            AddSymbol(new Symbol("gint", "int"));
+            AddSymbol(new Symbol("gint32", "int"));
+            AddSymbol(new Symbol("pid_t", "int"));
 
-            AddBasicType(new BasicType("unsigned int", "uint"));
-            AddBasicType(new BasicType("unsigned", "uint"));
-            AddBasicType(new BasicType("guint", "uint"));
-            AddBasicType(new BasicType("guint32", "uint"));
-            AddBasicType(new BasicType("gunichar", "uint"));
-            AddBasicType(new BasicType("uid_t", "uint"));
+            AddSymbol(new Symbol("unsigned int", "uint"));
+            AddSymbol(new Symbol("unsigned", "uint"));
+            AddSymbol(new Symbol("guint", "uint"));
+            AddSymbol(new Symbol("guint32", "uint"));
+            AddSymbol(new Symbol("gunichar", "uint"));
+            AddSymbol(new Symbol("uid_t", "uint"));
             // AddBasicSymbol(new BasicSymbol("GQuark", "uint"));
 
-            AddBasicType(new BasicType("guchar", "byte"));
-            AddBasicType(new BasicType("gchar", "byte"));
-            AddBasicType(new BasicType("char", "byte"));
-            AddBasicType(new BasicType("guint8", "byte"));
-            AddBasicType(new BasicType("gint8", "byte"));
+            AddSymbol(new Symbol("guchar", "byte"));
+            AddSymbol(new Symbol("gchar", "byte"));
+            AddSymbol(new Symbol("char", "byte"));
+            AddSymbol(new Symbol("guint8", "byte"));
+            AddSymbol(new Symbol("gint8", "byte"));
 
-            AddBasicType(new BasicType("glong", "long"));
-            AddBasicType(new BasicType("gssize", "long"));
-            AddBasicType(new BasicType("gint64", "long"));
-            AddBasicType(new BasicType("goffset", "long"));
-            AddBasicType(new BasicType("time_t", "long"));
+            AddSymbol(new Symbol("glong", "long"));
+            AddSymbol(new Symbol("gssize", "long"));
+            AddSymbol(new Symbol("gint64", "long"));
+            AddSymbol(new Symbol("goffset", "long"));
+            AddSymbol(new Symbol("time_t", "long"));
 
-            AddBasicType(new BasicType("gsize", "ulong"));
-            AddBasicType(new BasicType("guint64", "ulong"));
-            AddBasicType(new BasicType("gulong", "ulong"));
+            AddSymbol(new Symbol("gsize", "ulong"));
+            AddSymbol(new Symbol("guint64", "ulong"));
+            AddSymbol(new Symbol("gulong", "ulong"));
 
-            AddBasicType(new BasicType("utf8", "string"));
-            AddBasicType(new BasicType("filename", "string"));
+            AddSymbol(new Symbol("utf8", "string"));
+            AddSymbol(new Symbol("filename", "string"));
             // AddBasicSymbol(new BasicSymbol("Window", "ulong"));
         }
 
@@ -81,16 +81,16 @@ namespace Repository.Analysis
         /// </summary>
         /// <param name="nspace"></param>
         /// <param name="info"></param>
-        public void AddType(string nspace, IType info)
+        public void AddSymbol(string nspace, ISymbol info)
         {
-            GetTypeDict(nspace).AddType(info.NativeName, info);
+            GetTypeDict(nspace).AddSymbol(info.NativeName, info);
         }
 
-        public void AddTypes(string nspace, IEnumerable<IType> infos)
+        public void AddSymbols(string nspace, IEnumerable<ISymbol> infos)
         {
             TypeDictionary dict = GetTypeDict(nspace);
-            foreach (IType info in infos)
-                dict.AddType(info.NativeName, info);
+            foreach (ISymbol info in infos)
+                dict.AddSymbol(info.NativeName, info);
         }
 
         /// <summary>
@@ -127,19 +127,19 @@ namespace Repository.Analysis
             return dict;
         }
 
-        private void AddBasicType(BasicType basicType)
+        private void AddSymbol(ISymbol symbol)
         {
-            _defaultDict.AddType(basicType.NativeName, basicType);
+            _defaultDict.AddSymbol(symbol.NativeName, symbol);
         }
 
-        private IType GetTypeInternal(TypeDictionary symbolDict, string symbol)
+        private ISymbol GetSymbolInternal(TypeDictionary symbolDict, string symbol)
         {
             // Check Fundamental Types
-            if (_defaultDict.TryGetType(symbol, out IType? info))
+            if (_defaultDict.TryGetSymbol(symbol, out ISymbol? info))
                 return info;
 
             // Check Normal
-            return symbolDict.GetType(symbol);
+            return symbolDict.GetSymbol(symbol);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Repository.Analysis
         /// <param name="nspace">Namespace to search</param>
         /// <param name="symbol">Unqualified name of symbol (i.e. does not contain '.')</param>
         /// <returns>Information about the symbol</returns>
-        public IType GetType(string? nspace, string symbol)
+        public ISymbol GetSymbol(string? nspace, string symbol)
         {
             Debug.Assert(
                 condition: !symbol.Contains('.'),
@@ -159,7 +159,7 @@ namespace Repository.Analysis
             );
 
             if (nspace == null)
-                return _defaultDict.GetType(symbol);
+                return _defaultDict.GetSymbol(symbol);
 
             // Get Namespace-specific Dictionaries
             TypeDictionary symbolDict = GetTypeDict(nspace);
@@ -172,15 +172,15 @@ namespace Repository.Analysis
                 {
                     // Reference to other namespace
                     var components = alias.Split('.', 2);
-                    return GetType(nspace: components[0], symbol: components[1]);
+                    return GetSymbol(nspace: components[0], symbol: components[1]);
                 }
 
                 // Within this namespace
-                return GetTypeInternal(symbolDict, alias);
+                return GetSymbolInternal(symbolDict, alias);
             }
 
             // Check Normal
-            return GetTypeInternal(symbolDict, symbol);
+            return GetSymbolInternal(symbolDict, symbol);
         }
     }
 }

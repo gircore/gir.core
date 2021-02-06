@@ -1,6 +1,6 @@
 ﻿namespace Repository.Model
 {
-    public class Enumeration : BasicType
+    public class Enumeration : Type
     {
         public bool HasFlags { get; }
      

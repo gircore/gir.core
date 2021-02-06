@@ -2,11 +2,11 @@
 
 namespace Repository.Model
 {
-    public class Record : BasicType
+    public class Record : Type
     {
-        public ITypeReference? GLibClassStructFor { get; }
+        public ISymbolReference? GLibClassStructFor { get; }
         
-        public Record(Namespace @namespace, string nativeName, string managedName, ITypeReference? gLibClassStructFor) : base(@namespace, nativeName, managedName)
+        public Record(Namespace @namespace, string nativeName, string managedName, ISymbolReference? gLibClassStructFor) : base(@namespace, nativeName, managedName)
         {
             GLibClassStructFor = gLibClassStructFor;
         }

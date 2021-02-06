@@ -29,7 +29,7 @@ namespace Repository.Analysis
         /// </summary>
         /// <param name="typeName">Name of the symbol. May be qualified or unqualified</param>
         /// <returns>Information about the symbol</returns>
-        public IType LookupType(string typeName)
+        public ISymbol LookupType(string typeName)
         {
             if (string.IsNullOrEmpty(typeName))
                 throw new ArgumentNullException(nameof(typeName), "Provided lookup cannot be null or empty");
@@ -38,13 +38,13 @@ namespace Repository.Analysis
             {
                 // We are in the form 'Namespace.Type'
                 var components = typeName.Split('.', 2);
-                return _symbolDict.GetType(components[0], components[1]);
+                return _symbolDict.GetSymbol(components[0], components[1]);
             }
 
             // We are not qualified by a namespace, so assume this one.
             // It might also be a fundamental type, but the type dict
             // takes care of this.
-            return _symbolDict.GetType(_namespace, typeName);
+            return _symbolDict.GetSymbol(_namespace, typeName);
         }
     }
 }

@@ -11,17 +11,17 @@ namespace Repository.Factories
 
     public class ReturnValueFactory : IReturnValueFactory
     {
-        private readonly ITypeReferenceFactory _typeReferenceFactory;
+        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
 
-        public ReturnValueFactory(ITypeReferenceFactory typeReferenceFactory)
+        public ReturnValueFactory(ISymbolReferenceFactory symbolReferenceFactory)
         {
-            _typeReferenceFactory = typeReferenceFactory;
+            _symbolReferenceFactory = symbolReferenceFactory;
         }
         
         public ReturnValue Create(ReturnValueInfo returnValueInfo)
         {
             return new ReturnValue(
-                typeReference: _typeReferenceFactory.Create(returnValueInfo)
+                symbolReference: _symbolReferenceFactory.Create(returnValueInfo)
             );
         }
     }

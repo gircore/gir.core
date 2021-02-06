@@ -12,11 +12,11 @@ namespace Repository.Factories
 
     public class RecordFactory : IRecordFactory
     {
-        private readonly ITypeReferenceFactory _typeReferenceFactory;
+        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
 
-        public RecordFactory(ITypeReferenceFactory typeReferenceFactory)
+        public RecordFactory(ISymbolReferenceFactory symbolReferenceFactory)
         {
-            _typeReferenceFactory = typeReferenceFactory;
+            _symbolReferenceFactory = symbolReferenceFactory;
         }
 
         public Record Create(RecordInfo @record, Namespace @namespace)
@@ -28,7 +28,7 @@ namespace Repository.Factories
                 @namespace: @namespace, 
                 nativeName: @record.Name, 
                 managedName: @record.Name, 
-                gLibClassStructFor: _typeReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor, false)
+                gLibClassStructFor: _symbolReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor, false)
             );
         }
     }

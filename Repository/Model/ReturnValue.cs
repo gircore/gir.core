@@ -4,11 +4,11 @@ namespace Repository.Model
 {
     public class ReturnValue
     {
-        public ITypeReference TypeReference { get; }
+        public ISymbolReference SymbolReference { get; }
 
-        public ReturnValue(ITypeReference typeReference)
+        public ReturnValue(ISymbolReference symbolReference)
         {
-            TypeReference = typeReference;
+            SymbolReference = symbolReference;
         }
     }
 }

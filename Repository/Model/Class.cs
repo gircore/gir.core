@@ -3,15 +3,15 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Class : BasicType
+    public class Class : Type
     {
         public string CType { get; }
-        public ITypeReference? Parent { get; }
-        public IEnumerable<ITypeReference> Implements { get; }
+        public ISymbolReference? Parent { get; }
+        public IEnumerable<ISymbolReference> Implements { get; }
         
         public IEnumerable<Method> Methods { get; }
 
-        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, ITypeReference? parent, IEnumerable<ITypeReference> implements, IEnumerable<Method> methods) : base(@namespace, nativeName, managedName)
+        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, ISymbolReference? parent, IEnumerable<ISymbolReference> implements, IEnumerable<Method> methods) : base(@namespace, nativeName, managedName)
         {
             Parent = parent;
             Implements = implements;

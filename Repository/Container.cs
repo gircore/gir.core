@@ -8,7 +8,7 @@ namespace Repository
     [Register(typeof(RepositoryInternal))]
     [Register(typeof(XmlService), typeof(IXmlService))]
     [Register(typeof(NamespaceFactory), typeof(INamespaceFactory))]
-    [Register(typeof(TypeReferenceFactory), typeof(ITypeReferenceFactory))]
+    [Register(typeof(SymbolReferenceFactory), typeof(ISymbolReferenceFactory))]
     [Register(typeof(InfoFactory), typeof(IInfoFactory))]
     [Register(typeof(ClassFactory), typeof(IClassFactory))]
     [Register(typeof(AliasFactory), typeof(IAliasFactory))]

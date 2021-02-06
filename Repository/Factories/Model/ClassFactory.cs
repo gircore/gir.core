@@ -15,12 +15,12 @@ namespace Repository.Factories
 
     public class ClassFactory : IClassFactory
     {
-        private readonly ITypeReferenceFactory _typeReferenceFactory;
+        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
         private readonly IMethodFactory _methodFactory;
 
-        public ClassFactory(ITypeReferenceFactory typeReferenceFactory, IMethodFactory methodFactory)
+        public ClassFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory)
         {
-            _typeReferenceFactory = typeReferenceFactory;
+            _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;
         }
         
@@ -34,22 +34,22 @@ namespace Repository.Factories
                 nativeName: cls.Name,
                 managedName: cls.Name,
                 ctype: cls.TypeName,
-                parent: _typeReferenceFactory.CreateWithNull(cls.Parent, false),
+                parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, false),
                 implements: GetTypeReferences(cls.Implements),
                 methods: GetMethods(cls.Methods)
             );
         }
 
-        private IEnumerable<ITypeReference> GetTypeReferences(IEnumerable<ImplementInfo> implements)
+        private IEnumerable<ISymbolReference> GetTypeReferences(IEnumerable<ImplementInfo> implements)
         {
-            var list = new List<ITypeReference>();
+            var list = new List<ISymbolReference>();
             
             foreach (ImplementInfo implement in implements)
             {
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
                 
-                list.Add(_typeReferenceFactory.Create(implement.Name, false));
+                list.Add(_symbolReferenceFactory.Create(implement.Name, false));
             }
 
             return list;

@@ -12,11 +12,11 @@ namespace Repository.Factories
 
     public class ArgumentFactory : IArgumentFactory
     {
-        private readonly ITypeReferenceFactory _typeReferenceFactory;
+        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
 
-        public ArgumentFactory(ITypeReferenceFactory typeReferenceFactory)
+        public ArgumentFactory(ISymbolReferenceFactory symbolReferenceFactory)
         {
-            _typeReferenceFactory = typeReferenceFactory;
+            _symbolReferenceFactory = symbolReferenceFactory;
         }
         
         public Argument Create(ParameterInfo parameterInfo)
@@ -47,7 +47,7 @@ namespace Repository.Factories
             
             return new Argument(
                 name: parameterInfo.Name,
-                typeReference: _typeReferenceFactory.Create(parameterInfo),
+                symbolReference: _symbolReferenceFactory.Create(parameterInfo),
                 direction: direction,
                 transfer: transfer,
                 nullable: parameterInfo.Nullable

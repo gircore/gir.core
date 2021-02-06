@@ -14,7 +14,7 @@ namespace Generator.Services
             var result = $": {obj.Parent}";
 
             // Interfaces
-            foreach (TypeReference impl in obj.Implements)
+            foreach (SymbolReference impl in obj.Implements)
                 result += $", {impl}";
 
             return result;

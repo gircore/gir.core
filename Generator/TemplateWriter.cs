@@ -13,43 +13,48 @@ namespace Generator
     {
         public static string WriteArguments(IEnumerable<Argument> arguments)
         {
-            var args = arguments.Select(x => WriteTypeReference(x.TypeReference) + " " + x.Name);
+            var args = arguments.Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.Name);
             return string.Join(", ", args);
         }
 
-        public static string WriteTypeReference(ITypeReference typeReference)
+        public static string WriteManagedSymbolReference(ISymbolReference symbolReference)
         {
-            // TODO: More advanced type resolution logic?
+            if (symbolReference.Symbol is null)
+                throw new InvalidOperationException($"The Type for {symbolReference.Name} Reference has not been resolved. It cannot be printed.");
 
-            if (typeReference.Type is null)
-                throw new InvalidOperationException($"The Type for {typeReference.Name} Reference has not been resolved. It cannot be printed.");
+            if (symbolReference.Symbol.ManagedName is null)
+                throw new Exception($"The type for {symbolReference.Name} was resolved but is missing a managed name.");
 
-            // Fundamental Type
-            if (typeReference.Type.Namespace == null)
-                return typeReference.Type.ManagedName;
+            if (symbolReference.Symbol is not IType type)
+                return symbolReference.Symbol.ManagedName;
 
-            // External Array
-            if (typeReference.IsForeign && typeReference.IsArray)
-                return $"{typeReference.Type.Namespace.Name}.{typeReference.Type.ManagedName}[]";
-
-            // External Type
-            if (typeReference.IsForeign)
-                return $"{typeReference.Type.Namespace.Name}.{typeReference.Type.ManagedName}";
-
-            // Internal Array
-            if (typeReference.IsArray)
-                return $"{typeReference.Type.ManagedName}[]";
-
-            // Internal Type
-            return typeReference.Type.ManagedName;
+            return symbolReference switch
+            {
+                { IsExternal: true, IsArray: true } => ExternalArray(type),
+                { IsExternal: true, IsArray: false } => ExternalType(type),
+                { IsExternal: false, IsArray: true } => InternalArray(type),
+                { IsExternal: false, IsArray: false } => InternalType(type)
+            };
         }
 
-        public static string WriteInheritance(ITypeReference? parent, IEnumerable<ITypeReference> implements)
+        private static string ExternalType(IType type)
+            => $"{type.Namespace.Name}.{type.ManagedName}";
+        
+        private static string ExternalArray(IType type)
+            => $"{type.Namespace.Name}.{type.ManagedName}[]";
+
+        private static string InternalArray(IType type)
+            => $"{type.ManagedName}[]";
+
+        private static string InternalType(IType type)
+            => type.ManagedName!;
+
+        public static string WriteInheritance(ISymbolReference? parent, IEnumerable<ISymbolReference> implements)
         {
             var builder = new StringBuilder();
 
             if (parent is { })
-                builder.Append(": " + WriteTypeReference(parent));
+                builder.Append(": " + WriteManagedSymbolReference(parent));
 
             var refs = implements.ToList();
             if (refs.Count == 0)
@@ -57,14 +62,14 @@ namespace Generator
 
             if (parent is { })
                 builder.Append(", ");
-                
-            builder.Append(string.Join(", ", refs.Select(WriteTypeReference)));
+
+            builder.Append(string.Join(", ", refs.Select(WriteManagedSymbolReference)));
             return builder.ToString();
         }
 
         public static string WriteMethod(Method method)
         {
-            var returnValue = WriteTypeReference(method.ReturnValue.TypeReference);
+            var returnValue = WriteManagedSymbolReference(method.ReturnValue.SymbolReference);
             return $"public static extern {returnValue} {method.Name}({WriteArguments(method.Arguments)});\r\n";
         }
     }
