@@ -100,7 +100,7 @@ The code in the library folder is not complete because the biggest part of the c
 [dbus]: https://www.freedesktop.org/wiki/Software/dbus/
 [libchamplain]: https://wiki.gnome.org/Projects/libchamplain
 [GtkSharp]: https://github.com/GtkSharp/GtkSharp
-[sample_gtk_quickstart]: https://github.com/gircore/gir.core/tree/develop/Samples/Gtk3/Quickstart
+[sample_gtk_quickstart]: https://github.com/gircore/gir.core/tree/develop/Samples/Gtk3/QuickStart
 [GdkPixbuf]: https://gitlab.gnome.org/GNOME/gdk-pixbuf
 
 ## Licensing terms
