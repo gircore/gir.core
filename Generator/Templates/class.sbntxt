@@ -13,6 +13,7 @@ namespace {{ namespace.name }}
         private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ ctype }}", Native.get_type);
         
         {{ include 'class.constructors.sbntxt' this }}
+        {{ include 'class.fields.sbntxt' this }}
         {{ include 'class.native.sbntxt' this }}
         
         {{~ if class_struct ~}}

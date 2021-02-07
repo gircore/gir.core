@@ -1,3 +1,5 @@
+#region Native
+
 protected static class Native
 {
     #region Properties
@@ -18,3 +20,5 @@ protected static class Native
     
     #endregion
 }
+
+#endregion

@@ -122,5 +122,8 @@ namespace Generator
             
             return builder.ToString();
         }
+
+        public static string GetIf(string text, bool condition)
+            => condition ? text : "";
     }
 }

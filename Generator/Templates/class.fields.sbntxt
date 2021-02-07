@@ -1,0 +1,7 @@
+#region Fields
+
+[StructLayout(LayoutKind.Sequential)]
+protected {{'new '|get_if parent != null}}struct Fields : IObjectStruct
+{
+}
+#endregion
