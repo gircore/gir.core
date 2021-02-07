@@ -23,12 +23,12 @@ namespace Repository.Factories
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;
         }
-        
+
         public Class Create(ClassInfo cls, Namespace @namespace)
         {
             if (cls.Name is null || cls.TypeName is null)
                 throw new Exception("Class is missing data");
-            
+
             return new Class(
                 @namespace: @namespace,
                 nativeName: cls.Name,
@@ -36,29 +36,35 @@ namespace Repository.Factories
                 ctype: cls.TypeName,
                 parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, false),
                 implements: GetTypeReferences(cls.Implements),
-                methods: GetMethods(cls.Methods, @namespace)
+                methods: GetMethods(cls, @namespace)
             );
         }
 
         private IEnumerable<ISymbolReference> GetTypeReferences(IEnumerable<ImplementInfo> implements)
         {
             var list = new List<ISymbolReference>();
-            
+
             foreach (ImplementInfo implement in implements)
             {
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
-                
+
                 list.Add(_symbolReferenceFactory.Create(implement.Name, false));
             }
 
             return list;
         }
 
-        private IEnumerable<Method> GetMethods(IEnumerable<MethodInfo> methods, Namespace @namespace)
+        private IEnumerable<Method> GetMethods(ClassInfo info, Namespace @namespace)
         {
             var list = new List<Method>();
-            foreach (var method in methods)
+
+            if (info.GetTypeFunction is { })
+            {
+                list.Add(_methodFactory.CreateGetTypeMethod(info.GetTypeFunction, @namespace));
+            }
+
+            foreach (var method in info.Methods)
             {
                 try
                 {

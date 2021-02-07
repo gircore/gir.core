@@ -7,6 +7,7 @@ namespace Repository.Factories
     public interface IReturnValueFactory
     {
         ReturnValue Create(ReturnValueInfo returnValueInfo);
+        ReturnValue Create(string type, bool isArray, Transfer transfer, bool nullable);
     }
 
     public class ReturnValueFactory : IReturnValueFactory
@@ -26,6 +27,15 @@ namespace Repository.Factories
                 symbolReference: _symbolReferenceFactory.Create(returnValueInfo),
                 transfer: _transferFactory.FromText(returnValueInfo.TransferOwnership),
                 nullable: returnValueInfo.Nullable
+            );
+        }
+
+        public ReturnValue Create(string type, bool isArray, Transfer transfer, bool nullable)
+        {
+            return new ReturnValue(
+                symbolReference: _symbolReferenceFactory.Create(type, isArray),
+                transfer: transfer,
+                nullable: nullable
             );
         }
     }
