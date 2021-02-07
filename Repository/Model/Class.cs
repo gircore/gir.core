@@ -10,13 +10,17 @@ namespace Repository.Model
         public IEnumerable<ISymbolReference> Implements { get; }
         
         public IEnumerable<Method> Methods { get; }
+        public IEnumerable<Method> Functions { get; }
+        public Method GetTypeFunction { get; }
 
-        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, ISymbolReference? parent, IEnumerable<ISymbolReference> implements, IEnumerable<Method> methods) : base(@namespace, nativeName, managedName)
+        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, ISymbolReference? parent, IEnumerable<ISymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, nativeName, managedName)
         {
             Parent = parent;
             Implements = implements;
             CType = ctype;
             Methods = methods;
+            Functions = functions;
+            GetTypeFunction = getTypeFunction;
         }
     }
 }

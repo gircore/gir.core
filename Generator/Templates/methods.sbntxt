@@ -1,8 +1,4 @@
-#region Methods
-
 {{~ for $method in $1
 write_native_method $method ~}}
 
 {{~ end ~}}
-
-#endregion

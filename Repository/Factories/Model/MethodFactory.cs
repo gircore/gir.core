@@ -38,7 +38,7 @@ namespace Repository.Factories
                 nativeName: methodInfo.Identifier,
                 managedName: methodInfo.Name,
                 returnValue: _returnValueFactory.Create(methodInfo.ReturnValue),
-                arguments: _argumentsFactory.Create(methodInfo.Parameters)
+                arguments: _argumentsFactory.Create(methodInfo.Parameters, methodInfo.Throws)
             );
         }
 

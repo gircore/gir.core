@@ -8,6 +8,7 @@ namespace Repository.Factories
     public interface IArgumentFactory
     {
         Argument Create(ParameterInfo parameterInfo);
+        Argument Create(string name, string type, bool isArray, Direction direction, Transfer transfer, bool nullable);
     }
 
     public class ArgumentFactory : IArgumentFactory
@@ -48,6 +49,17 @@ namespace Repository.Factories
                 direction: direction,
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
                 nullable: parameterInfo.Nullable
+            );
+        }
+
+        public Argument Create(string name, string type, bool isArray, Direction direction, Transfer transfer, bool nullable)
+        {
+            return new Argument(
+                name: name,
+                symbolReference: _symbolReferenceFactory.Create(type, isArray),
+                direction: direction,
+                transfer: transfer,
+                nullable: nullable
             );
         }
 

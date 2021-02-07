@@ -18,7 +18,25 @@ namespace Generator
 
         public static string WriteNativeArguments(IEnumerable<Argument> arguments)
         {
-            var args = arguments.Select(x => WriteNativeSymbolReference(x.SymbolReference) + " " + x.Name);
+            var args = new List<string>();
+            foreach (var argument in arguments)
+            {
+                var builder = new StringBuilder();
+
+                builder.Append(argument.Direction switch
+                {
+                    Direction.OutCalleeAllocates => "out ",
+                    Direction.OutCallerAllocates => "ref ",
+                    _ => ""
+                });
+                
+                builder.Append(WriteNativeSymbolReference(argument.SymbolReference));
+                builder.Append(' ');
+                builder.Append(argument.Name);
+
+                args.Add(builder.ToString());
+            }
+            
             return string.Join(", ", args);
         }
 

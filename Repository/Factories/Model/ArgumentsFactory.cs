@@ -7,7 +7,7 @@ namespace Repository.Factories
 {
     public interface IArgumentsFactory
     {
-        IEnumerable<Argument> Create(ParametersInfo? parameters);
+        IEnumerable<Argument> Create(ParametersInfo? parameters, bool throws = false);
     }
 
     public class ArgumentsFactory : IArgumentsFactory
@@ -19,7 +19,7 @@ namespace Repository.Factories
             _argumentFactory = argumentFactory;
         }
 
-        public IEnumerable<Argument> Create(ParametersInfo? parameters)
+        public IEnumerable<Argument> Create(ParametersInfo? parameters, bool throws)
         {
             var list = new List<Argument>();
 
@@ -29,6 +29,18 @@ namespace Repository.Factories
                     list.Add(_argumentFactory.Create(parameters.InstanceParameter));
 
                 list.AddRange(parameters.Parameters.Select(arg => _argumentFactory.Create(arg)));
+
+                if (throws)
+                {
+                    list.Add(_argumentFactory.Create(
+                        name: "error",
+                        type: "GLib.Error",
+                        isArray: false,
+                        direction: Direction.OutCalleeAllocates,
+                        transfer: Transfer.Full,
+                        nullable: false
+                    ));
+                }
             }
 
             return list;

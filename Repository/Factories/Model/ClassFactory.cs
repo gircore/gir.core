@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
@@ -29,6 +28,9 @@ namespace Repository.Factories
             if (cls.Name is null || cls.TypeName is null)
                 throw new Exception("Class is missing data");
 
+            if (cls.GetTypeFunction is null)
+                throw new Exception($"Class {cls.Name} is missing a get type function");
+            
             return new Class(
                 @namespace: @namespace,
                 nativeName: cls.Name,
@@ -36,7 +38,9 @@ namespace Repository.Factories
                 ctype: cls.TypeName,
                 parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, false),
                 implements: GetTypeReferences(cls.Implements),
-                methods: GetMethods(cls, @namespace)
+                methods: GetMethods(cls.Methods, @namespace),
+                functions: GetMethods(cls.Functions, @namespace),
+                getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace)
             );
         }
 
@@ -55,16 +59,11 @@ namespace Repository.Factories
             return list;
         }
 
-        private IEnumerable<Method> GetMethods(ClassInfo info, Namespace @namespace)
+        private IEnumerable<Method> GetMethods(IEnumerable<MethodInfo> methods, Namespace @namespace)
         {
             var list = new List<Method>();
 
-            if (info.GetTypeFunction is { })
-            {
-                list.Add(_methodFactory.CreateGetTypeMethod(info.GetTypeFunction, @namespace));
-            }
-
-            foreach (var method in info.Methods)
+            foreach (var method in methods)
             {
                 try
                 {
