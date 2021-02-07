@@ -8,7 +8,7 @@ namespace {{ namespace.name }}
     public enum {{ managed_name }} : long
     {
         {{~ for member in members }}
-        {{ include 'enum_member.sbntxt' member ~}}
+        {{ include 'enum.member.sbntxt' member ~}}
         {{ end }}
     }
 }
