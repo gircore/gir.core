@@ -12,5 +12,8 @@ namespace Repository.Model
             ReturnValue = returnValue;
             Arguments = arguments;
         }
+
+        public override string ToString()
+            => ManagedName;
     }
 }
