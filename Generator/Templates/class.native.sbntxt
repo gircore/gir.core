@@ -1,5 +1,13 @@
 protected static class Native
 {
+    #region Properties
+    {{~ for $property in properties }}
+    {{ include 'property_name.sbntxt' $property ~}}
+
+    {{ end ~}}
+
+    #endregion
+    
     #region Methods
 
     {{ get_type_function | write_native_method }}

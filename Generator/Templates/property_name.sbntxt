@@ -1,0 +1,4 @@
+/// <summary>
+/// Contains the native name of the {{ $1.managed_name}} property.
+/// </summary>
+public const string {{ $1.managed_name}}Property = "{{ $1.native_name }}";

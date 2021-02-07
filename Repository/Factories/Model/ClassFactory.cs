@@ -16,11 +16,13 @@ namespace Repository.Factories
     {
         private readonly ISymbolReferenceFactory _symbolReferenceFactory;
         private readonly IMethodFactory _methodFactory;
+        private readonly IPropertyFactory _propertyFactory;
 
-        public ClassFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory)
+        public ClassFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory, IPropertyFactory propertyFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;
+            _propertyFactory = propertyFactory;
         }
 
         public Class Create(ClassInfo cls, Namespace @namespace)
@@ -38,9 +40,10 @@ namespace Repository.Factories
                 ctype: cls.TypeName,
                 parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, false),
                 implements: GetTypeReferences(cls.Implements),
-                methods: GetMethods(cls.Methods, @namespace),
-                functions: GetMethods(cls.Functions, @namespace),
-                getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace)
+                methods: _methodFactory.Create(cls.Methods, @namespace),
+                functions: _methodFactory.Create(cls.Functions, @namespace),
+                getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
+                properties: _propertyFactory.Create(cls.Properties)
             );
         }
 
@@ -54,25 +57,6 @@ namespace Repository.Factories
                     throw new Exception("Implement is missing a name");
 
                 list.Add(_symbolReferenceFactory.Create(implement.Name, false));
-            }
-
-            return list;
-        }
-
-        private IEnumerable<Method> GetMethods(IEnumerable<MethodInfo> methods, Namespace @namespace)
-        {
-            var list = new List<Method>();
-
-            foreach (var method in methods)
-            {
-                try
-                {
-                    list.Add(_methodFactory.Create(method, @namespace));
-                }
-                catch (ArgumentFactory.VarArgsNotSupportedException ex)
-                {
-                    Log.Debug($"Method {method.Name} could not be created: {ex.Message}");
-                }
             }
 
             return list;

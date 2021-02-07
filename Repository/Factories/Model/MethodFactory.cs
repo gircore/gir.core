@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Repository.Model;
 using Repository.Xml;
@@ -8,6 +9,7 @@ namespace Repository.Factories
     public interface IMethodFactory
     {
         Method Create(MethodInfo methodInfo, Namespace @namespace);
+        IEnumerable<Method> Create(IEnumerable<MethodInfo> methods, Namespace @namespace);
         Method CreateGetTypeMethod(string getTypeMethodName, Namespace @namespace);
     }
 
@@ -58,6 +60,25 @@ namespace Repository.Factories
                 returnValue: returnValue,
                 arguments: Enumerable.Empty<Argument>()
             );
+        }
+        
+        public IEnumerable<Method> Create(IEnumerable<MethodInfo> methods, Namespace @namespace)
+        {
+            var list = new List<Method>();
+
+            foreach (var method in methods)
+            {
+                try
+                {
+                    list.Add(Create(method, @namespace));
+                }
+                catch (ArgumentFactory.VarArgsNotSupportedException ex)
+                {
+                    Log.Debug($"Method {method.Name} could not be created: {ex.Message}");
+                }
+            }
+
+            return list;
         }
     }
 }
