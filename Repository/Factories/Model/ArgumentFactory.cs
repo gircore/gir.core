@@ -44,7 +44,8 @@ namespace Repository.Factories
                 throw new Exception("Argument name is null");
             
             return new Argument(
-                name: _identifierConverter.Convert(parameterInfo.Name),
+                nativeName: _identifierConverter.Convert(parameterInfo.Name),
+                managedName: _identifierConverter.Convert(parameterInfo.Name),
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo),
                 direction: direction,
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
@@ -55,7 +56,8 @@ namespace Repository.Factories
         public Argument Create(string name, string type, bool isArray, Direction direction, Transfer transfer, bool nullable)
         {
             return new Argument(
-                name: name,
+                nativeName: name,
+                managedName: name,
                 symbolReference: _symbolReferenceFactory.Create(type, isArray),
                 direction: direction,
                 transfer: transfer,

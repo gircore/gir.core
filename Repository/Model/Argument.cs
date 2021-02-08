@@ -2,17 +2,15 @@
 
 namespace Repository.Model
 {
-    public class Argument
+    public class Argument : Symbol
     {
-        public string Name { get; }
         public ISymbolReference SymbolReference { get; }
         public Direction Direction { get; }
         public Transfer Transfer { get; }
         public bool Nullable { get; }
 
-        public Argument(string name, ISymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable)
+        public Argument(string nativeName, string managedName, ISymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable) : base(nativeName, managedName)
         {
-            Name = name;
             SymbolReference = symbolReference;
             Direction = direction;
             Transfer = transfer;

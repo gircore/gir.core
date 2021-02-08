@@ -12,7 +12,7 @@ namespace Generator
     {
         public static string WriteManagedArguments(IEnumerable<Argument> arguments)
         {
-            var args = arguments.Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.Name);
+            var args = arguments.Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.ManagedName);
             return string.Join(", ", args);
         }
 
@@ -32,7 +32,7 @@ namespace Generator
                 
                 builder.Append(WriteNativeSymbolReference(argument.SymbolReference));
                 builder.Append(' ');
-                builder.Append(argument.Name);
+                builder.Append(argument.NativeName);
 
                 args.Add(builder.ToString());
             }
@@ -115,7 +115,7 @@ namespace Generator
 
             foreach (var argument in method.Arguments)
             {
-                builder.Append($"/// <param name=\"{argument.Name}\">Transfer ownership: {argument.Transfer} Nullable: {argument.Nullable}</param>\r\n");
+                builder.Append($"/// <param name=\"{argument.NativeName}\">Transfer ownership: {argument.Transfer} Nullable: {argument.Nullable}</param>\r\n");
             }
 
             builder.Append($"/// <returns>Transfer ownership: {method.ReturnValue.Transfer} Nullable: {method.ReturnValue.Nullable}</returns>\r\n");
