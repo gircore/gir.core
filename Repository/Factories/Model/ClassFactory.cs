@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
@@ -43,7 +44,8 @@ namespace Repository.Factories
                 methods: _methodFactory.Create(cls.Methods, @namespace),
                 functions: _methodFactory.Create(cls.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
-                properties: _propertyFactory.Create(cls.Properties)
+                properties: _propertyFactory.Create(cls.Properties),
+                fields: Enumerable.Empty<Field>()
             );
         }
 

@@ -12,9 +12,10 @@ namespace Repository.Model
         public IEnumerable<Property> Properties { get; }
         public IEnumerable<Method> Methods { get; }
         public IEnumerable<Method> Functions { get; }
+        public IEnumerable<Field> Fields { get; }
         public Method GetTypeFunction { get; }
 
-        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, ISymbolReference? parent, IEnumerable<ISymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(@namespace, nativeName, managedName)
+        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, ISymbolReference? parent, IEnumerable<ISymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields) : base(@namespace, nativeName, managedName)
         {
             Parent = parent;
             Implements = implements;
@@ -23,6 +24,7 @@ namespace Repository.Model
             Functions = functions;
             GetTypeFunction = getTypeFunction;
             Properties = properties;
+            Fields = fields;
         }
     }
 }
