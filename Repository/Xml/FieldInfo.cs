@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    public class FieldInfo
+    public class FieldInfo : ITypeOrArray
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

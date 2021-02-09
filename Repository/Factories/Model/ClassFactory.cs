@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
@@ -18,12 +17,14 @@ namespace Repository.Factories
         private readonly ISymbolReferenceFactory _symbolReferenceFactory;
         private readonly IMethodFactory _methodFactory;
         private readonly IPropertyFactory _propertyFactory;
+        private readonly IFieldFactory _fieldFactory;
 
-        public ClassFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory, IPropertyFactory propertyFactory)
+        public ClassFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory, IPropertyFactory propertyFactory, IFieldFactory fieldFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;
             _propertyFactory = propertyFactory;
+            _fieldFactory = fieldFactory;
         }
 
         public Class Create(ClassInfo cls, Namespace @namespace)
@@ -45,7 +46,7 @@ namespace Repository.Factories
                 functions: _methodFactory.Create(cls.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
                 properties: _propertyFactory.Create(cls.Properties),
-                fields: Enumerable.Empty<Field>()
+                fields: _fieldFactory.Create(cls.Fields)
             );
         }
 

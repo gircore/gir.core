@@ -27,6 +27,7 @@ namespace Repository
     [Register(typeof(PascalCaseConverter), typeof(IPascalCaseConverter))]
     [Register(typeof(IdentifierConverter), typeof(IIdentifierConverter))]
     [Register(typeof(PropertyFactory), typeof(IPropertyFactory))]
+    [Register(typeof(FieldFactory), typeof(IFieldFactory))]
     public partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]

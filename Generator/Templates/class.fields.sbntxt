@@ -1,7 +1,10 @@
 #region Fields
 
 [StructLayout(LayoutKind.Sequential)]
-protected {{'new '|get_if parent != null}}struct Fields : IObjectStruct
+protected {{'new '|get_if $1.parent != null}}struct Fields : IObjectStruct
 {
+    {{~ for $field in $1.fields ~}}
+    //public {{$field.symbol_reference | write_native_symbol_reference}} {{$field.managed_name}};    
+    {{~ end ~}}
 }
 #endregion
