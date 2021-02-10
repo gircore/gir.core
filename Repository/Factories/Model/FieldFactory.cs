@@ -17,10 +17,12 @@ namespace Repository.Factories
     public class FieldFactory : IFieldFactory
     {
         private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly IIdentifierConverter _identifierConverter;
 
-        public FieldFactory(ISymbolReferenceFactory symbolReferenceFactory)
+        public FieldFactory(ISymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
+            _identifierConverter = identifierConverter;
         }
         
         public Field Create(FieldInfo info)
@@ -29,8 +31,8 @@ namespace Repository.Factories
                 throw new Exception("Field is missing name");
 
             return new Field(
-                nativeName: info.Name,
-                managedName: info.Name,
+                nativeName: _identifierConverter.Convert(info.Name),
+                managedName: _identifierConverter.Convert(info.Name),
                 symbolReference: _symbolReferenceFactory.Create(info)
             );
         }

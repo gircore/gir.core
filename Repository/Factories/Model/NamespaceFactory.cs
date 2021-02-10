@@ -47,9 +47,9 @@ namespace Repository
 
             if (namespaceInfo.SharedLibrary is null)
                 throw new Exception($"Namespace {namespaceInfo.Name} does not provide a shared libraryinfo");
-            
+
             var nspace = new Namespace(
-                name: namespaceInfo.Name, 
+                name: namespaceInfo.Name,
                 version: namespaceInfo.Version,
                 sharedLibrary: namespaceInfo.SharedLibrary
             );
@@ -62,13 +62,14 @@ namespace Repository
             SetInterfaces(nspace, namespaceInfo.Interfaces);
             SetRecords(nspace, namespaceInfo.Records, references);
             SetFunctions(nspace, namespaceInfo.Functions, references);
+            SetUnions(nspace, namespaceInfo.Unions, references);
 
             return (nspace, references);
         }
 
         private void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
         {
-            foreach(var alias in aliases)
+            foreach (var alias in aliases)
                 nspace.AddAlias(_aliasFactory.Create(alias));
         }
 
@@ -78,7 +79,7 @@ namespace Repository
             {
                 var cls = _classFactory.Create(classInfo, nspace);
                 nspace.AddClass(cls);
-                
+
                 //TODO: The following calls are somehow bad code. We need to know the type references of 
                 //each object in the class structure. This should somehow work automatically
                 AddReference(references, cls.Parent);
@@ -99,17 +100,16 @@ namespace Repository
             {
                 var callback = _callbackFactory.Create(callbackInfo, nspace);
                 nspace.AddCallback(callback);
-                
+
                 AddReference(references, callback.ReturnValue.SymbolReference);
                 AddReferences(references, callback.Arguments.Select(x => x.SymbolReference));
             }
         }
-        
+
         private void SetEnumerations(Namespace nspace, IEnumerable<EnumInfo> enumerations)
         {
             foreach (var enumInfo in enumerations)
                 nspace.AddEnumeration(_enumartionFactory.Create(enumInfo, nspace, false));
-
         }
 
         private void SetBitfields(Namespace nspace, IEnumerable<EnumInfo> enumerations)
@@ -120,7 +120,7 @@ namespace Repository
 
         private void SetInterfaces(Namespace nspace, IEnumerable<InterfaceInfo> ifaces)
         {
-            foreach(var iface in ifaces)
+            foreach (var iface in ifaces)
                 nspace.AddInterface(_interfaceFactory.Create(iface, nspace));
         }
 
@@ -130,8 +130,19 @@ namespace Repository
             {
                 var record = _recordFactory.Create(recordInfo, nspace);
                 nspace.AddRecord(record);
-                
+
                 AddReference(references, record.GLibClassStructFor);
+            }
+        }
+
+        private void SetUnions(Namespace nspace, IEnumerable<RecordInfo> unions, List<ISymbolReference> references)
+        {
+            foreach (RecordInfo unionInfo in unions)
+            {
+                var union = _recordFactory.Create(unionInfo, nspace);
+                nspace.AddUnion(union);
+
+                AddReference(references, union.GLibClassStructFor);
             }
         }
 

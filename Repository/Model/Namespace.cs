@@ -39,6 +39,9 @@ namespace Repository.Model
         private readonly List<Method> _functions = new();
         public IEnumerable<Method> Functions => _functions;
 
+        private readonly List<Record> _unions = new();
+        public IEnumerable<Record> Unions => _unions;
+
         #endregion
         
         public Namespace(string name, string version, string sharedLibrary)
@@ -71,6 +74,9 @@ namespace Repository.Model
 
         public void AddFunction(Method method)
             => _functions.Add(method);
+
+        public void AddUnion(Record union)
+            => _unions.Add(union);
         
         public string ToCanonicalName() => $"{Name}-{Version}";
         

@@ -125,5 +125,22 @@ namespace Generator
 
         public static string GetIf(string text, bool condition)
             => condition ? text : "";
+
+        public static string WriteClassFields(IEnumerable<Field> fields)
+        {
+            var list = fields.ToArray();
+            if (list.Length == 0)
+                return "";
+            
+            var builder = new StringBuilder();
+            builder.AppendLine($"    public {WriteManagedSymbolReference(list[0].SymbolReference)}.Fields {list[0].ManagedName};");
+
+            foreach (var field in list[1..])
+            {
+                builder.AppendLine($"    public {WriteNativeSymbolReference(field.SymbolReference)} {field.ManagedName};");
+            }
+
+            return builder.ToString();
+        }
     }
 }

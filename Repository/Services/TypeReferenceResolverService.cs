@@ -37,6 +37,7 @@ namespace Repository.Services
             symbolDictionary.AddSymbols(@namespace.Name, @namespace.Enumerations);
             symbolDictionary.AddSymbols(@namespace.Name, @namespace.Bitfields);
             symbolDictionary.AddSymbols(@namespace.Name, @namespace.Records);
+            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Unions);
         }
 
         private void ResolveReferences(SymbolDictionary symbolDictionary, ILoadedProject proj)
