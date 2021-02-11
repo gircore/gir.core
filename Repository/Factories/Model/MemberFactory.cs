@@ -11,11 +11,11 @@ namespace Repository.Factories
 
     public class MemberFactory : IMemberFactory
     {
-        private readonly IPascalCaseConverter _pascalCaseConverter;
+        private readonly ICaseConverter _caseConverter;
 
-        public MemberFactory(IPascalCaseConverter pascalCaseConverter)
+        public MemberFactory(ICaseConverter caseConverter)
         {
-            _pascalCaseConverter = pascalCaseConverter;
+            _caseConverter = caseConverter;
         }
 
         public Member Create(MemberInfo info)
@@ -31,7 +31,7 @@ namespace Repository.Factories
             
             return new Member(
                 nativeName: info.Identifier, 
-                managedName: _pascalCaseConverter.Convert(info.Name), 
+                managedName: _caseConverter.ToPascalCase(info.Name), 
                 value: info.Value
             );
         }

@@ -24,10 +24,11 @@ namespace Repository
     [Register(typeof(TypeReferenceResolverService), typeof(ITypeReferenceResolverService))]
     [Register(typeof(TransferFactory), typeof(ITransferFactory))]
     [Register(typeof(MemberFactory), typeof(IMemberFactory))]
-    [Register(typeof(PascalCaseConverter), typeof(IPascalCaseConverter))]
+    [Register(typeof(CaseConverter), typeof(ICaseConverter))]
     [Register(typeof(IdentifierConverter), typeof(IIdentifierConverter))]
     [Register(typeof(PropertyFactory), typeof(IPropertyFactory))]
     [Register(typeof(FieldFactory), typeof(IFieldFactory))]
+    [Register(typeof(SignalFactory), typeof(ISignalFactory))]
     public partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]

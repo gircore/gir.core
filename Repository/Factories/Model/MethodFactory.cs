@@ -17,11 +17,13 @@ namespace Repository.Factories
     {
         private readonly IReturnValueFactory _returnValueFactory;
         private readonly IArgumentsFactory _argumentsFactory;
+        private readonly ICaseConverter _caseConverter;
 
-        public MethodFactory(IReturnValueFactory returnValueFactory, IArgumentsFactory argumentsFactory)
+        public MethodFactory(IReturnValueFactory returnValueFactory, IArgumentsFactory argumentsFactory, ICaseConverter caseConverter)
         {
             _returnValueFactory = returnValueFactory;
             _argumentsFactory = argumentsFactory;
+            _caseConverter = caseConverter;
         }
 
         public Method Create(MethodInfo methodInfo, Namespace @namespace)
@@ -38,7 +40,7 @@ namespace Repository.Factories
             return new Method(
                 @namespace: @namespace,
                 nativeName: methodInfo.Identifier,
-                managedName: methodInfo.Name,
+                managedName: _caseConverter.ToPascalCase(methodInfo.Name),
                 returnValue: _returnValueFactory.Create(methodInfo.ReturnValue),
                 arguments: _argumentsFactory.Create(methodInfo.Parameters, methodInfo.Throws)
             );
@@ -56,7 +58,7 @@ namespace Repository.Factories
             return new Method(
                 @namespace: @namespace,
                 nativeName: getTypeMethodName,
-                managedName: "get_type",
+                managedName: "GetType",
                 returnValue: returnValue,
                 arguments: Enumerable.Empty<Argument>()
             );

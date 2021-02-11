@@ -17,13 +17,13 @@ namespace Repository.Factories
     {
         private readonly ITransferFactory _transferFactory;
         private readonly ISymbolReferenceFactory _symbolReferenceFactory;
-        private readonly IPascalCaseConverter _pascalCaseConverter;
+        private readonly ICaseConverter _caseConverter;
 
-        public PropertyFactory(ITransferFactory transferFactory, ISymbolReferenceFactory symbolReferenceFactory, IPascalCaseConverter pascalCaseConverter)
+        public PropertyFactory(ITransferFactory transferFactory, ISymbolReferenceFactory symbolReferenceFactory, ICaseConverter caseConverter)
         {
             _transferFactory = transferFactory;
             _symbolReferenceFactory = symbolReferenceFactory;
-            _pascalCaseConverter = pascalCaseConverter;
+            _caseConverter = caseConverter;
         }
 
         public Property Create(PropertyInfo info)
@@ -33,7 +33,7 @@ namespace Repository.Factories
             
             return new Property(
                 nativeName: info.Name,
-                managedName: _pascalCaseConverter.Convert(info.Name),
+                managedName: _caseConverter.ToPascalCase(info.Name),
                 symbolReference: _symbolReferenceFactory.Create(info),
                 writeable: info.Writeable,
                 transfer:  _transferFactory.FromText(info.TransferOwnership)

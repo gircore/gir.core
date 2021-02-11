@@ -18,13 +18,15 @@ namespace Repository.Factories
         private readonly IMethodFactory _methodFactory;
         private readonly IPropertyFactory _propertyFactory;
         private readonly IFieldFactory _fieldFactory;
+        private readonly ISignalFactory _signalFactory;
 
-        public ClassFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory, IPropertyFactory propertyFactory, IFieldFactory fieldFactory)
+        public ClassFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory, IPropertyFactory propertyFactory, IFieldFactory fieldFactory, ISignalFactory signalFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;
             _propertyFactory = propertyFactory;
             _fieldFactory = fieldFactory;
+            _signalFactory = signalFactory;
         }
 
         public Class Create(ClassInfo cls, Namespace @namespace)
@@ -46,7 +48,8 @@ namespace Repository.Factories
                 functions: _methodFactory.Create(cls.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
                 properties: _propertyFactory.Create(cls.Properties),
-                fields: _fieldFactory.Create(cls.Fields)
+                fields: _fieldFactory.Create(cls.Fields),
+                signals: _signalFactory.Create(cls.Signals)
             );
         }
 

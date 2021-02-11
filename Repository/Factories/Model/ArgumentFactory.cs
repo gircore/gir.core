@@ -16,12 +16,14 @@ namespace Repository.Factories
         private readonly ISymbolReferenceFactory _symbolReferenceFactory;
         private readonly ITransferFactory _transferFactory;
         private readonly IIdentifierConverter _identifierConverter;
+        private readonly ICaseConverter _caseConverter;
 
-        public ArgumentFactory(ISymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory, IIdentifierConverter identifierConverter)
+        public ArgumentFactory(ISymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory, IIdentifierConverter identifierConverter, ICaseConverter caseConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;
             _identifierConverter = identifierConverter;
+            _caseConverter = caseConverter;
         }
         
         public Argument Create(ParameterInfo parameterInfo)
@@ -45,7 +47,7 @@ namespace Repository.Factories
             
             return new Argument(
                 nativeName: _identifierConverter.Convert(parameterInfo.Name),
-                managedName: _identifierConverter.Convert(parameterInfo.Name),
+                managedName: _caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)),
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo),
                 direction: direction,
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
@@ -53,11 +55,11 @@ namespace Repository.Factories
             );
         }
 
-        public Argument Create(string name, string type, bool isArray, Direction direction, Transfer transfer, bool nullable)
+        public Argument Create(string nativeName, string type, bool isArray, Direction direction, Transfer transfer, bool nullable)
         {
             return new Argument(
-                nativeName: name,
-                managedName: name,
+                nativeName: nativeName,
+                managedName: _caseConverter.ToCamelCase(nativeName),
                 symbolReference: _symbolReferenceFactory.Create(type, isArray),
                 direction: direction,
                 transfer: transfer,

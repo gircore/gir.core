@@ -1,0 +1,7 @@
+#region Signals
+
+{{~ for $signal in $1.signals }}
+{{ include 'signal.sbntxt' $signal $1.name }}
+{{ end ~}}
+
+#endregion

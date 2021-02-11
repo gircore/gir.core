@@ -32,7 +32,7 @@ namespace Generator
                 
                 builder.Append(WriteNativeSymbolReference(argument.SymbolReference));
                 builder.Append(' ');
-                builder.Append(argument.NativeName);
+                builder.Append(argument.ManagedName);
 
                 args.Add(builder.ToString());
             }
@@ -133,7 +133,7 @@ namespace Generator
                 return "";
             
             var builder = new StringBuilder();
-            builder.AppendLine($"    public {WriteManagedSymbolReference(list[0].SymbolReference)}.Fields {list[0].ManagedName};");
+            builder.AppendLine($"    public {WriteManagedSymbolReference(list[0].SymbolReference)}.Field {list[0].ManagedName};");
 
             foreach (var field in list[1..])
             {
