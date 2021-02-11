@@ -18,11 +18,13 @@ namespace Repository.Factories
     {
         private readonly ISymbolReferenceFactory _symbolReferenceFactory;
         private readonly IIdentifierConverter _identifierConverter;
+        private readonly ICaseConverter _caseConverter;
 
-        public FieldFactory(ISymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter)
+        public FieldFactory(ISymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter, ICaseConverter caseConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _identifierConverter = identifierConverter;
+            _caseConverter = caseConverter;
         }
         
         public Field Create(FieldInfo info)
@@ -32,7 +34,7 @@ namespace Repository.Factories
 
             return new Field(
                 nativeName: _identifierConverter.Convert(info.Name),
-                managedName: _identifierConverter.Convert(info.Name),
+                managedName: _caseConverter.ToPascalCase(_identifierConverter.Convert(info.Name)),
                 symbolReference: _symbolReferenceFactory.Create(info)
             );
         }
