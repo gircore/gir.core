@@ -113,12 +113,16 @@ namespace Generator
         {
             var builder = new StringBuilder();
 
+            builder.AppendLine($"/// <summary>");
+            builder.AppendLine($"/// Calls native method {method.NativeName}.");
+            builder.AppendLine($"/// </summary>");
+            
             foreach (var argument in method.Arguments)
             {
-                builder.Append($"/// <param name=\"{argument.NativeName}\">Transfer ownership: {argument.Transfer} Nullable: {argument.Nullable}</param>\r\n");
+                builder.AppendLine($"/// <param name=\"{argument.NativeName}\">Transfer ownership: {argument.Transfer} Nullable: {argument.Nullable}</param>");
             }
 
-            builder.Append($"/// <returns>Transfer ownership: {method.ReturnValue.Transfer} Nullable: {method.ReturnValue.Nullable}</returns>\r\n");
+            builder.AppendLine($"/// <returns>Transfer ownership: {method.ReturnValue.Transfer} Nullable: {method.ReturnValue.Nullable}</returns>");
             
             return builder.ToString();
         }
@@ -133,13 +137,26 @@ namespace Generator
                 return "";
             
             var builder = new StringBuilder();
-            builder.AppendLine($"    public {WriteManagedSymbolReference(list[0].SymbolReference)}.Field {list[0].ManagedName};");
+            builder.AppendLine(WriteNativeClassField(list[0], true));
 
             foreach (var field in list[1..])
             {
-                builder.AppendLine($"    public {WriteNativeSymbolReference(field.SymbolReference)} {field.ManagedName};");
+                builder.AppendLine(WriteNativeClassField(field, false));
             }
 
+            return builder.ToString();
+        }
+
+        private static string WriteNativeClassField(Field field, bool isFirst)
+        {
+            var appender = isFirst ? ".Field" : "";
+
+            var builder = new StringBuilder();
+            builder.AppendLine($"    /// <summary>");
+            builder.AppendLine($"    /// Maps to native object field {field.NativeName}.");
+            builder.AppendLine($"    /// </summary>");
+            builder.AppendLine($"    public {WriteManagedSymbolReference(field.SymbolReference)}{appender} {field.ManagedName};");
+            
             return builder.ToString();
         }
     }
