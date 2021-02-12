@@ -24,7 +24,7 @@ public SignalHandler<{{ $signal_generic_args }}> this[Signal<{{ $signal_generic_
 public sealed class {{$signal_data.args_type}} : SignalArgs
 {
     #region Properties
-
+    {{ $1.arguments | write_signal_args_properties }}
     #endregion
 }
 {{~ end ~}}
