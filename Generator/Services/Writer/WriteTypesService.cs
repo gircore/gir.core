@@ -35,6 +35,7 @@ namespace Generator.Services.Writer
                 scriptObject.Import("write_inheritance", new Func<ISymbolReference?, IEnumerable<ISymbolReference>, string>(TemplateWriter.WriteInheritance));
                 scriptObject.Import("write_class_fields", new Func<IEnumerable<Field>, string>(TemplateWriter.WriteClassFields));
                 scriptObject.Import("get_if", new Func<string, bool, string>(TemplateWriter.GetIf));
+                scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
                 
                 _writeHelperService.Write(
                     projectName: projectName,

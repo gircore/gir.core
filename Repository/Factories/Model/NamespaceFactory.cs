@@ -91,6 +91,7 @@ namespace Repository
                 AddReference(references, cls.GetTypeFunction.ReturnValue.SymbolReference);
                 AddReferences(references, cls.GetTypeFunction.Arguments.Select(x => x.SymbolReference));
                 AddReferences(references, cls.Fields.Select(x => x.SymbolReference));
+                AddReferences(references, cls.Signals.SelectMany(x => x.Arguments).Select(x => x.SymbolReference));
             }
         }
 

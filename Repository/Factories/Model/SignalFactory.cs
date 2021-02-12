@@ -16,11 +16,13 @@ namespace Repository.Factories
     {
         private readonly IReturnValueFactory _returnValueFactory;
         private readonly ICaseConverter _caseConverter;
+        private readonly IArgumentsFactory _argumentsFactory;
 
-        public SignalFactory(IReturnValueFactory returnValueFactory, ICaseConverter caseConverter)
+        public SignalFactory(IReturnValueFactory returnValueFactory, ICaseConverter caseConverter, IArgumentsFactory argumentsFactory)
         {
             _returnValueFactory = returnValueFactory;
             _caseConverter = caseConverter;
+            _argumentsFactory = argumentsFactory;
         }
 
         public Signal Create(SignalInfo signalInfo)
@@ -34,7 +36,8 @@ namespace Repository.Factories
             return new Signal(
                 nativeName: signalInfo.Name,
                 managedName: _caseConverter.ToPascalCase(signalInfo.Name),
-                returnValue: _returnValueFactory.Create(signalInfo.ReturnValue)
+                returnValue: _returnValueFactory.Create(signalInfo.ReturnValue),
+                arguments: _argumentsFactory.Create(signalInfo.Parameters)
             );
         }
 
