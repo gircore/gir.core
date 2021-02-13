@@ -1,4 +1,5 @@
-﻿using Generator.Factories;
+﻿using System;
+using Generator.Factories;
 using Repository;
 using Scriban.Runtime;
 
@@ -37,13 +38,20 @@ namespace Generator.Services.Writer
                 { "osx_dll", dllImportResolver.GetOsxDllImport() }
             };
 
-            _writeHelperService.Write(
-                projectName: loadedProject.Name,
-                templateName: "dll_import.sbntxt",
-                folder: "Classes",
-                fileName: "DllImport",
-                scriptObject: scriptObject
-            );
+            try
+            {
+                _writeHelperService.Write(
+                    projectName: loadedProject.Name,
+                    templateName: "dll_import.sbntxt",
+                    folder: "Classes",
+                    fileName: "DllImport",
+                    scriptObject: scriptObject
+                );
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Could not write dll import for {loadedProject.Name}: {ex.Message}");
+            }
         }
     }
 }

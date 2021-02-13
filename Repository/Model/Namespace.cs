@@ -86,23 +86,19 @@ namespace Repository.Model
         public IEnumerable<ISymbolReference> GetSymbolReferences()
         {
             return IEnumerables.Concat(
-                GetSymbolReferences(Aliases),
-                GetSymbolReferences(Callbacks),
-                GetSymbolReferences(Classes),
-                GetSymbolReferences(Enumerations),
-                GetSymbolReferences(Bitfields),
-                GetSymbolReferences(Interfaces),
-                GetSymbolReferences(Records),
-                GetSymbolReferences(Functions),
-                GetSymbolReferences(Unions)
+                Aliases.GetSymbolReferences(),
+                Callbacks.GetSymbolReferences(),
+                Classes.GetSymbolReferences(),
+                Enumerations.GetSymbolReferences(),
+                Bitfields.GetSymbolReferences(),
+                Interfaces.GetSymbolReferences(),
+                Records.GetSymbolReferences(),
+                Functions.GetSymbolReferences(),
+                Unions.GetSymbolReferences(),
+                Constants.GetSymbolReferences()
             );
         }
 
-        private static IEnumerable<ISymbolReference> GetSymbolReferences(IEnumerable<ISymbolReferenceProvider> providers)
-        {
-            return providers.SelectMany(x => x.GetSymbolReferences());
-        }
-        
         public string ToCanonicalName() => $"{Name}-{Version}";
     }
 }

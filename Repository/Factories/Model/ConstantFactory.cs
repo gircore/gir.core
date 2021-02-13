@@ -13,10 +13,12 @@ namespace Repository.Factories
     public class ConstantFactory : IConstantFactory
     {
         private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly IIdentifierConverter _identifierConverter;
 
-        public ConstantFactory(ISymbolReferenceFactory symbolReferenceFactory)
+        public ConstantFactory(ISymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
+            _identifierConverter = identifierConverter;
         }
 
         public Constant Create(ConstantInfo constantInfo)
@@ -28,8 +30,8 @@ namespace Repository.Factories
                 throw new Exception($"{nameof(ConstantInfo)} {constantInfo.Name} misses a {nameof(constantInfo.Value)}");
             
             return new Constant(
-                nativeName: constantInfo.Name,
-                managedName: constantInfo.Name,
+                nativeName: _identifierConverter.Convert(constantInfo.Name),
+                managedName: _identifierConverter.Convert(constantInfo.Name),
                 symbolReference: _symbolReferenceFactory.Create(constantInfo),
                 value: constantInfo.Value
             );

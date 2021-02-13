@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Repository.Analysis;
+using Repository.Model;
 
 namespace Repository
 {
@@ -9,6 +11,10 @@ namespace Repository
         {
             return lists.SelectMany(x => x);
         }
-
+        
+        public static IEnumerable<ISymbolReference> GetSymbolReferences(this IEnumerable<ISymbolReferenceProvider> providers)
+        {
+            return providers.SelectMany(x => x.GetSymbolReferences());
+        }
     }
 }

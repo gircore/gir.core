@@ -35,11 +35,11 @@ namespace Repository.Model
             var symbolReferences = IEnumerables.Concat(
                 Implements,
                 GetTypeFunction.GetSymbolReferences(),
-                Properties.SelectMany(x => x.GetSymbolReferences()),
-                Methods.SelectMany(x => x.GetSymbolReferences()),
-                Functions.SelectMany(x => x.GetSymbolReferences()),
-                Fields.SelectMany(x => x.GetSymbolReferences()),
-                Signals.SelectMany(x => x.GetSymbolReferences())
+                Properties.GetSymbolReferences(),
+                Methods.GetSymbolReferences(),
+                Functions.GetSymbolReferences(),
+                Fields.GetSymbolReferences(),
+                Signals.GetSymbolReferences()
             );
 
             if (Parent is { })

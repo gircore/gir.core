@@ -38,14 +38,21 @@ namespace Generator.Services.Writer
                 scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
                 scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteSignalArgsProperties));
                 scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
-                
-                _writeHelperService.Write(
-                    projectName: projectName,
-                    templateName: templateName,
-                    folder: subfolder,
-                    fileName: obj.ManagedName,
-                    scriptObject: scriptObject
-                );
+
+                try
+                {
+                    _writeHelperService.Write(
+                        projectName: projectName,
+                        templateName: templateName,
+                        folder: subfolder,
+                        fileName: obj.ManagedName,
+                        scriptObject: scriptObject
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Could not create type {obj.ManagedName}: {ex.Message}");
+                }
             }
         }
     }

@@ -162,6 +162,20 @@ namespace Generator
             return builder.ToString();
         }
 
+        public static string WriteNativeConstant(Constant constant)
+        {
+            var type = WriteManagedSymbolReference(constant.SymbolReference);
+
+            var value = type switch
+            {
+                { } t when t.EndsWith("Flags") => $"({t}) {constant.Value}",
+                { } t when t == "string" => "\"" + constant.Value + "\"",
+                _ => constant.Value
+            };
+
+            return $"public static {type} {constant.ManagedName} = {value};\r\n";
+        }
+
         public static string WriteSignalArgsProperties(IEnumerable<Argument> arguments)
         {
             var builder = new StringBuilder();
@@ -173,7 +187,7 @@ namespace Generator
                 index += 1;
                 var type = WriteManagedSymbolReference(argument.SymbolReference);
                 var name = converter.ToPascalCase(argument.ManagedName);
-                
+
                 builder.AppendLine($"public {type} {name} => Args[{index}].Extract<{type}>();");
             }
 

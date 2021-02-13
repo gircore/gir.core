@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Repository.Analysis;
 using Repository.Model;
 using Scriban.Runtime;
@@ -26,17 +27,25 @@ namespace Generator.Services.Writer
         {
             var scriptObject = new ScriptObject
             {
-                {name, symbols}, 
+                {name.ToLower(), symbols}, 
                 {"namespace", @namespace}
             };
+            scriptObject.Import("write_native_constant", new Func<Constant, string>(TemplateWriter.WriteNativeConstant));
 
-            _writeHelperService.Write(
-                projectName: projectName,
-                templateName: templateName,
-                folder: subfolder,
-                fileName: name,
-                scriptObject: scriptObject
-            );
+            try
+            {
+                _writeHelperService.Write(
+                    projectName: projectName,
+                    templateName: templateName,
+                    folder: subfolder,
+                    fileName: name,
+                    scriptObject: scriptObject
+                );
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Could not write symbols for {@namespace.Name} / {name}: {ex.Message}");
+            }
         }
     }
 }
