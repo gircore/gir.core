@@ -12,6 +12,7 @@ namespace {{ namespace.name }}
     {
          {{ include 'type_descriptor.sbntxt' }}
          
+         {{ include 'interface.properties.sbntxt' }}
          {{ include 'interface.native.sbntxt' }}
     }
 }
