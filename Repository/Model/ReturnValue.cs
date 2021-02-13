@@ -1,8 +1,9 @@
-﻿using Repository.Analysis;
+﻿using System.Collections.Generic;
+using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class ReturnValue
+    public class ReturnValue : ISymbolReferenceProvider
     {
         public Transfer Transfer { get; }
         public bool Nullable { get; }
@@ -13,6 +14,11 @@ namespace Repository.Model
             SymbolReference = symbolReference;
             Transfer = transfer;
             Nullable = nullable;
+        }
+
+        public IEnumerable<ISymbolReference> GetSymbolReferences()
+        {
+            yield return SymbolReference;
         }
     }
 }

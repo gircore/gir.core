@@ -1,4 +1,5 @@
-﻿using Repository.Analysis;
+﻿using System.Collections.Generic;
+using Repository.Analysis;
 
 namespace Repository.Model
 {
@@ -15,6 +16,11 @@ namespace Repository.Model
             Direction = direction;
             Transfer = transfer;
             Nullable = nullable;
+        }
+
+        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        {
+            yield return SymbolReference;
         }
     }
 }

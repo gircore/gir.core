@@ -11,7 +11,7 @@ namespace Repository
 {
     public interface INamespaceFactory
     {
-        (Namespace, IEnumerable<ISymbolReference>) CreateFromNamespaceInfo(NamespaceInfo repoinfo);
+        Namespace CreateFromNamespaceInfo(NamespaceInfo repoinfo);
     }
 
     public class NamespaceFactory : INamespaceFactory
@@ -35,10 +35,8 @@ namespace Repository
             _methodFactory = methodFactory;
         }
 
-        public (Namespace, IEnumerable<ISymbolReference>) CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
+        public Namespace CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
         {
-            var references = new List<ISymbolReference>();
-
             if (namespaceInfo.Name is null)
                 throw new Exception("Namespace does not have a name");
 
@@ -55,16 +53,16 @@ namespace Repository
             );
 
             SetAliases(nspace, namespaceInfo.Aliases);
-            SetClasses(nspace, namespaceInfo.Classes, references);
-            SetCallbacks(nspace, namespaceInfo.Callbacks, references);
+            SetClasses(nspace, namespaceInfo.Classes);
+            SetCallbacks(nspace, namespaceInfo.Callbacks);
             SetEnumerations(nspace, namespaceInfo.Enumerations);
             SetBitfields(nspace, namespaceInfo.Bitfields);
             SetInterfaces(nspace, namespaceInfo.Interfaces);
-            SetRecords(nspace, namespaceInfo.Records, references);
-            SetFunctions(nspace, namespaceInfo.Functions, references);
-            SetUnions(nspace, namespaceInfo.Unions, references);
+            SetRecords(nspace, namespaceInfo.Records);
+            SetFunctions(nspace, namespaceInfo.Functions);
+            SetUnions(nspace, namespaceInfo.Unions);
 
-            return (nspace, references);
+            return nspace;
         }
 
         private void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
@@ -73,37 +71,21 @@ namespace Repository
                 nspace.AddAlias(_aliasFactory.Create(alias));
         }
 
-        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes, List<ISymbolReference> references)
+        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes)
         {
             foreach (var classInfo in classes)
             {
                 var cls = _classFactory.Create(classInfo, nspace);
                 nspace.AddClass(cls);
-
-                //TODO: The following calls are somehow bad code. We need to know the type references of 
-                //each object in the class structure. This should somehow work automatically
-                AddReference(references, cls.Parent);
-                AddReferences(references, cls.Implements);
-                AddReferences(references, cls.Methods.Select(x => x.ReturnValue.SymbolReference));
-                AddReferences(references, cls.Methods.SelectMany(x => x.Arguments).Select(x => x.SymbolReference));
-                AddReferences(references, cls.Functions.Select(x => x.ReturnValue.SymbolReference));
-                AddReferences(references, cls.Functions.SelectMany(x => x.Arguments).Select(x => x.SymbolReference));
-                AddReference(references, cls.GetTypeFunction.ReturnValue.SymbolReference);
-                AddReferences(references, cls.GetTypeFunction.Arguments.Select(x => x.SymbolReference));
-                AddReferences(references, cls.Fields.Select(x => x.SymbolReference));
-                AddReferences(references, cls.Signals.SelectMany(x => x.Arguments).Select(x => x.SymbolReference));
             }
         }
 
-        private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks, List<ISymbolReference> references)
+        private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks)
         {
             foreach (CallbackInfo callbackInfo in callbacks)
             {
                 var callback = _callbackFactory.Create(callbackInfo, nspace);
                 nspace.AddCallback(callback);
-
-                AddReference(references, callback.ReturnValue.SymbolReference);
-                AddReferences(references, callback.Arguments.Select(x => x.SymbolReference));
             }
         }
 
@@ -125,29 +107,25 @@ namespace Repository
                 nspace.AddInterface(_interfaceFactory.Create(iface, nspace));
         }
 
-        private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records, List<ISymbolReference> references)
+        private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records)
         {
             foreach (RecordInfo recordInfo in records)
             {
                 var record = _recordFactory.Create(recordInfo, nspace);
                 nspace.AddRecord(record);
-
-                AddReference(references, record.GLibClassStructFor);
             }
         }
 
-        private void SetUnions(Namespace nspace, IEnumerable<RecordInfo> unions, List<ISymbolReference> references)
+        private void SetUnions(Namespace nspace, IEnumerable<RecordInfo> unions)
         {
             foreach (RecordInfo unionInfo in unions)
             {
                 var union = _recordFactory.Create(unionInfo, nspace);
                 nspace.AddUnion(union);
-
-                AddReference(references, union.GLibClassStructFor);
             }
         }
 
-        private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions, List<ISymbolReference> references)
+        private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions)
         {
             foreach (MethodInfo info in functions)
             {
@@ -155,28 +133,12 @@ namespace Repository
                 {
                     var method = _methodFactory.Create(info, nspace);
                     nspace.AddFunction(method);
-
-                    AddReference(references, method.ReturnValue.SymbolReference);
                 }
                 catch (ArgumentFactory.VarArgsNotSupportedException ex)
                 {
                     Log.Debug($"Method {info.Name} could not be created: {ex.Message}");
                 }
             }
-        }
-
-        private void AddReference(List<ISymbolReference> references, ISymbolReference? reference)
-        {
-            if (reference is null)
-                return;
-
-            references.Add(reference);
-        }
-
-        private void AddReferences(List<ISymbolReference> referencesSet, IEnumerable<ISymbolReference> references)
-        {
-            foreach (var reference in references)
-                referencesSet.Add(reference);
         }
     }
 }

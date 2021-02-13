@@ -19,7 +19,7 @@ namespace Repository.Factories
             if (aliasInfo.For?.Name is null)
                 throw new Exception($"Alias {aliasInfo.Name} is missing target");
 
-            return new Symbol(aliasInfo.Name, aliasInfo.For.Name);
+            return new BasicSymbol(aliasInfo.Name, aliasInfo.For.Name);
         }
     }
 }

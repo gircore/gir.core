@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Repository.Analysis;
 
 namespace Repository.Model
 {
@@ -12,5 +14,8 @@ namespace Repository.Model
             HasFlags = hasFlags;
             Members = members;
         }
+
+        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+            => Members.SelectMany(x => x.GetSymbolReferences());
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Namespace
+    public class Namespace : ISymbolReferenceProvider
     {
         #region Properties
         
@@ -43,7 +45,7 @@ namespace Repository.Model
         public IEnumerable<Record> Unions => _unions;
 
         #endregion
-        
+
         public Namespace(string name, string version, string sharedLibrary)
         {
             Name = name;
@@ -78,7 +80,26 @@ namespace Repository.Model
         public void AddUnion(Record union)
             => _unions.Add(union);
         
-        public string ToCanonicalName() => $"{Name}-{Version}";
+        public IEnumerable<ISymbolReference> GetSymbolReferences()
+        {
+            return IEnumerables.Concat(
+                GetSymbolReferences(Aliases),
+                GetSymbolReferences(Callbacks),
+                GetSymbolReferences(Classes),
+                GetSymbolReferences(Enumerations),
+                GetSymbolReferences(Bitfields),
+                GetSymbolReferences(Interfaces),
+                GetSymbolReferences(Records),
+                GetSymbolReferences(Functions),
+                GetSymbolReferences(Unions)
+            );
+        }
+
+        private static IEnumerable<ISymbolReference> GetSymbolReferences(IEnumerable<ISymbolReferenceProvider> providers)
+        {
+            return providers.SelectMany(x => x.GetSymbolReferences());
+        }
         
+        public string ToCanonicalName() => $"{Name}-{Version}";
     }
 }

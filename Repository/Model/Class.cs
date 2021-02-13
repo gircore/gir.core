@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Repository.Analysis;
 
 namespace Repository.Model
@@ -8,7 +9,7 @@ namespace Repository.Model
         public string CType { get; }
         public ISymbolReference? Parent { get; }
         public IEnumerable<ISymbolReference> Implements { get; }
-        
+
         public IEnumerable<Property> Properties { get; }
         public IEnumerable<Method> Methods { get; }
         public IEnumerable<Method> Functions { get; }
@@ -27,6 +28,24 @@ namespace Repository.Model
             Properties = properties;
             Fields = fields;
             Signals = signals;
+        }
+
+        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        {
+            var symbolReferences = IEnumerables.Concat(
+                Implements,
+                GetTypeFunction.GetSymbolReferences(),
+                Properties.SelectMany(x => x.GetSymbolReferences()),
+                Methods.SelectMany(x => x.GetSymbolReferences()),
+                Functions.SelectMany(x => x.GetSymbolReferences()),
+                Fields.SelectMany(x => x.GetSymbolReferences()),
+                Signals.SelectMany(x => x.GetSymbolReferences())
+            );
+
+            if (Parent is { })
+                symbolReferences = symbolReferences.Append(Parent);
+
+            return symbolReferences;
         }
     }
 }

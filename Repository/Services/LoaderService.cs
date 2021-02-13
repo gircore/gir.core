@@ -65,9 +65,9 @@ namespace Repository
                     return project;
 
                 var dependencies = LoadDependencies(loadedProjects, repoinfo.Includes);
-                var (nspace, references) = _namespaceFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
+                var nspace = _namespaceFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
                 
-                project = new LoadedProject(nspace.ToCanonicalName(), nspace, dependencies, references);
+                project = new LoadedProject(nspace.ToCanonicalName(), nspace, dependencies);
                 loadedProjects.Add(project);
                 Log.Information($"Loaded '{nspace.ToCanonicalName()}' (provided by '{target.Name}')");
 

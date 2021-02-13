@@ -4,9 +4,9 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Interface : Type
+    public class BasicSymbol : Symbol
     {
-        public Interface(Namespace @namespace, string nativeName, string managedName) : base(@namespace, nativeName, managedName)
+        public BasicSymbol(string nativeName, string managedName) : base(nativeName, managedName)
         {
         }
 

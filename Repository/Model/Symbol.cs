@@ -1,12 +1,20 @@
-﻿namespace Repository.Model
+﻿using System.Collections.Generic;
+using Repository.Analysis;
+
+namespace Repository.Model
 {
+    public interface  ISymbolReferenceProvider
+    {
+        IEnumerable<ISymbolReference> GetSymbolReferences();
+    }
+    
     public interface ISymbol
     {
         string NativeName { get; }
         string ManagedName { get; }
     }
 
-    public class Symbol : ISymbol
+    public abstract class Symbol : ISymbol, ISymbolReferenceProvider
     {
         public string NativeName { get; }
         public string ManagedName { get; }
@@ -16,5 +24,7 @@
             NativeName = nativeName;
             ManagedName = managedName;
         }
+        
+        public abstract IEnumerable<ISymbolReference> GetSymbolReferences();
     }
 }

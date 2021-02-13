@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Repository.Analysis;
 
 namespace Repository.Model
 {
@@ -12,5 +14,14 @@ namespace Repository.Model
             ReturnValue = returnValue;
             Arguments = arguments;
         }
+
+        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        {
+            return IEnumerables.Concat(
+                ReturnValue.GetSymbolReferences(),
+                Arguments.SelectMany(x => x.GetSymbolReferences())
+            );
+        }
+
     }
 }

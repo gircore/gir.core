@@ -1,4 +1,5 @@
-﻿using Repository.Analysis;
+﻿using System.Collections.Generic;
+using Repository.Analysis;
 
 namespace Repository.Model
 {
@@ -9,6 +10,11 @@ namespace Repository.Model
         public Field(string nativeName, string managedName, ISymbolReference symbolReference) : base(nativeName, managedName)
         {
             SymbolReference = symbolReference;
+        }
+
+        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        {
+            yield return SymbolReference;
         }
     }
 }

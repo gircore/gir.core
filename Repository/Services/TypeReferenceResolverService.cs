@@ -44,7 +44,7 @@ namespace Repository.Services
         {
             var view = symbolDictionary.GetView(proj.Namespace.Name);
 
-            foreach (var reference in proj.SymbolReferences)
+            foreach (var reference in proj.Namespace.GetSymbolReferences())
             {
                 var symbol = view.LookupType(reference.Name);
 
