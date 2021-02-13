@@ -1,0 +1,13 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace {{ namespace.name }}
+{
+    public partial class Functions
+    {
+        internal static class Native
+        {
+            {{ include 'methods.sbntxt' functions ~}}
+        }
+    }
+}

@@ -62,6 +62,15 @@ namespace Generator.Services.Writer
                 symbols: loadedProject.Namespace.Constants,
                 @namespace: loadedProject.Namespace
             );
+            
+            _writeSymbolsService.WriteSymbols(
+                projectName: loadedProject.Name,
+                templateName: "functions.sbntxt",
+                subfolder: "Classes",
+                name: "Functions",
+                symbols: loadedProject.Namespace.Functions,
+                @namespace: loadedProject.Namespace
+            );
         }
     }
 }
