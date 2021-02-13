@@ -1,4 +1,6 @@
-﻿using Repository.Analysis;
+﻿using System;
+using System.Collections.Generic;
+using Repository.Analysis;
 using Repository.Xml;
 
 namespace Repository.Services
@@ -7,6 +9,7 @@ namespace Repository.Services
     {
         ISymbolReference Create(string type, bool isArray);
         ISymbolReference Create(ITypeOrArray typeOrArray);
+        IEnumerable<ISymbolReference> Create(IEnumerable<ImplementInfo> implements);
         ISymbolReference? CreateWithNull(string? type, bool isArry);
     }
 
@@ -36,6 +39,21 @@ namespace Repository.Services
         public ISymbolReference? CreateWithNull(string? type, bool isArray)
         {
             return type is null ? null : Create(type, isArray);
+        }
+        
+        public IEnumerable<ISymbolReference> Create(IEnumerable<ImplementInfo> implements)
+        {
+            var list = new List<ISymbolReference>();
+
+            foreach (ImplementInfo implement in implements)
+            {
+                if (implement.Name is null)
+                    throw new Exception("Implement is missing a name");
+
+                list.Add(Create(implement.Name, false));
+            }
+
+            return list;
         }
     }
 }

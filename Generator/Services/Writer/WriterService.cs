@@ -49,6 +49,13 @@ namespace Generator.Services.Writer
             
             _writeTypesService.WriteTypes(
                 projectName: loadedProject.Name,
+                templateName: "interface.sbntxt",
+                subfolder: "Interfaces",
+                objects: loadedProject.Namespace.Interfaces
+            );
+            
+            _writeTypesService.WriteTypes(
+                projectName: loadedProject.Name,
                 templateName: "enum.sbntxt",
                 subfolder: "Enums",
                 objects: loadedProject.Namespace.Enumerations

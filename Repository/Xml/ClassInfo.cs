@@ -26,8 +26,5 @@ namespace Repository.Xml
 
         [XmlAttribute("fundamental", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public bool Fundamental { get; set; }
-
-        [XmlElement("implements")]
-        public List<ImplementInfo> Implements { get; set; } = default!;
     }
 }

@@ -25,5 +25,8 @@ namespace Repository.Xml
 
         [XmlElement("property")]
         public List<PropertyInfo> Properties { get; set; } = default!;
+        
+        [XmlElement("implements")]
+        public List<ImplementInfo> Implements { get; set; } = default!;
     }
 }

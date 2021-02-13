@@ -43,7 +43,7 @@ namespace Repository.Factories
                 managedName: cls.Name,
                 ctype: cls.TypeName,
                 parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, false),
-                implements: GetTypeReferences(cls.Implements),
+                implements: _symbolReferenceFactory.Create(cls.Implements),
                 methods: _methodFactory.Create(cls.Methods, @namespace),
                 functions: _methodFactory.Create(cls.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
@@ -51,21 +51,6 @@ namespace Repository.Factories
                 fields: _fieldFactory.Create(cls.Fields),
                 signals: _signalFactory.Create(cls.Signals)
             );
-        }
-
-        private IEnumerable<ISymbolReference> GetTypeReferences(IEnumerable<ImplementInfo> implements)
-        {
-            var list = new List<ISymbolReference>();
-
-            foreach (ImplementInfo implement in implements)
-            {
-                if (implement.Name is null)
-                    throw new Exception("Implement is missing a name");
-
-                list.Add(_symbolReferenceFactory.Create(implement.Name, false));
-            }
-
-            return list;
         }
     }
 }
