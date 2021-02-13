@@ -6,9 +6,6 @@ namespace Repository.Xml
 {
     public class ClassInfo : InterfaceInfo
     {
-        [XmlElement("function")]
-        public List<MethodInfo> Functions { get; set; } = default!;
-
         [XmlElement("constructor")]
         public List<MethodInfo> Constructors { get; set; } = default!;
 

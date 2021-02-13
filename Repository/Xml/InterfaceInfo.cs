@@ -19,6 +19,9 @@ namespace Repository.Xml
 
         [XmlElement("method")]
         public List<MethodInfo> Methods { get; set; } = default!;
+        
+        [XmlElement("function")]
+        public List<MethodInfo> Functions { get; set; } = default!;
 
         [XmlAttribute("get-type", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public string? GetTypeFunction { get; set; }

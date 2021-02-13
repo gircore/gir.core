@@ -11,5 +11,7 @@ namespace {{ namespace.name }}
     public partial interface {{ managed_name }} {{ write_inheritance parent implements }}
     {
          {{ include 'type_descriptor.sbntxt' }}
+         
+         {{ include 'interface.native.sbntxt' }}
     }
 }

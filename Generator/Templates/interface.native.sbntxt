@@ -2,8 +2,6 @@
 
 protected static class Native
 {
-    {{ include 'class.native.fields.sbntxt' }}
-    {{ include 'class.native.properties.sbntxt' }}
     {{ include 'native.methods.sbntxt' }}
 }
 
