@@ -14,11 +14,9 @@ namespace Repository.Model
         
         public string SharedLibrary { get; }
         
-        // Aliases
         private readonly List<Symbol> _aliases = new();
         public IEnumerable<Symbol> Aliases => _aliases;
         
-        // Symbols
         private readonly List<Callback> _callbacks = new();
         public IEnumerable<Callback> Callbacks => _callbacks;
 
@@ -37,12 +35,14 @@ namespace Repository.Model
         private readonly List<Record> _records = new();
         public IEnumerable<Record> Records => _records;
         
-        // Miscellaneous
         private readonly List<Method> _functions = new();
         public IEnumerable<Method> Functions => _functions;
 
         private readonly List<Record> _unions = new();
         public IEnumerable<Record> Unions => _unions;
+
+        private readonly  List<Constant> _constants = new();
+        public IEnumerable<Constant> Constants => _constants;
 
         #endregion
 
@@ -79,6 +79,9 @@ namespace Repository.Model
 
         public void AddUnion(Record union)
             => _unions.Add(union);
+
+        public void AddConstant(Constant constant)
+            => _constants.Add(constant);
         
         public IEnumerable<ISymbolReference> GetSymbolReferences()
         {

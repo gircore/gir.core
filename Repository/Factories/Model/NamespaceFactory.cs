@@ -23,8 +23,9 @@ namespace Repository
         private readonly IInterfaceFactory _interfaceFactory;
         private readonly IRecordFactory _recordFactory;
         private readonly IMethodFactory _methodFactory;
+        private readonly IConstantFactory _constantFactory;
 
-        public NamespaceFactory(IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory, IInterfaceFactory interfaceFactory, IRecordFactory recordFactory, IMethodFactory methodFactory)
+        public NamespaceFactory(IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory, IInterfaceFactory interfaceFactory, IRecordFactory recordFactory, IMethodFactory methodFactory, IConstantFactory constantFactory)
         {
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;
@@ -33,6 +34,7 @@ namespace Repository
             _interfaceFactory = interfaceFactory;
             _recordFactory = recordFactory;
             _methodFactory = methodFactory;
+            _constantFactory = constantFactory;
         }
 
         public Namespace CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
@@ -61,7 +63,8 @@ namespace Repository
             SetRecords(nspace, namespaceInfo.Records);
             SetFunctions(nspace, namespaceInfo.Functions);
             SetUnions(nspace, namespaceInfo.Unions);
-
+            SetConstants(nspace, namespaceInfo.Constants);
+            
             return nspace;
         }
 
@@ -138,6 +141,15 @@ namespace Repository
                 {
                     Log.Debug($"Method {info.Name} could not be created: {ex.Message}");
                 }
+            }
+        }
+
+        private void SetConstants(Namespace nspace, IEnumerable<ConstantInfo> constantInfos)
+        {
+            foreach (var info in constantInfos)
+            {
+                var constant = _constantFactory.Create(info);
+                nspace.AddConstant(constant);
             }
         }
     }

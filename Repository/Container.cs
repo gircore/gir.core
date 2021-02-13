@@ -29,6 +29,7 @@ namespace Repository
     [Register(typeof(PropertyFactory), typeof(IPropertyFactory))]
     [Register(typeof(FieldFactory), typeof(IFieldFactory))]
     [Register(typeof(SignalFactory), typeof(ISignalFactory))]
+    [Register(typeof(ConstantFactory), typeof(IConstantFactory))]
     public partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]
