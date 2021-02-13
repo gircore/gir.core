@@ -1,8 +1,8 @@
 #region Fields
 
 [StructLayout(LayoutKind.Sequential)]
-protected {{'new '|get_if $1.parent != null}}struct Field : IObjectStruct
+protected {{'new '|get_if $parent != null}}struct Field : IObjectStruct
 {
-    {{~ $1.fields | write_class_fields ~}}
+    {{~ fields | write_class_fields ~}}
 }
 #endregion

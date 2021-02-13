@@ -1,8 +1,8 @@
-{{~ if $1.parent ~}} 
+{{~ if parent ~}} 
 #region Constructors
 
-protected internal {{ $1.managed_name }}(IntPtr ptr, bool ownedRef) : base(ptr, ownedRef) {}
-protected internal {{ $1.managed_name }}(params ConstructParameter[] properties) : base(properties) {}
+protected internal {{ managed_name }}(IntPtr ptr, bool ownedRef) : base(ptr, ownedRef) {}
+protected internal {{ managed_name }}(params ConstructParameter[] properties) : base(properties) {}
 
 #endregion
 {{~ end ~}}

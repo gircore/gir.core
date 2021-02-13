@@ -2,9 +2,9 @@
 
 protected static class Native
 {
-    {{ include 'class.native.fields.sbntxt' this }}
-    {{ include 'class.native.properties.sbntxt' this }}
-    {{ include 'class.native.methods.sbntxt' this }}
+    {{ include 'class.native.fields.sbntxt' }}
+    {{ include 'class.native.properties.sbntxt' }}
+    {{ include 'class.native.methods.sbntxt' }}
 }
 
 #endregion

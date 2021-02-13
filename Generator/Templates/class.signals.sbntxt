@@ -10,8 +10,8 @@ public SignalHandler<{{ managed_name }}> this[Signal<{{ managed_name }}> signal]
 }
 {{~ end ~}}
 
-{{~ for $signal in $1.signals }}
-{{ include 'signal.sbntxt' $signal $1.name }}
+{{~ for $signal in signals }}
+{{ include 'signal.sbntxt' $signal }}
 {{ end ~}}
 
 #endregion

@@ -10,11 +10,11 @@ namespace {{ namespace.name }}
 
     public partial class {{ managed_name }} {{ write_inheritance parent implements }}
     {
-        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ ctype }}", Native.get_type);
+        {{ include 'type_descriptor.sbntxt' }}
         
-        {{ include 'class.signals.sbntxt' this }}
-        {{ include 'class.constructors.sbntxt' this }}
-        {{ include 'class.native.sbntxt' this }}
+        {{ include 'class.signals.sbntxt' }}
+        {{ include 'class.constructors.sbntxt' }}
+        {{ include 'class.native.sbntxt' }}
         
         {{~ if class_struct ~}}
         // Object Class Struct
