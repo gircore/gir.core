@@ -11,6 +11,7 @@ namespace Repository
     [Register(typeof(WriteHelperService), typeof(IWriteHelperService))]
     [Register(typeof(WriteDllImportService), typeof(IWriteDllImportService))]
     [Register(typeof(WriteTypesService), typeof(IWriteTypesService))]
+    [Register(typeof(WriteSymbolsService), typeof(IWriteSymbolsService))]
     public partial class Container : IContainer<WriterService>
     {
     }

@@ -15,11 +15,13 @@ namespace Generator.Services.Writer
     {
         private readonly IWriteTypesService _writeTypesService;
         private readonly IWriteDllImportService _writeDllImportService;
+        private readonly IWriteSymbolsService _writeSymbolsService;
 
-        public WriterService(IWriteTypesService writeTypesService, IWriteDllImportService writeDllImportService)
+        public WriterService(IWriteTypesService writeTypesService, IWriteDllImportService writeDllImportService, IWriteSymbolsService writeSymbolsService)
         {
             _writeTypesService = writeTypesService;
             _writeDllImportService = writeDllImportService;
+            _writeSymbolsService = writeSymbolsService;
         }
 
         public Task WriteAsync(ILoadedProject loadedProject)
@@ -50,6 +52,15 @@ namespace Generator.Services.Writer
                 templateName: "enum.sbntxt",
                 subfolder: "Enums",
                 objects: loadedProject.Namespace.Enumerations
+            );
+
+            _writeSymbolsService.WriteSymbols(
+                projectName: loadedProject.Name,
+                templateName: "constants.sbntxt",
+                subfolder: "Classes",
+                name: "Constants",
+                symbols: loadedProject.Namespace.Constants,
+                @namespace: loadedProject.Namespace
             );
         }
     }
