@@ -48,7 +48,12 @@ namespace Generator.Services.Writer
 
         private static string GenerateCode(Template template, ScriptObject scriptObject)
         {
-            var templateContext = new TemplateContext {IndentWithInclude = true, TemplateLoader = new TemplateLoader()};
+            var templateContext = new TemplateContext
+            {
+                IndentWithInclude = true, 
+                TemplateLoader = new TemplateLoader(),
+                LoopLimit = 10000 // Some libraries define more than 1000 elements (e.g. GDK constants)
+            };
 
             templateContext.PushGlobal(scriptObject);
             return template.Render(templateContext);
