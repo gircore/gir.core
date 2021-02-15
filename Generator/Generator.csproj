@@ -3,7 +3,7 @@
   <Import Project="../General.props" />
 
   <ItemGroup>
-    <PackageReference Include="Scriban" Version="3.4.2" />
+    <PackageReference Include="Scriban" Version="3.5.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
   </ItemGroup>
 
