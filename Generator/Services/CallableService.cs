@@ -7,15 +7,17 @@ namespace Generator.Services
     public static class CallableService
     {
         public static string WriteReturnValue(Callback callback)
-            => callback.ReturnValue.Type.ToString();
+            => callback.ReturnValue.SymbolReference.ToString();
         
         public static string WriteParameters(Callback callback)
         {
+            return "";
             // TODO: We will need some kind of parameter marshalling logic
             // This should take into account Type, Direction, Lifetime, Transfer,
             // Marshalling Behaviour (e.g. Value or Reference), and many other
             // factors. It could probably be its own dedicated service.
 
+            /*
             List<Argument> args = callback.Arguments;
             
             var result = string.Empty;
@@ -36,6 +38,7 @@ namespace Generator.Services
             }
 
             return result;
+            */
         }
     }
 }

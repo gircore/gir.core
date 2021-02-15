@@ -1,10 +1,8 @@
 using System.Xml.Serialization;
 
-#nullable enable
-
 namespace Repository.Xml
 {
-    public class PropertyInfo
+    public class PropertyInfo : ITypeOrArray
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -32,5 +30,8 @@ namespace Repository.Xml
 
         [XmlElement("type")]
         public TypeInfo? Type { get; set; }
+        
+        [XmlElement("array")]
+        public ArrayInfo? Array { get; set; }
     }
 }

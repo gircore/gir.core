@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-#nullable enable
-
 namespace Repository.Xml
 {
     public class InterfaceInfo
@@ -21,11 +19,17 @@ namespace Repository.Xml
 
         [XmlElement("method")]
         public List<MethodInfo> Methods { get; set; } = default!;
+        
+        [XmlElement("function")]
+        public List<MethodInfo> Functions { get; set; } = default!;
 
         [XmlAttribute("get-type", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public string? GetTypeFunction { get; set; }
 
         [XmlElement("property")]
         public List<PropertyInfo> Properties { get; set; } = default!;
+        
+        [XmlElement("implements")]
+        public List<ImplementInfo> Implements { get; set; } = default!;
     }
 }

@@ -11,6 +11,7 @@
 
     public enum Transfer
     {
+        Unknown,
         None,
         Container,
         Full

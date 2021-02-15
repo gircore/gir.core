@@ -4,14 +4,14 @@ namespace Generator.Services
 {
     public static class TypeService
     {
-        public static string PrintTypeIdentifier(TypeReference type)
+        public static string PrintTypeIdentifier(SymbolReference symbol)
         {
             // External Type
-            if (type.IsForeign)
-                return $"{type.Type.Namespace}.{type.Type.ManagedName}";
+            //if (symbol.IsForeign)
+            //    return $"{symbol.Type.Namespace}.{symbol.Type.ManagedName}";
 
             // Internal Type
-            return type.Type.ManagedName;
+            return ""; //symbol.Symbol.ManagedName;
         }
     }
 }

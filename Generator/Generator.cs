@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Repository;
 using Repository.Analysis;
 using Repository.Model;
+using StrongInject;
 
 namespace Generator
 {
@@ -14,7 +15,7 @@ namespace Generator
     {
         private static string _cacheDir = "../gir-files";
 
-        public readonly List<LoadedProject> LoadedProjects;
+        public readonly List<ILoadedProject> LoadedProjects;
 
         /// <summary>
         /// The main interface used to generate source files from GObject
@@ -25,9 +26,9 @@ namespace Generator
         public Generator(string[] projects)
         {
             // Repository does its own logging and error handling
-            var repository = new Repository.Repository(ResolveFile, projects);
-            LoadedProjects = repository.LoadedProjects;
-            
+            var repository = new Repository.Repository();
+            LoadedProjects = repository.Load(ResolveFile, projects).ToList();
+
             try
             {
                 Log.Information("Processing introspection data");
@@ -36,6 +37,7 @@ namespace Generator
                 // e.g. We could use linq queries on it to fetch certain symbols
                 
                 // Process Data
+                /*
                 foreach (LoadedProject proj in LoadedProjects)
                 {
                     // Prefix Interfaces with 'I'
@@ -46,14 +48,14 @@ namespace Generator
                     List<Record> records = proj.Namespace.Records;
                     foreach (Record classStruct in records.Where(record => record.GLibClassStructFor != null))
                     {
-                        ISymbol type = classStruct.GLibClassStructFor!.Type;
+                        IType type = classStruct.GLibClassStructFor!.Type;
                         if (type is not Class)
                             continue;
                         
                         classStruct.ManagedName = $"{type.ManagedName}.{classStruct.ManagedName}";
                         type.AddMetadata("ClassStruct", classStruct);
                     }
-                }
+                }*/
             }
             catch (Exception e)
             {
@@ -67,17 +69,18 @@ namespace Generator
         // TODO: Add more configuration options to Writer
         public int WriteAsync()
         {
-            List<Task> AsyncTasks = new();
-
-            foreach (LoadedProject proj in LoadedProjects)
+            var writerService = new Container().Resolve().Value;
+            
+            //List<Task> asyncTasks = new();
+            foreach (ILoadedProject proj in LoadedProjects)
             {
-                var writer = new Writer(proj);
-                AsyncTasks.AddRange(writer.GetAsyncTasks());
+                writerService.Write(proj);
+                //asyncTasks.Add(task);
             }
 
             try
             {
-                Task.WaitAll(AsyncTasks.ToArray());
+                //Task.WaitAll(asyncTasks.ToArray());
                 Log.Information("Writing completed successfully");
                 return 0;
             }

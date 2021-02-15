@@ -1,13 +1,21 @@
-﻿using Repository.Analysis;
+﻿using System.Collections.Generic;
+using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public record Record : ISymbol
+    public class Record : Type
     {
-        public Namespace Namespace { get; init; }
-        public string ManagedName { get; set; }
-        public string NativeName { get; init; }
+        public ISymbolReference? GLibClassStructFor { get; }
         
-        public TypeReference? GLibClassStructFor { get; init; }
+        public Record(Namespace @namespace, string nativeName, string managedName, ISymbolReference? gLibClassStructFor) : base(@namespace, nativeName, managedName)
+        {
+            GLibClassStructFor = gLibClassStructFor;
+        }
+
+        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        {
+            if (GLibClassStructFor is { })
+                yield return GLibClassStructFor;
+        }
     }
 }

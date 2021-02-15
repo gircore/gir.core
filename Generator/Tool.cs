@@ -2,6 +2,8 @@
 using System.IO;
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.Linq;
+using Repository;
 
 namespace Generator
 {

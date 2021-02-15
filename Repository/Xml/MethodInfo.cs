@@ -1,7 +1,4 @@
-using System.Linq;
 using System.Xml.Serialization;
-
-#nullable enable
 
 namespace Repository.Xml
 {
@@ -36,5 +33,8 @@ namespace Repository.Xml
 
         [XmlAttribute("moved-to")]
         public string? MovedTo { get; set; }
+
+        public override string? ToString()
+            => Name ?? Identifier ?? base.ToString();
     }
 }

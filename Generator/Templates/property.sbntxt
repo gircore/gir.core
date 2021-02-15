@@ -1,0 +1,19 @@
+{{~
+$property_type = $1.symbol_reference | write_native_symbol_reference
+$property_descriptor_name = $1.managed_name + 'Property'
+~}}
+#region {{ $1.managed_name }}
+
+/// <summary>
+/// Property descriptor for <see cref="{{ $1.managed_name }}" />.
+/// </summary>
+public static readonly Property<{{ $property_type }}> {{ $property_descriptor_name }} = Property<{{ $property_type }}>.Wrap<{{ $1.native_name }}>(
+    Native.{{ $property_descriptor_name }},
+    nameof({{ $1.managed_name }}),
+    (o) => o.{{ $1.managed_name }}{{ if $1.writeable }},
+    (o, v) => o.{{ $1.managed_name }} = v{{ end }}
+);
+
+{{ $property_type }} {{ $1.managed_name }} { get; set; }
+
+#endregion

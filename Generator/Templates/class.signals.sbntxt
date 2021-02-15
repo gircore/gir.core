@@ -1,0 +1,17 @@
+#region Signals
+{{~ if signals | signals_have_args ~}}
+
+/// <summary>
+/// Indexer to connect with a SignalHandler&lt;{{managed_name}}&gt;
+/// </summary>
+public SignalHandler<{{ managed_name }}> this[Signal<{{ managed_name }}> signal]
+{
+    set => signal.Connect(this, value, true);
+}
+{{~ end ~}}
+
+{{~ for $signal in signals }}
+{{ include 'signal.sbntxt' $signal }}
+{{ end ~}}
+
+#endregion

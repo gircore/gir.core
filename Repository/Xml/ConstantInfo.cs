@@ -1,10 +1,8 @@
 using System.Xml.Serialization;
 
-#nullable enable
-
 namespace Repository.Xml
 {
-    public class ConstantInfo
+    public class ConstantInfo : ITypeOrArray
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -14,6 +12,9 @@ namespace Repository.Xml
 
         [XmlElement("type")]
         public TypeInfo? Type { get; set; }
+        
+        [XmlElement("array")]
+        public ArrayInfo? Array { get; set; }
         
         [XmlElement("doc")]
         public DocInfo? Doc { get; set; }

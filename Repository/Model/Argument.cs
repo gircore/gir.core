@@ -1,13 +1,26 @@
-﻿using Repository.Analysis;
+﻿using System.Collections.Generic;
+using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public record Argument
+    public class Argument : Symbol
     {
-        public string Name { get; set; }
-        public TypeReference Type { get; init; }
-        public Direction Direction { get; init; }
-        public Transfer Transfer { get; init; }
-        public bool Nullable { get; init; }
+        public ISymbolReference SymbolReference { get; }
+        public Direction Direction { get; }
+        public Transfer Transfer { get; }
+        public bool Nullable { get; }
+
+        public Argument(string nativeName, string managedName, ISymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable) : base(nativeName, managedName)
+        {
+            SymbolReference = symbolReference;
+            Direction = direction;
+            Transfer = transfer;
+            Nullable = nullable;
+        }
+
+        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        {
+            yield return SymbolReference;
+        }
     }
 }

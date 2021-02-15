@@ -1,11 +1,21 @@
-﻿namespace Repository.Model
+﻿using System.Collections.Generic;
+using System.Linq;
+using Repository.Analysis;
+
+namespace Repository.Model
 {
-    public record Enumeration : ISymbol
+    public class Enumeration : Type
     {
-        public Namespace Namespace { get; init; }
-        public string ManagedName { get; set; }
-        public string NativeName { get; init; }
+        public bool HasFlags { get; }
+        public IEnumerable<Member> Members { get; }
         
-        public bool HasFlags { get; init; }
+        public Enumeration(Namespace @namespace, string nativeName, string managedName, bool hasFlags, IEnumerable<Member> members) : base(@namespace, nativeName, managedName)
+        {
+            HasFlags = hasFlags;
+            Members = members;
+        }
+
+        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+            => Members.SelectMany(x => x.GetSymbolReferences());
     }
 }
