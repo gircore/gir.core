@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using GLib;
 
@@ -7,7 +7,7 @@ namespace Gio
     public partial class DBusConnection
     {
         #region Static methods
-        
+
         public static DBusConnection Get(BusType busType)
         {
             IntPtr handle = Global.Native.bus_get_sync(busType, IntPtr.Zero, out IntPtr error);
@@ -15,9 +15,9 @@ namespace Gio
 
             return WrapHandle<DBusConnection>(handle, true);
         }
-        
+
         #endregion
-        
+
         #region Methods
 
         public Task<Variant> CallAsync(string busName, string objectPath, string interfaceName, string methodName,
@@ -49,7 +49,7 @@ namespace Gio
 
             return new Variant(ret);
         }
-        
+
         #endregion
     }
 }

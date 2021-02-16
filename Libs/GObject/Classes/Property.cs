@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace GObject
 {
@@ -139,7 +139,7 @@ namespace GObject
         {
             Object.SignalHelper signalHelper = o.GetSignalHelper($"notify::{Name}");
             signalHelper.Connect<Action<string>>(
-                action: o.OnPropertyChanged, 
+                action: o.OnPropertyChanged,
                 after: false,
                 mapping: (callback) => (ref Value[] _) => callback(PropertyName)
             );

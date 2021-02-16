@@ -8,12 +8,12 @@ namespace Gir.Integration.CSharp.Gtk
     internal class CompositeTemplateDataProvider
     {
         #region Fields
-        
+
         private readonly ClassDeclarationSyntax _classDeclarationSyntax;
         private readonly Compilation _compilation;
 
         #endregion
-        
+
         #region Properties
 
         public string Namespace => GetNamespace();
@@ -22,9 +22,9 @@ namespace Gir.Integration.CSharp.Gtk
         public IEnumerable<string> ConnectFields => GetConnectFields();
 
         #endregion
-        
+
         #region Constructors
-        
+
         public CompositeTemplateDataProvider(ClassDeclarationSyntax classDeclarationSyntax, Compilation compilation)
         {
             _classDeclarationSyntax = classDeclarationSyntax ?? throw new ArgumentNullException(nameof(classDeclarationSyntax));
@@ -32,9 +32,9 @@ namespace Gir.Integration.CSharp.Gtk
         }
 
         #endregion
-        
+
         #region Methods
-        
+
         private string GetNamespace()
         {
             var model = _compilation.GetSemanticModel(_classDeclarationSyntax.SyntaxTree, true);
@@ -55,7 +55,7 @@ namespace Gir.Integration.CSharp.Gtk
         {
             var attributeSyntax = SyntaxHelper.GetAttributeSyntax(_classDeclarationSyntax, "Template");
             var firstArgument = SyntaxHelper.GetFirstArgument(attributeSyntax);
-            
+
             return firstArgument;
         }
 
@@ -63,10 +63,10 @@ namespace Gir.Integration.CSharp.Gtk
         {
             var fieldSyntaxes = SyntaxHelper.GetFieldSyntaxes(_classDeclarationSyntax);
             var fields = GetConnectFields(fieldSyntaxes);
-            
+
             return fields;
         }
- 
+
         private IEnumerable<string> GetConnectFields(IEnumerable<FieldDeclarationSyntax> fieldSyntaxes)
         {
             foreach (var fieldSyntax in fieldSyntaxes)

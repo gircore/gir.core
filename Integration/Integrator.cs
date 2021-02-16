@@ -17,7 +17,7 @@ namespace Gir.Integration.CSharp
 
         public Integrator()
         {
-            _generators = new List<ISourceGenerator>() {new CompositeTemplateGenerator()};
+            _generators = new List<ISourceGenerator>() { new CompositeTemplateGenerator() };
         }
 
         #endregion

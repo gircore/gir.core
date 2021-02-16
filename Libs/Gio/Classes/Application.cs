@@ -6,7 +6,7 @@ namespace Gio
     public partial class Application
     {
         #region Properties
-        
+
         public static readonly Property<string> ApplicationIdProperty = Property<string>.Register<Application>(
             Native.ApplicationIdProperty,
             nameof(Application),
@@ -19,9 +19,9 @@ namespace Gio
             get => GetProperty(ApplicationIdProperty);
             set => SetProperty(ApplicationIdProperty, value);
         }
-        
+
         #endregion
-        
+
         #region Methods
 
         public int Run()

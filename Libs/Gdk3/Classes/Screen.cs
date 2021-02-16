@@ -1,5 +1,5 @@
-namespace Gdk
-{   
+﻿namespace Gdk
+{
     public partial class Screen
     {
         public static Screen? GetDefault()

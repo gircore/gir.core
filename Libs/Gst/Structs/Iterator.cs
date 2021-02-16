@@ -8,6 +8,6 @@ namespace Gst
     // TODO: Implement IEnumerator for this class
     public partial struct Iterator
     {
-        
+
     }
 }

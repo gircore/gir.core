@@ -1,4 +1,4 @@
-namespace GObject
+﻿namespace GObject
 {
     /// <summary>
     /// Define the value of GProperty which can be used at the construct time.
