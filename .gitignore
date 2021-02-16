@@ -22,3 +22,4 @@ coverage.*
 
 # Visual Studio
 .vs/
+/Folder.DotSettings.user
