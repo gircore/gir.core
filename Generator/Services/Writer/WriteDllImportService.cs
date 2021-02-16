@@ -25,6 +25,9 @@ namespace Generator.Services.Writer
 
         public void WriteDllImport(ILoadedProject loadedProject)
         {
+            if(loadedProject.Namespace.SharedLibrary is null)
+                throw new Exception($"Namespace {loadedProject.Namespace.Name} does not provide a shared libraryinfo");
+            
             IDllImportResolver dllImportResolver = _dllImportResolverFactory.Create(
                 sharedLibrary: loadedProject.Namespace.SharedLibrary,
                 namespaceName: loadedProject.Namespace.Name
