@@ -63,6 +63,13 @@ namespace Generator.Services.Writer
                 subfolder: "Enums",
                 objects: loadedProject.Namespace.Enumerations
             );
+            
+            _writeTypesService.WriteTypes(
+                projectName: loadedProject.Name,
+                templateName: "struct.sbntxt",
+                subfolder: "Structs",
+                objects: loadedProject.Namespace.Records
+            );
 
             _writeSymbolsService.WriteSymbols(
                 projectName: loadedProject.Name,
