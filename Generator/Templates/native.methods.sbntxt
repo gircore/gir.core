@@ -3,9 +3,7 @@
 public class Methods
 {
     {{ get_type_function | write_native_method }}
-    
     {{ include 'methods.sbntxt' methods }}
-    
     {{ include 'methods.sbntxt' functions }}
 }
 #endregion

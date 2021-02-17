@@ -30,6 +30,7 @@ namespace Generator.Services.Writer
                 scriptObject.Import("write_native_method", new Func<Method, string>(TemplateWriter.WriteNativeMethod));
                 scriptObject.Import("write_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>(TemplateWriter.WriteInheritance));
                 scriptObject.Import("write_class_fields", new Func<IEnumerable<Field>, string>(TemplateWriter.WriteClassFields));
+                scriptObject.Import("write_struct_fields", new Func<IEnumerable<Field>, string>(TemplateWriter.WriteStructFields));
                 scriptObject.Import("get_if", new Func<string, bool, string>(TemplateWriter.GetIf));
                 scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
                 scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteSignalArgsProperties));

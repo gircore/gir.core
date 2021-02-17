@@ -7,21 +7,24 @@ namespace Repository.Model
     public class Record : Type
     {
         public Method? GetTypeFunction { get; }
+        public IEnumerable<Field> Fields { get; }
         public IEnumerable<Method> Methods { get; }
         public IEnumerable<Method> Functions { get; }
         public SymbolReference? GLibClassStructFor { get; }
 
-        public Record(Namespace @namespace, string nativeName, string managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction) : base(@namespace, nativeName, managedName)
+        public Record(Namespace @namespace, string nativeName, string managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields) : base(@namespace, nativeName, managedName)
         {
             GLibClassStructFor = gLibClassStructFor;
             Methods = methods;
             Functions = functions;
             GetTypeFunction = getTypeFunction;
+            Fields = fields;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()
         {
             var symbolReferences = IEnumerables.Concat(
+                Fields.GetSymbolReferences(),
                 Methods.GetSymbolReferences(),
                 Functions.GetSymbolReferences()
             );

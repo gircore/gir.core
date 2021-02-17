@@ -136,6 +136,28 @@ namespace Generator
         public static string GetIf(string text, bool condition)
             => condition ? text : "";
 
+        public static string WriteStructFields(IEnumerable<Field> fields)
+        {
+            var builder = new StringBuilder();
+
+            foreach (Field field in fields)
+            {
+                builder.AppendLine(WriteStructField(field));
+            }
+            
+            return builder.ToString();
+        }
+        
+        private static string WriteStructField(Field field)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"/// <summary>");
+            builder.AppendLine($"/// Original field name: {field.NativeName}.");
+            builder.AppendLine($"/// </summary>");
+            builder.AppendLine($"public {WriteManagedSymbolReference(field.SymbolReference)} {field.ManagedName};");
+            return builder.ToString();
+        }
+
         public static string WriteClassFields(IEnumerable<Field> fields)
         {
             var list = fields.ToArray();
@@ -155,7 +177,7 @@ namespace Generator
 
         private static string WriteNativeClassField(Field field, bool isFirst)
         {
-            var appender = isFirst ? ".Field" : "";
+            var appender = isFirst ? ".Fields" : "";
 
             var builder = new StringBuilder();
             builder.AppendLine($"    /// <summary>");

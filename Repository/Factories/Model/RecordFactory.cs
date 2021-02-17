@@ -9,11 +9,13 @@ namespace Repository.Factories
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly MethodFactory _methodFactory;
+        private readonly FieldFactory _fieldFactory;
 
-        public RecordFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory)
+        public RecordFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory, FieldFactory fieldFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;
+            _fieldFactory = fieldFactory;
         }
 
         public Record Create(RecordInfo @record, Namespace @namespace)
@@ -34,7 +36,8 @@ namespace Repository.Factories
                 gLibClassStructFor: _symbolReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor, false),
                 methods:_methodFactory.Create(@record.Methods, @namespace),
                 functions: _methodFactory.Create(@record.Functions, @namespace),
-                getTypeFunction: getTypeFunction
+                getTypeFunction: getTypeFunction,
+                fields: _fieldFactory.Create(@record.Fields)
             );
         }
     }
