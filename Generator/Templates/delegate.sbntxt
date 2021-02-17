@@ -9,6 +9,11 @@ namespace {{ namespace.name }}
 
     public delegate {{ return_value.symbol_reference | write_native_symbol_reference }} {{ managed_name }}Native({{ arguments | write_native_arguments}});
     
+    /// <summary>
+    /// Call Handler for {{ managed_name }}. A call annotation indicates the closure should
+    /// be valid for the duration of the call. This handler does not implement any special
+    /// memory management. 
+    /// </summary>
     public class {{ managed_name }}CallHandler
     {
         public {{ managed_name }}Native NativeCallback;
@@ -31,6 +36,10 @@ namespace {{ namespace.name }}
         }
     }
     
+    /// <summary>
+    /// Async Handler for {{ managed_name }}. An async annotation indicates the closure will
+    /// be called precisely once, after which it is then available for garbage collection.
+    /// </summary>
     public class {{ managed_name }}AsyncHandler
     {
         public {{ managed_name }}Native NativeCallback;
@@ -58,13 +67,19 @@ namespace {{ namespace.name }}
         }
     }
 
+    /// <summary>
+    /// Notified Handler for {{ managed_name }}. A notified annotation indicates the closure should
+    /// be kept alive until it is manually removed by the user. This removal is indicated by a
+    /// destroy_notify event, emitted by the relevant library. Pass <c>DestroyNotify</c> in place of a
+    /// destroy_notify callback parameter. 
+    /// </summary>
     public class {{ managed_name }}NotifiedHandler
     {
         public event Action OnDestroyNotify;
         public {{ managed_name }}Native NativeCallback;
+        public DestroyNotify DestroyNotify;
 
         private {{ managed_name }} managedCallback;
-        private DestroyNotify DestroyNotify;
         private GCHandle gch;
 
         public {{ managed_name }}NotifiedHandler({{ managed_name }} managed)
