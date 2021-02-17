@@ -3,12 +3,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Services
 {
-    public interface IXmlService
-    {
-        T Deserialize<T>(FileInfo girFile);
-    }
-
-    public class XmlService : IXmlService
+    public class XmlService
     {
         public T Deserialize<T>(FileInfo girFile)
         {

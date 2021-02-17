@@ -18,13 +18,13 @@ namespace Repository
     {
         private readonly IDependencyResolverService<ILoadedProject> _dependencyResolverService;
         private readonly IInfoFactory _infoFactory;
-        private readonly IXmlService _xmlService;
+        private readonly XmlService _xmlService;
         private readonly INamespaceFactory _namespaceFactory;
         private ResolveFileFunc? _lookupFunc;
 
         private bool _projectLoadFailed;
 
-        public LoaderService(IDependencyResolverService<ILoadedProject> dependencyResolverService, IInfoFactory infoFactory, IXmlService xmlService, INamespaceFactory namespaceFactory)
+        public LoaderService(IDependencyResolverService<ILoadedProject> dependencyResolverService, IInfoFactory infoFactory, XmlService xmlService, INamespaceFactory namespaceFactory)
         {
             _dependencyResolverService = dependencyResolverService;
             _infoFactory = infoFactory;

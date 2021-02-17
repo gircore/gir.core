@@ -6,7 +6,7 @@ using StrongInject;
 namespace Repository
 {
     [Register(typeof(RepositoryInternal))]
-    [Register(typeof(XmlService), typeof(IXmlService))]
+    [Register(typeof(XmlService))]
     [Register(typeof(NamespaceFactory), typeof(INamespaceFactory))]
     [Register(typeof(SymbolReferenceFactory))]
     [Register(typeof(InfoFactory), typeof(IInfoFactory))]
