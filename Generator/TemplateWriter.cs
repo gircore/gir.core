@@ -101,8 +101,11 @@ namespace Generator
             return builder.ToString();
         }
 
-        public static string WriteNativeMethod(Method method)
+        public static string WriteNativeMethod(Method? method)
         {
+            if (method is null)
+                return "";
+
             var returnValue = WriteNativeSymbolReference(method.ReturnValue.SymbolReference);
 
             var summaryText = WriteNativeSummary(method);

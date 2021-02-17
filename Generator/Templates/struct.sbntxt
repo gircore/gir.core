@@ -10,5 +10,6 @@ namespace {{ namespace.name }}
     [StructLayout(LayoutKind.Sequential)]
     public partial struct {{ managed_name }}
     {
+        {{ include 'struct.native.sbntxt' }}
     }
 }

@@ -20,6 +20,12 @@ namespace Repository.Factories
         {
             if (@record.Name is null)
                 throw new Exception("Record is missing a name");
+
+            Method? getTypeFunction = @record.GetTypeFunction switch
+            {
+                { } f => _methodFactory.CreateGetTypeMethod(f, @namespace),
+                _ => null
+            };
             
             return new Record(
                 @namespace: @namespace, 
@@ -27,7 +33,8 @@ namespace Repository.Factories
                 managedName: @record.Name, 
                 gLibClassStructFor: _symbolReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor, false),
                 methods:_methodFactory.Create(@record.Methods, @namespace),
-                functions: _methodFactory.Create(@record.Functions, @namespace)
+                functions: _methodFactory.Create(@record.Functions, @namespace),
+                getTypeFunction: getTypeFunction
             );
         }
     }

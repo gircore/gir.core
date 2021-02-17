@@ -1,0 +1,8 @@
+#region Native
+
+protected static class Native
+{
+    {{ include 'native.methods.sbntxt' }}
+}
+
+#endregion
