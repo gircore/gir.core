@@ -40,7 +40,7 @@ namespace Generator.Services.Writer
                 scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteSignalArgsProperties));
                 scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
                 scriptObject.Import("write_marshal_argument_to_managed", new Func<Argument, string, string>(TemplateWriter.WriteMarshalArgumentToManaged));
-                scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, string, string>(TemplateWriter.WriteCallbackMarshaller));
+                scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, string, bool, string>(TemplateWriter.WriteCallbackMarshaller));
 
                 try
                 {

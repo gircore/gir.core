@@ -194,7 +194,7 @@ namespace Generator
             return builder.ToString();
         }
 
-        public static string WriteCallbackMarshaller(IEnumerable<Argument> arguments, string funcName)
+        public static string WriteCallbackMarshaller(IEnumerable<Argument> arguments, string funcName, bool hasReturnValue)
         {
             var builder = new StringBuilder();
             var args = new List<string>();
@@ -210,8 +210,9 @@ namespace Generator
                 args.Add(newName);
             }
 
+            // TODO: Vary this depending on whether the callback returns a value or not
             var funcArgs = string.Join(separator: ", ", values: args);
-            builder.Append($"return {funcName}({funcArgs});");
+            builder.Append($"var result = {funcName}({funcArgs});");
 
             return builder.ToString();
         }
