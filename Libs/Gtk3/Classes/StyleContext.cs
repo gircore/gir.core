@@ -1,10 +1,10 @@
-using GObject;
+﻿using GObject;
 
 namespace Gtk
 {
     public partial class StyleContext
     {
-        public StyleContext() {}
+        public StyleContext() { }
 
         public void AddClass(string class_name) => Native.add_class(Handle, class_name);
         public void RemoveClass(string class_name) => Native.remove_class(Handle, class_name);

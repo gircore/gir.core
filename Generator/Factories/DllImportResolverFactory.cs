@@ -1,4 +1,6 @@
-﻿namespace Generator.Factories
+﻿#nullable enable
+
+namespace Generator.Factories
 {
     public interface IDllImportResolverFactory
     {

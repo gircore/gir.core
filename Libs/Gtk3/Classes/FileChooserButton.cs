@@ -73,7 +73,7 @@ namespace Gtk
         }
 
         #endregion
-        
+
         public static readonly Property<string> TitleProperty = Property<string>.Register<FileChooserButton>(
             Native.TitleProperty,
             nameof(Title),
@@ -102,7 +102,8 @@ namespace Gtk
 
         public FileChooserButton(string title, FileChooserDialog dialog) : this(
             ConstructParameter.With(TitleProperty, title),
-            ConstructParameter.With(DialogProperty, dialog)) {}
+            ConstructParameter.With(DialogProperty, dialog))
+        { }
 
         public static FileChooserButton New(string title, FileChooserAction action)
             => new FileChooserButton(Native.@new(title, action), false);

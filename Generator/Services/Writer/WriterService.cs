@@ -31,7 +31,10 @@ namespace Generator.Services.Writer
 
         public void Write(ILoadedProject loadedProject)
         {
-            _writeDllImportService.WriteDllImport(loadedProject);
+            if(loadedProject.Namespace.SharedLibrary is null)
+                Log.Debug($"Not generating DLL import helper for namespace {loadedProject.Namespace.Name}: It is missing a shared library info.");
+            else
+                _writeDllImportService.WriteDllImport(loadedProject);
             
             _writeTypesService.WriteTypes(
                 projectName: loadedProject.Name,
@@ -59,6 +62,13 @@ namespace Generator.Services.Writer
                 templateName: "enum.sbntxt",
                 subfolder: "Enums",
                 objects: loadedProject.Namespace.Enumerations
+            );
+            
+            _writeTypesService.WriteTypes(
+                projectName: loadedProject.Name,
+                templateName: "struct.sbntxt",
+                subfolder: "Structs",
+                objects: loadedProject.Namespace.Records
             );
 
             _writeSymbolsService.WriteSymbols(

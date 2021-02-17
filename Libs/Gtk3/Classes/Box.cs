@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using GObject;
 
 namespace Gtk
@@ -36,7 +36,7 @@ namespace Gtk
         public void PackStart(Widget widget, bool expand, bool fill, uint padding)
             => Native.pack_start(Handle, widget.Handle, expand, fill, padding);
 
-        public Box(Orientation orientation) : this(orientation, 0) {}
+        public Box(Orientation orientation) : this(orientation, 0) { }
 
         public Box(Orientation orientation, int spacing)
             : this(

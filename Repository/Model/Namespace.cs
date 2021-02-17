@@ -12,7 +12,7 @@ namespace Repository.Model
         public string Name { get; }
         public string Version { get; }
         
-        public string SharedLibrary { get; }
+        public string? SharedLibrary { get; }
         
         private readonly List<Symbol> _aliases = new();
         public IEnumerable<Symbol> Aliases => _aliases;
@@ -46,7 +46,7 @@ namespace Repository.Model
 
         #endregion
 
-        public Namespace(string name, string version, string sharedLibrary)
+        public Namespace(string name, string version, string? sharedLibrary)
         {
             Name = name;
             Version = version;

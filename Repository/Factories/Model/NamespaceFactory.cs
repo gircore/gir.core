@@ -45,9 +45,6 @@ namespace Repository
             if (namespaceInfo.Version is null)
                 throw new Exception($"Namespace {namespaceInfo.Name} does not have version");
 
-            if (namespaceInfo.SharedLibrary is null)
-                throw new Exception($"Namespace {namespaceInfo.Name} does not provide a shared libraryinfo");
-
             var nspace = new Namespace(
                 name: namespaceInfo.Name,
                 version: namespaceInfo.Version,

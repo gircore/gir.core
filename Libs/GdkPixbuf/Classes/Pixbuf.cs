@@ -9,11 +9,11 @@ namespace GdkPixbuf
         #region Fields
 
         private long _size;
-        
+
         #endregion
 
         #region Properties
-        
+
         #region WidthProperty
 
         public static readonly Property<int> WidthProperty = Property<int>.Wrap<Pixbuf>(
@@ -28,9 +28,9 @@ namespace GdkPixbuf
             get => GetProperty(WidthProperty);
             set => SetProperty(WidthProperty, value);
         }
-        
+
         #endregion
-        
+
         #region HeightProperty
 
         public static readonly Property<int> HeightProperty = Property<int>.Wrap<Pixbuf>(
@@ -45,11 +45,11 @@ namespace GdkPixbuf
             get => GetProperty(HeightProperty);
             set => SetProperty(HeightProperty, value);
         }
-        
+
         #endregion
-        
+
         #endregion
-        
+
         public static Pixbuf NewFromFile(string fileName)
         {
             IntPtr handle = Native.new_from_file(fileName, out IntPtr error);
@@ -65,9 +65,9 @@ namespace GdkPixbuf
             GC.AddMemoryPressure(_size);
         }
 
-        protected override void Dispose(bool disposing)
+        public override void Dispose()
         {
-            base.Dispose(disposing);
+            base.Dispose();
             GC.RemoveMemoryPressure(_size);
         }
     }

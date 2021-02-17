@@ -1,14 +1,14 @@
-using GObject;
-using System;
-using System.Text;
+﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using GLib;
+using GObject;
 
 namespace Gtk
 {
     public partial class CssProvider
     {
-        public CssProvider() {}
+        public CssProvider() { }
 
         public override string ToString()
             => StringHelper.ToAnsiStringAndFree(Native.to_string(Handle));

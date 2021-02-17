@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace Build
 {
@@ -40,15 +41,16 @@ namespace Build
             {
                 foreach (var d in Directory.EnumerateDirectories(project))
                 {
-                    foreach (var file in Directory.EnumerateFiles(d))
+                    foreach (var file in Directory.EnumerateFiles(d).Where(FileIsGenerated))
                     {
-                        if (file.Contains(".Generated."))
-                            File.Delete(file);
+                        File.Delete(file);
                     }
                 }
             }
 
             DotNet.Clean(project, configuration);
         }
+
+        private static bool FileIsGenerated(string file) => file.Contains(".Generated.");
     }
 }
