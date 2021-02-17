@@ -9,16 +9,11 @@ using Scriban.Runtime;
 
 namespace Generator.Services.Writer
 {
-    public interface IWriteSymbolsService
+    public class WriteSymbolsService
     {
-        void WriteSymbols(string projectName, string templateName, string subfolder, string name, IEnumerable<Symbol> symbols, Namespace @namespace);
-    }
+        private readonly WriteHelperService _writeHelperService;
 
-    public class WriteSymbolsService : IWriteSymbolsService
-    {
-        private readonly IWriteHelperService _writeHelperService;
-
-        public WriteSymbolsService(IWriteHelperService writeHelperService)
+        public WriteSymbolsService(WriteHelperService writeHelperService)
         {
             _writeHelperService = writeHelperService;
         }

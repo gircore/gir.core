@@ -2,14 +2,7 @@
 
 namespace Generator
 {
-    public interface IDllImportResolver
-    {
-        string GetWindowsDllImport();
-        string GetOsxDllImport();
-        string GetLinuxDllImport();
-    }
-
-    public class DllImportResolver : IDllImportResolver
+    public class DllImportResolver
     {
         private readonly string _sharedLibrary;
         private readonly string _namespaceName;

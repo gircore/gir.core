@@ -13,11 +13,11 @@ namespace Generator.Services.Writer
 
     public class WriterService : IWriterService
     {
-        private readonly IWriteTypesService _writeTypesService;
-        private readonly IWriteDllImportService _writeDllImportService;
-        private readonly IWriteSymbolsService _writeSymbolsService;
+        private readonly WriteTypesService _writeTypesService;
+        private readonly WriteDllImportService _writeDllImportService;
+        private readonly WriteSymbolsService _writeSymbolsService;
 
-        public WriterService(IWriteTypesService writeTypesService, IWriteDllImportService writeDllImportService, IWriteSymbolsService writeSymbolsService)
+        public WriterService(WriteTypesService writeTypesService, WriteDllImportService writeDllImportService, WriteSymbolsService writeSymbolsService)
         {
             _writeTypesService = writeTypesService;
             _writeDllImportService = writeDllImportService;

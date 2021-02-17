@@ -9,16 +9,11 @@ using Type = Repository.Model.Type;
 
 namespace Generator.Services.Writer
 {
-    public interface IWriteTypesService
+    public class WriteTypesService
     {
-        void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<Type> objects);
-    }
+        private readonly WriteHelperService _writeHelperService;
 
-    public class WriteTypesService : IWriteTypesService
-    {
-        private readonly IWriteHelperService _writeHelperService;
-
-        public WriteTypesService(IWriteHelperService writeHelperService)
+        public WriteTypesService(WriteHelperService writeHelperService)
         {
             _writeHelperService = writeHelperService;
         }

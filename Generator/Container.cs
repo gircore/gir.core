@@ -6,12 +6,12 @@ using StrongInject;
 namespace Repository
 {
     [Register(typeof(WriterService))]
-    [Register(typeof(TemplateReaderService), typeof(ITemplateReaderService))]
-    [Register(typeof(DllImportResolverFactory), typeof(IDllImportResolverFactory))]
-    [Register(typeof(WriteHelperService), typeof(IWriteHelperService))]
-    [Register(typeof(WriteDllImportService), typeof(IWriteDllImportService))]
-    [Register(typeof(WriteTypesService), typeof(IWriteTypesService))]
-    [Register(typeof(WriteSymbolsService), typeof(IWriteSymbolsService))]
+    [Register(typeof(TemplateReaderService))]
+    [Register(typeof(DllImportResolverFactory))]
+    [Register(typeof(WriteHelperService))]
+    [Register(typeof(WriteDllImportService))]
+    [Register(typeof(WriteTypesService))]
+    [Register(typeof(WriteSymbolsService))]
     public partial class Container : IContainer<WriterService>
     {
     }

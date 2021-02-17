@@ -7,16 +7,11 @@ using Scriban.Runtime;
 
 namespace Generator.Services.Writer
 {
-    public interface IWriteHelperService
+    public class WriteHelperService
     {
-        void Write(string projectName, string templateName, string folder, string fileName, ScriptObject scriptObject);
-    }
+        private readonly TemplateReaderService _templateReaderService;
 
-    public class WriteHelperService : IWriteHelperService
-    {
-        private readonly ITemplateReaderService _templateReaderService;
-
-        public WriteHelperService(ITemplateReaderService templateReaderService)
+        public WriteHelperService(TemplateReaderService templateReaderService)
         {
             _templateReaderService = templateReaderService;
         }

@@ -7,17 +7,12 @@ using Scriban.Runtime;
 
 namespace Generator.Services.Writer
 {
-    public interface IWriteDllImportService
+    public class WriteDllImportService
     {
-        void WriteDllImport(LoadedProject loadedProject);
-    }
+        private readonly WriteHelperService _writeHelperService;
+        private readonly DllImportResolverFactory _dllImportResolverFactory;
 
-    public class WriteDllImportService : IWriteDllImportService
-    {
-        private readonly IWriteHelperService _writeHelperService;
-        private readonly IDllImportResolverFactory _dllImportResolverFactory;
-
-        public WriteDllImportService(IWriteHelperService writeHelperService, IDllImportResolverFactory dllImportResolverFactory)
+        public WriteDllImportService(WriteHelperService writeHelperService, DllImportResolverFactory dllImportResolverFactory)
         {
             _writeHelperService = writeHelperService;
             _dllImportResolverFactory = dllImportResolverFactory;
@@ -28,7 +23,7 @@ namespace Generator.Services.Writer
             if(loadedProject.Namespace.SharedLibrary is null)
                 throw new Exception($"Namespace {loadedProject.Namespace.Name} does not provide a shared libraryinfo");
             
-            IDllImportResolver dllImportResolver = _dllImportResolverFactory.Create(
+            DllImportResolver dllImportResolver = _dllImportResolverFactory.Create(
                 sharedLibrary: loadedProject.Namespace.SharedLibrary,
                 namespaceName: loadedProject.Namespace.Name
             );

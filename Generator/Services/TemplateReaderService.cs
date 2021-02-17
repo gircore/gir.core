@@ -6,12 +6,7 @@ using Scriban;
 
 namespace Generator.Services
 {
-    public interface ITemplateReaderService
-    {
-        Template ReadGenericTemplate(string resource);
-    }
-
-    public class TemplateReaderService : ITemplateReaderService
+    public class TemplateReaderService
     {
         public Template ReadGenericTemplate(string resource)
         {
