@@ -29,6 +29,7 @@ namespace Generator.Services.Writer
                 var scriptObject = new ScriptObject();
                 scriptObject.Import(obj);
                 scriptObject.Import("write_native_arguments", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteNativeArguments));
+                scriptObject.Import("write_managed_arguments", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteManagedArguments));
                 scriptObject.Import("write_native_symbol_reference", new Func<ISymbolReference, string>(TemplateWriter.WriteNativeSymbolReference));
                 scriptObject.Import("write_managed_symbol_reference", new Func<ISymbolReference, string>(TemplateWriter.WriteManagedSymbolReference));
                 scriptObject.Import("write_native_method", new Func<Method, string>(TemplateWriter.WriteNativeMethod));
@@ -38,6 +39,8 @@ namespace Generator.Services.Writer
                 scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
                 scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteSignalArgsProperties));
                 scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
+                scriptObject.Import("write_marshal_argument_to_managed", new Func<Argument, string, string>(TemplateWriter.WriteMarshalArgumentToManaged));
+                scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, string, string>(TemplateWriter.WriteCallbackMarshaller));
 
                 try
                 {

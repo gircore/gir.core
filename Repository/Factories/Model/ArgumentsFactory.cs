@@ -38,7 +38,9 @@ namespace Repository.Factories
                         isArray: false,
                         direction: Direction.OutCalleeAllocates,
                         transfer: Transfer.Full,
-                        nullable: false
+                        nullable: false,
+                        closure: 0,
+                        destroy: 0
                     ));
                 }
             }

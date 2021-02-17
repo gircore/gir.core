@@ -8,7 +8,7 @@ namespace Repository.Factories
     public interface IArgumentFactory
     {
         Argument Create(ParameterInfo parameterInfo);
-        Argument Create(string name, string type, bool isArray, Direction direction, Transfer transfer, bool nullable);
+        Argument Create(string name, string type, bool isArray, Direction direction, Transfer transfer, bool nullable, int closure, int destroy);
     }
 
     public class ArgumentFactory : IArgumentFactory
@@ -51,11 +51,13 @@ namespace Repository.Factories
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo),
                 direction: direction,
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
-                nullable: parameterInfo.Nullable
+                nullable: parameterInfo.Nullable,
+                closureIndex: parameterInfo.Closure,
+                destroyIndex: parameterInfo.Destroy
             );
         }
 
-        public Argument Create(string nativeName, string type, bool isArray, Direction direction, Transfer transfer, bool nullable)
+        public Argument Create(string nativeName, string type, bool isArray, Direction direction, Transfer transfer, bool nullable, int closure, int destroy)
         {
             return new Argument(
                 nativeName: nativeName,
@@ -63,7 +65,9 @@ namespace Repository.Factories
                 symbolReference: _symbolReferenceFactory.Create(type, isArray),
                 direction: direction,
                 transfer: transfer,
-                nullable: nullable
+                nullable: nullable,
+                closureIndex: closure,
+                destroyIndex: destroy
             );
         }
 
