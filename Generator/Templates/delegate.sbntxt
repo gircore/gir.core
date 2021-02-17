@@ -9,6 +9,28 @@ namespace {{ namespace.name }}
 
     public delegate {{ return_value.symbol_reference | write_native_symbol_reference }} {{ managed_name }}Native({{ arguments | write_native_arguments}});
     
+    public class {{ managed_name }}CallHandler
+    {
+        public {{ managed_name }}Native NativeCallback;
+
+        private {{ managed_name }} managedCallback;
+    
+        public {{ managed_name }}CallHandler({{ managed_name }} managed)
+        {
+            NativeCallback = NativeCallbackMarshaller;
+            managedCallback = managed;
+        }
+    
+        private {{ return_value.symbol_reference | write_managed_symbol_reference }} NativeCallbackMarshaller({{ arguments | write_native_arguments}})
+        {
+            {{ include 'delegate.marshaller.sbntxt' arguments "managedCallback" (return_value != null) }}
+            
+            {{~ if return_value ~}} 
+            return result;
+            {{~ end ~}}
+        }
+    }
+    
     public class {{ managed_name }}AsyncHandler
     {
         public {{ managed_name }}Native NativeCallback;
