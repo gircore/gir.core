@@ -5,20 +5,14 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IArgumentFactory
-    {
-        Argument Create(ParameterInfo parameterInfo);
-        Argument Create(string name, string type, bool isArray, Direction direction, Transfer transfer, bool nullable);
-    }
-
-    public class ArgumentFactory : IArgumentFactory
+    public class ArgumentFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
-        private readonly ITransferFactory _transferFactory;
-        private readonly IIdentifierConverter _identifierConverter;
-        private readonly ICaseConverter _caseConverter;
+        private readonly TransferFactory _transferFactory;
+        private readonly IdentifierConverter _identifierConverter;
+        private readonly CaseConverter _caseConverter;
 
-        public ArgumentFactory(SymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory, IIdentifierConverter identifierConverter, ICaseConverter caseConverter)
+        public ArgumentFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;

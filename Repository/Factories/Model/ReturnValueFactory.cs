@@ -4,18 +4,12 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IReturnValueFactory
-    {
-        ReturnValue Create(ReturnValueInfo returnValueInfo);
-        ReturnValue Create(string type, bool isArray, Transfer transfer, bool nullable);
-    }
-
-    public class ReturnValueFactory : IReturnValueFactory
+    public class ReturnValueFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
-        private readonly ITransferFactory _transferFactory;
+        private readonly TransferFactory _transferFactory;
 
-        public ReturnValueFactory(SymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory)
+        public ReturnValueFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;

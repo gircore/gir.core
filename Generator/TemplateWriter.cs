@@ -5,6 +5,7 @@ using System.Text;
 using Repository;
 using Repository.Analysis;
 using Repository.Model;
+using Type = Repository.Model.Type;
 
 #nullable enable
 
@@ -44,9 +45,9 @@ namespace Generator
 
         public static string WriteNativeSymbolReference(SymbolReference symbolReference)
         {
-            ISymbol symbol = symbolReference.GetSymbol();
+            Symbol symbol = symbolReference.GetSymbol();
 
-            if (symbol is IType)
+            if (symbol is Type)
                 return "IntPtr";
 
             if (symbolReference.IsArray)
@@ -57,8 +58,8 @@ namespace Generator
 
         public static string WriteManagedSymbolReference(SymbolReference symbolReference)
         {
-            ISymbol symbol = symbolReference.GetSymbol();
-            if (symbol is not IType type)
+            Symbol symbol = symbolReference.GetSymbol();
+            if (symbol is not Type type)
                 return symbol.ManagedName;
 
             return symbolReference switch
@@ -70,16 +71,16 @@ namespace Generator
             };
         }
 
-        private static string ExternalType(IType type)
+        private static string ExternalType(Type type)
             => $"{type.Namespace.Name}.{type.ManagedName}";
 
-        private static string ExternalArray(IType type)
+        private static string ExternalArray(Type type)
             => $"{type.Namespace.Name}.{type.ManagedName}[]";
 
-        private static string InternalArray(ISymbol type)
+        private static string InternalArray(Symbol type)
             => $"{type.ManagedName}[]";
 
-        private static string InternalType(ISymbol type)
+        private static string InternalType(Symbol type)
             => type.ManagedName;
 
         public static string WriteInheritance(SymbolReference? parent, IEnumerable<SymbolReference> implements)

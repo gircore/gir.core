@@ -7,19 +7,13 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IPropertyFactory
+    public class PropertyFactory
     {
-        Property Create(PropertyInfo info);
-        IEnumerable<Property> Create(IEnumerable<PropertyInfo> infos);
-    }
-
-    public class PropertyFactory : IPropertyFactory
-    {
-        private readonly ITransferFactory _transferFactory;
+        private readonly TransferFactory _transferFactory;
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
-        private readonly ICaseConverter _caseConverter;
+        private readonly CaseConverter _caseConverter;
 
-        public PropertyFactory(ITransferFactory transferFactory, SymbolReferenceFactory symbolReferenceFactory, ICaseConverter caseConverter)
+        public PropertyFactory(TransferFactory transferFactory, SymbolReferenceFactory symbolReferenceFactory, CaseConverter caseConverter)
         {
             _transferFactory = transferFactory;
             _symbolReferenceFactory = symbolReferenceFactory;

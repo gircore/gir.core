@@ -81,15 +81,15 @@ namespace Repository.Analysis
         /// </summary>
         /// <param name="nspace"></param>
         /// <param name="info"></param>
-        public void AddSymbol(string nspace, ISymbol info)
+        public void AddSymbol(string nspace, Symbol info)
         {
             GetTypeDict(nspace).AddSymbol(info.NativeName, info);
         }
 
-        public void AddSymbols(string nspace, IEnumerable<ISymbol> infos)
+        public void AddSymbols(string nspace, IEnumerable<Symbol> infos)
         {
             TypeDictionary dict = GetTypeDict(nspace);
-            foreach (ISymbol info in infos)
+            foreach (Symbol info in infos)
                 dict.AddSymbol(info.NativeName, info);
         }
 
@@ -127,15 +127,15 @@ namespace Repository.Analysis
             return dict;
         }
 
-        private void AddSymbol(ISymbol symbol)
+        private void AddSymbol(Symbol symbol)
         {
             _defaultDict.AddSymbol(symbol.NativeName, symbol);
         }
 
-        private ISymbol GetSymbolInternal(TypeDictionary symbolDict, string symbol)
+        private Symbol GetSymbolInternal(TypeDictionary symbolDict, string symbol)
         {
             // Check Fundamental Types
-            if (_defaultDict.TryGetSymbol(symbol, out ISymbol? info))
+            if (_defaultDict.TryGetSymbol(symbol, out Symbol? info))
                 return info;
 
             // Check Normal
@@ -151,7 +151,7 @@ namespace Repository.Analysis
         /// <param name="nspace">Namespace to search</param>
         /// <param name="symbol">Unqualified name of symbol (i.e. does not contain '.')</param>
         /// <returns>Information about the symbol</returns>
-        public ISymbol GetSymbol(string? nspace, string symbol)
+        public Symbol GetSymbol(string? nspace, string symbol)
         {
             Debug.Assert(
                 condition: !symbol.Contains('.'),

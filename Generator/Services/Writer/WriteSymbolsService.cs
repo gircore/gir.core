@@ -11,7 +11,7 @@ namespace Generator.Services.Writer
 {
     public interface IWriteSymbolsService
     {
-        void WriteSymbols(string projectName, string templateName, string subfolder, string name, IEnumerable<ISymbol> symbols, Namespace @namespace);
+        void WriteSymbols(string projectName, string templateName, string subfolder, string name, IEnumerable<Symbol> symbols, Namespace @namespace);
     }
 
     public class WriteSymbolsService : IWriteSymbolsService
@@ -23,7 +23,7 @@ namespace Generator.Services.Writer
             _writeHelperService = writeHelperService;
         }
 
-        public void WriteSymbols(string projectName, string templateName, string subfolder, string name, IEnumerable<ISymbol> symbols, Namespace @namespace)
+        public void WriteSymbols(string projectName, string templateName, string subfolder, string name, IEnumerable<Symbol> symbols, Namespace @namespace)
         {
             var scriptObject = new ScriptObject
             {

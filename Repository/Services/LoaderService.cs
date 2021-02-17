@@ -9,22 +9,17 @@ using Repository.Xml;
 
 namespace Repository
 {
-    public interface ILoaderService
+    public class LoaderService
     {
-        IEnumerable<ILoadedProject> LoadOrdered(IEnumerable<string> targets, ResolveFileFunc lookupFunc);
-    }
-
-    public class LoaderService : ILoaderService
-    {
-        private readonly IDependencyResolverService<ILoadedProject> _dependencyResolverService;
-        private readonly IInfoFactory _infoFactory;
+        private readonly DependencyResolverService<LoadedProject> _dependencyResolverService;
+        private readonly InfoFactory _infoFactory;
         private readonly XmlService _xmlService;
-        private readonly INamespaceFactory _namespaceFactory;
+        private readonly NamespaceFactory _namespaceFactory;
         private ResolveFileFunc? _lookupFunc;
 
         private bool _projectLoadFailed;
 
-        public LoaderService(IDependencyResolverService<ILoadedProject> dependencyResolverService, IInfoFactory infoFactory, XmlService xmlService, INamespaceFactory namespaceFactory)
+        public LoaderService(DependencyResolverService<LoadedProject> dependencyResolverService, InfoFactory infoFactory, XmlService xmlService, NamespaceFactory namespaceFactory)
         {
             _dependencyResolverService = dependencyResolverService;
             _infoFactory = infoFactory;
@@ -34,10 +29,10 @@ namespace Repository
 
         // Where 'targets' are toplevel projects. LoaderService resolves
         // dependent gir libraries automatically.
-        public IEnumerable<ILoadedProject> LoadOrdered(IEnumerable<string> targets, ResolveFileFunc lookupFunc)
+        public IEnumerable<LoadedProject> LoadOrdered(IEnumerable<string> targets, ResolveFileFunc lookupFunc)
         {
             _lookupFunc = lookupFunc;
-            var loadedProjects = new List<ILoadedProject>();
+            var loadedProjects = new List<LoadedProject>();
 
             foreach (var target in targets)
                 LoadAndAddProjects(loadedProjects, target);
@@ -45,23 +40,23 @@ namespace Repository
             if (_projectLoadFailed)
                 Log.Warning($"Failed to load some projects. Please check the log for more information.");
 
-            return _dependencyResolverService.ResolveOrdered(loadedProjects).Cast<ILoadedProject>();
+            return _dependencyResolverService.ResolveOrdered(loadedProjects).Cast<LoadedProject>();
         }
 
-        private void LoadAndAddProjects(ICollection<ILoadedProject> loadedProjects, string target)
+        private void LoadAndAddProjects(ICollection<LoadedProject> loadedProjects, string target)
         {
             var info = new FileInfo(target);
             _ = LoadRecursive(loadedProjects, info);
         }
 
-        private ILoadedProject? LoadRecursive(ICollection<ILoadedProject> loadedProjects, FileInfo target)
+        private LoadedProject? LoadRecursive(ICollection<LoadedProject> loadedProjects, FileInfo target)
         {
             try
             {
                 var repoinfo = LoadRepositoryInfo(target);
                 var repositoryInfoData = _infoFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
 
-                if (TryLoadProject(loadedProjects, repositoryInfoData, out ILoadedProject? project))
+                if (TryLoadProject(loadedProjects, repositoryInfoData, out LoadedProject? project))
                     return project;
 
                 var dependencies = LoadDependencies(loadedProjects, repoinfo.Includes);
@@ -83,9 +78,9 @@ namespace Repository
             }
         }
 
-        private IEnumerable<ILoadedProject> LoadDependencies(ICollection<ILoadedProject> loadedProjects, IEnumerable<IncludeInfo> includes)
+        private IEnumerable<LoadedProject> LoadDependencies(ICollection<LoadedProject> loadedProjects, IEnumerable<IncludeInfo> includes)
         {
-            var dependencies = new List<ILoadedProject>();
+            var dependencies = new List<LoadedProject>();
             foreach (var dependency in _infoFactory.CreateFromIncludes(includes))
             {
                 FileInfo dependentGirFile = GetGirFileInfo(dependency);
@@ -98,7 +93,7 @@ namespace Repository
             return dependencies;
         }
 
-        private bool TryLoadProject(IEnumerable<ILoadedProject> loadedProjects, Info repo, [NotNullWhen(true)] out ILoadedProject? loadedProject)
+        private bool TryLoadProject(IEnumerable<LoadedProject> loadedProjects, Info repo, [NotNullWhen(true)] out LoadedProject? loadedProject)
         {
             var foundProjects = loadedProjects.Where(x => NameMatches(x, repo)).ToArray();
             switch (foundProjects.Length)
@@ -114,7 +109,7 @@ namespace Repository
             }
         }
 
-        private bool NameMatches(ILoadedProject loadedProject, Info repo)
+        private bool NameMatches(LoadedProject loadedProject, Info repo)
             => loadedProject.Name == repo.ToCanonicalName();
 
         private FileInfo GetGirFileInfo(Info data)

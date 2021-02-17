@@ -10,7 +10,7 @@ namespace Repository.Analysis
         // Namespace-specific
         private class TypeDictionary
         {
-            private readonly Dictionary<string, ISymbol> _typeDict = new();
+            private readonly Dictionary<string, Symbol> _typeDict = new();
             private string? Namespace { get; }
 
             public TypeDictionary(string? nspace)
@@ -18,13 +18,13 @@ namespace Repository.Analysis
                 Namespace = nspace;
             }
 
-            public void AddSymbol(string name, ISymbol info)
+            public void AddSymbol(string name, Symbol info)
                 => _typeDict.Add(name, info);
 
-            public ISymbol GetSymbol(string name)
+            public Symbol GetSymbol(string name)
                 => _typeDict[name];
 
-            public bool TryGetSymbol(string name, [NotNullWhen(true)] out ISymbol? type)
+            public bool TryGetSymbol(string name, [NotNullWhen(true)] out Symbol? type)
                 => _typeDict.TryGetValue(name, out type);
         }
     }

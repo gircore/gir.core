@@ -5,17 +5,12 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IConstantFactory
-    {
-        Constant Create(ConstantInfo constantInfo);
-    }
-
-    public class ConstantFactory : IConstantFactory
+    public class ConstantFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
-        private readonly IIdentifierConverter _identifierConverter;
+        private readonly IdentifierConverter _identifierConverter;
 
-        public ConstantFactory(SymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter)
+        public ConstantFactory(SymbolReferenceFactory symbolReferenceFactory, IdentifierConverter identifierConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _identifierConverter = identifierConverter;

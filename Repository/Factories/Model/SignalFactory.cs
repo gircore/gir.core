@@ -6,19 +6,13 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface ISignalFactory
+    public class SignalFactory
     {
-        Signal Create(SignalInfo signalInfo);
-        IEnumerable<Signal> Create(IEnumerable<SignalInfo> signals);
-    }
+        private readonly ReturnValueFactory _returnValueFactory;
+        private readonly CaseConverter _caseConverter;
+        private readonly ArgumentsFactory _argumentsFactory;
 
-    public class SignalFactory : ISignalFactory
-    {
-        private readonly IReturnValueFactory _returnValueFactory;
-        private readonly ICaseConverter _caseConverter;
-        private readonly IArgumentsFactory _argumentsFactory;
-
-        public SignalFactory(IReturnValueFactory returnValueFactory, ICaseConverter caseConverter, IArgumentsFactory argumentsFactory)
+        public SignalFactory(ReturnValueFactory returnValueFactory, CaseConverter caseConverter, ArgumentsFactory argumentsFactory)
         {
             _returnValueFactory = returnValueFactory;
             _caseConverter = caseConverter;

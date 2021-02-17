@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Repository.Analysis;
 using Repository.Model;
 using Scriban.Runtime;
+using Type = Repository.Model.Type;
 
 #nullable enable
 
@@ -10,7 +11,7 @@ namespace Generator.Services.Writer
 {
     public interface IWriteTypesService
     {
-        void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<IType> objects);
+        void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<Type> objects);
     }
 
     public class WriteTypesService : IWriteTypesService
@@ -22,9 +23,9 @@ namespace Generator.Services.Writer
             _writeHelperService = writeHelperService;
         }
 
-        public void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<IType> objects)
+        public void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<Type> objects)
         {
-            foreach (IType obj in objects)
+            foreach (Type obj in objects)
             {
                 var scriptObject = new ScriptObject();
                 scriptObject.Import(obj);

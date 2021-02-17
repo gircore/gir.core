@@ -7,14 +7,8 @@ namespace Repository.Model
     {
         IEnumerable<SymbolReference> GetSymbolReferences();
     }
-    
-    public interface ISymbol
-    {
-        string NativeName { get; }
-        string ManagedName { get; }
-    }
 
-    public abstract class Symbol : ISymbol, ISymbolReferenceProvider
+    public abstract class Symbol : ISymbolReferenceProvider
     {
         public string NativeName { get; }
         public string ManagedName { get; }

@@ -4,16 +4,11 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IMemberFactory
+    public class MemberFactory
     {
-        Member Create(MemberInfo info);
-    }
+        private readonly CaseConverter _caseConverter;
 
-    public class MemberFactory : IMemberFactory
-    {
-        private readonly ICaseConverter _caseConverter;
-
-        public MemberFactory(ICaseConverter caseConverter)
+        public MemberFactory(CaseConverter caseConverter)
         {
             _caseConverter = caseConverter;
         }

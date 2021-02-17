@@ -4,12 +4,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IAliasFactory
-    {
-        Symbol Create(AliasInfo aliasInfo);
-    }
-
-    public class AliasFactory : IAliasFactory
+    public class AliasFactory 
     {
         public Symbol Create(AliasInfo aliasInfo)
         {

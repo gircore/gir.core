@@ -5,17 +5,12 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IRecordFactory
-    {
-        Record Create(RecordInfo @record, Namespace @namespace);
-    }
-
-    public class RecordFactory : IRecordFactory
+    public class RecordFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
-        private readonly IMethodFactory _methodFactory;
+        private readonly MethodFactory _methodFactory;
 
-        public RecordFactory(SymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory)
+        public RecordFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;

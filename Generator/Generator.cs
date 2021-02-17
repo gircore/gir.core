@@ -15,7 +15,7 @@ namespace Generator
     {
         private static string _cacheDir = "../gir-files";
 
-        public readonly List<ILoadedProject> LoadedProjects;
+        public readonly List<LoadedProject> LoadedProjects;
 
         /// <summary>
         /// The main interface used to generate source files from GObject
@@ -72,7 +72,7 @@ namespace Generator
             var writerService = new Container().Resolve().Value;
             
             //List<Task> asyncTasks = new();
-            foreach (ILoadedProject proj in LoadedProjects)
+            foreach (LoadedProject proj in LoadedProjects)
             {
                 writerService.Write(proj);
                 //asyncTasks.Add(task);

@@ -9,7 +9,7 @@ namespace Generator.Services.Writer
 {
     public interface IWriteDllImportService
     {
-        void WriteDllImport(ILoadedProject loadedProject);
+        void WriteDllImport(LoadedProject loadedProject);
     }
 
     public class WriteDllImportService : IWriteDllImportService
@@ -23,7 +23,7 @@ namespace Generator.Services.Writer
             _dllImportResolverFactory = dllImportResolverFactory;
         }
 
-        public void WriteDllImport(ILoadedProject loadedProject)
+        public void WriteDllImport(LoadedProject loadedProject)
         {
             if(loadedProject.Namespace.SharedLibrary is null)
                 throw new Exception($"Namespace {loadedProject.Namespace.Name} does not provide a shared libraryinfo");
