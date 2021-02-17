@@ -55,8 +55,7 @@ namespace Repository.Services
                     _ => ReferenceType.External
                 };
 
-                if (reference is IResolveableSymbolReference resolveable)
-                    resolveable.ResolveAs(symbol, kind);
+                reference.ResolveAs(symbol, kind);
             }
         }
 

@@ -29,10 +29,10 @@ namespace Generator.Services.Writer
                 var scriptObject = new ScriptObject();
                 scriptObject.Import(obj);
                 scriptObject.Import("write_native_arguments", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteNativeArguments));
-                scriptObject.Import("write_native_symbol_reference", new Func<ISymbolReference, string>(TemplateWriter.WriteNativeSymbolReference));
-                scriptObject.Import("write_managed_symbol_reference", new Func<ISymbolReference, string>(TemplateWriter.WriteManagedSymbolReference));
+                scriptObject.Import("write_native_symbol_reference", new Func<SymbolReference, string>(TemplateWriter.WriteNativeSymbolReference));
+                scriptObject.Import("write_managed_symbol_reference", new Func<SymbolReference, string>(TemplateWriter.WriteManagedSymbolReference));
                 scriptObject.Import("write_native_method", new Func<Method, string>(TemplateWriter.WriteNativeMethod));
-                scriptObject.Import("write_inheritance", new Func<ISymbolReference?, IEnumerable<ISymbolReference>, string>(TemplateWriter.WriteInheritance));
+                scriptObject.Import("write_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>(TemplateWriter.WriteInheritance));
                 scriptObject.Import("write_class_fields", new Func<IEnumerable<Field>, string>(TemplateWriter.WriteClassFields));
                 scriptObject.Import("get_if", new Func<string, bool, string>(TemplateWriter.GetIf));
                 scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));

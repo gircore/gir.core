@@ -8,16 +8,16 @@ namespace Repository.Model
     {
         public string CType { get; }
         public Method GetTypeFunction { get; }
-        public IEnumerable<ISymbolReference> Implements { get; }
+        public IEnumerable<SymbolReference> Implements { get; }
         
         public IEnumerable<Method> Methods { get; }
         public IEnumerable<Method> Functions { get; }
-        public ISymbolReference? Parent { get; }
+        public SymbolReference? Parent { get; }
         public IEnumerable<Property> Properties { get; }
         public IEnumerable<Field> Fields { get; }
         public IEnumerable<Signal> Signals { get; }
 
-        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, ISymbolReference? parent, IEnumerable<ISymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals) : base(@namespace, nativeName, managedName)
+        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, SymbolReference? parent, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals) : base(@namespace, nativeName, managedName)
         {
             Parent = parent;
             Implements = implements;
@@ -30,7 +30,7 @@ namespace Repository.Model
             CType = ctype;
         }
 
-        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        public override IEnumerable<SymbolReference> GetSymbolReferences()
         {
             var symbolReferences = IEnumerables.Concat(
                 Implements,

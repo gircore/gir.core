@@ -14,7 +14,7 @@ namespace Repository
             return lists.SelectMany(x => x);
         }
         
-        public static IEnumerable<ISymbolReference> GetSymbolReferences(this IEnumerable<ISymbolReferenceProvider> providers)
+        public static IEnumerable<SymbolReference> GetSymbolReferences(this IEnumerable<ISymbolReferenceProvider> providers)
         {
             return providers.SelectMany(x => x.GetSymbolReferences());
         }

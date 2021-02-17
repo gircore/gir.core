@@ -42,7 +42,7 @@ namespace Generator
             return string.Join(", ", args);
         }
 
-        public static string WriteNativeSymbolReference(ISymbolReference symbolReference)
+        public static string WriteNativeSymbolReference(SymbolReference symbolReference)
         {
             ISymbol symbol = symbolReference.GetSymbol();
 
@@ -55,7 +55,7 @@ namespace Generator
             return InternalType(symbol);
         }
 
-        public static string WriteManagedSymbolReference(ISymbolReference symbolReference)
+        public static string WriteManagedSymbolReference(SymbolReference symbolReference)
         {
             ISymbol symbol = symbolReference.GetSymbol();
             if (symbol is not IType type)
@@ -82,7 +82,7 @@ namespace Generator
         private static string InternalType(ISymbol type)
             => type.ManagedName;
 
-        public static string WriteInheritance(ISymbolReference? parent, IEnumerable<ISymbolReference> implements)
+        public static string WriteInheritance(SymbolReference? parent, IEnumerable<SymbolReference> implements)
         {
             var builder = new StringBuilder();
 

@@ -7,20 +7,20 @@ namespace Repository.Services
 {
     public interface ISymbolReferenceFactory
     {
-        ISymbolReference Create(string type, bool isArray);
-        ISymbolReference Create(ITypeOrArray typeOrArray);
-        IEnumerable<ISymbolReference> Create(IEnumerable<ImplementInfo> implements);
-        ISymbolReference? CreateWithNull(string? type, bool isArry);
+        SymbolReference Create(string type, bool isArray);
+        SymbolReference Create(ITypeOrArray typeOrArray);
+        IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements);
+        SymbolReference? CreateWithNull(string? type, bool isArry);
     }
 
     public class SymbolReferenceFactory : ISymbolReferenceFactory
     {
-        public ISymbolReference Create(string type, bool isArray)
+        public SymbolReference Create(string type, bool isArray)
         {
             return new SymbolReference(type, false);
         }
         
-        public ISymbolReference Create(ITypeOrArray typeOrArray)
+        public SymbolReference Create(ITypeOrArray typeOrArray)
         {
             // Check for Type
             var type = typeOrArray?.Type?.Name ?? null;
@@ -36,14 +36,14 @@ namespace Repository.Services
             return Create("none", false);
         }
 
-        public ISymbolReference? CreateWithNull(string? type, bool isArray)
+        public SymbolReference? CreateWithNull(string? type, bool isArray)
         {
             return type is null ? null : Create(type, isArray);
         }
         
-        public IEnumerable<ISymbolReference> Create(IEnumerable<ImplementInfo> implements)
+        public IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements)
         {
-            var list = new List<ISymbolReference>();
+            var list = new List<SymbolReference>();
 
             foreach (ImplementInfo implement in implements)
             {

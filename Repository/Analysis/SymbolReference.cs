@@ -9,21 +9,7 @@ namespace Repository.Analysis
         External
     }
 
-    public interface ISymbolReference
-    {
-        bool IsExternal { get;  }
-        bool IsArray { get; }
-        string Name { get; }
-
-        ISymbol GetSymbol();
-    }
-
-    internal interface IResolveableSymbolReference : ISymbolReference
-    {
-        void ResolveAs(ISymbol symbol, ReferenceType referenceType);
-    }
-    
-    public class SymbolReference : IResolveableSymbolReference
+    public class SymbolReference
     {
         private ISymbol? _symbol;
         
