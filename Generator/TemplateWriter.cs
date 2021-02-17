@@ -14,7 +14,9 @@ namespace Generator
     {
         public static string WriteManagedArguments(IEnumerable<Argument> arguments)
         {
-            var args = arguments.Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.ManagedName);
+            var args = arguments
+                .Where(x => x.ClosureIndex == 0) // Exclude "userData" parameters
+                .Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.ManagedName);
             return string.Join(", ", args);
         }
 
