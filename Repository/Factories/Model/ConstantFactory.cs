@@ -12,10 +12,10 @@ namespace Repository.Factories
 
     public class ConstantFactory : IConstantFactory
     {
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly IIdentifierConverter _identifierConverter;
 
-        public ConstantFactory(ISymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter)
+        public ConstantFactory(SymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _identifierConverter = identifierConverter;

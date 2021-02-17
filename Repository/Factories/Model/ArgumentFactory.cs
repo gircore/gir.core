@@ -13,12 +13,12 @@ namespace Repository.Factories
 
     public class ArgumentFactory : IArgumentFactory
     {
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly ITransferFactory _transferFactory;
         private readonly IIdentifierConverter _identifierConverter;
         private readonly ICaseConverter _caseConverter;
 
-        public ArgumentFactory(ISymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory, IIdentifierConverter identifierConverter, ICaseConverter caseConverter)
+        public ArgumentFactory(SymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory, IIdentifierConverter identifierConverter, ICaseConverter caseConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;

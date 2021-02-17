@@ -16,11 +16,11 @@ namespace Repository.Factories
 
     public class FieldFactory : IFieldFactory
     {
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly IIdentifierConverter _identifierConverter;
         private readonly ICaseConverter _caseConverter;
 
-        public FieldFactory(ISymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter, ICaseConverter caseConverter)
+        public FieldFactory(SymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter, ICaseConverter caseConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _identifierConverter = identifierConverter;

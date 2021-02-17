@@ -16,10 +16,10 @@ namespace Repository.Factories
     public class PropertyFactory : IPropertyFactory
     {
         private readonly ITransferFactory _transferFactory;
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly ICaseConverter _caseConverter;
 
-        public PropertyFactory(ITransferFactory transferFactory, ISymbolReferenceFactory symbolReferenceFactory, ICaseConverter caseConverter)
+        public PropertyFactory(ITransferFactory transferFactory, SymbolReferenceFactory symbolReferenceFactory, ICaseConverter caseConverter)
         {
             _transferFactory = transferFactory;
             _symbolReferenceFactory = symbolReferenceFactory;

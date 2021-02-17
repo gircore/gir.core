@@ -5,15 +5,7 @@ using Repository.Xml;
 
 namespace Repository.Services
 {
-    public interface ISymbolReferenceFactory
-    {
-        SymbolReference Create(string type, bool isArray);
-        SymbolReference Create(ITypeOrArray typeOrArray);
-        IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements);
-        SymbolReference? CreateWithNull(string? type, bool isArry);
-    }
-
-    public class SymbolReferenceFactory : ISymbolReferenceFactory
+    public class SymbolReferenceFactory 
     {
         public SymbolReference Create(string type, bool isArray)
         {

@@ -12,10 +12,10 @@ namespace Repository.Factories
 
     public class ReturnValueFactory : IReturnValueFactory
     {
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly ITransferFactory _transferFactory;
 
-        public ReturnValueFactory(ISymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory)
+        public ReturnValueFactory(SymbolReferenceFactory symbolReferenceFactory, ITransferFactory transferFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;

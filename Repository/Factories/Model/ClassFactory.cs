@@ -14,13 +14,13 @@ namespace Repository.Factories
 
     public class ClassFactory : IClassFactory
     {
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly IMethodFactory _methodFactory;
         private readonly IPropertyFactory _propertyFactory;
         private readonly IFieldFactory _fieldFactory;
         private readonly ISignalFactory _signalFactory;
 
-        public ClassFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory, IPropertyFactory propertyFactory, IFieldFactory fieldFactory, ISignalFactory signalFactory)
+        public ClassFactory(SymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory, IPropertyFactory propertyFactory, IFieldFactory fieldFactory, ISignalFactory signalFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;

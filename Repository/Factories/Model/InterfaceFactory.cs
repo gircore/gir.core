@@ -12,10 +12,10 @@ namespace Repository.Factories
 
     public class InterfaceFactory : IInterfaceFactory
     {
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly IMethodFactory _methodFactory;
 
-        public InterfaceFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory)
+        public InterfaceFactory(SymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;

@@ -12,10 +12,10 @@ namespace Repository.Factories
 
     public class RecordFactory : IRecordFactory
     {
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly IMethodFactory _methodFactory;
 
-        public RecordFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory)
+        public RecordFactory(SymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;
