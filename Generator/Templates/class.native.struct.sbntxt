@@ -1,0 +1,10 @@
+{{~ if class_struct ~}}
+#region Struct
+
+[StructLayout(LayoutKind.Sequential)]
+public struct ClassStruct
+{
+    {{~ class_struct.fields | write_class_fields ~}}
+}
+#endregion
+{{~ end ~}}
