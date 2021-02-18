@@ -13,10 +13,10 @@ namespace Build
 
         public void Execute()
         {
-            foreach ((Project project, Type _) in Projects.LibraryProjects)
+            foreach (Project proj in Projects.AllLibraries)
             {
                 DotNet.Build(
-                    project: project.Folder,
+                    project: proj.Folder,
                     configuration: _settings.Configuration,
                     version: _settings.Version?.ToNormalizedString()
                 );

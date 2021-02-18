@@ -23,7 +23,7 @@ namespace Generator
         /// call <see cref="WriteAsync"/> in order to output generated code.
         /// </summary>
         /// <param name="projects"></param>
-        public Generator(string[] projects)
+        public Generator(IEnumerable<string> projects)
         {
             // Repository does its own logging and error handling
             var repository = new Repository.Repository();
@@ -92,6 +92,7 @@ namespace Generator
             }
         }
         
+        // TODO: Make this overrideable
         private static FileInfo ResolveFile(string nspace, string version)
         {
             // Attempt to resolve dependencies

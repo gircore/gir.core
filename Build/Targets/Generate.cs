@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Generator = Generator.Generator;
 
 namespace Build
 {
@@ -28,22 +30,8 @@ namespace Build
 
         private void RunGenerator()
         {
-            foreach (var (project, type) in Projects.LibraryProjects)
-            {
-                var generator = CreateGenerator(project, type);
-                generator.GenerateComments = _settings.GenerateComments;
-                generator.Generate();
-            }
-        }
-
-        private static global::Generator.IGenerator CreateGenerator(Project project, Type type)
-        {
-            project.Gir = $"../gir-files/{project.Gir}";
-
-            if (Activator.CreateInstance(type, project) is global::Generator.IGenerator generator)
-                return generator;
-
-            throw new Exception($"{type.Name} is not a {nameof(global::Generator.IGenerator)}");
+            var projectFiles = Projects.AllLibraries.Select(x => x.GirFile);
+            new global::Generator.Generator(projectFiles.ToArray()).WriteAsync();
         }
     }
 }

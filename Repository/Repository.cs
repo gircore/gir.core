@@ -8,7 +8,7 @@ namespace Repository
     
     public class Repository
     {
-        public IEnumerable<LoadedProject> Load(ResolveFileFunc fileFunc, string[] targets)
+        public IEnumerable<LoadedProject> Load(ResolveFileFunc fileFunc, IEnumerable<string> targets)
         {
             //This just wraps the container to provide a nice public API.
             return new Container().Run(repository => repository.Load(fileFunc, targets));
