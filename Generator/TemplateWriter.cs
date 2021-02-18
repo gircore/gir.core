@@ -212,9 +212,12 @@ namespace Generator
                 args.Add(newName);
             }
 
-            // TODO: Vary this depending on whether the callback returns a value or not
             var funcArgs = string.Join(separator: ", ", values: args);
-            builder.Append($"var result = {funcName}({funcArgs});");
+            var funcCall = hasReturnValue
+                ? $"var result = {funcName}({funcArgs});"
+                : $"{funcName}({funcArgs});";
+            
+            builder.Append(funcCall);
 
             return builder.ToString();
         }
