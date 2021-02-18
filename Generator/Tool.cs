@@ -1,9 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.CommandLine;
-using System.CommandLine.Invocation;
-using System.Linq;
-using Repository;
 
 namespace Generator
 {
@@ -29,7 +25,7 @@ namespace Generator
 
             try
             {
-                new Generator().WriteAsync(args);
+                Generator.Write(args);
                 return 0;
             }
             catch (Exception ex)
