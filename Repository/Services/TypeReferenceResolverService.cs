@@ -5,7 +5,7 @@ using Repository.Model;
 
 namespace Repository.Services
 {
-    public class TypeReferenceResolverService 
+    internal class TypeReferenceResolverService 
     {
         public void Resolve(IEnumerable<LoadedProject> projects)
         {

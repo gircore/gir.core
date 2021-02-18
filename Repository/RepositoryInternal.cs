@@ -4,7 +4,7 @@ using Repository.Services;
 
 namespace Repository
 {
-    public class RepositoryInternal
+    internal class RepositoryInternal
     {
         private readonly LoaderService _loaderService;
         private readonly TypeReferenceResolverService _typeReferenceResolverService;

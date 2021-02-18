@@ -5,7 +5,7 @@ using Repository.Xml;
 
 namespace Repository.Services
 {
-    public class SymbolReferenceFactory 
+    internal class SymbolReferenceFactory 
     {
         public SymbolReference Create(string type, bool isArray)
         {

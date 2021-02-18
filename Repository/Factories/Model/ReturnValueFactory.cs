@@ -4,7 +4,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class ReturnValueFactory
+    internal class ReturnValueFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly TransferFactory _transferFactory;

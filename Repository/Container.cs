@@ -30,7 +30,7 @@ namespace Repository
     [Register(typeof(FieldFactory))]
     [Register(typeof(SignalFactory))]
     [Register(typeof(ConstantFactory))]
-    public partial class Container : IContainer<RepositoryInternal>
+    internal partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]
         public static DependencyResolverService<T> GetResolver<T>() where T : INode<T> => new DependencyResolverService<T>();

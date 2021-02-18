@@ -4,7 +4,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class MemberFactory
+    internal class MemberFactory
     {
         private readonly CaseConverter _caseConverter;
 

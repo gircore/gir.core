@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Repository.Analysis
 {
-    public partial class SymbolDictionary
+    internal partial class SymbolDictionary
     {
         // Maps Alias -> Symbol Name
         // Namespace-specific

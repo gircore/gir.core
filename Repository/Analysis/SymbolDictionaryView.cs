@@ -9,7 +9,7 @@ namespace Repository.Analysis
     ///  - 'Application'     resolves to 'Gtk.Application' (Internal)
     ///  - 'Gio.Application' resolves to 'Gio.Application' (External)
     /// </summary>
-    public class SymbolDictionaryView
+    internal class SymbolDictionaryView
     {
         private readonly SymbolDictionary _symbolDict;
         private readonly string _namespace;

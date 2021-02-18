@@ -7,7 +7,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class ClassFactory
+    internal class ClassFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly MethodFactory _methodFactory;

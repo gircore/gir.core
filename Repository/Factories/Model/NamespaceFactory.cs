@@ -9,7 +9,7 @@ using Repository.Xml;
 
 namespace Repository
 {
-    public class NamespaceFactory
+    internal class NamespaceFactory
     {
         private readonly ClassFactory _classFactory;
         private readonly AliasFactory _aliasFactory;

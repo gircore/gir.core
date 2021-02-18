@@ -5,7 +5,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class ArgumentsFactory
+    internal class ArgumentsFactory
     {
         private readonly ArgumentFactory _argumentFactory;
 
