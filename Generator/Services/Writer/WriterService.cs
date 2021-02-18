@@ -11,7 +11,7 @@ namespace Generator.Services.Writer
         Task WriteAsync(LoadedProject loadedProject);
     }
 
-    public class WriterService : IWriterService
+    internal class WriterService : IWriterService
     {
         private readonly WriteTypesService _writeTypesService;
         private readonly WriteDllImportService _writeDllImportService;

@@ -11,7 +11,7 @@ using Type = Repository.Model.Type;
 
 namespace Generator
 {
-    public static class TemplateWriter
+    internal static class TemplateWriter
     {
         public static string WriteManagedArguments(IEnumerable<Argument> arguments)
         {

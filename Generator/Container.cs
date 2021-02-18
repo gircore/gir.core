@@ -12,7 +12,7 @@ namespace Repository
     [Register(typeof(WriteDllImportService))]
     [Register(typeof(WriteTypesService))]
     [Register(typeof(WriteSymbolsService))]
-    public partial class Container : IContainer<WriterService>
+    internal partial class Container : IContainer<WriterService>
     {
     }
 }

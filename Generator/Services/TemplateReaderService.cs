@@ -6,7 +6,7 @@ using Scriban;
 
 namespace Generator.Services
 {
-    public class TemplateReaderService
+    internal class TemplateReaderService
     {
         public Template ReadGenericTemplate(string resource)
         {

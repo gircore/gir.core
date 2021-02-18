@@ -9,7 +9,7 @@ using Type = Repository.Model.Type;
 
 namespace Generator.Services.Writer
 {
-    public class WriteTypesService
+    internal class WriteTypesService
     {
         private readonly WriteHelperService _writeHelperService;
 
