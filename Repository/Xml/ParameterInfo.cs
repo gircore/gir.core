@@ -30,5 +30,11 @@ namespace Repository.Xml
 
         [XmlAttribute("nullable")]
         public bool Nullable;
+        
+        [XmlAttribute ("closure")]
+        public int Closure;
+
+        [XmlAttribute ("destroy")]
+        public int Destroy;
     }
 }

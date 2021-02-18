@@ -15,7 +15,9 @@ namespace Generator
     {
         public static string WriteManagedArguments(IEnumerable<Argument> arguments)
         {
-            var args = arguments.Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.ManagedName);
+            var args = arguments
+                .Where(x => x.ClosureIndex == 0) // Exclude "userData" parameters
+                .Select(x => WriteManagedSymbolReference(x.SymbolReference) + " " + x.ManagedName);
             return string.Join(", ", args);
         }
 
@@ -218,6 +220,54 @@ namespace Generator
             }
 
             return builder.ToString();
+        }
+
+        public static string WriteCallbackMarshaller(IEnumerable<Argument> arguments, string funcName, bool hasReturnValue)
+        {
+            var builder = new StringBuilder();
+            var args = new List<string>();
+
+            foreach (Argument arg in arguments)
+            {
+                // Skip 'user_data' parameters (for callbacks, when closure index is not zero)
+                if (arg.ClosureIndex != 0)
+                    continue;
+                
+                var newName = arg.ManagedName + "Parameter";
+                builder.AppendLine(WriteMarshalArgumentToManaged(arg, newName));
+                args.Add(newName);
+            }
+
+            var funcArgs = string.Join(separator: ", ", values: args);
+            var funcCall = hasReturnValue
+                ? $"var result = {funcName}({funcArgs});"
+                : $"{funcName}({funcArgs});";
+            
+            builder.Append(funcCall);
+
+            return builder.ToString();
+        }
+
+        public static string WriteMarshalArgumentToManaged(Argument arg, string paramName)
+        {
+            // TODO: We need to support disguised structs (opaque types)
+            Symbol symbol = arg.SymbolReference.GetSymbol();
+            var fromName = arg.ManagedName;
+            var managedType = symbol.ManagedName;
+
+            var expression = symbol switch
+            {
+                // GObject -> Use Object.WrapHandle
+                Class => $"Object.WrapHandle<{managedType}>({fromName});",
+                
+                // Struct -> Use struct marshalling (TODO: Should support opaque types)
+                Record => $"Marshal.PtrToStructure<{managedType}>({fromName});",
+                
+                // Other -> Try a brute-force cast
+                _ => $"({managedType}){fromName};"
+            };
+            
+            return $"{managedType} {paramName} = " + expression;
         }
 
         public static bool SignalsHaveArgs(IEnumerable<Signal> signals)

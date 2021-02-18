@@ -5,7 +5,7 @@ namespace Repository.Services
 {
     public class XmlService
     {
-        public T Deserialize<T>(FileInfo girFile)
+        public T? Deserialize<T>(FileInfo girFile) where T : class
         {
             var serializer = new XmlSerializer(
                 type: typeof(T),
@@ -13,7 +13,7 @@ namespace Repository.Services
 
             using FileStream fs = girFile.OpenRead();
             
-            return (T)serializer.Deserialize(fs);
+            return (T?) serializer.Deserialize(fs);
         }
     }
 }
