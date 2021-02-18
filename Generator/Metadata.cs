@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-#nullable enable
-
 namespace Generator
 {
     // Allows us to store and manage metadata

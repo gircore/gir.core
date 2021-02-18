@@ -2,8 +2,6 @@
 using Scriban;
 using Scriban.Runtime;
 
-#nullable enable
-
 namespace Generator.Services.Writer
 {
     internal class WriteHelperService

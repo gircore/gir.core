@@ -5,8 +5,6 @@ using Repository.Model;
 using Scriban.Runtime;
 using Type = Repository.Model.Type;
 
-#nullable enable
-
 namespace Generator.Services.Writer
 {
     internal class WriteTypesService

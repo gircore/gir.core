@@ -2,8 +2,6 @@
 using Repository;
 using StrongInject;
 
-#nullable enable
-
 namespace Generator
 {
     public class Generator

@@ -7,8 +7,6 @@ using Repository.Analysis;
 using Repository.Model;
 using Type = Repository.Model.Type;
 
-#nullable enable
-
 namespace Generator
 {
     internal static class TemplateWriter

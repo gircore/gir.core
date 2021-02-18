@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-namespace Generator.Factories
+﻿namespace Generator.Factories
 {
     internal class DllImportResolverFactory
     {

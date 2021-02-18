@@ -2,8 +2,6 @@
 using System.Reflection;
 using Scriban;
 
-#nullable enable
-
 namespace Generator.Services
 {
     internal class TemplateReaderService
