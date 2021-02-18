@@ -4,7 +4,7 @@
 [StructLayout(LayoutKind.Sequential)]
 public struct ClassStruct
 {
-    {{~ class_struct.fields | write_class_fields ~}}
+    {{~ class_struct.fields | write_class_struct_fields managed_name ~}}
 }
 #endregion
 {{~ end ~}}

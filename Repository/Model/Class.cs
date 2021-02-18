@@ -8,7 +8,7 @@ namespace Repository.Model
     {
         public string CType { get; }
         public Method GetTypeFunction { get; }
-        public Record? ClassStruct { get; }
+        public Record? ClassStruct { get; internal set; }
         public IEnumerable<SymbolReference> Implements { get; }
         
         public IEnumerable<Method> Methods { get; }

@@ -8,11 +8,13 @@ namespace Repository
     {
         private readonly LoaderService _loaderService;
         private readonly TypeReferenceResolverService _typeReferenceResolverService;
+        private readonly ClassStructResolverService _classStructResolverService;
 
-        public RepositoryInternal(LoaderService loaderService, TypeReferenceResolverService typeReferenceResolverService)
+        public RepositoryInternal(LoaderService loaderService, TypeReferenceResolverService typeReferenceResolverService, ClassStructResolverService classStructResolverService)
         {
             _loaderService = loaderService;
             _typeReferenceResolverService = typeReferenceResolverService;
+            _classStructResolverService = classStructResolverService;
         }
 
         public IEnumerable<LoadedProject> Load(ResolveFileFunc fileFunc, string[] targets)
@@ -23,6 +25,7 @@ namespace Repository
             var loadedProjects = enumerableLoadedProjects as List<LoadedProject> ?? enumerableLoadedProjects.ToList();
             
             _typeReferenceResolverService.Resolve(loadedProjects);
+            _classStructResolverService.Resolve(loadedProjects);
             
             Log.Information($"Repository initialised with {loadedProjects.Count} top-level project(s) and {loadedProjects.Count - targets.Length} dependencies.");
             

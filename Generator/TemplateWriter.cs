@@ -151,13 +151,28 @@ namespace Generator
         private static string WriteStructField(Field field)
         {
             var builder = new StringBuilder();
-            builder.AppendLine($"/// <summary>");
-            builder.AppendLine($"/// Original field name: {field.NativeName}.");
-            builder.AppendLine($"/// </summary>");
+            builder.Append(WriteNativeStructFieldSummary(field));
             builder.AppendLine($"public {WriteManagedSymbolReference(field.SymbolReference)} {field.ManagedName};");
             return builder.ToString();
         }
 
+        public static string WriteClassStructFields(IEnumerable<Field> fields, string className)
+        {
+            var list = fields.ToArray();
+            if (list.Length == 0)
+                return "";
+            
+            var builder = new StringBuilder();
+            builder.AppendLine(WriteFirstNativeClassStructField(list[0], className));
+
+            foreach (var field in list[1..])
+            {
+                builder.AppendLine(WriteStructField(field));
+            }
+
+            return builder.ToString();
+        }
+        
         public static string WriteClassFields(IEnumerable<Field> fields)
         {
             var list = fields.ToArray();
@@ -165,26 +180,40 @@ namespace Generator
                 return "";
 
             var builder = new StringBuilder();
-            builder.AppendLine(WriteNativeClassField(list[0], true));
+            builder.AppendLine(WriteFirstNativeClassField(list[0]));
 
             foreach (var field in list[1..])
             {
-                builder.AppendLine(WriteNativeClassField(field, false));
+                builder.AppendLine(WriteStructField(field));
             }
 
             return builder.ToString();
         }
 
-        private static string WriteNativeClassField(Field field, bool isFirst)
+        private static string WriteFirstNativeClassStructField(Field field, string className)
         {
-            var appender = isFirst ? ".Fields" : "";
-
             var builder = new StringBuilder();
-            builder.AppendLine($"    /// <summary>");
-            builder.AppendLine($"    /// Maps to native object field {field.NativeName}.");
-            builder.AppendLine($"    /// </summary>");
-            builder.AppendLine($"    public {WriteManagedSymbolReference(field.SymbolReference)}{appender} {field.ManagedName};");
+            builder.Append(WriteNativeStructFieldSummary(field));
+            builder.AppendLine($"    public {className}.Native.ClassStruct {field.ManagedName};");
 
+            return builder.ToString();
+        }
+        
+        private static string WriteFirstNativeClassField(Field field)
+        {
+            var builder = new StringBuilder();
+            builder.Append(WriteNativeStructFieldSummary(field));
+            builder.AppendLine($"    public {WriteManagedSymbolReference(field.SymbolReference)}.Fields {field.ManagedName};");
+
+            return builder.ToString();
+        }
+
+        private static string WriteNativeStructFieldSummary(Field field)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"/// <summary>");
+            builder.AppendLine($"/// Field name: {field.NativeName}.");
+            builder.AppendLine($"/// </summary>");
             return builder.ToString();
         }
 

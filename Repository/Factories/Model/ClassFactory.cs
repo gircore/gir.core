@@ -22,7 +22,7 @@ namespace Repository.Factories
             _signalFactory = signalFactory;
         }
 
-        public Class Create(ClassInfo cls, Namespace @namespace, Record? classStruct)
+        public Class Create(ClassInfo cls, Namespace @namespace)
         {
             if (cls.Name is null || cls.TypeName is null)
                 throw new Exception("Class is missing data");
@@ -43,7 +43,7 @@ namespace Repository.Factories
                 properties: _propertyFactory.Create(cls.Properties),
                 fields: _fieldFactory.Create(cls.Fields),
                 signals: _signalFactory.Create(cls.Signals),
-                classStruct: classStruct
+                classStruct: null
             );
         }
     }

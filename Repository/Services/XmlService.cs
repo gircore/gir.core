@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
-
+I think we can improve the public
 namespace Repository.Services
 {
     internal class XmlService

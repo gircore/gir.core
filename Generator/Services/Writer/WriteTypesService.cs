@@ -36,6 +36,7 @@ namespace Generator.Services.Writer
                 scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
                 scriptObject.Import("write_marshal_argument_to_managed", new Func<Argument, string, string>(TemplateWriter.WriteMarshalArgumentToManaged));
                 scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, string, bool, string>(TemplateWriter.WriteCallbackMarshaller));
+                scriptObject.Import("write_class_struct_fields", new Func<IEnumerable<Field>, string, string>(TemplateWriter.WriteClassStructFields));
 
                 try
                 {

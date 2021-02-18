@@ -50,7 +50,7 @@ namespace Repository
             SetBitfields(nspace, namespaceInfo.Bitfields);
             SetInterfaces(nspace, namespaceInfo.Interfaces);
             SetRecords(nspace, namespaceInfo.Records);
-            SetClasses(nspace, namespaceInfo.Classes, nspace.Records);
+            SetClasses(nspace, namespaceInfo.Classes);
             SetFunctions(nspace, namespaceInfo.Functions);
             SetUnions(nspace, namespaceInfo.Unions);
             SetConstants(nspace, namespaceInfo.Constants);
@@ -64,12 +64,11 @@ namespace Repository
                 nspace.AddAlias(_aliasFactory.Create(alias));
         }
 
-        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes, IEnumerable<Record> records)
+        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes)
         {
             foreach (var classInfo in classes)
             {
-                var classStruct = records.FirstOrDefault(x => x.GLibClassStructFor?.Name == classInfo.Name);
-                var cls = _classFactory.Create(classInfo, nspace, classStruct);
+                Class cls = _classFactory.Create(classInfo, nspace);
                 nspace.AddClass(cls);
             }
         }

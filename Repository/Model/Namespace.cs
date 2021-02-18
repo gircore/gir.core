@@ -74,6 +74,9 @@ namespace Repository.Model
         public void AddRecord(Record @record)
             => _records.Add(@record);
 
+        public void RemoveRecord(Record @record)
+            => _records.Remove(@record);
+
         public void AddFunction(Method method)
             => _functions.Add(method);
 
