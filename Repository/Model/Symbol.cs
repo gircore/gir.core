@@ -20,5 +20,8 @@ namespace Repository.Model
         }
         
         public abstract IEnumerable<SymbolReference> GetSymbolReferences();
+
+        public override string ToString()
+            => ManagedName;
     }
 }
