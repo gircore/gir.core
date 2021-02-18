@@ -29,7 +29,7 @@ namespace Repository.Analysis
         /// </summary>
         /// <param name="typeName">Name of the symbol. May be qualified or unqualified</param>
         /// <returns>Information about the symbol</returns>
-        public ISymbol LookupType(string typeName)
+        public Symbol LookupType(string typeName)
         {
             if (string.IsNullOrEmpty(typeName))
                 throw new ArgumentNullException(nameof(typeName), "Provided lookup cannot be null or empty");

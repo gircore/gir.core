@@ -7,20 +7,13 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IFieldFactory
+    public class FieldFactory
     {
-        Field Create(FieldInfo info);
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly IdentifierConverter _identifierConverter;
+        private readonly CaseConverter _caseConverter;
 
-        IEnumerable<Field> Create(IEnumerable<FieldInfo> infos);
-    }
-
-    public class FieldFactory : IFieldFactory
-    {
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
-        private readonly IIdentifierConverter _identifierConverter;
-        private readonly ICaseConverter _caseConverter;
-
-        public FieldFactory(ISymbolReferenceFactory symbolReferenceFactory, IIdentifierConverter identifierConverter, ICaseConverter caseConverter)
+        public FieldFactory(SymbolReferenceFactory symbolReferenceFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _identifierConverter = identifierConverter;

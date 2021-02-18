@@ -5,6 +5,7 @@ using System.Text;
 using Repository;
 using Repository.Analysis;
 using Repository.Model;
+using Type = Repository.Model.Type;
 
 #nullable enable
 
@@ -44,11 +45,11 @@ namespace Generator
             return string.Join(", ", args);
         }
 
-        public static string WriteNativeSymbolReference(ISymbolReference symbolReference)
+        public static string WriteNativeSymbolReference(SymbolReference symbolReference)
         {
-            ISymbol symbol = symbolReference.GetSymbol();
+            Symbol symbol = symbolReference.GetSymbol();
 
-            if (symbol is IType)
+            if (symbol is Type)
                 return "IntPtr";
 
             if (symbolReference.IsArray)
@@ -57,10 +58,10 @@ namespace Generator
             return InternalType(symbol);
         }
 
-        public static string WriteManagedSymbolReference(ISymbolReference symbolReference)
+        public static string WriteManagedSymbolReference(SymbolReference symbolReference)
         {
-            ISymbol symbol = symbolReference.GetSymbol();
-            if (symbol is not IType type)
+            Symbol symbol = symbolReference.GetSymbol();
+            if (symbol is not Type type)
                 return symbol.ManagedName;
 
             return symbolReference switch
@@ -72,19 +73,19 @@ namespace Generator
             };
         }
 
-        private static string ExternalType(IType type)
+        private static string ExternalType(Type type)
             => $"{type.Namespace.Name}.{type.ManagedName}";
 
-        private static string ExternalArray(IType type)
+        private static string ExternalArray(Type type)
             => $"{type.Namespace.Name}.{type.ManagedName}[]";
 
-        private static string InternalArray(ISymbol type)
+        private static string InternalArray(Symbol type)
             => $"{type.ManagedName}[]";
 
-        private static string InternalType(ISymbol type)
+        private static string InternalType(Symbol type)
             => type.ManagedName;
 
-        public static string WriteInheritance(ISymbolReference? parent, IEnumerable<ISymbolReference> implements)
+        public static string WriteInheritance(SymbolReference? parent, IEnumerable<SymbolReference> implements)
         {
             var builder = new StringBuilder();
 
@@ -102,8 +103,11 @@ namespace Generator
             return builder.ToString();
         }
 
-        public static string WriteNativeMethod(Method method)
+        public static string WriteNativeMethod(Method? method)
         {
+            if (method is null)
+                return "";
+
             var returnValue = WriteNativeSymbolReference(method.ReturnValue.SymbolReference);
 
             var summaryText = WriteNativeSummary(method);
@@ -134,6 +138,28 @@ namespace Generator
         public static string GetIf(string text, bool condition)
             => condition ? text : "";
 
+        public static string WriteStructFields(IEnumerable<Field> fields)
+        {
+            var builder = new StringBuilder();
+
+            foreach (Field field in fields)
+            {
+                builder.AppendLine(WriteStructField(field));
+            }
+            
+            return builder.ToString();
+        }
+        
+        private static string WriteStructField(Field field)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"/// <summary>");
+            builder.AppendLine($"/// Original field name: {field.NativeName}.");
+            builder.AppendLine($"/// </summary>");
+            builder.AppendLine($"public {WriteManagedSymbolReference(field.SymbolReference)} {field.ManagedName};");
+            return builder.ToString();
+        }
+
         public static string WriteClassFields(IEnumerable<Field> fields)
         {
             var list = fields.ToArray();
@@ -153,7 +179,7 @@ namespace Generator
 
         private static string WriteNativeClassField(Field field, bool isFirst)
         {
-            var appender = isFirst ? ".Field" : "";
+            var appender = isFirst ? ".Fields" : "";
 
             var builder = new StringBuilder();
             builder.AppendLine($"    /// <summary>");

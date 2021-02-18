@@ -8,12 +8,12 @@ namespace Repository.Model
     {
         public string CType { get; }
         public Method GetTypeFunction { get; }
-        public IEnumerable<ISymbolReference> Implements { get; }
+        public IEnumerable<SymbolReference> Implements { get; }
         
         public IEnumerable<Method> Methods { get; }
         public IEnumerable<Method> Functions { get; }
         
-        public Interface(Namespace @namespace, string nativeName, string managedName, string cType, IEnumerable<ISymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, nativeName, managedName)
+        public Interface(Namespace @namespace, string nativeName, string managedName, string cType, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, nativeName, managedName)
         {
             CType = cType;
             Implements = implements;
@@ -22,7 +22,7 @@ namespace Repository.Model
             GetTypeFunction = getTypeFunction;
         }
 
-        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        public override IEnumerable<SymbolReference> GetSymbolReferences()
         {
             return IEnumerables.Concat(
                 Implements,

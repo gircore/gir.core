@@ -2,14 +2,9 @@
 
 namespace Generator.Factories
 {
-    public interface IDllImportResolverFactory
+    public class DllImportResolverFactory
     {
-        IDllImportResolver Create(string sharedLibrary, string namespaceName);
-    }
-
-    public class DllImportResolverFactory : IDllImportResolverFactory
-    {
-        public IDllImportResolver Create(string sharedLibrary, string namespaceName)
+        public DllImportResolver Create(string sharedLibrary, string namespaceName)
         {
             return new DllImportResolver(sharedLibrary, namespaceName);
         }

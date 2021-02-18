@@ -6,21 +6,21 @@ namespace Repository
 {
     public class RepositoryInternal
     {
-        private readonly ILoaderService _loaderService;
-        private readonly ITypeReferenceResolverService _typeReferenceResolverService;
+        private readonly LoaderService _loaderService;
+        private readonly TypeReferenceResolverService _typeReferenceResolverService;
 
-        public RepositoryInternal(ILoaderService loaderService, ITypeReferenceResolverService typeReferenceResolverService)
+        public RepositoryInternal(LoaderService loaderService, TypeReferenceResolverService typeReferenceResolverService)
         {
             _loaderService = loaderService;
             _typeReferenceResolverService = typeReferenceResolverService;
         }
 
-        public IEnumerable<ILoadedProject> Load(ResolveFileFunc fileFunc, string[] targets)
+        public IEnumerable<LoadedProject> Load(ResolveFileFunc fileFunc, string[] targets)
         {
             Log.Information($"Initialising generator with {targets.Length} toplevel project(s)");
 
             var enumerableLoadedProjects = _loaderService.LoadOrdered(targets, fileFunc);
-            var loadedProjects = enumerableLoadedProjects as List<ILoadedProject> ?? enumerableLoadedProjects.ToList();
+            var loadedProjects = enumerableLoadedProjects as List<LoadedProject> ?? enumerableLoadedProjects.ToList();
             
             _typeReferenceResolverService.Resolve(loadedProjects);
             

@@ -6,20 +6,13 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IMethodFactory
+    public class MethodFactory
     {
-        Method Create(MethodInfo methodInfo, Namespace @namespace);
-        IEnumerable<Method> Create(IEnumerable<MethodInfo> methods, Namespace @namespace);
-        Method CreateGetTypeMethod(string getTypeMethodName, Namespace @namespace);
-    }
+        private readonly ReturnValueFactory _returnValueFactory;
+        private readonly ArgumentsFactory _argumentsFactory;
+        private readonly CaseConverter _caseConverter;
 
-    public class MethodFactory : IMethodFactory
-    {
-        private readonly IReturnValueFactory _returnValueFactory;
-        private readonly IArgumentsFactory _argumentsFactory;
-        private readonly ICaseConverter _caseConverter;
-
-        public MethodFactory(IReturnValueFactory returnValueFactory, IArgumentsFactory argumentsFactory, ICaseConverter caseConverter)
+        public MethodFactory(ReturnValueFactory returnValueFactory, ArgumentsFactory argumentsFactory, CaseConverter caseConverter)
         {
             _returnValueFactory = returnValueFactory;
             _argumentsFactory = argumentsFactory;

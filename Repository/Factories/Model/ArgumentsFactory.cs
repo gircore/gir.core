@@ -5,21 +5,16 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IArgumentsFactory
+    public class ArgumentsFactory
     {
-        IEnumerable<Argument> Create(ParametersInfo? parameters, bool throws = false);
-    }
+        private readonly ArgumentFactory _argumentFactory;
 
-    public class ArgumentsFactory : IArgumentsFactory
-    {
-        private readonly IArgumentFactory _argumentFactory;
-
-        public ArgumentsFactory(IArgumentFactory argumentFactory)
+        public ArgumentsFactory(ArgumentFactory argumentFactory)
         {
             _argumentFactory = argumentFactory;
         }
 
-        public IEnumerable<Argument> Create(ParametersInfo? parameters, bool throws)
+        public IEnumerable<Argument> Create(ParametersInfo? parameters, bool throws = false)
         {
             var list = new List<Argument>();
 
@@ -33,7 +28,7 @@ namespace Repository.Factories
                 if (throws)
                 {
                     list.Add(_argumentFactory.Create(
-                        name: "error",
+                        nativeName: "error",
                         type: "GLib.Error",
                         isArray: false,
                         direction: Direction.OutCalleeAllocates,

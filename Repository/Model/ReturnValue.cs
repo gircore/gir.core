@@ -7,16 +7,16 @@ namespace Repository.Model
     {
         public Transfer Transfer { get; }
         public bool Nullable { get; }
-        public ISymbolReference SymbolReference { get; }
+        public SymbolReference SymbolReference { get; }
 
-        public ReturnValue(ISymbolReference symbolReference, Transfer transfer, bool nullable)
+        public ReturnValue(SymbolReference symbolReference, Transfer transfer, bool nullable)
         {
             SymbolReference = symbolReference;
             Transfer = transfer;
             Nullable = nullable;
         }
 
-        public IEnumerable<ISymbolReference> GetSymbolReferences()
+        public IEnumerable<SymbolReference> GetSymbolReferences()
         {
             yield return SymbolReference;
         }

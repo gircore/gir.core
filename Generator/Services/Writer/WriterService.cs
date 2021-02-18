@@ -8,28 +8,28 @@ namespace Generator.Services.Writer
 {
     public interface IWriterService
     {
-        Task WriteAsync(ILoadedProject loadedProject);
+        Task WriteAsync(LoadedProject loadedProject);
     }
 
     public class WriterService : IWriterService
     {
-        private readonly IWriteTypesService _writeTypesService;
-        private readonly IWriteDllImportService _writeDllImportService;
-        private readonly IWriteSymbolsService _writeSymbolsService;
+        private readonly WriteTypesService _writeTypesService;
+        private readonly WriteDllImportService _writeDllImportService;
+        private readonly WriteSymbolsService _writeSymbolsService;
 
-        public WriterService(IWriteTypesService writeTypesService, IWriteDllImportService writeDllImportService, IWriteSymbolsService writeSymbolsService)
+        public WriterService(WriteTypesService writeTypesService, WriteDllImportService writeDllImportService, WriteSymbolsService writeSymbolsService)
         {
             _writeTypesService = writeTypesService;
             _writeDllImportService = writeDllImportService;
             _writeSymbolsService = writeSymbolsService;
         }
 
-        public Task WriteAsync(ILoadedProject loadedProject)
+        public Task WriteAsync(LoadedProject loadedProject)
         {
             return Task.Run(() => Write(loadedProject));
         }
 
-        public void Write(ILoadedProject loadedProject)
+        public void Write(LoadedProject loadedProject)
         {
             if(loadedProject.Namespace.SharedLibrary is null)
                 Log.Debug($"Not generating DLL import helper for namespace {loadedProject.Namespace.Name}: It is missing a shared library info.");

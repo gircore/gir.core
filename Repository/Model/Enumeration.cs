@@ -15,7 +15,7 @@ namespace Repository.Model
             Members = members;
         }
 
-        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        public override IEnumerable<SymbolReference> GetSymbolReferences()
             => Members.SelectMany(x => x.GetSymbolReferences());
     }
 }

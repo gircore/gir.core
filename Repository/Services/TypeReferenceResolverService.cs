@@ -5,14 +5,9 @@ using Repository.Model;
 
 namespace Repository.Services
 {
-    public interface ITypeReferenceResolverService
+    public class TypeReferenceResolverService 
     {
-        void Resolve(IEnumerable<ILoadedProject> projects);
-    }
-
-    public class TypeReferenceResolverService : ITypeReferenceResolverService
-    {
-        public void Resolve(IEnumerable<ILoadedProject> projects)
+        public void Resolve(IEnumerable<LoadedProject> projects)
         {
             var symbolDictionary = new SymbolDictionary();
 
@@ -40,7 +35,7 @@ namespace Repository.Services
             symbolDictionary.AddSymbols(@namespace.Name, @namespace.Unions);
         }
 
-        private void ResolveReferences(SymbolDictionary symbolDictionary, ILoadedProject proj)
+        private void ResolveReferences(SymbolDictionary symbolDictionary, LoadedProject proj)
         {
             var view = symbolDictionary.GetView(proj.Namespace.Name);
 
@@ -51,12 +46,11 @@ namespace Repository.Services
 
                 ReferenceType kind = symbol switch
                 {
-                    IType t when t.Namespace.Name == proj.Namespace.Name => ReferenceType.Internal,
+                    Type t when t.Namespace.Name == proj.Namespace.Name => ReferenceType.Internal,
                     _ => ReferenceType.External
                 };
 
-                if (reference is IResolveableSymbolReference resolveable)
-                    resolveable.ResolveAs(symbol, kind);
+                reference.ResolveAs(symbol, kind);
             }
         }
 

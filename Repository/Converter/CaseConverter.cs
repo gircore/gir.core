@@ -3,13 +3,7 @@ using System.Text;
 
 namespace Repository
 {
-    public interface ICaseConverter
-    {
-        string ToPascalCase(string str);
-        string ToCamelCase(string str);
-    }
-
-    public class CaseConverter : ICaseConverter
+    public class CaseConverter
     {
         public string ToCamelCase(string str)
         {

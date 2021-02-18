@@ -9,23 +9,18 @@ using Repository.Xml;
 
 namespace Repository
 {
-    public interface INamespaceFactory
+    public class NamespaceFactory
     {
-        Namespace CreateFromNamespaceInfo(NamespaceInfo repoinfo);
-    }
+        private readonly ClassFactory _classFactory;
+        private readonly AliasFactory _aliasFactory;
+        private readonly CallbackFactory _callbackFactory;
+        private readonly EnumerationFactory _enumartionFactory;
+        private readonly InterfaceFactory _interfaceFactory;
+        private readonly RecordFactory _recordFactory;
+        private readonly MethodFactory _methodFactory;
+        private readonly ConstantFactory _constantFactory;
 
-    public class NamespaceFactory : INamespaceFactory
-    {
-        private readonly IClassFactory _classFactory;
-        private readonly IAliasFactory _aliasFactory;
-        private readonly ICallbackFactory _callbackFactory;
-        private readonly IEnumartionFactory _enumartionFactory;
-        private readonly IInterfaceFactory _interfaceFactory;
-        private readonly IRecordFactory _recordFactory;
-        private readonly IMethodFactory _methodFactory;
-        private readonly IConstantFactory _constantFactory;
-
-        public NamespaceFactory(IClassFactory classFactory, IAliasFactory aliasFactory, ICallbackFactory callbackFactory, IEnumartionFactory enumartionFactory, IInterfaceFactory interfaceFactory, IRecordFactory recordFactory, IMethodFactory methodFactory, IConstantFactory constantFactory)
+        public NamespaceFactory(ClassFactory classFactory, AliasFactory aliasFactory, CallbackFactory callbackFactory, EnumerationFactory enumartionFactory, InterfaceFactory interfaceFactory, RecordFactory recordFactory, MethodFactory methodFactory, ConstantFactory constantFactory)
         {
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;

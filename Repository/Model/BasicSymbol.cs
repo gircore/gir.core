@@ -10,7 +10,7 @@ namespace Repository.Model
         {
         }
 
-        public override IEnumerable<ISymbolReference> GetSymbolReferences()
-            => Enumerable.Empty<ISymbolReference>();
+        public override IEnumerable<SymbolReference> GetSymbolReferences()
+            => Enumerable.Empty<SymbolReference>();
     }
 }

@@ -5,17 +5,12 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface ICallbackFactory
+    public class CallbackFactory
     {
-        Callback Create(CallbackInfo callbackInfo, Namespace @namespace);
-    }
+        private readonly ReturnValueFactory _returnValueFactory;
+        private readonly ArgumentsFactory _argumentsFactory;
 
-    public class CallbackFactory : ICallbackFactory
-    {
-        private readonly IReturnValueFactory _returnValueFactory;
-        private readonly IArgumentsFactory _argumentsFactory;
-
-        public CallbackFactory(IReturnValueFactory returnValueFactory, IArgumentsFactory argumentsFactory)
+        public CallbackFactory(ReturnValueFactory returnValueFactory, ArgumentsFactory argumentsFactory)
         {
             _returnValueFactory = returnValueFactory;
             _argumentsFactory = argumentsFactory;

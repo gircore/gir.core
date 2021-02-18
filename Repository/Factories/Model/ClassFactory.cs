@@ -7,20 +7,15 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IClassFactory
+    public class ClassFactory
     {
-        Class Create(ClassInfo cls, Namespace @namespace);
-    }
+        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly MethodFactory _methodFactory;
+        private readonly PropertyFactory _propertyFactory;
+        private readonly FieldFactory _fieldFactory;
+        private readonly SignalFactory _signalFactory;
 
-    public class ClassFactory : IClassFactory
-    {
-        private readonly ISymbolReferenceFactory _symbolReferenceFactory;
-        private readonly IMethodFactory _methodFactory;
-        private readonly IPropertyFactory _propertyFactory;
-        private readonly IFieldFactory _fieldFactory;
-        private readonly ISignalFactory _signalFactory;
-
-        public ClassFactory(ISymbolReferenceFactory symbolReferenceFactory, IMethodFactory methodFactory, IPropertyFactory propertyFactory, IFieldFactory fieldFactory, ISignalFactory signalFactory)
+        public ClassFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory, FieldFactory fieldFactory, SignalFactory signalFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;

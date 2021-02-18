@@ -83,7 +83,7 @@ namespace Repository.Model
         public void AddConstant(Constant constant)
             => _constants.Add(constant);
         
-        public IEnumerable<ISymbolReference> GetSymbolReferences()
+        public IEnumerable<SymbolReference> GetSymbolReferences()
         {
             return IEnumerables.Concat(
                 Aliases.GetSymbolReferences(),

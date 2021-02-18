@@ -10,14 +10,7 @@ namespace Repository.Services
             => $"{Name}-{Version}";
     };
 
-    public interface IInfoFactory
-    {
-        IEnumerable<Info> CreateFromIncludes(IEnumerable<IncludeInfo> includes);
-
-        Info CreateFromNamespaceInfo(NamespaceInfo repositoryInfo);
-    }
-
-    public class InfoFactory : IInfoFactory
+    public class InfoFactory
     {
         public Info CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
         {

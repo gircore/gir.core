@@ -2,12 +2,7 @@
 
 namespace Repository.Factories
 {
-    public interface ITransferFactory
-    {
-        Transfer FromText(string? text);
-    }
-
-    public class TransferFactory : ITransferFactory
+    public class TransferFactory 
     {
         public Transfer FromText(string? text)
         {

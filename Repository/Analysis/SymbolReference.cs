@@ -9,23 +9,9 @@ namespace Repository.Analysis
         External
     }
 
-    public interface ISymbolReference
+    public class SymbolReference
     {
-        bool IsExternal { get;  }
-        bool IsArray { get; }
-        string Name { get; }
-
-        ISymbol GetSymbol();
-    }
-
-    internal interface IResolveableSymbolReference : ISymbolReference
-    {
-        void ResolveAs(ISymbol symbol, ReferenceType referenceType);
-    }
-    
-    public class SymbolReference : IResolveableSymbolReference
-    {
-        private ISymbol? _symbol;
+        private Symbol? _symbol;
         
         #region Properties
         
@@ -41,7 +27,7 @@ namespace Repository.Analysis
             IsArray = isArray;
         }
 
-        public ISymbol GetSymbol()
+        public Symbol GetSymbol()
         {
             if(_symbol is null)
                 throw new InvalidOperationException($"The symbolreference for {Name} has not been resolved.");
@@ -49,7 +35,7 @@ namespace Repository.Analysis
             return _symbol;
         }
         
-        public void ResolveAs(ISymbol symbol, ReferenceType referenceType)
+        public void ResolveAs(Symbol symbol, ReferenceType referenceType)
         {
             _symbol = symbol;
             IsExternal = (referenceType == ReferenceType.External);
