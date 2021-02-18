@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
-using Repository.Analysis;
 using Repository.Factories;
 using Repository.Model;
 using Repository.Xml;
@@ -47,12 +45,12 @@ namespace Repository
             );
 
             SetAliases(nspace, namespaceInfo.Aliases);
-            SetClasses(nspace, namespaceInfo.Classes);
             SetCallbacks(nspace, namespaceInfo.Callbacks);
             SetEnumerations(nspace, namespaceInfo.Enumerations);
             SetBitfields(nspace, namespaceInfo.Bitfields);
             SetInterfaces(nspace, namespaceInfo.Interfaces);
             SetRecords(nspace, namespaceInfo.Records);
+            SetClasses(nspace, namespaceInfo.Classes, nspace.Records);
             SetFunctions(nspace, namespaceInfo.Functions);
             SetUnions(nspace, namespaceInfo.Unions);
             SetConstants(nspace, namespaceInfo.Constants);
@@ -66,11 +64,12 @@ namespace Repository
                 nspace.AddAlias(_aliasFactory.Create(alias));
         }
 
-        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes)
+        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes, IEnumerable<Record> records)
         {
             foreach (var classInfo in classes)
             {
-                var cls = _classFactory.Create(classInfo, nspace);
+                var classStruct = records.FirstOrDefault(x => x.GLibClassStructFor?.Name == classInfo.Name);
+                var cls = _classFactory.Create(classInfo, nspace, classStruct);
                 nspace.AddClass(cls);
             }
         }

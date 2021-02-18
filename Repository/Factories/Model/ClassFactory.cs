@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -24,14 +22,14 @@ namespace Repository.Factories
             _signalFactory = signalFactory;
         }
 
-        public Class Create(ClassInfo cls, Namespace @namespace)
+        public Class Create(ClassInfo cls, Namespace @namespace, Record? classStruct)
         {
             if (cls.Name is null || cls.TypeName is null)
                 throw new Exception("Class is missing data");
 
             if (cls.GetTypeFunction is null)
                 throw new Exception($"Class {cls.Name} is missing a get type function");
-            
+
             return new Class(
                 @namespace: @namespace,
                 nativeName: cls.Name,
@@ -44,7 +42,8 @@ namespace Repository.Factories
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
                 properties: _propertyFactory.Create(cls.Properties),
                 fields: _fieldFactory.Create(cls.Fields),
-                signals: _signalFactory.Create(cls.Signals)
+                signals: _signalFactory.Create(cls.Signals),
+                classStruct: classStruct
             );
         }
     }
