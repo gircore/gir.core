@@ -11,7 +11,7 @@ namespace Generator
             var repository = new Repository.Repository();
             var loadedProjects = repository.Load(FileResolver.ResolveFile, projects).ToList();
 
-            Log.Information("Ready to Write");
+            Log.Information("Ready to write.");
 
             var writerService = new Container().Resolve().Value;
             foreach (LoadedProject proj in loadedProjects)
@@ -19,7 +19,7 @@ namespace Generator
                 writerService.Write(proj);
             }
 
-            Log.Information("Writing completed successfully");
+            Log.Information("Writing completed.");
         }
     }
 }
