@@ -251,7 +251,7 @@ namespace Generator
         public static string WriteMarshalArgumentToManaged(Argument arg, string paramName)
         {
             // TODO: We need to support disguised structs (opaque types)
-            ISymbol symbol = arg.SymbolReference.GetSymbol();
+            Symbol symbol = arg.SymbolReference.GetSymbol();
             var fromName = arg.ManagedName;
             var managedType = symbol.ManagedName;
 
