@@ -27,7 +27,18 @@ namespace Generator
                 }   
             }
 
-            return new Generator(args).WriteAsync();
+            try
+            {
+                new Generator().WriteAsync(args);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Exception(ex);
+                Log.Error("An error occured during processing. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
+                
+                return -1;
+            }
         }
     }
 }
