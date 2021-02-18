@@ -17,7 +17,7 @@ namespace Repository
 
         public IEnumerable<LoadedProject> Load(ResolveFileFunc fileFunc, string[] targets)
         {
-            Log.Information($"Initialising generator with {targets.Length} toplevel project(s)");
+            Log.Information($"Initialising repository with {targets.Length} toplevel project(s).");
 
             var enumerableLoadedProjects = _loaderService.LoadOrdered(targets, fileFunc);
             var loadedProjects = enumerableLoadedProjects as List<LoadedProject> ?? enumerableLoadedProjects.ToList();
