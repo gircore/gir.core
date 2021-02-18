@@ -5,16 +5,11 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public interface IEnumartionFactory
+    public class EnumerationFactory
     {
-        Enumeration Create(EnumInfo @enum, Namespace @namespace, bool hasFlags);
-    }
+        private readonly MemberFactory _memberFactory;
 
-    public class EnumerationFactory : IEnumartionFactory
-    {
-        private readonly IMemberFactory _memberFactory;
-
-        public EnumerationFactory(IMemberFactory memberFactory)
+        public EnumerationFactory(MemberFactory memberFactory)
         {
             _memberFactory = memberFactory;
         }

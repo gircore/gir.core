@@ -5,19 +5,14 @@ using Repository.Model;
 
 namespace Repository
 {
-    public interface ILoadedProject : INode<ILoadedProject>
-    {
-        Namespace Namespace { get; }
-    }
-
-    public class LoadedProject : ILoadedProject
+    public class LoadedProject : INode<LoadedProject>
     {
         public string Name { get; }
         public Namespace Namespace { get; }
         
-        public IEnumerable<ILoadedProject> Dependencies { get; }
+        public IEnumerable<LoadedProject> Dependencies { get; }
 
-        public LoadedProject(string name, Namespace @namespace, IEnumerable<ILoadedProject> dependencies)
+        public LoadedProject(string name, Namespace @namespace, IEnumerable<LoadedProject> dependencies)
         {
             Name = name;
             Namespace = @namespace;

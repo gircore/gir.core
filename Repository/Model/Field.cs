@@ -5,14 +5,14 @@ namespace Repository.Model
 {
     public class Field : Symbol
     {
-        public ISymbolReference SymbolReference { get; }
+        public SymbolReference SymbolReference { get; }
         
-        public Field(string nativeName, string managedName, ISymbolReference symbolReference) : base(nativeName, managedName)
+        public Field(string nativeName, string managedName, SymbolReference symbolReference) : base(nativeName, managedName)
         {
             SymbolReference = symbolReference;
         }
 
-        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        public override IEnumerable<SymbolReference> GetSymbolReferences()
         {
             yield return SymbolReference;
         }

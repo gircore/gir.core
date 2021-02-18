@@ -3,37 +3,34 @@ using System.Collections.Generic;
 using Repository.Analysis;
 using Repository.Model;
 using Scriban.Runtime;
+using Type = Repository.Model.Type;
 
 #nullable enable
 
 namespace Generator.Services.Writer
 {
-    public interface IWriteTypesService
+    public class WriteTypesService
     {
-        void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<IType> objects);
-    }
+        private readonly WriteHelperService _writeHelperService;
 
-    public class WriteTypesService : IWriteTypesService
-    {
-        private readonly IWriteHelperService _writeHelperService;
-
-        public WriteTypesService(IWriteHelperService writeHelperService)
+        public WriteTypesService(WriteHelperService writeHelperService)
         {
             _writeHelperService = writeHelperService;
         }
 
-        public void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<IType> objects)
+        public void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<Type> objects)
         {
-            foreach (IType obj in objects)
+            foreach (Type obj in objects)
             {
                 var scriptObject = new ScriptObject();
                 scriptObject.Import(obj);
                 scriptObject.Import("write_native_arguments", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteNativeArguments));
-                scriptObject.Import("write_native_symbol_reference", new Func<ISymbolReference, string>(TemplateWriter.WriteNativeSymbolReference));
-                scriptObject.Import("write_managed_symbol_reference", new Func<ISymbolReference, string>(TemplateWriter.WriteManagedSymbolReference));
+                scriptObject.Import("write_native_symbol_reference", new Func<SymbolReference, string>(TemplateWriter.WriteNativeSymbolReference));
+                scriptObject.Import("write_managed_symbol_reference", new Func<SymbolReference, string>(TemplateWriter.WriteManagedSymbolReference));
                 scriptObject.Import("write_native_method", new Func<Method, string>(TemplateWriter.WriteNativeMethod));
-                scriptObject.Import("write_inheritance", new Func<ISymbolReference?, IEnumerable<ISymbolReference>, string>(TemplateWriter.WriteInheritance));
+                scriptObject.Import("write_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>(TemplateWriter.WriteInheritance));
                 scriptObject.Import("write_class_fields", new Func<IEnumerable<Field>, string>(TemplateWriter.WriteClassFields));
+                scriptObject.Import("write_struct_fields", new Func<IEnumerable<Field>, string>(TemplateWriter.WriteStructFields));
                 scriptObject.Import("get_if", new Func<string, bool, string>(TemplateWriter.GetIf));
                 scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
                 scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(TemplateWriter.WriteSignalArgsProperties));

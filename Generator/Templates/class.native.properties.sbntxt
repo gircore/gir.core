@@ -1,6 +1,6 @@
 #region Properties
 
-public class Property
+public class Properties
 {
     {{~ for $property in properties }}
     {{ include 'property_name.sbntxt' $property ~}}

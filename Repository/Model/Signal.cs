@@ -18,7 +18,7 @@ namespace Repository.Model
         public override string ToString()
             => ManagedName;
 
-        public override IEnumerable<ISymbolReference> GetSymbolReferences()
+        public override IEnumerable<SymbolReference> GetSymbolReferences()
         {
             return IEnumerables.Concat(
                 ReturnValue.GetSymbolReferences(),

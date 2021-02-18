@@ -1,7 +1,7 @@
 #region Fields
 
 [StructLayout(LayoutKind.Sequential)]
-protected {{'new '|get_if $parent != null}}struct Field : IObjectStruct
+protected {{'new '|get_if $parent != null}}struct Fields : IObjectStruct
 {
     {{~ fields | write_class_fields ~}}
 }
