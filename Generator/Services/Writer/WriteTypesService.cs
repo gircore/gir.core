@@ -18,7 +18,7 @@ namespace Generator.Services.Writer
             _writeHelperService = writeHelperService;
         }
 
-        public void WriteTypes(string projectName, string templateName, string subfolder, IEnumerable<Type> objects)
+        public void WriteTypes(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Type> objects)
         {
             foreach (Type obj in objects)
             {
@@ -43,6 +43,7 @@ namespace Generator.Services.Writer
                 {
                     _writeHelperService.Write(
                         projectName: projectName,
+                        outputDir: outputDir,
                         templateName: templateName,
                         folder: subfolder,
                         fileName: obj.ManagedName,

@@ -18,7 +18,7 @@ namespace Generator.Services.Writer
             _dllImportResolverFactory = dllImportResolverFactory;
         }
 
-        public void WriteDllImport(LoadedProject loadedProject)
+        public void WriteDllImport(LoadedProject loadedProject, string outputDir)
         {
             if(loadedProject.Namespace.SharedLibrary is null)
                 throw new Exception($"Namespace {loadedProject.Namespace.Name} does not provide a shared libraryinfo");
@@ -42,6 +42,7 @@ namespace Generator.Services.Writer
                     projectName: loadedProject.Name,
                     templateName: "dll_import.sbntxt",
                     folder: "Classes",
+                    outputDir: outputDir,
                     fileName: "DllImport",
                     scriptObject: scriptObject
                 );

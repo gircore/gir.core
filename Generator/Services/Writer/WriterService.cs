@@ -8,7 +8,7 @@ namespace Generator.Services.Writer
 {
     public interface IWriterService
     {
-        Task WriteAsync(LoadedProject loadedProject);
+        Task WriteAsync(LoadedProject loadedProject, string outputDir);
     }
 
     public class WriterService : IWriterService
@@ -24,20 +24,21 @@ namespace Generator.Services.Writer
             _writeSymbolsService = writeSymbolsService;
         }
 
-        public Task WriteAsync(LoadedProject loadedProject)
+        public Task WriteAsync(LoadedProject loadedProject, string outputDir)
         {
-            return Task.Run(() => Write(loadedProject));
+            return Task.Run(() => Write(loadedProject, outputDir));
         }
 
-        public void Write(LoadedProject loadedProject)
+        public void Write(LoadedProject loadedProject, string outputDir)
         {
             if(loadedProject.Namespace.SharedLibrary is null)
                 Log.Debug($"Not generating DLL import helper for namespace {loadedProject.Namespace.Name}: It is missing a shared library info.");
             else
-                _writeDllImportService.WriteDllImport(loadedProject);
+                _writeDllImportService.WriteDllImport(loadedProject, outputDir);
             
             _writeTypesService.WriteTypes(
                 projectName: loadedProject.Name,
+                outputDir: outputDir,
                 templateName: "delegate.sbntxt",
                 subfolder: "Delegates",
                 objects: loadedProject.Namespace.Callbacks
@@ -45,6 +46,7 @@ namespace Generator.Services.Writer
 
             _writeTypesService.WriteTypes(
                 projectName: loadedProject.Name,
+                outputDir: outputDir,
                 templateName: "class.sbntxt",
                 subfolder: "Classes",
                 objects: loadedProject.Namespace.Classes
@@ -52,6 +54,7 @@ namespace Generator.Services.Writer
             
             _writeTypesService.WriteTypes(
                 projectName: loadedProject.Name,
+                outputDir: outputDir,
                 templateName: "interface.sbntxt",
                 subfolder: "Interfaces",
                 objects: loadedProject.Namespace.Interfaces
@@ -59,6 +62,7 @@ namespace Generator.Services.Writer
             
             _writeTypesService.WriteTypes(
                 projectName: loadedProject.Name,
+                outputDir: outputDir,
                 templateName: "enum.sbntxt",
                 subfolder: "Enums",
                 objects: loadedProject.Namespace.Enumerations
@@ -66,6 +70,7 @@ namespace Generator.Services.Writer
             
             _writeTypesService.WriteTypes(
                 projectName: loadedProject.Name,
+                outputDir: outputDir,
                 templateName: "struct.sbntxt",
                 subfolder: "Structs",
                 objects: loadedProject.Namespace.Records
@@ -73,6 +78,7 @@ namespace Generator.Services.Writer
 
             _writeSymbolsService.WriteSymbols(
                 projectName: loadedProject.Name,
+                outputDir: outputDir,
                 templateName: "constants.sbntxt",
                 subfolder: "Classes",
                 name: "Constants",
@@ -82,6 +88,7 @@ namespace Generator.Services.Writer
             
             _writeSymbolsService.WriteSymbols(
                 projectName: loadedProject.Name,
+                outputDir: outputDir,
                 templateName: "functions.sbntxt",
                 subfolder: "Classes",
                 name: "Functions",
