@@ -22,7 +22,6 @@ namespace Repository
     [Register(typeof(MethodFactory))]
     [Register(typeof(LoaderService))]
     [Register(typeof(TypeReferenceResolverService))]
-    [Register(typeof(ClassStructResolverService))]
     [Register(typeof(TransferFactory))]
     [Register(typeof(MemberFactory))]
     [Register(typeof(CaseConverter))]

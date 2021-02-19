@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Repository;
 using Repository.Model;
 
-namespace Repository.Services
+namespace Generator.Services
 {
     internal class ClassStructResolverService 
     {
@@ -29,7 +30,7 @@ namespace Repository.Services
                 if (classStruct is not null)
                 {
                     classStruct.ManagedName = $"{cls.ManagedName}.Native.ClassStruct";
-                    cls.ClassStruct = classStruct;
+                    cls.Metadata["ClassStruct"] = classStruct;
                     cls.Namespace.RemoveRecord(classStruct);
                 }
             }
