@@ -1,17 +1,9 @@
 ﻿using System.Threading.Tasks;
-using Generator.Services.Writer;
 using Repository;
-
-#nullable enable
 
 namespace Generator.Services.Writer
 {
-    public interface IWriterService
-    {
-        Task WriteAsync(LoadedProject loadedProject, string outputDir);
-    }
-
-    public class WriterService : IWriterService
+    internal class WriterService
     {
         private readonly WriteTypesService _writeTypesService;
         private readonly WriteDllImportService _writeDllImportService;
@@ -23,12 +15,7 @@ namespace Generator.Services.Writer
             _writeDllImportService = writeDllImportService;
             _writeSymbolsService = writeSymbolsService;
         }
-
-        public Task WriteAsync(LoadedProject loadedProject, string outputDir)
-        {
-            return Task.Run(() => Write(loadedProject, outputDir));
-        }
-
+        
         public void Write(LoadedProject loadedProject, string outputDir)
         {
             if(loadedProject.Namespace.SharedLibrary is null)

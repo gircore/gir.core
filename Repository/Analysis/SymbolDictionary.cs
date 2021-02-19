@@ -4,7 +4,7 @@ using Repository.Model;
 
 namespace Repository.Analysis
 {
-    public partial class SymbolDictionary
+    internal partial class SymbolDictionary
     {
         private readonly Dictionary<string, TypeDictionary> _symbolDictionaries = new();
         private readonly Dictionary<string, AliasDictionary> _aliasDictionaries = new();

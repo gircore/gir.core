@@ -5,7 +5,7 @@ using Repository.Model;
 
 namespace Repository.Services
 {
-    public class TypeReferenceResolverService 
+    internal class TypeReferenceResolverService 
     {
         public void Resolve(IEnumerable<LoadedProject> projects)
         {
@@ -14,11 +14,11 @@ namespace Repository.Services
             var loadedProjects = projects.ToList();
             foreach (var proj in loadedProjects)
             {
-                Log.Information($"Analysing '{proj.Name}'.");
+                Log.Debug($"Analysing '{proj.Name}'.");
                 FillSymbolDictionary(symbolDictionary, proj.Namespace);
-
-                Log.Information("Resolving symbol references.");
+                
                 ResolveReferences(symbolDictionary, proj);
+                Log.Information($"Resolved symbol references for {proj.Name}.");
             }
         }
 

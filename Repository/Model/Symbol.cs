@@ -11,7 +11,7 @@ namespace Repository.Model
     public abstract class Symbol : ISymbolReferenceProvider
     {
         public string NativeName { get; }
-        public string ManagedName { get; }
+        public string ManagedName { get; internal set; }
 
         public Symbol(string nativeName, string managedName)
         {
@@ -20,5 +20,8 @@ namespace Repository.Model
         }
         
         public abstract IEnumerable<SymbolReference> GetSymbolReferences();
+
+        public override string ToString()
+            => ManagedName;
     }
 }

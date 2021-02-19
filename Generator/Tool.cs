@@ -1,9 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.CommandLine;
-using System.CommandLine.Invocation;
-using System.Linq;
-using Repository;
 
 namespace Generator
 {
@@ -27,7 +23,18 @@ namespace Generator
                 }   
             }
 
-            return new Generator(args).WriteAsync();
+            try
+            {
+                Generator.Write(args);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Exception(ex);
+                Log.Error("An error occured during processing. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
+                
+                return -1;
+            }
         }
     }
 }

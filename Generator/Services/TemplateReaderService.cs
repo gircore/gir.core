@@ -2,11 +2,9 @@
 using System.Reflection;
 using Scriban;
 
-#nullable enable
-
 namespace Generator.Services
 {
-    public class TemplateReaderService
+    internal class TemplateReaderService
     {
         public Template ReadGenericTemplate(string resource)
         {

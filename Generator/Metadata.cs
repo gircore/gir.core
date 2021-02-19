@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-#nullable enable
-
 namespace Generator
 {
     // Allows us to store and manage metadata
     // TODO: Naive attempt. We might not want to go down this route
-    public static class Metadata
+    internal static class Metadata
     {
         private static readonly Dictionary<object, Dictionary<string, object>> _metadataDict = new();
 

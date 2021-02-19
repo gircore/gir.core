@@ -2,7 +2,7 @@
 
 namespace Generator
 {
-    public class DllImportResolver
+    internal class DllImportResolver
     {
         private readonly string _sharedLibrary;
         private readonly string _namespaceName;

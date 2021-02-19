@@ -6,7 +6,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class SignalFactory
+    internal class SignalFactory
     {
         private readonly ReturnValueFactory _returnValueFactory;
         private readonly CaseConverter _caseConverter;

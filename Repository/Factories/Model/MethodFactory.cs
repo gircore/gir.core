@@ -6,7 +6,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class MethodFactory
+    internal class MethodFactory
     {
         private readonly ReturnValueFactory _returnValueFactory;
         private readonly ArgumentsFactory _argumentsFactory;

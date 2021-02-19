@@ -30,8 +30,10 @@ namespace Build
 
         private void RunGenerator()
         {
-            var projectFiles = Projects.AllLibraries.Select(x => x.GirFile);
-            new global::Generator.Generator(projectFiles.ToArray(), Projects.ProjectPath).WriteAsync();
+            global::Generator.Generator.Write(
+                projects: Projects.AllLibraries.Select(x => x.GirFile),
+                outputDir: Projects.ProjectPath
+            );
         }
     }
 }

@@ -5,7 +5,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class CallbackFactory
+    internal class CallbackFactory
     {
         private readonly ReturnValueFactory _returnValueFactory;
         private readonly ArgumentsFactory _argumentsFactory;

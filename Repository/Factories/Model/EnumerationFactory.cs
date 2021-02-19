@@ -5,7 +5,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class EnumerationFactory
+    internal class EnumerationFactory
     {
         private readonly MemberFactory _memberFactory;
 

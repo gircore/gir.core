@@ -7,7 +7,7 @@ using St = Microsoft.CodeAnalysis.SyntaxToken;
 
 namespace Repository
 {
-    public class IdentifierConverter
+    internal class IdentifierConverter
     {
         public string Convert(string identifier)
         {

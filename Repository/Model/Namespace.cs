@@ -53,34 +53,37 @@ namespace Repository.Model
             SharedLibrary = sharedLibrary;
         }
 
-        public void AddAlias(Symbol symbol)
+        internal void AddAlias(Symbol symbol)
             => _aliases.Add(symbol);
 
-        public void AddCallback(Callback callback)
+        internal void AddCallback(Callback callback)
             => _callbacks.Add(callback);
 
-        public void AddClass(Class @class)
+        internal void AddClass(Class @class)
             => _classes.Add(@class);
 
-        public void AddEnumeration(Enumeration enumeration)
+        internal void AddEnumeration(Enumeration enumeration)
             => _enumerations.Add(enumeration);
 
-        public void AddBitfield(Enumeration enumeration)
+        internal void AddBitfield(Enumeration enumeration)
             => _bitfields.Add(enumeration);
 
-        public void AddInterface(Interface @interface)
+        internal void AddInterface(Interface @interface)
             => _interfaces.Add(@interface);
 
-        public void AddRecord(Record @record)
+        internal void AddRecord(Record @record)
             => _records.Add(@record);
 
-        public void AddFunction(Method method)
+        internal void RemoveRecord(Record @record)
+            => _records.Remove(@record);
+
+        internal void AddFunction(Method method)
             => _functions.Add(method);
 
-        public void AddUnion(Record union)
+        internal void AddUnion(Record union)
             => _unions.Add(union);
 
-        public void AddConstant(Constant constant)
+        internal void AddConstant(Constant constant)
             => _constants.Add(constant);
         
         public IEnumerable<SymbolReference> GetSymbolReferences()

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
-using Repository.Analysis;
 using Repository.Factories;
 using Repository.Model;
 using Repository.Xml;
 
 namespace Repository
 {
-    public class NamespaceFactory
+    internal class NamespaceFactory
     {
         private readonly ClassFactory _classFactory;
         private readonly AliasFactory _aliasFactory;
@@ -47,12 +45,12 @@ namespace Repository
             );
 
             SetAliases(nspace, namespaceInfo.Aliases);
-            SetClasses(nspace, namespaceInfo.Classes);
             SetCallbacks(nspace, namespaceInfo.Callbacks);
             SetEnumerations(nspace, namespaceInfo.Enumerations);
             SetBitfields(nspace, namespaceInfo.Bitfields);
             SetInterfaces(nspace, namespaceInfo.Interfaces);
             SetRecords(nspace, namespaceInfo.Records);
+            SetClasses(nspace, namespaceInfo.Classes);
             SetFunctions(nspace, namespaceInfo.Functions);
             SetUnions(nspace, namespaceInfo.Unions);
             SetConstants(nspace, namespaceInfo.Constants);
@@ -70,7 +68,7 @@ namespace Repository
         {
             foreach (var classInfo in classes)
             {
-                var cls = _classFactory.Create(classInfo, nspace);
+                Class cls = _classFactory.Create(classInfo, nspace);
                 nspace.AddClass(cls);
             }
         }

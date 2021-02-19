@@ -3,11 +3,9 @@ using Generator.Factories;
 using Repository;
 using Scriban.Runtime;
 
-#nullable enable
-
 namespace Generator.Services.Writer
 {
-    public class WriteDllImportService
+    internal class WriteDllImportService
     {
         private readonly WriteHelperService _writeHelperService;
         private readonly DllImportResolverFactory _dllImportResolverFactory;

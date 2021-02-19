@@ -1,11 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+    <Import Project="../General.props" />
+  
     <PropertyGroup>
-      <TargetFramework>net5.0</TargetFramework>
       <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Repository\Repository.csproj" />
+      
       <PackageReference Include="Scriban" Version="3.3.3" />
       <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20574.7" />
       <PackageReference Include="StrongInject" Version="1.0.8" />
@@ -15,14 +17,7 @@
 
     <ItemGroup>
       <Compile Remove="output\**" />
-    </ItemGroup>
-
-    <ItemGroup>
       <EmbeddedResource Include="Templates\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Repository\Repository.csproj" />
     </ItemGroup>
 
 </Project>
