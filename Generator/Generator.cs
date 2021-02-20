@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 using Repository;
-using Generator.Services.Writer;
-
 using StrongInject;
+
+using Generator.Services;
 
 namespace Generator
 {
@@ -18,8 +17,11 @@ namespace Generator
 
             Log.Information("Ready to write.");
 
-            WriterService writerService = new Container().Resolve().Value;
-                
+            var classStructResolverService = new ClassStructResolverService();
+            classStructResolverService.Resolve(loadedProjects);
+
+            var writerService = new Container().Resolve().Value;
+
             foreach (LoadedProject proj in loadedProjects)
                 writerService.Write(proj, outputDir);
                 
