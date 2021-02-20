@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Generator = Generator.Generator;
 
 namespace Build
 {
@@ -30,10 +29,18 @@ namespace Build
 
         private void RunGenerator()
         {
-            global::Generator.Generator.Write(
-                projects: Projects.AllLibraries.Select(x => x.GirFile),
-                outputDir: Projects.ProjectPath
-            );
+            try
+            {
+                Generator.Generator.Write(
+                    projects: Projects.AllLibraries.Select(x => x.GirFile),
+                    outputDir: Projects.ProjectPath
+                );
+            }
+            catch (Exception e)
+            {
+                Log.Exception(e);
+                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
+            }
         }
     }
 }

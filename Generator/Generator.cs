@@ -18,20 +18,12 @@ namespace Generator
 
             Log.Information("Ready to write.");
 
-            try
-            {
-                WriterService writerService = new Container().Resolve().Value;
+            WriterService writerService = new Container().Resolve().Value;
                 
-                foreach (LoadedProject proj in loadedProjects)
-                    writerService.Write(proj, outputDir);
+            foreach (LoadedProject proj in loadedProjects)
+                writerService.Write(proj, outputDir);
                 
-                Log.Information("Writing completed successfully");
-            }
-            catch (Exception e)
-            {
-                Log.Exception(e);
-                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
-            }
+            Log.Information("Writing completed successfully");
         }
     }
 }
