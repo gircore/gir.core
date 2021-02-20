@@ -9,7 +9,7 @@ using Repository.Xml;
 
 namespace Repository
 {
-    public class LoaderService
+    internal class LoaderService
     {
         private readonly DependencyResolverService<LoadedProject> _dependencyResolverService;
         private readonly InfoFactory _infoFactory;

@@ -1,6 +1,6 @@
 ﻿namespace Repository.Xml
 {
-    public class Project
+    internal class Project
     {
         public string Gir { get; }
 

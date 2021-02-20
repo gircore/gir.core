@@ -1,13 +1,10 @@
 ﻿using System.IO;
-using Generator.Services;
 using Scriban;
 using Scriban.Runtime;
 
-#nullable enable
-
 namespace Generator.Services.Writer
 {
-    public class WriteHelperService
+    internal class WriteHelperService
     {
         private readonly TemplateReaderService _templateReaderService;
 

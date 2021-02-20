@@ -5,7 +5,7 @@ namespace Repository.Graph
 {
     // Dependency Resolver Algorithm
     // https://www.electricmonk.nl/docs/dependency_resolving_algorithm/dependency_resolving_algorithm.html
-    public class DependencyResolverService<T> where T : INode<T>
+    internal class DependencyResolverService<T> where T : INode<T>
     {
         private List<INode<T>> _resolvedNodes = new ();
         private List<INode<T>> _unresolvedNodes = new ();

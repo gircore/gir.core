@@ -7,7 +7,7 @@ using Scriban.Runtime;
 
 namespace Generator
 {
-    public class TemplateLoader : ITemplateLoader
+    internal class TemplateLoader : ITemplateLoader
     {
         #region Methods
 

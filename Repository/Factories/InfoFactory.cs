@@ -10,7 +10,7 @@ namespace Repository.Services
             => $"{Name}-{Version}";
     };
 
-    public class InfoFactory
+    internal class InfoFactory
     {
         public Info CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
         {

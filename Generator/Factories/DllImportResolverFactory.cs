@@ -1,8 +1,6 @@
-﻿#nullable enable
-
-namespace Generator.Factories
+﻿namespace Generator.Factories
 {
-    public class DllImportResolverFactory
+    internal class DllImportResolverFactory
     {
         public DllImportResolver Create(string sharedLibrary, string namespaceName)
         {

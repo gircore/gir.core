@@ -5,11 +5,9 @@ using Repository.Model;
 using Scriban.Runtime;
 using Type = Repository.Model.Type;
 
-#nullable enable
-
 namespace Generator.Services.Writer
 {
-    public class WriteTypesService
+    internal class WriteTypesService
     {
         private readonly WriteHelperService _writeHelperService;
 
@@ -38,6 +36,8 @@ namespace Generator.Services.Writer
                 scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
                 scriptObject.Import("write_marshal_argument_to_managed", new Func<Argument, string, string>(TemplateWriter.WriteMarshalArgumentToManaged));
                 scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, string, bool, string>(TemplateWriter.WriteCallbackMarshaller));
+                scriptObject.Import("write_class_struct_fields", new Func<IEnumerable<Field>, string, string>(TemplateWriter.WriteClassStructFields));
+                scriptObject.Import("get_metadata", new Func<string, object?>(key => obj.Metadata[key])); //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
 
                 try
                 {

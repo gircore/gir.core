@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class ClassFactory
+    internal class ClassFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly MethodFactory _methodFactory;
@@ -31,7 +29,7 @@ namespace Repository.Factories
 
             if (cls.GetTypeFunction is null)
                 throw new Exception($"Class {cls.Name} is missing a get type function");
-            
+
             return new Class(
                 @namespace: @namespace,
                 nativeName: cls.Name,

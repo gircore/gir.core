@@ -4,7 +4,7 @@ using Repository.Model;
 
 namespace Repository.Analysis
 {
-    public partial class SymbolDictionary
+    internal partial class SymbolDictionary
     {
         // Maps Symbol Name -> Introspection Data
         // Namespace-specific

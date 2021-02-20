@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Repository.Analysis;
 using Repository.Model;
 using Scriban.Runtime;
 
-#nullable enable
-
 namespace Generator.Services.Writer
 {
-    public class WriteSymbolsService
+    internal class WriteSymbolsService
     {
         private readonly WriteHelperService _writeHelperService;
 

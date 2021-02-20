@@ -5,7 +5,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    public class ConstantFactory
+    internal class ConstantFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly IdentifierConverter _identifierConverter;

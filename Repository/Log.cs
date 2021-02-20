@@ -4,7 +4,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 namespace Repository
 {
-    public static class Log
+    internal static class Log
     {
         private static readonly Serilog.Core.Logger _logger;
 

@@ -3,7 +3,7 @@ using Repository.Model;
 
 namespace Generator.Services.Writer
 {
-    public class SignalHelper
+    internal class SignalHelper
     {
         private readonly Signal _signal;
 
