@@ -14,7 +14,7 @@ namespace Generator.Services.Writer
             _writeHelperService = writeHelperService;
         }
 
-        public void WriteSymbols(string projectName, string templateName, string subfolder, string name, IEnumerable<Symbol> symbols, Namespace @namespace)
+        public void WriteSymbols(string projectName, string outputDir, string templateName, string subfolder, string name, IEnumerable<Symbol> symbols, Namespace @namespace)
         {
             var scriptObject = new ScriptObject
             {
@@ -30,6 +30,7 @@ namespace Generator.Services.Writer
                     projectName: projectName,
                     templateName: templateName,
                     folder: subfolder,
+                    outputDir: outputDir,
                     fileName: name,
                     scriptObject: scriptObject
                 );

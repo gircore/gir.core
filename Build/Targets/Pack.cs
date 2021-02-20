@@ -13,7 +13,7 @@ namespace Build
 
         public void Execute()
         {
-            foreach ((Project project, Type _) in Projects.LibraryProjects)
+            foreach (Project project in Projects.AllLibraries)
             {
                 DotNet.Pack(
                     project: project.Folder,

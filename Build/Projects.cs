@@ -1,7 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Build
 {
+    // TODO: Instead of declaring the folder here, maybe we should use LoadedProject?
+    // Alternatively, we might want to choose where certain projects are generated,
+    // e.g. to put GLib and GObject in a separate dedicated folder.
+    public record Project(string GirFile, string Folder);
+    
     public static class Projects
     {
         #region Constants
@@ -83,35 +90,51 @@ namespace Build
             GDKPIXBUF_TEST_MEMORY_LEAKS
         };
 
-        public static readonly (Project Project, Type Type)[] LibraryProjects =
+        public const string ProjectPath = "../Libs";
+        public const string GirPath = "../gir-files";
+
+        // TODO: Special-Case GLib and GObject
+        public static readonly IEnumerable<Project> Base = new[]
         {
-            (new Project(GLIB, "GLib-2.0.gir"), typeof(GLibGenerator)),
-            (new Project(GOBJECT, "GObject-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GIO, "Gio-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(CAIRO, "cairo-1.0.gir"), typeof(GObjectGenerator)),
-            //(new Project(XLIB, "xlib-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(PANGO, "Pango-1.0.gir"), typeof(GObjectGenerator)),
-            //(new Project(CLUTTER, "Clutter-1.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GDK3, "Gdk-3.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GDK_PIXBUF, "GdkPixbuf-2.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GTK3, "Gtk-3.0.gir"), typeof(GObjectGenerator)),
+            new Project($"{GirPath}/GLib-2.0.gir", $"{ProjectPath}/GLib-2.0"),
+            new Project($"{GirPath}/GObject-2.0.gir", $"{ProjectPath}/GObject-2.0"),
+            new Project($"{GirPath}/Gio-2.0.gir", $"{ProjectPath}/Gio-2.0")
+        };
+
+        public static readonly IEnumerable<Project> Gtk3 = new[]
+        {
+            new Project($"{GirPath}/cairo-1.0.gir", $"{ProjectPath}/cairo-1.0"),
+            new Project($"{GirPath}/Pango-1.0.gir", $"{ProjectPath}/Pango-1.0"),
+            new Project($"{GirPath}/Gdk-3.0.gir", $"{ProjectPath}/Gdk-3.0"),
+            new Project($"{GirPath}/GdkPixbuf-2.0.gir", $"{ProjectPath}/GdkPixbuf-2.0"),
+            new Project($"{GirPath}/Gtk-3.0.gir", $"{ProjectPath}/Gtk-3.0")
+        };
+        
+        public static readonly IEnumerable<Project> GStreamer = new[]
+        {
+            new Project($"{GirPath}/Gst-1.0.gir", $"{ProjectPath}/Gst-1.0"),
+            new Project($"{GirPath}/GstAudio-1.0.gir", $"{ProjectPath}/GstAudio-1.0"),
+            new Project($"{GirPath}/GstVideo-1.0.gir", $"{ProjectPath}/GstVideo-1.0"),
+            new Project($"{GirPath}/GstPbutils-1.0.gir", $"{ProjectPath}/GstPbutils-1.0"),
+            new Project($"{GirPath}/GstBase-1.0.gir", $"{ProjectPath}/GstBase-1.0")
+        };
+        
+        public static readonly IEnumerable<Project> Misc = new[]
+        {
+            new Project($"{GirPath}/Handy-0.0.gir", $"{ProjectPath}/Handy-0.0")
             /*(JAVASCRIPT_CORE, JAVASCRIPT_CORE_GIR, "javascriptcoregtk-4.0.so", false),
-            (HANDY, HANDY_GIR, "libhandy-0.0.so.0", false),
             (WEBKITGTK, WEBKITGTK_GIR, "libwebkit2gtk-4.0.so.37", true),
             (WEBKIT2WEBEXTENSION, WEBKIT2WEBEXTENSION_GIR, "WEBEXTENSION", true),
             (GTKCLUTTER, "GtkClutter-1.0.gir", "libclutter-gtk-1.0.so.0", false),
             (CHAMPLAIN, "Champlain-0.12.gir", "libchamplain-0.12", false),
             (GTKCHAMPLAIN, "GtkChamplain-0.12.gir", "libchamplain-gtk-0.12.so.0", false),*/
-            (new Project(GST, "Gst-1.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GST_AUDIO, "GstAudio-1.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GST_VIDEO, "GstVideo-1.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GST_PBUTILS, "GstPbutils-1.0.gir"), typeof(GObjectGenerator)),
-            (new Project(GST_BASE, "GstBase-1.0.gir"), typeof(GObjectGenerator))
-            /*(GDK4, "Gdk-4.0.gir", "libgtk-4.so.0", true),//GTK4
-            (GSK4, "Gsk-4.0.gir", "libgtk-4.so.0", true),//GTK4
-            (GTK4, GTK4_GIR, "libgtk-4.so.0", true) //GTK4*/
         };
-        
+
+        public static IEnumerable<Project> AllLibraries
+            => Base.Concat(Gtk3)
+                .Concat(GStreamer)
+                .Concat(Misc);
+
         #endregion
     }
 }

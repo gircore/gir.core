@@ -13,12 +13,12 @@ namespace Generator.Services.Writer
             _templateReaderService = templateReaderService;
         }
 
-        public void Write(string projectName, string templateName, string folder, string fileName, ScriptObject scriptObject)
+        public void Write(string projectName, string templateName, string folder, string outputDir, string fileName, ScriptObject scriptObject)
         {
             var template = _templateReaderService. ReadGenericTemplate(templateName);
 
             WriteCode(
-                folder: CreateSubfolder(projectName, folder),
+                folder: CreateSubfolder(projectName, outputDir, folder),
                 filename: fileName,
                 code: GenerateCode(template, scriptObject)
             );
@@ -30,9 +30,9 @@ namespace Generator.Services.Writer
             File.WriteAllText(path, code);
         }
 
-        private static string CreateSubfolder(string projectName, string subfolder)
+        private static string CreateSubfolder(string projectName, string outputDir, string subfolder)
         {
-            var dir = $"output/{projectName}/{subfolder}/";
+            var dir = $"{outputDir}/{projectName}/{subfolder}/";
             Directory.CreateDirectory(dir);
 
             return dir;

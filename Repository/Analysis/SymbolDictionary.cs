@@ -30,6 +30,9 @@ namespace Repository.Analysis
             AddSymbol(new BasicSymbol("gpointer", "IntPtr"));
             AddSymbol(new BasicSymbol("GType", "IntPtr"));
             AddSymbol(new BasicSymbol("tm", "IntPtr"));
+            
+            // TODO: Should we use UIntPtr here? Non-CLR compliant
+            AddSymbol(new BasicSymbol("guintptr", "UIntPtr"));
 
             AddSymbol(new BasicSymbol("guint16", "ushort"));
             AddSymbol(new BasicSymbol("gushort", "ushort"));

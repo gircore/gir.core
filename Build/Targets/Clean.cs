@@ -29,9 +29,9 @@ namespace Build
 
         private void CleanLibraries()
         {
-            foreach (var libraryProject in Projects.LibraryProjects)
+            foreach (Project project in Projects.AllLibraries)
             {
-                CleanUp(libraryProject.Project.Folder, _settings.Configuration);
+                CleanUp(project.Folder, _settings.Configuration);
             }
         }
 
