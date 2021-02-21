@@ -15,10 +15,10 @@ namespace Generator
             var repository = new Repository.Repository();
             var loadedProjects = repository.Load(FileResolver.ResolveFile, projects).ToList();
 
-            Log.Information("Ready to write.");
-
             var classStructResolverService = new ClassStructResolverService();
             classStructResolverService.Resolve(loadedProjects);
+            
+            Log.Information("Ready to write.");
 
             var writerService = new Container().Resolve().Value;
 
