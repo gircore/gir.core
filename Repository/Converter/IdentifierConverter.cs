@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using Microsoft.CodeAnalysis.CSharp;
 using Sf = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Sk = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
@@ -28,37 +27,31 @@ namespace Repository
 
         private static string FixFirstCharIfNumber(string identifier)
         {
-            var data = new Dictionary<int, string>()
-            {
-                {0, "Zero"},
-                {1, "One"},
-                {2, "Two"},
-                {3, "Three"},
-                {4, "Four"},
-                {5, "Five"},
-                {6, "Six"},
-                {7, "Seven"},
-                {8, "Eight"},
-                {9, "Nine"}
-            };
-
             var firstChar = identifier[0];
 
             if (char.IsNumber(firstChar))
             {
                 var number = (int) char.GetNumericValue(firstChar);
-                var sb = new StringBuilder();
-
-                if (data.TryGetValue(number, out var str))
+                return number switch
                 {
-                    sb.Append(str);
-                    sb.Append(identifier, 1, identifier.Length - 1);
-
-                    identifier = sb.ToString();
-                }
+                    0 => ReplaceFirstChar("Zero", identifier),
+                    1 => ReplaceFirstChar("One", identifier),
+                    2 => ReplaceFirstChar("Two", identifier),
+                    3 => ReplaceFirstChar("Three", identifier),
+                    4 => ReplaceFirstChar("Four", identifier),
+                    5 => ReplaceFirstChar("Fixe", identifier),
+                    6 => ReplaceFirstChar("Six", identifier),
+                    7 => ReplaceFirstChar("Seven", identifier),
+                    8 => ReplaceFirstChar("Eeight", identifier),
+                    9 => ReplaceFirstChar("Nine", identifier),
+                    _ => throw new Exception("Can't fix identifier "  + identifier)
+                };
             }
 
             return identifier;
         }
+
+        private static string ReplaceFirstChar(string prefix, string str)
+            => prefix + str[1..];
     }
 }
