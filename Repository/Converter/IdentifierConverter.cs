@@ -39,10 +39,10 @@ namespace Repository
                     2 => ReplaceFirstChar("Two", identifier),
                     3 => ReplaceFirstChar("Three", identifier),
                     4 => ReplaceFirstChar("Four", identifier),
-                    5 => ReplaceFirstChar("Fixe", identifier),
+                    5 => ReplaceFirstChar("Five", identifier),
                     6 => ReplaceFirstChar("Six", identifier),
                     7 => ReplaceFirstChar("Seven", identifier),
-                    8 => ReplaceFirstChar("Eeight", identifier),
+                    8 => ReplaceFirstChar("Eight", identifier),
                     9 => ReplaceFirstChar("Nine", identifier),
                     _ => throw new Exception("Can't fix identifier "  + identifier)
                 };
