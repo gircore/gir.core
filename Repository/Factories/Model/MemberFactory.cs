@@ -8,11 +8,13 @@ namespace Repository.Factories
 {
     internal class MemberFactory
     {
-        private readonly CaseConverter _caseConverter;
+        private readonly CaseConverter _caseConverter; 
+        private readonly IdentifierConverter _identifierConverter;
 
-        public MemberFactory(CaseConverter caseConverter)
+        public MemberFactory(CaseConverter caseConverter, IdentifierConverter identifierConverter)
         {
             _caseConverter = caseConverter;
+            _identifierConverter = identifierConverter;
         }
 
         public Member Create(MemberInfo info)
@@ -30,7 +32,7 @@ namespace Repository.Factories
             
             return new Member(
                 nativeName: info.Identifier, 
-                managedName: Validation.EscapeIdentifier(ident),
+                managedName: _identifierConverter.Convert(ident),
                 value: info.Value
             );
         }
