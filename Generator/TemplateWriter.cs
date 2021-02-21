@@ -141,18 +141,22 @@ namespace Generator
             var builder = new StringBuilder();
 
             foreach (Field field in fields)
-            {
                 builder.AppendLine(WriteStructField(field));
-            }
             
             return builder.ToString();
         }
         
         private static string WriteStructField(Field field)
         {
+            var type = WriteManagedSymbolReference(field.SymbolReference);
+         
+            // We cannot have "void" in a field declaration, so use IntPtr instead
+            if (type == "void")
+                type = "IntPtr";
+            
             var builder = new StringBuilder();
             builder.Append(WriteNativeStructFieldSummary(field));
-            builder.AppendLine($"public {WriteManagedSymbolReference(field.SymbolReference)} {field.ManagedName};");
+            builder.AppendLine($"public {type} {field.ManagedName};");
             return builder.ToString();
         }
 
@@ -166,9 +170,7 @@ namespace Generator
             builder.AppendLine(WriteFirstNativeClassStructField(list[0], className));
 
             foreach (var field in list[1..])
-            {
                 builder.AppendLine(WriteStructField(field));
-            }
 
             return builder.ToString();
         }
@@ -183,9 +185,7 @@ namespace Generator
             builder.AppendLine(WriteFirstNativeClassField(list[0]));
 
             foreach (var field in list[1..])
-            {
                 builder.AppendLine(WriteStructField(field));
-            }
 
             return builder.ToString();
         }
