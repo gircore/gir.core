@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Repository.Model;
 using Repository.Xml;
 
@@ -23,10 +25,12 @@ namespace Repository.Factories
 
             if (info.Value is null)
                 throw new Exception($"Member {info.Name} is missing a value");
+
+            var ident = _caseConverter.ToPascalCase(info.Name);
             
             return new Member(
                 nativeName: info.Identifier, 
-                managedName: _caseConverter.ToPascalCase(info.Name), 
+                managedName: Validation.EscapeIdentifier(ident),
                 value: info.Value
             );
         }

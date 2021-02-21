@@ -103,8 +103,8 @@ namespace Generator
 
         public static string WriteNativeMethod(Method? method)
         {
-            if (method is null)
-                return "";
+            if (method is null || string.IsNullOrEmpty(method.ManagedName))
+                return string.Empty;
 
             var returnValue = WriteNativeSymbolReference(method.ReturnValue.SymbolReference);
 
