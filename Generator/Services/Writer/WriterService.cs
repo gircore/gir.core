@@ -58,6 +58,14 @@ namespace Generator.Services.Writer
             _writeTypesService.WriteTypes(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
+                templateName: "enum.sbntxt",
+                subfolder: "Enums",
+                objects: loadedProject.Namespace.Bitfields
+            );
+            
+            _writeTypesService.WriteTypes(
+                projectName: loadedProject.Name,
+                outputDir: outputDir,
                 templateName: "struct.sbntxt",
                 subfolder: "Structs",
                 objects: loadedProject.Namespace.Records
