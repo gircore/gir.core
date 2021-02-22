@@ -37,6 +37,18 @@ namespace Build
 
         private static void CleanUp(string project, Configuration configuration)
         {
+            try
+            {
+                CleanUpInternal(project, configuration);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Could not clean {project} ({configuration}): {ex.Message}");
+            }
+        }
+
+        private static void CleanUpInternal(string project, Configuration configuration)
+        {
             if (Directory.Exists(project))
             {
                 foreach (var d in Directory.EnumerateDirectories(project))
