@@ -9,7 +9,18 @@ namespace Repository.Services
     {
         public SymbolReference Create(string type, bool isArray)
         {
-            return new SymbolReference(type, false);
+            return new SymbolReference(type, isArray);
+        }
+
+        public SymbolReference CreateFromField(FieldInfo field)
+        {
+            if (field.Callback is null)
+                return Create(field);
+
+            if (field.Callback.Name is null)
+                throw new Exception($"Field {field.Name} has a callback without a name.");
+            
+            return Create(field.Callback.Name, false);
         }
         
         public SymbolReference Create(ITypeOrArray typeOrArray)

@@ -147,16 +147,7 @@ namespace Generator
 
         private static string WriteStructField(Field field)
         {
-            var type = WriteManagedSymbolReference(field.SymbolReference);
-
-            //TODO: The void -> IntPtr conversion is a workaround.
-            //There are struct fields which contain a callback instead of a
-            //valid symbol reference e.g. fields: io_read, io_write, io_seek, io_close in GLib.
-            //We need to support those cases properly to get rid of the workaround.
-
-            // We cannot have "void" in a field declaration, so use IntPtr instead
-            if (type == "void")
-                type = "IntPtr";
+            var type = WriteNativeSymbolReference(field.SymbolReference);
 
             var builder = new StringBuilder();
             builder.Append(WriteNativeStructFieldSummary(field));
