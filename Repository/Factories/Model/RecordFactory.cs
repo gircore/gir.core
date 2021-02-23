@@ -37,7 +37,8 @@ namespace Repository.Factories
                 methods:_methodFactory.Create(@record.Methods, @namespace),
                 functions: _methodFactory.Create(@record.Functions, @namespace),
                 getTypeFunction: getTypeFunction,
-                fields: _fieldFactory.Create(@record.Fields, @namespace)
+                fields: _fieldFactory.Create(@record.Fields, @namespace),
+                disguised: @record.Disguised
             );
         }
     }
