@@ -11,6 +11,7 @@ namespace Repository.Model
             {Disguised: true, GLibClassStructFor: {}} => RecordType.PrivateClass,
             {Disguised: false, GLibClassStructFor: {}} => RecordType.PublicClass,
             {Disguised: false, Fields: { } f} when f.Any() => RecordType.Value,
+            {Disguised: false, Constructors: {} c} when c.Any() => RecordType.Ref,
             _ => RecordType.Opaque
         };
 
@@ -18,10 +19,11 @@ namespace Repository.Model
         public IEnumerable<Field> Fields { get; }
         public bool Disguised { get; }
         public IEnumerable<Method> Methods { get; }
+        public IEnumerable<Method> Constructors { get; }
         public IEnumerable<Method> Functions { get; }
         public SymbolReference? GLibClassStructFor { get; }
 
-        public Record(Namespace @namespace, string nativeName, string managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised) : base(@namespace, nativeName, managedName)
+        public Record(Namespace @namespace, string nativeName, string managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(@namespace, nativeName, managedName)
         {
             GLibClassStructFor = gLibClassStructFor;
             Methods = methods;
@@ -29,6 +31,7 @@ namespace Repository.Model
             GetTypeFunction = getTypeFunction;
             Fields = fields;
             Disguised = disguised;
+            Constructors = constructors;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()

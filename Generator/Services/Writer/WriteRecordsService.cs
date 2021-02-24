@@ -25,6 +25,12 @@ namespace Generator.Services.Writer
             {
                 try
                 {
+                    if (record.Type.In(RecordType.Opaque, RecordType.PrivateClass))
+                    {
+                        Log.Debug($"Skipping record {record.ManagedName} because of it s type {record.Type}.");
+                        continue;
+                    }
+                    
                     //TODO: This code is unfinished
                     var scriptObject =  _scriptObjectFactory.CreateForStructs();
                     scriptObject.Import(record);

@@ -8,7 +8,12 @@
         Value,
         
         /// <summary>
-        /// Opaque struct, marshal as class + IntPtr
+        /// Struct with complex behaviour (like constructors) which should be wrapped into classes.
+        /// </summary>
+        Ref,
+        
+        /// <summary>
+        /// Opaque struct
         /// </summary>
         Opaque,
         
