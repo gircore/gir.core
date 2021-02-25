@@ -23,7 +23,7 @@ namespace Build
         /// <param name="parallel">Run targets in parallel.</param>
         /// <param name="skipDependencies">Do not run targets' dependencies.</param>
         /// <param name="verbose">Enable verbose output.</param>
-        public static void Main(
+        public static int Main(
             bool release,
             bool comments,
             bool xmlDocumentation,
@@ -41,6 +41,9 @@ namespace Build
             bool verbose
         )
         {
+            // Initialise Serilog before Bullseye
+            Log.Information("GirCore Build Tool");
+            
             var settings = new Settings()
             {
                 GenerateComments = comments,
@@ -73,7 +76,8 @@ namespace Build
                 test: new Test(settings),
                 docs: new Docs(settings)
             );
-            runner.Run(targets, options);
+            
+            return runner.Run(targets, options);
         }
 
         /// <summary>
