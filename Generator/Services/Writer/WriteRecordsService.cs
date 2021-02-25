@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Generator.Factories;
 using Repository.Model;
 using Scriban.Runtime;
@@ -18,45 +17,48 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        //TODO: Call this method in WriterService
-        public void WriteRecords(string projectName, string outputDir, string subfolder, string name, IEnumerable<Record> records, Namespace @namespace)
+        public void WriteRecords(string projectName, string outputDir, IEnumerable<Record> records)
         {
             foreach (var record in records)
             {
                 try
                 {
-                    if (record.Type.In(RecordType.Opaque, RecordType.PrivateClass))
+                    if (record.Type == RecordType.Opaque)
                     {
                         Log.Debug($"Skipping record {record.ManagedName} because of it s type {record.Type}.");
                         continue;
                     }
-                    
-                    //TODO: This code is unfinished
+
                     var scriptObject =  _scriptObjectFactory.CreateForStructs();
                     scriptObject.Import(record);
-                    
+
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
                         templateName: GetTemplateName(record.Type),
-                        folder: subfolder,
+                        folder: GetSubfolder(record.Type),
                         fileName: record.ManagedName,
                         scriptObject: scriptObject
                     );
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Could not write symbols for {@namespace.Name} / {name}: {ex.Message}");
+                    Log.Error($"Could not write record for {record.ManagedName}: {ex.Message}");
                 }
             }
         }
 
+        private string GetSubfolder(RecordType recordType) => recordType switch
+        {
+            RecordType.Value => "Structs",
+            RecordType.Ref => "Classes",
+            _ => throw new NotImplementedException("Unsupported record type")
+        };
+
         private string GetTemplateName(RecordType recordType) => recordType switch
         {
             RecordType.Value => "struct.sbntxt",
-            RecordType.Opaque => "class_struct.sbntxt",
-            //RecordType.PrivateClass => throw new Exception($"{nameof(RecordType.PrivateClass)} should be handled by the class. Please open a bug report."),
-            //RecordType.PublicClass => throw new Exception($"{nameof(RecordType.PublicClass)} should be handled by the class. Please open a bug report."),
+            RecordType.Ref => "struct_as_class.sbntxt",
             _ => throw new NotImplementedException("Unsupported record type")
         };
     }
