@@ -22,6 +22,14 @@ namespace Repository.Model
         IEnumerable<SymbolReference> GetSymbolReferences();
     }
 
+    public interface IComplexSymbol
+    {
+        Metadata Metadata { get; }
+        public string NativeName { get; }
+        public string ManagedName { get; set; }
+        Namespace Namespace { get; }
+    }
+
     public abstract class Symbol : ISymbolReferenceProvider
     {
         public Metadata Metadata { get; } = new();

@@ -7,10 +7,7 @@ namespace Generator
 {
     internal static class ClassExtension
     {
-        private const string PublicClassStruct = "ClassStruct";
-        private const string PrivateClassStruct = "PrivateClassStruct";
-        
-        public static void AddClassStructs(this Class cls, IEnumerable<Record> classStructs)
+        public static void AddClassStructs(this IComplexSymbol cls, IEnumerable<Record> classStructs)
         {
             var foundClassStructs = FindClassStructs(classStructs, cls);
             
@@ -25,12 +22,12 @@ namespace Generator
         
         private static string GetClassStructIdentifier(RecordType type) => type switch
         {
-            RecordType.PublicClass => PublicClassStruct,
-            RecordType.PrivateClass => PrivateClassStruct,
+            RecordType.PublicClass => "ClassStruct",
+            RecordType.PrivateClass => "PrivateClassStruct",
             _ => throw new Exception($"Unknown class struct type {type}")
         };
         
-        private static IEnumerable<Record> FindClassStructs(IEnumerable<Record> classStructs, Class cls)
+        private static IEnumerable<Record> FindClassStructs(IEnumerable<Record> classStructs, IComplexSymbol cls)
             => classStructs.Where(x => x.GLibClassStructFor!.GetSymbol() == cls);
     }
 }

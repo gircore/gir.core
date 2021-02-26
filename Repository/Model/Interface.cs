@@ -4,7 +4,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Interface : Type
+    public class Interface : Type, IComplexSymbol
     {
         public string CType { get; }
         public Method GetTypeFunction { get; }
