@@ -27,20 +27,10 @@ namespace Build
             _docs = docs;
         }
 
-        public int Run(IEnumerable<string> targets, Options options)
+        public void Run(IEnumerable<string> targets, Options options)
         {
-            try
-            {
-                Bullseye.Targets targetColletion = CreateTargets();
-                targetColletion.RunWithoutExiting(targets, options);
-                return 0;
-            }
-            catch (Exception e)
-            {
-                Log.Exception(e);
-                Log.Error("An error occured in the build tool. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
-                return 1;
-            }
+            Bullseye.Targets targetColletion = CreateTargets();
+            targetColletion.RunWithoutExiting(targets, options);
         }
 
         private Bullseye.Targets CreateTargets()
