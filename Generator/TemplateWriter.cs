@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Repository;
@@ -103,8 +102,8 @@ namespace Generator
 
         public static string WriteNativeMethod(Method? method)
         {
-            if (method is null)
-                return "";
+            if (method is null )
+                return string.Empty;
 
             var returnValue = WriteNativeSymbolReference(method.ReturnValue.SymbolReference);
 
@@ -141,18 +140,18 @@ namespace Generator
             var builder = new StringBuilder();
 
             foreach (Field field in fields)
-            {
                 builder.AppendLine(WriteStructField(field));
-            }
-            
+
             return builder.ToString();
         }
-        
+
         private static string WriteStructField(Field field)
         {
+            var type = WriteNativeSymbolReference(field.SymbolReference);
+
             var builder = new StringBuilder();
             builder.Append(WriteNativeStructFieldSummary(field));
-            builder.AppendLine($"public {WriteManagedSymbolReference(field.SymbolReference)} {field.ManagedName};");
+            builder.AppendLine($"public {type} {field.ManagedName};");
             return builder.ToString();
         }
 
@@ -161,18 +160,16 @@ namespace Generator
             var list = fields.ToArray();
             if (list.Length == 0)
                 return "";
-            
+
             var builder = new StringBuilder();
             builder.AppendLine(WriteFirstNativeClassStructField(list[0], className));
 
             foreach (var field in list[1..])
-            {
                 builder.AppendLine(WriteStructField(field));
-            }
 
             return builder.ToString();
         }
-        
+
         public static string WriteClassFields(IEnumerable<Field> fields)
         {
             var list = fields.ToArray();
@@ -183,9 +180,7 @@ namespace Generator
             builder.AppendLine(WriteFirstNativeClassField(list[0]));
 
             foreach (var field in list[1..])
-            {
                 builder.AppendLine(WriteStructField(field));
-            }
 
             return builder.ToString();
         }
@@ -198,7 +193,7 @@ namespace Generator
 
             return builder.ToString();
         }
-        
+
         private static string WriteFirstNativeClassField(Field field)
         {
             var builder = new StringBuilder();
@@ -259,7 +254,7 @@ namespace Generator
                 // Skip 'user_data' parameters (for callbacks, when closure index is not zero)
                 if (arg.ClosureIndex != 0)
                     continue;
-                
+
                 var newName = arg.ManagedName + "Parameter";
                 builder.AppendLine(WriteMarshalArgumentToManaged(arg, newName));
                 args.Add(newName);
@@ -269,7 +264,7 @@ namespace Generator
             var funcCall = hasReturnValue
                 ? $"var result = {funcName}({funcArgs});"
                 : $"{funcName}({funcArgs});";
-            
+
             builder.Append(funcCall);
 
             return builder.ToString();
@@ -286,14 +281,14 @@ namespace Generator
             {
                 // GObject -> Use Object.WrapHandle
                 Class => $"Object.WrapHandle<{managedType}>({fromName});",
-                
+
                 // Struct -> Use struct marshalling (TODO: Should support opaque types)
                 Record => $"Marshal.PtrToStructure<{managedType}>({fromName});",
-                
+
                 // Other -> Try a brute-force cast
                 _ => $"({managedType}){fromName};"
             };
-            
+
             return $"{managedType} {paramName} = " + expression;
         }
 

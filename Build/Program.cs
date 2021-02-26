@@ -1,4 +1,5 @@
-﻿using Bullseye;
+﻿using System;
+using Bullseye;
 using NuGet.Versioning;
 
 namespace Build
@@ -23,7 +24,8 @@ namespace Build
         /// <param name="parallel">Run targets in parallel.</param>
         /// <param name="skipDependencies">Do not run targets' dependencies.</param>
         /// <param name="verbose">Enable verbose output.</param>
-        public static void Main(
+        /// <param name="disableAsync">Generate files synchronously (useful for debugging)</param>
+        public static int Main(
             bool release,
             bool comments,
             bool xmlDocumentation,
@@ -38,13 +40,18 @@ namespace Build
             bool noColor,
             bool parallel,
             bool skipDependencies,
-            bool verbose
+            bool verbose,
+            bool disableAsync
         )
         {
+            // Initialise Serilog before Bullseye
+            Log.Information("GirCore Build Tool");
+            
             var settings = new Settings()
             {
                 GenerateComments = comments,
                 GenerateXmlDocumentation = xmlDocumentation,
+                GenerateAsynchronously = !disableAsync,
                 Configuration = release ? Configuration.Release : Configuration.Debug,
                 Version = GetSemanticVersion(version)
             };
@@ -73,7 +80,19 @@ namespace Build
                 test: new Test(settings),
                 docs: new Docs(settings)
             );
-            runner.Run(targets, options);
+            
+            try
+            {
+                runner.Run(targets, options);
+            }
+            catch (Exception e)
+            {
+                Log.Exception(e);
+                Log.Error("An error occured in the build tool. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
+                return 1;
+            }
+
+            return 0;
         }
 
         /// <summary>

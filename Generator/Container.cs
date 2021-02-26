@@ -12,6 +12,8 @@ namespace Repository
     [Register(typeof(WriteDllImportService))]
     [Register(typeof(WriteTypesService))]
     [Register(typeof(WriteSymbolsService))]
+    [Register(typeof(WriteRecordsService))]
+    [Register(typeof(ScriptObjectFactory))]
     internal partial class Container : IContainer<WriterService>
     {
     }

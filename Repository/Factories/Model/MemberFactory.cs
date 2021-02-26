@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Repository.Model;
 using Repository.Xml;
 
@@ -6,11 +8,13 @@ namespace Repository.Factories
 {
     internal class MemberFactory
     {
-        private readonly CaseConverter _caseConverter;
+        private readonly CaseConverter _caseConverter; 
+        private readonly IdentifierConverter _identifierConverter;
 
-        public MemberFactory(CaseConverter caseConverter)
+        public MemberFactory(CaseConverter caseConverter, IdentifierConverter identifierConverter)
         {
             _caseConverter = caseConverter;
+            _identifierConverter = identifierConverter;
         }
 
         public Member Create(MemberInfo info)
@@ -23,10 +27,12 @@ namespace Repository.Factories
 
             if (info.Value is null)
                 throw new Exception($"Member {info.Name} is missing a value");
+
+            var ident = _caseConverter.ToPascalCase(info.Name);
             
             return new Member(
                 nativeName: info.Identifier, 
-                managedName: _caseConverter.ToPascalCase(info.Name), 
+                managedName: _identifierConverter.Convert(ident),
                 value: info.Value
             );
         }

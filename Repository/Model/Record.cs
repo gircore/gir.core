@@ -6,19 +6,32 @@ namespace Repository.Model
 {
     public class Record : Type
     {
+        public RecordType Type => this switch
+        {
+            {Disguised: true, GLibClassStructFor: {}} => RecordType.PrivateClass,
+            {Disguised: false, GLibClassStructFor: {}} => RecordType.PublicClass,
+            {Disguised: false, Fields: { } f} when f.Any() => RecordType.Value,
+            {Disguised: false, Constructors: {} c} when c.Any() => RecordType.Ref,
+            _ => RecordType.Opaque
+        };
+
         public Method? GetTypeFunction { get; }
         public IEnumerable<Field> Fields { get; }
+        public bool Disguised { get; }
         public IEnumerable<Method> Methods { get; }
+        public IEnumerable<Method> Constructors { get; }
         public IEnumerable<Method> Functions { get; }
         public SymbolReference? GLibClassStructFor { get; }
 
-        public Record(Namespace @namespace, string nativeName, string managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields) : base(@namespace, nativeName, managedName)
+        public Record(Namespace @namespace, string nativeName, string managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(@namespace, nativeName, managedName)
         {
             GLibClassStructFor = gLibClassStructFor;
             Methods = methods;
             Functions = functions;
             GetTypeFunction = getTypeFunction;
             Fields = fields;
+            Disguised = disguised;
+            Constructors = constructors;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()
@@ -31,7 +44,7 @@ namespace Repository.Model
 
             if (GetTypeFunction is { })
                 symbolReferences = symbolReferences.Concat(GetTypeFunction.GetSymbolReferences());
-            
+
             if (GLibClassStructFor is { })
                 symbolReferences = symbolReferences.Append(GLibClassStructFor);
 

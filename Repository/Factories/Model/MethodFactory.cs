@@ -23,31 +23,40 @@ namespace Repository.Factories
         {
             if (methodInfo.Name is null)
                 throw new Exception("Methodinfo name is null");
-            
+
             if (methodInfo.ReturnValue is null)
                 throw new Exception($"{nameof(MethodInfo)} {methodInfo.Name} {nameof(methodInfo.ReturnValue)} is null");
 
-            if(methodInfo.Identifier is null)
+            if (methodInfo.Identifier is null)
                 throw new Exception($"{nameof(MethodInfo)} {methodInfo.Name} is missing {nameof(methodInfo.Identifier)} value");
-            
-            return new Method(
-                @namespace: @namespace,
-                nativeName: methodInfo.Identifier,
-                managedName: _caseConverter.ToPascalCase(methodInfo.Name),
-                returnValue: _returnValueFactory.Create(methodInfo.ReturnValue),
-                arguments: _argumentsFactory.Create(methodInfo.Parameters, methodInfo.Throws)
-            );
+
+            if (methodInfo.Name != string.Empty)
+            {
+                return new Method(
+                    @namespace: @namespace,
+                    nativeName: methodInfo.Identifier,
+                    managedName: _caseConverter.ToPascalCase(methodInfo.Name),
+                    returnValue: _returnValueFactory.Create(methodInfo.ReturnValue),
+                    arguments: _argumentsFactory.Create(methodInfo.Parameters, methodInfo.Throws)
+                );
+            }
+
+            if (!string.IsNullOrEmpty(methodInfo.MovedTo))
+                throw new MethodMovedException(methodInfo, $"Method {methodInfo.Identifier} moved to {methodInfo.MovedTo}.");
+
+            throw new Exception($"{nameof(MethodInfo)} {methodInfo.Identifier} has no {nameof(methodInfo.Name)} and did not move.");
+
         }
 
         public Method CreateGetTypeMethod(string getTypeMethodName, Namespace @namespace)
         {
             ReturnValue returnValue = _returnValueFactory.Create(
-                type: "gulong", 
-                isArray: false, 
-                transfer: Transfer.None, 
+                type: "gulong",
+                isArray: false,
+                transfer: Transfer.None,
                 nullable: false
             );
-            
+
             return new Method(
                 @namespace: @namespace,
                 nativeName: getTypeMethodName,
@@ -56,7 +65,7 @@ namespace Repository.Factories
                 arguments: Enumerable.Empty<Argument>()
             );
         }
-        
+
         public IEnumerable<Method> Create(IEnumerable<MethodInfo> methods, Namespace @namespace)
         {
             var list = new List<Method>();
@@ -71,9 +80,23 @@ namespace Repository.Factories
                 {
                     Log.Debug($"Method {method.Name} could not be created: {ex.Message}");
                 }
+                catch (MethodMovedException ex)
+                {
+                    Log.Debug($"Method ignored: {ex.Message}");
+                }
             }
 
             return list;
+        }
+
+        public class MethodMovedException : Exception
+        {
+            public MethodInfo MethodInfo { get; }
+
+            public MethodMovedException(MethodInfo methodInfo, string message) : base(message)
+            {
+                MethodInfo = methodInfo;
+            }
         }
     }
 }

@@ -132,8 +132,8 @@ namespace Build
 
         public static IEnumerable<Project> AllLibraries
             => Base.Concat(Gtk3)
-                .Concat(GStreamer)
-                .Concat(Misc);
+                .Concat(GStreamer);
+                //.Concat(Misc);
 
         #endregion
     }

@@ -41,7 +41,7 @@ namespace Repository.Factories
                 functions: _methodFactory.Create(cls.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
                 properties: _propertyFactory.Create(cls.Properties),
-                fields: _fieldFactory.Create(cls.Fields),
+                fields: _fieldFactory.Create(cls.Fields, @namespace),
                 signals: _signalFactory.Create(cls.Signals)
             );
         }

@@ -120,18 +120,8 @@ namespace Repository
 
         private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions)
         {
-            foreach (MethodInfo info in functions)
-            {
-                try
-                {
-                    var method = _methodFactory.Create(info, nspace);
-                    nspace.AddFunction(method);
-                }
-                catch (ArgumentFactory.VarArgsNotSupportedException ex)
-                {
-                    Log.Debug($"Method {info.Name} could not be created: {ex.Message}");
-                }
-            }
+            foreach (Method method in _methodFactory.Create(functions, nspace))
+                nspace.AddFunction(method);
         }
 
         private void SetConstants(Namespace nspace, IEnumerable<ConstantInfo> constantInfos)

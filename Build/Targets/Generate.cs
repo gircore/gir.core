@@ -31,10 +31,13 @@ namespace Build
         {
             try
             {
-                Generator.Generator.Write(
-                    projects: Projects.AllLibraries.Select(x => x.GirFile),
-                    outputDir: Projects.ProjectPath
-                );
+                var generator = new Generator.Generator
+                {
+                    OutputDir = Projects.ProjectPath,
+                    UseAsync = _settings.GenerateAsynchronously
+                };
+
+                generator.Write(Projects.AllLibraries.Select(x => x.GirFile));
             }
             catch (Exception e)
             {
