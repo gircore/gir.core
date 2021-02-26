@@ -25,7 +25,7 @@ namespace Generator
 
             try
             {
-                Generator.Write(args);
+                new Generator().Write(args);
                 return 0;
             }
             catch (Exception ex)

@@ -23,6 +23,7 @@ namespace Build
         /// <param name="parallel">Run targets in parallel.</param>
         /// <param name="skipDependencies">Do not run targets' dependencies.</param>
         /// <param name="verbose">Enable verbose output.</param>
+        /// <param name="disableAsync">Generate files synchronously (useful for debugging)</param>
         public static int Main(
             bool release,
             bool comments,
@@ -38,7 +39,8 @@ namespace Build
             bool noColor,
             bool parallel,
             bool skipDependencies,
-            bool verbose
+            bool verbose,
+            bool disableAsync
         )
         {
             // Initialise Serilog before Bullseye
@@ -48,6 +50,7 @@ namespace Build
             {
                 GenerateComments = comments,
                 GenerateXmlDocumentation = xmlDocumentation,
+                GenerateAsynchronously = !disableAsync,
                 Configuration = release ? Configuration.Release : Configuration.Debug,
                 Version = GetSemanticVersion(version)
             };

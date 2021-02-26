@@ -9,9 +9,12 @@ using Generator.Services.Writer;
 
 namespace Generator
 {
-    public static class Generator
+    public class Generator
     {
-        public static void Write(IEnumerable<string> projects, string outputDir = "output")
+        public string OutputDir { get; init; } = "output";
+        public bool UseAsync { get; init; } = true;
+
+        public void Write(IEnumerable<string> projects)
         {
             var repository = new Repository.Repository();
             var loadedProjects = repository.Load(FileResolver.ResolveFile, projects).ToList();
@@ -23,12 +26,20 @@ namespace Generator
 
             WriterService writerService = new Container().Resolve().Value;
 
-            var tasks = new List<Task>();
-            foreach (LoadedProject proj in loadedProjects)
-                tasks.Add(Task.Run(() => writerService.Write(proj, outputDir)));
-
-            Task.WaitAll(tasks.ToArray());
+            if (UseAsync)
+            {
+                Parallel.ForEach(loadedProjects, 
+                    proj => writerService.Write(proj, OutputDir));
+            }
+            else
+            {
+                Log.Warning("Async Generation is disabled. Generation may be slower than normal.");
                 
+                // Disable asynchronous writing for an easier debugging experience
+                foreach (LoadedProject proj in loadedProjects)
+                    writerService.Write(proj, OutputDir);
+            }
+
             Log.Information("Writing completed successfully");
         }
     }

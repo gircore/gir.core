@@ -17,17 +17,17 @@ namespace Generator.Services.Writer
         {
             var template = _templateReaderService. ReadGenericTemplate(templateName);
 
-            WriteCodeAsync(
+            WriteCode(
                 folder: CreateSubfolder(projectName, outputDir, folder),
                 filename: fileName,
                 code: GenerateCode(template, scriptObject)
             );
         }
         
-        private static async void WriteCodeAsync(string folder, string filename, string code)
+        private static void WriteCode(string folder, string filename, string code)
         {
             var path = Path.Combine(folder, $"{filename}.Generated.cs");
-            await File.WriteAllTextAsync(path, code);
+            File.WriteAllText(path, code);
         }
 
         private static string CreateSubfolder(string projectName, string outputDir, string subfolder)
