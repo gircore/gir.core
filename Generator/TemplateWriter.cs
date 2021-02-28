@@ -4,7 +4,6 @@ using System.Text;
 using Repository;
 using Repository.Analysis;
 using Repository.Model;
-using Type = Repository.Model.Type;
 
 namespace Generator
 {
@@ -50,7 +49,7 @@ namespace Generator
         {
             Symbol symbol = symbolReference.GetSymbol();
 
-            if (symbol is Type)
+            if (symbol is Symbol)
                 return "IntPtr";
 
             if (symbolReference.IsArray)
@@ -62,23 +61,23 @@ namespace Generator
         public static string WriteManagedSymbolReference(SymbolReference symbolReference)
         {
             Symbol symbol = symbolReference.GetSymbol();
-            if (symbol is not Type type)
+            if (symbol.Namespace is null)
                 return symbol.ManagedName;
 
             return symbolReference switch
             {
-                { IsExternal: true, IsArray: true } => ExternalArray(type),
-                { IsExternal: true, IsArray: false } => ExternalType(type),
-                { IsExternal: false, IsArray: true } => InternalArray(type),
-                { IsExternal: false, IsArray: false } => InternalType(type)
+                { IsExternal: true, IsArray: true } => ExternalArray(symbol),
+                { IsExternal: true, IsArray: false } => ExternalType(symbol),
+                { IsExternal: false, IsArray: true } => InternalArray(symbol),
+                { IsExternal: false, IsArray: false } => InternalType(symbol)
             };
         }
 
-        private static string ExternalType(Type type)
-            => $"{type.Namespace.Name}.{type.ManagedName}";
+        private static string ExternalType(Symbol symbol)
+            => $"{symbol.Namespace?.Name}.{symbol.ManagedName}";
 
-        private static string ExternalArray(Type type)
-            => $"{type.Namespace.Name}.{type.ManagedName}[]";
+        private static string ExternalArray(Symbol symbol)
+            => $"{symbol.Namespace?.Name}.{symbol.ManagedName}[]";
 
         private static string InternalArray(Symbol type)
             => $"{type.ManagedName}[]";

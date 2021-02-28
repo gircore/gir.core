@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Repository.Model;
-using Type = Repository.Model.Type;
 
 namespace Generator
 {
     internal static class TypeExtension
     {
-        public static void AddClassStructs(this Type type, IEnumerable<Record> classStructs)
+        public static void AddClassStructs(this Symbol symbol, IEnumerable<Record> classStructs)
         {
-            var foundClassStructs = FindClassStructs(classStructs, type);
+            var foundClassStructs = FindClassStructs(classStructs, symbol);
             
             foreach (var classStruct in foundClassStructs)
             {
                 var identifier = GetClassStructIdentifier(classStruct.Type);
-                classStruct.ManagedName = $"{type.ManagedName}.Native.{identifier}";
-                type.Metadata[identifier] = classStruct;
-                type.Namespace.RemoveRecord(classStruct);
+                classStruct.ManagedName = $"{symbol.ManagedName}.Native.{identifier}";
+                symbol.Metadata[identifier] = classStruct;
+                symbol.Namespace.RemoveRecord(classStruct);
             }
         }
         
@@ -28,7 +27,7 @@ namespace Generator
             _ => throw new Exception($"Unknown class struct type {type}")
         };
         
-        private static IEnumerable<Record> FindClassStructs(IEnumerable<Record> classStructs, Type type)
-            => classStructs.Where(x => x.GLibClassStructFor!.GetSymbol() == type);
+        private static IEnumerable<Record> FindClassStructs(IEnumerable<Record> classStructs, Symbol symbol)
+            => classStructs.Where(x => x.GLibClassStructFor!.GetSymbol() == symbol);
     }
 }

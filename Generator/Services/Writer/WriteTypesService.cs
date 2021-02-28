@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Repository.Analysis;
 using Repository.Model;
 using Scriban.Runtime;
-using Type = Repository.Model.Type;
 
 namespace Generator.Services.Writer
 {
@@ -16,9 +15,9 @@ namespace Generator.Services.Writer
             _writeHelperService = writeHelperService;
         }
 
-        public void WriteTypes(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Type> objects)
+        public void WriteTypes(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Symbol> objects)
         {
-            foreach (Type obj in objects)
+            foreach (Symbol obj in objects)
             {
                 var scriptObject = new ScriptObject();
                 scriptObject.Import(obj);

@@ -4,7 +4,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Record : Type
+    public class Record : Symbol
     {
         public RecordType Type => this switch
         {

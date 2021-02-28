@@ -46,7 +46,7 @@ namespace Repository.Services
 
                 ReferenceType kind = symbol switch
                 {
-                    Type t when t.Namespace.Name == proj.Namespace.Name => ReferenceType.Internal,
+                    { Namespace: {} ns } when ns.Name == proj.Namespace.Name => ReferenceType.Internal,
                     _ => ReferenceType.External
                 };
 

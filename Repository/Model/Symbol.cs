@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Repository.Analysis;
 
 namespace Repository.Model
@@ -22,8 +23,9 @@ namespace Repository.Model
         IEnumerable<SymbolReference> GetSymbolReferences();
     }
 
-    public abstract class Symbol : ISymbolReferenceProvider
+    public class Symbol : ISymbolReferenceProvider
     {
+        public Namespace? Namespace { get; }
         public Metadata Metadata { get; } = new();
         
         /// <summary>
@@ -41,18 +43,24 @@ namespace Repository.Model
         /// </summary>
         public string ManagedName { get; set; }
 
-        protected Symbol(string name, string managedName) : this(name, name, managedName)
+        protected internal Symbol(Namespace? @namespace, string name, string managedName) : this(@namespace, name, name, managedName)
+        {
+        }
+        
+        protected internal Symbol(string name, string managedName) : this(null, name, name, managedName)
         {
         }
 
-        protected Symbol(string name, string nativeName, string managedName)
+        protected internal Symbol(Namespace? @namespace, string name, string nativeName, string managedName)
         {
+            Namespace = @namespace;
             Name = name;
             NativeName = nativeName; 
             ManagedName = managedName;
         }
 
-        public abstract IEnumerable<SymbolReference> GetSymbolReferences();
+        public virtual IEnumerable<SymbolReference> GetSymbolReferences()
+            => Enumerable.Empty<SymbolReference>();
 
         public override string ToString()
             => ManagedName;

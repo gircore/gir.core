@@ -4,7 +4,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Enumeration : Type
+    public class Enumeration : Symbol
     {
         public bool HasFlags { get; }
         public IEnumerable<Member> Members { get; }

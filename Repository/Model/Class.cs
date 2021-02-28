@@ -4,7 +4,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Class : Type
+    public class Class : Symbol
     {
         public string CType { get; }
         public Method GetTypeFunction { get; }

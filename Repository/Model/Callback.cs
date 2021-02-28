@@ -4,7 +4,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Callback : Type
+    public class Callback : Symbol
     {
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
