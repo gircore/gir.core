@@ -13,11 +13,11 @@ namespace Repository.Model
         /// <summary>
         /// Creates a new field.
         /// </summary>
-        /// <param name="nativeName"></param>
+        /// <param name="name"></param>
         /// <param name="managedName"></param>
         /// <param name="symbolReference"></param>
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
-        public Field(string nativeName, string managedName, SymbolReference symbolReference, Callback? callback = null) : base(nativeName, managedName)
+        public Field(string name, string managedName, SymbolReference symbolReference, Callback? callback = null) : base(name, managedName)
         {
             SymbolReference = symbolReference;
             Callback = callback;
@@ -30,10 +30,7 @@ namespace Repository.Model
             if (Callback is null)
                 return;
 
-            if (Callback.ManagedName == SymbolReference.Name)
-                SymbolReference.ResolveAs(Callback, ReferenceType.Internal);
-            else
-                throw new Exception($"Field {ManagedName} should be a callback type. But the names do not match: {Callback.ManagedName} != {SymbolReference.Name}.");
+            SymbolReference.ResolveAs(Callback, ReferenceType.Internal);
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()

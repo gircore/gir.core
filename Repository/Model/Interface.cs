@@ -4,7 +4,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Interface : Type, IComplexSymbol
+    public class Interface : Type
     {
         public string CType { get; }
         public Method GetTypeFunction { get; }
@@ -13,7 +13,7 @@ namespace Repository.Model
         public IEnumerable<Method> Methods { get; }
         public IEnumerable<Method> Functions { get; }
         
-        public Interface(Namespace @namespace, string nativeName, string managedName, string cType, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, nativeName, managedName)
+        public Interface(Namespace @namespace, string name, string managedName, string cType, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, name, managedName)
         {
             CType = cType;
             Implements = implements;

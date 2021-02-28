@@ -31,7 +31,7 @@ namespace Repository.Factories
             
             return new Record(
                 @namespace: @namespace, 
-                nativeName: @record.Name, 
+                name: @record.Name, 
                 managedName: @record.Name, 
                 gLibClassStructFor: _symbolReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor, false),
                 methods:_methodFactory.Create(@record.Methods, @namespace),

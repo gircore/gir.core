@@ -13,7 +13,7 @@ namespace Repository.Model
         public int? ClosureIndex { get; }
         public int? DestroyIndex { get; }
 
-        public Argument(string nativeName, string managedName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, int? closureIndex, int? destroyIndex) : base(nativeName, managedName)
+        public Argument(string name, string managedName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, int? closureIndex, int? destroyIndex) : base(name, managedName)
         {
             SymbolReference = symbolReference;
             Direction = direction;

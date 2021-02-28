@@ -21,7 +21,7 @@ namespace Repository.Factories
 
             return new Enumeration(
                 @namespace: @namespace,
-                nativeName: @enum.Name,
+                name: @enum.Name,
                 managedName: @enum.Name,
                 hasFlags: hasFlags,
                 members: @enum.Members.Select(x => _memberFactory.Create(x)).ToList()

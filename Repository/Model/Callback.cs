@@ -9,7 +9,7 @@ namespace Repository.Model
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
 
-        public Callback(Namespace @namespace, string nativeName, string managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(@namespace, nativeName, managedName)
+        public Callback(Namespace @namespace, string name, string nativeName, string managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(@namespace, name, nativeName, managedName)
         {
             ReturnValue = returnValue;
             Arguments = arguments;

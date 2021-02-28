@@ -17,20 +17,20 @@ namespace Repository.Analysis
         
         public bool IsExternal { get; private set; }
         public bool IsArray { get; }
-        public string Name { get; }
+        public string Type { get; }
 
         #endregion
         
-        public SymbolReference(string name, bool isArray)
+        public SymbolReference(string type, bool isArray)
         {
-            Name = name;
+            Type = type;
             IsArray = isArray;
         }
 
         public Symbol GetSymbol()
         {
             if(_symbol is null)
-                throw new InvalidOperationException($"The symbolreference for {Name} has not been resolved.");
+                throw new InvalidOperationException($"The symbolreference for {Type} has not been resolved.");
 
             return _symbol;
         }

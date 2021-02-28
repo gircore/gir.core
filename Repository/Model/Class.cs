@@ -4,7 +4,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Class : Type, IComplexSymbol
+    public class Class : Type
     {
         public string CType { get; }
         public Method GetTypeFunction { get; }
@@ -18,7 +18,7 @@ namespace Repository.Model
         public IEnumerable<Signal> Signals { get; }
         public IEnumerable<Method> Constructors { get; }
 
-        public Class(Namespace @namespace, string nativeName, string managedName, string ctype, SymbolReference? parent, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors) : base(@namespace, nativeName, managedName)
+        public Class(Namespace @namespace, string name, string managedName, string ctype, SymbolReference? parent, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors) : base(@namespace, name, managedName)
         {
             Parent = parent;
             Implements = implements;

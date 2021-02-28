@@ -6,7 +6,7 @@ namespace Repository.Model
 {
     public class BasicSymbol : Symbol
     {
-        public BasicSymbol(string nativeName, string managedName) : base(nativeName, managedName)
+        public BasicSymbol(string name, string managedName) : base(name, managedName)
         {
         }
 

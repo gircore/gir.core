@@ -32,7 +32,7 @@ namespace Repository.Factories
 
             return new Class(
                 @namespace: @namespace,
-                nativeName: cls.Name,
+                name: cls.Name,
                 managedName: cls.Name,
                 ctype: cls.TypeName,
                 parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, false),

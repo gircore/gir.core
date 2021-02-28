@@ -86,14 +86,14 @@ namespace Repository.Analysis
         /// <param name="info"></param>
         public void AddSymbol(string nspace, Symbol info)
         {
-            GetTypeDict(nspace).AddSymbol(info.NativeName, info);
+            GetTypeDict(nspace).AddSymbol(info.Name, info);
         }
 
         public void AddSymbols(string nspace, IEnumerable<Symbol> infos)
         {
             TypeDictionary dict = GetTypeDict(nspace);
             foreach (Symbol info in infos)
-                dict.AddSymbol(info.NativeName, info);
+                AddSymbol(nspace, info);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Repository.Analysis
 
         private void AddSymbol(Symbol symbol)
         {
-            _defaultDict.AddSymbol(symbol.NativeName, symbol);
+            _defaultDict.AddSymbol(symbol.Name, symbol);
         }
 
         private Symbol GetSymbolInternal(TypeDictionary symbolDict, string symbol)

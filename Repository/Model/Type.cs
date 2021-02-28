@@ -8,7 +8,11 @@
     {
         public Namespace Namespace { get; }
 
-        protected Type(Namespace @namespace, string nativeName, string managedName) : base(nativeName, managedName)
+        protected Type(Namespace @namespace, string name, string managedName) : this(@namespace, name, name, managedName)
+        {
+        }
+        
+        protected Type(Namespace @namespace, string name, string nativeName, string managedName) : base(name, nativeName, managedName)
         {
             Namespace = @namespace;
         }

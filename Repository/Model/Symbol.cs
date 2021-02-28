@@ -22,23 +22,33 @@ namespace Repository.Model
         IEnumerable<SymbolReference> GetSymbolReferences();
     }
 
-    public interface IComplexSymbol
-    {
-        Metadata Metadata { get; }
-        string NativeName { get; }
-        string ManagedName { get; set; }
-        Namespace Namespace { get; }
-    }
-
     public abstract class Symbol : ISymbolReferenceProvider
     {
         public Metadata Metadata { get; } = new();
+        
+        /// <summary>
+        /// Original name of the symbol.
+        /// </summary>
+        public string Name { get; }
+        
+        /// <summary>
+        /// Name of the symbol which should be used as a native representation
+        /// </summary>
         public string NativeName { get; }
+        
+        /// <summary>
+        /// Name of the symbol which should be used as managed representation
+        /// </summary>
         public string ManagedName { get; set; }
 
-        public Symbol(string nativeName, string managedName)
+        protected Symbol(string name, string managedName) : this(name, name, managedName)
         {
-            NativeName = nativeName;
+        }
+
+        protected Symbol(string name, string nativeName, string managedName)
+        {
+            Name = name;
+            NativeName = nativeName; 
             ManagedName = managedName;
         }
 

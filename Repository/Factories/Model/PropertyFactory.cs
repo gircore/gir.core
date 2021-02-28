@@ -26,7 +26,7 @@ namespace Repository.Factories
                 throw new Exception("Property is missing a name");
             
             return new Property(
-                nativeName: info.Name,
+                name: info.Name,
                 managedName: _caseConverter.ToPascalCase(info.Name),
                 symbolReference: _symbolReferenceFactory.Create(info),
                 writeable: info.Writeable,

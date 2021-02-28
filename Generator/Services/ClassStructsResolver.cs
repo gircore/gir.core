@@ -12,8 +12,8 @@ namespace Generator.Services
             foreach (var proj in projects)
             {
                 var classStructs = GetClassStructs(proj);
-                UpdateComplexSymbolsWithClassStructs(proj.Namespace.Classes, classStructs);
-                UpdateComplexSymbolsWithClassStructs(proj.Namespace.Interfaces, classStructs);
+                UpdateTypesWithClassStructs(proj.Namespace.Classes, classStructs);
+                UpdateTypesWithClassStructs(proj.Namespace.Interfaces, classStructs);
 
                 Log.Information($"Resolved class structs for {proj.Name}.");
             }
@@ -22,12 +22,12 @@ namespace Generator.Services
         private static IEnumerable<Record> GetClassStructs(LoadedProject loadedProject)
             => loadedProject.Namespace.Records.Where(x => (x.GLibClassStructFor is not null));
 
-        private static void UpdateComplexSymbolsWithClassStructs(IEnumerable<IComplexSymbol> symbols, IEnumerable<Record> classStructs)
+        private static void UpdateTypesWithClassStructs(IEnumerable<Type> types, IEnumerable<Record> classStructs)
         {
             var structs = classStructs.ToList();
-            foreach(var symbol in symbols)
+            foreach(var type in types)
             {
-                symbol.AddClassStructs(structs);
+                type.AddClassStructs(structs);
             }
         }
     }
