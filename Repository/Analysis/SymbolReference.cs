@@ -1,5 +1,6 @@
 ﻿using System;
 using Repository.Model;
+using Array = Repository.Model.Array;
 
 namespace Repository.Analysis
 {
@@ -16,15 +17,16 @@ namespace Repository.Analysis
         #region Properties
         
         public bool IsExternal { get; private set; }
-        public bool IsArray { get; }
         public string Type { get; }
+        
+        public Array? Array { get; }
 
         #endregion
         
-        public SymbolReference(string type, bool isArray)
+        public SymbolReference(string type, Array? array)
         {
             Type = type;
-            IsArray = isArray;
+            Array = array;
         }
 
         public Symbol GetSymbol()

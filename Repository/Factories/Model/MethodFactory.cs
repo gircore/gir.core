@@ -52,7 +52,7 @@ namespace Repository.Factories
         {
             ReturnValue returnValue = _returnValueFactory.Create(
                 type: "gulong",
-                isArray: false,
+                array: null,
                 transfer: Transfer.None,
                 nullable: false
             );

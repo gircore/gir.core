@@ -30,7 +30,6 @@ namespace Repository.Factories
                     list.Add(_argumentFactory.Create(
                         name: "error",
                         type: "GLib.Error",
-                        isArray: false,
                         direction: Direction.OutCalleeAllocates,
                         transfer: Transfer.Full,
                         nullable: false,

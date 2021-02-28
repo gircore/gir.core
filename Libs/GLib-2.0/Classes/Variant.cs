@@ -72,20 +72,15 @@ namespace GLib
             for (var i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle;
 
-            handle = Native.new_tuple(ptrs, (ulong) count);
-            Native.ref_sink(handle);
+            handle = Native.Methods.NewTuple(ptrs, (ulong) count);
+            Native.Methods.RefSink(handle);
         }
 
         public string GetString()
-        {
-            ulong length = 0;
-            IntPtr strPtr = Native.get_string(_handle, out length);
-
-            return Marshal.PtrToStringAuto(strPtr) ?? string.Empty;
-        }
+            => Native.Methods.GetString(_handle, out _);
 
         public string Print(bool typeAnnotate)
-            => Marshal.PtrToStringAuto(Native.print(_handle, typeAnnotate)) ?? string.Empty;
+            => Native.Methods.Print(_handle, typeAnnotate);
 
         #endregion
     }

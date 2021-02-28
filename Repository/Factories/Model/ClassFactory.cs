@@ -35,7 +35,7 @@ namespace Repository.Factories
                 name: cls.Name,
                 managedName: cls.Name,
                 ctype: cls.TypeName,
-                parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, false),
+                parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, null),
                 implements: _symbolReferenceFactory.Create(cls.Implements),
                 methods: _methodFactory.Create(cls.Methods, @namespace),
                 functions: _methodFactory.Create(cls.Functions, @namespace),

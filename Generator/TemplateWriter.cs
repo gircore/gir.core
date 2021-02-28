@@ -50,13 +50,20 @@ namespace Generator
         {
             Symbol symbol = symbolReference.GetSymbol();
 
-            if (symbol.IsReferenceType())
-                return "IntPtr";
-
-            if (symbolReference.IsArray)
-                return InternalArray(symbol);
-
-            return InternalType(symbol);
+            if (symbolReference.Array is null)
+            {
+                return InternalType(symbol);
+            }
+            else
+            {
+                string attribute = "";
+                if (symbolReference.Array.Length is { } length)
+                {
+                    attribute = $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={length})]";
+                }
+                
+                return attribute + InternalArray(symbol);
+            }
         }
 
         public static string WriteManagedSymbolReference(SymbolReference symbolReference)
@@ -67,10 +74,10 @@ namespace Generator
 
             return symbolReference switch
             {
-                { IsExternal: true, IsArray: true } => ExternalArray(symbol),
-                { IsExternal: true, IsArray: false } => ExternalType(symbol),
-                { IsExternal: false, IsArray: true } => InternalArray(symbol),
-                { IsExternal: false, IsArray: false } => InternalType(symbol)
+                { IsExternal: true, Array: {} } => ExternalArray(symbol),
+                { IsExternal: true, Array: null } => ExternalType(symbol),
+                { IsExternal: false, Array: {} } => InternalArray(symbol),
+                { IsExternal: false, Array: null } => InternalType(symbol)
             };
         }
 
@@ -90,11 +97,11 @@ namespace Generator
             return $"{symbol.Namespace.Name}.{symbol.ManagedName}[]";
         }
 
-        private static string InternalArray(Symbol type)
-            => $"{type.ManagedName}[]";
+        private static string InternalArray(Symbol symbol)
+            => symbol.IsReferenceType() ? "IntPtr[]" : $"{symbol.ManagedName}[]";
 
-        private static string InternalType(Symbol type)
-            => type.ManagedName;
+        private static string InternalType(Symbol symbol)
+            => symbol.IsReferenceType() ? "IntPtr" : symbol.ManagedName;
 
         public static string WriteInheritance(SymbolReference? parent, IEnumerable<SymbolReference> implements)
         {
