@@ -41,6 +41,7 @@ namespace Repository.Factories
 
             return new Argument(
                 name: _identifierConverter.Convert(parameterInfo.Name),
+                nativeName: _caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)),
                 managedName: _caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)),
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo),
                 direction: direction,
@@ -56,6 +57,7 @@ namespace Repository.Factories
             return new Argument(
                 name: name,
                 managedName: _caseConverter.ToCamelCase(name),
+                nativeName: _caseConverter.ToCamelCase(name),
                 symbolReference: _symbolReferenceFactory.Create(type, isArray),
                 direction: direction,
                 transfer: transfer,

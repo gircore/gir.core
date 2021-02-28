@@ -47,7 +47,11 @@ namespace Repository.Model
         {
         }
         
-        protected internal Symbol(string name, string managedName) : this(null, name, name, managedName)
+        protected internal Symbol(string name, string managedName) : this(name, name, managedName)
+        {
+        }
+        
+        protected internal Symbol(string name, string nativeName, string managedName) : this(null, name, nativeName, managedName)
         {
         }
 

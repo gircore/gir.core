@@ -38,7 +38,7 @@ namespace Generator
                     builder.Append('?');
 
                 builder.Append(' ');
-                builder.Append(argument.ManagedName);
+                builder.Append(argument.NativeName);
 
                 args.Add(builder.ToString());
             }
