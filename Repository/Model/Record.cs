@@ -37,6 +37,7 @@ namespace Repository.Model
         public override IEnumerable<SymbolReference> GetSymbolReferences()
         {
             var symbolReferences = IEnumerables.Concat(
+                Constructors.GetSymbolReferences(),
                 Fields.GetSymbolReferences(),
                 Methods.GetSymbolReferences(),
                 Functions.GetSymbolReferences()

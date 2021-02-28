@@ -9,5 +9,6 @@ namespace {{ namespace.name }}
 
     public partial class {{ managed_name }}
     {
+        {{ include 'struct.native.sbntxt' }}
     }
 }
