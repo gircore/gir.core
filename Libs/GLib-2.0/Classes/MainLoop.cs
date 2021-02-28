@@ -13,13 +13,13 @@ namespace GLib
 
         private MainLoop(IntPtr context, bool isRunning)
         {
-            Handle = Native.@new(context, isRunning);
+            Handle = Native.Methods.New(context, isRunning);
         }
 
-        public bool IsRunning() => Native.is_running(Handle);
+        public bool IsRunning() => Native.Methods.IsRunning(Handle);
 
-        public void Run() => Native.run(Handle);
+        public void Run() => Native.Methods.Run(Handle);
 
-        public void Quit() => Native.quit(Handle);
+        public void Quit() => Native.Methods.Quit(Handle);
     }
 }

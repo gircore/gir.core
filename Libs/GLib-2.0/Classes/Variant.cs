@@ -44,22 +44,22 @@ namespace GLib
         {
             _children = new Variant[0];
             _handle = handle;
-            Native.ref_sink(handle);
+            Native.Methods.RefSink(handle);
         }
 
         #endregion
 
         #region Methods
 
-        public static Variant Create(int i) => new Variant(Native.new_int32(i));
-        public static Variant Create(uint ui) => new Variant(Native.new_uint32(ui));
-        public static Variant Create(string str) => new Variant(Native.new_string(str));
-        public static Variant Create(params string[] strs) => new Variant(Native.new_strv(strs, strs.Length));
+        public static Variant Create(int i) => new Variant(Native.Methods.NewInt32(i));
+        public static Variant Create(uint ui) => new Variant(Native.Methods.NewUint32(ui));
+        public static Variant Create(string str) => new Variant(Native.Methods.NewString(str));
+        public static Variant Create(params string[] strs) => new Variant(Native.Methods.NewStrv(strs, strs.Length));
 
         public static Variant CreateEmptyDictionary(VariantType key, VariantType value)
         {
-            IntPtr childType = VariantType.Native.new_dict_entry(key.Handle, value.Handle);
-            return new Variant(Native.new_array(childType, new IntPtr[0], 0));
+            IntPtr childType = VariantType.Native.Methods.NewDictEntry(key.Handle, value.Handle);
+            return new Variant(Native.Methods.NewArray(childType, new IntPtr[0], 0));
         }
 
         private void Init(out IntPtr handle, params Variant[] children)

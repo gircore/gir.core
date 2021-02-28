@@ -15,7 +15,7 @@ namespace GLib
 
         #region Methods
 
-        internal static void FreeError(IntPtr errorHandle) => Native.free(errorHandle);
+        internal static void FreeError(IntPtr errorHandle) => Native.Methods.Free(errorHandle);
 
         #endregion
 
