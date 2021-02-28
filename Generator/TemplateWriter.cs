@@ -33,6 +33,10 @@ namespace Generator
                 });
 
                 builder.Append(WriteNativeSymbolReference(argument.SymbolReference));
+
+                if (argument.Nullable)
+                    builder.Append('?');
+
                 builder.Append(' ');
                 builder.Append(argument.ManagedName);
 
