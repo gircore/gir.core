@@ -168,6 +168,10 @@ namespace Generator
 
             var builder = new StringBuilder();
             builder.Append(WriteNativeStructFieldSummary(field));
+
+            if (type == "string")
+                builder.AppendLine($"[MarshalAs(UnmanagedType.LPStr)]");
+
             builder.AppendLine($"public {type} {field.ManagedName};");
             return builder.ToString();
         }

@@ -12,6 +12,7 @@ namespace Generator
             Class => true,
             Interface => true,
             Record { Type: RecordType.Ref } => true,
+            Record {Type: RecordType.Value } => true,
             _ => false
         };
 
