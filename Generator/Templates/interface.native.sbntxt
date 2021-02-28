@@ -2,7 +2,7 @@
 
 protected static class Native
 {
-    {{ include 'native.methods.sbntxt' }}
+    {{ include 'interface.native.methods.sbntxt' }}
 }
 
 #endregion
