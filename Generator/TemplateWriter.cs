@@ -51,19 +51,9 @@ namespace Generator
             Symbol symbol = symbolReference.GetSymbol();
 
             if (symbolReference.Array is null)
-            {
-                return InternalType(symbol);
-            }
-            else
-            {
-                string attribute = "";
-                if (symbolReference.Array.Length is { } length)
-                {
-                    attribute = $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={length})]";
-                }
-                
-                return attribute + InternalArray(symbol);
-            }
+                return symbol.AsInternalType();
+
+            return symbolReference.Array.GetMarshallAttribute() + symbol.AsInternalArray();
         }
 
         public static string WriteManagedSymbolReference(SymbolReference symbolReference)
@@ -74,34 +64,12 @@ namespace Generator
 
             return symbolReference switch
             {
-                { IsExternal: true, Array: {} } => ExternalArray(symbol),
-                { IsExternal: true, Array: null } => ExternalType(symbol),
-                { IsExternal: false, Array: {} } => InternalArray(symbol),
-                { IsExternal: false, Array: null } => InternalType(symbol)
+                { IsExternal: true, Array: {} } => symbol.AsExternalArray(),
+                { IsExternal: true, Array: null } => symbol.AsExternalType(),
+                { IsExternal: false, Array: {} } => symbol.AsInternalArray(),
+                { IsExternal: false, Array: null } => symbol.AsInternalType()
             };
         }
-
-        private static string ExternalType(Symbol symbol)
-        {
-            if (symbol.Namespace is null)
-                throw new Exception($"Can not write external type as the symbol {symbol.Name} is missing a namespace");
-
-            return $"{symbol.Namespace.Name}.{symbol.ManagedName}";
-        }
-
-        private static string ExternalArray(Symbol symbol)
-        {
-            if (symbol.Namespace is null)
-                throw new Exception($"Can not write external array as the symbol {symbol.Name} is missing a namespace");
-
-            return $"{symbol.Namespace.Name}.{symbol.ManagedName}[]";
-        }
-
-        private static string InternalArray(Symbol symbol)
-            => symbol.IsReferenceType() ? "IntPtr[]" : $"{symbol.ManagedName}[]";
-
-        private static string InternalType(Symbol symbol)
-            => symbol.IsReferenceType() ? "IntPtr" : symbol.ManagedName;
 
         public static string WriteInheritance(SymbolReference? parent, IEnumerable<SymbolReference> implements)
         {
