@@ -22,12 +22,12 @@ namespace Generator.Services
         private static IEnumerable<Record> GetClassStructs(LoadedProject loadedProject)
             => loadedProject.Namespace.Records.Where(x => (x.GLibClassStructFor is not null));
 
-        private static void UpdateWithClassStructs(IEnumerable<Symbol> types, IEnumerable<Record> classStructs)
+        private static void UpdateWithClassStructs(IEnumerable<Symbol> symbols, IEnumerable<Record> classStructs)
         {
             var structs = classStructs.ToList();
-            foreach(var type in types)
+            foreach(var symbol in symbols)
             {
-                type.AddClassStructs(structs);
+                symbol.AddClassStructs(structs);
             }
         }
     }

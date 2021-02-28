@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Repository;
@@ -49,7 +50,7 @@ namespace Generator
         {
             Symbol symbol = symbolReference.GetSymbol();
 
-            if (symbol is Symbol)
+            if (symbol.IsReferenceType())
                 return "IntPtr";
 
             if (symbolReference.IsArray)
@@ -74,10 +75,20 @@ namespace Generator
         }
 
         private static string ExternalType(Symbol symbol)
-            => $"{symbol.Namespace?.Name}.{symbol.ManagedName}";
+        {
+            if (symbol.Namespace is null)
+                throw new Exception($"Can not write external type as the symbol {symbol.Name} is missing a namespace");
+
+            return $"{symbol.Namespace.Name}.{symbol.ManagedName}";
+        }
 
         private static string ExternalArray(Symbol symbol)
-            => $"{symbol.Namespace?.Name}.{symbol.ManagedName}[]";
+        {
+            if (symbol.Namespace is null)
+                throw new Exception($"Can not write external array as the symbol {symbol.Name} is missing a namespace");
+
+            return $"{symbol.Namespace.Name}.{symbol.ManagedName}[]";
+        }
 
         private static string InternalArray(Symbol type)
             => $"{type.ManagedName}[]";
@@ -107,6 +118,9 @@ namespace Generator
         {
             if (method is null )
                 return string.Empty;
+
+            if (method.Namespace is null)
+                throw new Exception($"Method {method.Name} is missing a namespace");
 
             var returnValue = WriteNativeSymbolReference(method.ReturnValue.SymbolReference);
 
