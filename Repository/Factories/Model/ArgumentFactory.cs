@@ -51,11 +51,11 @@ namespace Repository.Factories
             );
         }
 
-        public Argument Create(string nativeName, string type, bool isArray, Direction direction, Transfer transfer, bool nullable, int? closure, int? destroy)
+        public Argument Create(string name, string type, bool isArray, Direction direction, Transfer transfer, bool nullable, int? closure, int? destroy)
         {
             return new Argument(
-                name: nativeName,
-                managedName: _caseConverter.ToCamelCase(nativeName),
+                name: name,
+                managedName: _caseConverter.ToCamelCase(name),
                 symbolReference: _symbolReferenceFactory.Create(type, isArray),
                 direction: direction,
                 transfer: transfer,
