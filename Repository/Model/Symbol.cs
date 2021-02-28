@@ -25,8 +25,8 @@ namespace Repository.Model
     public interface IComplexSymbol
     {
         Metadata Metadata { get; }
-        public string NativeName { get; }
-        public string ManagedName { get; set; }
+        string NativeName { get; }
+        string ManagedName { get; set; }
         Namespace Namespace { get; }
     }
 
