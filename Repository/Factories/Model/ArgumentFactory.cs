@@ -38,7 +38,7 @@ namespace Repository.Factories
 
             if (parameterInfo.Name is null)
                 throw new Exception("Argument name is null");
-            
+
             return new Argument(
                 nativeName: _identifierConverter.Convert(parameterInfo.Name),
                 managedName: _caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)),
@@ -46,12 +46,12 @@ namespace Repository.Factories
                 direction: direction,
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
                 nullable: parameterInfo.Nullable,
-                closureIndex: parameterInfo.Closure,
-                destroyIndex: parameterInfo.Destroy
+                closureIndex: parameterInfo.Closure == -1 ? null : parameterInfo.Closure,
+                destroyIndex: parameterInfo.Destroy == -1 ? null : parameterInfo.Destroy
             );
         }
 
-        public Argument Create(string nativeName, string type, bool isArray, Direction direction, Transfer transfer, bool nullable, int closure, int destroy)
+        public Argument Create(string nativeName, string type, bool isArray, Direction direction, Transfer transfer, bool nullable, int? closure, int? destroy)
         {
             return new Argument(
                 nativeName: nativeName,
