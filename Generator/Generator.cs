@@ -21,6 +21,9 @@ namespace Generator
 
             var classStructsResolver = new ClassStructsResolver();
             classStructsResolver.Resolve(loadedProjects);
+
+            var typeRenamer = new TypeRenamer();
+            typeRenamer.SuffixDelegates(loadedProjects);
             
             Log.Information("Ready to write.");
 
