@@ -22,7 +22,7 @@ namespace Repository.Model
         /// <summary>
         /// Name of the symbol which should be used as a native representation
         /// </summary>
-        public string NativeName { get; }
+        public string NativeName { get; set; }
         
         /// <summary>
         /// Name of the symbol which should be used as managed representation

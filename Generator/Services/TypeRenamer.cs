@@ -16,8 +16,7 @@ namespace Generator.Services
                 // "managed" version. See delegate.sbntxt for more.
                 foreach (Callback dlg in project.Namespace.Callbacks)
                 {
-                    dlg.Metadata["WrapperName"] = dlg.ManagedName;
-                    dlg.ManagedName += "Native";
+                    dlg.NativeName += "Native";
                 }
             }
         }
