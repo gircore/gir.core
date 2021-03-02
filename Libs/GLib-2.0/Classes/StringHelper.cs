@@ -8,7 +8,7 @@ namespace GLib
         public static string? ToNullableAnsiStringAndFree(IntPtr ptr)
         {
             var resultString = Marshal.PtrToStringAnsi(ptr);
-            Global.Native.free(ptr);
+            Functions.Native.Free(ptr);
             return resultString;
         }
 

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Repository.Analysis;
+using Repository.Model;
 using Repository.Xml;
+using Array = Repository.Model.Array;
 
 namespace Repository.Services
 {
     internal class SymbolReferenceFactory 
     {
-        public SymbolReference Create(string type, bool isArray)
+        public SymbolReference Create(string type, Model.Array? array)
         {
-            return new SymbolReference(type, isArray);
+            return new SymbolReference(type, array);
         }
 
         public SymbolReference CreateFromField(FieldInfo field)
@@ -20,7 +22,7 @@ namespace Repository.Services
             if (field.Callback.Name is null)
                 throw new Exception($"Field {field.Name} has a callback without a name.");
             
-            return Create(field.Callback.Name, false);
+            return Create(field.Callback.Name, null);
         }
         
         public SymbolReference Create(ITypeOrArray typeOrArray)
@@ -28,20 +30,30 @@ namespace Repository.Services
             // Check for Type
             var type = typeOrArray?.Type?.Name ?? null;
             if (type != null)
-                return Create(type, false);
+                return Create(type, null);
 
             // Check for Array
-            var array = typeOrArray?.Array?.Type?.Name ?? null;
-            if (array != null)
-                return Create(array, true);
+            var arrayName = typeOrArray?.Array?.Type?.Name; //.Type?.Name ?? null;
+            if (arrayName != null)
+            {
+                var lengthStr = typeOrArray?.Array?.Length;
+                int? length = lengthStr is null ? null : int.Parse(lengthStr);
+                
+                var arrayData = new Array()
+                {
+                    Length = length
+                };
+                
+                return Create(arrayName, arrayData);
+            }
 
             // No Type (i.e. void)
-            return Create("none", false);
+            return Create("none", null);
         }
 
-        public SymbolReference? CreateWithNull(string? type, bool isArray)
+        public SymbolReference? CreateWithNull(string? type, Array? array)
         {
-            return type is null ? null : Create(type, isArray);
+            return type is null ? null : Create(type, array);
         }
         
         public IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements)
@@ -53,7 +65,7 @@ namespace Repository.Services
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
 
-                list.Add(Create(implement.Name, false));
+                list.Add(Create(implement.Name, null));
             }
 
             return list;

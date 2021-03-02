@@ -17,65 +17,65 @@ namespace Repository.Analysis
             // Fundamental types are accessible regardless of namespace and
             // take priority over any namespaced variant.
 
-            AddSymbol(new BasicSymbol("none", "void"));
-            AddSymbol(new BasicSymbol("any", "IntPtr"));
+            AddSymbol(new Symbol("none", "void"));
+            AddSymbol(new Symbol("any", "IntPtr"));
 
-            AddSymbol(new BasicSymbol("void", "void"));
-            AddSymbol(new BasicSymbol("gboolean", "bool"));
-            AddSymbol(new BasicSymbol("gfloat", "float"));
-            AddSymbol(new BasicSymbol("float", "float"));
+            AddSymbol(new Symbol("void", "void"));
+            AddSymbol(new Symbol("gboolean", "bool"));
+            AddSymbol(new Symbol("gfloat", "float"));
+            AddSymbol(new Symbol("float", "float"));
 
-            AddSymbol(new BasicSymbol("gconstpointer", "IntPtr"));
-            AddSymbol(new BasicSymbol("va_list", "IntPtr"));
-            AddSymbol(new BasicSymbol("gpointer", "IntPtr"));
-            AddSymbol(new BasicSymbol("GType", "IntPtr"));
-            AddSymbol(new BasicSymbol("tm", "IntPtr"));
+            AddSymbol(new Symbol("gconstpointer", "IntPtr"));
+            AddSymbol(new Symbol("va_list", "IntPtr"));
+            AddSymbol(new Symbol("gpointer", "IntPtr"));
+            AddSymbol(new Symbol("GType", "IntPtr"));
+            AddSymbol(new Symbol("tm", "IntPtr"));
             
             // TODO: Should we use UIntPtr here? Non-CLR compliant
-            AddSymbol(new BasicSymbol("guintptr", "UIntPtr"));
+            AddSymbol(new Symbol("guintptr", "UIntPtr"));
 
-            AddSymbol(new BasicSymbol("guint16", "ushort"));
-            AddSymbol(new BasicSymbol("gushort", "ushort"));
+            AddSymbol(new Symbol("guint16", "ushort"));
+            AddSymbol(new Symbol("gushort", "ushort"));
 
-            AddSymbol(new BasicSymbol("gint16", "short"));
-            AddSymbol(new BasicSymbol("gshort", "short"));
+            AddSymbol(new Symbol("gint16", "short"));
+            AddSymbol(new Symbol("gshort", "short"));
 
-            AddSymbol(new BasicSymbol("double", "double"));
-            AddSymbol(new BasicSymbol("gdouble", "double"));
-            AddSymbol(new BasicSymbol("long double", "double"));
+            AddSymbol(new Symbol("double", "double"));
+            AddSymbol(new Symbol("gdouble", "double"));
+            AddSymbol(new Symbol("long double", "double"));
 
             // AddBasicSymbol(new BasicSymbol("cairo_format_t", "int"));
-            AddSymbol(new BasicSymbol("int", "int"));
-            AddSymbol(new BasicSymbol("gint", "int"));
-            AddSymbol(new BasicSymbol("gint32", "int"));
-            AddSymbol(new BasicSymbol("pid_t", "int"));
+            AddSymbol(new Symbol("int", "int"));
+            AddSymbol(new Symbol("gint", "int"));
+            AddSymbol(new Symbol("gint32", "int"));
+            AddSymbol(new Symbol("pid_t", "int"));
 
-            AddSymbol(new BasicSymbol("unsigned int", "uint"));
-            AddSymbol(new BasicSymbol("unsigned", "uint"));
-            AddSymbol(new BasicSymbol("guint", "uint"));
-            AddSymbol(new BasicSymbol("guint32", "uint"));
-            AddSymbol(new BasicSymbol("gunichar", "uint"));
-            AddSymbol(new BasicSymbol("uid_t", "uint"));
+            AddSymbol(new Symbol("unsigned int", "uint"));
+            AddSymbol(new Symbol("unsigned", "uint"));
+            AddSymbol(new Symbol("guint", "uint"));
+            AddSymbol(new Symbol("guint32", "uint"));
+            AddSymbol(new Symbol("gunichar", "uint"));
+            AddSymbol(new Symbol("uid_t", "uint"));
             // AddBasicSymbol(new BasicSymbol("GQuark", "uint"));
 
-            AddSymbol(new BasicSymbol("guchar", "byte"));
-            AddSymbol(new BasicSymbol("gchar", "byte"));
-            AddSymbol(new BasicSymbol("char", "byte"));
-            AddSymbol(new BasicSymbol("guint8", "byte"));
-            AddSymbol(new BasicSymbol("gint8", "byte"));
+            AddSymbol(new Symbol("guchar", "byte"));
+            AddSymbol(new Symbol("gchar", "byte"));
+            AddSymbol(new Symbol("char", "byte"));
+            AddSymbol(new Symbol("guint8", "byte"));
+            AddSymbol(new Symbol("gint8", "byte"));
 
-            AddSymbol(new BasicSymbol("glong", "long"));
-            AddSymbol(new BasicSymbol("gssize", "long"));
-            AddSymbol(new BasicSymbol("gint64", "long"));
-            AddSymbol(new BasicSymbol("goffset", "long"));
-            AddSymbol(new BasicSymbol("time_t", "long"));
+            AddSymbol(new Symbol("glong", "long"));
+            AddSymbol(new Symbol("gssize", "long"));
+            AddSymbol(new Symbol("gint64", "long"));
+            AddSymbol(new Symbol("goffset", "long"));
+            AddSymbol(new Symbol("time_t", "long"));
 
-            AddSymbol(new BasicSymbol("gsize", "ulong"));
-            AddSymbol(new BasicSymbol("guint64", "ulong"));
-            AddSymbol(new BasicSymbol("gulong", "ulong"));
+            AddSymbol(new Symbol("gsize", "ulong"));
+            AddSymbol(new Symbol("guint64", "ulong"));
+            AddSymbol(new Symbol("gulong", "ulong"));
 
-            AddSymbol(new BasicSymbol("utf8", "string"));
-            AddSymbol(new BasicSymbol("filename", "string"));
+            AddSymbol(new Symbol("utf8", "string"));
+            AddSymbol(new Symbol("filename", "string"));
             // AddBasicSymbol(new BasicSymbol("Window", "ulong"));
         }
 
@@ -86,14 +86,14 @@ namespace Repository.Analysis
         /// <param name="info"></param>
         public void AddSymbol(string nspace, Symbol info)
         {
-            GetTypeDict(nspace).AddSymbol(info.NativeName, info);
+            GetTypeDict(nspace).AddSymbol(info.Name, info);
         }
 
         public void AddSymbols(string nspace, IEnumerable<Symbol> infos)
         {
             TypeDictionary dict = GetTypeDict(nspace);
             foreach (Symbol info in infos)
-                dict.AddSymbol(info.NativeName, info);
+                AddSymbol(nspace, info);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Repository.Analysis
 
         private void AddSymbol(Symbol symbol)
         {
-            _defaultDict.AddSymbol(symbol.NativeName, symbol);
+            _defaultDict.AddSymbol(symbol.Name, symbol);
         }
 
         private Symbol GetSymbolInternal(TypeDictionary symbolDict, string symbol)

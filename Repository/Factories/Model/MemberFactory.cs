@@ -31,7 +31,7 @@ namespace Repository.Factories
             var ident = _caseConverter.ToPascalCase(info.Name);
             
             return new Member(
-                nativeName: info.Identifier, 
+                name: info.Identifier, 
                 managedName: _identifierConverter.Convert(ident),
                 value: info.Value
             );

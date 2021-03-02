@@ -7,7 +7,7 @@ namespace {{ namespace.name }}
 
     public delegate {{ return_value.symbol_reference | write_managed_symbol_reference }} {{ managed_name }}({{ arguments | write_managed_arguments}});
 
-    public delegate {{ return_value.symbol_reference | write_native_symbol_reference }} {{ managed_name }}Native({{ arguments | write_native_arguments}});
+    public delegate {{ return_value.symbol_reference | write_native_symbol_reference }} {{ native_name }}({{ arguments | write_native_arguments}});
     
     /// <summary>
     /// Call Handler for {{ managed_name }}. A call annotation indicates the closure should
@@ -16,7 +16,7 @@ namespace {{ namespace.name }}
     /// </summary>
     public class {{ managed_name }}CallHandler
     {
-        public {{ managed_name }}Native NativeCallback;
+        public {{ native_name }} NativeCallback;
 
         private {{ managed_name }} managedCallback;
     
@@ -42,7 +42,7 @@ namespace {{ namespace.name }}
     /// </summary>
     public class {{ managed_name }}AsyncHandler
     {
-        public {{ managed_name }}Native NativeCallback;
+        public {{ native_name }} NativeCallback;
 
         private {{ managed_name }} managedCallback;
         private GCHandle gch;
@@ -76,8 +76,8 @@ namespace {{ namespace.name }}
     public class {{ managed_name }}NotifiedHandler
     {
         public event Action OnDestroyNotify;
-        public {{ managed_name }}Native NativeCallback;
-        public DestroyNotify DestroyNotify;
+        public {{ native_name }} NativeCallback;
+        public DestroyNotifyNative DestroyNotify;
 
         private {{ managed_name }} managedCallback;
         private GCHandle gch;
@@ -99,7 +99,7 @@ namespace {{ namespace.name }}
             {{~ end ~}}
         }
 
-        private void DestroyCallback(IntPtr userData)
+        private void DestroyCallback(IntPtr? userData)
         {
             OnDestroyNotify();
 

@@ -24,10 +24,10 @@ namespace Repository.Factories
             );
         }
 
-        public ReturnValue Create(string type, bool isArray, Transfer transfer, bool nullable)
+        public ReturnValue Create(string type, Array? array, Transfer transfer, bool nullable)
         {
             return new ReturnValue(
-                symbolReference: _symbolReferenceFactory.Create(type, isArray),
+                symbolReference: _symbolReferenceFactory.Create(type, array),
                 transfer: transfer,
                 nullable: nullable
             );

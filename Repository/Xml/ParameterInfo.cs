@@ -32,9 +32,9 @@ namespace Repository.Xml
         public bool Nullable;
         
         [XmlAttribute ("closure")]
-        public int Closure;
+        public int Closure = -1;
 
         [XmlAttribute ("destroy")]
-        public int Destroy;
+        public int Destroy = -1;
     }
 }

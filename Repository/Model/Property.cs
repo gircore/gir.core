@@ -9,7 +9,7 @@ namespace Repository.Model
         public bool Writeable { get; }
         public SymbolReference SymbolReference { get; }
         
-        public Property(string nativeName, string managedName, SymbolReference symbolReference, bool writeable, Transfer transfer) : base(nativeName, managedName)
+        public Property(string name, string managedName, SymbolReference symbolReference, bool writeable, Transfer transfer) : base(name, managedName)
         {
             SymbolReference = symbolReference;
             Writeable = writeable;

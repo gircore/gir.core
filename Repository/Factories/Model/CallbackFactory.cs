@@ -26,6 +26,7 @@ namespace Repository.Factories
             
             return new Callback(
                 @namespace: @namespace,
+                name: callbackInfo.Name,
                 nativeName: callbackInfo.Name,
                 managedName: callbackInfo.Name,
                 returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue),

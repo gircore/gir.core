@@ -19,8 +19,11 @@ namespace Generator
             var repository = new Repository.Repository();
             var loadedProjects = repository.Load(FileResolver.ResolveFile, projects).ToList();
 
-            var classStructResolverService = new ClassStructResolverService();
-            classStructResolverService.Resolve(loadedProjects);
+            var classStructsResolver = new ClassStructsResolver();
+            classStructsResolver.Resolve(loadedProjects);
+
+            var typeRenamer = new TypeRenamer();
+            typeRenamer.SuffixDelegates(loadedProjects);
             
             Log.Information("Ready to write.");
 

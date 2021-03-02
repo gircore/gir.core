@@ -32,17 +32,18 @@ namespace Repository.Factories
 
             return new Class(
                 @namespace: @namespace,
-                nativeName: cls.Name,
+                name: cls.Name,
                 managedName: cls.Name,
                 ctype: cls.TypeName,
-                parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, false),
+                parent: _symbolReferenceFactory.CreateWithNull(cls.Parent, null),
                 implements: _symbolReferenceFactory.Create(cls.Implements),
                 methods: _methodFactory.Create(cls.Methods, @namespace),
                 functions: _methodFactory.Create(cls.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
                 properties: _propertyFactory.Create(cls.Properties),
                 fields: _fieldFactory.Create(cls.Fields, @namespace),
-                signals: _signalFactory.Create(cls.Signals)
+                signals: _signalFactory.Create(cls.Signals),
+                constructors: _methodFactory.Create(cls.Constructors, @namespace)
             );
         }
     }

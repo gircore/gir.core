@@ -41,12 +41,12 @@ namespace Repository.Services
 
             foreach (var reference in proj.Namespace.GetSymbolReferences())
             {
-                var symbol = view.LookupType(reference.Name);
+                var symbol = view.LookupType(reference.Type);
 
 
                 ReferenceType kind = symbol switch
                 {
-                    Type t when t.Namespace.Name == proj.Namespace.Name => ReferenceType.Internal,
+                    { Namespace: {} ns } when ns.Name == proj.Namespace.Name => ReferenceType.Internal,
                     _ => ReferenceType.External
                 };
 
@@ -57,7 +57,7 @@ namespace Repository.Services
         private static void AddAliases(SymbolDictionary symbolDictionary, Namespace @namespace)
         {
             foreach (var alias in @namespace.Aliases)
-                symbolDictionary.AddAlias(@namespace.Name, alias.NativeName, alias.ManagedName);
+                symbolDictionary.AddAlias(@namespace.Name, alias.Name, alias.ManagedName);
         }
     }
 }

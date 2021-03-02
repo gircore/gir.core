@@ -17,7 +17,7 @@ namespace GLib
                     child.Dispose();
                 }
 
-                Native.unref(_handle);
+                Native.Methods.Unref(_handle);
                 _disposedValue = true;
             }
         }

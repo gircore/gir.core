@@ -8,7 +8,7 @@ namespace Repository.Model
     {
         public string Value { get; }
 
-        public Member(string nativeName, string managedName, string value) : base(nativeName, managedName)
+        public Member(string name, string managedName, string value) : base(name, managedName)
         {
             Value = value;
         }

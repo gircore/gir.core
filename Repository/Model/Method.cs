@@ -4,12 +4,12 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Method : Type
+    public class Method : Symbol
     {
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
 
-        public Method(Namespace @namespace, string nativeName, string managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(@namespace, nativeName, managedName)
+        public Method(Namespace @namespace, string name, string managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(@namespace, name, managedName)
         {
             ReturnValue = returnValue;
             Arguments = arguments;

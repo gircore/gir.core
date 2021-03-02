@@ -34,7 +34,7 @@ namespace Repository.Factories
             {
                 return new Method(
                     @namespace: @namespace,
-                    nativeName: methodInfo.Identifier,
+                    name: methodInfo.Identifier,
                     managedName: _caseConverter.ToPascalCase(methodInfo.Name),
                     returnValue: _returnValueFactory.Create(methodInfo.ReturnValue),
                     arguments: _argumentsFactory.Create(methodInfo.Parameters, methodInfo.Throws)
@@ -52,14 +52,14 @@ namespace Repository.Factories
         {
             ReturnValue returnValue = _returnValueFactory.Create(
                 type: "gulong",
-                isArray: false,
+                array: null,
                 transfer: Transfer.None,
                 nullable: false
             );
 
             return new Method(
                 @namespace: @namespace,
-                nativeName: getTypeMethodName,
+                name: getTypeMethodName,
                 managedName: "GetType",
                 returnValue: returnValue,
                 arguments: Enumerable.Empty<Argument>()

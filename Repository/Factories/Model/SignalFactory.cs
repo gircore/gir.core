@@ -28,7 +28,7 @@ namespace Repository.Factories
                 throw new Exception($"{nameof(SignalInfo)} {signalInfo.Name} {nameof(signalInfo.ReturnValue)} is null");
 
             return new Signal(
-                nativeName: signalInfo.Name,
+                name: signalInfo.Name,
                 managedName: _caseConverter.ToPascalCase(signalInfo.Name),
                 returnValue: _returnValueFactory.Create(signalInfo.ReturnValue),
                 arguments: _argumentsFactory.Create(signalInfo.Parameters)

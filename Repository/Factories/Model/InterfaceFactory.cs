@@ -29,7 +29,7 @@ namespace Repository.Factories
             
             return new Interface(
                 @namespace: @namespace, 
-                nativeName: iface.Name, 
+                name: iface.Name, 
                 managedName: iface.Name,
                 cType: iface.TypeName,
                 implements: _symbolReferenceFactory.Create(iface.Implements),

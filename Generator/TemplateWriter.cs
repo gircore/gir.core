@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Repository;
 using Repository.Analysis;
 using Repository.Model;
-using Type = Repository.Model.Type;
 
 namespace Generator
 {
@@ -33,8 +33,12 @@ namespace Generator
                 });
 
                 builder.Append(WriteNativeSymbolReference(argument.SymbolReference));
+
+                if (argument.Nullable)
+                    builder.Append('?');
+
                 builder.Append(' ');
-                builder.Append(argument.ManagedName);
+                builder.Append(argument.NativeName);
 
                 args.Add(builder.ToString());
             }
@@ -46,41 +50,26 @@ namespace Generator
         {
             Symbol symbol = symbolReference.GetSymbol();
 
-            if (symbol is Type)
-                return "IntPtr";
+            if (symbolReference.Array is null)
+                return symbol.AsInternalType();
 
-            if (symbolReference.IsArray)
-                return InternalArray(symbol);
-
-            return InternalType(symbol);
+            return symbolReference.Array.GetMarshallAttribute() + symbol.AsInternalArray();
         }
 
         public static string WriteManagedSymbolReference(SymbolReference symbolReference)
         {
             Symbol symbol = symbolReference.GetSymbol();
-            if (symbol is not Type type)
+            if (symbol.Namespace is null)
                 return symbol.ManagedName;
 
             return symbolReference switch
             {
-                { IsExternal: true, IsArray: true } => ExternalArray(type),
-                { IsExternal: true, IsArray: false } => ExternalType(type),
-                { IsExternal: false, IsArray: true } => InternalArray(type),
-                { IsExternal: false, IsArray: false } => InternalType(type)
+                { IsExternal: true, Array: {} } => symbol.AsExternalArray(),
+                { IsExternal: true, Array: null } => symbol.AsExternalType(),
+                { IsExternal: false, Array: {} } => symbol.AsInternalArray(),
+                { IsExternal: false, Array: null } => symbol.AsInternalType()
             };
         }
-
-        private static string ExternalType(Type type)
-            => $"{type.Namespace.Name}.{type.ManagedName}";
-
-        private static string ExternalArray(Type type)
-            => $"{type.Namespace.Name}.{type.ManagedName}[]";
-
-        private static string InternalArray(Symbol type)
-            => $"{type.ManagedName}[]";
-
-        private static string InternalType(Symbol type)
-            => type.ManagedName;
 
         public static string WriteInheritance(SymbolReference? parent, IEnumerable<SymbolReference> implements)
         {
@@ -104,6 +93,9 @@ namespace Generator
         {
             if (method is null )
                 return string.Empty;
+
+            if (method.Namespace is null)
+                throw new Exception($"Method {method.Name} is missing a namespace");
 
             var returnValue = WriteNativeSymbolReference(method.ReturnValue.SymbolReference);
 
@@ -151,6 +143,10 @@ namespace Generator
 
             var builder = new StringBuilder();
             builder.Append(WriteNativeStructFieldSummary(field));
+
+            if (type == "string")
+                builder.AppendLine($"[MarshalAs(UnmanagedType.LPStr)]");
+
             builder.AppendLine($"public {type} {field.ManagedName};");
             return builder.ToString();
         }

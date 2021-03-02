@@ -28,9 +28,8 @@ namespace Repository.Factories
                 if (throws)
                 {
                     list.Add(_argumentFactory.Create(
-                        nativeName: "error",
+                        name: "error",
                         type: "GLib.Error",
-                        isArray: false,
                         direction: Direction.OutCalleeAllocates,
                         transfer: Transfer.Full,
                         nullable: false,

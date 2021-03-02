@@ -16,7 +16,7 @@ namespace GLib
 
             protected sealed override bool ReleaseHandle()
             {
-                Native.unref(handle);
+                Native.Methods.Unref(handle);
                 return true;
             }
         }

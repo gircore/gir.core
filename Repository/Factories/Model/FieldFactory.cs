@@ -32,7 +32,7 @@ namespace Repository.Factories
                 callback = _callbackFactory.Create(info.Callback, @namespace);
             
             return new Field(
-                nativeName: _identifierConverter.Convert(info.Name),
+                name: _identifierConverter.Convert(info.Name),
                 managedName: _caseConverter.ToPascalCase(_identifierConverter.Convert(info.Name)),
                 symbolReference: _symbolReferenceFactory.CreateFromField(info),
                 callback: callback

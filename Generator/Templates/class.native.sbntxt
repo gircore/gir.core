@@ -5,7 +5,7 @@ protected static class Native
     {{ include 'class.native.fields.sbntxt' }}
     {{ include 'class.native.struct.sbntxt' }}
     {{ include 'class.native.properties.sbntxt' }}
-    {{ include 'native.methods.sbntxt' }}
+    {{ include 'class.native.methods.sbntxt' }}
 }
 
 #endregion
