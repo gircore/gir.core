@@ -30,7 +30,7 @@ namespace Repository.Model
             if (Callback is null)
                 return;
 
-            SymbolReference.ResolveAs(Callback, ReferenceType.Internal);
+            SymbolReference.ResolveAs(Callback);
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()

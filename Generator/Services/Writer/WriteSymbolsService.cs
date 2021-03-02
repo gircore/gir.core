@@ -21,8 +21,8 @@ namespace Generator.Services.Writer
                 {name.ToLower(), symbols}, 
                 {"namespace", @namespace}
             };
-            scriptObject.Import("write_native_constant", new Func<Constant, string>(TemplateWriter.WriteNativeConstant));
-            scriptObject.Import("write_native_method", new Func<Method, string>(TemplateWriter.WriteNativeMethod));
+            scriptObject.Import("write_managed_constant", new Func<Constant, string>((c) => c.WriteManaged()));
+            scriptObject.Import("write_native_method", new Func<Method, string>(m => m.WriteNative()));
 
             try
             {

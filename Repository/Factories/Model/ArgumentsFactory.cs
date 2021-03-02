@@ -32,9 +32,7 @@ namespace Repository.Factories
                         type: "GLib.Error",
                         direction: Direction.OutCalleeAllocates,
                         transfer: Transfer.Full,
-                        nullable: false,
-                        closure: 0,
-                        destroy: 0
+                        nullable: false
                     ));
                 }
             }

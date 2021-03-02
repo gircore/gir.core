@@ -9,9 +9,9 @@ namespace Repository.Services
 {
     internal class SymbolReferenceFactory 
     {
-        public SymbolReference Create(string type, Model.Array? array)
+        public SymbolReference Create(string type)
         {
-            return new SymbolReference(type, array);
+            return new SymbolReference(type);
         }
 
         public SymbolReference CreateFromField(FieldInfo field)
@@ -22,7 +22,7 @@ namespace Repository.Services
             if (field.Callback.Name is null)
                 throw new Exception($"Field {field.Name} has a callback without a name.");
             
-            return Create(field.Callback.Name, null);
+            return Create(field.Callback.Name);
         }
         
         public SymbolReference Create(ITypeOrArray typeOrArray)
@@ -30,7 +30,7 @@ namespace Repository.Services
             // Check for Type
             var type = typeOrArray?.Type?.Name ?? null;
             if (type != null)
-                return Create(type, null);
+                return Create(type);
 
             // Check for Array
             var arrayName = typeOrArray?.Array?.Type?.Name; //.Type?.Name ?? null;
@@ -38,22 +38,17 @@ namespace Repository.Services
             {
                 var lengthStr = typeOrArray?.Array?.Length;
                 int? length = lengthStr is null ? null : int.Parse(lengthStr);
-                
-                var arrayData = new Array()
-                {
-                    Length = length
-                };
-                
-                return Create(arrayName, arrayData);
+
+                return Create(arrayName);
             }
 
             // No Type (i.e. void)
-            return Create("none", null);
+            return Create("none");
         }
 
-        public SymbolReference? CreateWithNull(string? type, Array? array)
+        public SymbolReference? CreateWithNull(string? type)
         {
-            return type is null ? null : Create(type, array);
+            return type is null ? null : Create(type);
         }
         
         public IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements)
@@ -65,7 +60,7 @@ namespace Repository.Services
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
 
-                list.Add(Create(implement.Name, null));
+                list.Add(Create(implement.Name));
             }
 
             return list;

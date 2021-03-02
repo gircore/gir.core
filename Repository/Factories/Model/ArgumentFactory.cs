@@ -1,7 +1,9 @@
 using System;
+using Repository.Factories.Model;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
+using Array = Repository.Model.Array;
 
 namespace Repository.Factories
 {
@@ -11,13 +13,15 @@ namespace Repository.Factories
         private readonly TransferFactory _transferFactory;
         private readonly IdentifierConverter _identifierConverter;
         private readonly CaseConverter _caseConverter;
+        private readonly ArrayFactory _arrayFactory;
 
-        public ArgumentFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter)
+        public ArgumentFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, ArrayFactory arrayFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;
             _identifierConverter = identifierConverter;
             _caseConverter = caseConverter;
+            _arrayFactory = arrayFactory;
         }
         
         public Argument Create(ParameterInfo parameterInfo)
@@ -48,22 +52,24 @@ namespace Repository.Factories
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
                 nullable: parameterInfo.Nullable,
                 closureIndex: parameterInfo.Closure == -1 ? null : parameterInfo.Closure,
-                destroyIndex: parameterInfo.Destroy == -1 ? null : parameterInfo.Destroy
+                destroyIndex: parameterInfo.Destroy == -1 ? null : parameterInfo.Destroy,
+                array: _arrayFactory.Create(parameterInfo.Array)
             );
         }
 
-        public Argument Create(string name, string type, Direction direction, Transfer transfer, bool nullable, int? closure, int? destroy)
+        public Argument Create(string name, string type, Direction direction, Transfer transfer, bool nullable, int? closure = null, int? destroy = null, Array? array = null)
         {
             return new Argument(
                 name: name,
                 managedName: _caseConverter.ToCamelCase(name),
                 nativeName: _caseConverter.ToCamelCase(name),
-                symbolReference: _symbolReferenceFactory.Create(type, null),
+                symbolReference: _symbolReferenceFactory.Create(type),
                 direction: direction,
                 transfer: transfer,
                 nullable: nullable,
                 closureIndex: closure,
-                destroyIndex: destroy
+                destroyIndex: destroy,
+                array: array
             );
         }
 

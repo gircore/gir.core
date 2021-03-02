@@ -1,25 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Repository.Model;
 
 namespace Generator
 {
     internal static class SymbolExtension
     {
-        public static string AsInternalType(this Symbol symbol)
+        public static string AsType(this Symbol symbol, Namespace? ns)
+        {
+            if (ns is null || ns == symbol.Namespace)
+                return AsInternalType(symbol);
+
+            return symbol.AsExternalType();
+        }
+        private static string AsInternalType(this Symbol symbol)
             => symbol.IsReferenceType() ? "IntPtr" : symbol.ManagedName;
-        
-        public static string AsInternalArray(this Symbol symbol)
-            => symbol.IsReferenceType() ? "IntPtr[]" : $"{symbol.ManagedName}[]";
-        
-        public static string AsExternalType(this Symbol symbol)
+
+        private static string AsExternalType(this Symbol symbol)
         {
             if (symbol.Namespace is null)
                 throw new Exception($"Can not get external type as the symbol {symbol.Name} is missing a namespace");
 
             return $"{symbol.Namespace.Name}.{symbol.ManagedName}";
         }
+        
+        public static string AsInternalArray(this Symbol symbol)
+            => symbol.IsReferenceType() ? "IntPtr[]" : $"{symbol.ManagedName}[]";
+        
+
         
         public static string AsExternalArray(this Symbol symbol)
         {
@@ -64,5 +74,14 @@ namespace Generator
 
         private static IEnumerable<Record> FindClassStructs(IEnumerable<Record> classStructs, Symbol symbol)
             => classStructs.Where(x => x.GLibClassStructFor?.GetSymbol() == symbol);
+        
+        public static string WriteNativeSummary(this Symbol symbol)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"/// <summary>");
+            builder.AppendLine($"/// Native name: {symbol.NativeName}.");
+            builder.AppendLine($"/// </summary>");
+            return builder.ToString();
+        }
     }
 }

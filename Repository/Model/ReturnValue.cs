@@ -8,12 +8,14 @@ namespace Repository.Model
         public Transfer Transfer { get; }
         public bool Nullable { get; }
         public SymbolReference SymbolReference { get; }
+        public Array? Array { get; }
 
-        public ReturnValue(SymbolReference symbolReference, Transfer transfer, bool nullable)
+        public ReturnValue(SymbolReference symbolReference, Transfer transfer, bool nullable, Array? array = null)
         {
             SymbolReference = symbolReference;
             Transfer = transfer;
             Nullable = nullable;
+            Array = array;
         }
 
         public IEnumerable<SymbolReference> GetSymbolReferences()
