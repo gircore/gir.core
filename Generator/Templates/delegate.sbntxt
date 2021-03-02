@@ -77,7 +77,7 @@ namespace {{ namespace.name }}
     {
         public event Action OnDestroyNotify;
         public {{ native_name }} NativeCallback;
-        public DestroyNotify DestroyNotify;
+        public DestroyNotifyNative DestroyNotify;
 
         private {{ managed_name }} managedCallback;
         private GCHandle gch;
@@ -99,7 +99,7 @@ namespace {{ namespace.name }}
             {{~ end ~}}
         }
 
-        private void DestroyCallback(IntPtr userData)
+        private void DestroyCallback(IntPtr? userData)
         {
             OnDestroyNotify();
 
