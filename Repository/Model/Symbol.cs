@@ -54,5 +54,8 @@ namespace Repository.Model
 
         public override string ToString()
             => ManagedName;
+
+        public static Symbol Primitive(string nativeName, string managedName)
+            => new Symbol(nativeName, managedName, managedName);
     }
 }
