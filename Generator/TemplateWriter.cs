@@ -50,6 +50,13 @@ namespace Generator
         {
             Symbol symbol = symbolReference.GetSymbol();
 
+            // When using a callback in a native context, we want to suffix it
+            // with 'Native'. In conjunction with `delegate.sbntxt`, this ensures
+            // that the user must go through a delegate handler so the runtime can
+            // memory manage correctly.
+            if (symbol is Callback)
+                return symbol.ManagedName + "Native";
+
             if (symbolReference.Array is null)
                 return symbol.AsInternalType();
 
