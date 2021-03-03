@@ -6,7 +6,7 @@ namespace Generator
 {
     public static class MethodExtension
     {
-        public static string WriteNative(this Method? method)
+        public static string WriteNative(this Method? method, Namespace currentNamespace)
         {
             if (method is null )
                 return string.Empty;
@@ -14,7 +14,7 @@ namespace Generator
             if (method.Namespace is null)
                 throw new Exception($"Method {method.Name} is missing a namespace");
 
-            var returnValue = method.ReturnValue.WriteNative();
+            var returnValue = method.ReturnValue.WriteNative(currentNamespace);
 
             var summaryText = WriteNativeSummary(method);
             var dllImportText = $"[DllImport(\"{method.Namespace.Name}\", EntryPoint = \"{method.NativeName}\")]\r\n";

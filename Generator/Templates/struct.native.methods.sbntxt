@@ -2,7 +2,7 @@
 
 public class Methods
 {
-    {{ get_type_function | write_native_method }}
+    {{ get_type_function | write_native_method namespace }}
     {{ include 'methods.sbntxt' constructors }}
     {{ include 'methods.sbntxt' methods }}
     {{ include 'methods.sbntxt' functions }}

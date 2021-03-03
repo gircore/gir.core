@@ -7,7 +7,7 @@ namespace {{ namespace.name }}
 
     public delegate {{ return_value | write_managed_return_value }} {{ managed_name }}({{ arguments | write_managed_arguments}});
 
-    public delegate {{ return_value | write_native_return_value }} {{ native_name }}({{ arguments | write_native_arguments}});
+    public delegate {{ return_value | write_native_return_value namespace }} {{ native_name }}({{ arguments | write_native_arguments}});
     
     /// <summary>
     /// Call Handler for {{ managed_name }}. A call annotation indicates the closure should

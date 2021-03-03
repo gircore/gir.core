@@ -1,4 +1,3 @@
 {{~ for $method in $1
-write_native_method $method ~}}
-
-{{~ end ~}}
+$method | write_native_method namespace
+end ~}}

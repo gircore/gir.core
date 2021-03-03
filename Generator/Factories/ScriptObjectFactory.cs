@@ -14,9 +14,9 @@ namespace Generator.Factories
             var scriptObject = new ScriptObject();
             scriptObject.Import("write_native_arguments", new Func<IEnumerable<Argument>, string>(a => a.WriteNative()));
             scriptObject.Import("write_managed_arguments", new Func<IEnumerable<Argument>, string>(a => a.WriteManaged()));
-            scriptObject.Import("write_native_return_value", new Func<ReturnValue, string>(a => a.WriteNative()));
+            scriptObject.Import("write_native_return_value", new Func<ReturnValue, Namespace, string>((a,n) => a.WriteNative(n)));
             scriptObject.Import("write_managed_return_value", new Func<ReturnValue, string>(a => a.WriteManaged()));
-            scriptObject.Import("write_native_method", new Func<Method, string>(m => m.WriteNative()));
+            scriptObject.Import("write_native_method", new Func<Method, Namespace, string>((m,n) => m.WriteNative(n)));
             scriptObject.Import("get_if", new Func<string, bool, string>(TemplateWriter.GetIf));
 
             return scriptObject;
