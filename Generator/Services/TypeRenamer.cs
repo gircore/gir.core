@@ -19,6 +19,26 @@ namespace Generator.Services
                     dlg.NativeName += "Native";
                 }
             }
+
+            Log.Information("Suffixed delegates.");
+        }
+
+        public void SetNativeNames(IEnumerable<LoadedProject> projects)
+        {
+            foreach (LoadedProject project in projects)
+            {
+                // All structured data types are always expected to be handled
+                // as a pointer if used as an argument or return value.
+                // This is GObjec convention. If this changes it is expected
+                // that an additional attribute is inserted in the gir file.
+
+                foreach (var record in project.Namespace.Records)
+                    record.NativeName = "IntPtr";
+
+                //TODO: rename native names for other structured data types
+            }
+            
+            Log.Information("Native names set.");
         }
     }
 }

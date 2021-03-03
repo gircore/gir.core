@@ -8,36 +8,8 @@ namespace Generator
 {
     internal static class SymbolExtension
     {
-        public static string AsType(this Symbol symbol, Namespace? ns)
-        {
-            if (ns is null || ns == symbol.Namespace)
-                return AsInternalType(symbol);
-
-            return symbol.AsExternalType();
-        }
-        private static string AsInternalType(this Symbol symbol)
-            => symbol.IsReferenceType() ? "IntPtr" : symbol.ManagedName;
-
-        private static string AsExternalType(this Symbol symbol)
-        {
-            if (symbol.Namespace is null)
-                throw new Exception($"Can not get external type as the symbol {symbol.Name} is missing a namespace");
-
-            return $"{symbol.Namespace.Name}.{symbol.ManagedName}";
-        }
-        
-        public static string AsInternalArray(this Symbol symbol)
-            => symbol.IsReferenceType() ? "IntPtr[]" : $"{symbol.ManagedName}[]";
-        
-
-        
-        public static string AsExternalArray(this Symbol symbol)
-        {
-            if (symbol.Namespace is null)
-                throw new Exception($"Can not write external array as the symbol {symbol.Name} is missing a namespace");
-
-            return $"{symbol.Namespace.Name}.{symbol.ManagedName}[]";
-        }
+        public static bool IsForeignTo(this Symbol symbol, Namespace ns)
+            => symbol.Namespace is not null && ns != symbol.Namespace;
         
         public static bool IsReferenceType(this Symbol symbol) => symbol switch
         {

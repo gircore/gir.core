@@ -1,4 +1,5 @@
-﻿using Repository.Model;
+﻿using System;
+using Repository.Model;
 
 namespace Generator
 {
@@ -6,24 +7,21 @@ namespace Generator
     {
         public static string WriteNative(this ReturnValue returnValue, Namespace currentNamespace)
         {
-            var type = returnValue.SymbolReference.GetSymbol().NativeName;
-            
-            if (returnValue.SymbolReference.GetSymbol().Namespace is null || currentNamespace == returnValue.SymbolReference.GetSymbol().Namespace)
-            {
-                if(returnValue.Array is {})
-                    return type + "[]";
+            var symbol = returnValue.SymbolReference.GetSymbol();
+            var type = symbol.NativeName;
 
+            if (returnValue.Array is { })
+                type = type + "[]";
+
+            if (!symbol.IsForeignTo(currentNamespace))
                 return type;
-            }
 
-            var namespaceName = returnValue.SymbolReference.GetSymbol().Namespace?.Name;
-            
-            if(returnValue.Array is {})
-                return namespaceName + "." + type + "[]";
+            if (symbol.Namespace is null)
+                throw new Exception("Can not write return value, because namespace is missing");
 
-            return namespaceName + "." + type;
+            return symbol.Namespace.Name + "." + type;
         }
-        
+
         public static string WriteManaged(this ReturnValue returnValue)
         {
             return "ReturnValueManaged";

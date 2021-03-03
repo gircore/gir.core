@@ -24,6 +24,7 @@ namespace Generator
 
             var typeRenamer = new TypeRenamer();
             typeRenamer.SuffixDelegates(loadedProjects);
+            typeRenamer.SetNativeNames(loadedProjects);
             
             Log.Information("Ready to write.");
 
