@@ -1,6 +1,6 @@
-{{~
+{{-
 wrapper_name = managed_name + "Native"
-~}}
+-}}
 
 using System;
 using System.Runtime.InteropServices;
@@ -16,7 +16,7 @@ namespace {{ namespace.name }}
     /// <summary>
     /// Call Handler for {{ managed_name }}. A call annotation indicates the closure should
     /// be valid for the duration of the call. This handler does not implement any special
-    /// memory management. 
+    /// memory management. This is the default handler.
     /// </summary>
     public class {{ managed_name }}CallHandler
     {
