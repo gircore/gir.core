@@ -5,9 +5,9 @@ namespace Generator
 {
     public static class FieldExtension
     {
-        public static string WriteNative(this Field field)
+        public static string WriteNative(this Field field, Namespace currentNamespace)
         {
-            var type =  "TODOTYPEFIELD";//WriteNativeSymbolReference(field.SymbolReference);
+            var type = ((Type) field).WriteNative(currentNamespace);
 
             var builder = new StringBuilder();
             builder.Append(field.WriteNativeSummary());

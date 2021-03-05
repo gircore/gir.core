@@ -4,11 +4,12 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Field : Symbol
+    public class Field : Symbol, Type
     {
         public SymbolReference SymbolReference { get; }
         
         public Callback? Callback { get; }
+        public Array? Array { get; }
 
         /// <summary>
         /// Creates a new field.
@@ -16,10 +17,12 @@ namespace Repository.Model
         /// <param name="name"></param>
         /// <param name="managedName"></param>
         /// <param name="symbolReference"></param>
+        /// <param name="array"></param>
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
-        public Field(string name, string managedName, SymbolReference symbolReference, Callback? callback = null) : base(name, managedName)
+        public Field(string name, string managedName, SymbolReference symbolReference, Array? array = null, Callback? callback = null) : base(name, managedName)
         {
             SymbolReference = symbolReference;
+            Array = array;
             Callback = callback;
 
             TryResolveSymbolReference();

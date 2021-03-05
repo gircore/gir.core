@@ -18,11 +18,11 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void WriteTypes(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Symbol> objects)
+        public void WriteTypes(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Symbol> objects, Namespace @namespace)
         {
             foreach (Symbol obj in objects)
             {
-                var scriptObject = _scriptObjectFactory.CreateForClasses();
+                var scriptObject = _scriptObjectFactory.CreateForClasses(@namespace);
                 scriptObject.Import(obj);
 
                 //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333

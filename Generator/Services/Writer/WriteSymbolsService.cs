@@ -19,7 +19,7 @@ namespace Generator.Services.Writer
 
         public void WriteSymbols(string projectName, string outputDir, string templateName, string subfolder, string name, IEnumerable<Symbol> symbols, Namespace @namespace)
         {
-            var scriptObject = _scriptObjectFactory.CreateBase();
+            var scriptObject = _scriptObjectFactory.CreateBase(@namespace);
             scriptObject.Add(name.ToLower(), symbols);
             scriptObject.Add("namespace", @namespace);
             scriptObject.Import("write_managed_constant", new Func<Constant, string>((c) => c.WriteManaged()));

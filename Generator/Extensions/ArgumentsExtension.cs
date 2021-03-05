@@ -17,7 +17,7 @@ namespace Generator
             return string.Join(", ", args);
         }
         
-        public static string WriteNative(this IEnumerable<Argument> arguments)
+        public static string WriteNative(this IEnumerable<Argument> arguments, Namespace currentNamespace)
         {
             var args = new List<string>();
             foreach (var argument in arguments)
@@ -31,7 +31,7 @@ namespace Generator
                     _ => ""
                 });
 
-                builder.Append(argument.WriteNative());
+                builder.Append(argument.WriteNative(currentNamespace));
 
                 if (argument.Nullable)
                     builder.Append('?');

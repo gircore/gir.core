@@ -32,10 +32,15 @@ namespace Generator.Services
                 // This is GObjec convention. If this changes it is expected
                 // that an additional attribute is inserted in the gir file.
 
-                foreach (var record in project.Namespace.Records)
-                    record.NativeName = "IntPtr";
-
-                //TODO: rename native names for other structured data types
+                var structuredTypes = IEnumerables.Concat<Symbol>(
+                    project.Namespace.Unions,
+                    project.Namespace.Records,
+                    project.Namespace.Classes,
+                    project.Namespace.Interfaces
+                );
+                
+                foreach (var type in structuredTypes)
+                    type.NativeName = "IntPtr";
             }
             
             Log.Information("Native names set.");

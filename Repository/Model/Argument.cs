@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Argument : Symbol
+    public class Argument : Symbol, Type
     {
         public SymbolReference SymbolReference { get; }
         public Direction Direction { get; }

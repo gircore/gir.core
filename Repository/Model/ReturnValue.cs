@@ -3,7 +3,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class ReturnValue : ISymbolReferenceProvider
+    public class ReturnValue : Type, ISymbolReferenceProvider
     {
         public Transfer Transfer { get; }
         public bool Nullable { get; }

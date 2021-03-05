@@ -9,9 +9,15 @@ namespace Generator
             return "ArgumentWriteManaged";
         }
         
-        public static string WriteNative(this Argument argument)
+        public static string WriteNative(this Argument argument, Namespace currentNamespace)
         {
-            return "ArgumentWriteNative";
+            var attribute = argument.Array.GetMarshallAttribute();
+            var type = ((Type) argument).WriteNative(currentNamespace);
+
+            if (attribute.Length > 0)
+                attribute += " ";
+            
+            return $"{attribute}{type}";
         }
     }
 }

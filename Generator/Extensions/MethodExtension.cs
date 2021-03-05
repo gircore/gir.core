@@ -18,7 +18,7 @@ namespace Generator
 
             var summaryText = WriteNativeSummary(method);
             var dllImportText = $"[DllImport(\"{method.Namespace.Name}\", EntryPoint = \"{method.NativeName}\")]\r\n";
-            var methodText = $"public static extern {returnValue} {method.ManagedName}({method.Arguments.WriteNative()});\r\n";
+            var methodText = $"public static extern {returnValue} {method.ManagedName}({method.Arguments.WriteNative(currentNamespace)});\r\n";
 
             return summaryText + dllImportText + methodText;
         }
