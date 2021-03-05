@@ -59,10 +59,10 @@ namespace Repository.Analysis
             // AddBasicSymbol(new BasicSymbol("GQuark", "uint"));
 
             AddSymbol(Symbol.Primitive("guchar", "byte"));
-            AddSymbol(Symbol.Primitive("gchar", "byte"));
-            AddSymbol(Symbol.Primitive("char", "byte"));
+            AddSymbol(Symbol.Primitive("gchar", "sbyte"));
+            AddSymbol(Symbol.Primitive("char", "sbyte"));
             AddSymbol(Symbol.Primitive("guint8", "byte"));
-            AddSymbol(Symbol.Primitive("gint8", "byte"));
+            AddSymbol(Symbol.Primitive("gint8", "sbyte"));
 
             AddSymbol(Symbol.Primitive("glong", "long"));
             AddSymbol(Symbol.Primitive("gssize", "long"));
