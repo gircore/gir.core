@@ -7,12 +7,12 @@ namespace Generator
     {
         public static string WriteNative(this ReturnValue returnValue, Namespace currentNamespace)
         {
-            return ((Type) returnValue).WriteNative(currentNamespace);
+            return ((Type) returnValue).WriteNativeType(currentNamespace);
         }
 
-        public static string WriteManaged(this ReturnValue returnValue)
+        public static string WriteManaged(this ReturnValue returnValue, Namespace currentNamespace)
         {
-            return "ReturnValueManaged";
+            return ((Type) returnValue).WriteManagedType(currentNamespace);
         }
     }
 }

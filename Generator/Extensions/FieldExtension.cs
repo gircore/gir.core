@@ -7,7 +7,7 @@ namespace Generator
     {
         public static string WriteNative(this Field field, Namespace currentNamespace)
         {
-            var type = ((Type) field).WriteNative(currentNamespace);
+            var type = ((Type) field).WriteNativeType(currentNamespace);
 
             var builder = new StringBuilder();
             builder.Append(field.WriteNativeSummary());

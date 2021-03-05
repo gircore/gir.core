@@ -13,9 +13,9 @@ namespace Generator.Factories
         {
             var scriptObject = new ScriptObject();
             scriptObject.Import("write_native_arguments", new Func<IEnumerable<Argument>, string>(a => a.WriteNative(currentNamespace)));
-            scriptObject.Import("write_managed_arguments", new Func<IEnumerable<Argument>, string>(a => a.WriteManaged()));
+            scriptObject.Import("write_managed_arguments", new Func<IEnumerable<Argument>, string>(a => a.WriteManaged(currentNamespace)));
             scriptObject.Import("write_native_return_value", new Func<ReturnValue, string>(a => a.WriteNative(currentNamespace)));
-            scriptObject.Import("write_managed_return_value", new Func<ReturnValue, string>(a => a.WriteManaged()));
+            scriptObject.Import("write_managed_return_value", new Func<ReturnValue, string>(a => a.WriteManaged(currentNamespace)));
             scriptObject.Import("write_native_method", new Func<Method, string>(m => m.WriteNative(currentNamespace)));
             scriptObject.Import("get_if", new Func<string, bool, string>(TemplateWriter.GetIf));
 
@@ -37,7 +37,7 @@ namespace Generator.Factories
             scriptObject.Import("write_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>(TemplateWriter.WriteInheritance));
             scriptObject.Import("write_class_fields", new Func<IEnumerable<Field>, string>(f => f.WriteClassFields(currentNamespace)));
             scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
-            scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(a => a.WriteManaged()));
+            scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(a => a.WriteManaged(currentNamespace)));
             scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
             
             scriptObject.Import("write_marshal_argument_to_managed", new Func<Argument, string, string>(TemplateWriter.WriteMarshalArgumentToManaged));

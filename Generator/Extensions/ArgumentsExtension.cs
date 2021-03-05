@@ -8,13 +8,11 @@ namespace Generator
 {
     internal static class ArgumentsExtension
     {
-        public static string WriteManaged(this IEnumerable<Argument> arguments)
+        public static string WriteManaged(this IEnumerable<Argument> arguments, Namespace currentNamespace)
         {
-            var args = arguments
-                .Where(x => x.ClosureIndex == null) // Exclude "userData" parameters
-                .Select(x => x.WriteManaged());
-            
-            return string.Join(", ", args);
+            var args = arguments.Where(x => x.ClosureIndex == null); // Exclude "userData" parameters
+
+            return string.Join(", ", args.Select(x => x.WriteManaged(currentNamespace)));
         }
         
         public static string WriteNative(this IEnumerable<Argument> arguments, Namespace currentNamespace)
@@ -22,19 +20,13 @@ namespace Generator
             var args = new List<string>();
             foreach (var argument in arguments)
             {
-                var builder = new StringBuilder();
-
-                builder.Append(argument.WriteNativeType(currentNamespace));
-                builder.Append(' ');
-                builder.Append(argument.NativeName);
-
-                args.Add(builder.ToString());
+                args.Add(argument.WriteNative(currentNamespace));
             }
 
             return string.Join(", ", args);
         }
         
-        public static string WriteSignalArgsProperties(this IEnumerable<Argument> arguments)
+        public static string WriteSignalArgsProperties(this IEnumerable<Argument> arguments, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
             var converter = new CaseConverter(); //TODO Make this a service
@@ -43,7 +35,7 @@ namespace Generator
             foreach (var argument in arguments)
             {
                 index += 1;
-                var type = argument.WriteManaged();
+                var type = argument.WriteManagedType(currentNamespace);
                 var name = converter.ToPascalCase(argument.ManagedName);
 
                 builder.AppendLine($"public {type} {name} => Args[{index}].Extract<{type}>();");
