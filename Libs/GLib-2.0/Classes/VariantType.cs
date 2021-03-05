@@ -20,7 +20,7 @@ namespace GLib
 
         #region Constructors
 
-        public VariantType(string type) : this(Native.@new(type)) { }
+        public VariantType(string type) : this(Native.Methods.New(type)) { }
 
         internal VariantType(IntPtr handle)
         {
@@ -32,17 +32,14 @@ namespace GLib
         #region Methods
 
         public override string? ToString()
-        {
-            IntPtr variantType = Native.dup_string(Handle);
-            return StringHelper.ToAnsiStringAndFree(variantType);
-        }
+            => Native.Methods.DupString(Handle);
 
         #endregion
 
         #region IDisposable Implementation
 
         public void Dispose()
-            => Native.free(Handle);
+            => Native.Methods.Free(Handle);
 
         #endregion
     }
