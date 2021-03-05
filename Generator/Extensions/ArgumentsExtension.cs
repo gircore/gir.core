@@ -24,18 +24,7 @@ namespace Generator
             {
                 var builder = new StringBuilder();
 
-                builder.Append(argument.Direction switch
-                {
-                    Direction.OutCalleeAllocates => "out ",
-                    Direction.OutCallerAllocates => "ref ",
-                    _ => ""
-                });
-
-                builder.Append(argument.WriteNative(currentNamespace));
-
-                if (argument.Nullable)
-                    builder.Append('?');
-
+                builder.Append(argument.WriteNativeType(currentNamespace));
                 builder.Append(' ');
                 builder.Append(argument.NativeName);
 
