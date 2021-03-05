@@ -6,7 +6,7 @@ using Repository.Model;
 
 namespace Generator
 {
-    public static class ArgumentsExtension
+    internal static class ArgumentsExtension
     {
         public static string WriteManaged(this IEnumerable<Argument> arguments)
         {

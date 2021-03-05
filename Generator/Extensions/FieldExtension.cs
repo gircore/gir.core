@@ -3,7 +3,7 @@ using Repository.Model;
 
 namespace Generator
 {
-    public static class FieldExtension
+    internal static class FieldExtension
     {
         public static string WriteNative(this Field field, Namespace currentNamespace)
         {

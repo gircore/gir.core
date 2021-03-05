@@ -2,7 +2,7 @@
 
 namespace Generator
 {
-    public static class ConstantExtension
+    internal static class ConstantExtension
     {
         public static string WriteManaged(this Constant constant)
         {

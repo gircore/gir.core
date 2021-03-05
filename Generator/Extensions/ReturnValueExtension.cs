@@ -3,7 +3,7 @@ using Type = Repository.Model.Type;
 
 namespace Generator
 {
-    public static class ReturnValueExtension
+    internal static class ReturnValueExtension
     {
         public static string WriteNative(this ReturnValue returnValue, Namespace currentNamespace)
         {

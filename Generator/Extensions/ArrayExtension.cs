@@ -2,7 +2,7 @@
 
 namespace Generator
 {
-    public static class ArrayExtension
+    internal static class ArrayExtension
     {
         public static string GetMarshallAttribute(this Array? array)
         {               

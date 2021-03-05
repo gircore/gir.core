@@ -5,7 +5,7 @@ using Repository.Model;
 
 namespace Generator
 {
-    public static class FieldsExtension
+    internal static class FieldsExtension
     {
         public static string WriteNative(this IEnumerable<Field> fields, Namespace currentNamespace)
         {

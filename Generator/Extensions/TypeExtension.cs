@@ -4,7 +4,7 @@ using Type = Repository.Model.Type;
 
 namespace Generator
 {
-    public static class TypeExtension
+    internal static class TypeExtension
     {
         public static string WriteNative(this Type type, Namespace currentNamespace)
         {
