@@ -9,11 +9,13 @@ namespace Repository.Factories
     {
         private readonly ReturnValueFactory _returnValueFactory;
         private readonly ArgumentsFactory _argumentsFactory;
+        private readonly CaseConverter _caseConverter;
 
-        public CallbackFactory(ReturnValueFactory returnValueFactory, ArgumentsFactory argumentsFactory)
+        public CallbackFactory(ReturnValueFactory returnValueFactory, ArgumentsFactory argumentsFactory, CaseConverter caseConverter)
         {
             _returnValueFactory = returnValueFactory;
             _argumentsFactory = argumentsFactory;
+            _caseConverter = caseConverter;
         }
         
         public Callback Create(CallbackInfo callbackInfo, Namespace @namespace)
@@ -27,8 +29,8 @@ namespace Repository.Factories
             return new Callback(
                 @namespace: @namespace,
                 name: callbackInfo.Name,
-                nativeName: callbackInfo.Name,
-                managedName: callbackInfo.Name,
+                nativeName: _caseConverter.ToPascal(callbackInfo.Name),
+                managedName: _caseConverter.ToPascal(callbackInfo.Name),
                 returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue),
                 arguments: _argumentsFactory.Create(callbackInfo.Parameters).ToList()
             );

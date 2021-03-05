@@ -26,6 +26,7 @@ namespace Generator.Factories
         {
             var scriptObject = CreateBase(currentNamespace);
             scriptObject.Import("write_struct_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
+            scriptObject.Import("write_struct_delegates", new Func<IEnumerable<Field>, string>(f => f.WriteNativeDelegates(currentNamespace)));
             
             return scriptObject;
         }
@@ -39,9 +40,7 @@ namespace Generator.Factories
             scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
             scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(a => a.WriteManaged(currentNamespace)));
             scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
-            
-            scriptObject.Import("write_marshal_argument_to_managed", new Func<Argument, string, string>(TemplateWriter.WriteMarshalArgumentToManaged));
-            scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, string, bool, string>(TemplateWriter.WriteCallbackMarshaller));
+            scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, ReturnValue, string>((a, r) => TemplateWriter.WriteCallbackMarshaller(a, r, currentNamespace)));
             scriptObject.Import("write_class_struct_fields", new Func<IEnumerable<Field>, string, string>((f,s) => f.WriteClassStructFields(s, currentNamespace)));
             
             return scriptObject;

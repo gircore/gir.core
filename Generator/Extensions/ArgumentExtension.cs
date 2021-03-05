@@ -13,6 +13,11 @@ namespace Generator
         public static string WriteManaged(this Argument argument, Namespace currentNamespace)
             => argument.Write(Target.Managed, currentNamespace);
 
+        internal static string WriteTypeAndName(this Argument argument, Target target, Namespace currentNamespace)
+        {
+            return GetType(argument, target, currentNamespace) + " " + argument.NativeName;
+        }
+        
         private static string Write(this Argument argument, Target target,  Namespace currentNamespace)
         {
             var type = GetFullType(argument, target, currentNamespace);
@@ -30,9 +35,8 @@ namespace Generator
             var attribute = GetAttribute(argument);
             var direction = GetDirection(argument);
             var type = GetType(argument, target, currentNamespace);
-            var nullable = GetNullable(argument);
-            
-            return $"{attribute}{direction}{type}{nullable}";
+
+            return $"{attribute}{direction}{type}";
         }
 
         private static string GetAttribute(Argument argument)
@@ -55,10 +59,10 @@ namespace Generator
             };
         }
         
-        private static string GetType(Argument argument, Target target, Namespace currentNamespace) => target switch
+        internal static string GetType(this Argument argument, Target target, Namespace currentNamespace) => target switch
         {
-            Target.Managed => argument.WriteManagedType(currentNamespace),
-            Target.Native => argument.WriteNativeType(currentNamespace),
+            Target.Managed => argument.WriteManagedType(currentNamespace) + GetNullable(argument),
+            Target.Native => argument.WriteNativeType(currentNamespace) + GetNullable(argument),
             _ => throw new Exception($"Unknown {nameof(Target)}")
         };
 

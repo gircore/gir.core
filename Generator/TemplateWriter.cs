@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Repository;
 using Repository.Analysis;
 using Repository.Model;
 
@@ -31,7 +29,7 @@ namespace Generator
         public static string GetIf(string text, bool condition)
             => condition ? text : "";
 
-        public static string WriteCallbackMarshaller(IEnumerable<Argument> arguments, string funcName, bool hasReturnValue)
+        public static string WriteCallbackMarshaller(IEnumerable<Argument> arguments, ReturnValue returnValue, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
             var args = new List<string>();
@@ -39,44 +37,47 @@ namespace Generator
             foreach (Argument arg in arguments)
             {
                 // Skip 'user_data' parameters (for callbacks, when closure index is not zero)
-                if (arg.ClosureIndex != 0)
+                if (arg.ClosureIndex.HasValue)
                     continue;
 
-                var newName = arg.ManagedName + "Parameter";
-                builder.AppendLine(WriteMarshalArgumentToManaged(arg, newName));
-                args.Add(newName);
+                builder.AppendLine(WriteMarshalArgumentToManaged(arg, currentNamespace));
+                args.Add(arg.ManagedName + "Managed");
             }
 
-            var funcArgs = string.Join(separator: ", ", values: args);
-            var funcCall = hasReturnValue
-                ? $"var result = {funcName}({funcArgs});"
-                : $"{funcName}({funcArgs});";
+            var funcArgs = string.Join(
+                separator: ", ", 
+                values: args
+            );
+            
+            var funcCall = returnValue.IsVoid()
+                ? $"managedCallback({funcArgs});" 
+                : $"var result = managedCallback({funcArgs});\r\n\r\n return result;";
 
             builder.Append(funcCall);
 
             return builder.ToString();
         }
 
-        public static string WriteMarshalArgumentToManaged(Argument arg, string paramName)
+        private static string WriteMarshalArgumentToManaged(Argument arg, Namespace currentNamespace)
         {
             // TODO: We need to support disguised structs (opaque types)
             Symbol symbol = arg.SymbolReference.GetSymbol();
-            var fromName = arg.ManagedName;
-            var managedType = symbol.ManagedName;
-
+            var managedType = arg.GetType(Target.Managed, currentNamespace);
+            
+            
             var expression = symbol switch
             {
                 // GObject -> Use Object.WrapHandle
-                Class => $"Object.WrapHandle<{managedType}>({fromName});",
+                Class => $"Object.WrapHandle<{managedType}>({arg.NativeName});",
 
                 // Struct -> Use struct marshalling (TODO: Should support opaque types)
-                Record => $"Marshal.PtrToStructure<{managedType}>({fromName});",
+                Record => $"Marshal.PtrToStructure<{managedType}>({arg.NativeName});",
 
                 // Other -> Try a brute-force cast
-                _ => $"({managedType}){fromName};"
+                _ => $"({managedType}){arg.NativeName};"
             };
 
-            return $"{managedType} {paramName} = " + expression;
+            return $"{arg.WriteTypeAndName(Target.Managed, currentNamespace)}Managed = " + expression;
         }
 
         public static bool SignalsHaveArgs(IEnumerable<Signal> signals)

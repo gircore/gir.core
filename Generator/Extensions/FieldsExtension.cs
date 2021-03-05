@@ -7,6 +7,19 @@ namespace Generator
 {
     internal static class FieldsExtension
     {
+        public static string WriteNativeDelegates(this IEnumerable<Field> fields, Namespace currentNamespace)
+        {
+            var builder = new StringBuilder();
+
+            foreach (Field field in fields)
+            {
+                if(field.Callback is{})
+                    builder.AppendLine(field.Callback.WriteNative(currentNamespace));
+            }
+
+            return builder.ToString();   
+        }
+        
         public static string WriteNative(this IEnumerable<Field> fields, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
