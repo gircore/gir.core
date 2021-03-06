@@ -33,7 +33,7 @@ namespace Repository.Factories
                 @namespace: @namespace, 
                 name: @record.Name, 
                 managedName: @record.Name, 
-                gLibClassStructFor: _symbolReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor, null),
+                gLibClassStructFor: _symbolReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor),
                 methods:_methodFactory.Create(@record.Methods, @namespace),
                 functions: _methodFactory.Create(@record.Functions, @namespace),
                 getTypeFunction: getTypeFunction,

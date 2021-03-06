@@ -1,1 +1,1 @@
-{{$constant | write_native_constant }}
+{{$constant | write_managed_constant }}

@@ -1,1 +1,1 @@
-﻿{{ write_callback_marshaller $1 $2 $3 }}
+﻿{{ write_callback_marshaller arguments return_value}}

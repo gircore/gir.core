@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Repository.Factories.Model;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -13,13 +14,15 @@ namespace Repository.Factories
         private readonly IdentifierConverter _identifierConverter;
         private readonly CaseConverter _caseConverter;
         private readonly CallbackFactory _callbackFactory;
+        private readonly ArrayFactory _arrayFactory;
 
-        public FieldFactory(SymbolReferenceFactory symbolReferenceFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, CallbackFactory callbackFactory)
+        public FieldFactory(SymbolReferenceFactory symbolReferenceFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, CallbackFactory callbackFactory, ArrayFactory arrayFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _identifierConverter = identifierConverter;
             _caseConverter = caseConverter;
             _callbackFactory = callbackFactory;
+            _arrayFactory = arrayFactory;
         }
         
         public Field Create(FieldInfo info, Namespace @namespace)
@@ -35,7 +38,8 @@ namespace Repository.Factories
                 name: _identifierConverter.Convert(info.Name),
                 managedName: _caseConverter.ToPascalCase(_identifierConverter.Convert(info.Name)),
                 symbolReference: _symbolReferenceFactory.CreateFromField(info),
-                callback: callback
+                callback: callback,
+                array: _arrayFactory.Create(info.Array)
             );
         }
 

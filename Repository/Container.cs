@@ -1,4 +1,5 @@
 ﻿using Repository.Factories;
+using Repository.Factories.Model;
 using Repository.Graph;
 using Repository.Services;
 using StrongInject;
@@ -30,6 +31,7 @@ namespace Repository
     [Register(typeof(FieldFactory))]
     [Register(typeof(SignalFactory))]
     [Register(typeof(ConstantFactory))]
+    [Register(typeof(ArrayFactory))]
     internal partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]

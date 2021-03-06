@@ -2,6 +2,6 @@
 {
     public partial struct Source
     {
-        public static void Remove(uint tag) => Global.Native.source_remove(tag);
+        public static void Remove(uint tag) => Functions.Native.SourceRemove(tag);
     }
 }

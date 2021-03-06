@@ -42,15 +42,7 @@ namespace Repository.Services
             foreach (var reference in proj.Namespace.GetSymbolReferences())
             {
                 var symbol = view.LookupType(reference.Type);
-
-
-                ReferenceType kind = symbol switch
-                {
-                    { Namespace: {} ns } when ns.Name == proj.Namespace.Name => ReferenceType.Internal,
-                    _ => ReferenceType.External
-                };
-
-                reference.ResolveAs(symbol, kind);
+                reference.ResolveAs(symbol);
             }
         }
 

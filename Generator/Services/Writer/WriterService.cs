@@ -30,7 +30,8 @@ namespace Generator.Services.Writer
                 outputDir: outputDir,
                 templateName: "delegate.sbntxt",
                 subfolder: "Delegates",
-                objects: loadedProject.Namespace.Callbacks
+                objects: loadedProject.Namespace.Callbacks,
+                @namespace: loadedProject.Namespace
             );
 
             _writeTypesService.WriteTypes(
@@ -38,7 +39,8 @@ namespace Generator.Services.Writer
                 outputDir: outputDir,
                 templateName: "class.sbntxt",
                 subfolder: "Classes",
-                objects: loadedProject.Namespace.Classes
+                objects: loadedProject.Namespace.Classes,
+                @namespace: loadedProject.Namespace
             );
 
             _writeTypesService.WriteTypes(
@@ -46,7 +48,8 @@ namespace Generator.Services.Writer
                 outputDir: outputDir,
                 templateName: "interface.sbntxt",
                 subfolder: "Interfaces",
-                objects: loadedProject.Namespace.Interfaces
+                objects: loadedProject.Namespace.Interfaces,
+                @namespace: loadedProject.Namespace
             );
 
             _writeTypesService.WriteTypes(
@@ -54,7 +57,8 @@ namespace Generator.Services.Writer
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
                 subfolder: "Enums",
-                objects: loadedProject.Namespace.Enumerations
+                objects: loadedProject.Namespace.Enumerations,
+                @namespace: loadedProject.Namespace
             );
 
             _writeTypesService.WriteTypes(
@@ -62,13 +66,15 @@ namespace Generator.Services.Writer
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
                 subfolder: "Enums",
-                objects: loadedProject.Namespace.Bitfields
+                objects: loadedProject.Namespace.Bitfields,
+                @namespace: loadedProject.Namespace
             );
 
             _writeRecordsService.WriteRecords(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
-                records: loadedProject.Namespace.Records
+                records: loadedProject.Namespace.Records,
+                @namespace: loadedProject.Namespace
             );
 
             _writeSymbolsService.WriteSymbols(

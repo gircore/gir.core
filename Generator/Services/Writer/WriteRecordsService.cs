@@ -17,7 +17,7 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void WriteRecords(string projectName, string outputDir, IEnumerable<Record> records)
+        public void WriteRecords(string projectName, string outputDir, IEnumerable<Record> records, Namespace @namespace)
         {
             foreach (var record in records)
             {
@@ -29,7 +29,7 @@ namespace Generator.Services.Writer
                         continue;
                     }
 
-                    var scriptObject =  _scriptObjectFactory.CreateForStructs();
+                    var scriptObject =  _scriptObjectFactory.CreateForStructs(@namespace);
                     scriptObject.Import(record);
 
                     _writeHelperService.Write(

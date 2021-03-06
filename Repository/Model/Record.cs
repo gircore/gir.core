@@ -8,10 +8,15 @@ namespace Repository.Model
     {
         public RecordType Type => this switch
         {
-            {Disguised: true, GLibClassStructFor: {}} => RecordType.PrivateClass,
-            {Disguised: false, GLibClassStructFor: {}} => RecordType.PublicClass,
+            {Disguised: true, GLibClassStructFor: { }} => RecordType.PrivateClass,
+            {Disguised: false, GLibClassStructFor: { }} => RecordType.PublicClass,
             {Disguised: false, Fields: { } f} when f.Any() => RecordType.Value,
-            {Disguised: false, Constructors: {} c} when c.Any() => RecordType.Ref,
+
+            //As structured types are always passed around via pointers
+            //they need to be Ref types if there are any methods or constructors
+            {Constructors: { } c} when c.Any() => RecordType.Ref,
+            {Methods : { } m} when m.Any() => RecordType.Ref,
+
             _ => RecordType.Opaque
         };
 
