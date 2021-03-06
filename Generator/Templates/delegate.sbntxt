@@ -29,6 +29,10 @@ namespace {{ namespace.name }}
         private {{ return_value | write_managed_return_value }} NativeCallbackMarshaller({{ arguments | write_native_arguments}})
         {
             {{ include 'delegate.marshaller.sbntxt' }}
+            
+            {{~ if return_value | return_value_is_void != true ~}}
+            return managed_callback_result;
+            {{~ end ~}}
         }
     }
     
@@ -56,6 +60,10 @@ namespace {{ namespace.name }}
             
             // Async callbacks are only ever called once
             gch.Free();
+            
+            {{~ if return_value | return_value_is_void != true ~}}
+            return managed_callback_result;
+            {{~ end ~}}
         }
     }
 
@@ -85,6 +93,10 @@ namespace {{ namespace.name }}
         private {{ return_value | write_managed_return_value }} NativeCallbackMarshaller({{ arguments | write_native_arguments}})
         {
             {{ include 'delegate.marshaller.sbntxt' }}
+            
+            {{~ if return_value | return_value_is_void != true ~}}
+            return managed_callback_result;
+            {{~ end ~}}
         }
 
         private void DestroyCallback(IntPtr? userData)
