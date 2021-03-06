@@ -20,7 +20,7 @@ namespace Generator
             if (type.Array is { })
                 name = name + "[]";
 
-            if (!symbol.IsForeignTo(currentNamespace))
+            if (!symbol.IsForeignTo(currentNamespace) || symbol.IsIntPtr(target))
                 return name;
 
             if (symbol.Namespace is null)
