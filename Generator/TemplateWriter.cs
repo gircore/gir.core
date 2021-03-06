@@ -8,21 +8,19 @@ namespace Generator
 {
     internal static class TemplateWriter
     {
-        public static string WriteInheritance(SymbolReference? parent, IEnumerable<SymbolReference> implements)
+        public static string WriteInheritance(SymbolReference? parent, IEnumerable<SymbolReference> implements, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
 
             if (parent is { })
-                builder.Append(": " + parent.GetSymbol().ManagedName);
+                builder.Append(": " + parent.GetSymbol().Write(Target.Managed, currentNamespace));
 
             var refs = implements.ToList();
             if (refs.Count == 0)
                 return builder.ToString();
 
-            if (parent is { })
-                builder.Append(", ");
-
-            builder.Append(string.Join(", ", refs.Select(x => x.GetSymbol().ManagedName)));
+            builder.Append(parent is { } ? ", " : ": ");
+            builder.Append(string.Join(", ", refs.Select(x => x.GetSymbol().Write(Target.Managed, currentNamespace))));
             return builder.ToString();
         }
 

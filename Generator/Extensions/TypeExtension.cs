@@ -14,26 +14,12 @@ namespace Generator
         
         private static string Write(this Type type, Target target,  Namespace currentNamespace)
         {
-            var symbol = type.SymbolReference.GetSymbol();
-            var name = GetName(symbol, target);
+            var name = type.SymbolReference.GetSymbol().Write(target, currentNamespace);
 
             if (type.Array is { })
-                name = name + "[]";
+                name += "[]";
 
-            if (!symbol.IsForeignTo(currentNamespace) || symbol.IsIntPtr(target))
-                return name;
-
-            if (symbol.Namespace is null)
-                throw new Exception("Can not write type value, because namespace is missing");
-
-            return symbol.Namespace.Name + "." + name;
+            return name;
         }
-        
-        private static string GetName(Symbol symbol, Target target) => target switch
-        {
-            Target.Managed => symbol.ManagedName,
-            Target.Native => symbol.NativeName,
-            _ => throw new Exception($"Unknown {nameof(Target)}")
-        };
     }
 }
