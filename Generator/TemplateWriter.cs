@@ -51,7 +51,7 @@ namespace Generator
             
             var funcCall = returnValue.IsVoid()
                 ? $"managedCallback({funcArgs});" 
-                : $"var result = managedCallback({funcArgs});\r\n\r\n return result;";
+                : $"var managed_callback_result = managedCallback({funcArgs});";
 
             builder.Append(funcCall);
 

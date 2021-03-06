@@ -42,6 +42,7 @@ namespace Generator.Factories
             scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
             scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, ReturnValue, string>((a, r) => TemplateWriter.WriteCallbackMarshaller(a, r, currentNamespace)));
             scriptObject.Import("write_class_struct_fields", new Func<IEnumerable<Field>, string, string>((f,s) => f.WriteClassStructFields(s, currentNamespace)));
+            scriptObject.Import("return_value_is_void", new Func<ReturnValue, bool>(r => r.IsVoid()));
             
             return scriptObject;
         }
