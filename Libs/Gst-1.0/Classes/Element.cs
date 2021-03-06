@@ -54,12 +54,12 @@ namespace Gst
         }
 
         public Bus? GetBus()
-            => WrapNullableHandle<Bus>(Native.get_bus(Handle), true);
+            => WrapNullableHandle<Bus>(Native.Methods.GetBus(Handle), true);
 
-        public bool AddPad(Pad pad) => Native.add_pad(Handle, pad.Handle);
+        public bool AddPad(Pad pad) => Native.Methods.AddPad(Handle, pad.Handle);
 
         public StateChangeReturn SetState(State state)
-            => Native.set_state(Handle, state);
+            => Native.Methods.SetState(Handle, state);
 
         public StateChangeReturn GetState(out State state, out State pending, ulong timeout)
         {
@@ -77,30 +77,30 @@ namespace Gst
         }
 
         public bool SeekSimple(Format format, SeekFlags seekFlags, long seekPos)
-            => Native.seek_simple(Handle, format, seekFlags, seekPos);
+            => Native.Methods.SeekSimple(Handle, format, seekFlags, seekPos);
 
         public bool QueryPosition(Format format, out long cur)
         {
-            return Native.query_position(Handle, format, out cur);
+            return Native.Methods.QueryPosition(Handle, format, out cur);
         }
 
         public bool QueryDuration(Format format, out long duration)
         {
-            return Native.query_duration(Handle, format, out duration);
+            return Native.Methods.QueryDuration(Handle, format, out duration);
         }
 
         public Pad? GetStaticPad(string name)
-            => WrapNullableHandle<Pad>(Native.get_static_pad(Handle, name), true);
+            => WrapNullableHandle<Pad>(Native.Methods.GetStaticPad(Handle, name), true);
 
         public static void Unlink(Element src, Element dest)
-            => Native.unlink(src.Handle, dest.Handle);
+            => Native.Methods.Unlink(src.Handle, dest.Handle);
 
         public void Unlink(Element dest) => Unlink(this, dest);
 
         public bool Link(Element dest) => Link(this, dest);
 
         public static bool Link(Element src, Element dest)
-            => Native.link(src.Handle, dest.Handle);
+            => Native.Methods.Link(src.Handle, dest.Handle);
 
         // FIXME: This function is the culprit for wavparse0 errors
         // TODO: Make this work properly, and additionally clean up
@@ -125,10 +125,10 @@ namespace Gst
         }
 
         public Pad? GetRequestPad(string name)
-            => WrapNullableHandle<Pad>(Native.get_request_pad(Handle, name), true);
+            => WrapNullableHandle<Pad>(Native.Methods.GetRequestPad(Handle, name), true);
 
         public bool SyncStateWithParent()
-            => Native.sync_state_with_parent(Handle);
+            => Native.Methods.SyncStateWithParent(Handle);
 
         // Some older mono applications appear to use a
         // string indexer to lookup properties from GLib

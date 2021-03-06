@@ -82,8 +82,8 @@ namespace GObject
                     values
                 );
 
-                if (Native.is_floating(handle))
-                    Native.ref_sink(handle); //Make sure handle is owned by us
+                if (Native.Methods.IsFloating(handle))
+                    Native.Methods.RefSink(handle); //Make sure handle is owned by us
             }
             finally
             {
@@ -110,14 +110,14 @@ namespace GObject
                 // - Unowned InitiallyUnowned floating objects need to be ref_sinked
                 // - Unowned InitiallyUnowned non-floating objects need to be refed
                 // As ref_sink behaves like ref in case of non floating instances we use it for all 3 cases
-                Native.ref_sink(handle);
+                Native.Methods.RefSink(handle);
             }
             else
             {
                 //In case we own the ref because the ownership was fully transfered to us we
                 //do not need to ref the object at all.
 
-                Debug.Assert(!Native.is_floating(handle), "Owned floating references are not possible.");
+                Debug.Assert(!Native.Methods.IsFloating(handle), "Owned floating references are not possible.");
             }
 
             Initialize(handle);

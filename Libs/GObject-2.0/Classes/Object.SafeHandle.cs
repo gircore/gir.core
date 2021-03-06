@@ -26,7 +26,7 @@ namespace GObject
                     SubclassObjects.Remove(handle);
                 }
 
-                Native.unref(handle);
+                Native.Methods.Unref(handle);
                 return true;
             }
         }

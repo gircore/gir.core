@@ -11,7 +11,7 @@ namespace Gst
 
         //TODO: This method is a shortcut for the user and should probably be part of the toolkit layer
         public void TimedPopFiltered(ulong timeout)
-            => Native.timed_pop_filtered(Handle, timeout, (MessageType.Eos | MessageType.Error));
+            => Native.Methods.TimedPopFiltered(Handle, timeout, (MessageType.Eos | MessageType.Error));
 
         public uint AddWatchFull(int priority, BusFunc func)
             => AddWatchFull(priority, func, null);

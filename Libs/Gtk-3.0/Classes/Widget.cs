@@ -88,10 +88,10 @@ namespace Gtk
         }
 
 
-        public void ShowAll() => Native.show_all(Handle);
-        public void Show() => Native.show(Handle);
-        public StyleContext GetStyleContext() => WrapHandle<StyleContext>(Native.get_style_context(Handle), false);
+        public void ShowAll() => Native.Methods.ShowAll(Handle);
+        public void Show() => Native.Methods.Show(Handle);
+        public StyleContext GetStyleContext() => WrapHandle<StyleContext>(Native.Methods.GetStyleContext(Handle), false);
 
-        public Gdk.Screen GetScreen() => WrapHandle<Gdk.Screen>(Native.get_screen(Handle), false);
+        public Gdk.Screen GetScreen() => WrapHandle<Gdk.Screen>(Native.Methods.GetScreen(Handle), false);
     }
 }

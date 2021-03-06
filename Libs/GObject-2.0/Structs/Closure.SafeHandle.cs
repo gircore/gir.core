@@ -16,8 +16,8 @@ namespace GObject
 
             protected sealed override bool ReleaseHandle()
             {
-                Native.invalidate(handle);
-                Native.unref(handle);
+                Native.Methods.Invalidate(handle);
+                Native.Methods.Unref(handle);
                 return true;
             }
         }

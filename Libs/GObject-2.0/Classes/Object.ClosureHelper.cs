@@ -33,12 +33,12 @@ namespace GObject
                 _callback = action;
                 _marshalCallback = MarshalCallback;
 
-                var handle = Closure.Native.new_simple((uint) Marshal.SizeOf(typeof(Closure)), IntPtr.Zero);
+                var handle = Closure.Native.Methods.NewSimple((uint) Marshal.SizeOf(typeof(Closure)), IntPtr.Zero);
                 _safeHandle = new Closure.ClosureSafeHandle(handle);
 
-                Closure.Native.@ref(Handle);
-                Closure.Native.sink(Handle);
-                Closure.Native.set_marshal(Handle, _marshalCallback);
+                Closure.Native.Methods.Ref(Handle);
+                Closure.Native.Methods.Sink(Handle);
+                Closure.Native.Methods.SetMarshal(Handle, _marshalCallback);
             }
 
             #endregion

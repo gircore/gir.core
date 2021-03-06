@@ -11,25 +11,25 @@ namespace Gst
         #endregion
 
         public static PadLinkReturn Link(Pad sourcePad, Pad sinkPad)
-            => Native.link(sourcePad.Handle, sinkPad.Handle);
+            => Native.Methods.Link(sourcePad.Handle, sinkPad.Handle);
 
         public static bool Unlink(Pad sourcePad, Pad sinkPad)
-            => Native.unlink(sourcePad.Handle, sinkPad.Handle);
+            => Native.Methods.Unlink(sourcePad.Handle, sinkPad.Handle);
 
         public PadLinkReturn Link(Pad sinkPad) => Link(this, sinkPad);
         public bool Unlink(Pad sinkPad) => Unlink(this, sinkPad);
 
-        public bool IsLinked() => Native.is_linked(Handle);
-        public bool IsBlocked() => Native.is_blocked(Handle);
-        public bool IsBlocking() => Native.is_blocking(Handle);
-        public bool IsActive() => Native.is_active(Handle);
+        public bool IsLinked() => Native.Methods.IsLinked(Handle);
+        public bool IsBlocked() => Native.Methods.IsBlocked(Handle);
+        public bool IsBlocking() => Native.Methods.IsBlocking(Handle);
+        public bool IsActive() => Native.Methods.IsActive(Handle);
 
         public Caps? QueryCaps() => QueryCaps(null);
 
-        public Pad? GetPeer() => WrapNullableHandle<Pad>(Native.get_peer(Handle), true);
+        public Pad? GetPeer() => WrapNullableHandle<Pad>(Native.Methods.GetPeer(Handle), true);
 
         public Element? GetParentElement() =>
-            WrapNullableHandle<Element>(Native.get_parent_element(Handle), true);
+            WrapNullableHandle<Element>(Native.Methods.GetParentElement(Handle), true);
 
         public ulong AddProbe(PadProbeType mask, PadProbeCallback callback, DestroyNotify? notify = null)
         {
@@ -46,7 +46,7 @@ namespace Gst
                 Marshal.StructureToPtr(filter, ptr, false);
             }
 
-            IntPtr ret = Native.query_caps(Handle, ptr);
+            IntPtr ret = Native.Methods.QueryCaps(Handle, ptr);
 
             Marshal.FreeHGlobal(ptr);
 

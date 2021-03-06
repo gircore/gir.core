@@ -7,7 +7,7 @@ namespace GdkPixbuf
     {
         public static Pixbuf FromBytes(byte[] data)
         {
-            IntPtr handle = Native.@new();
+            IntPtr handle = Native.Methods.New();
 
             try
             {
@@ -19,7 +19,7 @@ namespace GdkPixbuf
                 Native.close(handle, out error);
                 Error.ThrowOnError(error);
 
-                return new Pixbuf(Native.get_pixbuf(handle), false);
+                return new Pixbuf(Native.Methods.GetPixbuf(handle), false);
             }
             finally
             {

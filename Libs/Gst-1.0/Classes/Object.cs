@@ -18,7 +18,7 @@ namespace Gst
         }
 
         public void SetName(string name)
-            => Native.set_name(Handle, name);
+            => Native.Methods.SetName(Handle, name);
 
         // TODO: Marshal as enum
         public uint Flags

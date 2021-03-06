@@ -315,39 +315,39 @@ namespace Gtk
 
         public string? GetProgramName() => Marshal.PtrToStringAnsi(Native.get_program_name(Handle));
 
-        public void SetProgramName(string name) => Native.set_program_name(Handle, name);
+        public void SetProgramName(string name) => Native.Methods.SetProgramName(Handle, name);
 
         public string? GetVersion() => Marshal.PtrToStringAnsi(Native.get_version(Handle));
 
-        public void SetVersion(string version) => Native.set_version(Handle, version);
+        public void SetVersion(string version) => Native.Methods.SetVersion(Handle, version);
 
         public string? GetCopyright() => Marshal.PtrToStringAnsi(Native.get_copyright(Handle));
 
-        public void SetCopyright(string copyright) => Native.set_copyright(Handle, copyright);
+        public void SetCopyright(string copyright) => Native.Methods.SetCopyright(Handle, copyright);
 
         public string? GetComments() => Marshal.PtrToStringAnsi(Native.get_comments(Handle));
 
-        public void SetComments(string comments) => Native.set_comments(Handle, comments);
+        public void SetComments(string comments) => Native.Methods.SetComments(Handle, comments);
 
         public string? GetLicense() => Marshal.PtrToStringAnsi(Native.get_license(Handle));
 
-        public void SetLicense(string license) => Native.set_license(Handle, license);
+        public void SetLicense(string license) => Native.Methods.SetLicense(Handle, license);
 
-        public bool GetWrapLicense() => Native.get_wrap_license(Handle);
+        public bool GetWrapLicense() => Native.Methods.GetWrapLicense(Handle);
 
-        public void SetWrapLicense(bool wrapLicense) => Native.set_wrap_license(Handle, wrapLicense);
+        public void SetWrapLicense(bool wrapLicense) => Native.Methods.SetWrapLicense(Handle, wrapLicense);
 
         public License GetLicenseType() => Native.get_license_type(Handle);
 
-        public void SetLicenseType(License licenseType) => Native.set_license_type(Handle, licenseType);
+        public void SetLicenseType(License licenseType) => Native.Methods.SetLicenseType(Handle, licenseType);
 
         public string? GetWebsite() => Marshal.PtrToStringAnsi(Native.get_website(Handle));
 
-        public void SetWebsite(string website) => Native.set_website(Handle, website);
+        public void SetWebsite(string website) => Native.Methods.SetWebsite(Handle, website);
 
         public string? GetWebsiteLabel() => Marshal.PtrToStringAnsi(Native.get_website_label(Handle));
 
-        public void SetWebsiteLabel(string websiteLabel) => Native.set_website_label(Handle, websiteLabel);
+        public void SetWebsiteLabel(string websiteLabel) => Native.Methods.SetWebsiteLabel(Handle, websiteLabel);
 
         public string[] GetAuthors()
         {
