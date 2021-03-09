@@ -77,7 +77,7 @@ namespace {{ namespace.name }}
     {
         public event Action OnDestroyNotify;
         public {{ native_name }} NativeCallback;
-        public DestroyNotifyNative DestroyNotify;
+        public GLib.DestroyNotifyNative DestroyNotify;
 
         private {{ managed_name }} managedCallback;
         private GCHandle gch;

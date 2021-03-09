@@ -62,11 +62,26 @@ namespace Generator
         internal static string GetType(this Argument argument, Target target, Namespace currentNamespace) => target switch
         {
             Target.Managed => argument.WriteManagedType(currentNamespace) + GetNullable(argument),
-            Target.Native => argument.WriteNativeType(currentNamespace) + GetNullable(argument),
+            Target.Native => argument.WriteNativeType(currentNamespace),
             _ => throw new Exception($"Unknown {nameof(Target)}")
         };
 
         private static string GetNullable(Argument argument)
             => argument.Nullable ? "?" : string.Empty;
+        
+        internal static string WriteMarshalArgumentToManaged(this Argument arg, Namespace currentNamespace)
+        {
+            // TODO: We need to support disguised structs (opaque types)
+            var expression = (arg.SymbolReference.GetSymbol(), arg) switch
+            {
+                (Record r, { Array: null } a) => $"Marshal.PtrToStructure<{r.ManagedName}>({a.NativeName});",
+                (Record r, { Array: {}} a) => $"{a.NativeName}.MarshalToStructure<{r.ManagedName}>();",
+                (Class c, {Array: null} a) => $"Object.WrapHandle<{c.ManagedName}>({a.NativeName}, {a.Transfer.IsOwnedRef().ToString().ToLower()});",
+                (Class c, {Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
+                _ => $"({arg.SymbolReference.GetSymbol().ManagedName}){arg.NativeName};" // Other -> Try a brute-force cast
+            };
+
+            return $"{arg.WriteTypeAndName(Target.Managed, currentNamespace)}Managed = " + expression;
+        }
     }
 }

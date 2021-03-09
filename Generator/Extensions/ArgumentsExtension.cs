@@ -56,7 +56,7 @@ namespace Generator
                 if (arg.ClosureIndex.HasValue)
                     continue;
 
-                builder.AppendLine(WriteMarshalArgumentToManaged(arg, currentNamespace));
+                builder.AppendLine(arg.WriteMarshalArgumentToManaged(currentNamespace));
                 args.Add(arg.ManagedName + "Managed");
             }
 
@@ -72,21 +72,6 @@ namespace Generator
             builder.Append(funcCall);
 
             return builder.ToString();
-        }
-
-        private static string WriteMarshalArgumentToManaged(Argument arg, Namespace currentNamespace)
-        {
-            // TODO: We need to support disguised structs (opaque types)
-            var expression = (arg.SymbolReference.GetSymbol(), arg) switch
-            {
-                (Record r, { Array: null } a) => $"Marshal.PtrToStructure<{r.ManagedName}>({a.NativeName});",
-                (Record r, { Array: {}} a) => $"{a.NativeName}.MarshalToStructure<{r.ManagedName}>();",
-                (Class c, {Array: null} a) => $"Object.WrapHandle<{c.ManagedName}>({a.NativeName});",
-                (Class c, {Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
-                _ => $"({arg.SymbolReference.GetSymbol().ManagedName}){arg.NativeName};" // Other -> Try a brute-force cast
-            };
-
-            return $"{arg.WriteTypeAndName(Target.Managed, currentNamespace)}Managed = " + expression;
         }
     }
 }
