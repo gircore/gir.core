@@ -76,6 +76,7 @@ namespace Generator
             {
                 (Record r, { Array: null } a) => $"Marshal.PtrToStructure<{r.ManagedName}>({a.NativeName});",
                 (Record r, { Array: {}} a) => $"{a.NativeName}.MarshalToStructure<{r.ManagedName}>();",
+                (Class { IsFundamental: true} c, {Array: null} a) => $"{c.ManagedName}.From({a.NativeName});",
                 (Class c, {Array: null} a) => $"Object.WrapHandle<{c.ManagedName}>({a.NativeName}, {a.Transfer.IsOwnedRef().ToString().ToLower()});",
                 (Class c, {Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
                 _ => $"({arg.SymbolReference.GetSymbol().ManagedName}){arg.NativeName};" // Other -> Try a brute-force cast
