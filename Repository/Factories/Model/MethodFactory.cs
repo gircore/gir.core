@@ -59,7 +59,7 @@ namespace Repository.Factories
             return new Method(
                 @namespace: @namespace,
                 name: getTypeMethodName,
-                managedName: "GetType",
+                managedName: "GetGType",
                 returnValue: returnValue,
                 arguments: Enumerable.Empty<Argument>()
             );
