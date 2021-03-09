@@ -1,6 +1,6 @@
 #region Native
 
-protected static class Native
+protected class Native
 {
     {{ include 'class.native.fields.sbntxt' }}
     {{ include 'class.native.struct.sbntxt' }}
