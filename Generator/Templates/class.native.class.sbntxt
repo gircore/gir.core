@@ -2,12 +2,12 @@
 $class_struct = get_metadata "ClassStruct"
 
 if $class_struct ~}}
-#region Struct
+#region Class
 
 [StructLayout(LayoutKind.Sequential)]
-public struct ClassStruct
+public struct Class
 {
-    {{ include 'class.native.struct.delegates.sbntxt' $class_struct.fields }}
+    {{ include 'class.native.class.delegates.sbntxt' $class_struct.fields }}
 
     {{~ $class_struct.fields | write_class_struct_fields managed_name ~}}
 }
