@@ -29,7 +29,7 @@ namespace Generator.Services.Writer
                         continue;
                     }
 
-                    var scriptObject =  _scriptObjectFactory.CreateForStructs(@namespace);
+                    var scriptObject =  _scriptObjectFactory.CreateComplex(@namespace);
                     scriptObject.Import(record);
 
                     _writeHelperService.Write(

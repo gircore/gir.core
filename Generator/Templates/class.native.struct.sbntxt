@@ -7,6 +7,8 @@ if $class_struct ~}}
 [StructLayout(LayoutKind.Sequential)]
 public struct ClassStruct
 {
+    {{ include 'class.native.struct.delegates.sbntxt' $class_struct.fields }}
+
     {{~ $class_struct.fields | write_class_struct_fields managed_name ~}}
 }
 #endregion

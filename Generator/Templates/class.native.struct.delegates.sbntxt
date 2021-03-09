@@ -1,0 +1,5 @@
+#region Delegates
+
+{{$1 | write_struct_delegates }}
+
+#endregion

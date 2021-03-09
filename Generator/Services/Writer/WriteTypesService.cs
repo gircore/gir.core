@@ -22,7 +22,7 @@ namespace Generator.Services.Writer
         {
             foreach (Symbol obj in objects)
             {
-                var scriptObject = _scriptObjectFactory.CreateForClasses(@namespace);
+                var scriptObject = _scriptObjectFactory.CreateComplex(@namespace);
                 scriptObject.Import(obj);
 
                 //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
