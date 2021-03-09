@@ -43,7 +43,8 @@ namespace Repository.Factories
                 properties: _propertyFactory.Create(cls.Properties),
                 fields: _fieldFactory.Create(cls.Fields, @namespace),
                 signals: _signalFactory.Create(cls.Signals),
-                constructors: _methodFactory.Create(cls.Constructors, @namespace)
+                constructors: _methodFactory.Create(cls.Constructors, @namespace),
+                isFundamental: cls.Fundamental
             );
         }
     }

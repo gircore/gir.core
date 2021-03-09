@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Repository;
 
 namespace Generator.Services.Writer
@@ -41,7 +42,16 @@ namespace Generator.Services.Writer
                 outputDir: outputDir,
                 templateName: "class.sbntxt",
                 subfolder: "Classes",
-                objects: loadedProject.Namespace.Classes,
+                objects: loadedProject.Namespace.Classes.Where(x => !x.IsFundamental),
+                @namespace: loadedProject.Namespace
+            );
+            
+            _writeTypesService.Write(
+                projectName: loadedProject.Name,
+                outputDir: outputDir,
+                templateName: "fundamental.class.sbntxt",
+                subfolder: "Classes",
+                objects: loadedProject.Namespace.Classes.Where(x => x.IsFundamental),
                 @namespace: loadedProject.Namespace
             );
 

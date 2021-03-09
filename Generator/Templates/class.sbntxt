@@ -15,13 +15,5 @@ namespace {{ namespace.name }}
         {{ include 'class.signals.sbntxt' }}
         {{ include 'class.constructors.sbntxt' }}
         {{ include 'class.native.sbntxt' }}
-        
-        {{~ if class_struct ~}}
-        // Object Class Struct
-        public struct {{ class_struct_name }}
-        {
-            
-        }
-        {{~ end ~}}
     }
 }
