@@ -99,7 +99,7 @@ namespace {{ namespace.name }}
             {{~ end ~}}
         }
 
-        private void DestroyCallback(IntPtr? userData)
+        private void DestroyCallback(IntPtr userData)
         {
             OnDestroyNotify();
 
