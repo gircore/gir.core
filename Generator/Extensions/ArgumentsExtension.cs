@@ -44,7 +44,7 @@ namespace Generator
             return builder.ToString();
         }
         
-        public static string WriteCallbackMarshaller(IEnumerable<Argument> arguments, ReturnValue returnValue, Namespace currentNamespace)
+        public static string WriteCallbackMarshaller(this IEnumerable<Argument> arguments, ReturnValue returnValue, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
             var args = new List<string>();
