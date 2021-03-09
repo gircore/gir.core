@@ -9,13 +9,15 @@ namespace Generator.Services.Writer
         private readonly WriteDllImportService _writeDllImportService;
         private readonly WriteSymbolsService _writeSymbolsService;
         private readonly WriteRecordsService _writeRecordsService;
+        private readonly WriteStaticService _writeStaticService;
 
-        public WriterService(WriteTypesService writeTypesService, WriteDllImportService writeDllImportService, WriteSymbolsService writeSymbolsService, WriteRecordsService writeRecordsService)
+        public WriterService(WriteTypesService writeTypesService, WriteDllImportService writeDllImportService, WriteSymbolsService writeSymbolsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService)
         {
             _writeTypesService = writeTypesService;
             _writeDllImportService = writeDllImportService;
             _writeSymbolsService = writeSymbolsService;
             _writeRecordsService = writeRecordsService;
+            _writeStaticService = writeStaticService;
         }
 
         public void Write(LoadedProject loadedProject, string outputDir)
@@ -25,7 +27,7 @@ namespace Generator.Services.Writer
             else
                 _writeDllImportService.WriteDllImport(loadedProject, outputDir);
 
-            _writeTypesService.WriteTypes(
+            _writeTypesService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 templateName: "delegate.sbntxt",
@@ -34,7 +36,7 @@ namespace Generator.Services.Writer
                 @namespace: loadedProject.Namespace
             );
 
-            _writeTypesService.WriteTypes(
+            _writeTypesService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 templateName: "class.sbntxt",
@@ -43,7 +45,7 @@ namespace Generator.Services.Writer
                 @namespace: loadedProject.Namespace
             );
 
-            _writeTypesService.WriteTypes(
+            _writeTypesService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 templateName: "interface.sbntxt",
@@ -52,7 +54,7 @@ namespace Generator.Services.Writer
                 @namespace: loadedProject.Namespace
             );
 
-            _writeTypesService.WriteTypes(
+            _writeTypesService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
@@ -61,7 +63,7 @@ namespace Generator.Services.Writer
                 @namespace: loadedProject.Namespace
             );
 
-            _writeTypesService.WriteTypes(
+            _writeTypesService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
@@ -70,14 +72,14 @@ namespace Generator.Services.Writer
                 @namespace: loadedProject.Namespace
             );
 
-            _writeRecordsService.WriteRecords(
+            _writeRecordsService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 records: loadedProject.Namespace.Records,
                 @namespace: loadedProject.Namespace
             );
 
-            _writeSymbolsService.WriteSymbols(
+            _writeSymbolsService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 templateName: "constants.sbntxt",
@@ -87,13 +89,22 @@ namespace Generator.Services.Writer
                 @namespace: loadedProject.Namespace
             );
 
-            _writeSymbolsService.WriteSymbols(
+            _writeSymbolsService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 templateName: "functions.sbntxt",
                 subfolder: "Classes",
                 name: "Functions",
                 symbols: loadedProject.Namespace.Functions,
+                @namespace: loadedProject.Namespace
+            );
+            
+            _writeStaticService.Write(
+                projectName: loadedProject.Name,
+                outputDir: outputDir,
+                templateName: "extensions.sbntxt",
+                subfolder: "Classes",
+                name: "Extensions",
                 @namespace: loadedProject.Namespace
             );
         }

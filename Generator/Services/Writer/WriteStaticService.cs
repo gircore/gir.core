@@ -6,23 +6,21 @@ using Scriban.Runtime;
 
 namespace Generator.Services.Writer
 {
-    internal class WriteSymbolsService
+    internal class WriteStaticService
     {
         private readonly WriteHelperService _writeHelperService;
         private readonly ScriptObjectFactory _scriptObjectFactory;
 
-        public WriteSymbolsService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
+        public WriteStaticService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
         {
             _writeHelperService = writeHelperService;
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, string templateName, string subfolder, string name, IEnumerable<Symbol> symbols, Namespace @namespace)
+        public void Write(string projectName, string outputDir, string templateName, string subfolder, string name, Namespace @namespace)
         {
             var scriptObject = _scriptObjectFactory.CreateBase(@namespace);
-            scriptObject.Add(name.ToLower(), symbols);
             scriptObject.Add("namespace", @namespace);
-            scriptObject.Import("write_managed_constant", new Func<Constant, string>((c) => c.WriteManaged()));
 
             try
             {
@@ -37,7 +35,7 @@ namespace Generator.Services.Writer
             }
             catch (Exception ex)
             {
-                Log.Error($"Could not write symbols for {@namespace.Name} / {name}: {ex.Message}");
+                Log.Error($"Could not write template for {@namespace.Name} / {name}: {ex.Message}");
             }
         }
     }

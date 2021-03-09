@@ -17,7 +17,7 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void WriteRecords(string projectName, string outputDir, IEnumerable<Record> records, Namespace @namespace)
+        public void Write(string projectName, string outputDir, IEnumerable<Record> records, Namespace @namespace)
         {
             foreach (var record in records)
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Repository;
@@ -63,7 +64,7 @@ namespace Generator
                 separator: ", ", 
                 values: args
             );
-            
+
             var funcCall = returnValue.IsVoid()
                 ? $"managedCallback({funcArgs});" 
                 : $"var managed_callback_result = managedCallback({funcArgs});";
@@ -76,20 +77,13 @@ namespace Generator
         private static string WriteMarshalArgumentToManaged(Argument arg, Namespace currentNamespace)
         {
             // TODO: We need to support disguised structs (opaque types)
-            Symbol symbol = arg.SymbolReference.GetSymbol();
-            var managedType = arg.GetType(Target.Managed, currentNamespace);
-            
-            
-            var expression = symbol switch
+            var expression = (arg.SymbolReference.GetSymbol(), arg) switch
             {
-                // GObject -> Use Object.WrapHandle
-                Class => $"Object.WrapHandle<{managedType}>({arg.NativeName});",
-
-                // Struct -> Use struct marshalling (TODO: Should support opaque types)
-                Record => $"Marshal.PtrToStructure<{managedType}>({arg.NativeName});",
-
-                // Other -> Try a brute-force cast
-                _ => $"({managedType}){arg.NativeName};"
+                (Record r, { Array: null } a) => $"Marshal.PtrToStructure<{r.ManagedName}>({a.NativeName});",
+                (Record r, { Array: {}} a) => $"{a.NativeName}.MarshalToStructure<{r.ManagedName}>();",
+                (Class c, {Array: null} a) => $"Object.WrapHandle<{c.ManagedName}>({a.NativeName});",
+                (Class c, {Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
+                _ => $"({arg.SymbolReference.GetSymbol().ManagedName}){arg.NativeName};" // Other -> Try a brute-force cast
             };
 
             return $"{arg.WriteTypeAndName(Target.Managed, currentNamespace)}Managed = " + expression;

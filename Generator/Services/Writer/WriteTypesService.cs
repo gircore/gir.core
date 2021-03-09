@@ -18,7 +18,7 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void WriteTypes(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Symbol> objects, Namespace @namespace)
+        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Symbol> objects, Namespace @namespace)
         {
             foreach (Symbol obj in objects)
             {
