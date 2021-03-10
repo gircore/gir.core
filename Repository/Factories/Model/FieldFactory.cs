@@ -39,7 +39,9 @@ namespace Repository.Factories
                 managedName: _caseConverter.ToPascalCase(_identifierConverter.Convert(info.Name)),
                 symbolReference: _symbolReferenceFactory.CreateFromField(info),
                 callback: callback,
-                array: _arrayFactory.Create(info.Array)
+                array: _arrayFactory.Create(info.Array),
+                readable: info.Readable,
+                @private: info.Private 
             );
         }
 

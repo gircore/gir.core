@@ -19,7 +19,9 @@ namespace Generator
             if (type == "string")
                 builder.AppendLine($"[MarshalAs(UnmanagedType.LPStr)]");
 
-            builder.AppendLine($"public {type} {field.ManagedName};");
+            var accessibility = field.Private ? "private" : "public";
+            
+            builder.AppendLine($"{accessibility} {type} {field.ManagedName};");
             return builder.ToString();
         }
     }

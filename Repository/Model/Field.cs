@@ -10,6 +10,8 @@ namespace Repository.Model
         
         public Callback? Callback { get; }
         public Array? Array { get; }
+        public bool Readable { get; }
+        public bool Private { get; }
 
         /// <summary>
         /// Creates a new field.
@@ -19,11 +21,15 @@ namespace Repository.Model
         /// <param name="symbolReference"></param>
         /// <param name="array"></param>
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
-        public Field(string name, string managedName, SymbolReference symbolReference, Array? array = null, Callback? callback = null) : base(name, managedName)
+        /// <param name="readable"></param>
+        /// <param name="private"></param>
+        public Field(string name, string managedName, SymbolReference symbolReference, Array? array = null, Callback? callback = null, bool readable = true, bool @private = false) : base(name, managedName)
         {
             SymbolReference = symbolReference;
             Array = array;
             Callback = callback;
+            Readable = readable;
+            Private = @private;
 
             TryResolveSymbolReference();
         }

@@ -27,7 +27,7 @@ namespace Generator.Factories
 
             var scriptObject = CreateBase(currentNamespace);
             scriptObject.Import("write_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>((s, l) => TemplateWriter.WriteInheritance(s, l, currentNamespace)));
-            scriptObject.Import("write_class_fields", new Func<IEnumerable<Field>, string>(f => f.WriteClassFields(currentNamespace)));
+            scriptObject.Import("write_class_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
             scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
             scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(a => a.WriteManaged(currentNamespace)));
             scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
