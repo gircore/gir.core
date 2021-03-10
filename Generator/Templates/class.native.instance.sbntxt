@@ -1,8 +1,13 @@
+{{~
+$instance_struct = get_metadata "InstanceStruct"
+
+if $instance_struct ~}}
 #region Instance
 
 [StructLayout(LayoutKind.Sequential)]
-protected {{'new '|get_if $parent != null}}struct Instance : IObjectStruct
+protected {{'new '|get_if $parent != null}}struct {{$instance_struct.managed_name}} : IObjectStruct
 {
-    {{~ fields | write_class_fields ~}}
+    {{~ $instance_struct.fields | write_class_fields ~}}
 }
 #endregion
+{{~ end ~}}

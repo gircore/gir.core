@@ -15,7 +15,7 @@ namespace Repository.Model
         public IEnumerable<Method> Functions { get; }
         public SymbolReference? Parent { get; }
         public IEnumerable<Property> Properties { get; }
-        public IEnumerable<Field> Fields { get; }
+        public IEnumerable<Field> Fields { get; private set; }
         public IEnumerable<Signal> Signals { get; }
         public IEnumerable<Method> Constructors { get; }
 
@@ -51,6 +51,11 @@ namespace Repository.Model
                 symbolReferences = symbolReferences.Append(Parent);
 
             return symbolReferences;
+        }
+
+        public void ClearFields()
+        {
+            Fields = Enumerable.Empty<Field>();
         }
     }
 }

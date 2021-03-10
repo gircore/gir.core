@@ -53,5 +53,11 @@ namespace Generator
 
             return builder.ToString();
         }
+        
+        public static void ResolveAs(this IEnumerable<Field> fields, Symbol symbol)
+        {
+            foreach (var field in fields)
+                field.SymbolReference.ResolveAs(symbol);
+        }
     }
 }

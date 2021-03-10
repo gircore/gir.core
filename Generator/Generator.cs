@@ -26,6 +26,9 @@ namespace Generator
             var classStructsResolver = new ClassStructsResolver();
             classStructsResolver.Resolve(loadedProjects);
 
+            var classInstanceStructResolver = new ClassInstanceStructResolver();
+            classInstanceStructResolver.Resolve(loadedProjects);
+
             Log.Information("Ready to write.");
 
             WriterService writerService = new Container().Resolve().Value;
