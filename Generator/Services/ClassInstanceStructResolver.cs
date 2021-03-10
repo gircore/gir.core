@@ -58,7 +58,7 @@ namespace Generator.Services
             }
         }
         
-        private Record CreateInstanceRecord(Namespace @namespace, string nameprefix, IEnumerable<Field> fields) => new Record(
+        private Record CreateInstanceRecord(Namespace @namespace, IEnumerable<Field> fields) => new Record(
             @namespace: @namespace,
             name: "Instance",
             managedName: "Instance",
