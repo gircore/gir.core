@@ -14,7 +14,11 @@ namespace Generator
         
         private static string Write(this Type type, Target target,  Namespace currentNamespace)
         {
-            var name = type.SymbolReference.GetSymbol().Write(target, currentNamespace);
+            var name = type.SymbolReference switch
+            {
+                {IsPointer: true} => "IntPtr",
+                _ => type.SymbolReference.GetSymbol().Write(target, currentNamespace)
+            };
 
             if (type.Array is { })
                 name += "[]";

@@ -17,12 +17,15 @@ namespace Repository.Analysis
         #region Properties
 
         public string Type { get; }
-
+        private string? CType { get; }
+        public bool IsPointer => CType?.EndsWith("*") ?? false;
+        
         #endregion
 
-        public SymbolReference(string type)
+        public SymbolReference(string type, string? ctype = null)
         {
             Type = type;
+            CType = ctype;
         }
 
         public Symbol GetSymbol()

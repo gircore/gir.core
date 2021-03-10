@@ -8,13 +8,6 @@ namespace Generator
 {
     internal static class SymbolExtension
     {
-        public static bool IsIntPtr(this Symbol symbol, Target target) => target switch
-        {
-            Target.Managed => symbol.ManagedName.StartsWith("IntPtr"),
-            Target.Native => symbol.NativeName.StartsWith("IntPtr"),
-            _ => throw new Exception($"Unknown {nameof(Target)}")
-        };
-
         public static bool IsForeignTo(this Symbol symbol, Namespace ns)
             => symbol.Namespace is not null && ns != symbol.Namespace;
 
@@ -22,7 +15,7 @@ namespace Generator
         {
             var name = GetName(symbol, target);
 
-            if (!symbol.IsForeignTo(currentNamespace) || symbol.IsIntPtr(target))
+            if (!symbol.IsForeignTo(currentNamespace))
                 return name;
 
             if (symbol.Namespace is null)

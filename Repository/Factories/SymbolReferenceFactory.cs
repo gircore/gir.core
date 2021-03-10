@@ -9,9 +9,9 @@ namespace Repository.Services
 {
     internal class SymbolReferenceFactory 
     {
-        public SymbolReference Create(string type)
+        public SymbolReference Create(string type, string? ctype = null)
         {
-            return new SymbolReference(type);
+            return new SymbolReference(type, ctype);
         }
 
         public SymbolReference CreateFromField(FieldInfo field)
@@ -28,19 +28,14 @@ namespace Repository.Services
         public SymbolReference Create(ITypeOrArray typeOrArray)
         {
             // Check for Type
-            var type = typeOrArray?.Type?.Name ?? null;
+            var type = typeOrArray?.Type?.Name;
             if (type != null)
-                return Create(type);
+                return Create(type, typeOrArray?.Type?.CType);
 
             // Check for Array
-            var arrayName = typeOrArray?.Array?.Type?.Name; //.Type?.Name ?? null;
+            var arrayName = typeOrArray?.Array?.Type?.Name;
             if (arrayName != null)
-            {
-                var lengthStr = typeOrArray?.Array?.Length;
-                int? length = lengthStr is null ? null : int.Parse(lengthStr);
-
-                return Create(arrayName);
-            }
+                return Create(arrayName, typeOrArray?.Array?.Type?.CType);
 
             // No Type (i.e. void)
             return Create("none");
