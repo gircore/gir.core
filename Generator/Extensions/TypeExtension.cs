@@ -7,16 +7,16 @@ namespace Generator
     internal static class TypeExtension
     {
         public static string WriteNativeType(this Type type, Namespace currentNamespace)
-            => type.Write(Target.Native, currentNamespace);
+            => type.WriteType(Target.Native, currentNamespace);
 
         public static string WriteManagedType(this Type type, Namespace currentNamespace)
-            => type.Write(Target.Managed, currentNamespace);
+            => type.WriteType(Target.Managed, currentNamespace);
         
-        private static string Write(this Type type, Target target,  Namespace currentNamespace)
+        internal static string WriteType(this Type type, Target target,  Namespace currentNamespace)
         {
-            var name = type.SymbolReference switch
+            var name = (type.SymbolReference, target) switch
             {
-                {IsPointer: true} => "IntPtr",
+                ({IsPointer: true}, Target.Native) => "IntPtr",
                 _ => type.SymbolReference.GetSymbol().Write(target, currentNamespace)
             };
 

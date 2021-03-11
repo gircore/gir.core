@@ -21,8 +21,10 @@ namespace Repository.Analysis
             public void AddSymbol(string name, Symbol info)
                 => _typeDict.Add(name, info);
 
-            public Symbol GetSymbol(string name)
-                => _typeDict[name];
+            public bool GetSymbol(string name, [MaybeNullWhen(false)] out Symbol symbol)
+            {
+                return _typeDict.TryGetValue(name, out symbol);
+            }
 
             public bool TryGetSymbol(string name, [NotNullWhen(true)] out Symbol? type)
                 => _typeDict.TryGetValue(name, out type);

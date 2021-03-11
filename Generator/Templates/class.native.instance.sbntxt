@@ -1,8 +1,0 @@
-#region Instance
-
-[StructLayout(LayoutKind.Sequential)]
-protected {{'new '|get_if $parent != null}}struct Instance : IObjectStruct
-{
-    {{~ fields | write_class_fields ~}}
-}
-#endregion

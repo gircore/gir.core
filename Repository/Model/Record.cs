@@ -28,7 +28,7 @@ namespace Repository.Model
         public IEnumerable<Method> Functions { get; }
         public SymbolReference? GLibClassStructFor { get; }
 
-        public Record(Namespace @namespace, string name, string managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(@namespace, name, managedName)
+        public Record(Namespace @namespace, string name, string managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors, string? ctype) : base(@namespace, ctype, name, managedName, managedName)
         {
             GLibClassStructFor = gLibClassStructFor;
             Methods = methods;

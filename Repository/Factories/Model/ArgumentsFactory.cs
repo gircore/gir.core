@@ -29,10 +29,11 @@ namespace Repository.Factories
                 {
                     list.Add(_argumentFactory.Create(
                         name: "error",
-                        type: "GLib.Error",
+                        type: "GError",
                         direction: Direction.OutCalleeAllocates,
                         transfer: Transfer.Full,
-                        nullable: false
+                        nullable: false,
+                        isPointer: true
                     ));
                 }
             }

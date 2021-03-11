@@ -20,6 +20,11 @@ namespace Repository.Model
         public string Name { get; }
         
         /// <summary>
+        /// Name of the symbol in the c world
+        /// </summary>
+        public string? CName { get; }
+        
+        /// <summary>
         /// Name of the symbol which should be used as a native representation
         /// </summary>
         public string NativeName { get; set; }
@@ -29,21 +34,14 @@ namespace Repository.Model
         /// </summary>
         public string ManagedName { get; set; }
 
-        protected internal Symbol(Namespace? @namespace, string name, string managedName) : this(@namespace, name, name, managedName)
-        {
-        }
-        
-        protected internal Symbol(string name, string managedName) : this(name, name, managedName)
-        {
-        }
-        
-        protected internal Symbol(string name, string nativeName, string managedName) : this(null, name, nativeName, managedName)
+        protected internal Symbol(string cname, string name, string nativeName, string managedName): this(null, cname, name, nativeName, managedName)
         {
         }
 
-        protected internal Symbol(Namespace? @namespace, string name, string nativeName, string managedName)
+        protected internal Symbol(Namespace? @namespace, string? cname, string name, string nativeName, string managedName)
         {
             Namespace = @namespace;
+            CName = cname;
             Name = name;
             NativeName = nativeName; 
             ManagedName = managedName;
@@ -56,6 +54,6 @@ namespace Repository.Model
             => ManagedName;
 
         public static Symbol Primitive(string nativeName, string managedName)
-            => new Symbol(nativeName, managedName, managedName);
+            => new Symbol(nativeName, nativeName, managedName, managedName);
     }
 }

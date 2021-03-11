@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Repository.Model;
 
 namespace Repository.Analysis
@@ -36,7 +37,8 @@ namespace Repository.Analysis
 
             AddSymbol(Symbol.Primitive("guint16", "ushort"));
             AddSymbol(Symbol.Primitive("gushort", "ushort"));
-
+            AddSymbol(Symbol.Primitive("gunichar2", "ushort"));
+            
             AddSymbol(Symbol.Primitive("gint16", "short"));
             AddSymbol(Symbol.Primitive("gshort", "short"));
 
@@ -86,7 +88,7 @@ namespace Repository.Analysis
         /// <param name="info"></param>
         public void AddSymbol(string nspace, Symbol info)
         {
-            GetTypeDict(nspace).AddSymbol(info.Name, info);
+            GetTypeDict(nspace).AddSymbol(info.CName ?? info.Name, info);
         }
 
         public void AddSymbols(string nspace, IEnumerable<Symbol> infos)
@@ -132,17 +134,17 @@ namespace Repository.Analysis
 
         private void AddSymbol(Symbol symbol)
         {
-            _defaultDict.AddSymbol(symbol.Name, symbol);
+            _defaultDict.AddSymbol(symbol.CName ?? symbol.Name, symbol);
         }
 
-        private Symbol GetSymbolInternal(TypeDictionary symbolDict, string symbol)
+        private bool GetSymbolInternal(TypeDictionary symbolDict, string symbol, [MaybeNullWhen(false)] out Symbol found)
         {
             // Check Fundamental Types
-            if (_defaultDict.TryGetSymbol(symbol, out Symbol? info))
-                return info;
+            if (_defaultDict.TryGetSymbol(symbol, out found))
+                return true;
 
             // Check Normal
-            return symbolDict.GetSymbol(symbol);
+            return symbolDict.GetSymbol(symbol, out found);
         }
 
         /// <summary>
@@ -153,8 +155,9 @@ namespace Repository.Analysis
         /// </summary>
         /// <param name="nspace">Namespace to search</param>
         /// <param name="symbol">Unqualified name of symbol (i.e. does not contain '.')</param>
+        /// <param name="found"></param>
         /// <returns>Information about the symbol</returns>
-        public Symbol GetSymbol(string? nspace, string symbol)
+        public bool GetSymbol(string? nspace, string symbol, [MaybeNullWhen(false)] out Symbol found)
         {
             Debug.Assert(
                 condition: !symbol.Contains('.'),
@@ -162,7 +165,7 @@ namespace Repository.Analysis
             );
 
             if (nspace == null)
-                return _defaultDict.GetSymbol(symbol);
+                return _defaultDict.GetSymbol(symbol, out found);
 
             // Get Namespace-specific Dictionaries
             TypeDictionary symbolDict = GetTypeDict(nspace);
@@ -175,15 +178,15 @@ namespace Repository.Analysis
                 {
                     // Reference to other namespace
                     var components = alias.Split('.', 2);
-                    return GetSymbol(nspace: components[0], symbol: components[1]);
+                    return GetSymbol(nspace: components[0], symbol: components[1], out found);
                 }
 
                 // Within this namespace
-                return GetSymbolInternal(symbolDict, alias);
+                return GetSymbolInternal(symbolDict, alias, out found);
             }
 
             // Check Normal
-            return GetSymbolInternal(symbolDict, symbol);
+            return GetSymbolInternal(symbolDict, symbol, out found);
         }
     }
 }

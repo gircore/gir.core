@@ -12,7 +12,7 @@ namespace Repository.Model
         public IEnumerable<Method> Methods { get; }
         public IEnumerable<Method> Functions { get; }
         
-        public Interface(Namespace @namespace, string name, string managedName, string cType, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, name, managedName)
+        public Interface(Namespace @namespace, string name, string managedName, string cType, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, cType, name, managedName, managedName)
         {
             CType = cType;
             Implements = implements;

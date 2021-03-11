@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Repository.Model;
 
 namespace Repository.Analysis
@@ -28,8 +29,9 @@ namespace Repository.Analysis
         /// other type name.
         /// </summary>
         /// <param name="typeName">Name of the symbol. May be qualified or unqualified</param>
+        /// <param name="symbol"></param>
         /// <returns>Information about the symbol</returns>
-        public Symbol LookupType(string typeName)
+        public bool LookupType(string typeName, [MaybeNullWhen(false)] out Symbol symbol)
         {
             if (string.IsNullOrEmpty(typeName))
                 throw new ArgumentNullException(nameof(typeName), "Provided lookup cannot be null or empty");
@@ -38,13 +40,13 @@ namespace Repository.Analysis
             {
                 // We are in the form 'Namespace.Type'
                 var components = typeName.Split('.', 2);
-                return _symbolDict.GetSymbol(components[0], components[1]);
+                return _symbolDict.GetSymbol(components[0], components[1], out symbol);
             }
 
             // We are not qualified by a namespace, so assume this one.
             // It might also be a fundamental type, but the type dict
             // takes care of this.
-            return _symbolDict.GetSymbol(_namespace, typeName);
+            return _symbolDict.GetSymbol(_namespace, typeName, out symbol);
         }
     }
 }

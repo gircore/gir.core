@@ -8,7 +8,7 @@ namespace Repository.Model
         public string Value { get; }
         public SymbolReference SymbolReference { get; }
         
-        public Constant(string name, string managedName, SymbolReference symbolReference, string value) : base(name, managedName)
+        public Constant(string name, string managedName, SymbolReference symbolReference, string value) : base(name, name, managedName, managedName)
         {
             SymbolReference = symbolReference;
             Value = value;

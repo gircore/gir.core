@@ -25,14 +25,14 @@ namespace Repository.Factories
 
             if (callbackInfo.ReturnValue is null)
                 throw new Exception($"Callback {callbackInfo.Name} is  missing a return value");
-            
+
             return new Callback(
                 @namespace: @namespace,
                 name: callbackInfo.Name,
-                nativeName: _caseConverter.ToPascal(callbackInfo.Name),
                 managedName: _caseConverter.ToPascal(callbackInfo.Name),
                 returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue),
-                arguments: _argumentsFactory.Create(callbackInfo.Parameters).ToList()
+                arguments: _argumentsFactory.Create(callbackInfo.Parameters).ToList(),
+                ctype: callbackInfo.Type
             );
         }
     }

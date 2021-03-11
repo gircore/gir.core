@@ -50,6 +50,8 @@ namespace Generator.Services.Writer
 
         private string GetSubfolder(RecordType recordType) => recordType switch
         {
+            RecordType.PrivateClass => "Structs",
+            RecordType.PublicClass => "Structs",
             RecordType.Value => "Structs",
             RecordType.Ref => "Classes",
             _ => throw new NotImplementedException("Unsupported record type")
@@ -57,6 +59,8 @@ namespace Generator.Services.Writer
 
         private string GetTemplateName(RecordType recordType) => recordType switch
         {
+            RecordType.PrivateClass => "classstruct.sbntxt",
+            RecordType.PublicClass => "classstruct.sbntxt",
             RecordType.Value => "struct.sbntxt",
             RecordType.Ref => "struct_as_class.sbntxt",
             _ => throw new NotImplementedException("Unsupported record type")

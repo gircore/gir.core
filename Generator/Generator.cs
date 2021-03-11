@@ -23,8 +23,8 @@ namespace Generator
             typeRenamer.SuffixDelegates(loadedProjects);
             typeRenamer.SetNativeNames(loadedProjects);
             
-            var classStructsResolver = new ClassStructsResolver();
-            classStructsResolver.Resolve(loadedProjects);
+            //var classStructsResolver = new ClassStructsResolver();
+            //classStructsResolver.Resolve(loadedProjects);
 
             Log.Information("Ready to write.");
 

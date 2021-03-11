@@ -23,7 +23,7 @@ namespace Repository.Model
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
         /// <param name="readable"></param>
         /// <param name="private"></param>
-        public Field(string name, string managedName, SymbolReference symbolReference, Array? array = null, Callback? callback = null, bool readable = true, bool @private = false) : base(name, managedName)
+        public Field(string name, string managedName, SymbolReference symbolReference, Array? array = null, Callback? callback = null, bool readable = true, bool @private = false) : base(name, name, managedName, managedName)
         {
             SymbolReference = symbolReference;
             Array = array;

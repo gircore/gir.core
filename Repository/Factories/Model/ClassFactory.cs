@@ -24,7 +24,7 @@ namespace Repository.Factories
 
         public Class Create(ClassInfo cls, Namespace @namespace)
         {
-            if (cls.Name is null || cls.TypeName is null)
+            if (cls.Name is null)
                 throw new Exception("Class is missing data");
 
             if (cls.GetTypeFunction is null)
@@ -34,7 +34,7 @@ namespace Repository.Factories
                 @namespace: @namespace,
                 name: cls.Name,
                 managedName: cls.Name,
-                ctype: cls.TypeName,
+                ctype: cls.Type,
                 parent: _symbolReferenceFactory.CreateWithNull(cls.Parent),
                 implements: _symbolReferenceFactory.Create(cls.Implements),
                 methods: _methodFactory.Create(cls.Methods, @namespace),

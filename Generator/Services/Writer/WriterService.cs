@@ -49,6 +49,15 @@ namespace Generator.Services.Writer
             _writeTypesService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
+                templateName: "classinstance.sbntxt",
+                subfolder: "Structs",
+                objects: loadedProject.Namespace.Classes.Where(x => !x.IsFundamental),
+                @namespace: loadedProject.Namespace
+            );
+            
+            _writeTypesService.Write(
+                projectName: loadedProject.Name,
+                outputDir: outputDir,
                 templateName: "fundamental.class.sbntxt",
                 subfolder: "Classes",
                 objects: loadedProject.Namespace.Classes.Where(x => x.IsFundamental),
@@ -86,6 +95,13 @@ namespace Generator.Services.Writer
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 records: loadedProject.Namespace.Records,
+                @namespace: loadedProject.Namespace
+            );
+            
+            _writeRecordsService.Write(
+                projectName: loadedProject.Name,
+                outputDir: outputDir,
+                records: loadedProject.Namespace.Unions,
                 @namespace: loadedProject.Namespace
             );
 

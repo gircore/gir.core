@@ -29,20 +29,13 @@ namespace Generator.Services
         {
             foreach (LoadedProject project in projects)
             {
-                // All structured data types are always expected to be handled
-                // as a pointer if used as an argument or return value.
-                // This is GObjec convention. If this changes it is expected
-                // that an additional attribute is inserted in the gir file.
-
                 var structuredTypes = IEnumerables.Concat<Symbol>(
-                    project.Namespace.Unions,
-                    project.Namespace.Records,
                     project.Namespace.Classes,
                     project.Namespace.Interfaces
                 );
 
                 foreach (var type in structuredTypes)
-                    type.NativeName = "IntPtr";
+                    type.NativeName += "Instance";
             }
 
             Log.Information("Native names set.");

@@ -7,7 +7,7 @@ namespace Generator.Services
 {
     internal class ClassStructsResolver
     {
-        public void Resolve(IEnumerable<LoadedProject> projects)
+        /*public void Resolve(IEnumerable<LoadedProject> projects)
         {
             foreach (var proj in projects)
             {
@@ -29,6 +29,6 @@ namespace Generator.Services
             {
                 symbol.AddClassStructs(structs);
             }
-        }
+        }*/
     }
 }

@@ -41,15 +41,26 @@ namespace Repository.Services
 
             foreach (var reference in proj.Namespace.GetSymbolReferences())
             {
-                var symbol = view.LookupType(reference.Type);
-                reference.ResolveAs(symbol);
+                Resolve(view, reference);
             }
+        }
+
+        private static void Resolve(SymbolDictionaryView view, SymbolReference reference)
+        {
+            var type = reference.Type
+                .Replace("*", "")
+                .Replace("const ", "")
+                .Replace("volatile ", "")
+                .Replace(" const", "");
+
+            if (view.LookupType(type, out Symbol? symbol))
+                reference.ResolveAs(symbol);
         }
 
         private static void AddAliases(SymbolDictionary symbolDictionary, Namespace @namespace)
         {
             foreach (var alias in @namespace.Aliases)
-                symbolDictionary.AddAlias(@namespace.Name, alias.Name, alias.ManagedName);
+                symbolDictionary.AddAlias(@namespace.Name, alias.CName ?? alias.Name, alias.ManagedName);
         }
     }
 }

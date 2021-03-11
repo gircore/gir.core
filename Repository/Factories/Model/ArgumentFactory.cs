@@ -45,7 +45,6 @@ namespace Repository.Factories
 
             return new Argument(
                 name: _identifierConverter.Convert(parameterInfo.Name),
-                nativeName: _caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)),
                 managedName: _caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)),
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo),
                 direction: direction,
@@ -57,13 +56,12 @@ namespace Repository.Factories
             );
         }
 
-        public Argument Create(string name, string type, Direction direction, Transfer transfer, bool nullable, int? closure = null, int? destroy = null, Array? array = null)
+        public Argument Create(string name, string type, Direction direction, Transfer transfer, bool nullable, int? closure = null, int? destroy = null, Array? array = null, bool isPointer = false)
         {
             return new Argument(
                 name: name,
                 managedName: _caseConverter.ToCamelCase(name),
-                nativeName: _caseConverter.ToCamelCase(name),
-                symbolReference: _symbolReferenceFactory.Create(type),
+                symbolReference: _symbolReferenceFactory.Create(type, isPointer),
                 direction: direction,
                 transfer: transfer,
                 nullable: nullable,

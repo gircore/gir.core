@@ -9,9 +9,9 @@ namespace Repository.Services
 {
     internal class SymbolReferenceFactory 
     {
-        public SymbolReference Create(string type, string? ctype = null)
+        public SymbolReference Create(string type, bool isPointer = false)
         {
-            return new SymbolReference(type, ctype);
+            return new SymbolReference(type, isPointer);
         }
 
         public SymbolReference CreateFromField(FieldInfo field)
@@ -28,17 +28,29 @@ namespace Repository.Services
         public SymbolReference Create(ITypeOrArray typeOrArray)
         {
             // Check for Type
-            var type = typeOrArray?.Type?.Name;
+            var type = typeOrArray?.Type?.CType;
             if (type != null)
-                return Create(type, typeOrArray?.Type?.CType);
+                return Create(type, IsPointer(typeOrArray?.Type));
 
             // Check for Array
-            var arrayName = typeOrArray?.Array?.Type?.Name;
+            var arrayName = typeOrArray?.Array?.Type?.CType;
             if (arrayName != null)
-                return Create(arrayName, typeOrArray?.Array?.Type?.CType);
+                return Create(arrayName, IsPointer(typeOrArray?.Array?.Type));
 
             // No Type (i.e. void)
             return Create("none");
+        }
+        
+        private bool IsPointer(TypeInfo? typeInfo)
+        {
+            return typeInfo switch
+            {
+                {Name: "utf8"} => false,
+                {Name: "filename"} => false,
+                {CType: "gpointer"} => true,
+                {CType: {} ctype} => ctype.EndsWith("*"),
+                _ => false
+            };
         }
 
         public SymbolReference? CreateWithNull(string? type)
