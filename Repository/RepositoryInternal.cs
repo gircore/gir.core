@@ -22,11 +22,19 @@ namespace Repository
             var enumerableLoadedProjects = _loaderService.LoadOrdered(targets, fileFunc);
             var loadedProjects = enumerableLoadedProjects as List<LoadedProject> ?? enumerableLoadedProjects.ToList();
 
+            StripProjects(loadedProjects);
+            
             _typeReferenceResolverService.Resolve(loadedProjects);
 
             Log.Information($"Repository initialised with {loadedProjects.Count} top-level project(s) and {loadedProjects.Count - targets.Count()} dependencies.");
             
             return loadedProjects;
+        }
+
+        private static void StripProjects(List<LoadedProject> loadedProjects)
+        {
+            foreach (var proj in loadedProjects)
+                proj.Namespace.Strip();
         }
     }
 }

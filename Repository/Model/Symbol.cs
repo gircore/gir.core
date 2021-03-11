@@ -50,6 +50,11 @@ namespace Repository.Model
         public virtual IEnumerable<SymbolReference> GetSymbolReferences()
             => Enumerable.Empty<SymbolReference>();
 
+        internal virtual bool GetIsResolved()
+            => true;
+
+        internal virtual void Strip() {}
+        
         public override string ToString()
             => ManagedName;
 

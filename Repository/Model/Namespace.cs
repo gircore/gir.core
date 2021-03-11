@@ -103,5 +103,32 @@ namespace Repository.Model
         }
 
         public string ToCanonicalName() => $"{Name}-{Version}";
+        
+        internal void Strip()
+        {
+            Classes.Strip();
+            Interfaces.Strip();
+
+            _aliases.RemoveAll(Remove);
+            _callbacks.RemoveAll(Remove);
+            _classes.RemoveAll(Remove);
+            _enumerations.RemoveAll(Remove);
+            _bitfields.RemoveAll(Remove);
+            _interfaces.RemoveAll(Remove);
+            _records.RemoveAll(Remove);
+            _functions.RemoveAll(Remove);
+            _unions.RemoveAll(Remove);
+            _constants.RemoveAll(Remove);
+        }
+
+        private bool Remove(Symbol symbol)
+        {
+            var result = symbol.GetIsResolved();
+            
+            if(!result)
+                Log.Information($"Removing Symbol {symbol?.Namespace?.Name} {symbol?.Name} because it is not resolved");
+
+            return !result;
+        }
     }
 }

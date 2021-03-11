@@ -23,5 +23,7 @@ namespace Repository.Model
             );
         }
 
+        internal override bool GetIsResolved()
+            => ReturnValue.GetIsResolved() && Arguments.AllResolved();
     }
 }

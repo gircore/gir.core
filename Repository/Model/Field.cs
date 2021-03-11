@@ -57,5 +57,8 @@ namespace Repository.Model
             else
                 return new List<SymbolReference>() { SymbolReference };
         }
+
+        internal override bool GetIsResolved()
+            => SymbolReference.IsResolved && (Callback?.GetIsResolved() ?? true);
     }
 }

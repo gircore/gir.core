@@ -19,6 +19,8 @@ namespace Repository.Analysis
         public string Type { get; }
         public bool IsPointer { get; }
 
+        public bool IsResolved => _symbol is { };
+
         #endregion
 
         public SymbolReference(string type, bool isPointer = false)

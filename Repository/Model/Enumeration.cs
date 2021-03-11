@@ -17,5 +17,8 @@ namespace Repository.Model
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()
             => Members.SelectMany(x => x.GetSymbolReferences());
+
+        internal override bool GetIsResolved()
+            => Members.AllResolved();
     }
 }

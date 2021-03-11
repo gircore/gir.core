@@ -20,5 +20,8 @@ namespace Repository.Model
         {
             yield return SymbolReference;
         }
+
+        internal override bool GetIsResolved()
+            => SymbolReference.IsResolved;
     }
 }

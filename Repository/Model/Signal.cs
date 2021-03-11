@@ -22,5 +22,8 @@ namespace Repository.Model
                 Arguments.SelectMany(x => x.GetSymbolReferences())
             );
         }
+
+        internal override bool GetIsResolved()
+            => ReturnValue.GetIsResolved() && Arguments.AllResolved();
     }
 }

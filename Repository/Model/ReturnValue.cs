@@ -22,5 +22,8 @@ namespace Repository.Model
         {
             yield return SymbolReference;
         }
+
+        internal bool GetIsResolved() 
+            => SymbolReference.IsResolved;
     }
 }
