@@ -56,12 +56,12 @@ namespace Repository.Factories
             );
         }
 
-        public Argument Create(string name, string type, Direction direction, Transfer transfer, bool nullable, int? closure = null, int? destroy = null, Array? array = null, bool isPointer = false)
+        public Argument Create(string name, string type, string ctype, Direction direction, Transfer transfer, bool nullable, int? closure = null, int? destroy = null, Array? array = null, bool isPointer = false)
         {
             return new Argument(
                 name: name,
                 managedName: _caseConverter.ToCamelCase(name),
-                symbolReference: _symbolReferenceFactory.Create(type, isPointer),
+                symbolReference: _symbolReferenceFactory.Create(type, ctype, isPointer),
                 direction: direction,
                 transfer: transfer,
                 nullable: nullable,

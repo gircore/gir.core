@@ -30,15 +30,6 @@ namespace Generator
             Target.Native => symbol.NativeName,
             _ => throw new Exception($"Unknown {nameof(Target)}")
         };
-        
-        public static bool IsReferenceType(this Symbol symbol) => symbol switch
-        {
-            Class => true,
-            Interface => true,
-            Record { Type: RecordType.Ref } => true,
-            Record {Type: RecordType.Value } => true,
-            _ => false
-        };
 
         public static void AddClassStructs(this Symbol symbol, IEnumerable<Record> classStructs)
         {

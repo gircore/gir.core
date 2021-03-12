@@ -29,24 +29,30 @@ namespace Repository.Analysis
         /// other type name.
         /// </summary>
         /// <param name="typeName">Name of the symbol. May be qualified or unqualified</param>
+        /// <param name="reference"></param>
         /// <param name="symbol"></param>
         /// <returns>Information about the symbol</returns>
-        public bool LookupType(string typeName, [MaybeNullWhen(false)] out Symbol symbol)
+        public bool LookupType(SymbolReference reference, [MaybeNullWhen(false)] out Symbol symbol)
         {
-            if (string.IsNullOrEmpty(typeName))
-                throw new ArgumentNullException(nameof(typeName), "Provided lookup cannot be null or empty");
+            var ctype = reference.CType?
+                .Replace("*", "")
+                .Replace("const ", "")
+                .Replace("volatile ", "")
+                .Replace(" const", "");
+
+            var name = reference?.Type;
             
-            if (typeName.Contains('.'))
+            if (name?.Contains('.') ?? false)
             {
                 // We are in the form 'Namespace.Type'
-                var components = typeName.Split('.', 2);
-                return _symbolDict.GetSymbol(components[0], components[1], out symbol);
+                var components = name.Split('.', 2);
+                return _symbolDict.GetSymbol(components[0], components[1], ctype, out symbol);
             }
 
             // We are not qualified by a namespace, so assume this one.
             // It might also be a fundamental type, but the type dict
             // takes care of this.
-            return _symbolDict.GetSymbol(_namespace, typeName, out symbol);
+            return _symbolDict.GetSymbol(_namespace, name, ctype, out symbol);
         }
     }
 }

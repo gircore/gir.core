@@ -89,7 +89,7 @@ namespace Repository.Model
             var result = symbol.GetIsResolved();
             
             if(!result)
-                Log.Information($"Removing record symbol {symbol?.Namespace?.Name} {symbol?.Name} because it is not resolved");
+                Log.Information($"Record {Namespace?.Name}.{Name}: Stripping symbol {symbol?.Name}");
 
             return !result;
         }

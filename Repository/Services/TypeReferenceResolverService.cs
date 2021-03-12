@@ -19,9 +19,6 @@ namespace Repository.Services
                 
                 ResolveReferences(symbolDictionary, proj);
                 Log.Information($"Resolved symbol references for {proj.Name}.");
-
-                Strip();
-                Log.Information($"Stripped unresolved symbols.");
             }
         }
 
@@ -50,13 +47,7 @@ namespace Repository.Services
 
         private static void Resolve(SymbolDictionaryView view, SymbolReference reference)
         {
-            var type = reference.Type
-                .Replace("*", "")
-                .Replace("const ", "")
-                .Replace("volatile ", "")
-                .Replace(" const", "");
-
-            if (view.LookupType(type, out Symbol? symbol))
+            if (view.LookupType(reference, out Symbol? symbol))
                 reference.ResolveAs(symbol);
         }
 
@@ -64,21 +55,6 @@ namespace Repository.Services
         {
             foreach (var alias in @namespace.Aliases)
                 symbolDictionary.AddAlias(@namespace.Name, alias.CName ?? alias.Name, alias.ManagedName);
-        }
-
-        private void Strip()
-        {
-            //TODO:
-            // - Log and invalidate all methods which have unresolved member / return
-            // - Log and invalidate all properties which are unresolved
-            // - Log and invalidate all signals which are unresolved
-            // - Log and invalidate all callbacks which are unresolved
-            // - Log and invalidate all classes which have unresolved parents
-            // - Log and invalidate all interfaces which have unresolved parents
-            // - Log and invalidate all structs which have unresolved fields
-            // - ...
-            //
-            // A symbol is only allowed to be generated if it is not invalidated
         }
     }
 }

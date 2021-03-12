@@ -126,7 +126,7 @@ namespace Repository.Model
             var result = symbol.GetIsResolved();
             
             if(!result)
-                Log.Information($"Removing Symbol {symbol?.Namespace?.Name} {symbol?.Name} because it is not resolved");
+                Log.Information($"{symbol.GetType().Name} {symbol.Namespace?.Name}.{symbol.Name}: Removed because parts of it could not be completely resolvled");
 
             return !result;
         }

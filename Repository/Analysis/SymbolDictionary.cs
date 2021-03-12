@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Repository.Model;
@@ -8,9 +9,9 @@ namespace Repository.Analysis
     internal partial class SymbolDictionary
     {
         private readonly Dictionary<string, TypeDictionary> _symbolDictionaries = new();
-        private readonly Dictionary<string, AliasDictionary> _aliasDictionaries = new();
+        private readonly Dictionary<string, TypeDictionary> _aliasDictionaries = new();
 
-        private readonly TypeDictionary _defaultDict = new(null);
+        private readonly TypeDictionary _defaultDict = new();
 
         public SymbolDictionary()
         {
@@ -18,66 +19,66 @@ namespace Repository.Analysis
             // Fundamental types are accessible regardless of namespace and
             // take priority over any namespaced variant.
 
-            AddSymbol(Symbol.Primitive("none", "void"));
-            AddSymbol(Symbol.Primitive("any", "IntPtr"));
+            AddDefaultSymbol(Symbol.Primitive("none", "void"));
+            AddDefaultSymbol(Symbol.Primitive("any", "IntPtr"));
 
-            AddSymbol(Symbol.Primitive("void", "void"));
-            AddSymbol(Symbol.Primitive("gboolean", "bool"));
-            AddSymbol(Symbol.Primitive("gfloat", "float"));
-            AddSymbol(Symbol.Primitive("float", "float"));
+            AddDefaultSymbol(Symbol.Primitive("void", "void"));
+            AddDefaultSymbol(Symbol.Primitive("gboolean", "bool"));
+            AddDefaultSymbol(Symbol.Primitive("gfloat", "float"));
+            AddDefaultSymbol(Symbol.Primitive("float", "float"));
 
-            AddSymbol(Symbol.Primitive("gconstpointer", "IntPtr"));
-            AddSymbol(Symbol.Primitive("va_list", "IntPtr"));
-            AddSymbol(Symbol.Primitive("gpointer", "IntPtr"));
-            AddSymbol(Symbol.Primitive("GType", "IntPtr"));
-            AddSymbol(Symbol.Primitive("tm", "IntPtr"));
+            AddDefaultSymbol(Symbol.Primitive("gconstpointer", "IntPtr"));
+            AddDefaultSymbol(Symbol.Primitive("va_list", "IntPtr"));
+            AddDefaultSymbol(Symbol.Primitive("gpointer", "IntPtr"));
+            AddDefaultSymbol(Symbol.Primitive("GType", "IntPtr"));
+            AddDefaultSymbol(Symbol.Primitive("tm", "IntPtr"));
             
             // TODO: Should we use UIntPtr here? Non-CLR compliant
-            AddSymbol(Symbol.Primitive("guintptr", "UIntPtr"));
+            AddDefaultSymbol(Symbol.Primitive("guintptr", "UIntPtr"));
 
-            AddSymbol(Symbol.Primitive("guint16", "ushort"));
-            AddSymbol(Symbol.Primitive("gushort", "ushort"));
-            AddSymbol(Symbol.Primitive("gunichar2", "ushort"));
+            AddDefaultSymbol(Symbol.Primitive("guint16", "ushort"));
+            AddDefaultSymbol(Symbol.Primitive("gushort", "ushort"));
+            AddDefaultSymbol(Symbol.Primitive("gunichar2", "ushort"));
             
-            AddSymbol(Symbol.Primitive("gint16", "short"));
-            AddSymbol(Symbol.Primitive("gshort", "short"));
+            AddDefaultSymbol(Symbol.Primitive("gint16", "short"));
+            AddDefaultSymbol(Symbol.Primitive("gshort", "short"));
 
-            AddSymbol(Symbol.Primitive("double", "double"));
-            AddSymbol(Symbol.Primitive("gdouble", "double"));
-            AddSymbol(Symbol.Primitive("long double", "double"));
+            AddDefaultSymbol(Symbol.Primitive("double", "double"));
+            AddDefaultSymbol(Symbol.Primitive("gdouble", "double"));
+            AddDefaultSymbol(Symbol.Primitive("long double", "double"));
 
             // AddBasicSymbol(new BasicSymbol("cairo_format_t", "int"));
-            AddSymbol(Symbol.Primitive("int", "int"));
-            AddSymbol(Symbol.Primitive("gint", "int"));
-            AddSymbol(Symbol.Primitive("gint32", "int"));
-            AddSymbol(Symbol.Primitive("pid_t", "int"));
+            AddDefaultSymbol(Symbol.Primitive("int", "int"));
+            AddDefaultSymbol(Symbol.Primitive("gint", "int"));
+            AddDefaultSymbol(Symbol.Primitive("gint32", "int"));
+            AddDefaultSymbol(Symbol.Primitive("pid_t", "int"));
 
-            AddSymbol(Symbol.Primitive("unsigned int", "uint"));
-            AddSymbol(Symbol.Primitive("unsigned", "uint"));
-            AddSymbol(Symbol.Primitive("guint", "uint"));
-            AddSymbol(Symbol.Primitive("guint32", "uint"));
-            AddSymbol(Symbol.Primitive("gunichar", "uint"));
-            AddSymbol(Symbol.Primitive("uid_t", "uint"));
+            AddDefaultSymbol(Symbol.Primitive("unsigned int", "uint"));
+            AddDefaultSymbol(Symbol.Primitive("unsigned", "uint"));
+            AddDefaultSymbol(Symbol.Primitive("guint", "uint"));
+            AddDefaultSymbol(Symbol.Primitive("guint32", "uint"));
+            AddDefaultSymbol(Symbol.Primitive("gunichar", "uint"));
+            AddDefaultSymbol(Symbol.Primitive("uid_t", "uint"));
             // AddBasicSymbol(new BasicSymbol("GQuark", "uint"));
 
-            AddSymbol(Symbol.Primitive("guchar", "byte"));
-            AddSymbol(Symbol.Primitive("gchar", "sbyte"));
-            AddSymbol(Symbol.Primitive("char", "sbyte"));
-            AddSymbol(Symbol.Primitive("guint8", "byte"));
-            AddSymbol(Symbol.Primitive("gint8", "sbyte"));
+            AddDefaultSymbol(Symbol.Primitive("guchar", "byte"));
+            AddDefaultSymbol(Symbol.Primitive("gchar", "sbyte"));
+            AddDefaultSymbol(Symbol.Primitive("char", "sbyte"));
+            AddDefaultSymbol(Symbol.Primitive("guint8", "byte"));
+            AddDefaultSymbol(Symbol.Primitive("gint8", "sbyte"));
 
-            AddSymbol(Symbol.Primitive("glong", "long"));
-            AddSymbol(Symbol.Primitive("gssize", "long"));
-            AddSymbol(Symbol.Primitive("gint64", "long"));
-            AddSymbol(Symbol.Primitive("goffset", "long"));
-            AddSymbol(Symbol.Primitive("time_t", "long"));
+            AddDefaultSymbol(Symbol.Primitive("glong", "long"));
+            AddDefaultSymbol(Symbol.Primitive("gssize", "long"));
+            AddDefaultSymbol(Symbol.Primitive("gint64", "long"));
+            AddDefaultSymbol(Symbol.Primitive("goffset", "long"));
+            AddDefaultSymbol(Symbol.Primitive("time_t", "long"));
 
-            AddSymbol(Symbol.Primitive("gsize", "ulong"));
-            AddSymbol(Symbol.Primitive("guint64", "ulong"));
-            AddSymbol(Symbol.Primitive("gulong", "ulong"));
+            AddDefaultSymbol(Symbol.Primitive("gsize", "ulong"));
+            AddDefaultSymbol(Symbol.Primitive("guint64", "ulong"));
+            AddDefaultSymbol(Symbol.Primitive("gulong", "ulong"));
 
-            AddSymbol(Symbol.Primitive("utf8", "string"));
-            AddSymbol(Symbol.Primitive("filename", "string"));
+            AddDefaultSymbol(Symbol.Primitive("utf8", "string"));
+            AddDefaultSymbol(Symbol.Primitive("filename", "string"));
             // AddBasicSymbol(new BasicSymbol("Window", "ulong"));
         }
 
@@ -88,25 +89,18 @@ namespace Repository.Analysis
         /// <param name="info"></param>
         public void AddSymbol(string nspace, Symbol info)
         {
-            GetTypeDict(nspace).AddSymbol(info.CName ?? info.Name, info);
-        }
+            GetTypeDict(nspace).AddAlias(info);
+        }       
 
         public void AddSymbols(string nspace, IEnumerable<Symbol> infos)
         {
-            TypeDictionary dict = GetTypeDict(nspace);
             foreach (Symbol info in infos)
                 AddSymbol(nspace, info);
         }
-
-        /// <summary>
-        /// Adds a string alias under the given namespace.
-        /// </summary>
-        /// <param name="nspace"></param>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        public void AddAlias(string nspace, string from, string to)
+        
+        public void AddAlias(string nspace, Symbol symbol)
         {
-            GetAliasDict(nspace).AddAlias(from, to);
+            GetAliasDict(nspace).AddAlias(symbol);
         }
 
         public SymbolDictionaryView GetView(string nspace)
@@ -117,34 +111,34 @@ namespace Repository.Analysis
             if (_symbolDictionaries.TryGetValue(nspace, out TypeDictionary? symbolDict))
                 return symbolDict;
 
-            var dict = new TypeDictionary(nspace);
+            var dict = new TypeDictionary();
             _symbolDictionaries.Add(nspace, dict);
             return dict;
         }
 
-        private AliasDictionary GetAliasDict(string nspace)
+        private TypeDictionary GetAliasDict(string nspace)
         {
-            if (_aliasDictionaries.TryGetValue(nspace, out AliasDictionary? aliasDict))
+            if (_aliasDictionaries.TryGetValue(nspace, out TypeDictionary? aliasDict))
                 return aliasDict;
 
-            var dict = new AliasDictionary(nspace);
+            var dict = new TypeDictionary();
             _aliasDictionaries.Add(nspace, dict);
             return dict;
         }
 
-        private void AddSymbol(Symbol symbol)
+        private void AddDefaultSymbol(Symbol symbol)
         {
-            _defaultDict.AddSymbol(symbol.CName ?? symbol.Name, symbol);
+            _defaultDict.AddAlias(symbol);
         }
 
         private bool GetSymbolInternal(TypeDictionary symbolDict, string symbol, [MaybeNullWhen(false)] out Symbol found)
         {
             // Check Fundamental Types
-            if (_defaultDict.TryGetSymbol(symbol, out found))
+            if (_defaultDict.TryGetAlias(symbol, out found))
                 return true;
 
             // Check Normal
-            return symbolDict.GetSymbol(symbol, out found);
+            return symbolDict.TryGetAlias(symbol, out found);
         }
 
         /// <summary>
@@ -157,28 +151,34 @@ namespace Repository.Analysis
         /// <param name="symbol">Unqualified name of symbol (i.e. does not contain '.')</param>
         /// <param name="found"></param>
         /// <returns>Information about the symbol</returns>
-        public bool GetSymbol(string? nspace, string symbol, [MaybeNullWhen(false)] out Symbol found)
+        public bool GetSymbol(string? nspace, string? symbol, string? ctype, [MaybeNullWhen(false)] out Symbol found)
         {
             Debug.Assert(
-                condition: !symbol.Contains('.'),
+                condition: !symbol?.Contains('.') ?? true,
                 message: $"Symbol {symbol} should not be qualified by a namespace"
             );
 
-            if (nspace == null)
-                return _defaultDict.GetSymbol(symbol, out found);
+            if (nspace is null)
+            {
+                if(symbol is not null)
+                    return _defaultDict.TryGetAlias(symbol, ctype, out found);
+
+                throw new Exception("Can not get symbol because namespace is not given but symbol is empty");
+            }
+               
 
             // Get Namespace-specific Dictionaries
             TypeDictionary symbolDict = GetTypeDict(nspace);
-            AliasDictionary aliasDict = GetAliasDict(nspace);
+            TypeDictionary aliasDict = GetAliasDict(nspace);
 
             // Check Aliases (TODO: Should this use type references?)
-            if (aliasDict.TryGetAlias(symbol, out var alias))
+            if (aliasDict.TryGetAlias(symbol, ctype, out var alias))
             {
                 if (alias.Contains('.'))
                 {
                     // Reference to other namespace
                     var components = alias.Split('.', 2);
-                    return GetSymbol(nspace: components[0], symbol: components[1], out found);
+                    return GetSymbol(nspace: components[0], symbol: components[1], ctype, out found);
                 }
 
                 // Within this namespace

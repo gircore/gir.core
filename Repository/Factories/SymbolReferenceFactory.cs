@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Repository.Analysis;
 using Repository.Model;
 using Repository.Xml;
@@ -9,9 +10,9 @@ namespace Repository.Services
 {
     internal class SymbolReferenceFactory 
     {
-        public SymbolReference Create(string type, bool isPointer = false)
+        public SymbolReference Create(string? type, string? ctype, bool isPointer = false)
         {
-            return new SymbolReference(type, isPointer);
+            return new SymbolReference(type, ctype, isPointer);
         }
 
         public SymbolReference CreateFromField(FieldInfo field)
@@ -22,40 +23,34 @@ namespace Repository.Services
             if (field.Callback.Name is null)
                 throw new Exception($"Field {field.Name} has a callback without a name.");
             
-            return Create(field.Callback.Name);
+            return Create(field.Callback.Name, field.Callback.Type);
         }
         
         public SymbolReference Create(ITypeOrArray typeOrArray)
         {
-            // Check for Type
-            var type = typeOrArray?.Type?.CType;
-            if (type != null)
-                return Create(type, IsPointer(typeOrArray?.Type));
-
-            // Check for Array
-            var arrayName = typeOrArray?.Array?.Type?.CType;
-            if (arrayName != null)
-                return Create(arrayName, IsPointer(typeOrArray?.Array?.Type));
-
-            // No Type (i.e. void)
-            return Create("none");
+            if (TryCreate(typeOrArray?.Type, out var type))
+                return type;
+            
+            if (TryCreate(typeOrArray?.Type, out var array))
+                return array;
+            
+            return Create("void", "none");
         }
         
-        private bool IsPointer(TypeInfo? typeInfo)
+        private bool TryCreate(TypeInfo? typeInfo,  [MaybeNullWhen(false)] out SymbolReference symbolReference)
         {
-            return typeInfo switch
-            {
-                {Name: "utf8"} => false,
-                {Name: "filename"} => false,
-                {CType: "gpointer"} => true,
-                {CType: {} ctype} => ctype.EndsWith("*"),
-                _ => false
-            };
+            symbolReference = null;
+            
+            if (typeInfo is null)
+                return false;
+            
+            symbolReference = new SymbolReference(typeInfo.Name, typeInfo.CType);
+            return true;
         }
 
-        public SymbolReference? CreateWithNull(string? type)
+        public SymbolReference? CreateWithNull(string? type, string? ctype)
         {
-            return type is null ? null : Create(type);
+            return type is null ? null : Create(type, ctype);
         }
         
         public IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements)
@@ -67,7 +62,7 @@ namespace Repository.Services
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
 
-                list.Add(Create(implement.Name));
+                list.Add(Create(implement.Name, null));
             }
 
             return list;

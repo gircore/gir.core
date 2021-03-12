@@ -4,29 +4,37 @@ using Array = Repository.Model.Array;
 
 namespace Repository.Analysis
 {
-    public enum ReferenceType
-    {
-        Internal,
-        External
-    }
-
     public class SymbolReference
     {
         private Symbol? _symbol;
 
         #region Properties
 
-        public string Type { get; }
+        public string? CType { get; }
+        public string? Type { get; }
         public bool IsPointer { get; }
 
         public bool IsResolved => _symbol is { };
 
         #endregion
 
-        public SymbolReference(string type, bool isPointer = false)
+        public SymbolReference(string? type, string? ctype,  bool isPointer = false)
         {
+            CType = ctype;
             Type = type;
-            IsPointer = isPointer;
+            IsPointer = GetIsPointer(type, ctype);
+        }
+        
+        private bool GetIsPointer(string? type, string? ctype)
+        {
+            return (type, ctype) switch
+            {
+                ("utf8", _) => false,
+                ("filename", _) => false,
+                (_, "gpointer") => true,
+                (_, {} c) => c.EndsWith("*"),
+                _ => false
+            };
         }
 
         public Symbol GetSymbol()
