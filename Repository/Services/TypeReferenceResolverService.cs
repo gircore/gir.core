@@ -7,9 +7,9 @@ namespace Repository.Services
 {
     internal class TypeReferenceResolverService 
     {
-        public void Resolve(IEnumerable<LoadedProject> projects)
+        public static void Resolve(IEnumerable<LoadedProject> projects)
         {
-            var symbolDictionary = new SymbolDictionary();
+            var symbolDictionary = new SymbolDictionary2();
 
             var loadedProjects = projects.ToList();
             foreach (var proj in loadedProjects)
@@ -22,39 +22,30 @@ namespace Repository.Services
             }
         }
 
-        private void FillSymbolDictionary(SymbolDictionary symbolDictionary, Namespace @namespace)
+        private static void FillSymbolDictionary(SymbolDictionary2 symbolDictionary, Namespace @namespace)
         {
-            AddAliases(symbolDictionary, @namespace);
-
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Classes);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Interfaces);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Callbacks);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Enumerations);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Bitfields);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Records);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Unions);
+            symbolDictionary.AddSymbols(@namespace.Aliases);
+            symbolDictionary.AddSymbols(@namespace.Classes);
+            symbolDictionary.AddSymbols(@namespace.Interfaces);
+            symbolDictionary.AddSymbols(@namespace.Callbacks);
+            symbolDictionary.AddSymbols(@namespace.Enumerations);
+            symbolDictionary.AddSymbols(@namespace.Bitfields);
+            symbolDictionary.AddSymbols(@namespace.Records);
+            symbolDictionary.AddSymbols(@namespace.Unions);
         }
 
-        private void ResolveReferences(SymbolDictionary symbolDictionary, LoadedProject proj)
+        private static void ResolveReferences(SymbolDictionary2 symbolDictionary, LoadedProject proj)
         {
-            var view = symbolDictionary.GetView(proj.Namespace.Name);
-
             foreach (var reference in proj.Namespace.GetSymbolReferences())
             {
-                Resolve(view, reference);
+                Resolve(symbolDictionary, reference);
             }
         }
 
-        private static void Resolve(SymbolDictionaryView view, SymbolReference reference)
+        private static void Resolve(SymbolDictionary2 symbolDictionary, SymbolReference reference)
         {
-            if (view.LookupType(reference, out Symbol? symbol))
+            if(symbolDictionary.TryLookup(reference, out var symbol))
                 reference.ResolveAs(symbol);
-        }
-
-        private static void AddAliases(SymbolDictionary symbolDictionary, Namespace @namespace)
-        {
-            foreach (var alias in @namespace.Aliases)
-                symbolDictionary.AddAlias(@namespace.Name, alias.CName ?? alias.Name, alias.ManagedName);
         }
     }
 }

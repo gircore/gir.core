@@ -10,6 +10,7 @@ namespace Repository.Analysis
 
         #region Properties
 
+        public string? Namespace { get; }
         public string? CType { get; }
         public string? Type { get; }
         public bool IsPointer { get; }
@@ -25,8 +26,31 @@ namespace Repository.Analysis
             CType = GetCType(ctype);
             IsVolatile = GetIsVolatile(ctype);
             IsConst = GetIsConst(ctype);
-            Type = type;
+            Type = GetType(type);
+            Namespace = GetNamespace(type);
             IsPointer = GetIsPointer(type, ctype);
+        }
+
+        private string? GetNamespace(string? type)
+        {
+            if (type is null)
+                return null;
+
+            if (!type.Contains("."))
+                return type;
+
+            return type.Split('.', 2)[0];
+        }
+        
+        private string? GetType(string? type)
+        {
+            if (type is null)
+                return null;
+
+            if (!type.Contains("."))
+                return type;
+
+            return type.Split('.', 2)[1];
         }
 
         private bool GetIsVolatile(string? ctype)
