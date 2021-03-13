@@ -13,18 +13,35 @@ namespace Repository.Analysis
         public string? CType { get; }
         public string? Type { get; }
         public bool IsPointer { get; }
+        public bool IsVolatile { get; }
+        public bool IsConst { get; }
 
         public bool IsResolved => _symbol is { };
 
         #endregion
 
-        public SymbolReference(string? type, string? ctype,  bool isPointer = false)
+        public SymbolReference(string? type, string? ctype)
         {
-            CType = ctype;
+            CType = GetCType(ctype);
+            IsVolatile = GetIsVolatile(ctype);
+            IsConst = GetIsConst(ctype);
             Type = type;
             IsPointer = GetIsPointer(type, ctype);
         }
+
+        private bool GetIsVolatile(string? ctype)
+            => ctype?.Contains("volatile") ?? false;
+
+        private bool GetIsConst(string? ctype)
+            => ctype?.Contains("const") ?? false;
         
+        private string? GetCType(string? ctype)
+            => ctype?
+                .Replace("*", "")
+                .Replace("const ", "")
+                .Replace("volatile ", "")
+                .Replace(" const", "");
+
         private bool GetIsPointer(string? type, string? ctype)
         {
             return (type, ctype) switch
