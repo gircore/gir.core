@@ -7,9 +7,9 @@ namespace Repository.Model
     public class Field : Symbol, Type
     {
         public SymbolReference SymbolReference { get; }
-        
+        public TypeInformation TypeInformation { get; }
+
         public Callback? Callback { get; }
-        public Array? Array { get; }
         public bool Readable { get; }
         public bool Private { get; }
 
@@ -20,13 +20,14 @@ namespace Repository.Model
         /// <param name="managedName"></param>
         /// <param name="symbolReference"></param>
         /// <param name="array"></param>
+        /// <param name="typeInformation"></param>
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
         /// <param name="readable"></param>
         /// <param name="private"></param>
-        public Field(string name, string managedName, SymbolReference symbolReference, Array? array = null, Callback? callback = null, bool readable = true, bool @private = false) : base(name, name, managedName, managedName)
+        public Field(string name, string managedName, SymbolReference symbolReference, TypeInformation typeInformation, Callback? callback = null, bool readable = true, bool @private = false) : base(name, name, managedName, managedName)
         {
             SymbolReference = symbolReference;
-            Array = array;
+            TypeInformation = typeInformation;
             Callback = callback;
             Readable = readable;
             Private = @private;

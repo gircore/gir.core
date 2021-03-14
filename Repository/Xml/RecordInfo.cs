@@ -12,7 +12,7 @@ namespace Repository.Xml
         public DocInfo? Doc { get; set; }
 
         [XmlAttribute("type", Namespace = "http://www.gtk.org/introspection/c/1.0")]
-        public string? Type { get; set; }
+        public string? CType { get; set; }
 
         [XmlAttribute("type-name", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public string? TypeName { get; set; }

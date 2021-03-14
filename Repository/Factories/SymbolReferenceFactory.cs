@@ -2,58 +2,44 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Repository.Analysis;
-using Repository.Model;
 using Repository.Xml;
-using Array = Repository.Model.Array;
 
 namespace Repository.Services
 {
     internal class SymbolReferenceFactory 
     {
-        public SymbolReference Create(string? type, string? ctype, bool isPointer = false)
+        public SymbolReference Create(string? type, string? ctype, NamespaceName currentNamespace)
         {
-            return new SymbolReference(type, ctype, isPointer);
+            return new SymbolReference(
+                typeName: GetType(type),
+                ctypeName: GetCType(ctype),
+                namespaceName: GetNamespace(type, currentNamespace)
+            );
         }
 
-        public SymbolReference CreateFromField(FieldInfo field)
+        public SymbolReference Create(ITypeOrArray typeOrArray, NamespaceName currentNamespace)
         {
-            if (field.Callback is null)
-                return Create(field);
-
-            if (field.Callback.Name is null)
-                throw new Exception($"Field {field.Name} has a callback without a name.");
-            
-            return Create(field.Callback.Name, field.Callback.Type);
-        }
-        
-        public SymbolReference Create(ITypeOrArray typeOrArray)
-        {
-            if (TryCreate(typeOrArray?.Type, out var type))
+            if (TryCreate(typeOrArray?.Type, currentNamespace, out var type))
                 return type;
             
-            if (TryCreate(typeOrArray?.Type, out var array))
+            if (TryCreate(typeOrArray?.Type, currentNamespace, out var array))
                 return array;
             
-            return Create("void", "none");
+            return Create("void", "none", currentNamespace);
         }
         
-        private bool TryCreate(TypeInfo? typeInfo,  [MaybeNullWhen(false)] out SymbolReference symbolReference)
+        private bool TryCreate(TypeInfo? typeInfo, NamespaceName currentNamespace, [MaybeNullWhen(false)] out SymbolReference symbolReference)
         {
             symbolReference = null;
             
             if (typeInfo is null)
                 return false;
             
-            symbolReference = new SymbolReference(typeInfo.Name, typeInfo.CType);
+            symbolReference = Create(typeInfo.Name, typeInfo.CType, currentNamespace);
             return true;
         }
 
-        public SymbolReference? CreateWithNull(string? type, string? ctype)
-        {
-            return type is null ? null : Create(type, ctype);
-        }
-        
-        public IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements)
+        public IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements, NamespaceName currentNamespace)
         {
             var list = new List<SymbolReference>();
 
@@ -62,10 +48,46 @@ namespace Repository.Services
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
 
-                list.Add(Create(implement.Name, null));
+                list.Add(Create(implement.Name, null, currentNamespace));
             }
 
             return list;
+        }
+
+        private static NamespaceName? GetNamespace(string? type, NamespaceName currentNamespace)
+        {
+            if (type is null)
+                return currentNamespace;
+
+            if (!type.Contains("."))
+                return currentNamespace;
+
+            return new NamespaceName(type.Split('.', 2)[0]);
+        }
+        
+        private static TypeName? GetType(string? type)
+        {
+            if (type is null)
+                return null;
+
+            if (!type.Contains("."))
+                return new TypeName(type);
+
+            return new TypeName(type.Split('.', 2)[1]);
+        }
+
+        private static CTypeName? GetCType(string? ctype)
+        {
+            if (ctype is null)
+                return null;
+            
+            ctype = ctype
+                .Replace("*", "")
+                .Replace("const ", "")
+                .Replace("volatile ", "")
+                .Replace(" const", "");
+
+            return new CTypeName(ctype);
         }
     }
 }

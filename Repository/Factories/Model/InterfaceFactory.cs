@@ -32,7 +32,7 @@ namespace Repository.Factories
                 name: iface.Name, 
                 managedName: iface.Name,
                 cType: iface.TypeName,
-                implements: _symbolReferenceFactory.Create(iface.Implements),
+                implements: _symbolReferenceFactory.Create(iface.Implements, @namespace.Name),
                 methods: _methodFactory.Create(iface.Methods, @namespace),
                 functions: _methodFactory.Create(iface.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(iface.GetTypeFunction, @namespace)

@@ -1,4 +1,5 @@
 ﻿using System;
+using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -33,15 +34,25 @@ namespace Repository.Factories
                 @namespace: @namespace, 
                 name: @record.Name, 
                 managedName: @record.Name, 
-                gLibClassStructFor: _symbolReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor, null),
+                gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, @namespace.Name),
                 methods:_methodFactory.Create(@record.Methods, @namespace),
                 functions: _methodFactory.Create(@record.Functions, @namespace),
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(@record.Fields, @namespace),
                 disguised: @record.Disguised,
                 constructors: _methodFactory.Create(@record.Constructors, @namespace),
-                ctype: @record.Type
+                ctype: @record.CType
             );
+        }
+
+        private SymbolReference? GetGLibClassStructFor(string? classStructForName, NamespaceName namespaceName)
+        {
+            SymbolReference? getGLibClassStructFor = null;
+            
+            if (classStructForName is {})
+                getGLibClassStructFor = _symbolReferenceFactory.Create(classStructForName, null, namespaceName);
+
+            return getGLibClassStructFor;
         }
     }
 }

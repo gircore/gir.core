@@ -30,8 +30,8 @@ namespace Repository.Factories
                 @namespace: @namespace,
                 name: callbackInfo.Name,
                 managedName: _caseConverter.ToPascal(callbackInfo.Name),
-                returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue),
-                arguments: _argumentsFactory.Create(callbackInfo.Parameters).ToList(),
+                returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue, @namespace.Name),
+                arguments: _argumentsFactory.Create(callbackInfo.Parameters, @namespace.Name).ToList(),
                 ctype: callbackInfo.Type
             );
         }

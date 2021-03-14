@@ -36,8 +36,8 @@ namespace Repository.Factories
                     @namespace: @namespace,
                     name: methodInfo.Identifier,
                     managedName: _caseConverter.ToPascalCase(methodInfo.Name),
-                    returnValue: _returnValueFactory.Create(methodInfo.ReturnValue),
-                    arguments: _argumentsFactory.Create(methodInfo.Parameters, methodInfo.Throws)
+                    returnValue: _returnValueFactory.Create(methodInfo.ReturnValue, @namespace.Name),
+                    arguments: _argumentsFactory.Create(methodInfo.Parameters, @namespace.Name, methodInfo.Throws)
                 );
             }
 
@@ -53,7 +53,8 @@ namespace Repository.Factories
             ReturnValue returnValue = _returnValueFactory.Create(
                 type: "gulong",
                 transfer: Transfer.None,
-                nullable: false
+                nullable: false,
+                namespaceName: @namespace.Name
             );
 
             return new Method(

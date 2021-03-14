@@ -14,13 +14,13 @@ namespace Generator
         
         internal static string WriteType(this Type type, Target target,  Namespace currentNamespace)
         {
-            var name = (type.SymbolReference, target) switch
+            var name = (type, target) switch
             {
-                ({IsPointer: true}, Target.Native) => "IntPtr",
+                ({TypeInformation: {IsPointer:  true}}, Target.Native) => "IntPtr",
                 _ => type.SymbolReference.GetSymbol().Write(target, currentNamespace)
             };
 
-            if (type.Array is { })
+            if (type.TypeInformation.Array is { })
                 name += "[]";
 
             return name;

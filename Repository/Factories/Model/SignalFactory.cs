@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Repository.Analysis;
 using Repository.Model;
 using Repository.Xml;
 
@@ -19,7 +20,7 @@ namespace Repository.Factories
             _argumentsFactory = argumentsFactory;
         }
 
-        public Signal Create(SignalInfo signalInfo)
+        public Signal Create(SignalInfo signalInfo, NamespaceName namespaceName)
         {
             if (signalInfo.Name is null)
                 throw new Exception($"{nameof(signalInfo)} is missing a {nameof(signalInfo.Name)}");
@@ -30,12 +31,12 @@ namespace Repository.Factories
             return new Signal(
                 name: signalInfo.Name,
                 managedName: _caseConverter.ToPascalCase(signalInfo.Name),
-                returnValue: _returnValueFactory.Create(signalInfo.ReturnValue),
-                arguments: _argumentsFactory.Create(signalInfo.Parameters)
+                returnValue: _returnValueFactory.Create(signalInfo.ReturnValue, namespaceName),
+                arguments: _argumentsFactory.Create(signalInfo.Parameters, namespaceName)
             );
         }
 
-        public IEnumerable<Signal> Create(IEnumerable<SignalInfo> signals)
-            => signals.Select(Create).ToList();
+        public IEnumerable<Signal> Create(IEnumerable<SignalInfo> signals, NamespaceName namespaceName)
+            => signals.Select(x => Create(x, namespaceName)).ToList();
     }
 }

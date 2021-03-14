@@ -39,7 +39,7 @@ namespace Generator
             if (target == Target.Managed)
                 return "";
             
-            var attribute = argument.Array.GetMarshallAttribute();
+            var attribute = argument.TypeInformation.Array.GetMarshallAttribute();
             
             if (attribute.Length > 0)
                 attribute += " ";
@@ -69,22 +69,17 @@ namespace Generator
         
         internal static string WriteMarshalArgumentToManaged(this Argument arg, Namespace currentNamespace)
         {
-            if (arg.ManagedName == "fields")
-            {
-                
-            }
-            
             // TODO: We need to support disguised structs (opaque types)
-            var expression = (arg.SymbolReference.IsPointer, arg.SymbolReference.GetSymbol(), arg) switch
+            var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
             {
-                (true, Record r, { Array: null } a) => $"Marshal.PtrToStructure<{r.ManagedName}>({a.NativeName});",
-                (true, Record r, { Array: {}} a) => $"{a.NativeName}.MarshalToStructure<{r.ManagedName}>();",
-                (true, Class { IsFundamental: true} c, {Array: null} a) => $"{c.ManagedName}.From({a.NativeName});",
-                (true, Class c, {Array: null} a) => $"Object.WrapHandle<{c.ManagedName}>({a.NativeName}, {a.Transfer.IsOwnedRef().ToString().ToLower()});",
-                (true, Class c, {Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
+                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.ManagedName}>({arg.NativeName});",
+                (Record r, {IsPointer: true, Array:{}}) => $"{arg.NativeName}.MarshalToStructure<{r.ManagedName}>();",
+                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.ManagedName}.From({arg.NativeName});",
+                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.ManagedName}>({arg.NativeName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
+                (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
                 _ => $"({arg.WriteManagedType(currentNamespace)}){arg.NativeName};" // Other -> Try a brute-force cast
             };
-
+            
             return $"{arg.WriteManagedType(currentNamespace)} {arg.ManagedName}Managed = " + expression;
         }
     }

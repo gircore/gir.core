@@ -128,7 +128,7 @@ namespace Repository
         {
             foreach (var info in constantInfos)
             {
-                var constant = _constantFactory.Create(info);
+                var constant = _constantFactory.Create(info, nspace.Name);
                 nspace.AddConstant(constant);
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Repository.Analysis;
 using Repository.Model;
 using Repository.Xml;
 
@@ -14,16 +15,16 @@ namespace Repository.Factories
             _argumentFactory = argumentFactory;
         }
 
-        public IEnumerable<Argument> Create(ParametersInfo? parameters, bool throws = false)
+        public IEnumerable<Argument> Create(ParametersInfo? parameters, NamespaceName currentNamespace, bool throws = false)
         {
             var list = new List<Argument>();
 
             if (parameters is { })
             {
                 if (parameters.InstanceParameter is { })
-                    list.Add(_argumentFactory.Create(parameters.InstanceParameter));
+                    list.Add(_argumentFactory.Create(parameters.InstanceParameter, currentNamespace));
 
-                list.AddRange(parameters.Parameters.Select(arg => _argumentFactory.Create(arg)));
+                list.AddRange(parameters.Parameters.Select(arg => _argumentFactory.Create(arg, currentNamespace)));
 
                 if (throws)
                 {
@@ -34,7 +35,7 @@ namespace Repository.Factories
                         direction: Direction.OutCalleeAllocates,
                         transfer: Transfer.Full,
                         nullable: false,
-                        isPointer: true
+                        currentNamespace: currentNamespace
                     ));
                 }
             }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Repository.Analysis;
 
 namespace Repository.Model
@@ -9,7 +8,7 @@ namespace Repository.Model
         #region Properties
         
         // Basic Info
-        public string Name { get; }
+        public NamespaceName Name { get; }
         public string Version { get; }
         
         public string? SharedLibrary { get; }
@@ -48,7 +47,7 @@ namespace Repository.Model
 
         public Namespace(string name, string version, string? sharedLibrary)
         {
-            Name = name;
+            Name = new NamespaceName(name);
             Version = version;
             SharedLibrary = sharedLibrary;
         }

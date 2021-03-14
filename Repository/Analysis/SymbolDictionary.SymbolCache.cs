@@ -5,7 +5,7 @@ using Repository.Model;
 
 namespace Repository.Analysis
 {
-    public partial class SymbolDictionary2
+    public partial class SymbolDictionary
     {
         private class SymbolCache
         {
@@ -27,14 +27,16 @@ namespace Repository.Analysis
             {
                 if (!CheckNamespace(symbol, symbolReference))
                     return false;
+
+                return (symbol.Name == symbolReference.TypeName); //Check cname, too?|| (symbol.CName == symbolReference.CTypeName);
             }
 
-            private bool CheckNamespace(Symbol symbol, SymbolReference symbolReference) 
-                => (symbol, symbolReference) switch
-                {
-                    ({Namespace: {} }, {Nam})
-                    _ => true
-                };
+            private static bool CheckNamespace(Symbol symbol, SymbolReference symbolReference) => (symbol, symbolReference) switch
+            {
+                ({Namespace: {} }, {NamespaceName: null}) => false,
+                ({Namespace: {Name: {}n1}}, {NamespaceName:{}n2}) when n1 != n2 => false,
+                _ => true
+            };
         }
     }
 }

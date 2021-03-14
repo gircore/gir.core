@@ -11,9 +11,9 @@ namespace Repository.Model
         public bool Nullable { get; }
         public int? ClosureIndex { get; }
         public int? DestroyIndex { get; }
-        public Array? Array { get; }
+        public TypeInformation TypeInformation { get; }
 
-        public Argument(string name, string managedName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, int? closureIndex, int? destroyIndex, Array? array = null) : base(name, name, managedName, managedName)
+        public Argument(string name, string managedName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, int? closureIndex, int? destroyIndex, TypeInformation typeInformation) : base(name, name, managedName, managedName)
         {
             SymbolReference = symbolReference;
             Direction = direction;
@@ -21,7 +21,7 @@ namespace Repository.Model
             Nullable = nullable;
             ClosureIndex = closureIndex;
             DestroyIndex = destroyIndex;
-            Array = array;
+            TypeInformation = typeInformation;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()
