@@ -27,6 +27,14 @@ namespace Repository.Services
             
             return Create("void", "none", currentNamespace);
         }
+
+        public SymbolReference Create(TypeInfo typeInfo, NamespaceName currentNamespace)
+        {
+            if (TryCreate(typeInfo, currentNamespace, out var symbolReference))
+                return symbolReference;
+
+            throw new Exception("Could not create SymbolReference vrom TypeInfo");
+        }
         
         private bool TryCreate(TypeInfo? typeInfo, NamespaceName currentNamespace, [MaybeNullWhen(false)] out SymbolReference symbolReference)
         {

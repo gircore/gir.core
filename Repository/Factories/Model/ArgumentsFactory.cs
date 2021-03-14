@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Repository.Analysis;
 using Repository.Model;
 using Repository.Xml;
 
@@ -28,15 +27,20 @@ namespace Repository.Factories
 
                 if (throws)
                 {
-                    list.Add(_argumentFactory.Create(
-                        name: "error",
-                        type: "GLib.Error",
-                        ctype: "GError",
-                        direction: Direction.OutCalleeAllocates,
-                        transfer: Transfer.Full,
-                        nullable: false,
-                        currentNamespace: currentNamespace
-                    ));
+                    var parameterInfo = new ParameterInfo()
+                    {
+                        Name = "error",
+                        TransferOwnership = "full",
+                        Direction = "out",
+                        CallerAllocates = false,
+                        Type = new TypeInfo()
+                        {
+                            Name = "GLib.Error",
+                            CType = "GError*"
+                        }
+                    };
+                    
+                    list.Add(_argumentFactory.Create(parameterInfo, currentNamespace));
                 }
             }
 

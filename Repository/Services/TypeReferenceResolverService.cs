@@ -17,6 +17,8 @@ namespace Repository.Services
                 Log.Debug($"Analysing '{proj.Name}'.");
                 FillSymbolDictionary(symbolDictionary, proj.Namespace);
                 
+                symbolDictionary.ResolveAliases();
+
                 ResolveReferences(symbolDictionary, proj);
                 Log.Information($"Resolved symbol references for {proj.Name}.");
             }
@@ -26,7 +28,8 @@ namespace Repository.Services
         {
             AddPrimitives(symbolDictionary);
             
-            symbolDictionary.AddSymbols(@namespace.Aliases);
+            symbolDictionary.AddAliases(@namespace.Aliases);
+            
             symbolDictionary.AddSymbols(@namespace.Classes);
             symbolDictionary.AddSymbols(@namespace.Interfaces);
             symbolDictionary.AddSymbols(@namespace.Callbacks);

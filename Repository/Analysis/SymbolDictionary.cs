@@ -7,6 +7,7 @@ namespace Repository.Analysis
 {
     public partial class SymbolDictionary
     {
+        private readonly Dictionary<NamespaceName, AliasCache> _aliasData = new();
         private readonly Dictionary<NamespaceName, SymbolCache> _data = new();
         private readonly SymbolCache _globalSymbols = new();
 
@@ -15,6 +16,9 @@ namespace Repository.Analysis
             if (_globalSymbols.TryLookup(symbolReference, out symbol))
                 return true;
 
+            if (ResolveAlias(symbolReference, out symbol))
+                return true;
+            
             if (symbolReference.NamespaceName is null)
                 return false; //If the reference has no namespace it must be a global symbol or can not be resolved
 
@@ -22,6 +26,23 @@ namespace Repository.Analysis
                 return false;
 
             return cache.TryLookup(symbolReference, out symbol);
+        }
+
+        private bool ResolveAlias(SymbolReference symbolReference, [MaybeNullWhen(false)] out Symbol symbol)
+        {
+            symbol = null;
+            
+            if (symbolReference.NamespaceName is null)
+                return false;
+
+            if (!_aliasData.TryGetValue(symbolReference.NamespaceName, out var aliasCache))
+                return false;
+
+            if (!aliasCache.TryLookup(symbolReference, out var alias))
+                return false;
+
+            symbol = alias.SymbolReference.GetSymbol();
+            return true;
         }
         
         public void AddSymbols(IEnumerable<Symbol> symbols)
@@ -33,12 +54,12 @@ namespace Repository.Analysis
         public void AddSymbol(Symbol symbol)
         {
             if (symbol.Namespace is null)
-                AddDefaultSymbol(symbol);
+                AddGlobalSymbol(symbol);
             else
                 AddConcreteSymbol(symbol);
         }
 
-        private void AddDefaultSymbol(Symbol symbol)
+        private void AddGlobalSymbol(Symbol symbol)
         {
             Debug.Assert(
                 condition: symbol.Namespace is null, 
@@ -62,6 +83,31 @@ namespace Repository.Analysis
             }
 
             cache.Add(symbol);
+        }
+
+        public void AddAliases(IEnumerable<Alias> aliases)
+        {
+            foreach(var alias in aliases)
+                AddAlias(alias);
+        }
+
+        private void AddAlias(Alias alias)
+        {
+            if (!_aliasData.TryGetValue(alias.Namespace.Name, out var cache))
+            {
+                cache = new AliasCache();
+                _aliasData[alias.Namespace.Name] = cache;
+            }
+
+            cache.Add(alias);
+        }
+
+        public void ResolveAliases()
+        {
+            foreach(var aliasData in _aliasData.Values)
+                foreach (var alias in aliasData.Aliases)
+                    if(TryLookup(alias.SymbolReference, out var symbol))
+                        alias.SymbolReference.ResolveAs(symbol);
         }
     }
 }

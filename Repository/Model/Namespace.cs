@@ -13,8 +13,8 @@ namespace Repository.Model
         
         public string? SharedLibrary { get; }
         
-        private readonly List<Symbol> _aliases = new();
-        public IEnumerable<Symbol> Aliases => _aliases;
+        private readonly List<Alias> _aliases = new();
+        public IEnumerable<Alias> Aliases => _aliases;
         
         private readonly List<Callback> _callbacks = new();
         public IEnumerable<Callback> Callbacks => _callbacks;
@@ -52,8 +52,8 @@ namespace Repository.Model
             SharedLibrary = sharedLibrary;
         }
 
-        internal void AddAlias(Symbol symbol)
-            => _aliases.Add(symbol);
+        internal void AddAlias(Alias alias)
+            => _aliases.Add(alias);
 
         internal void AddCallback(Callback callback)
             => _callbacks.Add(callback);

@@ -61,7 +61,7 @@ namespace Repository
         private void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
         {
             foreach (var alias in aliases)
-                nspace.AddAlias(_aliasFactory.Create(alias));
+                nspace.AddAlias(_aliasFactory.Create(alias, nspace));
         }
 
         private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes)

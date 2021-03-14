@@ -18,12 +18,12 @@ namespace Repository.Analysis
 
             public bool TryLookup(SymbolReference symbolReference, [MaybeNullWhen(false)] out Symbol symbol)
             {
-                symbol = _symbols.FirstOrDefault(x => Check(x, symbolReference));
+                symbol = _symbols.FirstOrDefault(x => CheckSymbolReference(x, symbolReference));
 
                 return symbol is not null;
             }
 
-            private bool Check(Symbol symbol, SymbolReference symbolReference)
+            private bool CheckSymbolReference(Symbol symbol, SymbolReference symbolReference)
             {
                 if (!CheckNamespace(symbol, symbolReference))
                     return false;

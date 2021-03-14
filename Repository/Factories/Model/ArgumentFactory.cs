@@ -60,21 +60,6 @@ namespace Repository.Factories
             );
         }
 
-        public Argument Create(string name, string type, string ctype, Direction direction, Transfer transfer, bool nullable, NamespaceName currentNamespace, int? closure = null, int? destroy = null)
-        {
-            return new Argument(
-                elementName: new ElementName(name),
-                elementManagedName: new ElementManagedName(_caseConverter.ToCamelCase(name)),
-                symbolReference: _symbolReferenceFactory.Create(type, ctype, currentNamespace),
-                direction: direction,
-                transfer: transfer,
-                nullable: nullable,
-                closureIndex: closure,
-                destroyIndex: destroy,
-                typeInformation: _typeInformationFactory.CreateDefault()
-            );
-        }
-
         public class VarArgsNotSupportedException : Exception
         {
             public VarArgsNotSupportedException(string message) : base(message)
