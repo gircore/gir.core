@@ -1,5 +1,4 @@
-﻿using System;
-using Repository.Model;
+﻿using Repository.Model;
 using Type = Repository.Model.Type;
 
 namespace Generator
@@ -14,9 +13,15 @@ namespace Generator
         
         internal static string WriteType(this Type type, Target target,  Namespace currentNamespace)
         {
+            var symbol = type.SymbolReference.GetSymbol();
             var name = (type, target) switch
             {
-                ({TypeInformation: {IsPointer:  true}}, Target.Native) => "IntPtr",
+                //Arrays of byte can be marshalled automatically, no IntPtr needed
+                ({TypeInformation: {Array:{}}}, Target.Native) when symbol.NativeName == "byte" => "byte",
+                
+                //Use IntPtr for all types where a pointer is expected
+                ({TypeInformation: {IsPointer: true}}, Target.Native) => "IntPtr",
+                
                 _ => type.SymbolReference.GetSymbol().Write(target, currentNamespace)
             };
 

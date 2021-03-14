@@ -22,7 +22,7 @@ namespace Repository.Services
             if (TryCreate(typeOrArray?.Type, currentNamespace, out var type))
                 return type;
             
-            if (TryCreate(typeOrArray?.Type, currentNamespace, out var array))
+            if (TryCreate(typeOrArray?.Array?.Type, currentNamespace, out var array))
                 return array;
             
             return Create("void", "none", currentNamespace);
