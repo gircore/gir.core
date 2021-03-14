@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class IncludeInfo
+    internal class IncludeInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

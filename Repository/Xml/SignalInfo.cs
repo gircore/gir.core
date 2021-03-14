@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    public class SignalInfo
+    internal class SignalInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

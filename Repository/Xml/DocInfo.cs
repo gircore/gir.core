@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class DocInfo
+    internal class DocInfo
     {
         [XmlText]
         public string? Text { get; set; }

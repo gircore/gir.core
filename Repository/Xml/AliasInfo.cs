@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class AliasInfo
+    internal class AliasInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

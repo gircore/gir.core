@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace Repository.Xml
 {
     [XmlRoot(ElementName = "repository")]
-    public class RepositoryInfo
+    internal class RepositoryInfo
     {
         [XmlAttribute("version")]
         public string? Version { get; set; }

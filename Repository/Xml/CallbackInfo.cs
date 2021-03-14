@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class CallbackInfo
+    internal class CallbackInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
