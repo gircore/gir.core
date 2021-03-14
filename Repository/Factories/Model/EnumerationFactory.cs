@@ -24,11 +24,12 @@ namespace Repository.Factories
 
             return new Enumeration(
                 @namespace: @namespace,
-                name: @enum.Name,
-                managedName: @enum.Name,
+                typeName: new TypeName(@enum.Name),
+                managedName: new ManagedName(@enum.Name),
+                nativeName: new NativeName(@enum.Name),
                 hasFlags: hasFlags,
                 members: @enum.Members.Select(x => _memberFactory.Create(x)).ToList(),
-                ctype: @enum.Type
+                cTypeName: new CTypeName(@enum.Type)
             );
         }
     }

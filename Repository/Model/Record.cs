@@ -33,7 +33,7 @@ namespace Repository.Model
         public IEnumerable<Method> Functions => _functions;
         public SymbolReference? GLibClassStructFor { get; }
 
-        public Record(Namespace @namespace, string name, string managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors, string? ctype) : base(@namespace, ctype, name, managedName, managedName)
+        public Record(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, NativeName nativeName, ManagedName managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(@namespace, cTypeName, typeName, nativeName, managedName)
         {
             GLibClassStructFor = gLibClassStructFor;
             GetTypeFunction = getTypeFunction;
@@ -63,7 +63,7 @@ namespace Repository.Model
             return symbolReferences;
         }
 
-        internal override bool GetIsResolved()
+        public override bool GetIsResolved()
         {
             if (!(GetTypeFunction?.GetIsResolved() ?? true))
                 return false;
@@ -84,12 +84,12 @@ namespace Repository.Model
             _constructors.RemoveAll(Remove);
         }
         
-        private bool Remove(Symbol symbol)
+        private bool Remove(Element symbol)
         {
             var result = symbol.GetIsResolved();
             
             if(!result)
-                Log.Information($"Record {Namespace?.Name}.{Name}: Stripping symbol {symbol?.Name}");
+                Log.Information($"Record {Namespace?.Name}.{TypeName}: Stripping symbol {symbol.Name}");
 
             return !result;
         }

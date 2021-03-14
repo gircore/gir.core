@@ -36,8 +36,8 @@ namespace Repository.Factories
                 callback = _callbackFactory.Create(info.Callback, @namespace);
 
             return new Field(
-                name: _identifierConverter.Convert(info.Name),
-                managedName: _caseConverter.ToPascalCase(_identifierConverter.Convert(info.Name)),
+                elementName: new ElementName(_identifierConverter.Convert(info.Name)),
+                elementManagedName: new ElementManagedName(_caseConverter.ToPascalCase(_identifierConverter.Convert(info.Name))),
                 symbolReference: CreateSymbolReference(info, @namespace.Name),
                 callback: callback,
                 typeInformation: _typeInformationFactory.Create(info),

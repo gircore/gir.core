@@ -29,19 +29,24 @@ namespace Repository.Factories
                 { } f => _methodFactory.CreateGetTypeMethod(f, @namespace),
                 _ => null
             };
+
+            CTypeName? cTypeName = null;
+            if (@record.CType is { })
+                cTypeName = new CTypeName(@record.CType);
             
             return new Record(
-                @namespace: @namespace, 
-                name: @record.Name, 
-                managedName: @record.Name, 
+                @namespace: @namespace,
+                cTypeName: cTypeName,
+                typeName: new TypeName(@record.Name), 
+                managedName: new ManagedName(@record.Name),
+                nativeName: new NativeName(@record.Name),
                 gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, @namespace.Name),
                 methods:_methodFactory.Create(@record.Methods, @namespace),
                 functions: _methodFactory.Create(@record.Functions, @namespace),
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(@record.Fields, @namespace),
                 disguised: @record.Disguised,
-                constructors: _methodFactory.Create(@record.Constructors, @namespace),
-                ctype: @record.CType
+                constructors: _methodFactory.Create(@record.Constructors, @namespace)
             );
         }
 

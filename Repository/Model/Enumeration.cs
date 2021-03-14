@@ -9,7 +9,7 @@ namespace Repository.Model
         public bool HasFlags { get; }
         public IEnumerable<Member> Members { get; }
         
-        public Enumeration(Namespace @namespace, string name, string managedName, bool hasFlags, IEnumerable<Member> members, string ctype) : base(@namespace, ctype, name, managedName, managedName)
+        public Enumeration(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, NativeName nativeName, ManagedName managedName, bool hasFlags, IEnumerable<Member> members) : base(@namespace, cTypeName, typeName, nativeName, managedName)
         {
             HasFlags = hasFlags;
             Members = members;
@@ -18,7 +18,7 @@ namespace Repository.Model
         public override IEnumerable<SymbolReference> GetSymbolReferences()
             => Members.SelectMany(x => x.GetSymbolReferences());
 
-        internal override bool GetIsResolved()
+        public override bool GetIsResolved()
             => Members.AllResolved();
     }
 }

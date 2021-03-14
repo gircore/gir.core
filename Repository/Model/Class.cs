@@ -13,7 +13,6 @@ namespace Repository.Model
         private readonly List<Field> _fields;
         private readonly List<Signal> _signals;
         public bool IsFundamental { get; }
-        public string? CType { get; }
         public Method GetTypeFunction { get; }
         public IEnumerable<SymbolReference> Implements { get; }
         public IEnumerable<Method> Methods => _methods;
@@ -24,7 +23,7 @@ namespace Repository.Model
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Method> Constructors => _constructors;
 
-        public Class(Namespace @namespace, string name, string managedName, string? ctype, SymbolReference? parent, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(@namespace, ctype, name, managedName, managedName)
+        public Class(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, NativeName nativeName, ManagedName managedName, SymbolReference? parent, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(@namespace, cTypeName, typeName, nativeName, managedName)
         {
             Parent = parent;
             Implements = implements;
@@ -38,7 +37,6 @@ namespace Repository.Model
             this._signals = signals.ToList();
 
             IsFundamental = isFundamental;
-            CType = ctype;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()
@@ -60,9 +58,9 @@ namespace Repository.Model
             return symbolReferences;
         }
 
-        internal override bool GetIsResolved()
+        public override bool GetIsResolved()
         {
-            if (Parent is { } && !Parent.IsResolved)
+            if (Parent is { } && !Parent.GetIsResolved())
                 return false;
             
             if(!Implements.AllResolved())
@@ -91,12 +89,12 @@ namespace Repository.Model
             _signals.RemoveAll(Remove);
         }
         
-        private bool Remove(Symbol symbol)
+        private bool Remove(Element element)
         {
-            var result = symbol.GetIsResolved();
+            var result = element.GetIsResolved();
             
             if(!result)
-                Log.Information($"Class {Namespace?.Name}.{Name}: Stripping symbol {symbol?.Name}");
+                Log.Information($"Class {Namespace?.Name}.{TypeName}: Stripping symbol {element.Name}");
 
             return !result;
         }

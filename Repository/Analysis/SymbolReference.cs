@@ -4,7 +4,7 @@ using Array = Repository.Model.Array;
 
 namespace Repository.Analysis
 {
-    public class SymbolReference
+    public class SymbolReference : Resolveable
     {
         private Symbol? _symbol;
 
@@ -13,8 +13,6 @@ namespace Repository.Analysis
         public NamespaceName? NamespaceName { get; }
         public CTypeName? CTypeName { get; }
         public TypeName? TypeName { get; }
-
-        public bool IsResolved => _symbol is { };
 
         #endregion
 
@@ -37,5 +35,8 @@ namespace Repository.Analysis
         {
             _symbol = symbol;
         }
+
+        public bool GetIsResolved()
+            => _symbol is { };
     }
 }

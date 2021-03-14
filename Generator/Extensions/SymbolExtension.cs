@@ -31,23 +31,6 @@ namespace Generator
             _ => throw new Exception($"Unknown {nameof(Target)}")
         };
 
-        public static void AddClassStructs(this Symbol symbol, IEnumerable<Record> classStructs)
-        {
-            var foundClassStructs = FindClassStructs(classStructs, symbol);
-
-            foreach (var classStruct in foundClassStructs)
-            {
-                var identifier = GetClassStructIdentifier(classStruct.Type);
-                classStruct.ManagedName = $"{symbol.ManagedName}.Native.{identifier}";
-                symbol.Metadata[identifier] = classStruct;
-
-                if (symbol.Namespace is null)
-                    throw new Exception($"Can not add class structs to symbol {symbol.Name} because the symbol is missing its namespace");
-
-                symbol.Namespace?.RemoveRecord(classStruct);
-            }
-        }
-
         private static string GetClassStructIdentifier(RecordType type) => type switch
         {
             RecordType.PublicClass => "ClassStruct",
@@ -57,14 +40,5 @@ namespace Generator
 
         private static IEnumerable<Record> FindClassStructs(IEnumerable<Record> classStructs, Symbol symbol)
             => classStructs.Where(x => x.GLibClassStructFor?.GetSymbol() == symbol);
-
-        public static string WriteNativeSummary(this Symbol symbol)
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine($"/// <summary>");
-            builder.AppendLine($"/// Native name: {symbol.NativeName}.");
-            builder.AppendLine($"/// </summary>");
-            return builder.ToString();
-        }
     }
 }

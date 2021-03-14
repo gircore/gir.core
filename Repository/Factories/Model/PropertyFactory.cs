@@ -27,8 +27,8 @@ namespace Repository.Factories
                 throw new Exception("Property is missing a name");
             
             return new Property(
-                name: info.Name,
-                managedName: _caseConverter.ToPascalCase(info.Name),
+                elementName: new ElementName(info.Name),
+                elementManagedName: new ElementManagedName(_caseConverter.ToPascalCase(info.Name)),
                 symbolReference: _symbolReferenceFactory.Create(info, namespaceName),
                 writeable: info.Writeable,
                 transfer:  _transferFactory.FromText(info.TransferOwnership)

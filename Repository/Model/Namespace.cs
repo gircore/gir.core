@@ -3,7 +3,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Namespace : ISymbolReferenceProvider
+    public class Namespace : SymbolReferenceProvider
     {
         #region Properties
         
@@ -120,12 +120,22 @@ namespace Repository.Model
             _constants.RemoveAll(Remove);
         }
 
+        private bool Remove(Element element)
+        {
+            var result = element.GetIsResolved();
+            
+            if(!result)
+                Log.Information($"{element.GetType().Name} {element.Name}: Removed because parts of it could not be completely resolvled");
+
+            return !result;
+        }
+        
         private bool Remove(Symbol symbol)
         {
             var result = symbol.GetIsResolved();
             
             if(!result)
-                Log.Information($"{symbol.GetType().Name} {symbol.Namespace?.Name}.{symbol.Name}: Removed because parts of it could not be completely resolvled");
+                Log.Information($"{symbol.GetType().Name} {symbol.Namespace?.Name}.{symbol.TypeName}: Removed because parts of it could not be completely resolvled");
 
             return !result;
         }

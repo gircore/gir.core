@@ -4,12 +4,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public interface  ISymbolReferenceProvider
-    {
-        IEnumerable<SymbolReference> GetSymbolReferences();
-    }
-
-    public class Symbol : ISymbolReferenceProvider
+    public class Symbol : SymbolReferenceProvider, Resolveable
     {
         public Namespace? Namespace { get; }
         public Metadata Metadata { get; } = new();
@@ -17,32 +12,32 @@ namespace Repository.Model
         /// <summary>
         /// Original name of the symbol.
         /// </summary>
-        public string Name { get; }
+        public TypeName TypeName { get; }
         
         /// <summary>
         /// Name of the symbol in the c world
         /// </summary>
-        public string? CName { get; }
+        public CTypeName? CTypeName { get; }
         
         /// <summary>
         /// Name of the symbol which should be used as a native representation
         /// </summary>
-        public string NativeName { get; set; }
+        public NativeName NativeName { get; set; }
         
         /// <summary>
         /// Name of the symbol which should be used as managed representation
         /// </summary>
-        public string ManagedName { get; set; }
+        public ManagedName ManagedName { get; set; }
 
-        protected internal Symbol(string cname, string name, string nativeName, string managedName): this(null, cname, name, nativeName, managedName)
+        protected internal Symbol(CTypeName? ctypeName, TypeName typeName, NativeName nativeName, ManagedName managedName): this(null, ctypeName, typeName, nativeName, managedName)
         {
         }
 
-        protected internal Symbol(Namespace? @namespace, string? cname, string name, string nativeName, string managedName)
+        protected internal Symbol(Namespace? @namespace, CTypeName? cTypeName, TypeName typeName, NativeName nativeName, ManagedName managedName)
         {
             Namespace = @namespace;
-            CName = cname;
-            Name = name;
+            CTypeName = cTypeName;
+            TypeName = typeName;
             NativeName = nativeName; 
             ManagedName = managedName;
         }
@@ -50,7 +45,7 @@ namespace Repository.Model
         public virtual IEnumerable<SymbolReference> GetSymbolReferences()
             => Enumerable.Empty<SymbolReference>();
 
-        internal virtual bool GetIsResolved()
+        public virtual bool GetIsResolved()
             => true;
 
         internal virtual void Strip() {}
@@ -59,6 +54,11 @@ namespace Repository.Model
             => ManagedName;
 
         public static Symbol Primitive(string nativeName, string managedName)
-            => new Symbol(nativeName, nativeName, managedName, managedName);
+            => new Symbol(
+                ctypeName: new CTypeName(nativeName),
+                typeName: new TypeName(nativeName), 
+                nativeName: new NativeName(managedName), 
+                managedName: new ManagedName(managedName)
+            );
     }
 }

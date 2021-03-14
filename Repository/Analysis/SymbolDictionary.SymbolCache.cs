@@ -28,7 +28,7 @@ namespace Repository.Analysis
                 if (!CheckNamespace(symbol, symbolReference))
                     return false;
 
-                return (symbol.Name == symbolReference.TypeName); //Check cname, too?|| (symbol.CName == symbolReference.CTypeName);
+                return (symbol.TypeName == symbolReference.TypeName); //Check cname, too?|| (symbol.CName == symbolReference.CTypeName);
             }
 
             private static bool CheckNamespace(Symbol symbol, SymbolReference symbolReference) => (symbol, symbolReference) switch

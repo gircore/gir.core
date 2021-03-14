@@ -44,9 +44,12 @@ namespace Repository.Factories
             if (parameterInfo.Name is null)
                 throw new Exception("Argument name is null");
 
+            var elementName = new ElementName(_identifierConverter.Convert(parameterInfo.Name));
+            var elementManagedName = new ElementManagedName(_caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)));
+            
             return new Argument(
-                name: _identifierConverter.Convert(parameterInfo.Name),
-                managedName: _caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)),
+                elementName: elementName,
+                elementManagedName: elementManagedName,
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo, currentNamespace),
                 direction: direction,
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
@@ -60,8 +63,8 @@ namespace Repository.Factories
         public Argument Create(string name, string type, string ctype, Direction direction, Transfer transfer, bool nullable, NamespaceName currentNamespace, int? closure = null, int? destroy = null)
         {
             return new Argument(
-                name: name,
-                managedName: _caseConverter.ToCamelCase(name),
+                elementName: new ElementName(name),
+                elementManagedName: new ElementManagedName(_caseConverter.ToCamelCase(name)),
                 symbolReference: _symbolReferenceFactory.Create(type, ctype, currentNamespace),
                 direction: direction,
                 transfer: transfer,

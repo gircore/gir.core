@@ -9,16 +9,14 @@ namespace Repository.Model
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;
         
-        public string CType { get; }
         public Method GetTypeFunction { get; }
         public IEnumerable<SymbolReference> Implements { get; }
 
         public IEnumerable<Method> Methods => _methods;
         public IEnumerable<Method> Functions => _functions;
         
-        public Interface(Namespace @namespace, string name, string managedName, string cType, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, cType, name, managedName, managedName)
+        public Interface(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, NativeName nativeName, ManagedName managedName, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, cTypeName, typeName, nativeName, managedName)
         {
-            CType = cType;
             Implements = implements;
             this._methods = methods.ToList();
             this._functions = functions.ToList();
@@ -41,7 +39,7 @@ namespace Repository.Model
             _functions.RemoveAll(Remove);
         }
         
-        internal override bool GetIsResolved()
+        public override bool GetIsResolved()
         {
             if(!Implements.AllResolved())
                 return false;
@@ -53,12 +51,12 @@ namespace Repository.Model
                    && Functions.AllResolved();
         }
         
-        private bool Remove(Symbol symbol)
+        private bool Remove(Element element)
         {
-            var result = symbol.GetIsResolved();
+            var result = element.GetIsResolved();
             
             if(!result)
-                Log.Information($"Interface {Namespace?.Name}.{Name}: Stripping symbol {symbol?.Name}");
+                Log.Information($"Interface {Namespace?.Name}.{TypeName}: Stripping symbol {element.Name}");
 
             return !result;
         }

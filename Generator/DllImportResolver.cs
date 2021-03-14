@@ -1,4 +1,5 @@
 ﻿using System;
+using Repository;
 using Repository.Analysis;
 
 namespace Generator
@@ -10,8 +11,8 @@ namespace Generator
 
         public DllImportResolver(string sharedLibrary, NamespaceName namespaceName)
         {
-            _sharedLibrary = sharedLibrary ?? throw new ArgumentNullException(nameof(sharedLibrary));
-            _namespaceName = namespaceName ?? throw new ArgumentNullException(nameof(namespaceName));
+            _sharedLibrary = sharedLibrary;
+            _namespaceName = namespaceName;
         }
 
         public string GetWindowsDllImport()

@@ -31,11 +31,16 @@ namespace Repository.Factories
             if (cls.GetTypeFunction is null)
                 throw new Exception($"Class {cls.Name} is missing a get type function");
 
+            CTypeName? cTypeName = null;
+            if (cls.Type is { })
+                cTypeName = new CTypeName(cls.Type);
+            
             return new Class(
                 @namespace: @namespace,
-                name: cls.Name,
-                managedName: cls.Name,
-                ctype: cls.Type,
+                typeName: new TypeName(cls.Name),
+                managedName: new ManagedName(cls.Name),
+                nativeName: new NativeName(cls.Name),
+                cTypeName: cTypeName,
                 parent: GetParent(cls.Parent, @namespace.Name),
                 implements: _symbolReferenceFactory.Create(cls.Implements, @namespace.Name),
                 methods: _methodFactory.Create(cls.Methods, @namespace),

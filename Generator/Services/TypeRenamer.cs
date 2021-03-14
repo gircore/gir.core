@@ -12,10 +12,10 @@ namespace Generator.Services
             foreach (LoadedProject project in projects)
             {
                 foreach (Callback dlg in project.Namespace.Callbacks)
-                    dlg.NativeName += "Native";
+                    dlg.NativeName = new NativeName(dlg.NativeName + "Native");
 
                 foreach (Callback dlg in GetFieldCallbacks(project))
-                    dlg.NativeName += "Native";
+                    dlg.NativeName = new NativeName(dlg.NativeName + "Native");
             }
 
             Log.Information("Suffixed delegates.");
@@ -35,7 +35,7 @@ namespace Generator.Services
                 );
 
                 foreach (var type in structuredTypes)
-                    type.NativeName += "Instance";
+                    type.NativeName = new NativeName(type.NativeName + "Instance");
             }
 
             Log.Information("Native names set.");

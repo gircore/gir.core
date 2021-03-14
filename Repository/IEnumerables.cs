@@ -13,19 +13,14 @@ namespace Repository
             return lists.SelectMany(x => x);
         }
         
-        public static IEnumerable<SymbolReference> GetSymbolReferences(this IEnumerable<ISymbolReferenceProvider> providers)
+        public static IEnumerable<SymbolReference> GetSymbolReferences(this IEnumerable<SymbolReferenceProvider> providers)
         {
             return providers.SelectMany(x => x.GetSymbolReferences());
         }
 
-        internal static bool AllResolved(this IEnumerable<Symbol> symbols)
+        internal static bool AllResolved(this IEnumerable<Resolveable> symbols)
         {
             return symbols.All(x => x.GetIsResolved());
-        }
-
-        internal static bool AllResolved(this IEnumerable<SymbolReference> symbols)
-        {
-            return symbols.All(x => x.IsResolved);
         }
 
         internal static void Strip<T>(this IEnumerable<T> symbols) where T : Symbol

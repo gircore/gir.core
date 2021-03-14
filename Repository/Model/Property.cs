@@ -3,13 +3,13 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Property : Symbol
+    public class Property : Element
     {
         public Transfer Transfer { get; }
         public bool Writeable { get; }
         public SymbolReference SymbolReference { get; }
         
-        public Property(string name, string managedName, SymbolReference symbolReference, bool writeable, Transfer transfer) : base(name, name, managedName, managedName)
+        public Property(ElementName elementName, ElementManagedName elementManagedName, SymbolReference symbolReference, bool writeable, Transfer transfer) : base(elementName, elementManagedName)
         {
             SymbolReference = symbolReference;
             Writeable = writeable;
@@ -21,7 +21,7 @@ namespace Repository.Model
             yield return SymbolReference;
         }
 
-        internal override bool GetIsResolved()
-            => SymbolReference.IsResolved;
+        public override bool GetIsResolved()
+            => SymbolReference.GetIsResolved();
     }
 }

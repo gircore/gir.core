@@ -20,7 +20,7 @@ namespace Generator
             var builder = new StringBuilder();
             builder.Append(type);
             builder.Append(' ');
-            builder.Append(target == Target.Native ? argument.NativeName : argument.ManagedName);
+            builder.Append(argument.ManagedName);
 
             return builder.ToString();
         }
@@ -72,12 +72,12 @@ namespace Generator
             // TODO: We need to support disguised structs (opaque types)
             var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
             {
-                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.ManagedName}>({arg.NativeName});",
-                (Record r, {IsPointer: true, Array:{}}) => $"{arg.NativeName}.MarshalToStructure<{r.ManagedName}>();",
-                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.ManagedName}.From({arg.NativeName});",
-                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.ManagedName}>({arg.NativeName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
+                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.ManagedName}>({arg.ManagedName});",
+                (Record r, {IsPointer: true, Array:{}}) => $"{arg.ManagedName}.MarshalToStructure<{r.ManagedName}>();",
+                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.ManagedName}.From({arg.ManagedName});",
+                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.ManagedName}>({arg.ManagedName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
-                _ => $"({arg.WriteManagedType(currentNamespace)}){arg.NativeName};" // Other -> Try a brute-force cast
+                _ => $"({arg.WriteManagedType(currentNamespace)}){arg.ManagedName};" // Other -> Try a brute-force cast
             };
             
             return $"{arg.WriteManagedType(currentNamespace)} {arg.ManagedName}Managed = " + expression;

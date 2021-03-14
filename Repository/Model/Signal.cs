@@ -4,12 +4,12 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Signal : Symbol
+    public class Signal : Element
     {
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
 
-        public Signal(string name, string managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(name, name, managedName, managedName)
+        public Signal(ElementName elementName, ElementManagedName elementManagedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(elementName, elementManagedName)
         {
             ReturnValue = returnValue;
             Arguments = arguments;
@@ -23,7 +23,7 @@ namespace Repository.Model
             );
         }
 
-        internal override bool GetIsResolved()
+        public override bool GetIsResolved()
             => ReturnValue.GetIsResolved() && Arguments.AllResolved();
     }
 }

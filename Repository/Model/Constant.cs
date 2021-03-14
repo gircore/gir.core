@@ -3,12 +3,12 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Constant : Symbol
+    public class Constant : Element
     {
         public string Value { get; }
         public SymbolReference SymbolReference { get; }
         
-        public Constant(string name, string managedName, SymbolReference symbolReference, string value) : base(name, name, managedName, managedName)
+        public Constant(ElementName elementName, ElementManagedName elementManagedName, SymbolReference symbolReference, string value) : base(elementName, elementManagedName)
         {
             SymbolReference = symbolReference;
             Value = value;
@@ -19,7 +19,7 @@ namespace Repository.Model
             yield return SymbolReference;
         }
 
-        internal override bool GetIsResolved()
-            => SymbolReference.IsResolved;
+        public override bool GetIsResolved()
+            => SymbolReference.GetIsResolved();
     }
 }

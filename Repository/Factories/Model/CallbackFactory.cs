@@ -26,13 +26,18 @@ namespace Repository.Factories
             if (callbackInfo.ReturnValue is null)
                 throw new Exception($"Callback {callbackInfo.Name} is  missing a return value");
 
+            CTypeName? cTypeName = null;
+            if (callbackInfo.Type is { })
+                cTypeName = new CTypeName(callbackInfo.Type);
+            
             return new Callback(
                 @namespace: @namespace,
-                name: callbackInfo.Name,
-                managedName: _caseConverter.ToPascal(callbackInfo.Name),
+                ctypeName: cTypeName,
+                typeName: new TypeName(callbackInfo.Name),
+                managedName: new ManagedName(_caseConverter.ToPascal(callbackInfo.Name)),
+                nativeName: new NativeName(_caseConverter.ToPascal(callbackInfo.Name)),
                 returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue, @namespace.Name),
-                arguments: _argumentsFactory.Create(callbackInfo.Parameters, @namespace.Name).ToList(),
-                ctype: callbackInfo.Type
+                arguments: _argumentsFactory.Create(callbackInfo.Parameters, @namespace.Name).ToList()
             );
         }
     }
