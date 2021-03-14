@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    internal class PropertyInfo : ITypeOrArray
+    public class PropertyInfo : ITypeOrArray
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

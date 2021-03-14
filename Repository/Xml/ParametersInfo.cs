@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    internal class ParametersInfo
+    public class ParametersInfo
     {
         [XmlElement("instance-parameter")]
         public ParameterInfo? InstanceParameter { get; set; }

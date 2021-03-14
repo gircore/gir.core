@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    internal class ConstantInfo : ITypeOrArray
+    public class ConstantInfo : ITypeOrArray
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    internal class ArrayInfo
+    public class ArrayInfo
     {
         [XmlAttribute("length")]
         public string? Length { get; set; }

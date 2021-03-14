@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    internal class ImplementInfo
+    public class ImplementInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

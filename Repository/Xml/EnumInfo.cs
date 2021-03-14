@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    internal class EnumInfo
+    public class EnumInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

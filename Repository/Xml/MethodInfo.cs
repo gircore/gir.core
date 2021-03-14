@@ -2,7 +2,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    internal class MethodInfo
+    public class MethodInfo
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
