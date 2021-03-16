@@ -11,6 +11,7 @@ namespace Repository
     [Register(typeof(WriteHelperService))]
     [Register(typeof(WriteDllImportService))]
     [Register(typeof(WriteSymbolsService))]
+    [Register(typeof(WriteClassInstanceService))]
     [Register(typeof(WriteElementsService))]
     [Register(typeof(WriteStaticService))]
     [Register(typeof(WriteRecordsService))]

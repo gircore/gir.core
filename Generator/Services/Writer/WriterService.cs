@@ -11,14 +11,16 @@ namespace Generator.Services.Writer
         private readonly WriteElementsService _writeElementsService;
         private readonly WriteRecordsService _writeRecordsService;
         private readonly WriteStaticService _writeStaticService;
+        private readonly WriteClassInstanceService _writeClassInstanceService;
 
-        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService)
+        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService)
         {
             _writeSymbolsService = writeSymbolsService;
             _writeDllImportService = writeDllImportService;
             _writeElementsService = writeElementsService;
             _writeRecordsService = writeRecordsService;
             _writeStaticService = writeStaticService;
+            _writeClassInstanceService = writeClassInstanceService;
         }
 
         public void Write(LoadedProject loadedProject, string outputDir)
@@ -46,12 +48,12 @@ namespace Generator.Services.Writer
                 @namespace: loadedProject.Namespace
             );
             
-            _writeSymbolsService.Write(
+            _writeClassInstanceService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 templateName: "classinstance.sbntxt",
-                subfolder: "Structs",
-                objects: loadedProject.Namespace.Classes.Where(x => !x.IsFundamental),
+                subfolder: "Classes",
+                classes: loadedProject.Namespace.Classes.Where(x => !x.IsFundamental),
                 @namespace: loadedProject.Namespace
             );
             

@@ -25,20 +25,25 @@ namespace Generator.Services
             => project.Namespace.Records.SelectMany(
                 x => x.Fields.Select(y => y.Callback)).Where(x => x is { })!;
 
-        public void SetNativeNames(IEnumerable<LoadedProject> projects)
+        public void SetClassStructMetadata(IEnumerable<LoadedProject> projects)
         {
             foreach (LoadedProject project in projects)
             {
-                var structuredTypes = IEnumerables.Concat<Symbol>(
-                    project.Namespace.Classes,
-                    project.Namespace.Interfaces
-                );
-
-                foreach (var type in structuredTypes)
-                    type.NativeName = new NativeName(type.NativeName + "Instance");
+                foreach (var record in project.Namespace.Records)
+                {
+                    if (record.GLibClassStructFor is { })
+                    {
+                        var className = record.GLibClassStructFor.GetSymbol().ManagedName;
+                        record.Metadata["ClassName"] = className;
+                        record.Metadata["PureName"] = "Class";
+                        
+                        record.ManagedName = new ManagedName($"{className}.Native.Class");
+                        record.NativeName = new NativeName($"{className}.Native.Class");
+                    }
+                }
             }
-
-            Log.Information("Native names set.");
+            
+            Log.Information("Class struct metadata set.");
         }
     }
 }

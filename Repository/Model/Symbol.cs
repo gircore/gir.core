@@ -29,6 +29,8 @@ namespace Repository.Model
         /// </summary>
         public ManagedName ManagedName { get; set; }
 
+        //TODO: Verify if one of nativename / managedname can be removed completly
+        
         protected internal Symbol(CTypeName? ctypeName, TypeName typeName, NativeName nativeName, ManagedName managedName): this(null, ctypeName, typeName, nativeName, managedName)
         {
         }
