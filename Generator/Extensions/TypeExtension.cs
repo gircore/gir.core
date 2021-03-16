@@ -16,6 +16,9 @@ namespace Generator
             var symbol = type.SymbolReference.GetSymbol();
             var name = (type, target) switch
             {
+                //Arrays of string can be marshalled automatically, no IntPtr needed
+                ({TypeInformation: {Array:{}}}, Target.Native) when symbol.NativeName == "string" => "string",
+                
                 //Arrays of byte can be marshalled automatically, no IntPtr needed
                 ({TypeInformation: {Array:{}}}, Target.Native) when symbol.NativeName == "byte" => "byte",
                 
