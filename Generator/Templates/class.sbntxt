@@ -15,6 +15,10 @@ namespace {{ namespace.name }}
         {{ include 'class.signals.sbntxt' }}
         {{ include 'class.constructors.sbntxt' }}
         
-         {{ include 'class.native.properties.sbntxt' }}
+{{~ for method in methods
+method | write_managed_method
+end ~}}
+        
+        {{ include 'class.native.properties.sbntxt' }}
     }
 }
