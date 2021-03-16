@@ -31,7 +31,10 @@ namespace Generator.Services.Writer
 
                     var scriptObject =  _scriptObjectFactory.CreateComplex(@namespace);
                     scriptObject.Import(record);
+                    //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
+                    scriptObject.Import("get_metadata", new Func<string, object?>(key => record.Metadata[key]));
 
+                    
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
@@ -50,6 +53,8 @@ namespace Generator.Services.Writer
 
         private string GetSubfolder(RecordType recordType) => recordType switch
         {
+            RecordType.PrivateClass => "Classes",
+            RecordType.PublicClass => "Classes",
             RecordType.Value => "Structs",
             RecordType.Ref => "Classes",
             _ => throw new NotImplementedException("Unsupported record type")
@@ -57,6 +62,8 @@ namespace Generator.Services.Writer
 
         private string GetTemplateName(RecordType recordType) => recordType switch
         {
+            RecordType.PrivateClass => "classstruct.sbntxt",
+            RecordType.PublicClass => "classstruct.sbntxt",
             RecordType.Value => "struct.sbntxt",
             RecordType.Ref => "struct_as_class.sbntxt",
             _ => throw new NotImplementedException("Unsupported record type")

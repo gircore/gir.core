@@ -1,5 +1,4 @@
-﻿using System;
-using Repository.Model;
+﻿using Repository.Model;
 using Type = Repository.Model.Type;
 
 namespace Generator
@@ -7,20 +6,29 @@ namespace Generator
     internal static class TypeExtension
     {
         public static string WriteNativeType(this Type type, Namespace currentNamespace)
-            => type.Write(Target.Native, currentNamespace);
+            => type.WriteType(Target.Native, currentNamespace);
 
         public static string WriteManagedType(this Type type, Namespace currentNamespace)
-            => type.Write(Target.Managed, currentNamespace);
+            => type.WriteType(Target.Managed, currentNamespace);
         
-        private static string Write(this Type type, Target target,  Namespace currentNamespace)
+        internal static string WriteType(this Type type, Target target,  Namespace currentNamespace)
         {
-            var name = type.SymbolReference switch
+            var symbol = type.SymbolReference.GetSymbol();
+            var name = (type, target) switch
             {
-                {IsPointer: true} => "IntPtr",
+                //Arrays of string can be marshalled automatically, no IntPtr needed
+                ({TypeInformation: {Array:{}}}, Target.Native) when symbol.NativeName == "string" => "string",
+                
+                //Arrays of byte can be marshalled automatically, no IntPtr needed
+                ({TypeInformation: {Array:{}}}, Target.Native) when symbol.NativeName == "byte" => "byte",
+                
+                //Use IntPtr for all types where a pointer is expected
+                ({TypeInformation: {IsPointer: true}}, Target.Native) => "IntPtr",
+                
                 _ => type.SymbolReference.GetSymbol().Write(target, currentNamespace)
             };
 
-            if (type.Array is { })
+            if (type.TypeInformation.Array is { })
                 name += "[]";
 
             return name;

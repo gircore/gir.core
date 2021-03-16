@@ -19,12 +19,17 @@ namespace Repository.Factories
             if (@enum.Name is null)
                 throw new Exception("Enum has no name");
 
+            if (@enum.Type is null)
+                throw new Exception("Enum is missing a type");
+
             return new Enumeration(
                 @namespace: @namespace,
-                name: @enum.Name,
-                managedName: @enum.Name,
+                typeName: new TypeName(@enum.Name),
+                managedName: new ManagedName(@enum.Name),
+                nativeName: new NativeName(@enum.Name),
                 hasFlags: hasFlags,
-                members: @enum.Members.Select(x => _memberFactory.Create(x)).ToList()
+                members: @enum.Members.Select(x => _memberFactory.Create(x)).ToList(),
+                cTypeName: new CTypeName(@enum.Type)
             );
         }
     }

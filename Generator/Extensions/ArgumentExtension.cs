@@ -13,11 +13,6 @@ namespace Generator
         public static string WriteManaged(this Argument argument, Namespace currentNamespace)
             => argument.Write(Target.Managed, currentNamespace);
 
-        internal static string WriteTypeAndName(this Argument argument, Target target, Namespace currentNamespace)
-        {
-            return GetType(argument, target, currentNamespace) + " " + argument.NativeName;
-        }
-        
         private static string Write(this Argument argument, Target target,  Namespace currentNamespace)
         {
             var type = GetFullType(argument, target, currentNamespace);
@@ -25,23 +20,26 @@ namespace Generator
             var builder = new StringBuilder();
             builder.Append(type);
             builder.Append(' ');
-            builder.Append(argument.NativeName);
+            builder.Append(argument.ManagedName);
 
             return builder.ToString();
         }
 
         private static string GetFullType(this Argument argument, Target target, Namespace currentNamespace)
         {
-            var attribute = GetAttribute(argument);
+            var attribute = GetAttribute(argument, target);
             var direction = GetDirection(argument);
             var type = GetType(argument, target, currentNamespace);
 
             return $"{attribute}{direction}{type}";
         }
 
-        private static string GetAttribute(Argument argument)
+        private static string GetAttribute(Argument argument, Target target)
         {
-            var attribute = argument.Array.GetMarshallAttribute();
+            if (target == Target.Managed)
+                return "";
+            
+            var attribute = argument.TypeInformation.Array.GetMarshallAttribute();
             
             if (attribute.Length > 0)
                 attribute += " ";
@@ -58,8 +56,8 @@ namespace Generator
                 _ => ""
             };
         }
-        
-        internal static string GetType(this Argument argument, Target target, Namespace currentNamespace) => target switch
+
+        private static string GetType(this Argument argument, Target target, Namespace currentNamespace) => target switch
         {
             Target.Managed => argument.WriteManagedType(currentNamespace) + GetNullable(argument),
             Target.Native => argument.WriteNativeType(currentNamespace),
@@ -72,17 +70,17 @@ namespace Generator
         internal static string WriteMarshalArgumentToManaged(this Argument arg, Namespace currentNamespace)
         {
             // TODO: We need to support disguised structs (opaque types)
-            var expression = (arg.SymbolReference.GetSymbol(), arg) switch
+            var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
             {
-                (Record r, { Array: null } a) => $"Marshal.PtrToStructure<{r.ManagedName}>({a.NativeName});",
-                (Record r, { Array: {}} a) => $"{a.NativeName}.MarshalToStructure<{r.ManagedName}>();",
-                (Class { IsFundamental: true} c, {Array: null} a) => $"{c.ManagedName}.From({a.NativeName});",
-                (Class c, {Array: null} a) => $"Object.WrapHandle<{c.ManagedName}>({a.NativeName}, {a.Transfer.IsOwnedRef().ToString().ToLower()});",
-                (Class c, {Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
-                _ => $"({arg.SymbolReference.GetSymbol().ManagedName}){arg.NativeName};" // Other -> Try a brute-force cast
+                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.ManagedName}>({arg.ManagedName});",
+                (Record r, {IsPointer: true, Array:{}}) => $"{arg.ManagedName}.MarshalToStructure<{r.ManagedName}>();",
+                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.ManagedName}.From({arg.ManagedName});",
+                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.ManagedName}>({arg.ManagedName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
+                (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
+                _ => $"({arg.WriteManagedType(currentNamespace)}){arg.ManagedName};" // Other -> Try a brute-force cast
             };
-
-            return $"{arg.WriteTypeAndName(Target.Managed, currentNamespace)}Managed = " + expression;
+            
+            return $"{arg.WriteManagedType(currentNamespace)} {arg.ManagedName}Managed = " + expression;
         }
     }
 }

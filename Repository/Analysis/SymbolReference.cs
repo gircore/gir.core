@@ -4,34 +4,29 @@ using Array = Repository.Model.Array;
 
 namespace Repository.Analysis
 {
-    public enum ReferenceType
-    {
-        Internal,
-        External
-    }
-
-    public class SymbolReference
+    public class SymbolReference : Resolveable
     {
         private Symbol? _symbol;
 
         #region Properties
 
-        public string Type { get; }
-        private string? CType { get; }
-        public bool IsPointer => CType?.EndsWith("*") ?? false;
-        
+        public NamespaceName? NamespaceName { get; }
+        public CTypeName? CTypeName { get; }
+        public TypeName? TypeName { get; }
+
         #endregion
 
-        public SymbolReference(string type, string? ctype = null)
+        public SymbolReference(TypeName? typeName, CTypeName? ctypeName, NamespaceName? namespaceName)
         {
-            Type = type;
-            CType = ctype;
+            CTypeName = ctypeName;
+            TypeName = typeName;
+            NamespaceName = namespaceName;
         }
-
+        
         public Symbol GetSymbol()
         {
             if (_symbol is null)
-                throw new InvalidOperationException($"The symbolreference for {Type} has not been resolved.");
+                throw new InvalidOperationException($"The symbolreference for {TypeName} has not been resolved.");
 
             return _symbol;
         }
@@ -40,5 +35,8 @@ namespace Repository.Analysis
         {
             _symbol = symbol;
         }
+
+        public bool GetIsResolved()
+            => _symbol is { };
     }
 }

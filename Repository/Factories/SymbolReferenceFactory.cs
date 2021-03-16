@@ -1,52 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Repository.Analysis;
-using Repository.Model;
 using Repository.Xml;
-using Array = Repository.Model.Array;
 
 namespace Repository.Services
 {
     internal class SymbolReferenceFactory 
     {
-        public SymbolReference Create(string type, string? ctype = null)
+        public SymbolReference Create(string? type, string? ctype, NamespaceName currentNamespace)
         {
-            return new SymbolReference(type, ctype);
+            return new SymbolReference(
+                typeName: GetType(type),
+                ctypeName: GetCType(ctype),
+                namespaceName: GetNamespace(type, currentNamespace)
+            );
         }
 
-        public SymbolReference CreateFromField(FieldInfo field)
+        public SymbolReference Create(ITypeOrArray typeOrArray, NamespaceName currentNamespace)
         {
-            if (field.Callback is null)
-                return Create(field);
-
-            if (field.Callback.Name is null)
-                throw new Exception($"Field {field.Name} has a callback without a name.");
+            if (TryCreate(typeOrArray?.Type, currentNamespace, out var type))
+                return type;
             
-            return Create(field.Callback.Name);
+            if (TryCreate(typeOrArray?.Array?.Type, currentNamespace, out var array))
+                return array;
+            
+            return Create("void", "none", currentNamespace);
+        }
+
+        public SymbolReference Create(TypeInfo typeInfo, NamespaceName currentNamespace)
+        {
+            if (TryCreate(typeInfo, currentNamespace, out var symbolReference))
+                return symbolReference;
+
+            throw new Exception("Could not create SymbolReference vrom TypeInfo");
         }
         
-        public SymbolReference Create(ITypeOrArray typeOrArray)
+        private bool TryCreate(TypeInfo? typeInfo, NamespaceName currentNamespace, [MaybeNullWhen(false)] out SymbolReference symbolReference)
         {
-            // Check for Type
-            var type = typeOrArray?.Type?.Name;
-            if (type != null)
-                return Create(type, typeOrArray?.Type?.CType);
-
-            // Check for Array
-            var arrayName = typeOrArray?.Array?.Type?.Name;
-            if (arrayName != null)
-                return Create(arrayName, typeOrArray?.Array?.Type?.CType);
-
-            // No Type (i.e. void)
-            return Create("none");
+            symbolReference = null;
+            
+            if (typeInfo is null)
+                return false;
+            
+            symbolReference = Create(typeInfo.Name, typeInfo.CType, currentNamespace);
+            return true;
         }
 
-        public SymbolReference? CreateWithNull(string? type)
-        {
-            return type is null ? null : Create(type);
-        }
-        
-        public IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements)
+        public IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements, NamespaceName currentNamespace)
         {
             var list = new List<SymbolReference>();
 
@@ -55,10 +56,46 @@ namespace Repository.Services
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
 
-                list.Add(Create(implement.Name));
+                list.Add(Create(implement.Name, null, currentNamespace));
             }
 
             return list;
+        }
+
+        private static NamespaceName? GetNamespace(string? type, NamespaceName currentNamespace)
+        {
+            if (type is null)
+                return currentNamespace;
+
+            if (!type.Contains("."))
+                return currentNamespace;
+
+            return new NamespaceName(type.Split('.', 2)[0]);
+        }
+        
+        private static TypeName? GetType(string? type)
+        {
+            if (type is null)
+                return null;
+
+            if (!type.Contains("."))
+                return new TypeName(type);
+
+            return new TypeName(type.Split('.', 2)[1]);
+        }
+
+        private static CTypeName? GetCType(string? ctype)
+        {
+            if (ctype is null)
+                return null;
+            
+            ctype = ctype
+                .Replace("*", "")
+                .Replace("const ", "")
+                .Replace("volatile ", "")
+                .Replace(" const", "");
+
+            return new CTypeName(ctype);
         }
     }
 }

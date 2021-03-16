@@ -14,26 +14,33 @@ namespace Repository.Factories
             _argumentFactory = argumentFactory;
         }
 
-        public IEnumerable<Argument> Create(ParametersInfo? parameters, bool throws = false)
+        public IEnumerable<Argument> Create(ParametersInfo? parameters, NamespaceName currentNamespace, bool throws = false)
         {
             var list = new List<Argument>();
 
             if (parameters is { })
             {
                 if (parameters.InstanceParameter is { })
-                    list.Add(_argumentFactory.Create(parameters.InstanceParameter));
+                    list.Add(_argumentFactory.Create(parameters.InstanceParameter, currentNamespace));
 
-                list.AddRange(parameters.Parameters.Select(arg => _argumentFactory.Create(arg)));
+                list.AddRange(parameters.Parameters.Select(arg => _argumentFactory.Create(arg, currentNamespace)));
 
                 if (throws)
                 {
-                    list.Add(_argumentFactory.Create(
-                        name: "error",
-                        type: "GLib.Error",
-                        direction: Direction.OutCalleeAllocates,
-                        transfer: Transfer.Full,
-                        nullable: false
-                    ));
+                    var parameterInfo = new ParameterInfo()
+                    {
+                        Name = "error",
+                        TransferOwnership = "full",
+                        Direction = "out",
+                        CallerAllocates = false,
+                        Type = new TypeInfo()
+                        {
+                            Name = "GLib.Error",
+                            CType = "GError*"
+                        }
+                    };
+                    
+                    list.Add(_argumentFactory.Create(parameterInfo, currentNamespace));
                 }
             }
 

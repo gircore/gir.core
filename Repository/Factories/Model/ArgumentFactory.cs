@@ -1,4 +1,5 @@
 using System;
+using Repository.Analysis;
 using Repository.Factories.Model;
 using Repository.Model;
 using Repository.Services;
@@ -13,18 +14,18 @@ namespace Repository.Factories
         private readonly TransferFactory _transferFactory;
         private readonly IdentifierConverter _identifierConverter;
         private readonly CaseConverter _caseConverter;
-        private readonly ArrayFactory _arrayFactory;
+        private readonly TypeInformationFactory _typeInformationFactory;
 
-        public ArgumentFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, ArrayFactory arrayFactory)
+        public ArgumentFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;
             _identifierConverter = identifierConverter;
             _caseConverter = caseConverter;
-            _arrayFactory = arrayFactory;
+            _typeInformationFactory = typeInformationFactory;
         }
         
-        public Argument Create(ParameterInfo parameterInfo)
+        public Argument Create(ParameterInfo parameterInfo, NamespaceName currentNamespace)
         {
             if (parameterInfo.VarArgs is { })
                 throw new VarArgsNotSupportedException("Arguments containing variadic paramters are not supported.");
@@ -43,33 +44,19 @@ namespace Repository.Factories
             if (parameterInfo.Name is null)
                 throw new Exception("Argument name is null");
 
+            var elementName = new ElementName(_identifierConverter.Convert(parameterInfo.Name));
+            var elementManagedName = new ElementManagedName(_caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)));
+            
             return new Argument(
-                name: _identifierConverter.Convert(parameterInfo.Name),
-                nativeName: _caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)),
-                managedName: _caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)),
-                symbolReference: _symbolReferenceFactory.Create(parameterInfo),
+                elementName: elementName,
+                elementManagedName: elementManagedName,
+                symbolReference: _symbolReferenceFactory.Create(parameterInfo, currentNamespace),
                 direction: direction,
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
                 nullable: parameterInfo.Nullable,
                 closureIndex: parameterInfo.Closure == -1 ? null : parameterInfo.Closure,
                 destroyIndex: parameterInfo.Destroy == -1 ? null : parameterInfo.Destroy,
-                array: _arrayFactory.Create(parameterInfo.Array)
-            );
-        }
-
-        public Argument Create(string name, string type, Direction direction, Transfer transfer, bool nullable, int? closure = null, int? destroy = null, Array? array = null)
-        {
-            return new Argument(
-                name: name,
-                managedName: _caseConverter.ToCamelCase(name),
-                nativeName: _caseConverter.ToCamelCase(name),
-                symbolReference: _symbolReferenceFactory.Create(type),
-                direction: direction,
-                transfer: transfer,
-                nullable: nullable,
-                closureIndex: closure,
-                destroyIndex: destroy,
-                array: array
+                typeInformation: _typeInformationFactory.Create(parameterInfo)
             );
         }
 

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Generator.Factories;
+using Repository.Analysis;
 using Repository.Model;
 using Scriban.Runtime;
 
@@ -17,27 +18,30 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, string templateName, string subfolder, string name, IEnumerable<Symbol> symbols, Namespace @namespace)
+        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Symbol> objects, Namespace @namespace)
         {
-            var scriptObject = _scriptObjectFactory.CreateBase(@namespace);
-            scriptObject.Add(name.ToLower(), symbols);
-            scriptObject.Add("namespace", @namespace);
-            scriptObject.Import("write_managed_constant", new Func<Constant, string>((c) => c.WriteManaged()));
+            foreach (Symbol obj in objects)
+            {
+                var scriptObject = _scriptObjectFactory.CreateComplex(@namespace);
+                scriptObject.Import(obj);
 
-            try
-            {
-                _writeHelperService.Write(
-                    projectName: projectName,
-                    templateName: templateName,
-                    folder: subfolder,
-                    outputDir: outputDir,
-                    fileName: name,
-                    scriptObject: scriptObject
-                );
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"Could not write symbols for {@namespace.Name} / {name}: {ex.Message}");
+                //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
+                scriptObject.Import("get_metadata", new Func<string, object?>(key => obj.Metadata[key]));
+                try
+                {
+                    _writeHelperService.Write(
+                        projectName: projectName,
+                        outputDir: outputDir,
+                        templateName: templateName,
+                        folder: subfolder,
+                        fileName: obj.ManagedName,
+                        scriptObject: scriptObject
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Could not create type {obj.ManagedName}: {ex.Message}");
+                }
             }
         }
     }

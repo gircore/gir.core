@@ -3,7 +3,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Argument : Symbol, Type
+    public class Argument : Element, Type
     {
         public SymbolReference SymbolReference { get; }
         public Direction Direction { get; }
@@ -11,9 +11,9 @@ namespace Repository.Model
         public bool Nullable { get; }
         public int? ClosureIndex { get; }
         public int? DestroyIndex { get; }
-        public Array? Array { get; }
+        public TypeInformation TypeInformation { get; }
 
-        public Argument(string name, string nativeName, string managedName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, int? closureIndex, int? destroyIndex, Array? array = null) : base(name, nativeName, managedName)
+        public Argument(ElementName elementName, ElementManagedName elementManagedName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, int? closureIndex, int? destroyIndex, TypeInformation typeInformation) : base(elementName, elementManagedName)
         {
             SymbolReference = symbolReference;
             Direction = direction;
@@ -21,12 +21,15 @@ namespace Repository.Model
             Nullable = nullable;
             ClosureIndex = closureIndex;
             DestroyIndex = destroyIndex;
-            Array = array;
+            TypeInformation = typeInformation;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()
         {
             yield return SymbolReference;
         }
+
+        public override bool GetIsResolved()
+            => SymbolReference.GetIsResolved();
     }
 }

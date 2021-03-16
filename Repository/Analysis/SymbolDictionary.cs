@@ -1,189 +1,113 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Repository.Model;
 
 namespace Repository.Analysis
 {
-    internal partial class SymbolDictionary
+    public partial class SymbolDictionary
     {
-        private readonly Dictionary<string, TypeDictionary> _symbolDictionaries = new();
-        private readonly Dictionary<string, AliasDictionary> _aliasDictionaries = new();
+        private readonly Dictionary<NamespaceName, AliasCache> _aliasData = new();
+        private readonly Dictionary<NamespaceName, SymbolCache> _data = new();
+        private readonly SymbolCache _globalSymbols = new();
 
-        private readonly TypeDictionary _defaultDict = new(null);
-
-        public SymbolDictionary()
+        public bool TryLookup(SymbolReference symbolReference, [MaybeNullWhen(false)] out Symbol symbol)
         {
-            // Add Fundamental Types
-            // Fundamental types are accessible regardless of namespace and
-            // take priority over any namespaced variant.
+            if (_globalSymbols.TryLookup(symbolReference, out symbol))
+                return true;
 
-            AddSymbol(Symbol.Primitive("none", "void"));
-            AddSymbol(Symbol.Primitive("any", "IntPtr"));
-
-            AddSymbol(Symbol.Primitive("void", "void"));
-            AddSymbol(Symbol.Primitive("gboolean", "bool"));
-            AddSymbol(Symbol.Primitive("gfloat", "float"));
-            AddSymbol(Symbol.Primitive("float", "float"));
-
-            AddSymbol(Symbol.Primitive("gconstpointer", "IntPtr"));
-            AddSymbol(Symbol.Primitive("va_list", "IntPtr"));
-            AddSymbol(Symbol.Primitive("gpointer", "IntPtr"));
-            AddSymbol(Symbol.Primitive("GType", "IntPtr"));
-            AddSymbol(Symbol.Primitive("tm", "IntPtr"));
+            if (ResolveAlias(symbolReference, out symbol))
+                return true;
             
-            // TODO: Should we use UIntPtr here? Non-CLR compliant
-            AddSymbol(Symbol.Primitive("guintptr", "UIntPtr"));
+            if (symbolReference.NamespaceName is null)
+                return false; //If the reference has no namespace it must be a global symbol or can not be resolved
 
-            AddSymbol(Symbol.Primitive("guint16", "ushort"));
-            AddSymbol(Symbol.Primitive("gushort", "ushort"));
+            if (!_data.TryGetValue(symbolReference.NamespaceName, out var cache))
+                return false;
 
-            AddSymbol(Symbol.Primitive("gint16", "short"));
-            AddSymbol(Symbol.Primitive("gshort", "short"));
-
-            AddSymbol(Symbol.Primitive("double", "double"));
-            AddSymbol(Symbol.Primitive("gdouble", "double"));
-            AddSymbol(Symbol.Primitive("long double", "double"));
-
-            // AddBasicSymbol(new BasicSymbol("cairo_format_t", "int"));
-            AddSymbol(Symbol.Primitive("int", "int"));
-            AddSymbol(Symbol.Primitive("gint", "int"));
-            AddSymbol(Symbol.Primitive("gint32", "int"));
-            AddSymbol(Symbol.Primitive("pid_t", "int"));
-
-            AddSymbol(Symbol.Primitive("unsigned int", "uint"));
-            AddSymbol(Symbol.Primitive("unsigned", "uint"));
-            AddSymbol(Symbol.Primitive("guint", "uint"));
-            AddSymbol(Symbol.Primitive("guint32", "uint"));
-            AddSymbol(Symbol.Primitive("gunichar", "uint"));
-            AddSymbol(Symbol.Primitive("uid_t", "uint"));
-            // AddBasicSymbol(new BasicSymbol("GQuark", "uint"));
-
-            AddSymbol(Symbol.Primitive("guchar", "byte"));
-            AddSymbol(Symbol.Primitive("gchar", "sbyte"));
-            AddSymbol(Symbol.Primitive("char", "sbyte"));
-            AddSymbol(Symbol.Primitive("guint8", "byte"));
-            AddSymbol(Symbol.Primitive("gint8", "sbyte"));
-
-            AddSymbol(Symbol.Primitive("glong", "long"));
-            AddSymbol(Symbol.Primitive("gssize", "long"));
-            AddSymbol(Symbol.Primitive("gint64", "long"));
-            AddSymbol(Symbol.Primitive("goffset", "long"));
-            AddSymbol(Symbol.Primitive("time_t", "long"));
-
-            AddSymbol(Symbol.Primitive("gsize", "ulong"));
-            AddSymbol(Symbol.Primitive("guint64", "ulong"));
-            AddSymbol(Symbol.Primitive("gulong", "ulong"));
-
-            AddSymbol(Symbol.Primitive("utf8", "string"));
-            AddSymbol(Symbol.Primitive("filename", "string"));
-            // AddBasicSymbol(new BasicSymbol("Window", "ulong"));
+            return cache.TryLookup(symbolReference, out symbol);
         }
 
-        /// <summary>
-        /// Adds a symbol under the given namespace.
-        /// </summary>
-        /// <param name="nspace"></param>
-        /// <param name="info"></param>
-        public void AddSymbol(string nspace, Symbol info)
+        private bool ResolveAlias(SymbolReference symbolReference, [MaybeNullWhen(false)] out Symbol symbol)
         {
-            GetTypeDict(nspace).AddSymbol(info.Name, info);
-        }
+            symbol = null;
+            
+            if (symbolReference.NamespaceName is null)
+                return false;
 
-        public void AddSymbols(string nspace, IEnumerable<Symbol> infos)
+            if (!_aliasData.TryGetValue(symbolReference.NamespaceName, out var aliasCache))
+                return false;
+
+            if (!aliasCache.TryLookup(symbolReference, out var alias))
+                return false;
+
+            symbol = alias.SymbolReference.GetSymbol();
+            return true;
+        }
+        
+        public void AddSymbols(IEnumerable<Symbol> symbols)
         {
-            TypeDictionary dict = GetTypeDict(nspace);
-            foreach (Symbol info in infos)
-                AddSymbol(nspace, info);
+            foreach(var symbol in symbols)
+                AddSymbol(symbol);
         }
 
-        /// <summary>
-        /// Adds a string alias under the given namespace.
-        /// </summary>
-        /// <param name="nspace"></param>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        public void AddAlias(string nspace, string from, string to)
+        public void AddSymbol(Symbol symbol)
         {
-            GetAliasDict(nspace).AddAlias(from, to);
+            if (symbol.Namespace is null)
+                AddGlobalSymbol(symbol);
+            else
+                AddConcreteSymbol(symbol);
         }
 
-        public SymbolDictionaryView GetView(string nspace)
-            => new SymbolDictionaryView(this, nspace);
-
-        private TypeDictionary GetTypeDict(string nspace)
-        {
-            if (_symbolDictionaries.TryGetValue(nspace, out TypeDictionary? symbolDict))
-                return symbolDict;
-
-            var dict = new TypeDictionary(nspace);
-            _symbolDictionaries.Add(nspace, dict);
-            return dict;
-        }
-
-        private AliasDictionary GetAliasDict(string nspace)
-        {
-            if (_aliasDictionaries.TryGetValue(nspace, out AliasDictionary? aliasDict))
-                return aliasDict;
-
-            var dict = new AliasDictionary(nspace);
-            _aliasDictionaries.Add(nspace, dict);
-            return dict;
-        }
-
-        private void AddSymbol(Symbol symbol)
-        {
-            _defaultDict.AddSymbol(symbol.Name, symbol);
-        }
-
-        private Symbol GetSymbolInternal(TypeDictionary symbolDict, string symbol)
-        {
-            // Check Fundamental Types
-            if (_defaultDict.TryGetSymbol(symbol, out Symbol? info))
-                return info;
-
-            // Check Normal
-            return symbolDict.GetSymbol(symbol);
-        }
-
-        /// <summary>
-        /// Queries the type dictionary for the given type under the provided namespace. If
-        /// <see cref="symbol"/> refers to the name of a <b>fundamental type</b>, the
-        /// default dictionary will take priority over any namespace. It is an error
-        /// for a namespaced type to share the same name as a fundamental type.
-        /// </summary>
-        /// <param name="nspace">Namespace to search</param>
-        /// <param name="symbol">Unqualified name of symbol (i.e. does not contain '.')</param>
-        /// <returns>Information about the symbol</returns>
-        public Symbol GetSymbol(string? nspace, string symbol)
+        private void AddGlobalSymbol(Symbol symbol)
         {
             Debug.Assert(
-                condition: !symbol.Contains('.'),
-                message: $"Symbol {symbol} should not be qualified by a namespace"
+                condition: symbol.Namespace is null, 
+                message: "A default symbol is not allowed to have a namespace"
             );
-
-            if (nspace == null)
-                return _defaultDict.GetSymbol(symbol);
-
-            // Get Namespace-specific Dictionaries
-            TypeDictionary symbolDict = GetTypeDict(nspace);
-            AliasDictionary aliasDict = GetAliasDict(nspace);
-
-            // Check Aliases (TODO: Should this use type references?)
-            if (aliasDict.TryGetAlias(symbol, out var alias))
+            
+            _globalSymbols.Add(symbol);
+        }
+        
+        private void AddConcreteSymbol(Symbol symbol)
+        {
+            Debug.Assert(
+                condition: symbol.Namespace is not null, 
+                message: "A concrete symbol is must have a namespace"
+            );
+            
+            if (!_data.TryGetValue(symbol.Namespace.Name, out var cache))
             {
-                if (alias.Contains('.'))
-                {
-                    // Reference to other namespace
-                    var components = alias.Split('.', 2);
-                    return GetSymbol(nspace: components[0], symbol: components[1]);
-                }
-
-                // Within this namespace
-                return GetSymbolInternal(symbolDict, alias);
+                cache = new SymbolCache();
+                _data[symbol.Namespace.Name] = cache;
             }
 
-            // Check Normal
-            return GetSymbolInternal(symbolDict, symbol);
+            cache.Add(symbol);
+        }
+
+        public void AddAliases(IEnumerable<Alias> aliases)
+        {
+            foreach(var alias in aliases)
+                AddAlias(alias);
+        }
+
+        private void AddAlias(Alias alias)
+        {
+            if (!_aliasData.TryGetValue(alias.Namespace.Name, out var cache))
+            {
+                cache = new AliasCache();
+                _aliasData[alias.Namespace.Name] = cache;
+            }
+
+            cache.Add(alias);
+        }
+
+        public void ResolveAliases()
+        {
+            foreach(var aliasData in _aliasData.Values)
+                foreach (var alias in aliasData.Aliases)
+                    if(TryLookup(alias.SymbolReference, out var symbol))
+                        alias.SymbolReference.ResolveAs(symbol);
         }
     }
 }

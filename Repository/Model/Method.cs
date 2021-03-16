@@ -4,12 +4,12 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Method : Symbol
+    public class Method : Element
     {
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
 
-        public Method(Namespace @namespace, string name, string managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(@namespace, name, managedName)
+        public Method(ElementName elementName, ElementManagedName elementManagedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(elementName, elementManagedName)
         {
             ReturnValue = returnValue;
             Arguments = arguments;
@@ -22,5 +22,8 @@ namespace Repository.Model
                 Arguments.SelectMany(x => x.GetSymbolReferences())
             );
         }
+
+        public override bool GetIsResolved()
+            => ReturnValue.GetIsResolved() && Arguments.AllResolved();
     }
 }

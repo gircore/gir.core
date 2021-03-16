@@ -9,7 +9,7 @@ namespace Repository.Model
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
 
-        public Callback(Namespace @namespace, string name, string nativeName, string managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(@namespace, name, nativeName, managedName)
+        public Callback(Namespace @namespace, CTypeName? ctypeName, TypeName typeName, NativeName nativeName, ManagedName managedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(@namespace, ctypeName, typeName, nativeName, managedName)
         {
             ReturnValue = returnValue;
             Arguments = arguments;
@@ -23,5 +23,7 @@ namespace Repository.Model
             );
         }
 
+        public override bool GetIsResolved()
+            => ReturnValue.GetIsResolved() && Arguments.AllResolved();
     }
 }

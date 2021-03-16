@@ -12,10 +12,10 @@ namespace Generator.Services
             foreach (LoadedProject project in projects)
             {
                 foreach (Callback dlg in project.Namespace.Callbacks)
-                    dlg.NativeName += "Native";
+                    dlg.NativeName = new NativeName(dlg.NativeName + "Native");
 
                 foreach (Callback dlg in GetFieldCallbacks(project))
-                    dlg.NativeName += "Native";
+                    dlg.NativeName = new NativeName(dlg.NativeName + "Native");
             }
 
             Log.Information("Suffixed delegates.");
@@ -25,27 +25,25 @@ namespace Generator.Services
             => project.Namespace.Records.SelectMany(
                 x => x.Fields.Select(y => y.Callback)).Where(x => x is { })!;
 
-        public void SetNativeNames(IEnumerable<LoadedProject> projects)
+        public void SetClassStructMetadata(IEnumerable<LoadedProject> projects)
         {
             foreach (LoadedProject project in projects)
             {
-                // All structured data types are always expected to be handled
-                // as a pointer if used as an argument or return value.
-                // This is GObjec convention. If this changes it is expected
-                // that an additional attribute is inserted in the gir file.
-
-                var structuredTypes = IEnumerables.Concat<Symbol>(
-                    project.Namespace.Unions,
-                    project.Namespace.Records,
-                    project.Namespace.Classes,
-                    project.Namespace.Interfaces
-                );
-
-                foreach (var type in structuredTypes)
-                    type.NativeName = "IntPtr";
+                foreach (var record in project.Namespace.Records)
+                {
+                    if (record.GLibClassStructFor is { })
+                    {
+                        var className = record.GLibClassStructFor.GetSymbol().ManagedName;
+                        record.Metadata["ClassName"] = className;
+                        record.Metadata["PureName"] = "Class";
+                        
+                        record.ManagedName = new ManagedName($"{className}.Native.Class");
+                        record.NativeName = new NativeName($"{className}.Native.Class");
+                    }
+                }
             }
-
-            Log.Information("Native names set.");
+            
+            Log.Information("Class struct metadata set.");
         }
     }
 }

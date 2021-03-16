@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Namespace : ISymbolReferenceProvider
+    public class Namespace : SymbolReferenceProvider
     {
         #region Properties
         
         // Basic Info
-        public string Name { get; }
+        public NamespaceName Name { get; }
         public string Version { get; }
         
         public string? SharedLibrary { get; }
         
-        private readonly List<Symbol> _aliases = new();
-        public IEnumerable<Symbol> Aliases => _aliases;
+        private readonly List<Alias> _aliases = new();
+        public IEnumerable<Alias> Aliases => _aliases;
         
         private readonly List<Callback> _callbacks = new();
         public IEnumerable<Callback> Callbacks => _callbacks;
@@ -48,13 +47,13 @@ namespace Repository.Model
 
         public Namespace(string name, string version, string? sharedLibrary)
         {
-            Name = name;
+            Name = new NamespaceName(name);
             Version = version;
             SharedLibrary = sharedLibrary;
         }
 
-        internal void AddAlias(Symbol symbol)
-            => _aliases.Add(symbol);
+        internal void AddAlias(Alias alias)
+            => _aliases.Add(alias);
 
         internal void AddCallback(Callback callback)
             => _callbacks.Add(callback);
@@ -103,5 +102,42 @@ namespace Repository.Model
         }
 
         public string ToCanonicalName() => $"{Name}-{Version}";
+        
+        internal void Strip()
+        {
+            Classes.Strip();
+            Interfaces.Strip();
+
+            _aliases.RemoveAll(Remove);
+            _callbacks.RemoveAll(Remove);
+            _classes.RemoveAll(Remove);
+            _enumerations.RemoveAll(Remove);
+            _bitfields.RemoveAll(Remove);
+            _interfaces.RemoveAll(Remove);
+            _records.RemoveAll(Remove);
+            _functions.RemoveAll(Remove);
+            _unions.RemoveAll(Remove);
+            _constants.RemoveAll(Remove);
+        }
+
+        private bool Remove(Element element)
+        {
+            var result = element.GetIsResolved();
+            
+            if(!result)
+                Log.Information($"{element.GetType().Name} {element.Name}: Removed because parts of it could not be completely resolvled");
+
+            return !result;
+        }
+        
+        private bool Remove(Symbol symbol)
+        {
+            var result = symbol.GetIsResolved();
+            
+            if(!result)
+                Log.Information($"{symbol.GetType().Name} {symbol.Namespace?.Name}.{symbol.TypeName}: Removed because parts of it could not be completely resolvled");
+
+            return !result;
+        }
     }
 }

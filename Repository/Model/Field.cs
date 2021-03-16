@@ -1,32 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Field : Symbol, Type
+    public class Field : Element, Type
     {
         public SymbolReference SymbolReference { get; }
-        
+        public TypeInformation TypeInformation { get; }
+
         public Callback? Callback { get; }
-        public Array? Array { get; }
         public bool Readable { get; }
         public bool Private { get; }
 
         /// <summary>
         /// Creates a new field.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="managedName"></param>
+        /// <param name="elementManagedName"></param>
         /// <param name="symbolReference"></param>
-        /// <param name="array"></param>
+        /// <param name="typeInformation"></param>
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
         /// <param name="readable"></param>
         /// <param name="private"></param>
-        public Field(string name, string managedName, SymbolReference symbolReference, Array? array = null, Callback? callback = null, bool readable = true, bool @private = false) : base(name, managedName)
+        /// <param name="elementName"></param>
+        public Field(ElementName elementName, ElementManagedName elementManagedName, SymbolReference symbolReference, TypeInformation typeInformation, Callback? callback = null, bool readable = true, bool @private = false) : base(elementName, elementManagedName)
         {
             SymbolReference = symbolReference;
-            Array = array;
+            TypeInformation = typeInformation;
             Callback = callback;
             Readable = readable;
             Private = @private;
@@ -57,5 +56,8 @@ namespace Repository.Model
             else
                 return new List<SymbolReference>() { SymbolReference };
         }
+
+        public override bool GetIsResolved()
+            => SymbolReference.GetIsResolved() && (Callback?.GetIsResolved() ?? true);
     }
 }

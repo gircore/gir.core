@@ -26,13 +26,18 @@ namespace Repository.Factories
             
             if (iface.GetTypeFunction is null)
                 throw new Exception($"Interface {iface.Name} is missing a {nameof(iface.GetTypeFunction)}");
+
+            CTypeName? ctypeName = null;
+            if (iface.Type is { })
+                ctypeName = new CTypeName(iface.Type);
             
             return new Interface(
                 @namespace: @namespace, 
-                name: iface.Name, 
-                managedName: iface.Name,
-                cType: iface.TypeName,
-                implements: _symbolReferenceFactory.Create(iface.Implements),
+                typeName: new TypeName(iface.Name),
+                cTypeName:  ctypeName,
+                managedName: new ManagedName(iface.Name),
+                nativeName: new NativeName(iface.Name),
+                implements: _symbolReferenceFactory.Create(iface.Implements, @namespace.Name),
                 methods: _methodFactory.Create(iface.Methods, @namespace),
                 functions: _methodFactory.Create(iface.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(iface.GetTypeFunction, @namespace)

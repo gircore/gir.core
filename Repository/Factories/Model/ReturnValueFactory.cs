@@ -1,4 +1,5 @@
-﻿using Repository.Factories.Model;
+﻿using Repository.Analysis;
+using Repository.Factories.Model;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -9,32 +10,32 @@ namespace Repository.Factories
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly TransferFactory _transferFactory;
-        private readonly ArrayFactory _arrayFactory;
+        private readonly TypeInformationFactory _typeInformationFactory;
 
-        public ReturnValueFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, ArrayFactory arrayFactory)
+        public ReturnValueFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, TypeInformationFactory typeInformationFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;
-            _arrayFactory = arrayFactory;
+            _typeInformationFactory = typeInformationFactory;
         }
         
-        public ReturnValue Create(ReturnValueInfo returnValueInfo)
+        public ReturnValue Create(ReturnValueInfo returnValueInfo, NamespaceName namespaceName)
         {
             return new ReturnValue(
-                symbolReference: _symbolReferenceFactory.Create(returnValueInfo),
+                symbolReference: _symbolReferenceFactory.Create(returnValueInfo, namespaceName),
                 transfer: _transferFactory.FromText(returnValueInfo.TransferOwnership),
                 nullable: returnValueInfo.Nullable,
-                array: _arrayFactory.Create(returnValueInfo.Array)
+                typeInformation: _typeInformationFactory.Create(returnValueInfo)
             );
         }
 
-        public ReturnValue Create(string type, Transfer transfer, bool nullable, Array? array = null)
+        public ReturnValue Create(string type, Transfer transfer, bool nullable, NamespaceName namespaceName)
         {
             return new ReturnValue(
-                symbolReference: _symbolReferenceFactory.Create(type),
+                symbolReference: _symbolReferenceFactory.Create(type, type, namespaceName),
                 transfer: transfer,
                 nullable: nullable,
-                array: array
+                typeInformation: _typeInformationFactory.CreateDefault()
             );
         }
     }

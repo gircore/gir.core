@@ -1,4 +1,5 @@
 ﻿using System;
+using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -24,28 +25,43 @@ namespace Repository.Factories
 
         public Class Create(ClassInfo cls, Namespace @namespace)
         {
-            if (cls.Name is null || cls.TypeName is null)
+            if (cls.Name is null)
                 throw new Exception("Class is missing data");
 
             if (cls.GetTypeFunction is null)
                 throw new Exception($"Class {cls.Name} is missing a get type function");
 
+            CTypeName? cTypeName = null;
+            if (cls.Type is { })
+                cTypeName = new CTypeName(cls.Type);
+            
             return new Class(
                 @namespace: @namespace,
-                name: cls.Name,
-                managedName: cls.Name,
-                ctype: cls.TypeName,
-                parent: _symbolReferenceFactory.CreateWithNull(cls.Parent),
-                implements: _symbolReferenceFactory.Create(cls.Implements),
+                typeName: new TypeName(cls.Name),
+                managedName: new ManagedName(cls.Name),
+                nativeName: new NativeName(cls.Name),
+                cTypeName: cTypeName,
+                parent: GetParent(cls.Parent, @namespace.Name),
+                implements: _symbolReferenceFactory.Create(cls.Implements, @namespace.Name),
                 methods: _methodFactory.Create(cls.Methods, @namespace),
                 functions: _methodFactory.Create(cls.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
-                properties: _propertyFactory.Create(cls.Properties),
+                properties: _propertyFactory.Create(cls.Properties, @namespace.Name),
                 fields: _fieldFactory.Create(cls.Fields, @namespace),
-                signals: _signalFactory.Create(cls.Signals),
+                signals: _signalFactory.Create(cls.Signals, @namespace.Name),
                 constructors: _methodFactory.Create(cls.Constructors, @namespace),
                 isFundamental: cls.Fundamental
             );
+        }
+
+        private SymbolReference? GetParent(string? parentName, NamespaceName currentNamespace)
+        {
+            SymbolReference? parent = null;
+            
+            if (parentName is {})
+                parent = _symbolReferenceFactory.Create(parentName, null, currentNamespace);
+
+            return parent;
         }
     }
 }

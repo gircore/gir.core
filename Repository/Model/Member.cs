@@ -4,16 +4,19 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Member : Symbol
+    public class Member : Element
     {
         public string Value { get; }
 
-        public Member(string name, string managedName, string value) : base(name, managedName)
+        public Member(ElementName elementName, ElementManagedName elementManagedName, string value) : base(elementName, elementManagedName)
         {
             Value = value;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()
             => Enumerable.Empty<SymbolReference>();
+
+        public override bool GetIsResolved()
+            => true;
     }
 }

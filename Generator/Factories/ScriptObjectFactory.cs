@@ -27,12 +27,11 @@ namespace Generator.Factories
 
             var scriptObject = CreateBase(currentNamespace);
             scriptObject.Import("write_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>((s, l) => TemplateWriter.WriteInheritance(s, l, currentNamespace)));
-            scriptObject.Import("write_class_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
+            scriptObject.Import("write_native_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
             scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
-            scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(a => a.WriteManaged(currentNamespace)));
+            scriptObject.Import("write_signal_args_properties", new Func<IEnumerable<Argument>, string>(a => a.WriteSignalArgsProperties(currentNamespace)));
             scriptObject.Import("signals_have_args", new Func<IEnumerable<Signal>, bool>(TemplateWriter.SignalsHaveArgs));
             scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, ReturnValue, string>((a, r) => a.WriteCallbackMarshaller(r, currentNamespace)));
-            scriptObject.Import("write_class_struct_fields", new Func<IEnumerable<Field>, string, string>((f,s) => f.WriteClassStructFields(s, currentNamespace)));
             scriptObject.Import("return_value_is_void", new Func<ReturnValue, bool>(r => r.IsVoid()));
             scriptObject.Import("write_struct_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
             scriptObject.Import("write_struct_delegates", new Func<IEnumerable<Field>, string>(f => f.WriteNativeDelegates(currentNamespace)));

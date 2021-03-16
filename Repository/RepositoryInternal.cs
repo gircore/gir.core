@@ -7,12 +7,10 @@ namespace Repository
     internal class RepositoryInternal
     {
         private readonly LoaderService _loaderService;
-        private readonly TypeReferenceResolverService _typeReferenceResolverService;
 
-        public RepositoryInternal(LoaderService loaderService, TypeReferenceResolverService typeReferenceResolverService)
+        public RepositoryInternal(LoaderService loaderService)
         {
             _loaderService = loaderService;
-            _typeReferenceResolverService = typeReferenceResolverService;
         }
 
         public IEnumerable<LoadedProject> Load(ResolveFileFunc fileFunc, IEnumerable<string> targets)
@@ -22,11 +20,18 @@ namespace Repository
             var enumerableLoadedProjects = _loaderService.LoadOrdered(targets, fileFunc);
             var loadedProjects = enumerableLoadedProjects as List<LoadedProject> ?? enumerableLoadedProjects.ToList();
 
-            _typeReferenceResolverService.Resolve(loadedProjects);
+            TypeReferenceResolverService.Resolve(loadedProjects);
+            StripProjects(loadedProjects);
 
             Log.Information($"Repository initialised with {loadedProjects.Count} top-level project(s) and {loadedProjects.Count - targets.Count()} dependencies.");
             
             return loadedProjects;
+        }
+
+        private static void StripProjects(List<LoadedProject> loadedProjects)
+        {
+            foreach (var proj in loadedProjects)
+                proj.Namespace.Strip();
         }
     }
 }

@@ -1,16 +1,18 @@
 ﻿using System;
+using Repository;
+using Repository.Analysis;
 
 namespace Generator
 {
     internal class DllImportResolver
     {
         private readonly string _sharedLibrary;
-        private readonly string _namespaceName;
+        private readonly NamespaceName _namespaceName;
 
-        public DllImportResolver(string sharedLibrary, string namespaceName)
+        public DllImportResolver(string sharedLibrary, NamespaceName namespaceName)
         {
-            _sharedLibrary = sharedLibrary ?? throw new ArgumentNullException(nameof(sharedLibrary));
-            _namespaceName = namespaceName ?? throw new ArgumentNullException(nameof(namespaceName));
+            _sharedLibrary = sharedLibrary;
+            _namespaceName = namespaceName;
         }
 
         public string GetWindowsDllImport()

@@ -1,4 +1,5 @@
 ﻿using System;
+using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -28,12 +29,18 @@ namespace Repository.Factories
                 { } f => _methodFactory.CreateGetTypeMethod(f, @namespace),
                 _ => null
             };
+
+            CTypeName? cTypeName = null;
+            if (@record.CType is { })
+                cTypeName = new CTypeName(@record.CType);
             
             return new Record(
-                @namespace: @namespace, 
-                name: @record.Name, 
-                managedName: @record.Name, 
-                gLibClassStructFor: _symbolReferenceFactory.CreateWithNull(record.GLibIsGTypeStructFor),
+                @namespace: @namespace,
+                cTypeName: cTypeName,
+                typeName: new TypeName(@record.Name), 
+                managedName: new ManagedName(@record.Name),
+                nativeName: new NativeName(@record.Name),
+                gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, @namespace.Name),
                 methods:_methodFactory.Create(@record.Methods, @namespace),
                 functions: _methodFactory.Create(@record.Functions, @namespace),
                 getTypeFunction: getTypeFunction,
@@ -41,6 +48,16 @@ namespace Repository.Factories
                 disguised: @record.Disguised,
                 constructors: _methodFactory.Create(@record.Constructors, @namespace)
             );
+        }
+
+        private SymbolReference? GetGLibClassStructFor(string? classStructForName, NamespaceName namespaceName)
+        {
+            SymbolReference? getGLibClassStructFor = null;
+            
+            if (classStructForName is {})
+                getGLibClassStructFor = _symbolReferenceFactory.Create(classStructForName, null, namespaceName);
+
+            return getGLibClassStructFor;
         }
     }
 }

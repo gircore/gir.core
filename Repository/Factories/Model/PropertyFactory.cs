@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -20,21 +21,21 @@ namespace Repository.Factories
             _caseConverter = caseConverter;
         }
 
-        public Property Create(PropertyInfo info)
+        private Property Create(PropertyInfo info, NamespaceName namespaceName)
         {
             if (info.Name is null)
                 throw new Exception("Property is missing a name");
             
             return new Property(
-                name: info.Name,
-                managedName: _caseConverter.ToPascalCase(info.Name),
-                symbolReference: _symbolReferenceFactory.Create(info),
+                elementName: new ElementName(info.Name),
+                elementManagedName: new ElementManagedName(_caseConverter.ToPascalCase(info.Name)),
+                symbolReference: _symbolReferenceFactory.Create(info, namespaceName),
                 writeable: info.Writeable,
                 transfer:  _transferFactory.FromText(info.TransferOwnership)
             );
         }
 
-        public IEnumerable<Property> Create(IEnumerable<PropertyInfo> infos)
-            => infos.Select(Create).ToList();
+        public IEnumerable<Property> Create(IEnumerable<PropertyInfo> infos, NamespaceName namespaceName)
+            => infos.Select(x => Create(x, namespaceName)).ToList();
     }
 }

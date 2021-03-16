@@ -1,4 +1,5 @@
 ﻿using System;
+using Repository.Analysis;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -16,7 +17,7 @@ namespace Repository.Factories
             _identifierConverter = identifierConverter;
         }
 
-        public Constant Create(ConstantInfo constantInfo)
+        public Constant Create(ConstantInfo constantInfo, NamespaceName currentNamespace)
         {
             if (constantInfo.Name is null)
                 throw new Exception($"{nameof(ConstantInfo)} misses a {nameof(constantInfo.Name)}");
@@ -25,9 +26,9 @@ namespace Repository.Factories
                 throw new Exception($"{nameof(ConstantInfo)} {constantInfo.Name} misses a {nameof(constantInfo.Value)}");
             
             return new Constant(
-                name: _identifierConverter.Convert(constantInfo.Name),
-                managedName: _identifierConverter.Convert(constantInfo.Name),
-                symbolReference: _symbolReferenceFactory.Create(constantInfo),
+                elementName: new ElementName(_identifierConverter.Convert(constantInfo.Name)),
+                elementManagedName: new ElementManagedName(_identifierConverter.Convert(constantInfo.Name)),
+                symbolReference: _symbolReferenceFactory.Create(constantInfo, currentNamespace),
                 value: constantInfo.Value
             );
         }

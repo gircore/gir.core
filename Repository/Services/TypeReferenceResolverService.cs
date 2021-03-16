@@ -7,7 +7,7 @@ namespace Repository.Services
 {
     internal class TypeReferenceResolverService 
     {
-        public void Resolve(IEnumerable<LoadedProject> projects)
+        public static void Resolve(IEnumerable<LoadedProject> projects)
         {
             var symbolDictionary = new SymbolDictionary();
 
@@ -17,39 +17,108 @@ namespace Repository.Services
                 Log.Debug($"Analysing '{proj.Name}'.");
                 FillSymbolDictionary(symbolDictionary, proj.Namespace);
                 
+                symbolDictionary.ResolveAliases();
+
                 ResolveReferences(symbolDictionary, proj);
                 Log.Information($"Resolved symbol references for {proj.Name}.");
             }
         }
 
-        private void FillSymbolDictionary(SymbolDictionary symbolDictionary, Namespace @namespace)
+        private static void FillSymbolDictionary(SymbolDictionary symbolDictionary, Namespace @namespace)
         {
-            AddAliases(symbolDictionary, @namespace);
-
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Classes);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Interfaces);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Callbacks);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Enumerations);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Bitfields);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Records);
-            symbolDictionary.AddSymbols(@namespace.Name, @namespace.Unions);
+            AddPrimitives(symbolDictionary);
+            
+            symbolDictionary.AddAliases(@namespace.Aliases);
+            
+            symbolDictionary.AddSymbols(@namespace.Classes);
+            symbolDictionary.AddSymbols(@namespace.Interfaces);
+            symbolDictionary.AddSymbols(@namespace.Callbacks);
+            symbolDictionary.AddSymbols(@namespace.Enumerations);
+            symbolDictionary.AddSymbols(@namespace.Bitfields);
+            symbolDictionary.AddSymbols(@namespace.Records);
+            symbolDictionary.AddSymbols(@namespace.Unions);
         }
 
-        private void ResolveReferences(SymbolDictionary symbolDictionary, LoadedProject proj)
+        private static void ResolveReferences(SymbolDictionary symbolDictionary, LoadedProject proj)
         {
-            var view = symbolDictionary.GetView(proj.Namespace.Name);
-
             foreach (var reference in proj.Namespace.GetSymbolReferences())
             {
-                var symbol = view.LookupType(reference.Type);
-                reference.ResolveAs(symbol);
+                Resolve(symbolDictionary, reference);
             }
         }
 
-        private static void AddAliases(SymbolDictionary symbolDictionary, Namespace @namespace)
+        private static void Resolve(SymbolDictionary symbolDictionary, SymbolReference reference)
         {
-            foreach (var alias in @namespace.Aliases)
-                symbolDictionary.AddAlias(@namespace.Name, alias.Name, alias.ManagedName);
+            if(symbolDictionary.TryLookup(reference, out var symbol))
+                reference.ResolveAs(symbol);
+        }
+
+        private static void AddPrimitives(SymbolDictionary symbolDictionary)
+        {
+             // Add Fundamental Types
+            // Fundamental types are accessible regardless of namespace and
+            // take priority over any namespaced variant.
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("none", "void"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("any", "IntPtr"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("void", "void"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gboolean", "bool"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gfloat", "float"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("float", "float"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("gconstpointer", "IntPtr"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("va_list", "IntPtr"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gpointer", "IntPtr"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("GType", "IntPtr"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("tm", "IntPtr"));
+            
+            // TODO: Should we use UIntPtr here? Non-CLR compliant
+            symbolDictionary.AddSymbol(Symbol.Primitive("guintptr", "UIntPtr"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("guint16", "ushort"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gushort", "ushort"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("gint16", "short"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gshort", "short"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("double", "double"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gdouble", "double"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("long double", "double"));
+
+            // AddBasicSymbol(new BasicSymbol("cairo_format_t", "int"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("int", "int"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gint", "int"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gint32", "int"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("pid_t", "int"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("unsigned int", "uint"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("unsigned", "uint"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("guint", "uint"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("guint32", "uint"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gunichar", "uint"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("uid_t", "uint"));
+            // AddBasicSymbol(new BasicSymbol("GQuark", "uint"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("guchar", "byte"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gchar", "sbyte"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("char", "sbyte"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("guint8", "byte"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gint8", "sbyte"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("glong", "long"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gssize", "long"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gint64", "long"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("goffset", "long"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("time_t", "long"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("gsize", "ulong"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("guint64", "ulong"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("gulong", "ulong"));
+
+            symbolDictionary.AddSymbol(Symbol.Primitive("utf8", "string"));
+            symbolDictionary.AddSymbol(Symbol.Primitive("filename", "string"));
+            // AddBasicSymbol(new BasicSymbol("Window", "ulong"));
         }
     }
 }
