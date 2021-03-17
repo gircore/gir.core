@@ -1,1 +1,1 @@
-private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ ctype }}", {{native_name}}.Methods.GetGType);
+private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ ctype }}", Native.Instance.Methods.GetGType);
