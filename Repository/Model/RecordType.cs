@@ -20,11 +20,6 @@
         /// <summary>
         /// GObject type struct (special case)
         /// </summary>
-        PublicClass,
-        
-        /// <summary>
-        /// Same as PublicClass, but opaque
-        /// </summary>
-        PrivateClass
+        Class
     }
 }

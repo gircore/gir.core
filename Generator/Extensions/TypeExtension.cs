@@ -22,16 +22,27 @@ namespace Generator
                 //Arrays of byte can be marshalled automatically, no IntPtr needed
                 ({TypeInformation: {Array:{}}}, Target.Native) when symbol.NativeName == "byte" => "byte",
                 
+                //Argument pointer to value records can be handled automatically
+                (Argument {} a, Target.Native) when a.IsPointingToValueRecord() => symbol.Write(target, currentNamespace),
+                
                 //Use IntPtr for all types where a pointer is expected
                 ({TypeInformation: {IsPointer: true}}, Target.Native) => "IntPtr",
                 
-                _ => type.SymbolReference.GetSymbol().Write(target, currentNamespace)
+                _ => symbol.Write(target, currentNamespace)
             };
 
             if (type.TypeInformation.Array is { })
                 name += "[]";
 
             return name;
+        }
+        
+        internal static bool IsPointingToValueRecord(this Type argument)
+        {
+            var isValueRecord = argument.SymbolReference.GetSymbol() is Record {Type: RecordType.Value } ;
+            var isPointing = argument.TypeInformation.IsPointer;
+            
+            return isPointing && isValueRecord;
         }
     }
 }

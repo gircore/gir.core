@@ -49,10 +49,11 @@ namespace Generator
 
         private static string GetDirection(Argument argument)
         {
-            return argument.Direction switch
+            return argument switch
             {
-                Direction.OutCalleeAllocates => "out ",
-                Direction.OutCallerAllocates => "ref ",
+                {Direction: Direction.OutCalleeAllocates} => "out ",
+                {Direction: Direction.OutCallerAllocates} => "ref ",
+                {} a when a.IsPointingToValueRecord() => "ref ",
                 _ => ""
             };
         }

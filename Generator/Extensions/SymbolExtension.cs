@@ -30,15 +30,5 @@ namespace Generator
             Target.Native => symbol.NativeName,
             _ => throw new Exception($"Unknown {nameof(Target)}")
         };
-
-        private static string GetClassStructIdentifier(RecordType type) => type switch
-        {
-            RecordType.PublicClass => "ClassStruct",
-            RecordType.PrivateClass => "PrivateClassStruct",
-            _ => throw new Exception($"Unknown class struct type {type}")
-        };
-
-        private static IEnumerable<Record> FindClassStructs(IEnumerable<Record> classStructs, Symbol symbol)
-            => classStructs.Where(x => x.GLibClassStructFor?.GetSymbol() == symbol);
     }
 }

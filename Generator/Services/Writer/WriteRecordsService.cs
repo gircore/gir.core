@@ -21,6 +21,10 @@ namespace Generator.Services.Writer
         {
             foreach (var record in records)
             {
+                if (record.ManagedName == "HashTable")
+                {
+                    
+                }
                 try
                 {
                     if (record.Type == RecordType.Opaque)
@@ -53,8 +57,7 @@ namespace Generator.Services.Writer
 
         private string GetSubfolder(RecordType recordType) => recordType switch
         {
-            RecordType.PrivateClass => "Classes",
-            RecordType.PublicClass => "Classes",
+            RecordType.Class => "Classes",
             RecordType.Value => "Structs",
             RecordType.Ref => "Classes",
             _ => throw new NotImplementedException("Unsupported record type")
@@ -62,8 +65,7 @@ namespace Generator.Services.Writer
 
         private string GetTemplateName(RecordType recordType) => recordType switch
         {
-            RecordType.PrivateClass => "classstruct.sbntxt",
-            RecordType.PublicClass => "classstruct.sbntxt",
+            RecordType.Class => "classstruct.sbntxt",
             RecordType.Value => "struct.sbntxt",
             RecordType.Ref => "struct_as_class.sbntxt",
             _ => throw new NotImplementedException("Unsupported record type")
