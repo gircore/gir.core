@@ -28,6 +28,14 @@ Currently supported libraries
 ## Status
 As we are currently figuring out the best way for this project the code is under heavy development and not ready for production. There is currently _no_ nuget package available.
 
+## How to help
+Anyone who wants to help is very welcome. If you want to get into the project take a look at our [Good First Issues](https://github.com/gircore/gir.core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or get in contact by starting a [Discussion](https://github.com/gircore/gir.core/discussions).
+
+### Matrix Room
+We have a matrix room for discussing gir.core. Please join if you'd like to help (or just want to chat!)
+
+https://matrix.to/#/#gircore:matrix.org?via=matrix.org
+
 ## Build & Use
 To build the project locally in debug mode follow these steps:
 
@@ -77,9 +85,6 @@ If you want to build the wrappers in release mode just run
 To use the newly build libraries in your project just add a reference to the csproj file of the project you want to use, e.g:
 
     $ dotnet add reference [RepoPath]/Libs/Gtk/Gtk.csproj
-
-## How to help
-Anyone who wants to help is very welcome. If you want to get into the project take a look at our [Good First Issues](https://github.com/gircore/gir.core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or get in contact by starting a [Discussion](https://github.com/gircore/gir.core/discussions).
 
 ## Code structure
 The folder structure in this repository is organized like:
