@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace GLib
 {
-    public partial struct Error
+    public partial record Error
     {
         #region Methods
 

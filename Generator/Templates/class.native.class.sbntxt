@@ -9,7 +9,7 @@ public struct Class
 {
     {{ include 'class.native.class.delegates.sbntxt' $class_struct.fields }}
 
-    {{~ $class_struct.fields | write_class_struct_fields managed_name ~}}
+    {{~ $class_struct.fields | write_class_struct_fields symbol_name ~}}
 }
 #endregion
 {{~ end ~}}

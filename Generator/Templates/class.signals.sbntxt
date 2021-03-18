@@ -2,9 +2,9 @@
 {{~ if signals | signals_have_args ~}}
 
 /// <summary>
-/// Indexer to connect with a SignalHandler&lt;{{managed_name}}&gt;
+/// Indexer to connect with a SignalHandler&lt;{{symbol_name}}&gt;
 /// </summary>
-public SignalHandler<{{ managed_name }}> this[Signal<{{ managed_name }}> signal]
+public SignalHandler<{{ symbol_name }}> this[Signal<{{ symbol_name }}> signal]
 {
     set => signal.Connect(this, value, true);
 }

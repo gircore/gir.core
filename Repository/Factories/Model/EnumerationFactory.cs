@@ -22,6 +22,11 @@ namespace Repository.Factories
             if (@enum.Type is null)
                 throw new Exception("Enum is missing a type");
 
+            if (@enum.Name == "TokenType")
+            {
+                
+            }
+            
             return new Enumeration(
                 @namespace: @namespace,
                 typeName: new TypeName(@enum.Name),

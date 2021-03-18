@@ -37,7 +37,7 @@ namespace Repository.Factories
 
             return new Field(
                 elementName: new ElementName(_identifierConverter.Convert(info.Name)),
-                elementManagedName: new ElementManagedName(_caseConverter.ToPascalCase(_identifierConverter.Convert(info.Name))),
+                symbolName: new SymbolName(_caseConverter.ToPascalCase(_identifierConverter.Convert(info.Name))),
                 symbolReference: CreateSymbolReference(info, @namespace.Name),
                 callback: callback,
                 typeInformation: _typeInformationFactory.Create(info),

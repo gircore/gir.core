@@ -15,14 +15,14 @@ namespace Repository.Model
         /// <summary>
         /// Creates a new field.
         /// </summary>
-        /// <param name="elementManagedName"></param>
+        /// <param name="symbolName"></param>
         /// <param name="symbolReference"></param>
         /// <param name="typeInformation"></param>
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
         /// <param name="readable"></param>
         /// <param name="private"></param>
         /// <param name="elementName"></param>
-        public Field(ElementName elementName, ElementManagedName elementManagedName, SymbolReference symbolReference, TypeInformation typeInformation, Callback? callback = null, bool readable = true, bool @private = false) : base(elementName, elementManagedName)
+        public Field(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, TypeInformation typeInformation, Callback? callback = null, bool readable = true, bool @private = false) : base(elementName, symbolName)
         {
             SymbolReference = symbolReference;
             TypeInformation = typeInformation;

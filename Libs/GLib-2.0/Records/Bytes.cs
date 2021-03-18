@@ -2,7 +2,7 @@
 
 namespace GLib
 {
-    public sealed partial class Bytes : IHandle, IDisposable
+    public sealed partial record Bytes : IHandle, IDisposable
     {
         #region Fields
 

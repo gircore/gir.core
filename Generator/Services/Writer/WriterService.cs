@@ -12,8 +12,9 @@ namespace Generator.Services.Writer
         private readonly WriteRecordsService _writeRecordsService;
         private readonly WriteStaticService _writeStaticService;
         private readonly WriteClassInstanceService _writeClassInstanceService;
+        private readonly WriteUnionsService _writeUnionsService;
 
-        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService)
+        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService, WriteUnionsService writeUnionsService)
         {
             _writeSymbolsService = writeSymbolsService;
             _writeDllImportService = writeDllImportService;
@@ -21,6 +22,7 @@ namespace Generator.Services.Writer
             _writeRecordsService = writeRecordsService;
             _writeStaticService = writeStaticService;
             _writeClassInstanceService = writeClassInstanceService;
+            _writeUnionsService = writeUnionsService;
         }
 
         public void Write(LoadedProject loadedProject, string outputDir)
@@ -100,10 +102,10 @@ namespace Generator.Services.Writer
                 @namespace: loadedProject.Namespace
             );
             
-            _writeRecordsService.Write(
+            _writeUnionsService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
-                records: loadedProject.Namespace.Unions,
+                unions: loadedProject.Namespace.Unions,
                 @namespace: loadedProject.Namespace
             );
 

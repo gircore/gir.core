@@ -20,7 +20,7 @@ namespace Generator
             var builder = new StringBuilder();
             builder.Append(type);
             builder.Append(' ');
-            builder.Append(argument.ManagedName);
+            builder.Append(argument.SymbolName);
 
             return builder.ToString();
         }
@@ -72,15 +72,15 @@ namespace Generator
             // TODO: We need to support disguised structs (opaque types)
             var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
             {
-                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.SymbolName}>({arg.ManagedName});",
-                (Record r, {IsPointer: true, Array:{}}) => $"{arg.ManagedName}.MarshalToStructure<{r.SymbolName}>();",
-                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.SymbolName}.From({arg.ManagedName});",
-                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.SymbolName}>({arg.ManagedName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
-                (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
-                _ => $"({arg.WriteManagedType(currentNamespace)}){arg.ManagedName};" // Other -> Try a brute-force cast
+                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.SymbolName}>({arg.SymbolName});",
+                (Record r, {IsPointer: true, Array:{}}) => $"{arg.SymbolName}.MarshalToStructure<{r.SymbolName}>();",
+                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.SymbolName}.From({arg.SymbolName});",
+                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.SymbolName}>({arg.SymbolName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
+                (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.SymbolName}"),
+                _ => $"({arg.WriteManagedType(currentNamespace)}){arg.SymbolName};" // Other -> Try a brute-force cast
             };
             
-            return $"{arg.WriteManagedType(currentNamespace)} {arg.ManagedName}Managed = " + expression;
+            return $"{arg.WriteManagedType(currentNamespace)} {arg.SymbolName}Managed = " + expression;
         }
     }
 }

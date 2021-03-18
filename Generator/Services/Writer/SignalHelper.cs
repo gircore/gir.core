@@ -8,9 +8,9 @@ namespace Generator.Services.Writer
         private readonly Signal _signal;
 
         public bool NeedsArgs => _signal.Arguments.Any();
-        public string EventName => $"On{_signal.ManagedName}";
-        public string EventDescriptor => $"{_signal.ManagedName}Signal";
-        public string ArgsType => _signal.ManagedName + "SignalArgs";
+        public string EventName => $"On{_signal.SymbolName}";
+        public string EventDescriptor => $"{_signal.SymbolName}Signal";
+        public string ArgsType => _signal.SymbolName + "SignalArgs";
 
         public SignalHelper(Signal signal)
         {

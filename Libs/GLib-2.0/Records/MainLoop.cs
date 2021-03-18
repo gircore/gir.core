@@ -2,7 +2,7 @@
 
 namespace GLib
 {
-    public sealed partial class MainLoop : IHandle
+    public sealed partial record MainLoop : IHandle
     {
         public IntPtr Handle { get; private set; }
 

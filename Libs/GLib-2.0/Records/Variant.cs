@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace GLib
 {
-    public partial class Variant
+    public partial record Variant
     {
         #region Fields
 

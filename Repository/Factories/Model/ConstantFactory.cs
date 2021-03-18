@@ -27,7 +27,7 @@ namespace Repository.Factories
             
             return new Constant(
                 elementName: new ElementName(_identifierConverter.Convert(constantInfo.Name)),
-                elementManagedName: new ElementManagedName(_identifierConverter.Convert(constantInfo.Name)),
+                symbolName: new SymbolName(_identifierConverter.Convert(constantInfo.Name)),
                 symbolReference: _symbolReferenceFactory.Create(constantInfo, currentNamespace),
                 value: constantInfo.Value
             );

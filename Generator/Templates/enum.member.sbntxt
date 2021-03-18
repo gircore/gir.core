@@ -1,1 +1,1 @@
-{{$1.managed_name}} = {{ $1.value }},
+{{$1.symbol_name}} = {{ $1.value }},

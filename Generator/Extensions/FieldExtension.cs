@@ -21,7 +21,7 @@ namespace Generator
 
             var accessibility = field.Private ? "private" : "public";
             
-            builder.AppendLine($"{accessibility} {type} {field.ManagedName};");
+            builder.AppendLine($"{accessibility} {type} {field.SymbolName};");
             return builder.ToString();
         }
     }

@@ -2,7 +2,7 @@
 
 namespace GLib
 {
-    public partial class MainContext : IHandle
+    public partial record MainContext : IHandle
     {
         public IntPtr Handle { get; private set; }
 

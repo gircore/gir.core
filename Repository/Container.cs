@@ -33,6 +33,7 @@ namespace Repository
     [Register(typeof(ConstantFactory))]
     [Register(typeof(ArrayFactory))]
     [Register(typeof(TypeInformationFactory))]
+    [Register(typeof(UnionFactory))]
     internal partial class Container : IContainer<RepositoryInternal>
     {
         [Factory]

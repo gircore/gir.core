@@ -37,7 +37,7 @@ namespace Generator
             {
                 index += 1;
                 var type = argument.WriteManagedType(currentNamespace);
-                var name = converter.ToPascalCase(argument.ManagedName);
+                var name = converter.ToPascalCase(argument.SymbolName);
 
                 builder.AppendLine($"public {type} {name} => Args[{index}].Extract<{type}>();");
             }
@@ -57,7 +57,7 @@ namespace Generator
                     continue;
 
                 builder.AppendLine(arg.WriteMarshalArgumentToManaged(currentNamespace));
-                args.Add(arg.ManagedName + "Managed");
+                args.Add(arg.SymbolName + "Managed");
             }
 
             var funcArgs = string.Join(

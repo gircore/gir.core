@@ -1,4 +1,4 @@
 /// <summary>
-/// Contains the native name of the {{ $1.managed_name}} property.
+/// Contains the name of the {{ $1.symbol_name}} property.
 /// </summary>
-public const string {{ $1.managed_name}} = "{{ $1.native_name }}";
+public const string {{ $1.symbol_name}} = "{{ $1.symbol_name }}";

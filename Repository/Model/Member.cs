@@ -8,7 +8,7 @@ namespace Repository.Model
     {
         public string Value { get; }
 
-        public Member(ElementName elementName, ElementManagedName elementManagedName, string value) : base(elementName, elementManagedName)
+        public Member(ElementName elementName, SymbolName symbolName, string value) : base(elementName, symbolName)
         {
             Value = value;
         }

@@ -13,7 +13,7 @@ namespace GLib
 
         #region Constructors
 
-        internal GException(IntPtr errorHandle) : base(Marshal.PtrToStructure<Error>(errorHandle).Message)
+        internal GException(IntPtr errorHandle) : base(Marshal.PtrToStructure<Error.Native.Struct>(errorHandle).Message)
         {
             _errorHandle = new GExceptionSafeHandle(errorHandle);
         }

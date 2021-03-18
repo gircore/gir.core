@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Repository;
 using Repository.Model;
@@ -7,43 +8,59 @@ namespace Generator.Services
 {
     internal class TypeRenamer
     {
-        public void SuffixDelegates(IEnumerable<LoadedProject> projects)
+        public void SetMetadata(IEnumerable<LoadedProject> loadedProjects)
         {
-            foreach (LoadedProject project in projects)
+            foreach (LoadedProject project in loadedProjects)
             {
-                foreach (Callback dlg in project.Namespace.Callbacks)
-                    dlg.SymbolName = new SymbolName(dlg.SymbolName + "Native");
-
-                foreach (Callback dlg in GetFieldCallbacks(project))
-                    dlg.SymbolName = new SymbolName(dlg.SymbolName + "Native");
-            }
-
-            Log.Information("Suffixed delegates.");
-        }
-
-        private IEnumerable<Callback> GetFieldCallbacks(LoadedProject project)
-            => project.Namespace.Records.SelectMany(
-                x => x.Fields.Select(y => y.Callback)).Where(x => x is { })!;
-
-        public void SetClassStructMetadata(IEnumerable<LoadedProject> projects)
-        {
-            foreach (LoadedProject project in projects)
-            {
-                foreach (var record in project.Namespace.Records)
-                {
-                    if (record.GLibClassStructFor is { })
-                    {
-                        var className = record.GLibClassStructFor.GetSymbol().SymbolName;
-                        record.Metadata["ClassName"] = className;
-                        record.Metadata["PureName"] = "Class";
-                        
-
-                        record.SymbolName = new SymbolName($"{className}.Native.Class");
-                    }
-                }
+                SetRecordMetadata(project.Namespace.Records);
+                SetUnionMetadata(project.Namespace.Unions);
             }
             
-            Log.Information("Class struct metadata set.");
+            Log.Information("Metadata set.");
+        }
+
+        private void SetUnionMetadata(IEnumerable<Union> unions)
+        {
+            foreach(var union in unions)
+                SetUnionMetadata(union);
+        }
+        
+        private void SetUnionMetadata(Union union)
+        {
+            union.Metadata["RecordName"] = union.SymbolName;
+            union.Metadata["PureName"] = "Struct";
+
+            union.SymbolName = new SymbolName($"{union.SymbolName}.Native.Struct");
+        }
+        
+        private void SetRecordMetadata(IEnumerable<Record> records)
+        {
+            foreach (var record in records)
+            {
+                if (record.GLibClassStructFor is { })
+                    SetClassStructMetadata(record);
+                else
+                    SetRecordMetadata(record);
+            }
+        }
+
+        private void SetClassStructMetadata(Record record)
+        {
+            Debug.Assert(record.GLibClassStructFor is not null);
+            
+            var className = record.GLibClassStructFor.GetSymbol().SymbolName;
+            record.Metadata["ClassName"] = className;
+            record.Metadata["PureName"] = "Class";
+
+            record.SymbolName = new SymbolName($"{className}.Native.Class");
+        }
+
+        private void SetRecordMetadata(Record record)
+        {
+            record.Metadata["RecordName"] = record.SymbolName;
+            record.Metadata["PureName"] = "Struct";
+
+            record.SymbolName = new SymbolName($"{record.SymbolName}.Native.Struct");
         }
     }
 }

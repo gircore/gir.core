@@ -2,7 +2,7 @@
 
 namespace GLib
 {
-    public partial class Variant : IDisposable
+    public partial record Variant : IDisposable
     {
         #region IDisposable Implementation
 

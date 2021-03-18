@@ -1,8 +1,0 @@
-#region Native
-
-internal static class Native
-{
-    {{ include 'struct.native.methods.sbntxt' }}
-}
-
-#endregion

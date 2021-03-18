@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace GLib
 {
-    public partial class Bytes
+    public partial record Bytes
     {
         private class BytesSafeHandle : SafeHandle
         {

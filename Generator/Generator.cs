@@ -20,8 +20,7 @@ namespace Generator
             var loadedProjects = repository.Load(FileResolver.ResolveFile, projects).ToList();
 
             var typeRenamer = new TypeRenamer();
-            typeRenamer.SuffixDelegates(loadedProjects);
-            typeRenamer.SetClassStructMetadata(loadedProjects);
+            typeRenamer.SetMetadata(loadedProjects);
             
             Log.Information("Ready to write.");
 

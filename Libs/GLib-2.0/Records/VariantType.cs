@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace GLib
 {
-    public partial class VariantType : IDisposable
+    public partial record VariantType : IDisposable
     {
         #region Static Member
 

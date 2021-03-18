@@ -15,7 +15,7 @@ namespace Generator
                 _ => constant.Value
             };
 
-            return $"public static {type} {constant.ManagedName} = {value};\r\n";
+            return $"public static {type} {constant.SymbolName} = {value};\r\n";
         }
     }
 }
