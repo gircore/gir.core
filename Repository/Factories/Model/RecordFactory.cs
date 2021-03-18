@@ -37,9 +37,8 @@ namespace Repository.Factories
             return new Record(
                 @namespace: @namespace,
                 cTypeName: cTypeName,
-                typeName: new TypeName(@record.Name), 
-                managedName: new ManagedName(@record.Name),
-                nativeName: new NativeName(@record.Name),
+                typeName: new TypeName(@record.Name),
+                symbolName: new SymbolName(@record.Name),
                 gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, @namespace.Name),
                 methods:_methodFactory.Create(@record.Methods, @namespace),
                 functions: _methodFactory.Create(@record.Functions, @namespace),

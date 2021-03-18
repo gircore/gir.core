@@ -53,7 +53,6 @@ namespace Generator
             {
                 {Direction: Direction.OutCalleeAllocates} => "out ",
                 {Direction: Direction.OutCallerAllocates} => "ref ",
-                {} a when a.IsPointingToValueRecord() => "ref ",
                 _ => ""
             };
         }
@@ -73,10 +72,10 @@ namespace Generator
             // TODO: We need to support disguised structs (opaque types)
             var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
             {
-                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.ManagedName}>({arg.ManagedName});",
-                (Record r, {IsPointer: true, Array:{}}) => $"{arg.ManagedName}.MarshalToStructure<{r.ManagedName}>();",
-                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.ManagedName}.From({arg.ManagedName});",
-                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.ManagedName}>({arg.ManagedName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
+                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.SymbolName}>({arg.ManagedName});",
+                (Record r, {IsPointer: true, Array:{}}) => $"{arg.ManagedName}.MarshalToStructure<{r.SymbolName}>();",
+                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.SymbolName}.From({arg.ManagedName});",
+                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.SymbolName}>({arg.ManagedName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
                 _ => $"({arg.WriteManagedType(currentNamespace)}){arg.ManagedName};" // Other -> Try a brute-force cast
             };

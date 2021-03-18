@@ -23,7 +23,7 @@ namespace Repository.Model
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Method> Constructors => _constructors;
 
-        public Class(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, NativeName nativeName, ManagedName managedName, SymbolReference? parent, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(@namespace, cTypeName, typeName, nativeName, managedName)
+        public Class(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, SymbolReference? parent, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(@namespace, cTypeName, typeName, symbolName)
         {
             Parent = parent;
             Implements = implements;

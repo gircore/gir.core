@@ -34,13 +34,13 @@ namespace Generator.Services.Writer
                         outputDir: outputDir,
                         templateName: templateName,
                         folder: subfolder,
-                        fileName: obj.ManagedName,
+                        fileName: obj.SymbolName,
                         scriptObject: scriptObject
                     );
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Could not create type {obj.ManagedName}: {ex.Message}");
+                    Log.Error($"Could not create type {obj.SymbolName}: {ex.Message}");
                 }
             }
         }

@@ -13,8 +13,7 @@ namespace Generator
 
         internal static string Write(this Symbol symbol, Target target,  Namespace currentNamespace)
         {
-            var name = GetName(symbol, target);
-
+            var name = symbol.SymbolName;
             if (!symbol.IsForeignTo(currentNamespace))
                 return name;
 
@@ -23,12 +22,5 @@ namespace Generator
 
             return symbol.Namespace.Name + "." + name;
         }
-        
-        private static string GetName(Symbol symbol, Target target) => target switch
-        {
-            Target.Managed => symbol.ManagedName,
-            Target.Native => symbol.NativeName,
-            _ => throw new Exception($"Unknown {nameof(Target)}")
-        };
     }
 }

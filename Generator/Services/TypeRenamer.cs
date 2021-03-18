@@ -12,10 +12,10 @@ namespace Generator.Services
             foreach (LoadedProject project in projects)
             {
                 foreach (Callback dlg in project.Namespace.Callbacks)
-                    dlg.NativeName = new NativeName(dlg.NativeName + "Native");
+                    dlg.SymbolName = new SymbolName(dlg.SymbolName + "Native");
 
                 foreach (Callback dlg in GetFieldCallbacks(project))
-                    dlg.NativeName = new NativeName(dlg.NativeName + "Native");
+                    dlg.SymbolName = new SymbolName(dlg.SymbolName + "Native");
             }
 
             Log.Information("Suffixed delegates.");
@@ -33,12 +33,12 @@ namespace Generator.Services
                 {
                     if (record.GLibClassStructFor is { })
                     {
-                        var className = record.GLibClassStructFor.GetSymbol().ManagedName;
+                        var className = record.GLibClassStructFor.GetSymbol().SymbolName;
                         record.Metadata["ClassName"] = className;
                         record.Metadata["PureName"] = "Class";
                         
-                        record.ManagedName = new ManagedName($"{className}.Native.Class");
-                        record.NativeName = new NativeName($"{className}.Native.Class");
+
+                        record.SymbolName = new SymbolName($"{className}.Native.Class");
                     }
                 }
             }

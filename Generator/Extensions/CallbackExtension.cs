@@ -8,7 +8,7 @@ namespace Generator
         {
             var returnType = callback.ReturnValue.WriteNative(currentNamespace);
             var arguments = callback.Arguments.WriteNative(currentNamespace);
-            return $"public delegate {returnType} {callback.NativeName}({arguments});";
+            return $"public delegate {returnType} {callback.SymbolName}({arguments});";
         }
     }
 }

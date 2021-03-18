@@ -17,14 +17,11 @@ namespace Generator
             var name = (type, target) switch
             {
                 //Arrays of string can be marshalled automatically, no IntPtr needed
-                ({TypeInformation: {Array:{}}}, Target.Native) when symbol.NativeName == "string" => "string",
+                ({TypeInformation: {Array:{}}}, Target.Native) when symbol.SymbolName == "string" => "string",
                 
                 //Arrays of byte can be marshalled automatically, no IntPtr needed
-                ({TypeInformation: {Array:{}}}, Target.Native) when symbol.NativeName == "byte" => "byte",
-                
-                //Argument pointer to value records can be handled automatically
-                (Argument {} a, Target.Native) when a.IsPointingToValueRecord() => symbol.Write(target, currentNamespace),
-                
+                ({TypeInformation: {Array:{}}}, Target.Native) when symbol.SymbolName == "byte" => "byte",
+
                 //Use IntPtr for all types where a pointer is expected
                 ({TypeInformation: {IsPointer: true}}, Target.Native) => "IntPtr",
                 
@@ -35,14 +32,6 @@ namespace Generator
                 name += "[]";
 
             return name;
-        }
-        
-        internal static bool IsPointingToValueRecord(this Type argument)
-        {
-            var isValueRecord = argument.SymbolReference.GetSymbol() is Record {Type: RecordType.Value } ;
-            var isPointing = argument.TypeInformation.IsPointer;
-            
-            return isPointing && isValueRecord;
         }
     }
 }

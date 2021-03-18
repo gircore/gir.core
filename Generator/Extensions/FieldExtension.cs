@@ -9,7 +9,7 @@ namespace Generator
         {
             string type = field switch
             {
-                {Callback: {} c} => c.NativeName,
+                {Callback: {} c} => c.SymbolName,
                 _ => field.WriteNativeType(currentNamespace)
             };
 

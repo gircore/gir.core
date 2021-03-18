@@ -34,8 +34,7 @@ namespace Repository.Factories
                 @namespace: @namespace,
                 ctypeName: cTypeName,
                 typeName: new TypeName(callbackInfo.Name),
-                managedName: new ManagedName(_caseConverter.ToPascal(callbackInfo.Name)),
-                nativeName: new NativeName(_caseConverter.ToPascal(callbackInfo.Name)),
+                symbolName: new SymbolName(_caseConverter.ToPascal(callbackInfo.Name)),
                 returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue, @namespace.Name),
                 arguments: _argumentsFactory.Create(callbackInfo.Parameters, @namespace.Name).ToList()
             );

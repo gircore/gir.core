@@ -38,8 +38,7 @@ namespace Repository.Factories
             return new Class(
                 @namespace: @namespace,
                 typeName: new TypeName(cls.Name),
-                managedName: new ManagedName(cls.Name),
-                nativeName: new NativeName(cls.Name),
+                symbolName: new SymbolName(cls.Name),
                 cTypeName: cTypeName,
                 parent: GetParent(cls.Parent, @namespace.Name),
                 implements: _symbolReferenceFactory.Create(cls.Implements, @namespace.Name),
