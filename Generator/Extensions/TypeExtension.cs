@@ -5,12 +5,6 @@ namespace Generator
 {
     internal static class TypeExtension
     {
-        public static string WriteNativeType(this Type type, Namespace currentNamespace)
-            => type.WriteType(Target.Native, currentNamespace);
-
-        public static string WriteManagedType(this Type type, Namespace currentNamespace)
-            => type.WriteType(Target.Managed, currentNamespace);
-        
         internal static string WriteType(this Type type, Target target,  Namespace currentNamespace)
         {
             var symbol = type.SymbolReference.GetSymbol();

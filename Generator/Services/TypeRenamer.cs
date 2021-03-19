@@ -13,10 +13,36 @@ namespace Generator.Services
             foreach (LoadedProject project in loadedProjects)
             {
                 SetRecordMetadata(project.Namespace.Records);
+                SetRecordFieldsCallbackMetadata(project.Namespace.Records);
                 SetUnionMetadata(project.Namespace.Unions);
+                SetCallbacksMetadata(project.Namespace.Callbacks);
             }
             
             Log.Information("Metadata set.");
+        }
+
+        private void SetRecordFieldsCallbackMetadata(IEnumerable<Record> records)
+        {
+            foreach (var record in records)
+            {
+                foreach (var callback in record.Fields.Select(x => x.Callback))
+                {
+                    if(callback is {})
+                        SetCallbackMetadata(callback);   
+                }
+            }
+        }
+
+        private void SetCallbacksMetadata(IEnumerable<Callback> callbacks)
+        {
+            foreach(var callback in callbacks)
+                SetCallbackMetadata(callback);
+        }
+
+        private void SetCallbackMetadata(Callback callback)
+        {
+            callback.Metadata["ManagedName"] = callback.SymbolName;
+            callback.SymbolName = new SymbolName(callback.SymbolName + "Callback");
         }
 
         private void SetUnionMetadata(IEnumerable<Union> unions)

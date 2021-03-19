@@ -30,7 +30,7 @@ namespace Generator
             foreach (var argument in arguments)
             {
                 index += 1;
-                var type = argument.WriteManagedType(currentNamespace);
+                var type = argument.Write(Target.Managed, currentNamespace);
                 var name = converter.ToPascalCase(argument.SymbolName);
 
                 builder.AppendLine($"public {type} {name} => Args[{index}].Extract<{type}>();");

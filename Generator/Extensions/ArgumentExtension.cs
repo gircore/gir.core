@@ -53,8 +53,8 @@ namespace Generator
 
         private static string GetType(this Argument argument, Target target, Namespace currentNamespace) => target switch
         {
-            Target.Managed => argument.WriteManagedType(currentNamespace) + GetNullable(argument),
-            Target.Native => argument.WriteNativeType(currentNamespace),
+            Target.Managed => argument.WriteType(target, currentNamespace) + GetNullable(argument),
+            Target.Native => argument.WriteType(target, currentNamespace),
             _ => throw new Exception($"Unknown {nameof(Target)}")
         };
 
@@ -71,10 +71,10 @@ namespace Generator
                 (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.SymbolName}.From({arg.SymbolName});",
                 (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.SymbolName}>({arg.SymbolName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.SymbolName}"),
-                _ => $"({arg.WriteManagedType(currentNamespace)}){arg.SymbolName};" // Other -> Try a brute-force cast
+                _ => $"({arg.WriteType(Target.Managed, currentNamespace)}){arg.SymbolName};" // Other -> Try a brute-force cast
             };
             
-            return $"{arg.WriteManagedType(currentNamespace)} {arg.SymbolName}Managed = " + expression;
+            return $"{arg.WriteType(Target.Managed, currentNamespace)} {arg.SymbolName}Managed = " + expression;
         }
     }
 }
