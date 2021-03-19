@@ -13,8 +13,9 @@ namespace Generator.Services.Writer
         private readonly WriteStaticService _writeStaticService;
         private readonly WriteClassInstanceService _writeClassInstanceService;
         private readonly WriteUnionsService _writeUnionsService;
+        private readonly WriteRecordNativeSafeHandlesService _writeRecordNativeSafeHandlesService;
 
-        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService, WriteUnionsService writeUnionsService)
+        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService, WriteUnionsService writeUnionsService, WriteRecordNativeSafeHandlesService writeRecordNativeSafeHandlesService)
         {
             _writeSymbolsService = writeSymbolsService;
             _writeDllImportService = writeDllImportService;
@@ -23,6 +24,7 @@ namespace Generator.Services.Writer
             _writeStaticService = writeStaticService;
             _writeClassInstanceService = writeClassInstanceService;
             _writeUnionsService = writeUnionsService;
+            _writeRecordNativeSafeHandlesService = writeRecordNativeSafeHandlesService;
         }
 
         public void Write(LoadedProject loadedProject, string outputDir)
@@ -96,6 +98,13 @@ namespace Generator.Services.Writer
             );
 
             _writeRecordsService.Write(
+                projectName: loadedProject.Name,
+                outputDir: outputDir,
+                records: loadedProject.Namespace.Records,
+                @namespace: loadedProject.Namespace
+            );
+
+            _writeRecordNativeSafeHandlesService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 records: loadedProject.Namespace.Records,
