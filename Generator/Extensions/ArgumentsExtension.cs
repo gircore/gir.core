@@ -13,18 +13,12 @@ namespace Generator
         {
             var args = arguments.Where(x => x.ClosureIndex == null); // Exclude "userData" parameters
 
-            return string.Join(", ", args.Select(x => x.WriteManaged(currentNamespace)));
+            return string.Join(", ", args.Select(x => x.Write(Target.Managed, currentNamespace)));
         }
         
         public static string WriteNative(this IEnumerable<Argument> arguments, Namespace currentNamespace)
         {
-            var args = new List<string>();
-            foreach (var argument in arguments)
-            {
-                args.Add(argument.WriteNative(currentNamespace));
-            }
-
-            return string.Join(", ", args);
+            return string.Join(", ", arguments.Select(x => x.Write(Target.Native, currentNamespace)));
         }
         
         public static string WriteSignalArgsProperties(this IEnumerable<Argument> arguments, Namespace currentNamespace)

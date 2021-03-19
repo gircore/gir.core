@@ -7,13 +7,7 @@ namespace Generator
 {
     internal static class ArgumentExtension
     {
-        public static string WriteNative(this Argument argument, Namespace currentNamespace)
-            => argument.Write(Target.Native, currentNamespace);
-        
-        public static string WriteManaged(this Argument argument, Namespace currentNamespace)
-            => argument.Write(Target.Managed, currentNamespace);
-
-        private static string Write(this Argument argument, Target target,  Namespace currentNamespace)
+        internal static string Write(this Argument argument, Target target,  Namespace currentNamespace)
         {
             var type = GetFullType(argument, target, currentNamespace);
             
