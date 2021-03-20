@@ -9,10 +9,31 @@ namespace Generator
 {
     internal static class ArgumentsExtension
     {
+        private static IEnumerable<Argument> GetClosureArgs(this IEnumerable<Argument> arguments)
+        {
+            // TODO: This might be a bit too enthusiastic with removing arguments - Do some testing..?
+            
+            // Find the index of each 'userData' argument
+            IEnumerable<int> closureIds = arguments
+                .Where(x => x.ClosureIndex.HasValue)
+                .Select(x => x.ClosureIndex.Value);
+
+            // Lookup arguments by index
+            return closureIds.Select(x => arguments.ElementAtOrDefault(x) ?? null);
+        }
+
+        public static IEnumerable<Argument> GetManagedArgs(this IEnumerable<Argument> arguments)
+        {
+            // Exclude from generation
+            return arguments
+                .Except(arguments.GetClosureArgs());
+        }
+
         public static string WriteManaged(this IEnumerable<Argument> arguments, Namespace currentNamespace)
         {
-            var args = arguments.Where(x => x.ClosureIndex == null); // Exclude "userData" parameters
-
+            // Get managed arguments only (excludes userData, etc)
+            IEnumerable<Argument> args = GetManagedArgs(arguments);
+            
             return string.Join(", ", args.Select(x => x.WriteManaged(currentNamespace)));
         }
         

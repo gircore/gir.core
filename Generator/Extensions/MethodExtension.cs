@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -71,9 +72,25 @@ namespace Generator
             
             var builder = new StringBuilder();
 
-            var delegateParams = method.Arguments.Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
-            var marshalParams = method.Arguments.Except(delegateParams);
-            var returnValue = method.ReturnValue;
+            // The 'true' arguments of the method that we pass to our wrapped call
+            IEnumerable<Argument> nativeParams = method.Arguments;
+
+            // The arguments used in the managed method signature (e.g. no userData)
+            IEnumerable<Argument> managedParams = method.Arguments.GetManagedArgs();
+
+            // Delegate-type arguments only
+            IEnumerable<Argument> delegateParams = managedParams
+                .Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
+            
+            // All other arguments
+            IEnumerable<Argument> marshalParams = managedParams.Except(delegateParams);
+            
+            // Method return value
+            ReturnValue returnValue = method.ReturnValue;
+            
+            
+            
+            // Misc Logging
             var isInstance = method.InstanceArgument != null;
 
             builder.AppendLine("// Method: " + method.ManagedName);
@@ -87,6 +104,7 @@ namespace Generator
 
             builder.AppendLine("// With Return Value: " + returnValue.WriteManaged(currentNamespace));
 
+            // We don't support this (static generation) yet
             if (!isInstance)
                 goto exit;
             
