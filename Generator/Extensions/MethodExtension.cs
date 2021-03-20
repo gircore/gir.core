@@ -56,6 +56,9 @@ namespace Generator
                 latest = block;
             }
 
+            public void AddWhitespace()
+                => Nest(new Block());
+
             public string Build()
                 => root.Build();
         }
@@ -117,6 +120,8 @@ namespace Generator
                 });
             }
             
+            stack.AddWhitespace();
+            
             // 2. marshal parameters
             foreach (var arg in marshalParams)
             {
@@ -130,6 +135,8 @@ namespace Generator
                     End = dealloc
                 });
             }
+
+            stack.AddWhitespace();
             
             // 3. method call
             stack.Nest(new Block()
