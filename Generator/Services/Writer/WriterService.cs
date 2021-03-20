@@ -14,8 +14,9 @@ namespace Generator.Services.Writer
         private readonly WriteClassInstanceService _writeClassInstanceService;
         private readonly WriteUnionsService _writeUnionsService;
         private readonly WriteRecordNativeSafeHandlesService _writeRecordNativeSafeHandlesService;
+        private readonly WriteClassStructNativeSafeHandlesService _writeClassStructNativeSafeHandlesService;
 
-        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService, WriteUnionsService writeUnionsService, WriteRecordNativeSafeHandlesService writeRecordNativeSafeHandlesService)
+        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService, WriteUnionsService writeUnionsService, WriteRecordNativeSafeHandlesService writeRecordNativeSafeHandlesService, WriteClassStructNativeSafeHandlesService writeClassStructNativeSafeHandlesService)
         {
             _writeSymbolsService = writeSymbolsService;
             _writeDllImportService = writeDllImportService;
@@ -25,6 +26,7 @@ namespace Generator.Services.Writer
             _writeClassInstanceService = writeClassInstanceService;
             _writeUnionsService = writeUnionsService;
             _writeRecordNativeSafeHandlesService = writeRecordNativeSafeHandlesService;
+            _writeClassStructNativeSafeHandlesService = writeClassStructNativeSafeHandlesService;
         }
 
         public void Write(LoadedProject loadedProject, string outputDir)
@@ -108,6 +110,13 @@ namespace Generator.Services.Writer
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
                 records: loadedProject.Namespace.Records.Where(x => !x.IsClassStruct),
+                @namespace: loadedProject.Namespace
+            );
+            
+            _writeClassStructNativeSafeHandlesService.Write(
+                projectName: loadedProject.Name,
+                outputDir: outputDir,
+                records: loadedProject.Namespace.Records.Where(x => x.IsClassStruct),
                 @namespace: loadedProject.Namespace
             );
             
