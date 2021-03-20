@@ -41,7 +41,7 @@ namespace GObject
             if (name is null)
                 return;
 
-            Native.set_property(Handle, name, ref value);
+            Native.Instance.Methods.SetProperty(Handle, name, ref value);
             value.Dispose();
         }
 
@@ -58,7 +58,7 @@ namespace GObject
                 return default;
 
             var value = new Value();
-            Native.get_property(Handle, name, ref value);
+            Native.Instance.Methods.GetProperty(Handle, name, ref value);
 
             return value;
         }

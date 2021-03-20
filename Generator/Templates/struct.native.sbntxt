@@ -1,8 +1,12 @@
-#region Native
-
-internal static class Native
+//TODO: Native is only temporary public. Managed Callbacks reference this class, which is not correct. 
+public partial class Native
 {
+    [StructLayout(LayoutKind.Sequential)]
+    public partial struct {{ get_metadata "PureName" }}
+    {
+        {{ include 'struct.delegates.sbntxt' }}
+        {{ include 'struct.fields.sbntxt' }}
+    }
+    
     {{ include 'struct.native.methods.sbntxt' }}
 }
-
-#endregion

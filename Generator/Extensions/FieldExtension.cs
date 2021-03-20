@@ -9,8 +9,8 @@ namespace Generator
         {
             string type = field switch
             {
-                {Callback: {} c} => c.NativeName,
-                _ => field.WriteNativeType(currentNamespace)
+                {Callback: {} c} => c.SymbolName,
+                _ => field.WriteType(Target.Native, currentNamespace)
             };
 
             var builder = new StringBuilder();
@@ -21,7 +21,7 @@ namespace Generator
 
             var accessibility = field.Private ? "private" : "public";
             
-            builder.AppendLine($"{accessibility} {type} {field.ManagedName};");
+            builder.AppendLine($"{accessibility} {type} {field.SymbolName};");
             return builder.ToString();
         }
     }

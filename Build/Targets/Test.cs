@@ -13,8 +13,7 @@ namespace Build
 
         public void Execute()
         {
-            foreach (var project in Projects.TestProjects)
-                DotNet.Test(project, _settings.Configuration);
+            DotNet.Test(Projects.SOLUTION, _settings.Configuration);
         }
     }
 }

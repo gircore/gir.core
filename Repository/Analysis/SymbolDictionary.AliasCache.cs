@@ -27,7 +27,7 @@ namespace Repository.Analysis
 
             private bool CheckAlias(Alias alias, SymbolReference symbolReference)
             {
-                return (symbolReference.TypeName == alias.ManagedName) || (symbolReference.CTypeName == alias.Name);
+                return (symbolReference.TypeName == alias.SymbolName) || (symbolReference.CTypeName == alias.Name);
             }
         }
     }

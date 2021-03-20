@@ -11,19 +11,7 @@ namespace Repository.Model
         private readonly List<Method> _constructors;
         private readonly List<Field> _fields;
 
-        public RecordType Type => this switch
-        {
-            {Disguised: true, GLibClassStructFor: { }} => RecordType.PrivateClass,
-            {Disguised: false, GLibClassStructFor: { }} => RecordType.PublicClass,
-            {Disguised: false, Fields: { } f} when f.Any() => RecordType.Value,
-
-            //As structured types are always passed around via pointers
-            //they need to be Ref types if there are any methods or constructors
-            {Constructors: { } c} when c.Any() => RecordType.Ref,
-            {Methods : { } m} when m.Any() => RecordType.Ref,
-
-            _ => RecordType.Opaque
-        };
+        public bool IsClassStruct => GLibClassStructFor is { };
 
         public Method? GetTypeFunction { get; }
         public IEnumerable<Field> Fields => _fields;
@@ -33,7 +21,7 @@ namespace Repository.Model
         public IEnumerable<Method> Functions => _functions;
         public SymbolReference? GLibClassStructFor { get; }
 
-        public Record(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, NativeName nativeName, ManagedName managedName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(@namespace, cTypeName, typeName, nativeName, managedName)
+        public Record(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(@namespace, cTypeName, typeName, symbolName)
         {
             GLibClassStructFor = gLibClassStructFor;
             GetTypeFunction = getTypeFunction;

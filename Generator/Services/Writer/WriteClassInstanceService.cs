@@ -33,13 +33,13 @@ namespace Generator.Services.Writer
                         outputDir: outputDir,
                         templateName: templateName,
                         folder: subfolder,
-                        fileName: cls.ManagedName + ".Native.Instance",
+                        fileName: cls.SymbolName + ".Native.Instance",
                         scriptObject: scriptObject
                     );
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Could not create type {cls.ManagedName}: {ex.Message}");
+                    Log.Error($"Could not create type {cls.SymbolName}: {ex.Message}");
                 }
             }
         }

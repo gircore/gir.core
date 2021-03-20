@@ -9,7 +9,7 @@ namespace Repository.Model
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
 
-        public Method(ElementName elementName, ElementManagedName elementManagedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(elementName, elementManagedName)
+        public Method(ElementName elementName, SymbolName symbolName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(elementName, symbolName)
         {
             ReturnValue = returnValue;
             Arguments = arguments;
@@ -25,5 +25,8 @@ namespace Repository.Model
 
         public override bool GetIsResolved()
             => ReturnValue.GetIsResolved() && Arguments.AllResolved();
+
+        public override string ToString()
+            => Name;
     }
 }

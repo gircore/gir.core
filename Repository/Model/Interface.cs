@@ -15,7 +15,7 @@ namespace Repository.Model
         public IEnumerable<Method> Methods => _methods;
         public IEnumerable<Method> Functions => _functions;
         
-        public Interface(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, NativeName nativeName, ManagedName managedName, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, cTypeName, typeName, nativeName, managedName)
+        public Interface(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction) : base(@namespace, cTypeName, typeName, symbolName)
         {
             Implements = implements;
             this._methods = methods.ToList();

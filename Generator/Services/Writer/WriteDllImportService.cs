@@ -44,6 +44,15 @@ namespace Generator.Services.Writer
                     fileName: "DllImport",
                     scriptObject: scriptObject
                 );
+                
+                _writeHelperService.Write(
+                    projectName: loadedProject.Name,
+                    templateName: "module_dll_import.sbntxt",
+                    folder: "Classes",
+                    outputDir: outputDir,
+                    fileName: "Module",
+                    scriptObject: scriptObject
+                );
             }
             catch (Exception ex)
             {

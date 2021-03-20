@@ -6,7 +6,7 @@ namespace Generator
     {
         public static string WriteManaged(this Constant constant)
         {
-            var type = constant.SymbolReference.GetSymbol().ManagedName;
+            var type = constant.SymbolReference.GetSymbol().SymbolName;
 
             var value = type switch
             {
@@ -15,7 +15,7 @@ namespace Generator
                 _ => constant.Value
             };
 
-            return $"public static {type} {constant.ManagedName} = {value};\r\n";
+            return $"public static {type} {constant.SymbolName} = {value};\r\n";
         }
     }
 }

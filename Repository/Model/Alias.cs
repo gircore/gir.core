@@ -8,7 +8,7 @@ namespace Repository.Model
         public Namespace Namespace { get; }
         public SymbolReference SymbolReference { get; }
 
-        public Alias(Namespace @namespace, ElementName elementName, ElementManagedName elementManagedName, SymbolReference symbolReference) : base(elementName, elementManagedName)
+        public Alias(Namespace @namespace, ElementName elementName, SymbolName symbolName, SymbolReference symbolReference) : base(elementName, symbolName)
         {
             SymbolReference = symbolReference;
             Namespace = @namespace;

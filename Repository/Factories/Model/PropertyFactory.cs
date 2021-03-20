@@ -28,7 +28,7 @@ namespace Repository.Factories
             
             return new Property(
                 elementName: new ElementName(info.Name),
-                elementManagedName: new ElementManagedName(_caseConverter.ToPascalCase(info.Name)),
+                symbolName: new SymbolName(_caseConverter.ToPascalCase(info.Name)),
                 symbolReference: _symbolReferenceFactory.Create(info, namespaceName),
                 writeable: info.Writeable,
                 transfer:  _transferFactory.FromText(info.TransferOwnership)

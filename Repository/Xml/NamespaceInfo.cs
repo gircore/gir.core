@@ -45,7 +45,7 @@ namespace Repository.Xml
         public List<MethodInfo> Functions { get; set; } = default!;
 
         [XmlElement("union")]
-        public List<RecordInfo> Unions { get; set; } = default!;
+        public List<UnionInfo> Unions { get; set; } = default!;
 
         [XmlElement("constant")]
         public List<ConstantInfo> Constants { get; set; } = default!;

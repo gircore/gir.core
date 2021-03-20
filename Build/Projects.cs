@@ -13,6 +13,8 @@ namespace Build
     {
         #region Constants
 
+        public const string SOLUTION = "../GirCore.sln"; 
+        
         private const string GTK4_GIR = "Gtk-4.0.gir";
         private const string HANDY_GIR = "Handy-0.0.gir";
         private const string WEBKITGTK_GIR = "WebKit2-4.0.gir";
@@ -46,9 +48,6 @@ namespace Build
         public const string GST_VIDEO = "../Libs/Gst.Video/";
         public const string GST_PBUTILS = "../Libs/Gst.Pbutils/";
 
-        private const string BUILD_Test = "../Tests/Build.Tests/";
-        private const string GOBJECT_TEST = "../Tests/Libs/GObject.Tests/";
-
         private const string SAMPLE = "../Samples/";
         private const string DBUS_SAMPLE = SAMPLE + "DBus/";
         private const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
@@ -69,12 +68,6 @@ namespace Build
         public static readonly string[] IntegrationProjects =
         {
             INTEGRATION
-        };
-        
-        public static readonly string[] TestProjects =
-        {
-            BUILD_Test,
-            GOBJECT_TEST
         };
 
         public static readonly string[] SampleProjects =

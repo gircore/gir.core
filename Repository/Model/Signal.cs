@@ -9,7 +9,7 @@ namespace Repository.Model
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
 
-        public Signal(ElementName elementName, ElementManagedName elementManagedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(elementName, elementManagedName)
+        public Signal(ElementName elementName, SymbolName symbolName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(elementName, symbolName)
         {
             ReturnValue = returnValue;
             Arguments = arguments;

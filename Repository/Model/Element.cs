@@ -6,12 +6,12 @@ namespace Repository.Model
     public abstract class Element : SymbolReferenceProvider, Resolveable
     {
         public ElementName Name { get; }
-        public ElementManagedName ManagedName { get; }
+        public SymbolName SymbolName { get; }
         
-        protected Element(ElementName name, ElementManagedName managedName)
+        protected Element(ElementName name, SymbolName symbolName)
         {
             Name = name;
-            ManagedName = managedName;
+            SymbolName = symbolName;
         }
 
         public abstract IEnumerable<SymbolReference> GetSymbolReferences();

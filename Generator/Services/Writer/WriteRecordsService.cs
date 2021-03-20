@@ -23,12 +23,6 @@ namespace Generator.Services.Writer
             {
                 try
                 {
-                    if (record.Type == RecordType.Opaque)
-                    {
-                        Log.Debug($"Skipping record {record.ManagedName} because of it s type {record.Type}.");
-                        continue;
-                    }
-
                     var scriptObject =  _scriptObjectFactory.CreateComplex(@namespace);
                     scriptObject.Import(record);
                     //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
@@ -38,35 +32,17 @@ namespace Generator.Services.Writer
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: GetTemplateName(record.Type),
-                        folder: GetSubfolder(record.Type),
-                        fileName: record.ManagedName,
+                        templateName: record.IsClassStruct ? "classstruct.sbntxt" : "struct.sbntxt",
+                        folder: record.IsClassStruct ? "Classes" : "Records",
+                        fileName: record.SymbolName,
                         scriptObject: scriptObject
                     );
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Could not write record for {record.ManagedName}: {ex.Message}");
+                    Log.Error($"Could not write record for {record.SymbolName}: {ex.Message}");
                 }
             }
         }
-
-        private string GetSubfolder(RecordType recordType) => recordType switch
-        {
-            RecordType.PrivateClass => "Classes",
-            RecordType.PublicClass => "Classes",
-            RecordType.Value => "Structs",
-            RecordType.Ref => "Classes",
-            _ => throw new NotImplementedException("Unsupported record type")
-        };
-
-        private string GetTemplateName(RecordType recordType) => recordType switch
-        {
-            RecordType.PrivateClass => "classstruct.sbntxt",
-            RecordType.PublicClass => "classstruct.sbntxt",
-            RecordType.Value => "struct.sbntxt",
-            RecordType.Ref => "struct_as_class.sbntxt",
-            _ => throw new NotImplementedException("Unsupported record type")
-        };
     }
 }

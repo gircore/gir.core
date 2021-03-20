@@ -30,7 +30,7 @@ namespace Repository.Factories
 
             return new Signal(
                 elementName: new ElementName(signalInfo.Name),
-                elementManagedName: new ElementManagedName(_caseConverter.ToPascalCase(signalInfo.Name)),
+                symbolName: new SymbolName(_caseConverter.ToPascalCase(signalInfo.Name)),
                 returnValue: _returnValueFactory.Create(signalInfo.ReturnValue, namespaceName),
                 arguments: _argumentsFactory.Create(signalInfo.Parameters, namespaceName)
             );

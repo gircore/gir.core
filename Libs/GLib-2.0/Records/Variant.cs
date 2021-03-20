@@ -3,18 +3,18 @@ using System.Runtime.InteropServices;
 
 namespace GLib
 {
-    public partial class Variant
+    public partial record Variant : IDisposable
     {
         #region Fields
 
         private Variant[] _children;
-        private readonly IntPtr _handle;
+        private readonly Native.VariantSafeHandle _handle;
 
         #endregion
 
         #region Properties
 
-        public IntPtr Handle => _handle;
+        public Native.VariantSafeHandle Handle => _handle;
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace GLib
             Init(out this.handle, data);
         }*/
 
-        public Variant(IntPtr handle)
+        public Variant(Native.VariantSafeHandle handle)
         {
             _children = new Variant[0];
             _handle = handle;
@@ -58,16 +58,16 @@ namespace GLib
 
         public static Variant CreateEmptyDictionary(VariantType key, VariantType value)
         {
-            IntPtr childType = VariantType.Native.Methods.NewDictEntry(key.Handle, value.Handle);
-            return new Variant(Native.Methods.NewArray(childType, new IntPtr[0], 0));
+            var childType = VariantType.Native.Methods.NewDictEntry(key.Handle, value.Handle);
+            return new Variant(Native.Methods.NewArray(childType, new Native.VariantSafeHandle[0], 0));
         }
 
-        private void Init(out IntPtr handle, params Variant[] children)
+        private void Init(out Native.VariantSafeHandle handle, params Variant[] children)
         {
             _children = children;
 
             var count = children.Length;
-            var ptrs = new IntPtr[count];
+            var ptrs = new Native.VariantSafeHandle[count];
 
             for (var i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle;
@@ -79,9 +79,20 @@ namespace GLib
         public string GetString()
             => Native.Methods.GetString(_handle, out _);
 
+        public int GetInt()
+            => Native.Methods.GetInt32(_handle);
+        
         public string Print(bool typeAnnotate)
             => Native.Methods.Print(_handle, typeAnnotate);
 
         #endregion
+
+        public void Dispose()
+        {
+            foreach(var child in _children)
+                child.Dispose();
+            
+            Handle.Dispose();
+        }
     }
 }

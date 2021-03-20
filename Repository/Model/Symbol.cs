@@ -22,26 +22,18 @@ namespace Repository.Model
         /// <summary>
         /// Name of the symbol which should be used as a native representation
         /// </summary>
-        public NativeName NativeName { get; set; }
-        
-        /// <summary>
-        /// Name of the symbol which should be used as managed representation
-        /// </summary>
-        public ManagedName ManagedName { get; set; }
+        public SymbolName SymbolName { get; set; }
 
-        //TODO: Verify if one of nativename / managedname can be removed completly
-        
-        protected internal Symbol(CTypeName? ctypeName, TypeName typeName, NativeName nativeName, ManagedName managedName): this(null, ctypeName, typeName, nativeName, managedName)
+        protected internal Symbol(CTypeName? ctypeName, TypeName typeName, SymbolName symbolName): this(null, ctypeName, typeName, symbolName)
         {
         }
 
-        protected internal Symbol(Namespace? @namespace, CTypeName? cTypeName, TypeName typeName, NativeName nativeName, ManagedName managedName)
+        protected internal Symbol(Namespace? @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName)
         {
             Namespace = @namespace;
             CTypeName = cTypeName;
             TypeName = typeName;
-            NativeName = nativeName; 
-            ManagedName = managedName;
+            SymbolName = symbolName;
         }
 
         public virtual IEnumerable<SymbolReference> GetSymbolReferences()
@@ -53,14 +45,16 @@ namespace Repository.Model
         internal virtual void Strip() {}
         
         public override string ToString()
-            => ManagedName;
+            => SymbolName;
 
         public static Symbol Primitive(string nativeName, string managedName)
             => new Symbol(
                 ctypeName: new CTypeName(nativeName),
                 typeName: new TypeName(nativeName), 
-                nativeName: new NativeName(managedName), 
-                managedName: new ManagedName(managedName)
+                symbolName: new SymbolName(managedName)
             );
+
+        public string GetMetadataString(string key)
+            => Metadata[key]?.ToString() ?? "";
     }
 }

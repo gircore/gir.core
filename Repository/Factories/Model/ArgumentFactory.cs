@@ -45,11 +45,11 @@ namespace Repository.Factories
                 throw new Exception("Argument name is null");
 
             var elementName = new ElementName(_identifierConverter.Convert(parameterInfo.Name));
-            var elementManagedName = new ElementManagedName(_caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)));
+            var elementManagedName = new SymbolName(_caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)));
             
             return new Argument(
                 elementName: elementName,
-                elementManagedName: elementManagedName,
+                symbolName: elementManagedName,
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo, currentNamespace),
                 direction: direction,
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),

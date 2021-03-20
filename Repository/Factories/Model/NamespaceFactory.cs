@@ -17,8 +17,9 @@ namespace Repository
         private readonly RecordFactory _recordFactory;
         private readonly MethodFactory _methodFactory;
         private readonly ConstantFactory _constantFactory;
+        private readonly UnionFactory _unionFactory;
 
-        public NamespaceFactory(ClassFactory classFactory, AliasFactory aliasFactory, CallbackFactory callbackFactory, EnumerationFactory enumartionFactory, InterfaceFactory interfaceFactory, RecordFactory recordFactory, MethodFactory methodFactory, ConstantFactory constantFactory)
+        public NamespaceFactory(ClassFactory classFactory, AliasFactory aliasFactory, CallbackFactory callbackFactory, EnumerationFactory enumartionFactory, InterfaceFactory interfaceFactory, RecordFactory recordFactory, MethodFactory methodFactory, ConstantFactory constantFactory, UnionFactory unionFactory)
         {
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;
@@ -28,6 +29,7 @@ namespace Repository
             _recordFactory = recordFactory;
             _methodFactory = methodFactory;
             _constantFactory = constantFactory;
+            _unionFactory = unionFactory;
         }
 
         public Namespace CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
@@ -109,11 +111,11 @@ namespace Repository
             }
         }
 
-        private void SetUnions(Namespace nspace, IEnumerable<RecordInfo> unions)
+        private void SetUnions(Namespace nspace, IEnumerable<UnionInfo> unions)
         {
-            foreach (RecordInfo unionInfo in unions)
+            foreach (UnionInfo unionInfo in unions)
             {
-                var union = _recordFactory.Create(unionInfo, nspace);
+                var union = _unionFactory.Create(unionInfo, nspace);
                 nspace.AddUnion(union);
             }
         }

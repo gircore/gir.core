@@ -7,20 +7,14 @@ namespace Generator
 {
     internal static class ArgumentExtension
     {
-        public static string WriteNative(this Argument argument, Namespace currentNamespace)
-            => argument.Write(Target.Native, currentNamespace);
-        
-        public static string WriteManaged(this Argument argument, Namespace currentNamespace)
-            => argument.Write(Target.Managed, currentNamespace);
-
-        private static string Write(this Argument argument, Target target,  Namespace currentNamespace)
+        internal static string Write(this Argument argument, Target target,  Namespace currentNamespace)
         {
             var type = GetFullType(argument, target, currentNamespace);
             
             var builder = new StringBuilder();
             builder.Append(type);
             builder.Append(' ');
-            builder.Append(argument.ManagedName);
+            builder.Append(argument.SymbolName);
 
             return builder.ToString();
         }
@@ -49,18 +43,18 @@ namespace Generator
 
         private static string GetDirection(Argument argument)
         {
-            return argument.Direction switch
+            return argument switch
             {
-                Direction.OutCalleeAllocates => "out ",
-                Direction.OutCallerAllocates => "ref ",
+                {Direction: Direction.OutCalleeAllocates} => "out ",
+                {Direction: Direction.OutCallerAllocates} => "ref ",
                 _ => ""
             };
         }
 
         private static string GetType(this Argument argument, Target target, Namespace currentNamespace) => target switch
         {
-            Target.Managed => argument.WriteManagedType(currentNamespace) + GetNullable(argument),
-            Target.Native => argument.WriteNativeType(currentNamespace),
+            Target.Managed => argument.WriteType(target, currentNamespace) + GetNullable(argument),
+            Target.Native => argument.WriteType(target, currentNamespace),
             _ => throw new Exception($"Unknown {nameof(Target)}")
         };
 
@@ -72,15 +66,15 @@ namespace Generator
             // TODO: We need to support disguised structs (opaque types)
             var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
             {
-                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.ManagedName}>({arg.ManagedName});",
-                (Record r, {IsPointer: true, Array:{}}) => $"{arg.ManagedName}.MarshalToStructure<{r.ManagedName}>();",
-                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.ManagedName}.From({arg.ManagedName});",
-                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.ManagedName}>({arg.ManagedName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
-                (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
-                _ => $"({arg.WriteManagedType(currentNamespace)}){arg.ManagedName};" // Other -> Try a brute-force cast
+                (Record r, {IsPointer: true, Array: null}) => $"default; //TODO Marshal.PtrToStructure<{r.SymbolName}>({arg.SymbolName});",
+                (Record r, {IsPointer: true, Array:{}}) => $"default; //TODO {arg.SymbolName}.MarshalToStructure<{r.SymbolName}>();",
+                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.SymbolName}.From({arg.SymbolName});",
+                (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.SymbolName}>({arg.SymbolName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
+                (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.SymbolName}"),
+                _ => $"({arg.WriteType(Target.Managed, currentNamespace)}){arg.SymbolName};" // Other -> Try a brute-force cast
             };
             
-            return $"{arg.WriteManagedType(currentNamespace)} {arg.ManagedName}Managed = " + expression;
+            return $"{arg.WriteType(Target.Managed, currentNamespace)} {arg.SymbolName}Managed = " + expression;
         }
     }
 }

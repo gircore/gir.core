@@ -34,7 +34,7 @@ namespace Repository.Factories
             {
                 return new Method(
                     elementName: new ElementName(methodInfo.Identifier),
-                    elementManagedName: new ElementManagedName(_caseConverter.ToPascalCase(methodInfo.Name)),
+                    symbolName: new SymbolName(_caseConverter.ToPascalCase(methodInfo.Name)),
                     returnValue: _returnValueFactory.Create(methodInfo.ReturnValue, @namespace.Name),
                     arguments: _argumentsFactory.Create(methodInfo.Parameters, @namespace.Name, methodInfo.Throws)
                 );
@@ -58,7 +58,7 @@ namespace Repository.Factories
 
             return new Method(
                 elementName: new ElementName(getTypeMethodName),
-                elementManagedName: new ElementManagedName("GetGType"),
+                symbolName: new SymbolName("GetGType"),
                 returnValue: returnValue,
                 arguments: Enumerable.Empty<Argument>()
             );

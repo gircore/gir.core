@@ -2,26 +2,20 @@
 
 namespace GLib
 {
-    public sealed partial class Bytes : IHandle, IDisposable
+    public sealed partial record Bytes : IDisposable
     {
         #region Fields
 
         private readonly long _size;
-        private readonly BytesSafeHandle _safeHandle;
-
-        #endregion
-
-        #region Properties
-
-        public IntPtr Handle => _safeHandle.IsInvalid ? IntPtr.Zero : _safeHandle.DangerousGetHandle();
+        private readonly Native.BytesSafeHandle _safeHandle;
 
         #endregion
 
         #region Constructors
 
-        private Bytes(IntPtr handle)
+        private Bytes(Native.BytesSafeHandle handle)
         {
-            _safeHandle = new BytesSafeHandle(handle);
+            _safeHandle = handle;
             _size = (long) Native.Methods.GetSize(handle);
             GC.AddMemoryPressure(_size);
         }

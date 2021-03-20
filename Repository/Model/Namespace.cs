@@ -37,8 +37,8 @@ namespace Repository.Model
         private readonly List<Method> _functions = new();
         public IEnumerable<Method> Functions => _functions;
 
-        private readonly List<Record> _unions = new();
-        public IEnumerable<Record> Unions => _unions;
+        private readonly List<Union> _unions = new();
+        public IEnumerable<Union> Unions => _unions;
 
         private readonly  List<Constant> _constants = new();
         public IEnumerable<Constant> Constants => _constants;
@@ -79,7 +79,7 @@ namespace Repository.Model
         internal void AddFunction(Method method)
             => _functions.Add(method);
 
-        internal void AddUnion(Record union)
+        internal void AddUnion(Union union)
             => _unions.Add(union);
 
         internal void AddConstant(Constant constant)

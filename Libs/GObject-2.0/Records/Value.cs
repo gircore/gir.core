@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GLib;
 
 namespace GObject
 {
-    public partial struct Value : IDisposable
+    public partial record Value : IDisposable
     {
+        private Native.ValueSafeHandle handle;
+        
         #region Constructors
 
         public Value(Type type)
@@ -13,7 +16,9 @@ namespace GObject
             data1 = IntPtr.Zero;
             data2 = IntPtr.Zero;
 
-            Native.init(ref this, type.Value);
+            handle = Native.ValueSafeHandle.Create();
+
+            Native.Methods.Init(handle, (IntPtr)type.Value);
         }
 
         public Value(IntPtr value) : this(Type.Object) => Native.set_object(ref this, value);

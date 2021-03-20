@@ -1,6 +1,6 @@
 ﻿namespace GLib
 {
-    public partial struct Source
+    public partial record Source
     {
         public static void Remove(uint tag) => Functions.Native.SourceRemove(tag);
     }

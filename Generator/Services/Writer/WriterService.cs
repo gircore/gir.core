@@ -12,8 +12,10 @@ namespace Generator.Services.Writer
         private readonly WriteRecordsService _writeRecordsService;
         private readonly WriteStaticService _writeStaticService;
         private readonly WriteClassInstanceService _writeClassInstanceService;
+        private readonly WriteUnionsService _writeUnionsService;
+        private readonly WriteRecordNativeSafeHandlesService _writeRecordNativeSafeHandlesService;
 
-        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService)
+        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService, WriteUnionsService writeUnionsService, WriteRecordNativeSafeHandlesService writeRecordNativeSafeHandlesService)
         {
             _writeSymbolsService = writeSymbolsService;
             _writeDllImportService = writeDllImportService;
@@ -21,6 +23,8 @@ namespace Generator.Services.Writer
             _writeRecordsService = writeRecordsService;
             _writeStaticService = writeStaticService;
             _writeClassInstanceService = writeClassInstanceService;
+            _writeUnionsService = writeUnionsService;
+            _writeRecordNativeSafeHandlesService = writeRecordNativeSafeHandlesService;
         }
 
         public void Write(LoadedProject loadedProject, string outputDir)
@@ -99,11 +103,18 @@ namespace Generator.Services.Writer
                 records: loadedProject.Namespace.Records,
                 @namespace: loadedProject.Namespace
             );
-            
-            _writeRecordsService.Write(
+
+            _writeRecordNativeSafeHandlesService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
-                records: loadedProject.Namespace.Unions,
+                records: loadedProject.Namespace.Records.Where(x => !x.IsClassStruct),
+                @namespace: loadedProject.Namespace
+            );
+            
+            _writeUnionsService.Write(
+                projectName: loadedProject.Name,
+                outputDir: outputDir,
+                unions: loadedProject.Namespace.Unions,
                 @namespace: loadedProject.Namespace
             );
 

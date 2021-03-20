@@ -2,16 +2,16 @@
 
 namespace GLib
 {
-    public sealed partial class MainLoop : IHandle
+    public sealed partial record MainLoop
     {
-        public IntPtr Handle { get; private set; }
+        public Native.MainLoopSafeHandle Handle { get; private set; }
 
         public MainLoop(MainContext context, bool isRunning = false)
             : this(context.Handle, isRunning) { }
 
-        public MainLoop() : this(IntPtr.Zero, false) { }
+        public MainLoop() : this(new MainContext.Native.MainContextSafeHandle(IntPtr.Zero), false) { }
 
-        private MainLoop(IntPtr context, bool isRunning)
+        private MainLoop(MainContext.Native.MainContextSafeHandle context, bool isRunning)
         {
             Handle = Native.Methods.New(context, isRunning);
         }

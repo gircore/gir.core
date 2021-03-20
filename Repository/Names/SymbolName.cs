@@ -2,10 +2,10 @@
 
 namespace Repository
 {
-    public record ElementManagedName(string Value)
+    public record SymbolName(string Value)
     {
         [return: NotNullIfNotNull("name")]
-        public static implicit operator string?(ElementManagedName? name)
+        public static implicit operator string?(SymbolName? name)
             => name?.Value;
 
         public override string ToString()

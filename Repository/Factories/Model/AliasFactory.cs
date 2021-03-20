@@ -27,7 +27,7 @@ namespace Repository.Factories
 
             return new Alias(
                 elementName: new ElementName(aliasInfo.Type),
-                elementManagedName: new ElementManagedName(aliasInfo.Name),
+                symbolName: new SymbolName(aliasInfo.Name),
                 symbolReference: _symbolReferenceFactory.Create(aliasInfo.For, @namespace.Name),
                 @namespace: @namespace
             );
