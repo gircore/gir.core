@@ -158,10 +158,36 @@ namespace Generator
             stack.AddWhitespace();
             
             // 3. method call
-            stack.Nest(new Block()
             {
-                Start = "// Do Native Call"
-            });
+                var call = new StringBuilder();
+
+                if (!returnValue.IsVoid())
+                    call.Append("var result = ");
+                
+                // TODO: Handle excluded items
+                IEnumerable<string> args = nativeParams.Select(arg =>
+                {
+                    // Do something
+                    Symbol symbol = arg.SymbolReference.GetSymbol();
+                    var argText = symbol switch
+                    {
+                        Callback => $"{arg.ManagedName}Handler.NativeCallback",
+                        _ => $"{arg.ManagedName}Native"
+                    };
+
+                    return argText;
+                });
+
+                call.Append($"Native.Instance.Methods.{method.ManagedName}(");
+                call.Append(string.Join(", ", args));
+                call.Append(");\n");
+                
+                stack.Nest(new Block()
+                {
+                    Start = call.ToString()
+                });    
+            }
+            
 
             // The BlockStack then automatically inserts the cleanup code
             // in reverse order, making sure we free resources appropriately.
@@ -169,7 +195,12 @@ namespace Generator
             builder.AppendLine(methodBody);
             
             // 4. (optional) return value
-            
+            if (!returnValue.IsVoid())
+            {
+                // TODO: Marshalling
+                builder.AppendLine("return result;");   
+            }
+
             builder.AppendLine("}");
 
             exit: // <-- TODO: Avoid labels. Not very idiomatic
