@@ -126,9 +126,9 @@ namespace Generator
                 Symbol symbol = dlgParam.SymbolReference.GetSymbol();
                 var handlerType = dlgParam.CallbackScope switch
                 {
-                    Scope.Call => $"{symbol.ManagedName}CallHandler",
-                    Scope.Async => $"{symbol.ManagedName}AsyncHandler",
-                    Scope.Notified => $"{symbol.ManagedName}NotifiedHandler"
+                    Scope.Call => $"{symbol.Namespace.Name}.{symbol.ManagedName}CallHandler",
+                    Scope.Async => $"{symbol.Namespace.Name}.{symbol.ManagedName}AsyncHandler",
+                    Scope.Notified => $"{symbol.Namespace.Name}.{symbol.ManagedName}NotifiedHandler"
                 };
 
                 var alloc = $"var {dlgParam.ManagedName}Handler = new {handlerType}({dlgParam.ManagedName});";
