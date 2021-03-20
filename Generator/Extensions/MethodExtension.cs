@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Repository.Model;
 
@@ -69,7 +70,7 @@ namespace Generator
                 return string.Empty;
             
             var builder = new StringBuilder();
-            
+
             var delegateParams = method.Arguments.Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
             var marshalParams = method.Arguments.Except(delegateParams);
             var returnValue = method.ReturnValue;
@@ -126,7 +127,7 @@ namespace Generator
             foreach (var arg in marshalParams)
             {
                 Symbol symbol = arg.SymbolReference.GetSymbol();
-                var alloc = arg.WriteMarshalArgumentToNative($"{arg.ManagedName}Native", currentNamespace);
+                var alloc = arg.WriteMarshalArgumentToNative($"{arg.ManagedName}Native", arg.ManagedName, currentNamespace);
                 var dealloc = $"// TODO: Free {arg.ManagedName}Native";
                 
                 stack.Nest(new Block()

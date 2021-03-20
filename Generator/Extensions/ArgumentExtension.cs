@@ -83,21 +83,21 @@ namespace Generator
             return $"{arg.WriteManagedType(currentNamespace)} {arg.ManagedName}Managed = " + expression;
         }
         
-        internal static string WriteMarshalArgumentToNative(this Argument arg, string paramName, Namespace currentNamespace)
+        internal static string WriteMarshalArgumentToNative(this Argument arg, string toParamName, string fromParamName, Namespace currentNamespace)
         {
             // TODO: We need to support disguised structs (opaque types)
-            // var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
-            // {
-            //     (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.ManagedName}>({arg.ManagedName});",
-            //     (Record r, {IsPointer: true, Array:{}}) => $"{arg.ManagedName}.MarshalToStructure<{r.ManagedName}>();",
-            //     (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.ManagedName}.From({arg.ManagedName});",
-            //     (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.ManagedName}>({arg.ManagedName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
-            //     (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
-            //     _ => $"({arg.WriteManagedType(currentNamespace)}){arg.ManagedName};" // Other -> Try a brute-force cast
-            // };
-            
+            var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
+            {
+                // (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.ManagedName}>({arg.ManagedName});",
+                // (Record r, {IsPointer: true, Array:{}}) => $"{arg.ManagedName}.MarshalToStructure<{r.ManagedName}>();",
+                // (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.ManagedName}.From({arg.ManagedName});",
+                (Class c, {IsPointer: true, Array: null}) => $"{fromParamName}.Handle;",
+                // (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
+                _ => $"({arg.WriteNativeType(currentNamespace)}){fromParamName};" // Other -> Try a brute-force cast
+            };
+
             // return $"{arg.WriteManagedType(currentNamespace)} {arg.ManagedName}Managed = " + expression;
-            return $"{arg.WriteNativeType(currentNamespace)} {paramName} = ; // TODO";
+            return $"{arg.WriteNativeType(currentNamespace)} {toParamName} = " + expression;
         }
     }
 }
