@@ -25,5 +25,8 @@ namespace Repository.Model
 
         public override bool GetIsResolved()
             => ReturnValue.GetIsResolved() && Arguments.AllResolved();
+
+        public override string ToString()
+            => Name;
     }
 }

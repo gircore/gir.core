@@ -79,6 +79,9 @@ namespace GLib
         public string GetString()
             => Native.Methods.GetString(_handle, out _);
 
+        public int GetInt()
+            => Native.Methods.GetInt32(_handle);
+        
         public string Print(bool typeAnnotate)
             => Native.Methods.Print(_handle, typeAnnotate);
 
