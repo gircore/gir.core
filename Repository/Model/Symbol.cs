@@ -53,5 +53,8 @@ namespace Repository.Model
                 typeName: new TypeName(nativeName), 
                 symbolName: new SymbolName(managedName)
             );
+
+        public string GetMetadataString(string key)
+            => Metadata[key]?.ToString() ?? "";
     }
 }

@@ -7,13 +7,13 @@ namespace GLib
     {
         #region Methods
 
-        internal static void FreeError(IntPtr errorHandle) => Native.Methods.Free(errorHandle);
+        internal static void FreeError(Native.ErrorSafeHandle errorHandle) => Native.Methods.Free(errorHandle);
 
         #endregion
 
-        public static void ThrowOnError(IntPtr error)
+        public static void ThrowOnError(Native.ErrorSafeHandle error)
         {
-            if (error != IntPtr.Zero)
+            if (!error.IsInvalid)
                 throw new GException(error);
         }
     }

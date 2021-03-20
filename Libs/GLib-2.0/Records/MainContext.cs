@@ -2,11 +2,11 @@
 
 namespace GLib
 {
-    public partial record MainContext : IHandle
+    public partial record MainContext
     {
-        public IntPtr Handle { get; private set; }
+        public Native.MainContextSafeHandle Handle { get; private set; }
 
-        private MainContext(IntPtr handle)
+        private MainContext(Native.MainContextSafeHandle handle)
         {
             Handle = handle;
         }

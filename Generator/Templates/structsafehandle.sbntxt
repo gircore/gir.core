@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 #nullable enable
 
-{{~ $safehandle_name = (get_metadata "RecordName") + "SafeHandle" ~}}
+{{~ $safehandle_name = get_metadata "SafeHandleName" ~}}
 
 namespace {{ namespace.name }}
 {
@@ -12,7 +12,25 @@ namespace {{ namespace.name }}
     {
         public partial class Native
         {
-            internal class {{$safehandle_name}} : SafeHandle
+            public class {{$safehandle_name}} : SafeHandle
+            {
+                public {{$safehandle_name}}(IntPtr handle) : base(IntPtr.Zero, true)
+                {
+                    SetHandle(handle);
+                }
+    
+                public sealed override bool IsInvalid => handle == IntPtr.Zero;
+    
+                protected override bool ReleaseHandle()
+                {
+                    {{write_release_memory_call}}
+                    return true;
+                }
+            }
+            
+            {{~ if (constructors | array.size) == 0 ~}}
+            
+            public class Managed{{$safehandle_name}} : {{$safehandle_name}}
             {
                 public static {{$safehandle_name}} Create()
                 {
@@ -22,19 +40,15 @@ namespace {{ namespace.name }}
                     return new {{$safehandle_name}}(ptr);
                 }
                 
-                private {{$safehandle_name}}(IntPtr handle) : base(IntPtr.Zero, true)
-                {
-                    SetHandle(handle);
-                }
+                private Managed{{$safehandle_name}}(IntPtr handle) : base(handle) { }
     
-                public sealed override bool IsInvalid => handle == IntPtr.Zero;
-    
-                protected sealed override bool ReleaseHandle()
+                protected override bool ReleaseHandle()
                 {
                     Marshal.FreeHGlobal(handle);
                     return true;
                 }
             }
+            {{~ end ~}}
         }
     }
 }

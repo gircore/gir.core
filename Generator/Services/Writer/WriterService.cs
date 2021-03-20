@@ -107,7 +107,7 @@ namespace Generator.Services.Writer
             _writeRecordNativeSafeHandlesService.Write(
                 projectName: loadedProject.Name,
                 outputDir: outputDir,
-                records: loadedProject.Namespace.Records,
+                records: loadedProject.Namespace.Records.Where(x => !x.IsClassStruct),
                 @namespace: loadedProject.Namespace
             );
             

@@ -77,7 +77,9 @@ namespace Generator.Services
             var className = record.GLibClassStructFor.GetSymbol().SymbolName;
             record.Metadata["ClassName"] = className;
             record.Metadata["PureName"] = "Class";
-
+            record.Metadata["SafeHandleName"] = className + "SafeHandle";
+            record.Metadata["SafeHandleRefName"] = $"{record.SymbolName}.Native.{record.SymbolName }SafeHandle";
+            
             record.SymbolName = new SymbolName($"{className}.Native.Class");
         }
 
@@ -85,6 +87,8 @@ namespace Generator.Services
         {
             record.Metadata["RecordName"] = record.SymbolName;
             record.Metadata["PureName"] = "Struct";
+            record.Metadata["SafeHandleName"] = record.SymbolName + "SafeHandle";
+            record.Metadata["SafeHandleRefName"] = $"{record.SymbolName}.Native.{record.SymbolName }SafeHandle";
 
             record.SymbolName = new SymbolName($"{record.SymbolName}.Native.Struct");
         }

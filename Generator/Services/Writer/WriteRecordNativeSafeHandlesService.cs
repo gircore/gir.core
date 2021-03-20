@@ -27,12 +27,13 @@ namespace Generator.Services.Writer
                     scriptObject.Import(record);
                     //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
                     scriptObject.Import("get_metadata", new Func<string, object?>(key => record.Metadata[key]));
-
+                    scriptObject.Import("write_release_memory_call", new Func<string>(() => record.WriteReleaseMemoryCall()));
+                    
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
                         templateName: "structsafehandle.sbntxt",
-                        folder: record.IsClassStruct ? "Classes" : "Records",
+                        folder: "Records",
                         fileName: record.SymbolName + ".SafeHandle",
                         scriptObject: scriptObject
                     );

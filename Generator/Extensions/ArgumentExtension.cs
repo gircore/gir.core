@@ -66,8 +66,8 @@ namespace Generator
             // TODO: We need to support disguised structs (opaque types)
             var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
             {
-                (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.SymbolName}>({arg.SymbolName});",
-                (Record r, {IsPointer: true, Array:{}}) => $"{arg.SymbolName}.MarshalToStructure<{r.SymbolName}>();",
+                (Record r, {IsPointer: true, Array: null}) => $"default; //TODO Marshal.PtrToStructure<{r.SymbolName}>({arg.SymbolName});",
+                (Record r, {IsPointer: true, Array:{}}) => $"default; //TODO {arg.SymbolName}.MarshalToStructure<{r.SymbolName}>();",
                 (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.SymbolName}.From({arg.SymbolName});",
                 (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.SymbolName}>({arg.SymbolName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.SymbolName}"),

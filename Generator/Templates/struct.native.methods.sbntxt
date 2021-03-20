@@ -1,6 +1,6 @@
 #region Methods
 
-public class Methods
+public partial class Methods
 {
     {{ get_type_function | write_native_method }}
     {{ include 'methods.sbntxt' constructors }}
