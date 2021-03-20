@@ -10,19 +10,21 @@ namespace Repository.Factories
     {
         private readonly ReturnValueFactory _returnValueFactory;
         private readonly ArgumentsFactory _argumentsFactory;
+        private readonly ArgumentFactory _argFactory;
         private readonly CaseConverter _caseConverter;
 
-        public MethodFactory(ReturnValueFactory returnValueFactory, ArgumentsFactory argumentsFactory, CaseConverter caseConverter)
+        public MethodFactory(ReturnValueFactory returnValueFactory, ArgumentsFactory argumentsFactory, ArgumentFactory argFactory, CaseConverter caseConverter)
         {
             _returnValueFactory = returnValueFactory;
             _argumentsFactory = argumentsFactory;
             _caseConverter = caseConverter;
+            _argFactory = argFactory;
         }
 
         public Method Create(MethodInfo methodInfo, Namespace @namespace)
         {
             if (methodInfo.Name is null)
-                throw new Exception("Methodinfo name is null");
+                throw new Exception("MethodInfo name is null");
 
             if (methodInfo.ReturnValue is null)
                 throw new Exception($"{nameof(MethodInfo)} {methodInfo.Name} {nameof(methodInfo.ReturnValue)} is null");
@@ -36,7 +38,10 @@ namespace Repository.Factories
                     elementName: new ElementName(methodInfo.Identifier),
                     elementManagedName: new ElementManagedName(_caseConverter.ToPascalCase(methodInfo.Name)),
                     returnValue: _returnValueFactory.Create(methodInfo.ReturnValue, @namespace.Name),
-                    arguments: _argumentsFactory.Create(methodInfo.Parameters, @namespace.Name, methodInfo.Throws)
+                    arguments: _argumentsFactory.Create(methodInfo.Parameters, @namespace.Name, methodInfo.Throws),
+                    instanceArg: methodInfo.Parameters?.InstanceParameter != null
+                        ? _argFactory.Create(methodInfo.Parameters.InstanceParameter, @namespace.Name)
+                        : null
                 );
             }
 

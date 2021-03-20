@@ -20,6 +20,45 @@ namespace Generator
 
             return summaryText + dllImportText + methodText;
         }
+
+        private record Block
+        {
+            public Block? Inner { get; set; }
+            public string Start { get; set; }
+            public string End { get; set; }
+            
+            public string Build()
+                => Build(new StringBuilder()).ToString();
+
+            private StringBuilder Build(StringBuilder builder)
+            {
+                builder.AppendLine(Start);
+                Inner?.Build(builder);
+                builder.AppendLine(End);
+                return builder;
+            }
+        }
+
+        private class BlockStack
+        {
+            private Block root;
+            private Block latest;
+
+            public void Nest(Block block)
+            {
+                if (root is null)
+                {
+                    root = block;
+                    latest = root;
+                }
+
+                latest.Inner = block;
+                latest = block;
+            }
+
+            public string Build()
+                => root.Build();
+        }
         
         public static string WriteManaged(this Method? method, Namespace currentNamespace)
         {
@@ -31,8 +70,10 @@ namespace Generator
             var delegateParams = method.Arguments.Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
             var marshalParams = method.Arguments.Except(delegateParams);
             var returnValue = method.ReturnValue;
+            var isInstance = method.InstanceArgument != null;
 
             builder.AppendLine("// Method: " + method.ManagedName);
+            builder.AppendLine("// IsInstance: " + isInstance);
 
             foreach (var arg in delegateParams)
                 builder.AppendLine("// Delegate Arg: " + arg.ManagedName);
@@ -41,8 +82,72 @@ namespace Generator
                 builder.AppendLine("// Marshal Arg: " + arg.ManagedName);
 
             builder.AppendLine("// With Return Value: " + returnValue.WriteManaged(currentNamespace));
-            builder.Append("\n\n\n");
 
+            if (!isInstance)
+                goto exit;
+            
+            // TODO: REMOVE INSTANCE PARAMETER FROM ARGUMENTS
+            builder.AppendLine($"public {returnValue.WriteManaged(currentNamespace)} {method.ManagedName}({method.Arguments.WriteManaged(currentNamespace)})");
+            builder.AppendLine("{");
+            
+            // TODO: Method Generation
+            // We use a system of 'Blocks' to make sure resources are allocated and
+            // deallocated in the correct order. Blocks are nested inside each other,
+            // wrapping the inner blocks with a given 'start' and 'end' statement. This
+            // enforces a system of FILO (first in, last out), which makes sure that
+            // resources are not accidentally deleted while in-use.
+            var stack = new BlockStack();
+            
+            // 1. delegate setup
+            foreach (var dlgParam in delegateParams)
+            {
+                Symbol symbol = dlgParam.SymbolReference.GetSymbol();
+                var handlerType = dlgParam.CallbackScope switch
+                {
+                    Scope.Call => $"{symbol.ManagedName}CallHandler",
+                    Scope.Async => $"{symbol.ManagedName}AsyncHandler",
+                    Scope.Notified => $"{symbol.ManagedName}NotifiedHandler"
+                };
+
+                var alloc = $"var {dlgParam.ManagedName}Handler = new {handlerType}({dlgParam.ManagedName});";
+
+                stack.Nest(new Block()
+                {
+                    Start = alloc
+                });
+            }
+            
+            // 2. marshal parameters
+            foreach (var arg in marshalParams)
+            {
+                Symbol symbol = arg.SymbolReference.GetSymbol();
+                var alloc = arg.WriteMarshalArgumentToNative($"{arg.ManagedName}Native", currentNamespace);
+                var dealloc = $"// TODO: Free {arg.ManagedName}Native";
+                
+                stack.Nest(new Block()
+                {
+                    Start = alloc,
+                    End = dealloc
+                });
+            }
+            
+            // 3. method call
+            stack.Nest(new Block()
+            {
+                Start = "// Do Native Call"
+            });
+
+            // The BlockStack then automatically inserts the cleanup code
+            // in reverse order, making sure we free resources appropriately.
+            var methodBody = stack.Build();
+            builder.AppendLine(methodBody);
+            
+            // 4. (optional) return value
+            
+            builder.AppendLine("}");
+
+            exit: // <-- TODO: Avoid labels. Not very idiomatic
+            builder.Append("\n\n\n");
             return builder.ToString();
         }
         

@@ -16,4 +16,11 @@
         Container,
         Full
     }
+
+    public enum Scope
+    {
+        Call,
+        Async,
+        Notified
+    }
 }

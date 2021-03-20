@@ -11,9 +11,10 @@ namespace Repository.Model
         public bool Nullable { get; }
         public int? ClosureIndex { get; }
         public int? DestroyIndex { get; }
+        public Scope CallbackScope { get; }
         public TypeInformation TypeInformation { get; }
 
-        public Argument(ElementName elementName, ElementManagedName elementManagedName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, int? closureIndex, int? destroyIndex, TypeInformation typeInformation) : base(elementName, elementManagedName)
+        public Argument(ElementName elementName, ElementManagedName elementManagedName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, int? closureIndex, int? destroyIndex, Scope scope, TypeInformation typeInformation) : base(elementName, elementManagedName)
         {
             SymbolReference = symbolReference;
             Direction = direction;
@@ -21,6 +22,7 @@ namespace Repository.Model
             Nullable = nullable;
             ClosureIndex = closureIndex;
             DestroyIndex = destroyIndex;
+            CallbackScope = scope;
             TypeInformation = typeInformation;
         }
 

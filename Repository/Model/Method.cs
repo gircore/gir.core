@@ -8,11 +8,13 @@ namespace Repository.Model
     {
         public ReturnValue ReturnValue { get; }
         public IEnumerable<Argument> Arguments { get; }
+        public Argument? InstanceArgument { get; }
 
-        public Method(ElementName elementName, ElementManagedName elementManagedName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(elementName, elementManagedName)
+        public Method(ElementName elementName, ElementManagedName elementManagedName, ReturnValue returnValue, IEnumerable<Argument> arguments, Argument? instanceArg = null) : base(elementName, elementManagedName)
         {
             ReturnValue = returnValue;
             Arguments = arguments;
+            InstanceArgument = instanceArg;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()
