@@ -53,9 +53,7 @@ namespace GObject
         // Print out the name of the GType
         public override string ToString()
         {
-            //Do not free namePtr as the ownership is not transfered!
-            IntPtr namePtr = Global.Native.type_name(_value);
-            return Marshal.PtrToStringAnsi(namePtr) ?? string.Empty;
+            return Functions.Native.TypeName((IntPtr) _value);
         }
 
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h

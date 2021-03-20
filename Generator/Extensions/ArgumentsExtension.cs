@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Repository;
 using Repository.Model;
+using Type = Repository.Model.Type;
 
 namespace Generator
 {
@@ -30,7 +31,7 @@ namespace Generator
             foreach (var argument in arguments)
             {
                 index += 1;
-                var type = argument.Write(Target.Managed, currentNamespace);
+                var type = argument.WriteType(Target.Managed, currentNamespace);
                 var name = converter.ToPascalCase(argument.SymbolName);
 
                 builder.AppendLine($"public {type} {name} => Args[{index}].Extract<{type}>();");
