@@ -12,28 +12,30 @@ namespace GObject
 
         public Value(Type type)
         {
-            g_type = 0;
-            data1 = IntPtr.Zero;
-            data2 = IntPtr.Zero;
-
-            handle = Native.ValueSafeHandle.Create();
+            handle = Native.ManagedValueSafeHandle.Create();
 
             Native.Methods.Init(handle, (IntPtr)type.Value);
         }
 
-        public Value(IntPtr value) : this(Type.Object) => Native.set_object(ref this, value);
-        public Value(bool value) : this(Type.Boolean) => Native.set_boolean(ref this, value);
-        public Value(int value) : this(Type.Int) => Native.set_int(ref this, value);
-        public Value(uint value) : this(Type.UInt) => Native.set_uint(ref this, value);
-        public Value(long value) : this(Type.Long) => Native.set_long(ref this, value);
-        public Value(double value) : this(Type.Double) => Native.set_double(ref this, value);
-        public Value(float value) : this(Type.Float) => Native.set_float(ref this, value);
-        public Value(string value) : this(Type.String) => Native.set_string(ref this, value);
+        public Value(IntPtr value) : this(Type.Object) => Native.Methods.SetObject(handle, value);
+        public Value(bool value) : this(Type.Boolean) => Native.Methods.SetBoolean(handle, value);
+        public Value(int value) : this(Type.Int) => Native.Methods.SetInt(handle, value);
+        public Value(uint value) : this(Type.UInt) => Native.Methods.SetUint(handle, value);
+        public Value(long value) : this(Type.Long) => Native.Methods.SetLong(handle, value);
+        public Value(double value) : this(Type.Double) => Native.Methods.SetDouble(handle, value);
+        public Value(float value) : this(Type.Float) => Native.Methods.SetFloat(handle, value);
+        public Value(string value) : this(Type.String) => Native.Methods.SetString(handle, value);
 
         #endregion
 
         #region Methods
 
+        private Types GetTypeValue()
+        {
+            var structure = Marshal.PtrToStructure<Native.Struct>(handle.DangerousGetHandle());
+            return (Types)structure.GType;
+        }
+        
         /// <summary>
         /// Gets an instance of <see cref="Value"/> from the given <paramref name="value"/>.
         /// </summary>
@@ -68,32 +70,35 @@ namespace GObject
         /// </exception>
         public object? Extract()
         {
-            return g_type switch
+            var type = GetTypeValue();
+            return type switch
             {
-                (ulong) Types.Boolean => GetBool(),
-                (ulong) Types.UInt => GetUint(),
-                (ulong) Types.Int => GetInt(),
-                (ulong) Types.Long => GetLong(),
-                (ulong) Types.Double => GetDouble(),
-                (ulong) Types.Float => GetFloat(),
-                (ulong) Types.String => GetString(),
-                (ulong) Types.Pointer => GetPtr(),
-                _ => CheckComplexTypes(g_type)
+                Types.Boolean => GetBool(),
+                Types.UInt => GetUint(),
+                Types.Int => GetInt(),
+                Types.Long => GetLong(),
+                Types.Double => GetDouble(),
+                Types.Float => GetFloat(),
+                Types.String => GetString(),
+                Types.Pointer => GetPtr(),
+                _ => CheckComplexTypes(type)
             };
         }
 
-        private object? CheckComplexTypes(ulong gtype)
+        private object? CheckComplexTypes(Types gtype)
         {
-            if (Global.Native.type_is_a(gtype, (ulong) Types.Object))
+            var ptr = (IntPtr) gtype;
+            
+            if (Functions.Native.TypeIsA(ptr, (IntPtr) Types.Object))
                 return GetObject();
 
-            if (Global.Native.type_is_a(gtype, (ulong) Types.Boxed))
+            if (Functions.Native.TypeIsA(ptr, (IntPtr) Types.Boxed))
                 throw new NotImplementedException();
 
-            if (Global.Native.type_is_a(gtype, (ulong) Types.Enum))
+            if (Functions.Native.TypeIsA(ptr, (IntPtr) Types.Enum))
                 return GetEnum();
 
-            if (Global.Native.type_is_a(gtype, (ulong) Types.Flags))
+            if (Functions.Native.TypeIsA(ptr, (IntPtr) Types.Flags))
                 return GetFlags();
 
             throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
@@ -101,34 +106,28 @@ namespace GObject
 
         public T Extract<T>() => (T) Extract()!;
 
-        public IntPtr GetPtr() => Native.get_pointer(ref this);
-        public IntPtr GetBoxed() => Native.get_boxed(ref this);
+        public IntPtr GetPtr() => Native.Methods.GetPointer(handle);
+        public IntPtr GetBoxed() => Native.Methods.GetBoxed(handle);
 
         public Object? GetObject()
-            => Object.TryWrapHandle(Native.get_object(ref this), false, out Object? obj) ? obj : null;
+            => Object.TryWrapHandle(Native.Methods.GetObject(handle), false, out Object? obj) ? obj : null;
 
-        public bool GetBool() => Native.get_boolean(ref this);
-        public uint GetUint() => Native.get_uint(ref this);
-        public int GetInt() => Native.get_int(ref this);
-        public long GetLong() => Native.get_long(ref this);
-        public double GetDouble() => Native.get_double(ref this);
-        public float GetFloat() => Native.get_float(ref this);
-        public long GetFlags() => (long) Native.get_flags(ref this);
-        public long GetEnum() => (long) Native.get_enum(ref this);
+        public bool GetBool() => Native.Methods.GetBoolean(handle);
+        public uint GetUint() => Native.Methods.GetUint(handle);
+        public int GetInt() => Native.Methods.GetInt(handle);
+        public long GetLong() => Native.Methods.GetLong(handle);
+        public double GetDouble() => Native.Methods.GetDouble(handle);
+        public float GetFloat() => Native.Methods.GetFloat(handle);
+        public long GetFlags() => Native.Methods.GetFlags(handle);
+        public long GetEnum() => Native.Methods.GetEnum(handle);
+        public string GetString() => Native.Methods.GetString(handle);
 
-        public string GetString()
+        public void Dispose()
         {
-            //Do not free ptr as the ownership is not transfered!
-            IntPtr ptr = Native.get_string(ref this);
-            return Marshal.PtrToStringAnsi(ptr) ?? throw new Exception("Could not get string value");
+            handle.Dispose();
         }
-
+        
         #endregion
-
-        #region IDisposable Implementation
-
-        public void Dispose() => Native.unset(ref this);
-
-        #endregion
+        
     }
 }

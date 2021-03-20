@@ -16,6 +16,7 @@ namespace Repository
     [Register(typeof(WriteStaticService))]
     [Register(typeof(WriteRecordsService))]
     [Register(typeof(WriteRecordNativeSafeHandlesService))]
+    [Register(typeof(WriteClassStructNativeSafeHandlesService))]
     [Register(typeof(WriteUnionsService))]
     [Register(typeof(ScriptObjectFactory))]
     internal partial class Container : IContainer<WriterService>
