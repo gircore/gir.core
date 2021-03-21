@@ -67,6 +67,32 @@ namespace Generator
         
         public static string WriteManaged(this Method? method, Namespace currentNamespace)
         {
+            // TODO: Move these outside
+            static string ArgToNative(Argument arg, string toParamName, string fromParamName, Namespace currentNamespace)
+            {
+                var expression = Convert.ManagedToNative(
+                    fromParam: fromParamName,
+                    symbol: arg.SymbolReference.GetSymbol(),
+                    typeInfo: arg.TypeInformation,
+                    currentNamespace: currentNamespace
+                );
+            
+                return $"{arg.WriteNativeType(currentNamespace)} {toParamName} = {expression};";
+            }
+            
+            static string ArgToManaged(Argument arg, string toParamName, string fromParamName, Namespace currentNamespace)
+            {
+                var expression = Convert.NativeToManaged(
+                    fromParam: fromParamName,
+                    symbol: arg.SymbolReference.GetSymbol(),
+                    typeInfo: arg.TypeInformation,
+                    currentNamespace: currentNamespace,
+                    transfer: arg.Transfer
+                );
+            
+                return $"{arg.WriteManagedType(currentNamespace)} {toParamName} = {expression};";
+            }
+            
             if (method is null)
                 return string.Empty;
             
@@ -145,7 +171,7 @@ namespace Generator
             foreach (var arg in marshalParams)
             {
                 Symbol symbol = arg.SymbolReference.GetSymbol();
-                var alloc = arg.WriteMarshalArgumentToNative($"{arg.ManagedName}Native", arg.ManagedName, currentNamespace);
+                var alloc = ArgToNative(arg, $"{arg.ManagedName}Native", arg.ManagedName, currentNamespace);
                 var dealloc = $"// TODO: Free {arg.ManagedName}Native";
                 
                 stack.Nest(new Block()
@@ -192,13 +218,23 @@ namespace Generator
             // The BlockStack then automatically inserts the cleanup code
             // in reverse order, making sure we free resources appropriately.
             var methodBody = stack.Build();
-            builder.AppendLine(methodBody);
+            
+            // Indent appropriately (by 4 spaces)
+            var indent = "    ";
+            builder.Append(methodBody.Replace("\n", "\n" + indent));
             
             // 4. (optional) return value
             if (!returnValue.IsVoid())
             {
-                // TODO: Marshalling
-                builder.AppendLine("return result;");   
+                var expression = Convert.NativeToManaged(
+                    fromParam: "result",
+                    symbol: returnValue.SymbolReference.GetSymbol(),
+                    typeInfo: returnValue.TypeInformation,
+                    currentNamespace: currentNamespace,
+                    transfer: returnValue.Transfer
+                );
+                
+                builder.AppendLine($"return {expression};");   
             }
 
             builder.AppendLine("}");
