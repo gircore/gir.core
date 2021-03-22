@@ -2,8 +2,6 @@
 
 namespace GObject
 {
-    public partial class Object
-    {
         // TODO: Currently TypeDescriptor needs to be public in
         // order for interfaces to access it. We could look at making
         // separate Type and Interface Descriptors which derive from the
@@ -74,5 +72,4 @@ namespace GObject
 
             #endregion
         }
-    }
 }
