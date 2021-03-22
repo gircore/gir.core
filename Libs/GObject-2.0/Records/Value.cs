@@ -10,6 +10,11 @@ namespace GObject
         
         #region Constructors
 
+        internal Value(Native.ValueSafeHandle handle)
+        {
+            Handle = handle;
+        }
+        
         public Value(Type type)
         {
             Handle = Native.ManagedValueSafeHandle.Create();

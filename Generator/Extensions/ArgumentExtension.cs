@@ -43,10 +43,12 @@ namespace Generator
 
         private static string GetDirection(Argument argument)
         {
-            return argument switch
+            var symbol = argument.SymbolReference.GetSymbol();
+            return (argument, symbol) switch
             {
-                {Direction: Direction.OutCalleeAllocates} => "out ",
-                {Direction: Direction.OutCallerAllocates} => "ref ",
+                ({Direction: Direction.OutCalleeAllocates}, _) => "out ",
+                ({Direction: Direction.OutCallerAllocates}, _) => "ref ",
+                ({Transfer: Transfer.None, TypeInformation: {IsPointer: true, IsConst: false}}, Record) => "out ",
                 _ => ""
             };
         }
