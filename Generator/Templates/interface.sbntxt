@@ -10,7 +10,7 @@ namespace {{ namespace.name }}
 
     public partial interface {{ symbol_name }} {{ write_inheritance parent implements }}
     {
-         {{ include 'type_descriptor.sbntxt' }}
+         private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ ctype }}", Native.Methods.GetGType);
          
          {{ include 'interface.properties.sbntxt' }}
          {{ include 'interface.native.sbntxt' }}
