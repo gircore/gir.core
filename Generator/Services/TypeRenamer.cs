@@ -8,14 +8,14 @@ namespace Generator.Services
 {
     internal class TypeRenamer
     {
-        public void SetMetadata(IEnumerable<LoadedProject> loadedProjects)
+        public void SetMetadata(IEnumerable<Namespace> namespaces)
         {
-            foreach (LoadedProject project in loadedProjects)
+            foreach (Namespace ns in namespaces)
             {
-                SetRecordMetadata(project.Namespace.Records);
-                SetRecordFieldsCallbackMetadata(project.Namespace.Records);
-                SetUnionMetadata(project.Namespace.Unions);
-                SetCallbacksMetadata(project.Namespace.Callbacks);
+                SetRecordMetadata(ns.Records);
+                SetRecordFieldsCallbackMetadata(ns.Records);
+                SetUnionMetadata(ns.Unions);
+                SetCallbacksMetadata(ns.Callbacks);
             }
             
             Log.Information("Metadata set.");

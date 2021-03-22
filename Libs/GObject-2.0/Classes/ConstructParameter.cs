@@ -1,9 +1,11 @@
-﻿namespace GObject
+﻿using System;
+
+namespace GObject
 {
     /// <summary>
     /// Define the value of GProperty which can be used at the construct time.
     /// </summary>
-    public sealed class ConstructParameter
+    public sealed class ConstructParameter : IDisposable
     {
         #region Properties
 
@@ -44,6 +46,11 @@
         /// </returns>
         public static ConstructParameter With<T>(Property<T> property, T value) => new ConstructParameter(property.Name, value);
 
+        public void Dispose()
+        {
+            Value.Dispose();
+        }
+        
         #endregion
     }
 }

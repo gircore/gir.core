@@ -1,6 +1,7 @@
 ﻿using System;
 using Generator.Factories;
 using Repository;
+using Repository.Model;
 using Scriban.Runtime;
 
 namespace Generator.Services.Writer
@@ -16,19 +17,19 @@ namespace Generator.Services.Writer
             _dllImportResolverFactory = dllImportResolverFactory;
         }
 
-        public void WriteDllImport(LoadedProject loadedProject, string outputDir)
+        public void WriteDllImport(Namespace ns, string outputDir)
         {
-            if(loadedProject.Namespace.SharedLibrary is null)
-                throw new Exception($"Namespace {loadedProject.Namespace.Name} does not provide a shared libraryinfo");
+            if(ns.SharedLibrary is null)
+                throw new Exception($"Namespace {ns.Name} does not provide a shared libraryinfo");
             
             DllImportResolver dllImportResolver = _dllImportResolverFactory.Create(
-                sharedLibrary: loadedProject.Namespace.SharedLibrary,
-                namespaceName: loadedProject.Namespace.Name
+                sharedLibrary: ns.SharedLibrary,
+                namespaceName: ns.Name
             );
 
             var scriptObject = new ScriptObject
             {
-                { "namespace", loadedProject.Namespace}, 
+                { "namespace", ns}, 
                 { "windows_dll", dllImportResolver.GetWindowsDllImport() }, 
                 { "linux_dll", dllImportResolver.GetLinuxDllImport() }, 
                 { "osx_dll", dllImportResolver.GetOsxDllImport() }
@@ -37,7 +38,7 @@ namespace Generator.Services.Writer
             try
             {
                 _writeHelperService.Write(
-                    projectName: loadedProject.Name,
+                    projectName: ns.ToCanonicalName(),
                     templateName: "dll_import.sbntxt",
                     folder: "Classes",
                     outputDir: outputDir,
@@ -46,7 +47,7 @@ namespace Generator.Services.Writer
                 );
                 
                 _writeHelperService.Write(
-                    projectName: loadedProject.Name,
+                    projectName: ns.ToCanonicalName(),
                     templateName: "module_dll_import.sbntxt",
                     folder: "Classes",
                     outputDir: outputDir,
@@ -56,7 +57,7 @@ namespace Generator.Services.Writer
             }
             catch (Exception ex)
             {
-                Log.Error($"Could not write dll import for {loadedProject.Name}: {ex.Message}");
+                Log.Error($"Could not write dll import for {ns.Name}: {ex.Message}");
             }
         }
     }

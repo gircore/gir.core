@@ -8,20 +8,20 @@ namespace GObject.Test
     {
         #region Helper
 
-        private static IDictionary<System.Type, Object.TypeDescriptor> GetEmptyDictionary()
+        private static IDictionary<System.Type, TypeDescriptor> GetEmptyDictionary()
         {
-            return new Dictionary<System.Type, Object.TypeDescriptor>();
+            return new Dictionary<System.Type, TypeDescriptor>();
         }
 
-        private static Object.TypeDescriptor GetTypeDescriptor()
+        private static TypeDescriptor GetTypeDescriptor()
         {
-            return Object.TypeDescriptor.For(
+            return TypeDescriptor.For(
                 wrapperName: "wrappername",
                 getType: () => 0
             );
         }
 
-        private static void InitializeTypeDescriptorRegistryTesterFor<T>(Object.TypeDescriptor descriptor)
+        private static void InitializeTypeDescriptorRegistryTesterFor<T>(TypeDescriptor descriptor)
         {
             var dictionary = GetEmptyDictionary();
             dictionary.Add(typeof(T), descriptor);
@@ -29,7 +29,7 @@ namespace GObject.Test
             TypeDescriptorRegistry.SetDictionary(dictionary);
         }
 
-        private static Object.TypeDescriptor ResolveTypeWithDescriptor(Object.TypeDescriptor descriptor, IDictionary<System.Type, Object.TypeDescriptor> dictionary)
+        private static TypeDescriptor ResolveTypeWithDescriptor(TypeDescriptor descriptor, IDictionary<System.Type, TypeDescriptor> dictionary)
         {
             ClassWithTypeDescriptor.SetGTypeDescriptor(descriptor);
             TypeDescriptorRegistry.SetDictionary(dictionary);
@@ -42,10 +42,10 @@ namespace GObject.Test
         [TestMethod]
         public void ResolveTypeDescriptorForTypeReturnsDataFromCache()
         {
-            Object.TypeDescriptor descriptor = GetTypeDescriptor();
+            TypeDescriptor descriptor = GetTypeDescriptor();
             InitializeTypeDescriptorRegistryTesterFor<object>(descriptor);
 
-            Object.TypeDescriptor result = TypeDescriptorRegistry.ResolveTypeDescriptorForType(typeof(object));
+            TypeDescriptor result = TypeDescriptorRegistry.ResolveTypeDescriptorForType(typeof(object));
 
             Assert.AreSame(descriptor, result);
         }
@@ -53,7 +53,7 @@ namespace GObject.Test
         [TestMethod]
         public void ResolveTypeDescriptorForTypeAddsDataToCache()
         {
-            Object.TypeDescriptor descriptor = GetTypeDescriptor();
+            TypeDescriptor descriptor = GetTypeDescriptor();
             var dictionary = GetEmptyDictionary();
 
             _ = ResolveTypeWithDescriptor(descriptor, dictionary);
@@ -64,10 +64,10 @@ namespace GObject.Test
         [TestMethod]
         public void ResolveTypeDescriptorForTypeReturnsInitialTypeDescriptor()
         {
-            Object.TypeDescriptor descriptor = GetTypeDescriptor();
+            TypeDescriptor descriptor = GetTypeDescriptor();
             var dictionary = GetEmptyDictionary();
 
-            Object.TypeDescriptor result = ResolveTypeWithDescriptor(descriptor, dictionary);
+            TypeDescriptor result = ResolveTypeWithDescriptor(descriptor, dictionary);
 
             Assert.AreSame(descriptor, result);
         }
@@ -75,9 +75,9 @@ namespace GObject.Test
 
     internal class ClassWithTypeDescriptor
     {
-        private static Object.TypeDescriptor? GTypeDescriptor;
+        private static TypeDescriptor? GTypeDescriptor;
 
-        public static void SetGTypeDescriptor(Object.TypeDescriptor descriptor)
+        public static void SetGTypeDescriptor(TypeDescriptor descriptor)
         {
             GTypeDescriptor = descriptor;
         }

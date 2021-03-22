@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Repository.Model;
 using Repository.Services;
 
 namespace Repository
@@ -13,12 +14,12 @@ namespace Repository
             _loaderService = loaderService;
         }
 
-        public IEnumerable<LoadedProject> Load(ResolveFileFunc fileFunc, IEnumerable<string> targets)
+        public IEnumerable<Namespace> Load(ResolveFileFunc fileFunc, IEnumerable<string> targets)
         {
             Log.Information($"Initialising repository with {targets.Count()} toplevel project(s)");
 
             var enumerableLoadedProjects = _loaderService.LoadOrdered(targets, fileFunc);
-            var loadedProjects = enumerableLoadedProjects as List<LoadedProject> ?? enumerableLoadedProjects.ToList();
+            var loadedProjects = enumerableLoadedProjects as List<Namespace> ?? enumerableLoadedProjects.ToList();
 
             TypeReferenceResolverService.Resolve(loadedProjects);
             StripProjects(loadedProjects);
@@ -28,10 +29,10 @@ namespace Repository
             return loadedProjects;
         }
 
-        private static void StripProjects(List<LoadedProject> loadedProjects)
+        private static void StripProjects(List<Namespace> namespaces)
         {
-            foreach (var proj in loadedProjects)
-                proj.Namespace.Strip();
+            foreach (var ns in namespaces)
+                ns.Strip();
         }
     }
 }

@@ -6,25 +6,25 @@ namespace GObject
 {
     public partial record Value : IDisposable
     {
-        private Native.ValueSafeHandle handle;
+        internal Native.ValueSafeHandle Handle { get; }
         
         #region Constructors
 
         public Value(Type type)
         {
-            handle = Native.ManagedValueSafeHandle.Create();
+            Handle = Native.ManagedValueSafeHandle.Create();
 
-            Native.Methods.Init(handle, (IntPtr)type.Value);
+            Native.Methods.Init(Handle, type.Value);
         }
 
-        public Value(IntPtr value) : this(Type.Object) => Native.Methods.SetObject(handle, value);
-        public Value(bool value) : this(Type.Boolean) => Native.Methods.SetBoolean(handle, value);
-        public Value(int value) : this(Type.Int) => Native.Methods.SetInt(handle, value);
-        public Value(uint value) : this(Type.UInt) => Native.Methods.SetUint(handle, value);
-        public Value(long value) : this(Type.Long) => Native.Methods.SetLong(handle, value);
-        public Value(double value) : this(Type.Double) => Native.Methods.SetDouble(handle, value);
-        public Value(float value) : this(Type.Float) => Native.Methods.SetFloat(handle, value);
-        public Value(string value) : this(Type.String) => Native.Methods.SetString(handle, value);
+        public Value(IntPtr value) : this(Type.Object) => Native.Methods.SetObject(Handle, value);
+        public Value(bool value) : this(Type.Boolean) => Native.Methods.SetBoolean(Handle, value);
+        public Value(int value) : this(Type.Int) => Native.Methods.SetInt(Handle, value);
+        public Value(uint value) : this(Type.UInt) => Native.Methods.SetUint(Handle, value);
+        public Value(long value) : this(Type.Long) => Native.Methods.SetLong(Handle, value);
+        public Value(double value) : this(Type.Double) => Native.Methods.SetDouble(Handle, value);
+        public Value(float value) : this(Type.Float) => Native.Methods.SetFloat(Handle, value);
+        public Value(string value) : this(Type.String) => Native.Methods.SetString(Handle, value);
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace GObject
 
         private Types GetTypeValue()
         {
-            var structure = Marshal.PtrToStructure<Native.Struct>(handle.DangerousGetHandle());
+            var structure = Marshal.PtrToStructure<Native.Struct>(Handle.DangerousGetHandle());
             return (Types)structure.GType;
         }
         
@@ -87,18 +87,16 @@ namespace GObject
 
         private object? CheckComplexTypes(Types gtype)
         {
-            var ptr = (IntPtr) gtype;
-            
-            if (Functions.Native.TypeIsA(ptr, (IntPtr) Types.Object))
+            if (Functions.TypeIsA(gtype, Types.Object))
                 return GetObject();
 
-            if (Functions.Native.TypeIsA(ptr, (IntPtr) Types.Boxed))
+            if (Functions.TypeIsA(gtype, Types.Boxed))
                 throw new NotImplementedException();
 
-            if (Functions.Native.TypeIsA(ptr, (IntPtr) Types.Enum))
+            if (Functions.TypeIsA(gtype, Types.Enum))
                 return GetEnum();
 
-            if (Functions.Native.TypeIsA(ptr, (IntPtr) Types.Flags))
+            if (Functions.TypeIsA(gtype, Types.Flags))
                 return GetFlags();
 
             throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
@@ -106,25 +104,25 @@ namespace GObject
 
         public T Extract<T>() => (T) Extract()!;
 
-        public IntPtr GetPtr() => Native.Methods.GetPointer(handle);
-        public IntPtr GetBoxed() => Native.Methods.GetBoxed(handle);
+        public IntPtr GetPtr() => Native.Methods.GetPointer(Handle);
+        public IntPtr GetBoxed() => Native.Methods.GetBoxed(Handle);
 
         public Object? GetObject()
-            => Object.TryWrapHandle(Native.Methods.GetObject(handle), false, out Object? obj) ? obj : null;
+            => Object.TryWrapHandle(Native.Methods.GetObject(Handle), false, out Object? obj) ? obj : null;
 
-        public bool GetBool() => Native.Methods.GetBoolean(handle);
-        public uint GetUint() => Native.Methods.GetUint(handle);
-        public int GetInt() => Native.Methods.GetInt(handle);
-        public long GetLong() => Native.Methods.GetLong(handle);
-        public double GetDouble() => Native.Methods.GetDouble(handle);
-        public float GetFloat() => Native.Methods.GetFloat(handle);
-        public long GetFlags() => Native.Methods.GetFlags(handle);
-        public long GetEnum() => Native.Methods.GetEnum(handle);
-        public string GetString() => Native.Methods.GetString(handle);
+        public bool GetBool() => Native.Methods.GetBoolean(Handle);
+        public uint GetUint() => Native.Methods.GetUint(Handle);
+        public int GetInt() => Native.Methods.GetInt(Handle);
+        public long GetLong() => Native.Methods.GetLong(Handle);
+        public double GetDouble() => Native.Methods.GetDouble(Handle);
+        public float GetFloat() => Native.Methods.GetFloat(Handle);
+        public long GetFlags() => Native.Methods.GetFlags(Handle);
+        public long GetEnum() => Native.Methods.GetEnum(Handle);
+        public string GetString() => Native.Methods.GetString(Handle);
 
         public void Dispose()
         {
-            handle.Dispose();
+            Handle.Dispose();
         }
         
         #endregion

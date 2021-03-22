@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Repository.Analysis;
+using Repository.Graph;
 
 namespace Repository.Model
 {
-    public class Namespace : SymbolReferenceProvider
+    public class Namespace : SymbolReferenceProvider, INode<Namespace>
     {
         #region Properties
         
@@ -12,7 +14,8 @@ namespace Repository.Model
         public string Version { get; }
         
         public string? SharedLibrary { get; }
-        
+        public IEnumerable<Namespace> Dependencies { get; private set; }
+
         private readonly List<Alias> _aliases = new();
         public IEnumerable<Alias> Aliases => _aliases;
         
@@ -50,7 +53,11 @@ namespace Repository.Model
             Name = new NamespaceName(name);
             Version = version;
             SharedLibrary = sharedLibrary;
+            Dependencies = Enumerable.Empty<Namespace>();
         }
+
+        internal void SetDependencies(IEnumerable<Namespace> dependencies)
+            => Dependencies = dependencies;
 
         internal void AddAlias(Alias alias)
             => _aliases.Add(alias);
@@ -139,5 +146,8 @@ namespace Repository.Model
 
             return !result;
         }
+
+        public override string ToString()
+            => Name;
     }
 }

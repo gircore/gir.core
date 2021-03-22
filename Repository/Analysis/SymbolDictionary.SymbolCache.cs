@@ -9,8 +9,14 @@ namespace Repository.Analysis
     {
         private class SymbolCache
         {
+            public Namespace? Namespace { get; }
             private readonly HashSet<Symbol> _symbols = new();
 
+            public SymbolCache(Namespace? @namespace)
+            {
+                Namespace = @namespace;
+            }
+            
             public void Add(Symbol symbol)
             {
                 _symbols.Add(symbol);
@@ -28,7 +34,7 @@ namespace Repository.Analysis
                 if (!CheckNamespace(symbol, symbolReference))
                     return false;
 
-                return (symbol.TypeName == symbolReference.TypeName); //Check cname, too?|| (symbol.CName == symbolReference.CTypeName);
+                return symbol.TypeName == symbolReference.TypeName;
             }
 
             private static bool CheckNamespace(Symbol symbol, SymbolReference symbolReference) => (symbol, symbolReference) switch

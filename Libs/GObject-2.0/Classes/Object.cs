@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using GLib;
@@ -42,12 +43,12 @@ namespace GObject
         /// <summary>
         /// Constructs a new object
         /// </summary>
-        /// <param name="properties"></param>
+        /// <param name="constructParameters"></param>
         /// <remarks>This constructor is protected to be sure that there is no caller (enduser) keeping a reference to
         /// the construct parameters as the contained values are freed at the end of this constructor.
         /// If certain constructors are needed they need to be implemented with concrete constructor arguments in
         /// a higher layer.</remarks>
-        protected Object(params ConstructParameter[] properties)
+        protected Object(params ConstructParameter[] constructParameters)
         {
             // This will automatically register our
             // type in the type dictionary. If the type is
@@ -57,44 +58,38 @@ namespace GObject
             Type typeId = TypeDictionary.Get(t);
             Console.WriteLine($"Instantiating {TypeDictionary.Get(typeId)}");
 
-            var names = new IntPtr[properties.Length];
-            var values = new Value[properties.Length];
-
             IntPtr handle;
 
             try
             {
-                for (var i = 0; i < properties.Length; i++)
-                {
-                    ConstructParameter? prop = properties[i];
-                    // TODO: Marshal in a block, rather than one at a time
-                    // for performance reasons.
-                    names[i] = Marshal.StringToHGlobalAnsi(prop.Name);
-                    values[i] = prop.Value;
-                }
-
-                IntPtr zero = IntPtr.Zero;
-
-                handle = ObjectInstance.Methods.NewWithProperties(
-                    typeId.Value,
-                    (uint) properties.Length,
-                    ref (properties.Length > 0 ? ref names[0] : ref zero),
-                    values
+                handle = Native.Instance.Methods.NewWithProperties(
+                    objectType: typeId.Value,
+                    nProperties: (uint) constructParameters.Length,
+                    names: GetNames(constructParameters),
+                    values: GetValueHandle(constructParameters)
                 );
 
-                if (ObjectInstance.Methods.IsFloating(handle))
-                    ObjectInstance.Methods.RefSink(handle); //Make sure handle is owned by us
+                if (Native.Instance.Methods.IsFloating(handle))
+                    Native.Instance.Methods.RefSink(handle); //Make sure handle is owned by us
             }
             finally
             {
-                foreach (IntPtr ptr in names)
-                    Marshal.FreeHGlobal(ptr);
-
-                foreach (Value value in values)
-                    value.Dispose();
+                Free(constructParameters);
             }
 
             Initialize(handle);
+        }
+
+        private Value.Native.ValueSafeHandle[] GetValueHandle(ConstructParameter[] constructParameters)
+            => constructParameters.Select(x => x.Value.Handle).ToArray();
+        
+        private string[] GetNames(ConstructParameter[] constructParameters)
+            => constructParameters.Select(x => x.Name).ToArray();
+
+        private void Free(ConstructParameter[] constructParameters)
+        {
+            foreach (var constructParameter in constructParameters)
+                constructParameter.Dispose();
         }
 
         /// <summary>
@@ -110,14 +105,14 @@ namespace GObject
                 // - Unowned InitiallyUnowned floating objects need to be ref_sinked
                 // - Unowned InitiallyUnowned non-floating objects need to be refed
                 // As ref_sink behaves like ref in case of non floating instances we use it for all 3 cases
-                ObjectInstance.Methods.RefSink(handle);
+                Native.Instance.Methods.RefSink(handle);
             }
             else
             {
                 //In case we own the ref because the ownership was fully transfered to us we
                 //do not need to ref the object at all.
 
-                Debug.Assert(!ObjectInstance.Methods.IsFloating(handle), "Owned floating references are not possible.");
+                Debug.Assert(!Native.Instance.Methods.IsFloating(handle), "Owned floating references are not possible.");
             }
 
             Initialize(handle);
@@ -262,7 +257,7 @@ namespace GObject
 
                 // Ensure the conversion is valid
                 Type castGType = TypeDictionary.Get(typeof(T));
-                if (!Global.Native.type_is_a(trueGType.Value, castGType.Value))
+                if (!Functions.TypeIsA(trueGType, castGType))
                     throw new InvalidCastException();
             }
 

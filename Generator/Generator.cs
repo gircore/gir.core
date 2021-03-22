@@ -6,6 +6,7 @@ using StrongInject;
 
 using Generator.Services;
 using Generator.Services.Writer;
+using Repository.Model;
 
 namespace Generator
 {
@@ -17,10 +18,10 @@ namespace Generator
         public void Write(IEnumerable<string> projects)
         {
             var repository = new Repository.Repository();
-            var loadedProjects = repository.Load(FileResolver.ResolveFile, projects).ToList();
+            var namespaces = repository.Load(FileResolver.ResolveFile, projects).ToList();
 
             var typeRenamer = new TypeRenamer();
-            typeRenamer.SetMetadata(loadedProjects);
+            typeRenamer.SetMetadata(namespaces);
             
             Log.Information("Ready to write.");
 
@@ -28,7 +29,7 @@ namespace Generator
 
             if (UseAsync)
             {
-                Parallel.ForEach(loadedProjects, 
+                Parallel.ForEach(namespaces,
                     proj => writerService.Write(proj, OutputDir));
             }
             else
@@ -36,8 +37,8 @@ namespace Generator
                 Log.Warning("Async Generation is disabled. Generation may be slower than normal.");
                 
                 // Disable asynchronous writing for an easier debugging experience
-                foreach (LoadedProject proj in loadedProjects)
-                    writerService.Write(proj, OutputDir);
+                foreach (Namespace ns in namespaces)
+                    writerService.Write(ns, OutputDir);
             }
 
             Log.Information("Writing completed successfully");

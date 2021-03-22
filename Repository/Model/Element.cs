@@ -16,5 +16,8 @@ namespace Repository.Model
 
         public abstract IEnumerable<SymbolReference> GetSymbolReferences();
         public abstract bool GetIsResolved();
+
+        public override string ToString()
+            => SymbolName;
     }
 }

@@ -34,7 +34,7 @@ namespace Repository.Graph
                     continue;
 
                 if (_unresolvedNodes.Contains(dep))
-                    throw new Exception($"Recursive Dependencies: {node.Name} <-> {dep.Name}");
+                    throw new Exception($"Recursive Dependencies: {node} <-> {dep}");
 
                 // Recursively call this function
                 ResolveDependenciesRecursive(dep);

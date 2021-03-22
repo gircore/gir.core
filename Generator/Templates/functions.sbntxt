@@ -7,7 +7,8 @@ namespace {{ namespace.name }}
 {
     public partial class Functions
     {
-        internal static class Native
+        //TODO this is temporarily public as long as there is no manged code available
+        public static class Native
         {
             {{ include 'methods.sbntxt' functions ~}}
         }

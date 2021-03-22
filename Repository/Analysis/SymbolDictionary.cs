@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Repository.Model;
 
 namespace Repository.Analysis
 {
     public partial class SymbolDictionary
     {
-        private readonly Dictionary<NamespaceName, AliasCache> _aliasData = new();
         private readonly Dictionary<NamespaceName, SymbolCache> _data = new();
-        private readonly SymbolCache _globalSymbols = new();
+        private readonly SymbolCache _globalSymbols = new(null);
 
         public bool TryLookup(SymbolReference symbolReference, [MaybeNullWhen(false)] out Symbol symbol)
         {
             if (_globalSymbols.TryLookup(symbolReference, out symbol))
                 return true;
 
-            if (ResolveAlias(symbolReference, out symbol))
+            if (TryResolveAlias(symbolReference, out symbol))
                 return true;
             
             if (symbolReference.NamespaceName is null)
@@ -28,23 +29,48 @@ namespace Repository.Analysis
             return cache.TryLookup(symbolReference, out symbol);
         }
 
-        private bool ResolveAlias(SymbolReference symbolReference, [MaybeNullWhen(false)] out Symbol symbol)
+        private bool TryResolveAlias(SymbolReference symbolReference, [MaybeNullWhen(false)] out Symbol symbol)
         {
             symbol = null;
             
             if (symbolReference.NamespaceName is null)
                 return false;
 
-            if (!_aliasData.TryGetValue(symbolReference.NamespaceName, out var aliasCache))
+            if (!_data.TryGetValue(symbolReference.NamespaceName, out var symbolCache))
                 return false;
 
-            if (!aliasCache.TryLookup(symbolReference, out var alias))
-                return false;
+            var ns = symbolCache.Namespace;
 
-            symbol = alias.SymbolReference.GetSymbol();
-            return true;
+            if (ns is null)
+                throw new Exception("Namespace is missing");
+
+            symbol = RecursiveResolveAlias(ns, symbolReference);
+            
+            return symbol is {};
         }
-        
+
+        private Symbol? RecursiveResolveAlias(Namespace ns, SymbolReference symbolReference)
+        {
+            var directResult = ns.Aliases.FirstOrDefault(x => Resolves(x, symbolReference));
+
+            if (directResult is { })
+                return directResult.SymbolReference.GetSymbol();
+
+            foreach (var parent in ns.Dependencies)
+            {
+                var parentResult = RecursiveResolveAlias(parent, symbolReference);
+                if (parentResult is { })
+                    return parentResult;
+            }
+
+            return null;
+        }
+
+        private static bool Resolves(Alias alias, SymbolReference symbolReference)
+        {
+            return (symbolReference.TypeName == alias.SymbolName) || (symbolReference.CTypeName == alias.Name);
+        }
+
         public void AddSymbols(IEnumerable<Symbol> symbols)
         {
             foreach(var symbol in symbols)
@@ -78,36 +104,20 @@ namespace Repository.Analysis
             
             if (!_data.TryGetValue(symbol.Namespace.Name, out var cache))
             {
-                cache = new SymbolCache();
+                cache = new SymbolCache(symbol.Namespace);
                 _data[symbol.Namespace.Name] = cache;
             }
 
             cache.Add(symbol);
         }
 
-        public void AddAliases(IEnumerable<Alias> aliases)
+        public void ResolveAliases(IEnumerable<Alias> aliases)
         {
-            foreach(var alias in aliases)
-                AddAlias(alias);
-        }
-
-        private void AddAlias(Alias alias)
-        {
-            if (!_aliasData.TryGetValue(alias.Namespace.Name, out var cache))
+            foreach (var alias in aliases)
             {
-                cache = new AliasCache();
-                _aliasData[alias.Namespace.Name] = cache;
+                if (TryLookup(alias.SymbolReference, out var symbol))
+                    alias.SymbolReference.ResolveAs(symbol);
             }
-
-            cache.Add(alias);
-        }
-
-        public void ResolveAliases()
-        {
-            foreach(var aliasData in _aliasData.Values)
-                foreach (var alias in aliasData.Aliases)
-                    if(TryLookup(alias.SymbolReference, out var symbol))
-                        alias.SymbolReference.ResolveAs(symbol);
         }
     }
 }

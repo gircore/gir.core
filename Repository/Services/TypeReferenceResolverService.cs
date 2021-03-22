@@ -7,29 +7,27 @@ namespace Repository.Services
 {
     internal class TypeReferenceResolverService 
     {
-        public static void Resolve(IEnumerable<LoadedProject> projects)
+        public static void Resolve(IEnumerable<Namespace> namespaces)
         {
             var symbolDictionary = new SymbolDictionary();
 
-            var loadedProjects = projects.ToList();
-            foreach (var proj in loadedProjects)
+            var namespaceList = namespaces.ToList();
+            foreach (var ns in namespaceList)
             {
-                Log.Debug($"Analysing '{proj.Name}'.");
-                FillSymbolDictionary(symbolDictionary, proj.Namespace);
+                Log.Debug($"Analysing '{ns.Name}'.");
+                FillSymbolDictionary(symbolDictionary, ns);
                 
-                symbolDictionary.ResolveAliases();
+                symbolDictionary.ResolveAliases(ns.Aliases);
 
-                ResolveReferences(symbolDictionary, proj);
-                Log.Information($"Resolved symbol references for {proj.Name}.");
+                ResolveReferences(symbolDictionary, ns);
+                Log.Information($"Resolved symbol references for {ns.Name}.");
             }
         }
 
         private static void FillSymbolDictionary(SymbolDictionary symbolDictionary, Namespace @namespace)
         {
             AddPrimitives(symbolDictionary);
-            
-            symbolDictionary.AddAliases(@namespace.Aliases);
-            
+
             symbolDictionary.AddSymbols(@namespace.Classes);
             symbolDictionary.AddSymbols(@namespace.Interfaces);
             symbolDictionary.AddSymbols(@namespace.Callbacks);
@@ -39,9 +37,9 @@ namespace Repository.Services
             symbolDictionary.AddSymbols(@namespace.Unions);
         }
 
-        private static void ResolveReferences(SymbolDictionary symbolDictionary, LoadedProject proj)
+        private static void ResolveReferences(SymbolDictionary symbolDictionary, Namespace ns)
         {
-            foreach (var reference in proj.Namespace.GetSymbolReferences())
+            foreach (var reference in ns.GetSymbolReferences())
             {
                 Resolve(symbolDictionary, reference);
             }
@@ -70,7 +68,6 @@ namespace Repository.Services
             symbolDictionary.AddSymbol(Symbol.Primitive("gconstpointer", "IntPtr"));
             symbolDictionary.AddSymbol(Symbol.Primitive("va_list", "IntPtr"));
             symbolDictionary.AddSymbol(Symbol.Primitive("gpointer", "IntPtr"));
-            symbolDictionary.AddSymbol(Symbol.Primitive("GType", "IntPtr"));
             symbolDictionary.AddSymbol(Symbol.Primitive("tm", "IntPtr"));
             
             // TODO: Should we use UIntPtr here? Non-CLR compliant

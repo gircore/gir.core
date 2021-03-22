@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Repository;
+using Repository.Model;
 
 namespace Generator.Services.Writer
 {
@@ -29,131 +30,131 @@ namespace Generator.Services.Writer
             _writeClassStructNativeSafeHandlesService = writeClassStructNativeSafeHandlesService;
         }
 
-        public void Write(LoadedProject loadedProject, string outputDir)
+        public void Write(Namespace ns, string outputDir)
         {
-            if (loadedProject.Namespace.SharedLibrary is null)
-                Log.Debug($"Not generating DLL import helper for namespace {loadedProject.Namespace.Name}: It is missing a shared library info.");
+            if (ns.SharedLibrary is null)
+                Log.Debug($"Not generating DLL import helper for namespace {ns.Name}: It is missing a shared library info.");
             else
-                _writeDllImportService.WriteDllImport(loadedProject, outputDir);
+                _writeDllImportService.WriteDllImport(ns, outputDir);
 
             _writeSymbolsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "delegate.sbntxt",
                 subfolder: "Delegates",
-                objects: loadedProject.Namespace.Callbacks,
-                @namespace: loadedProject.Namespace
+                objects: ns.Callbacks,
+                @namespace: ns
             );
 
             _writeSymbolsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "class.sbntxt",
                 subfolder: "Classes",
-                objects: loadedProject.Namespace.Classes.Where(x => !x.IsFundamental),
-                @namespace: loadedProject.Namespace
+                objects: ns.Classes.Where(x => !x.IsFundamental),
+                @namespace: ns
             );
             
             _writeClassInstanceService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "classinstance.sbntxt",
                 subfolder: "Classes",
-                classes: loadedProject.Namespace.Classes.Where(x => !x.IsFundamental),
-                @namespace: loadedProject.Namespace
+                classes: ns.Classes.Where(x => !x.IsFundamental),
+                @namespace: ns
             );
             
             _writeSymbolsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "fundamental.class.sbntxt",
                 subfolder: "Classes",
-                objects: loadedProject.Namespace.Classes.Where(x => x.IsFundamental),
-                @namespace: loadedProject.Namespace
+                objects: ns.Classes.Where(x => x.IsFundamental),
+                @namespace: ns
             );
 
             _writeSymbolsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "interface.sbntxt",
                 subfolder: "Interfaces",
-                objects: loadedProject.Namespace.Interfaces,
-                @namespace: loadedProject.Namespace
+                objects: ns.Interfaces,
+                @namespace: ns
             );
 
             _writeSymbolsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
                 subfolder: "Enums",
-                objects: loadedProject.Namespace.Enumerations,
-                @namespace: loadedProject.Namespace
+                objects: ns.Enumerations,
+                @namespace: ns
             );
 
             _writeSymbolsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
                 subfolder: "Enums",
-                objects: loadedProject.Namespace.Bitfields,
-                @namespace: loadedProject.Namespace
+                objects: ns.Bitfields,
+                @namespace: ns
             );
 
             _writeRecordsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                records: loadedProject.Namespace.Records,
-                @namespace: loadedProject.Namespace
+                records: ns.Records,
+                @namespace: ns
             );
 
             _writeRecordNativeSafeHandlesService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                records: loadedProject.Namespace.Records.Where(x => !x.IsClassStruct),
-                @namespace: loadedProject.Namespace
+                records: ns.Records.Where(x => !x.IsClassStruct),
+                @namespace: ns
             );
             
             _writeClassStructNativeSafeHandlesService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                records: loadedProject.Namespace.Records.Where(x => x.IsClassStruct),
-                @namespace: loadedProject.Namespace
+                records: ns.Records.Where(x => x.IsClassStruct),
+                @namespace: ns
             );
             
             _writeUnionsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                unions: loadedProject.Namespace.Unions,
-                @namespace: loadedProject.Namespace
+                unions: ns.Unions,
+                @namespace: ns
             );
 
             _writeElementsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "constants.sbntxt",
                 subfolder: "Classes",
                 name: "Constants",
-                elements: loadedProject.Namespace.Constants,
-                @namespace: loadedProject.Namespace
+                elements: ns.Constants,
+                @namespace: ns
             );
 
             _writeElementsService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "functions.sbntxt",
                 subfolder: "Classes",
                 name: "Functions",
-                elements: loadedProject.Namespace.Functions,
-                @namespace: loadedProject.Namespace
+                elements: ns.Functions,
+                @namespace: ns
             );
             
             _writeStaticService.Write(
-                projectName: loadedProject.Name,
+                projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "extensions.sbntxt",
                 subfolder: "Classes",
                 name: "Extensions",
-                @namespace: loadedProject.Namespace
+                @namespace: ns
             );
         }
     }

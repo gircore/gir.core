@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Repository.Model;
 using StrongInject;
 
 namespace Repository
@@ -8,7 +9,7 @@ namespace Repository
     
     public class Repository
     {
-        public IEnumerable<LoadedProject> Load(ResolveFileFunc fileFunc, IEnumerable<string> targets)
+        public IEnumerable<Namespace> Load(ResolveFileFunc fileFunc, IEnumerable<string> targets)
         {
             //This just wraps the container to provide a nice public API.
             return new Container().Run(repository => repository.Load(fileFunc, targets));
