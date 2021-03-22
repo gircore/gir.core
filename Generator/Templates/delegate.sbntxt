@@ -18,7 +18,7 @@ namespace {{ namespace.name }}
     /// be valid for the duration of the call. This handler does not implement any special
     /// memory management. 
     /// </summary>
-    public class {{ $managed_name }}CallHandler
+    public class {{ $managed_name }}CallHandler : IDisposable
     {
         public {{ symbol_name }} NativeCallback;
 
@@ -38,13 +38,21 @@ namespace {{ namespace.name }}
             return managed_callback_result;
             {{~ end ~}}
         }
+        
+        public void Dispose()
+        {
+            // This implements IDisposable just to signal to the caller that this class contains
+            // disposable state. Actually there is no state which needs to be freed. But if an instance
+            // of this object is freed to early the NativeCallback can not be invoked from C anymore
+            // which breaks any native code relying on the availability of the NativeCallback.
+        }
     }
     
     /// <summary>
     /// Async Handler for {{ $managed_name }}. An async annotation indicates the closure will
     /// be called precisely once, after which it is then available for garbage collection.
     /// </summary>
-    public class {{ $managed_name }}AsyncHandler
+    public class {{ $managed_name }}AsyncHandler : IDisposable
     {
         public {{ symbol_name }} NativeCallback;
 
@@ -69,6 +77,12 @@ namespace {{ namespace.name }}
             return managed_callback_result;
             {{~ end ~}}
         }
+        
+        public void Dispose()
+        {
+            if(gch.IsAllocated)
+                gch.Free();
+        }
     }
 
     /// <summary>
@@ -77,7 +91,7 @@ namespace {{ namespace.name }}
     /// destroy_notify event, emitted by the relevant library. Pass <c>DestroyNotify</c> in place of a
     /// destroy_notify callback parameter. 
     /// </summary>
-    public class {{ $managed_name }}NotifiedHandler
+    public class {{ $managed_name }}NotifiedHandler : IDisposable
     {
         public event Action OnDestroyNotify;
         public {{ symbol_name }} NativeCallback;
@@ -109,6 +123,12 @@ namespace {{ namespace.name }}
 
             // Allow for garbage collection
             gch.Free();
+        }
+        
+        public void Dispose()
+        {
+            if(gch.IsAllocated)
+                gch.Free();
         }
     }
 }
