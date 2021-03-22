@@ -28,10 +28,10 @@ namespace GObject
         // Query a gtype structure to find out information
         // like class size, etc, so we can allocate our own
         // type info struct deriving from it.
-        private static TypeQuery QueryType(ulong gtype)
+        private static TypeQuery.Native.Struct QueryType(ulong gtype)
         {
             // Create query struct
-            TypeQuery query = default;
+            TypeQuery.Native.Struct query = default;
 
             // Convert to Pointer
             // IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(query));
@@ -50,7 +50,7 @@ namespace GObject
         }
 
         // TODO: Virtual Function
-        private static void InstanceInit(IntPtr instance, IntPtr g_class)
+        private static void InstanceInit(TypeInstance.Native.TypeInstanceSafeHandle instance, TypeClass.Native.TypeClassSafeHandle gClass)
         {
             Console.WriteLine("instance_init: Initialising custom subclass!");
         }
@@ -74,15 +74,16 @@ namespace GObject
 
 
             var boundaryTypeId = GetBoundaryTypeId(type);
-            TypeQuery query = QueryType(boundaryTypeId);
+            var query = QueryType(boundaryTypeId);
 
             // Create TypeInfo
-            var typeInfo = new TypeInfo(
-                class_size: (ushort) query.class_size,
-                instance_size: (ushort) query.instance_size,
-                class_init: TypeHelper.GetClassInitFunc(type),
-                instance_init: InstanceInit
-            );
+            var typeInfo = new TypeInfo.Native.Struct
+            {
+                ClassSize = (ushort) query.ClassSize,
+                InstanceSize = (ushort) query.InstanceSize,
+                ClassInit = TypeHelper.GetClassInitFunc(type),
+                InstanceInit = InstanceInit
+            };
 
             MarshalHelper.ToPtrAndFree(typeInfo, (ptr) =>
             {

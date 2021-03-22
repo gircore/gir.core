@@ -20,7 +20,7 @@ namespace GObject
                 return ptr;
             }
 
-            internal static ClassInitFunc GetClassInitFunc(IReflect type) => (gClass, classData) =>
+            internal static ClassInitFuncCallback GetClassInitFunc(IReflect type) => (gClass, classData) =>
             {
                 Type gtype = GetGTypeFromTypeClass(gClass);
 
