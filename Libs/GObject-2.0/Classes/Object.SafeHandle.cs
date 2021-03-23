@@ -5,14 +5,11 @@ namespace GObject
 {
     public partial class Object
     {
-        private class ObjectSafeHandle : SafeHandle
+        private class ObjectSafeHandle : Native.ClassSafeHandle
         {
-            public ObjectSafeHandle(IntPtr handle) : base(IntPtr.Zero, true)
+            public ObjectSafeHandle(IntPtr handle) : base(handle)
             {
-                SetHandle(handle);
             }
-
-            public sealed override bool IsInvalid => handle == IntPtr.Zero;
 
             protected sealed override bool ReleaseHandle()
             {
@@ -26,7 +23,7 @@ namespace GObject
                     SubclassObjects.Remove(handle);
                 }
 
-                Native.Methods.Unref(handle);
+                Native.Instance.Methods.Unref(handle);
                 return true;
             }
         }

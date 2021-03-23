@@ -12,7 +12,7 @@ namespace GObject
             private readonly ActionRefValues? _callback;
             private readonly Closure _closure;
 
-            public IntPtr Handle => _closure.Handle;
+            public Closure.Native.ClosureSafeHandle? Handle => _closure.Handle;
 
             public ClosureHelper(ActionRefValues action)
             {

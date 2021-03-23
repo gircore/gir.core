@@ -195,7 +195,7 @@ namespace GObject
                 while (!Contains(gtype))
                 {
                     // Get parent type
-                    var parent = Global.Native.type_parent(gtype.Value);
+                    var parent = Functions.Native.TypeParent(gtype.Value);
                     if (parent == 0)
                     {
                         throw new Exception($"Could not get parent type for GType {gtype}");

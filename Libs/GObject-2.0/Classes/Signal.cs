@@ -127,10 +127,10 @@ namespace GObject
             signalHelper.Connect(
                 action: action,
                 after: after,
-                mapping: callback => ((ref Value[] items) =>
+                mapping: callback => ((ref Value.Native.Struct[] items) =>
                 {
                     var args = new TSignalArgs();
-                    args.SetArgs(items);
+                    //TODO: args.SetArgs(items);
                     callback(o, args);
                 })
             );
@@ -181,7 +181,7 @@ namespace GObject
             signalHelper.Connect(
                 action: action,
                 after: after,
-                mapping: callback => (ref Value[] _) => callback(o, EventArgs.Empty)
+                mapping: callback => (ref Value.Native.Struct[] _) => callback(o, EventArgs.Empty)
             );
         }
 

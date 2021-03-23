@@ -221,7 +221,7 @@ namespace GObject
         /// <exception cref="NullReferenceException"></exception>
         /// <exception cref="InvalidCastException"></exception>
         /// <exception cref="Exception"></exception>
-        public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : Object
+        public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : class
         {
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException(
@@ -257,7 +257,7 @@ namespace GObject
 
                 // Ensure the conversion is valid
                 Type castGType = TypeDictionary.Get(typeof(T));
-                if (!Functions.TypeIsA(trueGType, castGType))
+                if (!Functions.Native.TypeIsA(trueGType.Value, castGType.Value))
                     throw new InvalidCastException();
             }
 
@@ -275,13 +275,13 @@ namespace GObject
             return (T) ctor.Invoke(new object[] { handle, ownedRef });
         }
 
-        private static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : Object
+        private static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : class
         {
             if (WrapperObjects.TryGetValue(handle, out WeakReference<Object>? weakRef))
             {
                 if (weakRef.TryGetTarget(out Object? weakObj))
                 {
-                    obj = (T) weakObj;
+                    obj = (T)(object) weakObj; //TODO: object boxing is a workaround to get interfaces compiling
                     return true;
                 }
             }
@@ -289,7 +289,7 @@ namespace GObject
             {
                 if (toggleObj.Object is not null)
                 {
-                    obj = (T) toggleObj.Object;
+                    obj = (T)(object) toggleObj.Object; //TODO: object boxing is a workaround to get interfaces compiling
                     return true;
                 }
             }

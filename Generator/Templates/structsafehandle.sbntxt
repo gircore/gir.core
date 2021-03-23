@@ -33,10 +33,13 @@ namespace {{ namespace.name }}
             
             public class Managed{{$safehandle_name}} : {{$safehandle_name}}
             {
-                public static {{$safehandle_name}} Create()
+                public static {{$safehandle_name}} Create({{symbol_name}}? strucuture = null)
                 {
                     var size = Marshal.SizeOf<{{symbol_name}}>();
                     IntPtr ptr = Marshal.AllocHGlobal(size);
+                    
+                    if (strucuture.HasValue)
+                        Marshal.StructureToPtr(strucuture.Value, ptr, false);
                     
                     return new {{$safehandle_name}}(ptr);
                 }

@@ -8,7 +8,7 @@ namespace GObject
         private readonly ClosureMarshalCallHandler _closureMarshalCallHandler;
         private readonly Native.ClosureSafeHandle _handle;
 
-        public IntPtr Handle => _handle.IsInvalid ? IntPtr.Zero : _handle.DangerousGetHandle();
+        public Native.ClosureSafeHandle? Handle => _handle.IsInvalid ? null : _handle;
 
         internal Closure(ClosureMarshal action)
         {
