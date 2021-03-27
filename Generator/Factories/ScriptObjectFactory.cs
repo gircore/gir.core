@@ -34,6 +34,7 @@ namespace Generator.Factories
             scriptObject.Import("write_callback_marshaller", new Func<IEnumerable<Argument>, ReturnValue, string>((a, r) => a.WriteCallbackMarshaller(r, currentNamespace)));
             scriptObject.Import("return_value_is_void", new Func<ReturnValue, bool>(r => r.IsVoid()));
             scriptObject.Import("write_struct_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
+            scriptObject.Import("write_union_fields", new Func<IEnumerable<Field>, string>(f => f.WriteUnionStructFields(currentNamespace)));
             scriptObject.Import("write_struct_delegates", new Func<IEnumerable<Field>, string>(f => f.WriteNativeDelegates(currentNamespace)));
             
             return scriptObject;

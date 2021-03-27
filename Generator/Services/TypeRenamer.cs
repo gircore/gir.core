@@ -53,7 +53,7 @@ namespace Generator.Services
         
         private void SetUnionMetadata(Union union)
         {
-            union.Metadata["RecordName"] = union.SymbolName;
+            union.Metadata["UnionName"] = union.SymbolName;
             union.Metadata["PureName"] = "Struct";
 
             union.SymbolName = new SymbolName($"{union.SymbolName}.Native.Struct");
