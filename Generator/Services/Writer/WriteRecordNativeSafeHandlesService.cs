@@ -33,7 +33,7 @@ namespace Generator.Services.Writer
                         projectName: projectName,
                         outputDir: outputDir,
                         templateName: "structsafehandle.sbntxt",
-                        folder: "Records",
+                        folder: Folder.Records,
                         fileName: record.SymbolName + ".SafeHandle",
                         scriptObject: scriptObject
                     );

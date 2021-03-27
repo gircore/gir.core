@@ -45,8 +45,8 @@ namespace Repository.Factories
                 throw new Exception("Argument name is null");
 
             var elementName = new ElementName(_identifierConverter.Convert(parameterInfo.Name));
-            var elementManagedName = new SymbolName(_caseConverter.ToCamelCase(_identifierConverter.Convert(parameterInfo.Name)));
-            
+            var elementManagedName = new SymbolName(_identifierConverter.Convert(_caseConverter.ToCamelCase(parameterInfo.Name)));
+
             return new Argument(
                 elementName: elementName,
                 symbolName: elementManagedName,

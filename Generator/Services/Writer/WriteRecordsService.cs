@@ -28,12 +28,11 @@ namespace Generator.Services.Writer
                     //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
                     scriptObject.Import("get_metadata", new Func<string, object?>(key => record.Metadata[key]));
 
-                    
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: record.IsClassStruct ? "classstruct.sbntxt" : "struct.sbntxt",
-                        folder: record.IsClassStruct ? "Classes" : "Records",
+                        templateName: GetTemplateName(record),
+                        folder: GetFolder(record),
                         fileName: record.SymbolName,
                         scriptObject: scriptObject
                     );
@@ -44,5 +43,21 @@ namespace Generator.Services.Writer
                 }
             }
         }
+
+        private string GetFolder(Record record)
+            => record.GLibClassStructFor?.GetSymbol() switch
+            {
+                Interface => Folder.Interfaces,
+                Class => Folder.Classes,
+                _ => Folder.Records
+            };
+
+        private string GetTemplateName(Record record)
+            => record.GLibClassStructFor?.GetSymbol() switch
+            {
+                Interface => "interfacestruct.sbntxt",
+                Class => "classstruct.sbntxt",
+                _ => "struct.sbntxt",
+            };
     }
 }

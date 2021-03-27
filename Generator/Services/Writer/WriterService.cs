@@ -50,7 +50,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "class.sbntxt",
-                subfolder: "Classes",
+                subfolder: Folder.Classes,
                 objects: ns.Classes.Where(x => !x.IsFundamental),
                 @namespace: ns
             );
@@ -59,7 +59,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "classinstance.sbntxt",
-                subfolder: "Classes",
+                subfolder: Folder.Classes,
                 classes: ns.Classes.Where(x => !x.IsFundamental),
                 @namespace: ns
             );
@@ -68,7 +68,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "fundamental.class.sbntxt",
-                subfolder: "Classes",
+                subfolder: Folder.Classes,
                 objects: ns.Classes.Where(x => x.IsFundamental),
                 @namespace: ns
             );
@@ -77,7 +77,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "interface.sbntxt",
-                subfolder: "Interfaces",
+                subfolder: Folder.Interfaces,
                 objects: ns.Interfaces,
                 @namespace: ns
             );
@@ -86,7 +86,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
-                subfolder: "Enums",
+                subfolder: Folder.Enums,
                 objects: ns.Enumerations,
                 @namespace: ns
             );
@@ -95,7 +95,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
-                subfolder: "Enums",
+                subfolder: Folder.Enums,
                 objects: ns.Bitfields,
                 @namespace: ns
             );
@@ -132,7 +132,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "constants.sbntxt",
-                subfolder: "Classes",
+                subfolder: Folder.Classes,
                 name: "Constants",
                 elements: ns.Constants,
                 @namespace: ns
@@ -142,7 +142,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "functions.sbntxt",
-                subfolder: "Classes",
+                subfolder: Folder.Classes,
                 name: "Functions",
                 elements: ns.Functions,
                 @namespace: ns
@@ -152,7 +152,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "extensions.sbntxt",
-                subfolder: "Classes",
+                subfolder: Folder.Classes,
                 name: "Extensions",
                 @namespace: ns
             );

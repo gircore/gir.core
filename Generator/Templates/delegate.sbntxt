@@ -93,7 +93,7 @@ namespace {{ namespace.name }}
     /// </summary>
     public class {{ $managed_name }}NotifiedHandler : IDisposable
     {
-        public event Action OnDestroyNotify;
+        public event System.Action OnDestroyNotify;
         public {{ symbol_name }} NativeCallback;
         public GLib.DestroyNotifyCallback DestroyNotify;
 

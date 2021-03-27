@@ -32,8 +32,8 @@ namespace Generator.Services.Writer
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "classstructsafehandle.sbntxt",
-                        folder: "Classes",
+                        templateName: GetTemplateName(record),
+                        folder: GetFolder(record),
                         fileName: record.SymbolName + ".SafeHandle",
                         scriptObject: scriptObject
                     );
@@ -43,6 +43,26 @@ namespace Generator.Services.Writer
                     Log.Error($"Could not write safe handle for record for {record.SymbolName}: {ex.Message}");
                 }
             }
+        }
+
+        private string GetFolder(Record record)
+        {
+            return record.GLibClassStructFor?.GetSymbol() switch
+            {
+                Class => Folder.Classes,
+                Interface => Folder.Interfaces,
+                _ => throw new NotSupportedException()
+            };
+        }
+        
+        private string GetTemplateName(Record record)
+        {
+            return record.GLibClassStructFor?.GetSymbol() switch
+            {
+                Class => "classstructsafehandle.sbntxt",
+                Interface => "interfacestructsafehandle.sbntxt",
+                _ => throw new NotSupportedException()
+            };
         }
     }
 }

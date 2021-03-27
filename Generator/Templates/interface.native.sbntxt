@@ -1,6 +1,6 @@
 #region Native
 
-protected static class Native
+internal protected partial class Native
 {
     {{ include 'interface.native.methods.sbntxt' }}
 }
