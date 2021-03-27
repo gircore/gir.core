@@ -8,7 +8,9 @@ namespace GObject.Tests.Records
     {
         [DataTestMethod]
         [DataRow(5)]
-        public void ValueFromShouldContainGivenData(object data)
+        [DataRow(true)]
+        [DataRow("TestString")]
+        public void ValueFromDataShouldContainGivenData(object data)
         {
             var v = Value.From(data);
             v.Extract().Should().Be(data);
