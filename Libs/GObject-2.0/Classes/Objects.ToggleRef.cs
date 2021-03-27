@@ -35,8 +35,8 @@ namespace GObject
             public ToggleRef(T obj)
             {
                 _reference = obj;
-                Native.add_toggle_ref(obj.Handle, ToggleReference, IntPtr.Zero);
-                Native.Methods.Unref(obj.Handle);
+                Native.Instance.Methods.AddToggleRef(obj.Handle, ToggleReference, IntPtr.Zero);
+                Native.Instance.Methods.Unref(obj.Handle);
             }
 
             private void ToggleReference(IntPtr data, IntPtr @object, bool is_last_ref)

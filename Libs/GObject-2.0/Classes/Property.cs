@@ -141,7 +141,7 @@ namespace GObject
             signalHelper.Connect<Action<string>>(
                 action: o.OnPropertyChanged,
                 after: false,
-                mapping: (callback) => (ref Value[] _) => callback(PropertyName)
+                mapping: arg => ((ref Value.Native.Struct[] _) => arg(PropertyName))
             );
         }
 

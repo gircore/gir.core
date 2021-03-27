@@ -30,6 +30,19 @@ namespace Generator
             return builder.ToString();
         }
 
+        public static string WriteUnionStructFields(this IEnumerable<Field> fields, Namespace currentNamespace)
+        {
+            var builder = new StringBuilder();
+
+            foreach (Field field in fields)
+            {
+                builder.AppendLine("[FieldOffset(0)]");
+                builder.AppendLine(field.WriteNative(currentNamespace));
+            }
+
+            return builder.ToString();
+        }
+        
         public static string WriteClassStructFields(this IEnumerable<Field> fields, string className, Namespace currentNamespace)
         {
             var list = fields.ToArray();

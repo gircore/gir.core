@@ -10,12 +10,12 @@ namespace GObject
         {
             #region Methods
 
-            public static IntPtr GetClassPointer(Type type)
+            public static TypeClass.Native.TypeClassSafeHandle GetClassPointer(Type type)
             {
-                IntPtr ptr = TypeClass.Native.peek(type.Value);
+                var ptr = TypeClass.Native.Methods.Peek(type.Value);
 
-                if (ptr == IntPtr.Zero)
-                    ptr = TypeClass.Native.@ref(type.Value);
+                if (ptr.IsInvalid)
+                    ptr = TypeClass.Native.Methods.Ref(type.Value);
 
                 return ptr;
             }
@@ -44,12 +44,12 @@ namespace GObject
                 method?.Invoke(null, parameters);
             }
 
-            private static Type GetGTypeFromTypeClass(IntPtr typeClassPtr)
+            private static Type GetGTypeFromTypeClass(TypeClass.Native.TypeClassSafeHandle typeClassPtr)
             {
                 try
                 {
-                    TypeClass typeClass = Marshal.PtrToStructure<TypeClass>(typeClassPtr);
-                    return new Type(typeClass.g_type);
+                    var typeClass = Marshal.PtrToStructure<TypeClass.Native.Struct>(typeClassPtr.DangerousGetHandle());
+                    return new Type(typeClass.GType);
                 }
                 catch (Exception ex)
                 {

@@ -34,8 +34,10 @@ namespace GObject
 
                 var closureHelper = new ClosureHelper(mapping(action));
 
-                var handlerId =
-                    Global.Native.signal_connect_closure(_object.Handle, _name, closureHelper.Handle, after);
+                if (closureHelper.Handle is null)
+                    throw new Exception("Closure handle is invalid");
+                
+                var handlerId = Functions.Native.SignalConnectClosure(_object.Handle, _name, closureHelper.Handle, after);
 
                 if (handlerId == 0)
                 {
@@ -50,7 +52,7 @@ namespace GObject
             {
                 if (_connectedHandlers.TryGetValue(callback, out (ulong, ClosureHelper) data))
                 {
-                    Global.Native.signal_handler_disconnect(_object.Handle, data.Item1);
+                    Functions.Native.SignalHandlerDisconnect(_object.Handle, data.Item1);
                     data.Item2.Dispose();
                     _connectedHandlers.Remove(data);
                 }

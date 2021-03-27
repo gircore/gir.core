@@ -31,7 +31,7 @@ namespace Generator.Services.Writer
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "struct.sbntxt",
+                        templateName: "union.sbntxt",
                         folder: "Records",
                         fileName: union.SymbolName,
                         scriptObject: scriptObject

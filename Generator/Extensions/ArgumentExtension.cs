@@ -43,10 +43,12 @@ namespace Generator
 
         private static string GetDirection(Argument argument)
         {
-            return argument switch
+            var symbol = argument.SymbolReference.GetSymbol();
+            return (argument, symbol) switch
             {
-                {Direction: Direction.OutCalleeAllocates} => "out ",
-                {Direction: Direction.OutCallerAllocates} => "ref ",
+                ({Direction: Direction.OutCalleeAllocates}, _) => "out ",
+                ({Direction: Direction.OutCallerAllocates}, _) => "ref ",
+                //({Transfer: Transfer.None, TypeInformation: {IsPointer: true, IsConst: false}}, Record) => "out ",
                 _ => ""
             };
         }
@@ -71,7 +73,8 @@ namespace Generator
                 (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.SymbolName}.From({arg.SymbolName});",
                 (Class c, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{c.SymbolName}>({arg.SymbolName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.SymbolName}"),
-                _ => $"({arg.WriteType(Target.Managed, currentNamespace)}){arg.SymbolName};" // Other -> Try a brute-force cast
+                (Interface i, {IsPointer: true, Array: null}) => $"Object.WrapHandle<{i.SymbolName}>({arg.SymbolName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
+                _ => $"default; //TODO ({arg.WriteType(Target.Managed, currentNamespace)}){arg.SymbolName};" // Other -> Try a brute-force cast
             };
             
             return $"{arg.WriteType(Target.Managed, currentNamespace)} {arg.SymbolName}Managed = " + expression;

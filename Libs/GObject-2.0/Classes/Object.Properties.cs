@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace GObject
 {
@@ -36,12 +37,9 @@ namespace GObject
         /// </summary>
         /// <param name="value">The property name.</param>
         /// <param name="name">The property value.</param>
-        protected void SetProperty(string? name, Value value)
+        protected void SetProperty(string name, Value value)
         {
-            if (name is null)
-                return;
-
-            Native.Instance.Methods.SetProperty(Handle, name, ref value);
+            Native.Instance.Methods.SetProperty(Handle, name, value.Handle);
             value.Dispose();
         }
 
@@ -52,16 +50,18 @@ namespace GObject
         /// <returns>
         /// The native value of the property, wrapped as a <see cref="Value"/>.
         /// </returns>
-        protected Value GetProperty(string? name)
+        protected Value GetProperty(string name)
         {
-            if (name is null)
-                return default;
+            var handle = Value.Native.ManagedValueSafeHandle.Create();
+            
+            GetProperty(Handle, name, ref handle);
 
-            var value = new Value();
-            Native.Instance.Methods.GetProperty(Handle, name, ref value);
-
-            return value;
+            return new Value(handle);
         }
+
+        //TODO: Clarify this call use native one if possible
+        [DllImport("GObject", EntryPoint = "g_object_get_property")]
+        public static extern void GetProperty(IntPtr @object, string propertyName, ref Value.Native.ValueSafeHandle value);
 
         #endregion
     }

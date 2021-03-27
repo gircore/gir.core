@@ -10,14 +10,14 @@ namespace Repository.Factories.Model
             if (info is null)
                 return null;
 
-            int? length = null;
-
-            if (int.TryParse(info.Length, out var l))
-                length = l;
+            int? length = int.TryParse(info.Length, out var l) ? l : null;
+            int? fixedSize = int.TryParse(info.FixedSize, out var f) ? f : null;
 
             return new Array()
             {
-                Length = length
+                Length = length,
+                IsZeroTerminated = info.ZeroTerminated,
+                FixedSize = fixedSize
             };
         }
     }

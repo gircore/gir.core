@@ -30,21 +30,11 @@ namespace GObject
         // type info struct deriving from it.
         private static TypeQuery.Native.Struct QueryType(ulong gtype)
         {
-            // Create query struct
-            TypeQuery.Native.Struct query = default;
-
-            // Convert to Pointer
-            // IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(query));
-            // Marshal.StructureToPtr(query, ptr, true);
-
-            // Perform Query
-            Global.Native.type_query(gtype, ref query);
+            var bla = TypeQuery.Native.ManagedTypeQuerySafeHandle.Create();
+            Functions.Native.TypeQuery(gtype, ref bla);
 
             // Marshal and Free Memory
-            // query = (TypeQuery) (Marshal.PtrToStructure(ptr, typeof(TypeQuery)) ??
-            //                      throw new Exception("Type Query Failed"));
-
-            // Marshal.FreeHGlobal(ptr);
+            var query = Marshal.PtrToStructure<TypeQuery.Native.Struct>(bla.DangerousGetHandle());
 
             return query;
         }
@@ -85,28 +75,32 @@ namespace GObject
                 InstanceInit = InstanceInit
             };
 
-            MarshalHelper.ToPtrAndFree(typeInfo, (ptr) =>
-            {
-                // Perform Registration
-                var qualifiedName = QualifyName(type);
-                Console.WriteLine($"Registering type {type.Name} as {qualifiedName}");
-                var typeid = Global.Native.type_register_static(boundaryTypeId, qualifiedName, ptr, 0);
+            var ptr = TypeInfo.Native.ManagedTypeInfoSafeHandle.Create(typeInfo);
+            
+            // Perform Registration
+            var qualifiedName = QualifyName(type);
+            Console.WriteLine($"Registering type {type.Name} as {qualifiedName}");
 
-                if (typeid == 0)
-                    throw new Exception("Type Registration Failed!");
+            var typeid = Functions.Native.TypeRegisterStatic(boundaryTypeId, qualifiedName, ptr, 0);
+                
+            //var typeid = Global.Native.type_register_static(boundaryTypeId, qualifiedName, ptr, 0);
 
-                // Register type in type dictionary
-                TypeDictionary.AddSingle(type, new Type(typeid));
-            });
+            if (typeid == 0)
+                throw new Exception("Type Registration Failed!");
+
+            // Register type in type dictionary
+            TypeDictionary.AddSingle(type, new Type(typeid));
         }
 
         private static Type TypeFromHandle(IntPtr handle)
         {
             try
             {
-                TypeInstance instance = Marshal.PtrToStructure<TypeInstance>(handle);
-                TypeClass typeClass = Marshal.PtrToStructure<TypeClass>(instance.g_class);
-                return new Type(typeClass.g_type);
+                var instance = Marshal.PtrToStructure<TypeInstance.Native.Struct>(handle);
+
+                var ptr = instance.GClass.DangerousGetHandle();
+                var typeClass = Marshal.PtrToStructure<TypeClass.Native.Struct>(ptr);
+                return new Type(typeClass.GType);
             }
             catch
             {

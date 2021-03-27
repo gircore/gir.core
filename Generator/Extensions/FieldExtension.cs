@@ -16,13 +16,19 @@ namespace Generator
             var builder = new StringBuilder();
             builder.Append(field.WriteNativeSummary());
 
+            if (field.TypeInformation.Array is {FixedSize: { } fixedSize})
+                builder.AppendLine($"[MarshalAs(UnmanagedType.ByValArray, SizeConst = {fixedSize})]");
+            
             if (type == "string")
                 builder.AppendLine($"[MarshalAs(UnmanagedType.LPStr)]");
 
-            var accessibility = field.Private ? "internal" : "public";
-            
-            builder.AppendLine($"{accessibility} {type} {field.SymbolName};");
+            builder.AppendLine($"{GetAccessibility(field)} {type} {field.SymbolName};");
             return builder.ToString();
+        }
+
+        private static string GetAccessibility(Field field)
+        {
+            return field.Private ? "internal" : "public";
         }
     }
 }
