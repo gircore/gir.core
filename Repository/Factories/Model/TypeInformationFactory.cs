@@ -22,22 +22,22 @@ namespace Repository.Factories.Model
             );
         }
         
-        public TypeInformation Create(ITypeOrArray typeOrArray)
+        public TypeInformation Create(Typed typed)
         {
             return new TypeInformation(
-                array: _arrayFactory.Create(typeOrArray.Array),
-                isPointer: IsPointer(typeOrArray),
-                isVolatile: IsVolatile(typeOrArray),
-                isConst: IsConst(typeOrArray)
+                array: _arrayFactory.Create(typed.Array),
+                isPointer: IsPointer(typed),
+                isVolatile: IsVolatile(typed),
+                isConst: IsConst(typed)
             );
         }
 
-        private bool IsPointer(ITypeOrArray typeOrArray)
+        private bool IsPointer(Typed typed)
         {
-            if (typeOrArray.Array is { })
+            if (typed.Array is { })
                 return true; //Arrays are always pointers
 
-            return GetIsPointer(typeOrArray.Type?.Name, typeOrArray.Type?.CType);
+            return GetIsPointer(typed.Type?.Name, typed.Type?.CType);
         }
 
         private bool GetIsPointer(string? type, string? ctype)
@@ -52,23 +52,23 @@ namespace Repository.Factories.Model
             };
         }
 
-        private bool IsVolatile(ITypeOrArray typeOrArray)
+        private bool IsVolatile(Typed typed)
         {
-            if (typeOrArray.Array is { })
-                return GetIsVolatile(typeOrArray.Array?.Type?.CType);
+            if (typed.Array is { })
+                return GetIsVolatile(typed.Array?.Type?.CType);
 
-            return GetIsVolatile(typeOrArray.Type?.CType);
+            return GetIsVolatile(typed.Type?.CType);
         }
         
         private bool GetIsVolatile(string? ctype)
             => ctype?.Contains("volatile") ?? false;
 
-        private bool IsConst(ITypeOrArray typeOrArray)
+        private bool IsConst(Typed typed)
         {
-            if (typeOrArray.Array is { })
-                return GetIsConst(typeOrArray.Array?.Type?.CType);
+            if (typed.Array is { })
+                return GetIsConst(typed.Array?.Type?.CType);
 
-            return GetIsConst(typeOrArray.Type?.CType);
+            return GetIsConst(typed.Type?.CType);
         }
         
         private bool GetIsConst(string? ctype)

@@ -8,7 +8,7 @@ namespace Gio
         #region Properties
 
         public static readonly Property<string> ApplicationIdProperty = Property<string>.Register<Application>(
-            Native.ApplicationIdProperty,
+            Properties.ApplicationId,
             nameof(Application),
             get: (o) => o.ApplicationId,
             set: (o, v) => o.ApplicationId = v
@@ -28,7 +28,7 @@ namespace Gio
         {
             const int argc = 0;
             IntPtr ptr = IntPtr.Zero;
-            return Native.run(Handle, argc, ref ptr);
+            return Native.Instance.Methods.Run(Handle, argc, ref ptr);
         }
 
         #endregion

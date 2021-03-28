@@ -28,7 +28,7 @@ namespace Generator
 
         private static string GetAccessibility(Field field)
         {
-            return field.Private ? "internal" : "internal"; //TODO "public";
+            return field.Private ? "public" : "public"; //TODO "public";
         }
     }
 }

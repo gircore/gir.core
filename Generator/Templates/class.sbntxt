@@ -17,6 +17,6 @@ namespace {{ namespace.name }}
         
         {{ include 'class.native.properties.sbntxt' }}
          
-         {{'new ' | get_if parent }}internal protected partial class Native {{ write_native_parent parent }} { }
+         {{'new ' | get_if parent }}protected partial class Native {{ write_native_parent parent }} { }
     }
 }

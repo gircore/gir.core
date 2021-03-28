@@ -6,7 +6,7 @@ namespace Repository.Xml
     public class ParametersInfo
     {
         [XmlElement("instance-parameter")]
-        public ParameterInfo? InstanceParameter { get; set; }
+        public InstanceParameterInfo? InstanceParameter { get; set; }
 
         [XmlElement("parameter")]
         public List<ParameterInfo> Parameters { get; set; } = default!;

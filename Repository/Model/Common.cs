@@ -4,8 +4,7 @@
     {
         Default,
         In,
-        OutCallerAllocates,
-        OutCalleeAllocates,
+        Out,
         Ref
     }
 

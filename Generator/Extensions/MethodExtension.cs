@@ -16,7 +16,7 @@ namespace Generator
 
             var summaryText = WriteNativeSummary(method);
             var dllImportText = $"[DllImport(\"{currentNamespace.Name}\", EntryPoint = \"{method.Name}\")]\r\n";
-            var methodText = $"public static extern {returnValue} {method.SymbolName}({method.Arguments.WriteNative(currentNamespace)});\r\n";
+            var methodText = $"public static extern {returnValue} {method.SymbolName}({method.ParameterList.WriteNative(currentNamespace)});\r\n";
 
             return summaryText + dllImportText + methodText;
         }
@@ -29,7 +29,7 @@ namespace Generator
             builder.AppendLine($"/// Calls native method {method.Name}.");
             builder.AppendLine($"/// </summary>");
 
-            foreach (var argument in method.Arguments)
+            foreach (var argument in method.ParameterList.GetParameters())
             {
                 builder.AppendLine($"/// <param name=\"{argument.SymbolName}\">Transfer ownership: {argument.Transfer} Nullable: {argument.Nullable}</param>");
             }

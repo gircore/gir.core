@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class ParameterInfo : Typed
+    public class InstanceParameterInfo : Typed
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -25,16 +25,7 @@ namespace Repository.Xml
         [XmlElement("array")]
         public ArrayInfo? Array { get; set; }
 
-        [XmlElement("varargs")]
-        public VarArgsInfo? VarArgs { get; set; }
-
         [XmlAttribute("nullable")]
         public bool Nullable;
-        
-        [XmlAttribute ("closure")]
-        public int Closure = -1;
-
-        [XmlAttribute ("destroy")]
-        public int Destroy = -1;
     }
 }

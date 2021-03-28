@@ -17,12 +17,12 @@ namespace Repository.Services
             );
         }
 
-        public SymbolReference Create(ITypeOrArray typeOrArray, NamespaceName currentNamespace)
+        public SymbolReference Create(Typed typed, NamespaceName currentNamespace)
         {
-            if (TryCreate(typeOrArray?.Type, currentNamespace, out var type))
+            if (TryCreate(typed?.Type, currentNamespace, out var type))
                 return type;
             
-            if (TryCreate(typeOrArray?.Array?.Type, currentNamespace, out var array))
+            if (TryCreate(typed?.Array?.Type, currentNamespace, out var array))
                 return array;
             
             return Create("void", "none", currentNamespace);

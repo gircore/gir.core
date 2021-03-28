@@ -8,13 +8,13 @@ namespace Repository.Factories
     internal class CallbackFactory
     {
         private readonly ReturnValueFactory _returnValueFactory;
-        private readonly ArgumentsFactory _argumentsFactory;
+        private readonly ParameterListFactory _parameterListFactory;
         private readonly CaseConverter _caseConverter;
 
-        public CallbackFactory(ReturnValueFactory returnValueFactory, ArgumentsFactory argumentsFactory, CaseConverter caseConverter)
+        public CallbackFactory(ReturnValueFactory returnValueFactory, ParameterListFactory parameterListFactory, CaseConverter caseConverter)
         {
             _returnValueFactory = returnValueFactory;
-            _argumentsFactory = argumentsFactory;
+            _parameterListFactory = parameterListFactory;
             _caseConverter = caseConverter;
         }
         
@@ -36,7 +36,7 @@ namespace Repository.Factories
                 typeName: new TypeName(callbackInfo.Name),
                 symbolName: new SymbolName(_caseConverter.ToPascal(callbackInfo.Name)),
                 returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue, @namespace.Name),
-                arguments: _argumentsFactory.Create(callbackInfo.Parameters, @namespace.Name).ToList()
+                parameterList: _parameterListFactory.Create(callbackInfo.Parameters, @namespace.Name)
             );
         }
     }

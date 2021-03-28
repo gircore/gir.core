@@ -8,7 +8,7 @@ using Array = Repository.Model.Array;
 
 namespace Repository.Factories
 {
-    internal class ArgumentFactory
+    internal class SingleParameterFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly TransferFactory _transferFactory;
@@ -16,7 +16,7 @@ namespace Repository.Factories
         private readonly CaseConverter _caseConverter;
         private readonly TypeInformationFactory _typeInformationFactory;
 
-        public ArgumentFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
+        public SingleParameterFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _transferFactory = transferFactory;
@@ -25,21 +25,10 @@ namespace Repository.Factories
             _typeInformationFactory = typeInformationFactory;
         }
         
-        public Argument Create(ParameterInfo parameterInfo, NamespaceName currentNamespace)
+        public SingleParameter Create(ParameterInfo parameterInfo, NamespaceName currentNamespace)
         {
             if (parameterInfo.VarArgs is { })
                 throw new VarArgsNotSupportedException("Arguments containing variadic paramters are not supported.");
-            
-            // Direction (for determining in/out/ref)
-            var callerAllocates = parameterInfo.CallerAllocates;
-            Direction direction = parameterInfo.Direction switch
-            {
-                "in" => Direction.In,
-                "out" when callerAllocates => Direction.OutCallerAllocates,
-                "out" when !callerAllocates => Direction.OutCalleeAllocates,
-                "inout" => Direction.Ref,
-                _ => Direction.Default
-            };
 
             if (parameterInfo.Name is null)
                 throw new Exception("Argument name is null");
@@ -47,13 +36,14 @@ namespace Repository.Factories
             var elementName = new ElementName(_identifierConverter.Convert(parameterInfo.Name));
             var elementManagedName = new SymbolName(_identifierConverter.Convert(_caseConverter.ToCamelCase(parameterInfo.Name)));
 
-            return new Argument(
+            return new SingleParameter(
                 elementName: elementName,
                 symbolName: elementManagedName,
                 symbolReference: _symbolReferenceFactory.Create(parameterInfo, currentNamespace),
-                direction: direction,
+                direction: DirectionFactory.Create(parameterInfo.Direction),
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
                 nullable: parameterInfo.Nullable,
+                callerAllocates: parameterInfo.CallerAllocates,
                 closureIndex: parameterInfo.Closure == -1 ? null : parameterInfo.Closure,
                 destroyIndex: parameterInfo.Destroy == -1 ? null : parameterInfo.Destroy,
                 typeInformation: _typeInformationFactory.Create(parameterInfo)

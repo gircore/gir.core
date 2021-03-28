@@ -9,13 +9,13 @@ namespace Repository.Factories
     internal class MethodFactory
     {
         private readonly ReturnValueFactory _returnValueFactory;
-        private readonly ArgumentsFactory _argumentsFactory;
+        private readonly ParameterListFactory _parameterListFactory;
         private readonly CaseConverter _caseConverter;
 
-        public MethodFactory(ReturnValueFactory returnValueFactory, ArgumentsFactory argumentsFactory, CaseConverter caseConverter)
+        public MethodFactory(ReturnValueFactory returnValueFactory, ParameterListFactory parameterListFactory, CaseConverter caseConverter)
         {
             _returnValueFactory = returnValueFactory;
-            _argumentsFactory = argumentsFactory;
+            _parameterListFactory = parameterListFactory;
             _caseConverter = caseConverter;
         }
 
@@ -36,7 +36,7 @@ namespace Repository.Factories
                     elementName: new ElementName(methodInfo.Identifier),
                     symbolName: new SymbolName(_caseConverter.ToPascalCase(methodInfo.Name)),
                     returnValue: _returnValueFactory.Create(methodInfo.ReturnValue, @namespace.Name),
-                    arguments: _argumentsFactory.Create(methodInfo.Parameters, @namespace.Name, methodInfo.Throws)
+                    parameterList: _parameterListFactory.Create(methodInfo.Parameters, @namespace.Name, methodInfo.Throws)
                 );
             }
 
@@ -60,7 +60,7 @@ namespace Repository.Factories
                 elementName: new ElementName(getTypeMethodName),
                 symbolName: new SymbolName("GetGType"),
                 returnValue: returnValue,
-                arguments: Enumerable.Empty<Argument>()
+                parameterList: new ParameterList()
             );
         }
 
@@ -74,7 +74,7 @@ namespace Repository.Factories
                 {
                     list.Add(Create(method, @namespace));
                 }
-                catch (ArgumentFactory.VarArgsNotSupportedException ex)
+                catch (SingleParameterFactory.VarArgsNotSupportedException ex)
                 {
                     Log.Debug($"Method {method.Name} could not be created: {ex.Message}");
                 }

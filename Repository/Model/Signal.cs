@@ -7,23 +7,23 @@ namespace Repository.Model
     public class Signal : Element
     {
         public ReturnValue ReturnValue { get; }
-        public IEnumerable<Argument> Arguments { get; }
+        public ParameterList ParameterList { get; }
 
-        public Signal(ElementName elementName, SymbolName symbolName, ReturnValue returnValue, IEnumerable<Argument> arguments) : base(elementName, symbolName)
+        public Signal(ElementName elementName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(elementName, symbolName)
         {
             ReturnValue = returnValue;
-            Arguments = arguments;
+            ParameterList = parameterList;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()
         {
             return IEnumerables.Concat(
                 ReturnValue.GetSymbolReferences(),
-                Arguments.SelectMany(x => x.GetSymbolReferences())
+                ParameterList.GetSymbolReferences()
             );
         }
 
         public override bool GetIsResolved()
-            => ReturnValue.GetIsResolved() && Arguments.AllResolved();
+            => ReturnValue.GetIsResolved() && ParameterList.GetIsResolved();
     }
 }

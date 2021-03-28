@@ -35,6 +35,6 @@ namespace Generator
             => condition ? text : "";
 
         public static bool SignalsHaveArgs(IEnumerable<Signal> signals)
-            => signals.Any(x => x.Arguments.Any());
+            => signals.Any(x => x.ParameterList.Any());
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class FieldInfo : ITypeOrArray
+    public class FieldInfo : Typed
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
