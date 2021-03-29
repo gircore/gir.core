@@ -10,7 +10,7 @@ namespace {{ namespace.name }}
 
     public partial class {{ symbol_name }} {{ write_inheritance parent implements }}
     {
-        private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ ctype }}", Native.Instance.Methods.GetGType);
+        public static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ ctype_name }}", Native.Instance.Methods.GetGType);
 
         {{ include 'class.signals.sbntxt' }}
         {{ include 'class.constructors.sbntxt' }}

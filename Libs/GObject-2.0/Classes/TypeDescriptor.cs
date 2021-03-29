@@ -31,12 +31,12 @@ namespace GObject
             /// <summary>
             /// The name of the wrapped type.
             /// </summary>
-            public string Name { get; }
+            internal string Name { get; }
 
             /// <summary>
             /// The c type of the wrapper.
             /// </summary>
-            public Type GType
+            internal Type GType
                 => _gType ??= new Type(_getGType());
 
             #endregion
