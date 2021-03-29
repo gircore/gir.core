@@ -10,7 +10,7 @@ namespace Gio
 
         public static DBusConnection Get(BusType busType)
         {
-            IntPtr handle = Global.Native.bus_get_sync(busType, IntPtr.Zero, out IntPtr error);
+            var handle = Functions.Native.BusGetSync(busType, IntPtr.Zero, out var error);
             Error.ThrowOnError(error);
 
             return WrapHandle<DBusConnection>(handle, true);
@@ -20,6 +20,7 @@ namespace Gio
 
         #region Methods
 
+        /* TODO
         public Task<Variant> CallAsync(string busName, string objectPath, string interfaceName, string methodName,
             Variant? parameters = null)
         {
@@ -48,7 +49,7 @@ namespace Gio
             Error.ThrowOnError(error);
 
             return new Variant(ret);
-        }
+        }*/
 
         #endregion
     }

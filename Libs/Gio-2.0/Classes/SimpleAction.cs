@@ -6,6 +6,7 @@ namespace Gio
     {
         #region Properties
 
+        /* TODO
         public bool Enabled
         {
             get => GetProperty(Action.EnabledProperty);
@@ -35,7 +36,7 @@ namespace Gio
             get => GetProperty(Action.StateTypeProperty);
             set => SetProperty(Action.StateTypeProperty, value);
         }
-
+*/
         #endregion
     }
 }

@@ -26,9 +26,7 @@ namespace Gio
 
         public int Run()
         {
-            const int argc = 0;
-            IntPtr ptr = IntPtr.Zero;
-            return Native.Instance.Methods.Run(Handle, argc, ref ptr);
+            return Native.Instance.Methods.Run(Handle, 0, new string[0]);
         }
 
         #endregion
