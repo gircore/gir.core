@@ -26,18 +26,19 @@ namespace {{ namespace.name }}
     
         public {{ $managed_name }}CallHandler({{ $managed_name }} managed)
         {
-            NativeCallback = NativeCallbackMarshaller;
+            NativeCallback = default; //TODO: NativeCallbackMarshaller;
             managedCallback = managed;
         }
-    
+        /* TODO
         private {{ return_value | write_managed_return_value }} NativeCallbackMarshaller({{ parameter_list | write_native_arguments}})
         {
             {{ include 'delegate.marshaller.sbntxt' }}
             
             {{~ if return_value | return_value_is_void != true ~}}
-            return managed_callback_result;
+            return default; //managed_callback_result;
             {{~ end ~}}
         }
+        */
         
         public void Dispose()
         {
@@ -61,11 +62,12 @@ namespace {{ namespace.name }}
     
         public {{ $managed_name }}AsyncHandler({{ $managed_name }} managed)
         {
-            NativeCallback = NativeCallbackMarshaller;
+            NativeCallback = default; //TODO: NativeCallbackMarshaller;
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
         }
     
+        /* TODO
         private {{ return_value | write_managed_return_value }} NativeCallbackMarshaller({{ parameter_list | write_native_arguments}})
         {
             {{ include 'delegate.marshaller.sbntxt' }}
@@ -74,9 +76,10 @@ namespace {{ namespace.name }}
             gch.Free();
             
             {{~ if return_value | return_value_is_void != true ~}}
-            return managed_callback_result;
+            return default; //TODO: managed_callback_result;
             {{~ end ~}}
         }
+        */
         
         public void Dispose()
         {
@@ -103,19 +106,21 @@ namespace {{ namespace.name }}
         public {{ $managed_name }}NotifiedHandler({{ $managed_name }} managed)
         {
             DestroyNotify = DestroyCallback;
-            NativeCallback = NativeCallbackMarshaller;
+            NativeCallback = default; //TODO: NativeCallbackMarshaller;
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
         }
 
+        /* TODO
         private {{ return_value | write_managed_return_value }} NativeCallbackMarshaller({{ parameter_list | write_native_arguments}})
         {
             {{ include 'delegate.marshaller.sbntxt' }}
             
             {{~ if return_value | return_value_is_void != true ~}}
-            return managed_callback_result;
+            return default; //TODO: managed_callback_result;
             {{~ end ~}}
         }
+        */
 
         private void DestroyCallback(IntPtr userData)
         {
