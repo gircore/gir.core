@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build.Tests", "Tests\Build.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{46D66262-FC61-43B9-8E76-A361FA3D6C81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GObject.Tests", "Tests\Libs\GObject.Tests\GObject.Tests.csproj", "{53101A81-CB4A-4589-AEB1-0E229D17AE7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GObject-2.0.Tests", "Tests\Libs\GObject-2.0.Tests\GObject-2.0.Tests.csproj", "{53101A81-CB4A-4589-AEB1-0E229D17AE7A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CompositeTemplates", "CompositeTemplates", "{A8E40ED1-550F-4168-8299-64EFB875CD44}"
 EndProject
@@ -67,9 +67,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-3.0", "Libs\Gtk-3.0\Gtk-3.0.csproj", "{B4C179CA-89E5-4638-BAEC-8E37B5BBED12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLib.Tests", "Tests\Libs\GLib.Tests\GLib.Tests.csproj", "{8E6A242B-B0E6-4DA2-ABA3-6389D65AED5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLib-2.0.Tests", "Tests\Libs\GLib-2.0.Tests\GLib-2.0.Tests.csproj", "{8E6A242B-B0E6-4DA2-ABA3-6389D65AED5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gio.Tests", "Tests\Libs\Gio.Tests\Gio.Tests.csproj", "{76DD0496-67BC-4B86-BBE1-5648CAF0C719}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gio-2.0.Tests", "Tests\Libs\Gio-2.0.Tests\Gio-2.0.Tests.csproj", "{76DD0496-67BC-4B86-BBE1-5648CAF0C719}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
