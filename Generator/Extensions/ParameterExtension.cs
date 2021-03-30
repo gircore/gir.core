@@ -39,7 +39,9 @@ namespace Generator
         private static string GetType(this Parameter parameter, Target target, Namespace currentNamespace) => target switch
         {
             Target.Managed => parameter.WriteType(target, currentNamespace) + GetNullable(parameter),
-            Target.Native => parameter.WriteType(target, currentNamespace),
+            //IntPtr can't be nullable they can be "nulled" via IntPtr.Zero
+            Target.Native when parameter.SymbolReference.GetSymbol().SymbolName == "IntPtr" => parameter.WriteType(target, currentNamespace),
+            Target.Native => parameter.WriteType(target, currentNamespace) + GetNullable(parameter),
             _ => throw new Exception($"Unknown {nameof(Target)}")
         };
 

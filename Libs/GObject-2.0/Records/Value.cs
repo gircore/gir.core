@@ -113,7 +113,7 @@ namespace GObject
         public IntPtr GetBoxed() => Native.Methods.GetBoxed(Handle);
 
         public Object? GetObject()
-            => Object.TryWrapHandle(Native.Methods.GetObject(Handle), false, out Object? obj) ? obj : null;
+            => null; //Object.TryWrapHandle(Native.Methods.GetObject(Handle), false, out Object? obj) ? obj : null;
 
         public bool GetBool() => Native.Methods.GetBoolean(Handle);
         public uint GetUint() => Native.Methods.GetUint(Handle);

@@ -13,7 +13,7 @@ namespace Gio
             var handle = Functions.Native.BusGetSync(busType, IntPtr.Zero, out var error);
             Error.ThrowOnError(error);
 
-            return WrapHandle<DBusConnection>(handle, true);
+            return Wrapper.WrapHandle<DBusConnection>(handle, true);
         }
 
         #endregion
@@ -39,17 +39,16 @@ namespace Gio
             Native.call(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.None, -1, IntPtr.Zero, Callback, IntPtr.Zero);
 
             return tcs.Task;
-        }
+        }*/
 
         public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
         {
-            IntPtr @params = parameters?.Handle ?? IntPtr.Zero;
-            IntPtr ret = Native.call_sync(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.None, 9999, IntPtr.Zero, out IntPtr error);
+            var ret = Native.Instance.Methods.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameters?.Handle, null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
 
             Error.ThrowOnError(error);
 
             return new Variant(ret);
-        }*/
+        }
 
         #endregion
     }
