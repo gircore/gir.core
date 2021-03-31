@@ -14,9 +14,10 @@ namespace Generator
 
             var returnValue = method.ReturnValue.WriteNative(currentNamespace);
 
+            var useSafeHandle = !method.IsFree() && !method.IsUnref();
             var summaryText = WriteNativeSummary(method);
             var dllImportText = $"[DllImport(\"{currentNamespace.Name}\", EntryPoint = \"{method.Name}\")]\r\n";
-            var methodText = $"public static extern {returnValue} {method.SymbolName}({method.ParameterList.WriteNative(currentNamespace)});\r\n";
+            var methodText = $"public static extern {returnValue} {method.SymbolName}({method.ParameterList.WriteNative(currentNamespace, useSafeHandle)});\r\n";
 
             return summaryText + dllImportText + methodText;
         }
@@ -38,5 +39,8 @@ namespace Generator
 
             return builder.ToString();
         }
+        
+        public static bool IsUnref(this Method method) => method.SymbolName == "Unref";
+        public static bool IsFree(this Method method) => method.SymbolName == "Free";
     }
 }

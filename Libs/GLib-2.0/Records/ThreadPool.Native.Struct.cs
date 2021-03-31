@@ -16,7 +16,7 @@ namespace GLib
             
             public partial class Methods
             {
-                public static void Free(ThreadPoolSafeHandle pool)
+                public static void Free(IntPtr pool)
                     => Free(pool, true, true); //TODO clarify which parameters are usefull
             }
             #endregion

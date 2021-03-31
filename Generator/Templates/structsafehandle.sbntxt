@@ -14,6 +14,8 @@ namespace {{ namespace.name }}
         {
             public class {{$safehandle_name}} : SafeHandle
             {
+                public static {{$safehandle_name}} Null = new {{$safehandle_name}}();
+
                 protected {{$safehandle_name}}() : base(IntPtr.Zero, true) {}
                 public {{$safehandle_name}}(IntPtr handle) : base(IntPtr.Zero, true)
                 {

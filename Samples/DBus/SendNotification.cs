@@ -26,6 +26,7 @@ namespace Sample
             );
 
             using Variant ret = bus.Call("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", "Notify", parameters);
+            Console.WriteLine("Result: " + ret.Print(true));
         }
     }
 }

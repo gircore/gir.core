@@ -59,7 +59,7 @@ namespace GLib
         public static Variant CreateEmptyDictionary(VariantType key, VariantType value)
         {
             var childType = VariantType.Native.Methods.NewDictEntry(key.Handle, value.Handle);
-            return new Variant(Native.Methods.NewArray(childType, new Native.VariantSafeHandle[0], 0));
+            return new Variant(Native.Methods.NewArray(childType, new IntPtr[0], 0));
         }
 
         private void Init(out Native.VariantSafeHandle handle, params Variant[] children)
@@ -67,10 +67,10 @@ namespace GLib
             _children = children;
 
             var count = children.Length;
-            var ptrs = new Native.VariantSafeHandle[count];
+            var ptrs = new IntPtr[count];
 
             for (var i = 0; i < count; i++)
-                ptrs[i] = children[i].Handle;
+                ptrs[i] = children[i].Handle.DangerousGetHandle();
 
             handle = Native.Methods.NewTuple(ptrs, (ulong) count);
             Native.Methods.RefSink(handle);
@@ -81,6 +81,9 @@ namespace GLib
 
         public int GetInt()
             => Native.Methods.GetInt32(_handle);
+        
+        public uint GetUInt()
+            => Native.Methods.GetUint32(_handle);
         
         public string Print(bool typeAnnotate)
             => Native.Methods.Print(_handle, typeAnnotate);

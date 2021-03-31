@@ -6,9 +6,9 @@ namespace Generator
 {
     internal static class ParameterExtension
     {
-        internal static string Write(this Parameter parameter, Target target,  Namespace currentNamespace)
+        internal static string Write(this Parameter parameter, Target target,  Namespace currentNamespace, bool useSafeHandle = true)
         {
-            var type = GetFullType(parameter, target, currentNamespace);
+            var type = GetFullType(parameter, target, currentNamespace, useSafeHandle);
             
             var builder = new StringBuilder();
             builder.Append(type);
@@ -18,10 +18,10 @@ namespace Generator
             return builder.ToString();
         }
 
-        private static string GetFullType(this Parameter parameter, Target target, Namespace currentNamespace)
+        private static string GetFullType(this Parameter parameter, Target target, Namespace currentNamespace, bool useSafeHandle)
         {
             var direction = GetDirection(parameter);
-            var type = GetType(parameter, target, currentNamespace);
+            var type = GetType(parameter, target, currentNamespace, useSafeHandle);
 
             return $"{direction}{type}";
         }
@@ -36,14 +36,30 @@ namespace Generator
             };
         }
 
-        private static string GetType(this Parameter parameter, Target target, Namespace currentNamespace) => target switch
+        private static string GetType(this Parameter parameter, Target target, Namespace currentNamespace, bool useSafeHandle)
         {
-            Target.Managed => parameter.WriteType(target, currentNamespace) + GetNullable(parameter),
-            //IntPtr can't be nullable they can be "nulled" via IntPtr.Zero
-            Target.Native when parameter.SymbolReference.GetSymbol().SymbolName == "IntPtr" => parameter.WriteType(target, currentNamespace),
-            Target.Native => parameter.WriteType(target, currentNamespace) + GetNullable(parameter),
-            _ => throw new Exception($"Unknown {nameof(Target)}")
-        };
+            var symbol = parameter.SymbolReference.GetSymbol();
+            return (target, parameter, symbol) switch
+            {
+                (Target.Managed, _, _) => Nullable(parameter, target, currentNamespace, useSafeHandle),
+                //IntPtr can't be nullable they can be "nulled" via IntPtr.Zero
+                (Target.Native, _, {SymbolName: {Value:"IntPtr"}}) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
+                //Native arrays can not be nullable
+                (Target.Native, {TypeInformation: {Array: {}}}, _) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
+                //Classes are represented as IntPtr and should not be nullable
+                (Target.Native, _, Class) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
+                //Records are represented as SafeHandles and are not nullable
+                (Target.Native, _, Record) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
+                (Target.Native, _, _) => Nullable(parameter, target, currentNamespace, useSafeHandle),
+                _ => throw new Exception($"Unknown {nameof(Target)}")
+            };
+        }
+
+        private static string NotNullable(Parameter parameter, Target target, Namespace currentNamespace, bool useSafeHandle)
+            => parameter.WriteType(target, currentNamespace, useSafeHandle);
+        
+        private static string Nullable(Parameter parameter, Target target, Namespace currentNamespace, bool useSafeHandle)
+            => parameter.WriteType(target, currentNamespace, useSafeHandle) + GetNullable(parameter);
 
         private static string GetNullable(Parameter singleParameter)
             => singleParameter.Nullable ? "?" : string.Empty;

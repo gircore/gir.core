@@ -9,16 +9,13 @@ namespace Generator
         public static string WriteReleaseMemoryCall(this Record record)
         {
             //Unref functions takes precedense over free function
-            if (record.Methods.Any(IsUnref))
-                return "Native.Methods.Unref(this);";
+            if (record.Methods.Any(x => x.IsUnref()))
+                return "Native.Methods.Unref(handle);";
 
-            if(record.Methods.Any(IsFree))
-                return "Native.Methods.Free(this);";
+            if(record.Methods.Any(x => x.IsFree()))
+                return "Native.Methods.Free(handle);";
 
             return "//TODO: No method to release data found.";
         }
-
-        private static bool IsUnref(Method method) => method.SymbolName == "Unref";
-        private static bool IsFree(Method method) => method.SymbolName == "Free";
     }
 }

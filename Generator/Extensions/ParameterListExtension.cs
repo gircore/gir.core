@@ -19,15 +19,15 @@ namespace Generator
 
             return string.Join(", ", args.Select(x => x.Write(Target.Managed, currentNamespace)));
         }
-        
-        public static string WriteNative(this ParameterList parameterList, Namespace currentNamespace)
+
+        public static string WriteNative(this ParameterList parameterList, Namespace currentNamespace, bool useSafeHandle = true)
         {
             var offset = parameterList.InstanceParameter is { } ? 1 : 0;
             var parameters = new List<string>();
             foreach (var parameter in parameterList.GetParameters())
             {
                 var attribute = GetAttribute(parameter, Target.Native, offset);
-                parameters.Add(attribute + parameter.Write(Target.Native, currentNamespace));
+                parameters.Add(attribute + parameter.Write(Target.Native, currentNamespace, useSafeHandle));
             }
             
             return string.Join(", ", parameters);

@@ -43,7 +43,7 @@ namespace Gio
 
         public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
         {
-            var ret = Native.Instance.Methods.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameters?.Handle, null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
+            var ret = Native.Instance.Methods.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameters?.Handle, VariantType.Native.VariantTypeSafeHandle.Null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
 
             Error.ThrowOnError(error);
 

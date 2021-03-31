@@ -14,7 +14,7 @@ namespace GLib
             #region Methods
             public partial class Methods
             {
-                public static void Free(StringSafeHandle str)
+                public static void Free(IntPtr str)
                     => Free(str, true);
             }
             #endregion

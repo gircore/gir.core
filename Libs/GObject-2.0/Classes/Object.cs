@@ -19,7 +19,7 @@ namespace GObject
 
         #region Properties
 
-        public IntPtr Handle => IntPtr.Zero;
+        public IntPtr Handle { get; }
 
         #endregion
 
@@ -47,6 +47,8 @@ namespace GObject
 
                 Debug.Assert(!Native.Instance.Methods.IsFloating(handle), "Owned floating references are not possible.");
             }
+
+            Handle = handle;
         }
 
         protected Object(ConstructParameter[] properties)
