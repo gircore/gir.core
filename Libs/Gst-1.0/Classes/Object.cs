@@ -4,7 +4,8 @@ namespace Gst
 {
     public partial class Object
     {
-        public static readonly Property<string> NameProperty = Property<string>.Register<Object>(
+        //TODO
+        /*public static readonly Property<string> NameProperty = Property<string>.Register<Object>(
             Native.NameProperty,
             nameof(Name),
             (o) => o.Name,
@@ -43,6 +44,6 @@ namespace Gst
                 // Fields* ptr = (Fields*) Handle;
                 // ptr->flags = value;
             }
-        }
+        }*/
     }
 }

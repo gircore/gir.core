@@ -24,6 +24,9 @@ namespace Repository.Model
         /// </summary>
         public SymbolName SymbolName { get; set; }
 
+        public Symbol(string nativeName, string managedName) 
+            : this(new CTypeName(nativeName), new TypeName(nativeName), new SymbolName(managedName)){ }
+        
         protected internal Symbol(CTypeName? ctypeName, TypeName typeName, SymbolName symbolName): this(null, ctypeName, typeName, symbolName)
         {
         }
@@ -46,13 +49,6 @@ namespace Repository.Model
         
         public override string ToString()
             => SymbolName;
-
-        public static Symbol Primitive(string nativeName, string managedName)
-            => new Symbol(
-                ctypeName: new CTypeName(nativeName),
-                typeName: new TypeName(nativeName), 
-                symbolName: new SymbolName(managedName)
-            );
 
         public string GetMetadataString(string key)
             => Metadata[key]?.ToString() ?? "";

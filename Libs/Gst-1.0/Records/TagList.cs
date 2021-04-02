@@ -4,18 +4,19 @@ using GObject;
 
 namespace Gst
 {
-    public partial struct TagList
+    public partial record TagList
     {
         public void Foreach(TagForeachFunc func)
         {
+            throw new NotImplementedException(); //TODO
             // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
+            /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
 
             Native.@foreach(thisPtr, func, IntPtr.Zero);
 
             // Update this structure (TODO: Check for NULL)
-            this = (TagList) Marshal.PtrToStructure(thisPtr, GetType())!;
+            this = (TagList) Marshal.PtrToStructure(thisPtr, GetType())!;*/
         }
 
         public void Add(TagMergeMode mode, string tag, params Value[] values)
@@ -28,8 +29,9 @@ namespace Gst
 
         public void AddValue(TagMergeMode mode, string tag, Value value)
         {
+            throw new NotImplementedException(); //TODO
             // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
+            /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
 
             Native.add_value(thisPtr, mode, tag, ref value);
@@ -38,13 +40,14 @@ namespace Gst
             this = (TagList) Marshal.PtrToStructure(thisPtr, GetType())!;
 
             // Dispose of Value afterwards
-            value.Dispose();
+            value.Dispose();*/
         }
 
         public uint GetTagSize(string tag)
         {
+            throw new NotImplementedException(); //TODO
             // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
+            /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
 
             var result = Native.get_tag_size(thisPtr, tag);
@@ -52,13 +55,14 @@ namespace Gst
             // Update this structure (TODO: Check for NULL)
             this = (TagList) Marshal.PtrToStructure(thisPtr, GetType())!;
 
-            return result;
+            return result;*/
         }
 
         public Value GetValueIndex(string tag, uint index)
         {
+            throw new NotImplementedException(); //TODO
             // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
+            /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
 
             var result = Native.get_value_index(thisPtr, tag, index);
@@ -66,7 +70,7 @@ namespace Gst
             // Update this structure (TODO: Check for NULL)
             this = (TagList) Marshal.PtrToStructure(thisPtr, GetType())!;
 
-            return result;
+            return result;*/
         }
     }
 }

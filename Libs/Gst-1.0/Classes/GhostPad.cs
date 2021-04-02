@@ -12,9 +12,9 @@ namespace Gst
         // which *must* be run. Therefore our existing constructor design is
         // inadequate.
         public static GhostPad? New(string name, Pad target)
-            => WrapNullableHandle<GhostPad>(Native.Methods.New(name, target.Handle), false);
+            => throw new NotImplementedException(); //TODO WrapNullableHandle<GhostPad>(Native.Methods.New(name, target.Handle), false);
 
         public bool SetTarget(Pad newTarget)
-            => Native.Methods.SetTarget(Handle, newTarget.Handle);
+            => throw new NotImplementedException(); //TODO Native.Methods.SetTarget(Handle, newTarget.Handle);
     }
 }

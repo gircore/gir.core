@@ -9,7 +9,7 @@ namespace Gst
     {
         #region Fields
 
-        public State CurrentState
+        /*public State CurrentState
         {
             get => GetObjectStruct<Fields>().current_state;
             set
@@ -18,7 +18,7 @@ namespace Gst
                 fields.current_state = value;
                 SetObjectStruct(fields);
             }
-        }
+        }*/
 
         // NOTE: Be careful about providing access to fields
         // We should (almost) always go through methods, unless
@@ -46,26 +46,26 @@ namespace Gst
 
         public static Element MakeFromUri(URIType type, string uri, string elementName)
         {
-            IntPtr result = Native.make_from_uri(type, uri, elementName, out IntPtr errPtr);
+            IntPtr result = Native.Instance.Methods.MakeFromUri(type, uri, elementName, out var error);
 
-            Error.ThrowOnError(errPtr);
+            Error.ThrowOnError(error);
 
             return WrapHandle<Element>(result, false);
         }
 
         public Bus? GetBus()
-            => WrapNullableHandle<Bus>(Native.Methods.GetBus(Handle), true);
+            => throw new NotImplementedException(); //TODO WrapNullableHandle<Bus>(Native.Instance.Methods.GetBus(Handle), true);
 
-        public bool AddPad(Pad pad) => Native.Methods.AddPad(Handle, pad.Handle);
+        public bool AddPad(Pad pad) => Native.Instance.Methods.AddPad(Handle, pad.Handle);
 
         public StateChangeReturn SetState(State state)
-            => Native.Methods.SetState(Handle, state);
+            => Native.Instance.Methods.SetState(Handle, state);
 
         public StateChangeReturn GetState(out State state, out State pending, ulong timeout)
         {
             IntPtr statePtr = IntPtr.Zero;
             IntPtr pendingPtr = IntPtr.Zero;
-            var result = Native.get_state(Handle, out statePtr, out pendingPtr, timeout);
+            var result = Native.Instance.Methods.GetState(Handle, out statePtr, out pendingPtr, timeout);
 
             state = Marshal.PtrToStructure<State>(statePtr);
             pending = Marshal.PtrToStructure<State>(pendingPtr);
@@ -77,30 +77,30 @@ namespace Gst
         }
 
         public bool SeekSimple(Format format, SeekFlags seekFlags, long seekPos)
-            => Native.Methods.SeekSimple(Handle, format, seekFlags, seekPos);
+            => Native.Instance.Methods.SeekSimple(Handle, format, seekFlags, seekPos);
 
         public bool QueryPosition(Format format, out long cur)
         {
-            return Native.Methods.QueryPosition(Handle, format, out cur);
+            return Native.Instance.Methods.QueryPosition(Handle, format, out  cur);
         }
 
         public bool QueryDuration(Format format, out long duration)
         {
-            return Native.Methods.QueryDuration(Handle, format, out duration);
+            return Native.Instance.Methods.QueryDuration(Handle, format, out duration);
         }
 
         public Pad? GetStaticPad(string name)
-            => WrapNullableHandle<Pad>(Native.Methods.GetStaticPad(Handle, name), true);
+            => throw new NotImplementedException(); //TODO WrapNullableHandle<Pad>(Native.Instance.Methods.GetStaticPad(Handle, name), true);
 
         public static void Unlink(Element src, Element dest)
-            => Native.Methods.Unlink(src.Handle, dest.Handle);
+            => Native.Instance.Methods.Unlink(src.Handle, dest.Handle);
 
         public void Unlink(Element dest) => Unlink(this, dest);
 
         public bool Link(Element dest) => Link(this, dest);
 
         public static bool Link(Element src, Element dest)
-            => Native.Methods.Link(src.Handle, dest.Handle);
+            => Native.Instance.Methods.Link(src.Handle, dest.Handle);
 
         // FIXME: This function is the culprit for wavparse0 errors
         // TODO: Make this work properly, and additionally clean up
@@ -125,10 +125,10 @@ namespace Gst
         }
 
         public Pad? GetRequestPad(string name)
-            => WrapNullableHandle<Pad>(Native.Methods.GetRequestPad(Handle, name), true);
+            => throw new NotImplementedException(); //TODO WrapNullableHandle<Pad>(Native.Instance.Methods.GetRequestPad(Handle, name), true);
 
         public bool SyncStateWithParent()
-            => Native.Methods.SyncStateWithParent(Handle);
+            => Native.Instance.Methods.SyncStateWithParent(Handle);
 
         // Some older mono applications appear to use a
         // string indexer to lookup properties from GLib

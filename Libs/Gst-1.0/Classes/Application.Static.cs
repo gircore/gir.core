@@ -6,10 +6,8 @@ namespace Gst
     {
         public static void Init()
         {
-            var argc = 0;
-            IntPtr argv = IntPtr.Zero;
-
-            Global.Native.init(ref argc, ref argv);
+            int argc = 0;
+            Functions.Native.Init(ref argc, new string[0]);
         }
     }
 }

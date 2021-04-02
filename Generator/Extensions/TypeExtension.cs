@@ -23,6 +23,9 @@ namespace Generator
                 (Record r, {TypeInformation: {IsPointer: true}}, Target.Native) when useSafeHandle
                     => WriteType(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName")),
 
+                //Pointers to primitive value types can be marshalled directly
+                (PrimitiveValueType, {TypeInformation:{IsPointer: true}}, Target.Native) => symbol.Write(target, currentNamespace),
+                
                 //Use IntPtr for all types where a pointer is expected
                 (_, {TypeInformation: {IsPointer: true}}, Target.Native) => "IntPtr",
                 

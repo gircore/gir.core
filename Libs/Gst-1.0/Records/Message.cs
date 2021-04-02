@@ -13,7 +13,8 @@ namespace Gst
         }
     }
 
-    public partial struct Message
+    //TODO
+    /*public partial record Message
     {
         public MessageType Type => type;
 
@@ -125,5 +126,5 @@ namespace Gst
             error = Marshal.PtrToStructure<GLib.Error>(errPtr);
             Marshal.FreeHGlobal(thisPtr);
         }
-    }
+    }*/
 }

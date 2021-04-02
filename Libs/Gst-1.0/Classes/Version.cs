@@ -10,6 +10,6 @@ namespace Gst
         public static int Nano => Constants.VERSION_NANO;
 
         public static string VersionString
-            => StringHelper.ToAnsiStringAndFree(Global.Native.version_string());
+            => Functions.Native.VersionString();
     }
 }

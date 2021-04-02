@@ -14,7 +14,7 @@ namespace Sample
             ret.SetState(State.Playing);
             Bus bus = ret.GetBus();
             bus.WaitForEndOrError();
-            ret.SetState(State.@null);
+            ret.SetState(State.Null);
         }
     }
 }

@@ -12,8 +12,7 @@ namespace Gst
         /// <exception cref="GLib.GException">Throws an exception in case of an error</exception>
         public static Element Launch(string pipelineDescription)
         {
-            IntPtr ret = Global.Native.parse_launch(pipelineDescription, out IntPtr error);
-
+            IntPtr ret = Functions.Native.ParseLaunch(pipelineDescription, out var error);
             GLib.Error.ThrowOnError(error);
 
             return GObject.Object.WrapHandle<Element>(ret, false);
@@ -21,8 +20,7 @@ namespace Gst
 
         public static Element BinFromDescription(string binDescription, bool ghostUnlinkedPads)
         {
-            IntPtr ret = Global.Native.parse_bin_from_description(binDescription, ghostUnlinkedPads, out IntPtr error);
-
+            IntPtr ret = Functions.Native.ParseBinFromDescription(binDescription, ghostUnlinkedPads, out var error);
             GLib.Error.ThrowOnError(error);
 
             return GObject.Object.WrapHandle<Element>(ret, false);
