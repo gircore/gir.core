@@ -6,6 +6,12 @@ namespace Gio
 {
     public partial class DBusConnection
     {
+        #region Fields
+
+        private AsyncReadyCallbackNativeCallHandler? _callAsyncCallbackHandler;
+        
+        #endregion
+        
         #region Static methods
 
         public static DBusConnection Get(BusType busType)
@@ -20,26 +26,26 @@ namespace Gio
 
         #region Methods
 
-        /* TODO
         public Task<Variant> CallAsync(string busName, string objectPath, string interfaceName, string methodName,
             Variant? parameters = null)
         {
             var tcs = new TaskCompletionSource<Variant>();
 
-            //TODO: This could be garbage collected and the callback would not work anymore
             void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
             {
-                IntPtr ret = Native.call_finish(sourceObject, res, out IntPtr error);
+                var ret = Native.Instance.Methods.CallFinish(sourceObject, res, out var error);
                 Error.ThrowOnError(error);
 
                 tcs.SetResult(new Variant(ret));
             }
+            
+            //TODO: Use on time CallbackHandler
+            _callAsyncCallbackHandler = new AsyncReadyCallbackNativeCallHandler(Callback);
 
-            IntPtr @params = parameters?.Handle ?? IntPtr.Zero;
-            Native.call(Handle, busName, objectPath, interfaceName, methodName, @params, IntPtr.Zero, DBusCallFlags.None, -1, IntPtr.Zero, Callback, IntPtr.Zero);
+            Native.Instance.Methods.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), VariantType.Native.VariantTypeSafeHandle.Null, DBusCallFlags.None, -1, IntPtr.Zero, _callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
 
             return tcs.Task;
-        }*/
+        }
 
         public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
         {
@@ -48,6 +54,12 @@ namespace Gio
             Error.ThrowOnError(error);
 
             return new Variant(ret);
+        }
+
+        public override void Dispose()
+        {
+            _callAsyncCallbackHandler?.Dispose();
+            base.Dispose();
         }
 
         #endregion

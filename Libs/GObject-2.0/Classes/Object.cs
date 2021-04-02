@@ -86,7 +86,7 @@ namespace GObject
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             //TODO
         }

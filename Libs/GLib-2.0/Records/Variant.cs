@@ -98,4 +98,10 @@ namespace GLib
             Handle.Dispose();
         }
     }
+
+    public static class  VariantExtension
+    {
+        public static Variant.Native.VariantSafeHandle GetSafeHandle(this Variant? variant)
+            => variant is null ? Variant.Native.VariantSafeHandle.Null : variant.Handle;
+    }
 }
