@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GObject
+namespace GObject.Integration
 {
     public static class TypeDictionary
     {

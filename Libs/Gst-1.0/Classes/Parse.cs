@@ -1,4 +1,5 @@
 ﻿using System;
+using GObject.Integration;
 
 namespace Gst
 {
@@ -15,7 +16,7 @@ namespace Gst
             IntPtr ret = Functions.Native.ParseLaunch(pipelineDescription, out var error);
             GLib.Error.ThrowOnError(error);
 
-            return GObject.Object.WrapHandle<Element>(ret, false);
+            return ObjectWrapper.WrapHandle<Element>(ret, false);
         }
 
         public static Element BinFromDescription(string binDescription, bool ghostUnlinkedPads)
@@ -23,7 +24,7 @@ namespace Gst
             IntPtr ret = Functions.Native.ParseBinFromDescription(binDescription, ghostUnlinkedPads, out var error);
             GLib.Error.ThrowOnError(error);
 
-            return GObject.Object.WrapHandle<Element>(ret, false);
+            return ObjectWrapper.WrapHandle<Element>(ret, false);
         }
     }
 }

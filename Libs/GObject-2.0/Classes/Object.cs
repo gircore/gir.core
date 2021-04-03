@@ -3,6 +3,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GLib;
+using GObject.Integration;
+
+#nullable enable
 
 namespace GObject
 {
@@ -19,7 +22,7 @@ namespace GObject
 
         #region Properties
 
-        public IntPtr Handle { get; }
+        public IntPtr Handle { get; private set; }
 
         #endregion
 
@@ -48,7 +51,13 @@ namespace GObject
                 Debug.Assert(!Native.Instance.Methods.IsFloating(handle), "Owned floating references are not possible.");
             }
 
+            Initialize(handle);
+        }
+
+        private void Initialize(IntPtr handle)
+        {
             Handle = handle;
+            ObjectMapper.Map(handle, this);
         }
 
         protected Object(ConstructParameter[] properties)

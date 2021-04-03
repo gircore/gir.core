@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using GObject.Integration;
 
 namespace GObject
 {
