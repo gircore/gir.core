@@ -32,7 +32,7 @@ namespace Generator.Services.Writer
                         projectName: projectName,
                         outputDir: outputDir,
                         templateName: "union.sbntxt",
-                        folder: Folder.Records,
+                        folder: Folder.Native.Records,
                         fileName: union.SymbolName,
                         scriptObject: scriptObject
                     );

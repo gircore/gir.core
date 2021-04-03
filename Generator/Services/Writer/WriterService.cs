@@ -40,8 +40,8 @@ namespace Generator.Services.Writer
             _writeSymbolsService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                templateName: "delegate.sbntxt",
-                subfolder: "Delegates",
+                templateName: "native.delegate.sbntxt",
+                subfolder: Folder.Native.Delegates,
                 objects: ns.Callbacks,
                 @namespace: ns
             );
@@ -50,7 +50,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "class.sbntxt",
-                subfolder: Folder.Classes,
+                subfolder: Folder.Managed.Classes,
                 objects: ns.Classes.Where(x => !x.IsFundamental),
                 @namespace: ns
             );
@@ -58,8 +58,8 @@ namespace Generator.Services.Writer
             _writeClassInstanceService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                templateName: "classinstance.sbntxt",
-                subfolder: Folder.Classes,
+                templateName: "native.classinstance.sbntxt",
+                subfolder: Folder.Native.Classes,
                 classes: ns.Classes.Where(x => !x.IsFundamental),
                 @namespace: ns
             );
@@ -68,7 +68,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "fundamental.class.sbntxt",
-                subfolder: Folder.Classes,
+                subfolder: Folder.Managed.Classes,
                 objects: ns.Classes.Where(x => x.IsFundamental),
                 @namespace: ns
             );
@@ -77,7 +77,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "interface.sbntxt",
-                subfolder: Folder.Interfaces,
+                subfolder: Folder.Managed.Interfaces,
                 objects: ns.Interfaces,
                 @namespace: ns
             );
@@ -86,7 +86,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
-                subfolder: Folder.Enums,
+                subfolder: Folder.Managed.Enums,
                 objects: ns.Enumerations,
                 @namespace: ns
             );
@@ -95,7 +95,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "enum.sbntxt",
-                subfolder: Folder.Enums,
+                subfolder: Folder.Managed.Enums,
                 objects: ns.Bitfields,
                 @namespace: ns
             );
@@ -132,7 +132,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 templateName: "constants.sbntxt",
-                subfolder: Folder.Classes,
+                subfolder: Folder.Managed.Classes,
                 name: "Constants",
                 elements: ns.Constants,
                 @namespace: ns
@@ -141,8 +141,8 @@ namespace Generator.Services.Writer
             _writeElementsService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                templateName: "functions.sbntxt",
-                subfolder: Folder.Classes,
+                templateName: "native.functions.sbntxt",
+                subfolder: Folder.Native.Classes,
                 name: "Functions",
                 elements: ns.Functions,
                 @namespace: ns
@@ -151,8 +151,8 @@ namespace Generator.Services.Writer
             _writeStaticService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                templateName: "extensions.sbntxt",
-                subfolder: Folder.Classes,
+                templateName: "native.extensions.sbntxt",
+                subfolder: Folder.Native.Classes,
                 name: "Extensions",
                 @namespace: ns
             );

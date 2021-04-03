@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GObject.Integration
+namespace GObject.Native
 {
     public partial class ObjectMapper
     {

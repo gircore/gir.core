@@ -39,8 +39,8 @@ namespace Generator.Services.Writer
             {
                 _writeHelperService.Write(
                     projectName: ns.ToCanonicalName(),
-                    templateName: "dll_import.sbntxt",
-                    folder: Folder.Classes,
+                    templateName: "native.dll_import.sbntxt",
+                    folder: Folder.Native.Classes,
                     outputDir: outputDir,
                     fileName: "DllImport",
                     scriptObject: scriptObject
@@ -49,7 +49,7 @@ namespace Generator.Services.Writer
                 _writeHelperService.Write(
                     projectName: ns.ToCanonicalName(),
                     templateName: "module_dll_import.sbntxt",
-                    folder: Folder.Classes,
+                    folder: Folder.Managed.Classes,
                     outputDir: outputDir,
                     fileName: "Module",
                     scriptObject: scriptObject

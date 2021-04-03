@@ -1,0 +1,16 @@
+using System;
+using System.Runtime.InteropServices;
+
+#nullable enable
+
+namespace {{ namespace.native_name }}
+{    
+    [StructLayout(LayoutKind.Sequential)]
+    public partial struct {{ symbol_name }}
+    {
+        {{ include 'native.struct.delegates.sbntxt' }}
+        {{ include 'native.struct.fields.sbntxt' }}
+        
+        {{ include 'native.struct.methods.sbntxt' }}
+    }
+}

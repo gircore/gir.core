@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace GObject.Integration
+namespace GObject.Native
 {
     public static class ObjectWrapper
     {

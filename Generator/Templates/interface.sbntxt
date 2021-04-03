@@ -13,6 +13,5 @@ namespace {{ namespace.name }}
          private static readonly TypeDescriptor GTypeDescriptor = TypeDescriptor.For("{{ ctype }}", Native.Methods.GetGType);
          
          {{ include 'interface.properties.sbntxt' }}
-         {{ include 'interface.native.sbntxt' }}
     }
 }

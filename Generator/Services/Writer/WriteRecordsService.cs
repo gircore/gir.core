@@ -47,16 +47,16 @@ namespace Generator.Services.Writer
         private string GetFolder(Record record)
             => record.GLibClassStructFor?.GetSymbol() switch
             {
-                Interface => Folder.Interfaces,
-                Class => Folder.Classes,
-                _ => Folder.Records
+                Interface => Folder.Native.Interfaces,
+                Class => Folder.Native.Classes,
+                _ => Folder.Managed.Records
             };
 
         private string GetTemplateName(Record record)
             => record.GLibClassStructFor?.GetSymbol() switch
             {
-                Interface => "interfacestruct.sbntxt",
-                Class => "classstruct.sbntxt",
+                Interface => "native.interfacestruct.sbntxt",
+                Class => "native.classstruct.sbntxt",
                 _ => "struct.sbntxt",
             };
     }

@@ -1,5 +1,5 @@
 ﻿using System;
-using GObject.Integration;
+using GObject.Native;
 
 namespace Gst
 {

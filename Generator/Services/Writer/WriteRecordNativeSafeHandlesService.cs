@@ -32,8 +32,8 @@ namespace Generator.Services.Writer
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "structsafehandle.sbntxt",
-                        folder: Folder.Records,
+                        templateName: "native.safehandle.sbntxt",
+                        folder: Folder.Native.Records,
                         fileName: record.SymbolName + ".SafeHandle",
                         scriptObject: scriptObject
                     );

@@ -1,6 +1,0 @@
-//TODO: Native is only temporary public. Managed Callbacks reference this class, which is not correct. 
-public partial class Native
-{
-    {{ include 'struct.native.struct.sbntxt' }}
-    {{ include 'struct.native.methods.sbntxt' }}
-}

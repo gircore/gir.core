@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 #nullable enable
 
-namespace {{ namespace.name }}
+namespace {{ namespace.native_name }}
 {
     internal static class DllImport
     {

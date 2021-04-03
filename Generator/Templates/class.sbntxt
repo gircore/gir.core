@@ -14,9 +14,5 @@ namespace {{ namespace.name }}
 
         {{ include 'class.signals.sbntxt' }}
         {{ include 'class.constructors.sbntxt' }}
-        
-        {{ include 'class.native.properties.sbntxt' }}
-         
-         {{'new ' | get_if parent }}protected partial class Native {{ write_native_parent parent }} { }
     }
 }

@@ -1,6 +1,0 @@
-[StructLayout(LayoutKind.Sequential)]
-public partial struct {{ get_metadata "PureName" }}
-{
-    {{ include 'struct.delegates.sbntxt' }}
-    {{ include 'struct.fields.sbntxt' }}
-}

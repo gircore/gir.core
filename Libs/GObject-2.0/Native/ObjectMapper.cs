@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace GObject.Integration
+namespace GObject.Native
 {
     public static partial class ObjectMapper
     {

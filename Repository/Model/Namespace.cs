@@ -8,8 +8,8 @@ namespace Repository.Model
     public class Namespace : SymbolReferenceProvider, INode<Namespace>
     {
         #region Properties
-        
-        // Basic Info
+
+        public NamespaceName NativeName => Name with { Value = Name.Value + ".Native"};
         public NamespaceName Name { get; }
         public string Version { get; }
         
