@@ -134,15 +134,19 @@ namespace Generator
 
             builder.AppendLine("// With Return Value: " + returnValue.WriteManaged(currentNamespace));
 
-            // We don't support this (static generation) yet
+            // We only support a subset of methods at the moment:
+            
+            // No static functions
             if (!isInstance)
                 goto exit;
             
-            // TODO: REMOVE INSTANCE PARAMETER FROM ARGUMENTS
+            // No in/out/ref parameters
+            if (managedParams.Any(param => param.Direction != Direction.Default))
+                goto exit;
+            
             builder.AppendLine($"public {returnValue.WriteManaged(currentNamespace)} {method.SymbolName}({method.ParameterList.WriteManaged(currentNamespace)})");
             builder.AppendLine("{");
             
-            // TODO: Method Generation
             // We use a system of 'Blocks' to make sure resources are allocated and
             // deallocated in the correct order. Blocks are nested inside each other,
             // wrapping the inner blocks with a given 'start' and 'end' statement. This

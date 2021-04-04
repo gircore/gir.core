@@ -14,8 +14,9 @@ namespace Generator
             // Exclude "userData" parameters
             IEnumerable<Parameter> args = parameterList.SingleParameters.Where(x => x.ClosureIndex == null);
 
-            if (parameterList.InstanceParameter is { })
-                args = args.Append(parameterList.InstanceParameter);
+            // TODO: We don't generate the instance parameter for managed method signatures
+            // if (parameterList.InstanceParameter is { })
+            //     args = args.Append(parameterList.InstanceParameter);
 
             return string.Join(", ", args.Select(x => x.Write(Target.Managed, currentNamespace)));
         }
