@@ -33,13 +33,13 @@ namespace Generator.Services.Writer
                         fileName: iface.SymbolName ,
                         scriptObject: scriptObject
                     );
-                    
+
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "interface.native.sbntxt",
+                        templateName: "interface.native.instance.sbntxt",
                         folder: Folder.Native.Interfaces,
-                        fileName: iface.SymbolName,
+                        fileName: iface.SymbolName + ".Instance",
                         scriptObject: scriptObject
                     );
                 }

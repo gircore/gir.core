@@ -20,14 +20,15 @@ namespace GObject
                 _callback = action;
             }
 
-            private void MarshalCallback(Native.Closure.Struct closure, Native.Value.Struct? returnvalue, uint nparamvalues, Native.Value.Struct[] paramvalues, IntPtr? invocationhint, IntPtr? marshaldata)
+            //private void MarshalCallback(Native.Closure.Struct closure, Native.Value.Struct? returnvalue, uint nparamvalues, Native.Value.Struct[] paramvalues, IntPtr? invocationhint, IntPtr? marshaldata)
+            private void MarshalCallback()
             {
-                Debug.Assert(
+                /*Debug.Assert(
                     condition: paramvalues.Length == nparamvalues,
                     message: "Values were not marshalled correctly. Breakage may occur"
                 );
 
-                _callback?.Invoke(ref paramvalues);
+                _callback?.Invoke(ref paramvalues);*/
             }
 
             public void Dispose()

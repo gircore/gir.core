@@ -39,7 +39,7 @@ namespace Generator.Services.Writer
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "class.native.sbntxt",
+                        templateName: "class.native.instance.sbntxt",
                         folder: Folder.Native.Classes,
                         fileName: cls.SymbolName + ".Instance",
                         scriptObject: scriptObject

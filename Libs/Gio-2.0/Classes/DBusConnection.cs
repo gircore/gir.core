@@ -8,7 +8,7 @@ namespace Gio
     {
         #region Fields
 
-        private AsyncReadyCallbackNativeCallHandler? _callAsyncCallbackHandler;
+        private Native.AsyncReadyCallbackNativeCallHandler? _callAsyncCallbackHandler;
         
         #endregion
         
@@ -16,10 +16,10 @@ namespace Gio
 
         public static DBusConnection Get(BusType busType)
         {
-            var handle = Functions.Native.BusGetSync(busType, IntPtr.Zero, out var error);
+            var handle = Native.Functions.BusGetSync(busType, IntPtr.Zero, out var error);
             Error.ThrowOnError(error);
 
-            return Wrapper.WrapHandle<DBusConnection>(handle, true);
+            return GObject.Native.ObjectWrapper.WrapHandle<DBusConnection>(handle, true);
         }
 
         #endregion
@@ -33,23 +33,23 @@ namespace Gio
 
             void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
             {
-                var ret = Native.Instance.Methods.CallFinish(sourceObject, res, out var error);
+                var ret = Native.DBusConnection.Instance.Methods.CallFinish(sourceObject, res, out var error);
                 Error.ThrowOnError(error);
 
                 tcs.SetResult(new Variant(ret));
             }
             
             //TODO: Use on time CallbackHandler
-            _callAsyncCallbackHandler = new AsyncReadyCallbackNativeCallHandler(Callback);
+            _callAsyncCallbackHandler = new Native.AsyncReadyCallbackNativeCallHandler(Callback);
 
-            Native.Instance.Methods.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), VariantType.Native.VariantTypeSafeHandle.Null, DBusCallFlags.None, -1, IntPtr.Zero, _callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
+            Native.DBusConnection.Instance.Methods.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Native.VariantType.Handle.Null, DBusCallFlags.None, -1, IntPtr.Zero, _callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
 
             return tcs.Task;
         }
 
         public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
         {
-            var ret = Native.Instance.Methods.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameters?.Handle, VariantType.Native.VariantTypeSafeHandle.Null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
+            var ret = Native.DBusConnection.Instance.Methods.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameters?.Handle, GLib.Native.VariantType.Handle.Null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
 
             Error.ThrowOnError(error);
 

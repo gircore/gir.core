@@ -80,7 +80,7 @@ namespace Generator.Services
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{className}.Handle";
             
-            record.SymbolName = new SymbolName($"Native.{className}.Class");
+            record.SymbolName = new SymbolName($"{className}.Class");
         }
 
         private void SetRecordMetadata(Record record)
@@ -90,7 +90,7 @@ namespace Generator.Services
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{record.SymbolName}.Handle";
 
-            record.SymbolName = new SymbolName($"Native.{record.SymbolName}.Struct");
+            record.SymbolName = new SymbolName($"{record.SymbolName}.Struct");
         }
     }
 }

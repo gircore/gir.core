@@ -14,7 +14,15 @@ namespace Generator
             if (symbol.Namespace is null)
                 throw new Exception($"Can not write {nameof(Symbol)}, because namespace is missing");
 
-            return symbol.Namespace.GetName(target) + "." + name;
+            var ns = symbol switch
+            {
+                //Enumerations do not have a native representation they always live in the managed namespace
+                Enumeration => symbol.Namespace.Name,
+                
+                _ => symbol.Namespace.GetName(target)
+            };
+            
+            return ns + "." + name;
         }
     }
 }

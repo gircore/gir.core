@@ -26,7 +26,7 @@ namespace Gio
 
         public int Run()
         {
-            return Native.Instance.Methods.Run(Handle, 0, new string[0]);
+            return Native.Application.Instance.Methods.Run(Handle, 0, new string[0]);
         }
 
         #endregion
