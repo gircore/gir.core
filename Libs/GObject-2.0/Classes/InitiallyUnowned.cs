@@ -4,7 +4,7 @@
     {
         protected override void Initialize()
         {
-             Object.Native.Instance.Methods.RefSink(Handle);
+             Native.Object.Instance.Methods.RefSink(Handle);
         }
     }
 }

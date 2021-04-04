@@ -14,7 +14,7 @@ namespace Generator
             if (symbol.Namespace is null)
                 throw new Exception($"Can not write {nameof(Symbol)}, because namespace is missing");
 
-            return symbol.Namespace.Name + "." + name;
+            return symbol.Namespace.GetName(target) + "." + name;
         }
     }
 }

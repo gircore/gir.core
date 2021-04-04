@@ -1,4 +1,5 @@
-﻿using Repository.Model;
+﻿using System;
+using Repository.Model;
 using Type = Repository.Model.Type;
 
 namespace Generator
@@ -21,7 +22,7 @@ namespace Generator
                 
                 //Use original symbol name for records (remapped to SafeHandles)
                 (Record r, {TypeInformation: {IsPointer: true}}, Target.Native) when useSafeHandle
-                    => WriteType(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName")),
+                    => WriteType(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), target),
 
                 //Pointers to primitive value types can be marshalled directly
                 (PrimitiveValueType, {TypeInformation:{IsPointer: true}}, Target.Native) => symbol.Write(target, currentNamespace),
@@ -38,12 +39,15 @@ namespace Generator
             return name;
         }
 
-        private static string WriteType(Namespace currentNamespace, Namespace? targetNamespace, string str)
+        private static string WriteType(Namespace currentNamespace, Namespace? targetNamespace, string str, Target target)
         {
             if (!currentNamespace.IsForeignTo(targetNamespace))
                 return str;
 
-            return targetNamespace?.Name + "." + str;
+            if (targetNamespace is null)
+                throw new Exception("Targetnamespace is missing");
+            
+            return targetNamespace.GetName(target) + "." + str;
         }
     }
 }

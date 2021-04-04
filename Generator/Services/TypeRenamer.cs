@@ -78,7 +78,7 @@ namespace Generator.Services
             record.Metadata["Name"] = className;
             record.Metadata["PureName"] = "Class";
             record.Metadata["SafeHandleName"] = "Handle";
-            record.Metadata["SafeHandleRefName"] = "ClassSafeHandle";
+            record.Metadata["SafeHandleRefName"] = $"{className}.Handle";
             
             record.SymbolName = new SymbolName($"Native.{className}.Class");
         }

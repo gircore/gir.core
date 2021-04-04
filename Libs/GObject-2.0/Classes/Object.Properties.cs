@@ -39,7 +39,7 @@ namespace GObject
         /// <param name="name">The property value.</param>
         protected void SetProperty(string name, Value value)
         {
-            Native.Instance.Methods.SetProperty(Handle, name, value.Handle);
+            Native.Object.Instance.Methods.SetProperty(Handle, name, value.Handle);
             value.Dispose();
         }
 
@@ -52,7 +52,7 @@ namespace GObject
         /// </returns>
         protected Value GetProperty(string name)
         {
-            var handle = Value.Native.ManagedValueSafeHandle.Create();
+            var handle = Native.Value.ManagedHandle.Create();
             
             GetProperty(Handle, name, ref handle);
 
@@ -61,7 +61,7 @@ namespace GObject
 
         //TODO: Clarify this call use native one if possible
         [DllImport("GObject", EntryPoint = "g_object_get_property")]
-        public static extern void GetProperty(IntPtr @object, string propertyName, ref Value.Native.ValueSafeHandle value);
+        public static extern void GetProperty(IntPtr @object, string propertyName, ref Native.Value.Handle value);
 
         #endregion
     }

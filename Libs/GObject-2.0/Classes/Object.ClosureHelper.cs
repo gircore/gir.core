@@ -5,14 +5,14 @@ namespace GObject
 {
     public partial class Object
     {
-        protected internal delegate void ActionRefValues(ref Value.Native.Struct[] items);
+        protected internal delegate void ActionRefValues(ref Native.Value.Struct[] items);
 
         private class ClosureHelper : IDisposable
         {
             private readonly ActionRefValues? _callback;
             private readonly Closure _closure;
 
-            public Closure.Native.ClosureSafeHandle? Handle => _closure.Handle;
+            public Native.Closure.Handle? Handle => _closure.Handle;
 
             public ClosureHelper(ActionRefValues action)
             {
@@ -20,7 +20,7 @@ namespace GObject
                 _callback = action;
             }
 
-            private void MarshalCallback(Closure.Native.Struct closure, Value.Native.Struct? returnvalue, uint nparamvalues, Value.Native.Struct[] paramvalues, IntPtr? invocationhint, IntPtr? marshaldata)
+            private void MarshalCallback(Native.Closure.Struct closure, Native.Value.Struct? returnvalue, uint nparamvalues, Native.Value.Struct[] paramvalues, IntPtr? invocationhint, IntPtr? marshaldata)
             {
                 Debug.Assert(
                     condition: paramvalues.Length == nparamvalues,

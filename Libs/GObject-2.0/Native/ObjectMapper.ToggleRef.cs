@@ -1,10 +1,11 @@
 ﻿using System;
+using GLib;
 
 namespace GObject.Native
 {
     public partial class ObjectMapper
     {
-        private class ToggleRef<T> where T : Object //TODO Use interface Wrapper which only defines a handle?
+        private class ToggleRef<T> where T : class, IHandle
         {
             private object _reference;
 
@@ -37,9 +38,8 @@ namespace GObject.Native
 
                 _reference = obj;
 
-                //TODO
-                //Native.add_toggle_ref(obj.Handle, ToggleReference, IntPtr.Zero);
-                //Native.unref(obj.Handle);
+                Native.Object.Instance.Methods.AddToggleRef(obj.Handle, ToggleReference, IntPtr.Zero);
+                Native.Object.Instance.Methods.Unref(obj.Handle);
             }
 
             private void ToggleReference(IntPtr data, IntPtr @object, bool is_last_ref)

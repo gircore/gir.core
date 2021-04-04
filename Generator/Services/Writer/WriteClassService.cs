@@ -33,6 +33,9 @@ namespace Generator.Services.Writer
                         scriptObject: scriptObject
                     );
 
+                    if (cls.IsFundamental)
+                        continue;
+
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,

@@ -53,7 +53,7 @@ namespace GObject
         // Print out the name of the GType
         public override string ToString()
         {
-            return Functions.Native.TypeName(_value);
+            return Native.Functions.TypeName(_value);
         }
 
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h

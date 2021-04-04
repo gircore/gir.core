@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Reflection;
+using GLib;
 
 namespace GObject.Native
 {
     public static class ObjectWrapper
     {
-        public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : class
+        public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : class, IHandle
         {
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException($"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
