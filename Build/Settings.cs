@@ -8,6 +8,7 @@ namespace Build
 
         public Configuration Configuration { get; init; }
         public bool GenerateComments { get; init; }
+        public bool GenerateMethods { get; init; }
         public bool GenerateXmlDocumentation { get; init; }
         public bool GenerateAsynchronously { get; init; } = true;
         public SemanticVersion? Version { get; init; }

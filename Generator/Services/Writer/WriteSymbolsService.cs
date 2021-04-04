@@ -18,12 +18,15 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Symbol> objects, Namespace @namespace)
+        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Symbol> objects, Namespace @namespace, object properties = null)
         {
             foreach (Symbol obj in objects)
             {
                 var scriptObject = _scriptObjectFactory.CreateComplex(@namespace);
                 scriptObject.Import(obj);
+                
+                if (properties != null)
+                    scriptObject.Import(properties);
 
                 //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
                 scriptObject.Import("get_metadata", new Func<string, object?>(key => obj.Metadata[key]));

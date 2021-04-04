@@ -69,7 +69,7 @@ namespace Generator
         public static string WriteManaged(this Method? method, Namespace currentNamespace)
         {
             // TODO: Move these outside
-            static string ArgToNative(Argument arg, string toParamName, string fromParamName, Namespace currentNamespace)
+            static string ArgToNative(Parameter arg, string toParamName, string fromParamName, Namespace currentNamespace)
             {
                 var expression = Convert.ManagedToNative(
                     fromParam: fromParamName,
@@ -78,10 +78,10 @@ namespace Generator
                     currentNamespace: currentNamespace
                 );
             
-                return $"{arg.WriteNativeType(currentNamespace)} {toParamName} = {expression};";
+                return $"{arg.WriteType(Target.Native, currentNamespace)} {toParamName} = {expression};";
             }
             
-            static string ArgToManaged(Argument arg, string toParamName, string fromParamName, Namespace currentNamespace)
+            static string ArgToManaged(Parameter arg, string toParamName, string fromParamName, Namespace currentNamespace)
             {
                 var expression = Convert.NativeToManaged(
                     fromParam: fromParamName,
@@ -91,7 +91,7 @@ namespace Generator
                     transfer: arg.Transfer
                 );
             
-                return $"{arg.WriteManagedType(currentNamespace)} {toParamName} = {expression};";
+                return $"{arg.WriteType(Target.Managed, currentNamespace)} {toParamName} = {expression};";
             }
             
             if (method is null)
@@ -100,24 +100,20 @@ namespace Generator
             var builder = new StringBuilder();
 
             // The 'true' arguments of the method that we pass to our wrapped call
-            IEnumerable<Argument> nativeParams = method.Arguments;
+            IEnumerable<Parameter> nativeParams = method.ParameterList.GetParameters();
 
             // The arguments used in the managed method signature (e.g. no userData)
-            IEnumerable<Argument> managedParams = method.Arguments.GetManagedArgs();
+            IEnumerable<SingleParameter> managedParams = method.ParameterList.SingleParameters;
             
             // Instance argument (which we want to exclude from the managed signature)
-            Argument instanceArg = method.InstanceArgument;
-
-            // Remove first element (instance argument) from managedParams
-            if (instanceArg != null)
-                managedParams = managedParams.ToArray()[1..];
+            InstanceParameter? instanceArg = method.ParameterList.InstanceParameter;
 
             // Delegate-type arguments only
-            IEnumerable<Argument> delegateParams = managedParams
+            IEnumerable<SingleParameter> delegateParams = managedParams
                 .Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
             
             // All other arguments
-            IEnumerable<Argument> marshalParams = managedParams.Except(delegateParams);
+            IEnumerable<SingleParameter> marshalParams = managedParams.Except(delegateParams);
             
             // Method return value
             ReturnValue returnValue = method.ReturnValue;
@@ -125,16 +121,16 @@ namespace Generator
             
             
             // Misc Logging
-            var isInstance = method.InstanceArgument != null;
+            var isInstance = method.ParameterList.InstanceParameter != null;
 
-            builder.AppendLine("// Method: " + method.ManagedName);
+            builder.AppendLine("// Method: " + method.SymbolName);
             builder.AppendLine("// IsInstance: " + isInstance);
 
             foreach (var arg in delegateParams)
-                builder.AppendLine("// Delegate Arg: " + arg.ManagedName);
+                builder.AppendLine("// Delegate Arg: " + arg.SymbolName);
             
             foreach (var arg in marshalParams)
-                builder.AppendLine("// Marshal Arg: " + arg.ManagedName);
+                builder.AppendLine("// Marshal Arg: " + arg.SymbolName);
 
             builder.AppendLine("// With Return Value: " + returnValue.WriteManaged(currentNamespace));
 
@@ -143,7 +139,7 @@ namespace Generator
                 goto exit;
             
             // TODO: REMOVE INSTANCE PARAMETER FROM ARGUMENTS
-            builder.AppendLine($"public {returnValue.WriteManaged(currentNamespace)} {method.ManagedName}({method.Arguments.WriteManaged(currentNamespace)})");
+            builder.AppendLine($"public {returnValue.WriteManaged(currentNamespace)} {method.SymbolName}({method.ParameterList.WriteManaged(currentNamespace)})");
             builder.AppendLine("{");
             
             // TODO: Method Generation
@@ -160,12 +156,12 @@ namespace Generator
                 Symbol symbol = dlgParam.SymbolReference.GetSymbol();
                 var handlerType = dlgParam.CallbackScope switch
                 {
-                    Scope.Call => $"{symbol.Namespace.Name}.{symbol.ManagedName}CallHandler",
-                    Scope.Async => $"{symbol.Namespace.Name}.{symbol.ManagedName}AsyncHandler",
-                    Scope.Notified => $"{symbol.Namespace.Name}.{symbol.ManagedName}NotifiedHandler"
+                    Scope.Call => $"{symbol.Namespace.Name}.{symbol.SymbolName}CallHandler",
+                    Scope.Async => $"{symbol.Namespace.Name}.{symbol.SymbolName}AsyncHandler",
+                    Scope.Notified => $"{symbol.Namespace.Name}.{symbol.SymbolName}NotifiedHandler"
                 };
 
-                var alloc = $"var {dlgParam.ManagedName}Handler = new {handlerType}({dlgParam.ManagedName});";
+                var alloc = $"var {dlgParam.SymbolName}Handler = new {handlerType}({dlgParam.SymbolName});";
 
                 stack.Nest(new Block()
                 {
@@ -179,8 +175,8 @@ namespace Generator
             if (instanceArg is { })
             {
                 Symbol symbol = instanceArg.SymbolReference.GetSymbol();
-                var alloc = ArgToNative(instanceArg, $"{instanceArg.ManagedName}Native", "this", currentNamespace);
-                var dealloc = $"// TODO: Free {instanceArg.ManagedName}Native (this)";
+                var alloc = ArgToNative(instanceArg, $"{instanceArg.SymbolName}Native", "this", currentNamespace);
+                var dealloc = $"// TODO: Free {instanceArg.SymbolName}Native (this)";
                 
                 stack.Nest(new Block()
                 {
@@ -193,8 +189,8 @@ namespace Generator
             foreach (var arg in marshalParams)
             {
                 Symbol symbol = arg.SymbolReference.GetSymbol();
-                var alloc = ArgToNative(arg, $"{arg.ManagedName}Native", arg.ManagedName, currentNamespace);
-                var dealloc = $"// TODO: Free {arg.ManagedName}Native";
+                var alloc = ArgToNative(arg, $"{arg.SymbolName}Native", arg.SymbolName, currentNamespace);
+                var dealloc = $"// TODO: Free {arg.SymbolName}Native";
                 
                 stack.Nest(new Block()
                 {
@@ -219,14 +215,14 @@ namespace Generator
                     Symbol symbol = arg.SymbolReference.GetSymbol();
                     var argText = symbol switch
                     {
-                        Callback => $"{arg.ManagedName}Handler.NativeCallback",
-                        _ => $"{arg.ManagedName}Native"
+                        Callback => $"{arg.SymbolName}Handler.NativeCallback",
+                        _ => $"{arg.SymbolName}Native"
                     };
 
                     return argText;
                 });
 
-                call.Append($"Native.Instance.Methods.{method.ManagedName}(");
+                call.Append($"Native.Instance.Methods.{method.SymbolName}(");
                 call.Append(string.Join(", ", args));
                 call.Append(");\n");
                 

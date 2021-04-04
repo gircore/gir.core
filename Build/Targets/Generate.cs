@@ -34,7 +34,9 @@ namespace Build
                 var generator = new Generator.Generator
                 {
                     OutputDir = Projects.ProjectPath,
-                    UseAsync = _settings.GenerateAsynchronously
+                    UseAsync = _settings.GenerateAsynchronously,
+                    GenerateMethods = _settings.GenerateMethods,
+                    GenerateDocComments = _settings.GenerateComments
                 };
 
                 generator.Write(Projects.AllLibraries.Select(x => x.GirFile));

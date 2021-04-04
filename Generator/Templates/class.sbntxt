@@ -19,8 +19,10 @@ namespace {{ namespace.name }}
          
         {{'new ' | get_if parent }}protected partial class Native {{ write_native_parent parent }} { }
         
-        {{~ for method in methods
-        method | write_managed_method
+        {{~ if generate_methods
+            for method in methods
+            method | write_managed_method
+            end
         end ~}}
     }
 }

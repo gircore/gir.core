@@ -5,6 +5,14 @@ using Repository.Model;
 
 namespace Generator.Services.Writer
 {
+    public record WriterOptions
+    {
+        public bool GenerateMethods { get; init; } = false;
+            
+        // TODO: Implement doc comment generation (LGPL-compliant)
+        public bool GenerateDocComments { get; init; } = false;
+    }
+    
     internal class WriterService
     {
         private readonly WriteSymbolsService _writeSymbolsService;
@@ -30,7 +38,7 @@ namespace Generator.Services.Writer
             _writeClassStructNativeSafeHandlesService = writeClassStructNativeSafeHandlesService;
         }
 
-        public void Write(Namespace ns, string outputDir)
+        public void Write(Namespace ns, string outputDir, WriterOptions options = default)
         {
             if (ns.SharedLibrary is null)
                 Log.Debug($"Not generating DLL import helper for namespace {ns.Name}: It is missing a shared library info.");
@@ -52,7 +60,8 @@ namespace Generator.Services.Writer
                 templateName: "class.sbntxt",
                 subfolder: Folder.Classes,
                 objects: ns.Classes.Where(x => !x.IsFundamental),
-                @namespace: ns
+                @namespace: ns,
+                properties: new { GenerateMethods = options.GenerateMethods }
             );
             
             _writeClassInstanceService.Write(
