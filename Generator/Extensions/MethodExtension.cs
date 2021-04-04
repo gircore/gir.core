@@ -103,6 +103,13 @@ namespace Generator
 
             // The arguments used in the managed method signature (e.g. no userData)
             IEnumerable<Argument> managedParams = method.Arguments.GetManagedArgs();
+            
+            // Instance argument (which we want to exclude from the managed signature)
+            Argument instanceArg = method.InstanceArgument;
+
+            // Remove first element (instance argument) from managedParams
+            if (instanceArg != null)
+                managedParams = managedParams.ToArray()[1..];
 
             // Delegate-type arguments only
             IEnumerable<Argument> delegateParams = managedParams
@@ -167,7 +174,21 @@ namespace Generator
             
             stack.AddWhitespace();
             
-            // 2. marshal parameters
+            // 2. instance parameter
+            if (instanceArg is { })
+            {
+                Symbol symbol = instanceArg.SymbolReference.GetSymbol();
+                var alloc = ArgToNative(instanceArg, $"{instanceArg.ManagedName}Native", "this", currentNamespace);
+                var dealloc = $"// TODO: Free {instanceArg.ManagedName}Native (this)";
+                
+                stack.Nest(new Block()
+                {
+                    Start = alloc,
+                    End = dealloc
+                });
+            }
+            
+            // 3. marshal parameters
             foreach (var arg in marshalParams)
             {
                 Symbol symbol = arg.SymbolReference.GetSymbol();
@@ -183,7 +204,7 @@ namespace Generator
 
             stack.AddWhitespace();
             
-            // 3. method call
+            // 4. method call
             {
                 var call = new StringBuilder();
 
@@ -223,7 +244,7 @@ namespace Generator
             var indent = "    ";
             builder.Append(methodBody.Replace("\n", "\n" + indent));
             
-            // 4. (optional) return value
+            // 5. (optional) return value
             if (!returnValue.IsVoid())
             {
                 var expression = Convert.NativeToManaged(
@@ -237,7 +258,7 @@ namespace Generator
                 builder.AppendLine($"return {expression};");   
             }
 
-            builder.AppendLine("}");
+            builder.AppendLine("\n}");
 
             exit: // <-- TODO: Avoid labels. Not very idiomatic
             builder.Append("\n\n\n");

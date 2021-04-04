@@ -21,8 +21,8 @@ namespace Repository.Model
         {
             return IEnumerables.Concat(
                 ReturnValue.GetSymbolReferences(),
-                Arguments.SelectMany(x => x.GetSymbolReferences())
-            );
+                Arguments.SelectMany(x => x.GetSymbolReferences()),
+                InstanceArgument?.GetSymbolReferences() ?? Enumerable.Empty<SymbolReference>());
         }
 
         public override bool GetIsResolved()

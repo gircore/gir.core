@@ -10,11 +10,11 @@ namespace Generator
             // TODO: We need to support disguised structs (opaque types)
             return (symbol, typeInfo) switch
             {
-                // (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{r.ManagedName}>({arg.ManagedName});",
+                (Record r, {IsPointer: true, Array: null}) => $"Marshal.StructureToPtr<{r.ManagedName}>({fromParam}, {fromParam}Ptr, false);",
                 // (Record r, {IsPointer: true, Array:{}}) => $"{arg.ManagedName}.MarshalToStructure<{r.ManagedName}>();",
                 // (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.ManagedName}.From({arg.ManagedName});",
                 (Class c, {IsPointer: true, Array: null}) => $"{fromParam}.Handle",
-                // (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {arg.ManagedName}"),
+                (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Cant create delegate for argument {fromParam}"),
                 _ => $"({symbol.Write(Target.Native, currentNamespace)}){fromParam}" // Other -> Try a brute-force cast
             };
         }
