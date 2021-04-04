@@ -30,6 +30,13 @@ namespace Repository.Factories
             if (parameterInfo.VarArgs is { })
                 throw new VarArgsNotSupportedException("Arguments containing variadic paramters are not supported.");
 
+            Scope callbackScope = parameterInfo.Scope switch
+            {
+                "async" => Scope.Async,
+                "notified" => Scope.Notified,
+                _ => Scope.Call,
+            };
+
             if (parameterInfo.Name is null)
                 throw new Exception("Argument name is null");
 
@@ -46,6 +53,7 @@ namespace Repository.Factories
                 callerAllocates: parameterInfo.CallerAllocates,
                 closureIndex: parameterInfo.Closure == -1 ? null : parameterInfo.Closure,
                 destroyIndex: parameterInfo.Destroy == -1 ? null : parameterInfo.Destroy,
+                scope: callbackScope,
                 typeInformation: _typeInformationFactory.Create(parameterInfo)
             );
         }

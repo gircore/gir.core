@@ -31,10 +31,13 @@ namespace Repository.Xml
         [XmlAttribute("nullable")]
         public bool Nullable;
         
-        [XmlAttribute ("closure")]
+        [XmlAttribute("closure")]
         public int Closure = -1;
 
-        [XmlAttribute ("destroy")]
+        [XmlAttribute("destroy")]
         public int Destroy = -1;
+
+        [XmlAttribute("scope")]
+        public string? Scope { get; set; }
     }
 }

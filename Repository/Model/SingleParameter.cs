@@ -12,9 +12,10 @@ namespace Repository.Model
         public bool CallerAllocates { get; }
         public int? ClosureIndex { get; }
         public int? DestroyIndex { get; }
+        public Scope CallbackScope { get; }
         public TypeInformation TypeInformation { get; }
 
-        public SingleParameter(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, TypeInformation typeInformation) : base(elementName, symbolName)
+        public SingleParameter(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope, TypeInformation typeInformation) : base(elementName, symbolName)
         {
             SymbolReference = symbolReference;
             Direction = direction;
@@ -23,6 +24,7 @@ namespace Repository.Model
             CallerAllocates = callerAllocates;
             ClosureIndex = closureIndex;
             DestroyIndex = destroyIndex;
+            CallbackScope = scope;
             TypeInformation = typeInformation;
         }
 

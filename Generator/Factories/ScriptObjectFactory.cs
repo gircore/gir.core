@@ -17,6 +17,7 @@ namespace Generator.Factories
             scriptObject.Import("write_native_return_value", new Func<ReturnValue, string>(a => a.WriteNative(currentNamespace)));
             scriptObject.Import("write_managed_return_value", new Func<ReturnValue, string>(a => a.WriteManaged(currentNamespace)));
             scriptObject.Import("write_native_method", new Func<Method, string>(m => m.WriteNative(currentNamespace)));
+            scriptObject.Import("write_managed_method", new Func<Method, string>(m => m.WriteManaged(currentNamespace)));
             scriptObject.Import("get_if", new Func<string, bool, string>(TemplateWriter.GetIf));
 
             return scriptObject;
