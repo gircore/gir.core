@@ -1,8 +1,0 @@
-#region Native
-
-protected partial class Native
-{
-    {{ include 'interface.native.methods.sbntxt' }}
-}
-
-#endregion

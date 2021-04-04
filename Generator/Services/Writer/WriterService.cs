@@ -12,22 +12,22 @@ namespace Generator.Services.Writer
         private readonly WriteElementsService _writeElementsService;
         private readonly WriteRecordsService _writeRecordsService;
         private readonly WriteStaticService _writeStaticService;
-        private readonly WriteClassInstanceService _writeClassInstanceService;
+        private readonly WriteClassService _writeClassService;
         private readonly WriteUnionsService _writeUnionsService;
-        private readonly WriteRecordNativeSafeHandlesService _writeRecordNativeSafeHandlesService;
-        private readonly WriteClassStructNativeSafeHandlesService _writeClassStructNativeSafeHandlesService;
+        private readonly WriteSafeHandlesService _writeSafeHandlesService;
+        private readonly WriteInterfaceService _writeInterfaceService;
 
-        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassInstanceService writeClassInstanceService, WriteUnionsService writeUnionsService, WriteRecordNativeSafeHandlesService writeRecordNativeSafeHandlesService, WriteClassStructNativeSafeHandlesService writeClassStructNativeSafeHandlesService)
+        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassService writeClassService, WriteUnionsService writeUnionsService, WriteSafeHandlesService writeSafeHandlesService, WriteInterfaceService writeInterfaceService)
         {
             _writeSymbolsService = writeSymbolsService;
             _writeDllImportService = writeDllImportService;
             _writeElementsService = writeElementsService;
             _writeRecordsService = writeRecordsService;
             _writeStaticService = writeStaticService;
-            _writeClassInstanceService = writeClassInstanceService;
+            _writeClassService = writeClassService;
             _writeUnionsService = writeUnionsService;
-            _writeRecordNativeSafeHandlesService = writeRecordNativeSafeHandlesService;
-            _writeClassStructNativeSafeHandlesService = writeClassStructNativeSafeHandlesService;
+            _writeSafeHandlesService = writeSafeHandlesService;
+            _writeInterfaceService = writeInterfaceService;
         }
 
         public void Write(Namespace ns, string outputDir)
@@ -37,29 +37,19 @@ namespace Generator.Services.Writer
             else
                 _writeDllImportService.WriteDllImport(ns, outputDir);
 
-            _writeSymbolsService.Write(
-                projectName: ns.ToCanonicalName(),
-                outputDir: outputDir,
-                templateName: "native.delegate.sbntxt",
-                subfolder: Folder.Native.Delegates,
-                objects: ns.Callbacks,
-                @namespace: ns
-            );
+            // _writeSymbolsService.Write(
+            //     projectName: ns.ToCanonicalName(),
+            //     outputDir: outputDir,
+            //     templateName: "native.delegate.sbntxt",
+            //     subfolder: Folder.Native.Delegates,
+            //     objects: ns.Callbacks,
+            //     @namespace: ns
+            // );
+            //
 
-            _writeSymbolsService.Write(
+            _writeClassService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                templateName: "class.sbntxt",
-                subfolder: Folder.Managed.Classes,
-                objects: ns.Classes.Where(x => !x.IsFundamental),
-                @namespace: ns
-            );
-            
-            _writeClassInstanceService.Write(
-                projectName: ns.ToCanonicalName(),
-                outputDir: outputDir,
-                templateName: "native.classinstance.sbntxt",
-                subfolder: Folder.Native.Classes,
                 classes: ns.Classes.Where(x => !x.IsFundamental),
                 @namespace: ns
             );
@@ -72,16 +62,14 @@ namespace Generator.Services.Writer
                 objects: ns.Classes.Where(x => x.IsFundamental),
                 @namespace: ns
             );
-
-            _writeSymbolsService.Write(
+            
+            _writeInterfaceService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                templateName: "interface.sbntxt",
-                subfolder: Folder.Managed.Interfaces,
-                objects: ns.Interfaces,
+                interfaces: ns.Interfaces,
                 @namespace: ns
             );
-
+            
             _writeSymbolsService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
@@ -90,7 +78,7 @@ namespace Generator.Services.Writer
                 objects: ns.Enumerations,
                 @namespace: ns
             );
-
+            
             _writeSymbolsService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
@@ -99,25 +87,19 @@ namespace Generator.Services.Writer
                 objects: ns.Bitfields,
                 @namespace: ns
             );
+            //
+            // _writeRecordsService.Write(
+            //     projectName: ns.ToCanonicalName(),
+            //     outputDir: outputDir,
+            //     records: ns.Records,
+            //     @namespace: ns
+            // );
+            //
 
-            _writeRecordsService.Write(
+            _writeSafeHandlesService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 records: ns.Records,
-                @namespace: ns
-            );
-
-            _writeRecordNativeSafeHandlesService.Write(
-                projectName: ns.ToCanonicalName(),
-                outputDir: outputDir,
-                records: ns.Records.Where(x => !x.IsClassStruct),
-                @namespace: ns
-            );
-            
-            _writeClassStructNativeSafeHandlesService.Write(
-                projectName: ns.ToCanonicalName(),
-                outputDir: outputDir,
-                records: ns.Records.Where(x => x.IsClassStruct),
                 @namespace: ns
             );
             
@@ -147,7 +129,7 @@ namespace Generator.Services.Writer
                 elements: ns.Functions,
                 @namespace: ns
             );
-            
+
             _writeStaticService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,

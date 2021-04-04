@@ -9,11 +9,13 @@ namespace Repository.Factories
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly MethodFactory _methodFactory;
+        private readonly PropertyFactory _propertyFactory;
 
-        public InterfaceFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory)
+        public InterfaceFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory)
         {
             _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;
+            _propertyFactory = propertyFactory;
         }
 
         public Interface Create(InterfaceInfo iface, Namespace @namespace)
@@ -39,7 +41,8 @@ namespace Repository.Factories
                 implements: _symbolReferenceFactory.Create(iface.Implements, @namespace.Name),
                 methods: _methodFactory.Create(iface.Methods, @namespace),
                 functions: _methodFactory.Create(iface.Functions, @namespace),
-                getTypeFunction: _methodFactory.CreateGetTypeMethod(iface.GetTypeFunction, @namespace)
+                getTypeFunction: _methodFactory.CreateGetTypeMethod(iface.GetTypeFunction, @namespace),
+                properties: _propertyFactory.Create(iface.Properties, @namespace.Name)
             );
         }
     }

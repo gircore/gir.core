@@ -40,5 +40,14 @@ namespace Generator.Factories
             
             return scriptObject;
         }
+
+        public ScriptObject CreateComplexForSymbol(Namespace currentNamespace, Symbol symbol)
+        {
+            var scriptObject = CreateComplex(currentNamespace);
+            scriptObject.Import(symbol);
+            //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
+            scriptObject.Import("get_metadata", new Func<string, object?>(key => symbol.Metadata[key]));
+            return scriptObject;
+        }
     }
 }

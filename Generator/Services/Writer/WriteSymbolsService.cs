@@ -22,11 +22,8 @@ namespace Generator.Services.Writer
         {
             foreach (Symbol obj in objects)
             {
-                var scriptObject = _scriptObjectFactory.CreateComplex(@namespace);
-                scriptObject.Import(obj);
+                var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, obj);
 
-                //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
-                scriptObject.Import("get_metadata", new Func<string, object?>(key => obj.Metadata[key]));
                 try
                 {
                     _writeHelperService.Write(

@@ -6,48 +6,46 @@ using Scriban.Runtime;
 
 namespace Generator.Services.Writer
 {
-    internal class WriteUnionsService
+    internal class WriteInterfaceService
     {
         private readonly WriteHelperService _writeHelperService;
         private readonly ScriptObjectFactory _scriptObjectFactory;
 
-        public WriteUnionsService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
+        public WriteInterfaceService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
         {
             _writeHelperService = writeHelperService;
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, IEnumerable<Union> unions, Namespace @namespace)
+        public void Write(string projectName, string outputDir, IEnumerable<Interface> interfaces, Namespace @namespace)
         {
-            foreach (var union in unions)
+            foreach (var iface in interfaces)
             {
                 try
                 {
-                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, union);
+                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, iface);
 
-                    var name = union.Metadata["UnionName"]?.ToString() ?? throw new Exception("Union is missing it's name");
-                    
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "union.sbntxt",
-                        folder: Folder.Managed.Records,
-                        fileName: name ,
+                        templateName: "interface.sbntxt",
+                        folder: Folder.Managed.Interfaces,
+                        fileName: iface.SymbolName ,
                         scriptObject: scriptObject
                     );
                     
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "native.union.sbntxt",
-                        folder: Folder.Native.Records,
-                        fileName: name,
+                        templateName: "native.interface.sbntxt",
+                        folder: Folder.Native.Interfaces,
+                        fileName: iface.SymbolName,
                         scriptObject: scriptObject
                     );
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Could not write union for {union.SymbolName}: {ex.Message}");
+                    Log.Error($"Could not write interface for {iface.SymbolName}: {ex.Message}");
                 }
             }
         }

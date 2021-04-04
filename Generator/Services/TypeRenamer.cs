@@ -56,7 +56,7 @@ namespace Generator.Services
             union.Metadata["UnionName"] = union.SymbolName;
             union.Metadata["PureName"] = "Struct";
 
-            union.SymbolName = new SymbolName($"{union.SymbolName}.Native.Struct");
+            union.SymbolName = new SymbolName($"{union.SymbolName}.Struct");
         }
         
         private void SetRecordMetadata(IEnumerable<Record> records)

@@ -6,12 +6,12 @@ using Scriban.Runtime;
 
 namespace Generator.Services.Writer
 {
-    internal class WriteRecordNativeSafeHandlesService
+    internal class WriteSafeHandlesService
     {
         private readonly WriteHelperService _writeHelperService;
         private readonly ScriptObjectFactory _scriptObjectFactory;
 
-        public WriteRecordNativeSafeHandlesService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
+        public WriteSafeHandlesService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
         {
             _writeHelperService = writeHelperService;
             _scriptObjectFactory = scriptObjectFactory;
@@ -23,17 +23,14 @@ namespace Generator.Services.Writer
             {
                 try
                 {
-                    var scriptObject =  _scriptObjectFactory.CreateComplex(@namespace);
-                    scriptObject.Import(record);
-                    //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
-                    scriptObject.Import("get_metadata", new Func<string, object?>(key => record.Metadata[key]));
+                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, record);
                     scriptObject.Import("write_release_memory_call", new Func<string>(() => record.WriteReleaseMemoryCall()));
                     
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
                         templateName: "native.safehandle.sbntxt",
-                        folder: Folder.Native.Records,
+                        folder: GetFolder(record),
                         fileName: record.SymbolName + ".SafeHandle",
                         scriptObject: scriptObject
                     );
@@ -43,6 +40,16 @@ namespace Generator.Services.Writer
                     Log.Error($"Could not write safe handle for record for {record.SymbolName}: {ex.Message}");
                 }
             }
+        }
+
+        private string GetFolder(Record record)
+        {
+            return record.GLibClassStructFor?.GetSymbol() switch
+            {
+                Class => Folder.Native.Classes,
+                Interface => Folder.Native.Interfaces,
+                _ => Folder.Native.Records //Regular struct not a class struct
+            };
         }
     }
 }

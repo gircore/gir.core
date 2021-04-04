@@ -2,52 +2,49 @@
 using System.Collections.Generic;
 using Generator.Factories;
 using Repository.Model;
-using Scriban.Runtime;
 
 namespace Generator.Services.Writer
 {
-    internal class WriteUnionsService
+    internal class WriteClassService
     {
         private readonly WriteHelperService _writeHelperService;
         private readonly ScriptObjectFactory _scriptObjectFactory;
 
-        public WriteUnionsService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
+        public WriteClassService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
         {
             _writeHelperService = writeHelperService;
             _scriptObjectFactory = scriptObjectFactory;
         }
-
-        public void Write(string projectName, string outputDir, IEnumerable<Union> unions, Namespace @namespace)
+        
+        public void Write(string projectName, string outputDir, IEnumerable<Class> classes, Namespace @namespace)
         {
-            foreach (var union in unions)
+            foreach (Class cls in classes)
             {
+                var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, cls);
+                
                 try
                 {
-                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, union);
-
-                    var name = union.Metadata["UnionName"]?.ToString() ?? throw new Exception("Union is missing it's name");
-                    
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "union.sbntxt",
-                        folder: Folder.Managed.Records,
-                        fileName: name ,
+                        templateName: "native.class.instance.sbntxt",
+                        folder: Folder.Native.Classes,
+                        fileName: cls.SymbolName + ".Instance",
                         scriptObject: scriptObject
                     );
                     
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "native.union.sbntxt",
-                        folder: Folder.Native.Records,
-                        fileName: name,
+                        templateName: "class.sbntxt",
+                        folder: Folder.Managed.Classes,
+                        fileName: cls.SymbolName,
                         scriptObject: scriptObject
                     );
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Could not write union for {union.SymbolName}: {ex.Message}");
+                    Log.Error($"Could not create type {cls.SymbolName}: {ex.Message}");
                 }
             }
         }

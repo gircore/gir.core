@@ -11,9 +11,9 @@ namespace {{ namespace.native_name }}
     {
         protected partial struct {{ get_metadata "PureName" }}
         {
-            {{ include 'struct.delegates.sbntxt' }}
-            {{ include 'struct.fields.sbntxt' }}
-            {{ include 'struct.native.methods.sbntxt' }}
+            {{ include 'native.struct.delegates.sbntxt' }}
+            {{ include 'native.struct.fields.sbntxt' }}
+            {{ include 'native.struct.methods.sbntxt' }}
         }
     }
 }
