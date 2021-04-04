@@ -7,16 +7,16 @@ namespace GLib
         #region Fields
 
         private readonly long _size;
-        private readonly Native.BytesSafeHandle _safeHandle;
+        private readonly Native.Bytes.Handle _safeHandle;
 
         #endregion
 
         #region Constructors
 
-        private Bytes(Native.BytesSafeHandle handle)
+        private Bytes(Native.Bytes.Handle handle)
         {
             _safeHandle = handle;
-            _size = (long) Native.Methods.GetSize(handle);
+            _size = (long) Native.Bytes.Methods.GetSize(handle);
             GC.AddMemoryPressure(_size);
         }
 
@@ -26,7 +26,7 @@ namespace GLib
 
         public static Bytes From(byte[] data)
         {
-            var obj = new Bytes(Native.Methods.New(data, (ulong) data.Length));
+            var obj = new Bytes(Native.Bytes.Methods.New(data, (ulong) data.Length));
             return obj;
         }
 

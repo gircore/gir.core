@@ -4,7 +4,7 @@ namespace {{ namespace.name }}
     {
         static partial void InitializeDllImport()
         {
-            DllImport.Initialize();
+            Native.DllImport.Initialize();
         }
     }
 }

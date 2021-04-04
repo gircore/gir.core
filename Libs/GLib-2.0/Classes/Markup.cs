@@ -4,7 +4,7 @@
     {
         public static string EscapeText(string text)
         {
-            return Functions.Native.MarkupEscapeText(text, -1);
+            return Native.Functions.MarkupEscapeText(text, -1);
         }
     }
 }

@@ -16,8 +16,9 @@ namespace Generator.Services.Writer
         private readonly WriteUnionsService _writeUnionsService;
         private readonly WriteSafeHandlesService _writeSafeHandlesService;
         private readonly WriteInterfaceService _writeInterfaceService;
+        private readonly WriteCallbacksService _writeCallbacksService;
 
-        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassService writeClassService, WriteUnionsService writeUnionsService, WriteSafeHandlesService writeSafeHandlesService, WriteInterfaceService writeInterfaceService)
+        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassService writeClassService, WriteUnionsService writeUnionsService, WriteSafeHandlesService writeSafeHandlesService, WriteInterfaceService writeInterfaceService, WriteCallbacksService writeCallbacksService)
         {
             _writeSymbolsService = writeSymbolsService;
             _writeDllImportService = writeDllImportService;
@@ -28,6 +29,7 @@ namespace Generator.Services.Writer
             _writeUnionsService = writeUnionsService;
             _writeSafeHandlesService = writeSafeHandlesService;
             _writeInterfaceService = writeInterfaceService;
+            _writeCallbacksService = writeCallbacksService;
         }
 
         public void Write(Namespace ns, string outputDir)
@@ -37,15 +39,12 @@ namespace Generator.Services.Writer
             else
                 _writeDllImportService.WriteDllImport(ns, outputDir);
 
-            // _writeSymbolsService.Write(
-            //     projectName: ns.ToCanonicalName(),
-            //     outputDir: outputDir,
-            //     templateName: "native.delegate.sbntxt",
-            //     subfolder: Folder.Native.Delegates,
-            //     objects: ns.Callbacks,
-            //     @namespace: ns
-            // );
-            //
+            _writeCallbacksService.Write(
+                projectName: ns.ToCanonicalName(),
+                outputDir: outputDir,
+                callbacks: ns.Callbacks,
+                @namespace: ns
+            );
 
             _writeClassService.Write(
                 projectName: ns.ToCanonicalName(),
@@ -53,7 +52,7 @@ namespace Generator.Services.Writer
                 classes: ns.Classes.Where(x => !x.IsFundamental),
                 @namespace: ns
             );
-            
+
             _writeSymbolsService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
@@ -62,14 +61,14 @@ namespace Generator.Services.Writer
                 objects: ns.Classes.Where(x => x.IsFundamental),
                 @namespace: ns
             );
-            
+
             _writeInterfaceService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 interfaces: ns.Interfaces,
                 @namespace: ns
             );
-            
+
             _writeSymbolsService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
@@ -78,7 +77,7 @@ namespace Generator.Services.Writer
                 objects: ns.Enumerations,
                 @namespace: ns
             );
-            
+
             _writeSymbolsService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
@@ -87,14 +86,13 @@ namespace Generator.Services.Writer
                 objects: ns.Bitfields,
                 @namespace: ns
             );
-            //
-            // _writeRecordsService.Write(
-            //     projectName: ns.ToCanonicalName(),
-            //     outputDir: outputDir,
-            //     records: ns.Records,
-            //     @namespace: ns
-            // );
-            //
+
+            _writeRecordsService.Write(
+                projectName: ns.ToCanonicalName(),
+                outputDir: outputDir,
+                records: ns.Records,
+                @namespace: ns
+            );
 
             _writeSafeHandlesService.Write(
                 projectName: ns.ToCanonicalName(),
@@ -102,7 +100,7 @@ namespace Generator.Services.Writer
                 records: ns.Records,
                 @namespace: ns
             );
-            
+
             _writeUnionsService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,

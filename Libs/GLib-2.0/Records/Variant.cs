@@ -8,13 +8,13 @@ namespace GLib
         #region Fields
 
         private Variant[] _children;
-        private readonly Native.VariantSafeHandle _handle;
+        private readonly Native.Variant.Handle _handle;
 
         #endregion
 
         #region Properties
 
-        public Native.VariantSafeHandle Handle => _handle;
+        public Native.Variant.Handle Handle => _handle;
 
         #endregion
 
@@ -40,29 +40,29 @@ namespace GLib
             Init(out this.handle, data);
         }*/
 
-        public Variant(Native.VariantSafeHandle handle)
+        public Variant(Native.Variant.Handle handle)
         {
             _children = new Variant[0];
             _handle = handle;
-            Native.Methods.RefSink(handle);
+            Native.Variant.Methods.RefSink(handle);
         }
 
         #endregion
 
         #region Methods
 
-        public static Variant Create(int i) => new Variant(Native.Methods.NewInt32(i));
-        public static Variant Create(uint ui) => new Variant(Native.Methods.NewUint32(ui));
-        public static Variant Create(string str) => new Variant(Native.Methods.NewString(str));
-        public static Variant Create(params string[] strs) => new Variant(Native.Methods.NewStrv(strs, strs.Length));
+        public static Variant Create(int i) => new Variant(Native.Variant.Methods.NewInt32(i));
+        public static Variant Create(uint ui) => new Variant(Native.Variant.Methods.NewUint32(ui));
+        public static Variant Create(string str) => new Variant(Native.Variant.Methods.NewString(str));
+        public static Variant Create(params string[] strs) => new Variant(Native.Variant.Methods.NewStrv(strs, strs.Length));
 
         public static Variant CreateEmptyDictionary(VariantType key, VariantType value)
         {
-            var childType = VariantType.Native.Methods.NewDictEntry(key.Handle, value.Handle);
-            return new Variant(Native.Methods.NewArray(childType, new IntPtr[0], 0));
+            var childType = Native.VariantType.Methods.NewDictEntry(key.Handle, value.Handle);
+            return new Variant(Native.Variant.Methods.NewArray(childType, new IntPtr[0], 0));
         }
 
-        private void Init(out Native.VariantSafeHandle handle, params Variant[] children)
+        private void Init(out Native.Variant.Handle handle, params Variant[] children)
         {
             _children = children;
 
@@ -72,21 +72,21 @@ namespace GLib
             for (var i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle.DangerousGetHandle();
 
-            handle = Native.Methods.NewTuple(ptrs, (ulong) count);
-            Native.Methods.RefSink(handle);
+            handle = Native.Variant.Methods.NewTuple(ptrs, (ulong) count);
+            Native.Variant.Methods.RefSink(handle);
         }
 
         public string GetString()
-            => Native.Methods.GetString(_handle, out _);
+            => Native.Variant.Methods.GetString(_handle, out _);
 
         public int GetInt()
-            => Native.Methods.GetInt32(_handle);
+            => Native.Variant.Methods.GetInt32(_handle);
         
         public uint GetUInt()
-            => Native.Methods.GetUint32(_handle);
+            => Native.Variant.Methods.GetUint32(_handle);
         
         public string Print(bool typeAnnotate)
-            => Native.Methods.Print(_handle, typeAnnotate);
+            => Native.Variant.Methods.Print(_handle, typeAnnotate);
 
         #endregion
 
@@ -101,7 +101,7 @@ namespace GLib
 
     public static class  VariantExtension
     {
-        public static Variant.Native.VariantSafeHandle GetSafeHandle(this Variant? variant)
-            => variant is null ? Variant.Native.VariantSafeHandle.Null : variant.Handle;
+        public static Native.Variant.Handle GetSafeHandle(this Variant? variant)
+            => variant is null ? Native.Variant.Handle.Null : variant.Handle;
     }
 }

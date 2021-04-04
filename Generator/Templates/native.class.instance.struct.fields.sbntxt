@@ -1,3 +1,0 @@
-#region Fields
-{{ fields | write_native_fields }}
-#endregion

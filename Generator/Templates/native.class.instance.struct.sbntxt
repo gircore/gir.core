@@ -1,4 +1,0 @@
-public partial struct Struct
-{
-    {{ include 'native.class.instance.struct.fields.sbntxt' }}        
-}

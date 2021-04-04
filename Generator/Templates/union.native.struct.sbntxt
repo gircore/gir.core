@@ -1,5 +1,5 @@
 [StructLayout(LayoutKind.Explicit)]
 public partial struct {{ get_metadata "PureName" }}
 {
-    {{ include 'native.union.struct.fields.sbntxt' }}
+    {{ include 'union.native.struct.fields.sbntxt' }}
 }

@@ -8,6 +8,7 @@
             public const string Interfaces = "Interfaces";
             public const string Enums = "Enums";
             public const string Records = "Records";
+            public const string Delegates = "Delegates";
         }
         
         public static class Native

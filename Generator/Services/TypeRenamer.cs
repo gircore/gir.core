@@ -53,7 +53,7 @@ namespace Generator.Services
         
         private void SetUnionMetadata(Union union)
         {
-            union.Metadata["UnionName"] = union.SymbolName;
+            union.Metadata["Name"] = union.SymbolName;
             union.Metadata["PureName"] = "Struct";
 
             union.SymbolName = new SymbolName($"{union.SymbolName}.Struct");
@@ -75,22 +75,22 @@ namespace Generator.Services
             Debug.Assert(record.GLibClassStructFor is not null);
             
             var className = record.GLibClassStructFor.GetSymbol().SymbolName;
-            record.Metadata["ClassName"] = className;
+            record.Metadata["Name"] = className;
             record.Metadata["PureName"] = "Class";
-            record.Metadata["SafeHandleName"] = "ClassSafeHandle";
+            record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = "ClassSafeHandle";
             
-            record.SymbolName = new SymbolName($"{className}.Native.Class");
+            record.SymbolName = new SymbolName($"Native.{className}.Class");
         }
 
         private void SetRecordMetadata(Record record)
         {
-            record.Metadata["RecordName"] = record.SymbolName;
+            record.Metadata["Name"] = record.SymbolName;
             record.Metadata["PureName"] = "Struct";
-            record.Metadata["SafeHandleName"] = record.SymbolName + "SafeHandle";
-            record.Metadata["SafeHandleRefName"] = $"{record.SymbolName}.Native.{record.SymbolName }SafeHandle";
+            record.Metadata["SafeHandleName"] = "Handle";
+            record.Metadata["SafeHandleRefName"] = $"{record.SymbolName}.Handle";
 
-            record.SymbolName = new SymbolName($"{record.SymbolName}.Native.Struct");
+            record.SymbolName = new SymbolName($"Native.{record.SymbolName}.Struct");
         }
     }
 }

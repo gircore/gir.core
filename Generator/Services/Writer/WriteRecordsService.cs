@@ -23,17 +23,29 @@ namespace Generator.Services.Writer
             {
                 try
                 {
-                    var scriptObject =  _scriptObjectFactory.CreateComplex(@namespace);
-                    scriptObject.Import(record);
-                    //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
-                    scriptObject.Import("get_metadata", new Func<string, object?>(key => record.Metadata[key]));
+                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, record);
+
+                    var name = record.Metadata["Name"]?.ToString() ?? throw new Exception("Record is missing it's name");
+                    
+                    if (record.GLibClassStructFor is null)
+                    {
+                        //Regular struct
+                        _writeHelperService.Write(
+                            projectName: projectName,
+                            outputDir: outputDir,
+                            templateName: "record.sbntxt",
+                            folder: Folder.Managed.Records,
+                            fileName: name,
+                            scriptObject: scriptObject
+                        );   
+                    }
 
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: GetTemplateName(record),
-                        folder: GetFolder(record),
-                        fileName: record.SymbolName,
+                        templateName: GetNativeTemplateName(record),
+                        folder: GetNativeFolder(record),
+                        fileName: name,
                         scriptObject: scriptObject
                     );
                 }
@@ -44,20 +56,20 @@ namespace Generator.Services.Writer
             }
         }
 
-        private string GetFolder(Record record)
+        private string GetNativeFolder(Record record)
             => record.GLibClassStructFor?.GetSymbol() switch
             {
                 Interface => Folder.Native.Interfaces,
                 Class => Folder.Native.Classes,
-                _ => Folder.Managed.Records
+                _ => Folder.Native.Records
             };
 
-        private string GetTemplateName(Record record)
+        private string GetNativeTemplateName(Record record)
             => record.GLibClassStructFor?.GetSymbol() switch
             {
-                Interface => "native.interfacestruct.sbntxt",
-                Class => "native.classstruct.sbntxt",
-                _ => "struct.sbntxt",
+                Interface => "record.native.interface.sbntxt",
+                Class => "record.native.class.sbntxt",
+                _ => "record.native.sbntxt",
             };
     }
 }

@@ -2,50 +2,49 @@
 using System.Collections.Generic;
 using Generator.Factories;
 using Repository.Model;
-using Scriban.Runtime;
 
 namespace Generator.Services.Writer
 {
-    internal class WriteInterfaceService
+    internal class WriteCallbacksService
     {
         private readonly WriteHelperService _writeHelperService;
         private readonly ScriptObjectFactory _scriptObjectFactory;
 
-        public WriteInterfaceService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
+        public WriteCallbacksService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
         {
             _writeHelperService = writeHelperService;
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, IEnumerable<Interface> interfaces, Namespace @namespace)
+        public void Write(string projectName, string outputDir, IEnumerable<Callback> callbacks, Namespace @namespace)
         {
-            foreach (var iface in interfaces)
+            foreach (var callback in callbacks)
             {
                 try
                 {
-                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, iface);
+                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, callback);
 
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "interface.sbntxt",
-                        folder: Folder.Managed.Interfaces,
-                        fileName: iface.SymbolName ,
+                        templateName: "delegate.sbntxt",
+                        folder: Folder.Managed.Delegates,
+                        fileName: callback.SymbolName,
                         scriptObject: scriptObject
                     );
                     
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "interface.native.sbntxt",
-                        folder: Folder.Native.Interfaces,
-                        fileName: iface.SymbolName,
+                        templateName: "native.delegate.sbntxt",
+                        folder: Folder.Native.Delegates,
+                        fileName: callback.SymbolName,
                         scriptObject: scriptObject
                     );
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Could not write interface for {iface.SymbolName}: {ex.Message}");
+                    Log.Error($"Could not write callback {callback.SymbolName}: {ex.Message}");
                 }
             }
         }

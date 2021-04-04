@@ -15,30 +15,30 @@ namespace Generator.Services.Writer
             _writeHelperService = writeHelperService;
             _scriptObjectFactory = scriptObjectFactory;
         }
-        
+
         public void Write(string projectName, string outputDir, IEnumerable<Class> classes, Namespace @namespace)
         {
             foreach (Class cls in classes)
             {
                 var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, cls);
-                
+
                 try
                 {
-                    _writeHelperService.Write(
-                        projectName: projectName,
-                        outputDir: outputDir,
-                        templateName: "native.class.instance.sbntxt",
-                        folder: Folder.Native.Classes,
-                        fileName: cls.SymbolName + ".Instance",
-                        scriptObject: scriptObject
-                    );
-                    
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
                         templateName: "class.sbntxt",
                         folder: Folder.Managed.Classes,
                         fileName: cls.SymbolName,
+                        scriptObject: scriptObject
+                    );
+
+                    _writeHelperService.Write(
+                        projectName: projectName,
+                        outputDir: outputDir,
+                        templateName: "class.native.sbntxt",
+                        folder: Folder.Native.Classes,
+                        fileName: cls.SymbolName + ".Instance",
                         scriptObject: scriptObject
                     );
                 }

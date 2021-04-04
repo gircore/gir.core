@@ -11,15 +11,15 @@ namespace GLib
         public static uint AddFull(int priority, uint interval, SourceFunc function, Action? destroyNotify)
         {
             // This uses scope=notified (see timeout_add_full's gir data)
-            var handler = new SourceFuncNotifiedHandler(function);
-            handler.OnDestroyNotify += destroyNotify;
-            
-            return Functions.Native.TimeoutAddFull(
+            //var handler = new SourceFuncNotifiedHandler(function);
+            //handler.OnDestroyNotify += destroyNotify;
+
+            return Native.Functions.TimeoutAddFull(
                 priority: priority,
                 interval: interval,
-                function: handler.NativeCallback,
+                function: default!, //TODO
                 data: IntPtr.Zero,
-                notify: handler.DestroyNotify);
+                notify: default!); //handler.DestroyNotify);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Generator.Services.Writer
                 {
                     var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, union);
 
-                    var name = union.Metadata["UnionName"]?.ToString() ?? throw new Exception("Union is missing it's name");
+                    var name = union.Metadata["Name"]?.ToString() ?? throw new Exception("Union is missing it's name");
                     
                     _writeHelperService.Write(
                         projectName: projectName,
@@ -39,7 +39,7 @@ namespace Generator.Services.Writer
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
-                        templateName: "native.union.sbntxt",
+                        templateName: "union.native.sbntxt",
                         folder: Folder.Native.Records,
                         fileName: name,
                         scriptObject: scriptObject

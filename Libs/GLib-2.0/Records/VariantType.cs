@@ -14,15 +14,15 @@ namespace GLib
 
         #region Properties
 
-        internal Native.VariantTypeSafeHandle Handle { get; }
+        internal Native.VariantType.Handle Handle { get; }
 
         #endregion
 
         #region Constructors
 
-        public VariantType(string type) : this(Native.Methods.New(type)) { }
+        public VariantType(string type) : this(Native.VariantType.Methods.New(type)) { }
 
-        internal VariantType(Native.VariantTypeSafeHandle handle)
+        internal VariantType(Native.VariantType.Handle handle)
         {
             Handle = handle;
         }
@@ -32,7 +32,7 @@ namespace GLib
         #region Methods
 
         public override string? ToString()
-            => Native.Methods.DupString(Handle);
+            => Native.VariantType.Methods.DupString(Handle);
 
         #endregion
 

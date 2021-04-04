@@ -2,6 +2,6 @@
 {
     public partial record Source
     {
-        public static void Remove(uint tag) => Functions.Native.SourceRemove(tag);
+        public static void Remove(uint tag) => Native.Functions.SourceRemove(tag);
     }
 }
