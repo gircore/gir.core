@@ -51,7 +51,7 @@ namespace Build
         {
             if (Directory.Exists(project))
             {
-                foreach (var d in Directory.EnumerateDirectories(project))
+                foreach (var d in Directory.EnumerateDirectories(project, "*", SearchOption.AllDirectories))
                 {
                     foreach (var file in Directory.EnumerateFiles(d).Where(FileIsGenerated))
                     {
