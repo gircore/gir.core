@@ -24,11 +24,11 @@ namespace GObject.Native
             return false;
         }
 
-        public static void Map(IntPtr handle, object obj)
+        public static void Map(IntPtr handle, object obj, bool ownedRef)
         {
             lock (WrapperObjects)
             {
-                WrapperObjects[handle] = new ToggleRef(handle, obj);
+                WrapperObjects[handle] = new ToggleRef(handle, obj, ownedRef);
             }
         }
 

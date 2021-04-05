@@ -38,29 +38,7 @@ namespace GObject
         /// <param name="ownedRef">Defines if the handle is owned by us. If not owned by us it is refed to keep it around.</param>
         protected Object(IntPtr handle, bool ownedRef)
         {
-            if (!ownedRef)
-            {
-                // - Unowned GObjects need to be refed to bind them to this instance
-                // - Unowned InitiallyUnowned floating objects need to be ref_sinked
-                // - Unowned InitiallyUnowned non-floating objects need to be refed
-                // As ref_sink behaves like ref in case of non floating instances we use it for all 3 cases
-                Native.Object.Instance.Methods.RefSink(handle);
-            }
-            else
-            {
-                //In case we own the ref because the ownership was fully transfered to us we
-                //do not need to ref the object at all.
-
-                Debug.Assert(!Native.Object.Instance.Methods.IsFloating(handle), "Owned floating references are not possible.");
-            }
-
-            Initialize(handle);
-        }
-
-        [MemberNotNull(nameof(_handle))]
-        private void Initialize(IntPtr handle)
-        {
-            _handle = new ObjectHandle(handle, this);
+            _handle = new ObjectHandle(handle, this, ownedRef);
             Initialize();
         }
 

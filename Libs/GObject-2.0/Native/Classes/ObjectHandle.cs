@@ -7,9 +7,9 @@ namespace GObject.Native
     {
         public IntPtr Handle => IsInvalid ? IntPtr.Zero : DangerousGetHandle();
         
-        public ObjectHandle(IntPtr handle, object obj) : base(IntPtr.Zero, true)
+        public ObjectHandle(IntPtr handle, object obj, bool ownedRef) : base(IntPtr.Zero, true)
         {
-            ObjectMapper.Map(handle, obj);
+            ObjectMapper.Map(handle, obj, ownedRef);
             SetHandle(handle);
         }
 

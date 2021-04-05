@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace GObject.Native
 {
@@ -36,14 +37,39 @@ namespace GObject.Native
             /// call of the Dispose method of the ToggleRef. The Dispose mehtod removes the added toggle reference
             /// and thus frees the last reference to the C object.
             /// </summary>
-            public ToggleRef(IntPtr handle, object obj)
+            public ToggleRef(IntPtr handle, object obj, bool ownedRef)
             {
                 _reference = obj;
                 _callback = ToggleReference;
                 _handle = handle;
 
-                Native.Object.Instance.Methods.AddToggleRef(handle, _callback, IntPtr.Zero);
-                Native.Object.Instance.Methods.Unref(handle);
+                OwnReference(ownedRef);
+                RegisterToggleRef();
+            }
+
+            private void RegisterToggleRef()
+            {
+                Native.Object.Instance.Methods.AddToggleRef(_handle, _callback, IntPtr.Zero);
+                Native.Object.Instance.Methods.Unref(_handle);
+            }
+
+            private void OwnReference(bool ownedRef)
+            {
+                if (!ownedRef)
+                {
+                    // - Unowned GObjects need to be refed to bind them to this instance
+                    // - Unowned InitiallyUnowned floating objects need to be ref_sinked
+                    // - Unowned InitiallyUnowned non-floating objects need to be refed
+                    // As ref_sink behaves like ref in case of non floating instances we use it for all 3 cases
+                    Native.Object.Instance.Methods.RefSink(_handle);
+                }
+                else
+                {
+                    //In case we own the ref because the ownership was fully transfered to us we
+                    //do not need to ref the object at all.
+
+                    Debug.Assert(!Native.Object.Instance.Methods.IsFloating(_handle), "Owned floating references are not possible.");
+                }
             }
 
             private void ToggleReference(IntPtr data, IntPtr @object, bool isLastRef)
