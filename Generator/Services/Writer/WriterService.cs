@@ -8,7 +8,7 @@ namespace Generator.Services.Writer
     internal class WriterService
     {
         private readonly WriteSymbolsService _writeSymbolsService;
-        private readonly WriteDllImportService _writeDllImportService;
+        private readonly WriteModuleService _writeModuleService;
         private readonly WriteElementsService _writeElementsService;
         private readonly WriteRecordsService _writeRecordsService;
         private readonly WriteStaticService _writeStaticService;
@@ -18,10 +18,10 @@ namespace Generator.Services.Writer
         private readonly WriteInterfaceService _writeInterfaceService;
         private readonly WriteCallbacksService _writeCallbacksService;
 
-        public WriterService(WriteSymbolsService writeSymbolsService, WriteDllImportService writeDllImportService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassService writeClassService, WriteUnionsService writeUnionsService, WriteSafeHandlesService writeSafeHandlesService, WriteInterfaceService writeInterfaceService, WriteCallbacksService writeCallbacksService)
+        public WriterService(WriteSymbolsService writeSymbolsService, WriteModuleService writeModuleService, WriteElementsService writeElementsService, WriteRecordsService writeRecordsService, WriteStaticService writeStaticService, WriteClassService writeClassService, WriteUnionsService writeUnionsService, WriteSafeHandlesService writeSafeHandlesService, WriteInterfaceService writeInterfaceService, WriteCallbacksService writeCallbacksService)
         {
             _writeSymbolsService = writeSymbolsService;
-            _writeDllImportService = writeDllImportService;
+            _writeModuleService = writeModuleService;
             _writeElementsService = writeElementsService;
             _writeRecordsService = writeRecordsService;
             _writeStaticService = writeStaticService;
@@ -37,7 +37,7 @@ namespace Generator.Services.Writer
             if (ns.SharedLibrary is null)
                 Log.Debug($"Not generating DLL import helper for namespace {ns.Name}: It is missing a shared library info.");
             else
-                _writeDllImportService.WriteDllImport(ns, outputDir);
+                _writeModuleService.Write(ns, outputDir);
 
             _writeCallbacksService.Write(
                 projectName: ns.ToCanonicalName(),

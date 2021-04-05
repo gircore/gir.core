@@ -24,7 +24,6 @@ namespace Generator.Factories
 
         public ScriptObject CreateComplex(Namespace currentNamespace)
         {
-
             var scriptObject = CreateBase(currentNamespace);
             scriptObject.Import("write_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>((s, l) => TemplateWriter.WriteInheritance(s, l, currentNamespace)));
             scriptObject.Import("write_native_parent", new Func<SymbolReference?, string>(s => TemplateWriter.WriteNativeParent(s, currentNamespace)));
@@ -37,7 +36,7 @@ namespace Generator.Factories
             scriptObject.Import("write_struct_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
             scriptObject.Import("write_union_fields", new Func<IEnumerable<Field>, string>(f => f.WriteUnionStructFields(currentNamespace)));
             scriptObject.Import("write_native_field_delegates", new Func<IEnumerable<Field>, string>(f => f.WriteNativeDelegates(currentNamespace)));
-            
+
             return scriptObject;
         }
 

@@ -24,5 +24,10 @@ namespace Generator
             
             return ns + "." + name;
         }
+
+        public static string WriteTypeRegistration(this Symbol symbol)
+        {
+            return $"TypeDictionary.Add(typeof({symbol.SymbolName}), {symbol.SymbolName}.GTypeDescriptor);\r\n";
+        }
     }
 }

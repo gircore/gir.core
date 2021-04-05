@@ -1,0 +1,14 @@
+using GObject.Native;
+
+namespace {{ namespace.name }}
+{
+    internal partial class Module
+    {
+        static partial void RegisterTypes()
+        {
+            {{ for $class in classes
+            $class | write_type_registration
+            end }}
+        }
+    }
+}

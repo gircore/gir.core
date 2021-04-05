@@ -9,9 +9,9 @@ namespace GObject.Native
 
         public static void Add(System.Type systemType, TypeDescriptor typeDescriptor)
         {
-            var type = typeDescriptor.GType;
-            systemTypeDict[systemType] = type;
-            gobjectTypeDict[type] = systemType;
+            //var type = typeDescriptor.GType;
+            //systemTypeDict[systemType] = type;
+            //gobjectTypeDict[type] = systemType;
         }
     }
 }

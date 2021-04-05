@@ -9,7 +9,7 @@ namespace Repository
     [Register(typeof(TemplateReaderService))]
     [Register(typeof(DllImportResolverFactory))]
     [Register(typeof(WriteHelperService))]
-    [Register(typeof(WriteDllImportService))]
+    [Register(typeof(WriteModuleService))]
     [Register(typeof(WriteSymbolsService))]
     [Register(typeof(WriteInterfaceService))]
     [Register(typeof(WriteClassService))]
