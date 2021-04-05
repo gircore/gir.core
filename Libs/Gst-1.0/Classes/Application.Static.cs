@@ -7,7 +7,7 @@ namespace Gst
         public static void Init()
         {
             int argc = 0;
-            Functions.Native.Init(ref argc, new string[0]);
+            Native.Functions.Init(ref argc, new string[0]);
         }
     }
 }

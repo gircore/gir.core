@@ -11,18 +11,18 @@ namespace Gst
         #endregion
 
         public static PadLinkReturn Link(Pad sourcePad, Pad sinkPad)
-            => Native.Instance.Methods.Link(sourcePad.Handle, sinkPad.Handle);
+            => Native.Pad.Instance.Methods.Link(sourcePad.Handle, sinkPad.Handle);
 
         public static bool Unlink(Pad sourcePad, Pad sinkPad)
-            => Native.Instance.Methods.Unlink(sourcePad.Handle, sinkPad.Handle);
+            => Native.Pad.Instance.Methods.Unlink(sourcePad.Handle, sinkPad.Handle);
 
         public PadLinkReturn Link(Pad sinkPad) => Link(this, sinkPad);
         public bool Unlink(Pad sinkPad) => Unlink(this, sinkPad);
 
-        public bool IsLinked() => Native.Instance.Methods.IsLinked(Handle);
-        public bool IsBlocked() => Native.Instance.Methods.IsBlocked(Handle);
-        public bool IsBlocking() => Native.Instance.Methods.IsBlocking(Handle);
-        public bool IsActive() => Native.Instance.Methods.IsActive(Handle);
+        public bool IsLinked() => Native.Pad.Instance.Methods.IsLinked(Handle);
+        public bool IsBlocked() => Native.Pad.Instance.Methods.IsBlocked(Handle);
+        public bool IsBlocking() => Native.Pad.Instance.Methods.IsBlocking(Handle);
+        public bool IsActive() => Native.Pad.Instance.Methods.IsActive(Handle);
 
         public Caps? QueryCaps() => QueryCaps(null);
 

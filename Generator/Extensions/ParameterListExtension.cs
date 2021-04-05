@@ -58,7 +58,8 @@ namespace Generator
                 var type = argument.WriteType(Target.Native, currentNamespace);
                 var name = converter.ToPascalCase(argument.SymbolName);
 
-                builder.AppendLine($"public {type} {name} => Args[{index}].Extract<{type}>();");
+                builder.AppendLine($"//TODO: public {type} {name} => Args[{index}].Extract<{type}>();");
+                builder.AppendLine($"public string {name} => \"\";");
             }
 
             return builder.ToString();

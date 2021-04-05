@@ -8,7 +8,7 @@ namespace GLib.Native
     public partial class ThreadPool
     {
 
-    #region Methods
+        #region Methods
         
         public partial class Methods
         {

@@ -10,6 +10,6 @@ namespace Gst
         public static int Nano => Constants.VERSION_NANO;
 
         public static string VersionString
-            => Functions.Native.VersionString();
+            => Native.Functions.VersionString();
     }
 }
