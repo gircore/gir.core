@@ -54,7 +54,10 @@ namespace Gst
         }
 
         public Bus? GetBus()
-            => throw new NotImplementedException(); //TODO WrapNullableHandle<Bus>(Native.Instance.Methods.GetBus(Handle), true);
+        {
+            IntPtr ptr = Native.Element.Instance.Methods.GetBus(Handle);
+            return GObject.Native.ObjectWrapper.WrapNullableHandle<Bus>(ptr, true);
+        }
 
         public bool AddPad(Pad pad) => Native.Element.Instance.Methods.AddPad(Handle, pad.Handle);
 

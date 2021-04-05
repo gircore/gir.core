@@ -6,6 +6,14 @@ namespace GObject.Native
 {
     public static class ObjectWrapper
     {
+        public static T? WrapNullableHandle<T>(IntPtr handle, bool ownedRef) where T : class, IHandle
+        {
+            if (handle == IntPtr.Zero)
+                return null;
+
+            return WrapHandle<T>(handle, ownedRef);
+        }
+        
         public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : class, IHandle
         {
             if (handle == IntPtr.Zero)
