@@ -21,7 +21,7 @@ namespace GObject.Native
 
             if(ObjectMapper.TryGetObject(handle, out T? obj))
                 return obj;
-            
+
             var ctor = GetObjectConstructor<T>();
 
             if (ctor == null)
