@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libs\Gtk3\Gtk3.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="gtk.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\GdkPixbuf-2.0\GdkPixbuf-2.0.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

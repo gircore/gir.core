@@ -5,8 +5,11 @@ namespace GObject.Native
 {
     public class ObjectHandle : SafeHandle
     {
-        public ObjectHandle(IntPtr handle) : base(IntPtr.Zero, true)
+        public IntPtr Handle => IsInvalid ? IntPtr.Zero : DangerousGetHandle();
+        
+        public ObjectHandle(IntPtr handle, object obj) : base(IntPtr.Zero, true)
         {
+            ObjectMapper.Map(handle, obj);
             SetHandle(handle);
         }
 
@@ -15,8 +18,6 @@ namespace GObject.Native
         protected sealed override bool ReleaseHandle()
         {
             ObjectMapper.Unmap(handle);
-            Object.Instance.Methods.Unref(handle);
-
             return true;
         }
     }

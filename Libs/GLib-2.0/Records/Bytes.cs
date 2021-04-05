@@ -7,15 +7,19 @@ namespace GLib
         #region Fields
 
         private readonly long _size;
-        private readonly Native.Bytes.Handle _safeHandle;
+        private readonly Native.Bytes.Handle _handle;
 
+        #endregion
+        
+        #region Properties
+        public Native.Bytes.Handle Handle => _handle;
         #endregion
 
         #region Constructors
 
         private Bytes(Native.Bytes.Handle handle)
         {
-            _safeHandle = handle;
+            _handle = handle;
             _size = (long) Native.Bytes.Methods.GetSize(handle);
             GC.AddMemoryPressure(_size);
         }
@@ -32,7 +36,7 @@ namespace GLib
 
         public void Dispose()
         {
-            _safeHandle.Dispose();
+            _handle.Dispose();
             GC.RemoveMemoryPressure(_size);
         }
 

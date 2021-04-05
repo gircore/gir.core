@@ -17,7 +17,7 @@ namespace GdkPixbuf
         #region WidthProperty
 
         public static readonly Property<int> WidthProperty = Property<int>.Wrap<Pixbuf>(
-            Native.WidthProperty,
+            Properties.Width,
             nameof(Width),
             get: (o) => o.Width,
             set: (o, v) => o.Width = v
@@ -34,7 +34,7 @@ namespace GdkPixbuf
         #region HeightProperty
 
         public static readonly Property<int> HeightProperty = Property<int>.Wrap<Pixbuf>(
-            Native.HeightProperty,
+            Properties.Height,
             nameof(Height),
             get: (o) => o.Height,
             set: (o, v) => o.Height = v
@@ -52,16 +52,16 @@ namespace GdkPixbuf
 
         public static Pixbuf NewFromFile(string fileName)
         {
-            IntPtr handle = Native.new_from_file(fileName, out IntPtr error);
+            IntPtr handle = Native.Pixbuf.Instance.Methods.NewFromFile(fileName, out var error);
             Error.ThrowOnError(error);
 
-            return WrapHandle<Pixbuf>(handle, true);
+            return GObject.Native.ObjectWrapper.WrapHandle<Pixbuf>(handle, true);
         }
 
         protected override void Initialize()
         {
             base.Initialize();
-            _size = (long) Native.get_byte_length(Handle);
+            _size = (long) Native.Pixbuf.Instance.Methods.GetByteLength(Handle);
             GC.AddMemoryPressure(_size);
         }
 

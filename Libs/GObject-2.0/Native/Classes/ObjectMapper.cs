@@ -7,11 +7,11 @@ namespace GObject.Native
 {
     public static partial class ObjectMapper
     {
-        private static readonly Dictionary<IntPtr, ToggleRef<IHandle>> WrapperObjects = new();
+        private static readonly Dictionary<IntPtr, ToggleRef> WrapperObjects = new();
         
         public static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : class, IHandle
         {
-            if (WrapperObjects.TryGetValue(handle, out ToggleRef<IHandle>? weakRef))
+            if (WrapperObjects.TryGetValue(handle, out ToggleRef? weakRef))
             {
                 if (weakRef.Object is not null)
                 {
@@ -24,16 +24,20 @@ namespace GObject.Native
             return false;
         }
 
-        public static void Map(IntPtr handle, IHandle obj)
+        public static void Map(IntPtr handle, object obj)
         {
-            WrapperObjects[handle] = new ToggleRef<IHandle>(obj);
+            lock (WrapperObjects)
+            {
+                WrapperObjects[handle] = new ToggleRef(handle, obj);
+            }
         }
 
         public static void Unmap(IntPtr handle)
         {
             lock (WrapperObjects)
             {
-                WrapperObjects.Remove(handle);
+                if(WrapperObjects.Remove(handle, out var toggleRef))
+                    toggleRef.Dispose();
             }
         }
     }

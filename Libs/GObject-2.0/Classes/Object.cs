@@ -25,7 +25,7 @@ namespace GObject
 
         #region Properties
 
-        public IntPtr Handle => _handle.IsInvalid ? IntPtr.Zero : _handle.DangerousGetHandle();
+        public IntPtr Handle => _handle.Handle;
 
         #endregion
 
@@ -60,8 +60,8 @@ namespace GObject
         [MemberNotNull(nameof(_handle))]
         private void Initialize(IntPtr handle)
         {
-            _handle = new ObjectHandle(handle);
-            ObjectMapper.Map(handle, this);
+            _handle = new ObjectHandle(handle, this);
+            Initialize();
         }
 
         protected Object(ConstructParameter[] properties)

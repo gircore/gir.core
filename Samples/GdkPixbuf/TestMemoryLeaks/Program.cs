@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using GdkPixbuf;
+using GLib;
 
 namespace TestMemoryLeaks
 {
@@ -30,9 +31,8 @@ namespace TestMemoryLeaks
                 });
             }
             Task.WaitAll(tasks);
-            Collect();
             Done();
-
+            
             Console.WriteLine("Concurrent bytes finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
             for (int i = 0; i < cycles; i++)
             {
@@ -42,7 +42,6 @@ namespace TestMemoryLeaks
                 });
             }
             Task.WaitAll(tasks);
-            Collect();
             Done();
 
             Console.WriteLine("File finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
@@ -50,7 +49,6 @@ namespace TestMemoryLeaks
             {
                 var a = Pixbuf.NewFromFile(fileName);
             }
-            Collect();
             Done();
 
             Console.WriteLine("Bytes finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
@@ -60,7 +58,7 @@ namespace TestMemoryLeaks
             }
             Done();
 
-            Console.WriteLine("File dispose: Memory should not go up as it is freed explicity via Dispose().");
+           Console.WriteLine("File dispose: Memory should not go up as it is freed explicity via Dispose().");
 
             for (int i = 0; i < cycles; i++)
             {
@@ -68,8 +66,7 @@ namespace TestMemoryLeaks
                 a.Dispose();
             }
             Done();
-
-
+           
             Console.WriteLine("Bytes dispose: Memory should not go up as it is freed explicity via Dispose().");
 
             for (int i = 0; i < cycles; i++)
@@ -78,13 +75,6 @@ namespace TestMemoryLeaks
                 p.Dispose();
             }
             Done();
-        }
-
-        private static void Collect()
-        {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
         }
 
         private static void Done()
