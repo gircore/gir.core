@@ -35,20 +35,19 @@ namespace GObject.Native
             /// </summary>
             public ToggleRef(T obj)
             {
-
                 _reference = obj;
 
                 Native.Object.Instance.Methods.AddToggleRef(obj.Handle, ToggleReference, IntPtr.Zero);
                 Native.Object.Instance.Methods.Unref(obj.Handle);
             }
 
-            private void ToggleReference(IntPtr data, IntPtr @object, bool is_last_ref)
+            private void ToggleReference(IntPtr data, IntPtr @object, bool isLastRef)
             {
-                if (is_last_ref && _reference is T obj)
+                if (isLastRef && _reference is T obj)
                 {
                     _reference = new WeakReference<T>(obj);
                 }
-                else if (!is_last_ref && _reference is WeakReference<T> weakRef)
+                else if (!isLastRef && _reference is WeakReference<T> weakRef)
                 {
                     if (weakRef.TryGetTarget(out T? weakObj))
                         _reference = weakObj;

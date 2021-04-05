@@ -1,11 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GLib;
 using GObject.Native;
-
-#nullable enable
 
 namespace GObject
 {
@@ -19,10 +18,14 @@ namespace GObject
         public event PropertyChangedEventHandler? PropertyChanged;
 
         #endregion
+        
+        #region Fields
+        private ObjectHandle _handle;
+        #endregion
 
         #region Properties
 
-        public IntPtr Handle { get; private set; }
+        public IntPtr Handle => _handle.IsInvalid ? IntPtr.Zero : _handle.DangerousGetHandle();
 
         #endregion
 
@@ -54,9 +57,10 @@ namespace GObject
             Initialize(handle);
         }
 
+        [MemberNotNull(nameof(_handle))]
         private void Initialize(IntPtr handle)
         {
-            Handle = handle;
+            _handle = new ObjectHandle(handle);
             ObjectMapper.Map(handle, this);
         }
 
@@ -97,7 +101,7 @@ namespace GObject
 
         public virtual void Dispose()
         {
-            //TODO
+            _handle.Dispose();
         }
     }
 }

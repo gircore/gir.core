@@ -31,7 +31,10 @@ namespace GObject.Native
 
         public static void Unmap(IntPtr handle)
         {
-            WrapperObjects.Remove(handle);
+            lock (WrapperObjects)
+            {
+                WrapperObjects.Remove(handle);
+            }
         }
     }
 }
