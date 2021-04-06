@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Gir.Atk</PackageId>
+    <RootNamespace>Atk</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
+  </ItemGroup>
+</Project>
