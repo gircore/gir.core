@@ -65,7 +65,7 @@ namespace GObject
             /// <returns>
             /// A new instance of <see cref="TypeDescriptor"/>.
             /// </returns>
-            public static TypeDescriptor For(string wrapperName, Func<ulong>? getType)
+            public static TypeDescriptor For(string wrapperName, Func<ulong> getType)
             {
                 return new TypeDescriptor(wrapperName, getType);
             }

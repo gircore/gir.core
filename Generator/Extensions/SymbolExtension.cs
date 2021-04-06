@@ -27,7 +27,7 @@ namespace Generator
 
         public static string WriteTypeRegistration(this Symbol symbol)
         {
-            return $"TypeDictionary.Add(typeof({symbol.SymbolName}), {symbol.SymbolName}.GTypeDescriptor);\r\n";
+            return $"TypeDictionary.Add(typeof({symbol.SymbolName}), GObject.TypeDescriptor.For(\"{symbol.CTypeName}\", Native.{symbol.SymbolName}.Instance.Methods.GetGType));\r\n";
         }
     }
 }

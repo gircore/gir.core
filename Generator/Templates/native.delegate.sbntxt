@@ -47,7 +47,7 @@ namespace {{ namespace.native_name }}
     
         public {{ $managed_name }}CallHandler({{ $managed_name }} managed)
         {
-            NativeCallback = default; //TODO: NativeCallbackMarshaller;
+            NativeCallback = default!; //TODO: NativeCallbackMarshaller;
             managedCallback = managed;
         }
         /* TODO
@@ -83,7 +83,7 @@ namespace {{ namespace.native_name }}
     
         public {{ $managed_name }}AsyncHandler({{ $managed_name }} managed)
         {
-            NativeCallback = default; //TODO: NativeCallbackMarshaller;
+            NativeCallback = default!; //TODO: NativeCallbackMarshaller;
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
         }
@@ -117,7 +117,7 @@ namespace {{ namespace.native_name }}
     /// </summary>
     public class {{ $managed_name }}NotifiedHandler : IDisposable
     {
-        public event System.Action OnDestroyNotify;
+        public event EventHandler<EventArgs>? OnDestroyNotify;
         public {{ symbol_name }} NativeCallback;
         public GLib.Native.DestroyNotifyCallback DestroyNotify;
 
@@ -127,7 +127,7 @@ namespace {{ namespace.native_name }}
         public {{ $managed_name }}NotifiedHandler({{ $managed_name }} managed)
         {
             DestroyNotify = DestroyCallback;
-            NativeCallback = default; //TODO: NativeCallbackMarshaller;
+            NativeCallback = default!; //TODO: NativeCallbackMarshaller;
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
         }
@@ -145,7 +145,7 @@ namespace {{ namespace.native_name }}
 
         private void DestroyCallback(IntPtr userData)
         {
-            OnDestroyNotify();
+            OnDestroyNotify?.Invoke(this, EventArgs.Empty);
 
             // Allow for garbage collection
             gch.Free();

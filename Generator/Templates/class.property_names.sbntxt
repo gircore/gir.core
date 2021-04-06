@@ -1,6 +1,6 @@
 #region Properties
 
-public class Properties
+public{{ ' new' | get_if parent }} class Properties
 {
     {{~ for $property in properties }}
     {{ include 'property_name.sbntxt' $property ~}}
