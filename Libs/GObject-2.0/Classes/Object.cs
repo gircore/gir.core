@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GLib;
 using GObject.Native;
@@ -10,26 +8,14 @@ namespace GObject
 {
     public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHandle
     {
-        #region Events
-
         /// <summary>
         /// Event triggered when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        #endregion
-        
-        #region Fields
-        private ObjectHandle _handle;
-        #endregion
-
-        #region Properties
+        private readonly ObjectHandle _handle;
 
         public IntPtr Handle => _handle.Handle;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a wrapper for an existing object
@@ -42,12 +28,22 @@ namespace GObject
             Initialize();
         }
 
+        /// <summary>
+        /// Constructs a new object
+        /// </summary>
+        /// <param name="properties"></param>
+        /// <remarks>This constructor is protected to be sure that there is no caller (enduser) keeping a reference to
+        /// the construct parameters as the contained values are freed at the end of this constructor.
+        /// If certain constructors are needed they need to be implemented with concrete constructor arguments in
+        /// a higher layer.</remarks>
         protected Object(ConstructParameter[] properties)
         {
+            var gtype = TypeDictionary.GetGType(GetType());
+
+            //TODO Create object with properties and type from TypeDict.
+            
             throw new NotImplementedException();
         }
-
-        #endregion
 
         /// <summary>
         /// Wrapper and subclasses can override here to perform immediate initialization
