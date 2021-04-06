@@ -55,7 +55,7 @@ namespace GdkPixbuf
             IntPtr handle = Native.Pixbuf.Instance.Methods.NewFromFile(fileName, out var error);
             Error.ThrowOnError(error);
 
-            return GObject.Native.ObjectWrapper.WrapHandle<Pixbuf>(handle, true);
+            return new Pixbuf(handle, true);
         }
 
         protected override void Initialize()
