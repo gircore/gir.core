@@ -7,6 +7,7 @@ using GLib;
 
 namespace Gtk
 {
+    /*
     public partial class Builder
     {
         #region Constructors
@@ -137,4 +138,5 @@ namespace Gtk
         }
         #endregion
     }
+    */
 }

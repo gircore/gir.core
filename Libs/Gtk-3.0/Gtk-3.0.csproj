@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <ProjectReference Include="..\Atk-1.0\Atk-1.0.csproj" />
     <ProjectReference Include="..\Gdk-3.0\Gdk-3.0.csproj" />
     <ProjectReference Include="..\GdkPixbuf-2.0\GdkPixbuf-2.0.csproj" />
     <ProjectReference Include="..\Gio-2.0\Gio-2.0.csproj" />

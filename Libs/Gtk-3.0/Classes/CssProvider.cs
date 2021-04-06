@@ -6,6 +6,7 @@ using GObject;
 
 namespace Gtk
 {
+    /*
     public partial class CssProvider
     {
         public CssProvider() { }
@@ -33,4 +34,5 @@ namespace Gtk
             return result;
         }
     }
+    */
 }
