@@ -46,7 +46,7 @@ namespace GObject
         /// </returns>
         public static ConstructParameter With<T>(Property<T> property, T value) => new ConstructParameter(property.Name, value);
 
-        public static ConstructParameter With<T>(string propertyName, T value) => new ConstructParameter(propertyName, value);
+        public static ConstructParameter With(string propertyName, object value) => new ConstructParameter(propertyName, value);
         
         public void Dispose()
         {

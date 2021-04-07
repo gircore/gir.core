@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GLib.Native;
 
 namespace GLib
 {
@@ -77,7 +78,7 @@ namespace GLib
         }
 
         public string GetString()
-            => Native.Variant.Methods.GetString(_handle, out _);
+            =>  StringHelper.ToAnsiString(Native.Variant.Methods.GetString(_handle, out _));
 
         public int GetInt()
             => Native.Variant.Methods.GetInt32(_handle);

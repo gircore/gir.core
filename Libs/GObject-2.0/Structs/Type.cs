@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GLib;
+using GLib.Native;
 
 namespace GObject
 {
@@ -53,7 +55,7 @@ namespace GObject
         // Print out the name of the GType
         public override string ToString()
         {
-            return Native.Functions.TypeName(_value);
+            return StringHelper.ToAnsiString(Native.Functions.TypeName(_value));
         }
 
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h

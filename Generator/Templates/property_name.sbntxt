@@ -1,7 +1,6 @@
 /// <summary>
 /// Contains the name of the {{ $1.symbol_name}} property.
 /// </summary>
-
 {{~
 $name = $1.symbol_name
 
@@ -9,4 +8,4 @@ if $name == "Properties"
     $name = "Properties_"
 end
 ~}}
-public const string {{ $name}} = "{{ $1.symbol_name }}";
+public const string {{ $name}} = "{{ $1.name }}";

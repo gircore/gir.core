@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using GLib;
+using GLib.Native;
 
 namespace GObject
 {
@@ -17,9 +18,8 @@ namespace GObject
         
         public Value(Type type)
         {
-            Handle = Native.Value.ManagedHandle.Create();
-
-            Native.Value.Methods.Init(Handle, type.Value);
+            var h = Native.Value.ManagedHandle.Create();
+            Handle = Native.Value.Methods.Init(h, type.Value);
         }
 
         public Value(IntPtr value) : this(Type.Object) => Native.Value.Methods.SetObject(Handle, value);
@@ -123,7 +123,7 @@ namespace GObject
         public float GetFloat() => Native.Value.Methods.GetFloat(Handle);
         public long GetFlags() => Native.Value.Methods.GetFlags(Handle);
         public long GetEnum() => Native.Value.Methods.GetEnum(Handle);
-        public string GetString() => Native.Value.Methods.GetString(Handle);
+        public string GetString() => StringHelper.ToAnsiString(Native.Value.Methods.GetString(Handle));
 
         public void Dispose()
         {

@@ -34,9 +34,6 @@ namespace Repository.Factories.Model
 
         private bool IsPointer(Typed typed)
         {
-            if (typed.Array is { })
-                return true; //Arrays are always pointers
-
             return GetIsPointer(typed.Type?.Name, typed.Type?.CType);
         }
 

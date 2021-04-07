@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using GLib;
 using GObject.Native;
 
@@ -38,11 +40,19 @@ namespace GObject
         /// a higher layer.</remarks>
         protected Object(ConstructParameter[] properties)
         {
-            var gtype = TypeDictionary.GetGType(GetType());
-
-            //TODO Create object with properties and type from TypeDict.
+            Type gtype = TypeDictionary.GetGType(GetType());
             
-            throw new NotImplementedException();
+            var names = properties.Select(x => x.Name).ToArray();
+            var values = new Native.Value.Struct[properties.Length];
+
+            IntPtr handle = Native.Object.Instance.Methods.NewWithProperties(
+                objectType: gtype.Value,
+                nProperties: (uint) properties.Length, 
+                names: names, 
+                values:values
+            );
+
+            _handle = new ObjectHandle(handle, this, !Native.Object.Instance.Methods.IsFloating(handle));
         }
 
         /// <summary>

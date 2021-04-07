@@ -5,19 +5,16 @@ namespace GObject.Native
 {
     public static class TypeDictionary
     {
-        private static Dictionary<System.Type, Type> systemTypeDict = new();
-        private static Dictionary<Type, System.Type> gobjectTypeDict = new();
+        private static readonly Dictionary<System.Type, Type> _systemTypeDict = new();
 
-        public static void Add(System.Type systemType, TypeDescriptor typeDescriptor)
+        public static void Add(System.Type systemType, Type type)
         {
-            var type = typeDescriptor.GType;
-            systemTypeDict[systemType] = type;
-            gobjectTypeDict[type] = systemType;
+            _systemTypeDict[systemType] = type;
         }
 
         public static Type GetGType(System.Type type)
         {
-            if (!systemTypeDict.TryGetValue(type, out Type result))
+            if (!_systemTypeDict.TryGetValue(type, out Type result))
                 throw new Exception($"Can not find native type for system type {type.FullName}. Is the type registered?");
 
             return result;
