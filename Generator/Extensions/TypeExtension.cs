@@ -1,4 +1,5 @@
-﻿using Repository.Model;
+﻿using System;
+using Repository.Model;
 using Type = Repository.Model.Type;
 
 namespace Generator
@@ -10,17 +11,20 @@ namespace Generator
             var symbol = type.SymbolReference.GetSymbol();
             var name = (symbol, type, target) switch
             {
-                //Arrays of string can be marshalled automatically, no IntPtr needed
+                // Arrays of string can be marshalled automatically, no IntPtr needed
                 (_, {TypeInformation: {Array:{}}}, Target.Native) when symbol.SymbolName == "string" => "string",
                 
-                //Arrays of byte can be marshalled automatically, no IntPtr needed
+                // Arrays of byte can be marshalled automatically, no IntPtr needed
                 (_, {TypeInformation: {Array:{}}}, Target.Native) when symbol.SymbolName == "byte" => "byte",
 
-                //Use original symbol name for records (remapped to SafeHandles)
+                // Use original symbol name for records (remapped to SafeHandles)
                 (Record r, {TypeInformation: {IsPointer: true}}, Target.Native) 
                     => WriteType(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName")),
+                
+                // TODO: Managed callbacks use the 'ManagedName' property
+                (Callback c, _, Target.Managed) => symbol.Write(c.Metadata["ManagedName"].ToString(), currentNamespace),
 
-                //Use IntPtr for all types where a pointer is expected
+                // Use IntPtr for all types where a pointer is expected
                 (_, {TypeInformation: {IsPointer: true}}, Target.Native) => "IntPtr",
                 
                 _ => symbol.Write(target, currentNamespace)

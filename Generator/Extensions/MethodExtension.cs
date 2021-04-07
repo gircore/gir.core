@@ -103,9 +103,12 @@ namespace Generator
             IEnumerable<Parameter> nativeParams = method.ParameterList.GetParameters();
 
             // The arguments used in the managed method signature (e.g. no userData)
-            IEnumerable<SingleParameter> managedParams = method.ParameterList.SingleParameters;
+            IEnumerable<SingleParameter> managedParams = method.ParameterList.GetManagedParameters();
             
-            // Instance argument (which we want to exclude from the managed signature)
+            // Null parameters (this is the difference between all parameters and managed parameters)
+            IEnumerable<SingleParameter> nullParams = method.ParameterList.SingleParameters.Except(managedParams);
+            
+            // Instance argument
             InstanceParameter? instanceArg = method.ParameterList.InstanceParameter;
 
             // Delegate-type arguments only
@@ -158,11 +161,13 @@ namespace Generator
             foreach (var dlgParam in delegateParams)
             {
                 Symbol symbol = dlgParam.SymbolReference.GetSymbol();
+                var managedName = symbol.Metadata["ManagedName"].ToString();
+                
                 var handlerType = dlgParam.CallbackScope switch
                 {
-                    Scope.Call => $"{symbol.Namespace.Name}.{symbol.SymbolName}CallHandler",
-                    Scope.Async => $"{symbol.Namespace.Name}.{symbol.SymbolName}AsyncHandler",
-                    Scope.Notified => $"{symbol.Namespace.Name}.{symbol.SymbolName}NotifiedHandler"
+                    Scope.Call => $"{symbol.Namespace.Name}.{managedName}CallHandler",
+                    Scope.Async => $"{symbol.Namespace.Name}.{managedName}AsyncHandler",
+                    Scope.Notified => $"{symbol.Namespace.Name}.{managedName}NotifiedHandler"
                 };
 
                 var alloc = $"var {dlgParam.SymbolName}Handler = new {handlerType}({dlgParam.SymbolName});";
@@ -192,6 +197,10 @@ namespace Generator
             // 3. marshal parameters
             foreach (var arg in marshalParams)
             {
+                // Skip null parameters
+                if (nullParams.Contains(arg))
+                    continue;
+                
                 Symbol symbol = arg.SymbolReference.GetSymbol();
                 var alloc = ArgToNative(arg, $"{arg.SymbolName}Native", arg.SymbolName, currentNamespace);
                 var dealloc = $"// TODO: Free {arg.SymbolName}Native";
@@ -215,6 +224,10 @@ namespace Generator
                 // TODO: Handle excluded items
                 IEnumerable<string> args = nativeParams.Select(arg =>
                 {
+                    // TODO: Better type handling
+                    if (nullParams.Contains(arg))
+                        return "IntPtr.Zero";
+                    
                     // Do something
                     Symbol symbol = arg.SymbolReference.GetSymbol();
                     var argText = symbol switch
