@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using GLib;
 using GLib.Native;
 
 namespace GObject
@@ -8,7 +7,7 @@ namespace GObject
     public partial record Value : IDisposable
     {
         internal Native.Value.Handle Handle { get; }
-        
+
         #region Constructors
 
         internal Value(Native.Value.Handle handle)
@@ -35,6 +34,8 @@ namespace GObject
 
         #region Methods
 
+        internal Native.Value.Struct GetData() => Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());
+        
         private Types GetTypeValue()
         {
             var structure = Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());

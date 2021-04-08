@@ -11,7 +11,6 @@ namespace Generator
             if (method is null )
                 return string.Empty;
 
-
             var returnValue = method.ReturnValue.WriteNative(currentNamespace);
 
             var useSafeHandle = !method.IsFree() && !method.IsUnref();

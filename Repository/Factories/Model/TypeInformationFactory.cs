@@ -1,4 +1,5 @@
-﻿using Repository.Model;
+﻿using System;
+using Repository.Model;
 using Repository.Xml;
 
 namespace Repository.Factories.Model
@@ -34,7 +35,14 @@ namespace Repository.Factories.Model
 
         private bool IsPointer(Typed typed)
         {
-            return GetIsPointer(typed.Type?.Name, typed.Type?.CType);
+            return typed switch
+            {
+                {Type: { } t} => GetIsPointer(t.Name, t.CType),
+                {Array: {Type: { } t}} => GetIsPointer(t.Name, t.CType),
+                {Array: {Array:{}}} => true,
+                FieldInfo {Callback: {}} => false, //Callbacks are no pointer as they are handled as delegates
+                _ => throw new Exception("Can not get pointer information from type: " + typed)
+            };
         }
 
         private bool GetIsPointer(string? type, string? ctype)

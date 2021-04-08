@@ -7,7 +7,7 @@ namespace Gtk
         #region Constructors
 
         public Application(string applicationId)
-            : this(ConstructParameter.With(ApplicationIdProperty, applicationId)) { }
+            : this(ConstructArgument.With(ApplicationIdProperty, applicationId)) { }
 
         #endregion
     }

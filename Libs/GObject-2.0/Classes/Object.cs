@@ -33,26 +33,38 @@ namespace GObject
         /// <summary>
         /// Constructs a new object
         /// </summary>
-        /// <param name="properties"></param>
+        /// <param name="constructParameters"></param>
         /// <remarks>This constructor is protected to be sure that there is no caller (enduser) keeping a reference to
         /// the construct parameters as the contained values are freed at the end of this constructor.
         /// If certain constructors are needed they need to be implemented with concrete constructor arguments in
         /// a higher layer.</remarks>
-        protected Object(ConstructParameter[] properties)
+        protected Object(ConstructArgument[] constructParameters)
         {
             Type gtype = TypeDictionary.GetGType(GetType());
-            
-            var names = properties.Select(x => x.Name).ToArray();
-            var values = new Native.Value.Struct[properties.Length];
 
             IntPtr handle = Native.Object.Instance.Methods.NewWithProperties(
                 objectType: gtype.Value,
-                nProperties: (uint) properties.Length, 
-                names: names, 
-                values:values
+                nProperties: (uint) constructParameters.Length, 
+                names: GetNames(constructParameters), 
+                values: GetValues(constructParameters)
             );
 
             _handle = new ObjectHandle(handle, this, !Native.Object.Instance.Methods.IsFloating(handle));
+        }
+
+        private string[] GetNames(ConstructArgument[] constructParameters)
+            => constructParameters.Select(x => x.Name).ToArray();
+
+        private Native.Value.Struct[] GetValues(ConstructArgument[] constructParameters)
+        {
+            var values = new Native.Value.Struct[constructParameters.Length];
+
+            for (int i = 0; i < constructParameters.Length; i++)
+            {
+                values[i] = constructParameters[i].Value.GetData();
+            }
+
+            return values;
         }
 
         /// <summary>
