@@ -15,7 +15,7 @@ namespace Generator.Services.Writer
 
         public void Write(string projectName, string templateName, string folder, string outputDir, string fileName, ScriptObject scriptObject)
         {
-            var template = _templateReaderService. ReadGenericTemplate(templateName);
+            Template template = _templateReaderService.ReadGenericTemplate(templateName);
 
             WriteCode(
                 folder: CreateSubfolder(projectName, outputDir, folder),

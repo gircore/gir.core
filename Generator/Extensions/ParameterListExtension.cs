@@ -9,15 +9,30 @@ namespace Generator
 {
     internal static class ParameterListExtension
     {
-        public static string WriteManaged(this ParameterList parameterList, Namespace currentNamespace)
+        public static IEnumerable<SingleParameter> GetManagedParameters(this ParameterList parameterList)
         {
             // Exclude "userData" parameters
-            IEnumerable<Parameter> args = parameterList.SingleParameters.Where(x => x.ClosureIndex == null);
+            SingleParameter[] args = parameterList.SingleParameters.ToArray();//.Where(x => x.ClosureIndex == null);
+            
+            var exclude = new List<SingleParameter>();
+            foreach (var arg in args)
+            {
+                if (arg.ClosureIndex.HasValue && arg.ClosureIndex != 0)
+                    exclude.Add(args[arg.ClosureIndex.Value]);
+            }
 
-            if (parameterList.InstanceParameter is { })
-                args = args.Append(parameterList.InstanceParameter);
-
-            return string.Join(", ", args.Select(x => x.Write(Target.Managed, currentNamespace)));
+            return args.Except(exclude);
+        }
+        public static string WriteManaged(this ParameterList parameterList, Namespace currentNamespace)
+        {
+            IEnumerable<string> paramArray = parameterList
+                .GetManagedParameters()
+                .Select(x => x.Write(Target.Managed, currentNamespace));
+            
+            return string.Join(
+                separator: ", ",
+                values: paramArray
+            );
         }
 
         public static string WriteNative(this ParameterList parameterList, Namespace currentNamespace, bool useSafeHandle = true)

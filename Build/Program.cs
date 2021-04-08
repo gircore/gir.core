@@ -10,7 +10,6 @@ namespace Build
 
         /// <summary>Run or list targets.</summary>
         /// <param name="release">Execute the targets with the Release configuration.</param>
-        /// <param name="comments">Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.</param>
         /// <param name="xmlDocumentation">Generate the xml documentation.</param>
         /// <param name="targets">A list of targets to run or list. To list the available targets use option --list-targets.</param>
         /// <param name="version">The version number to use during build.</param>
@@ -25,9 +24,10 @@ namespace Build
         /// <param name="skipDependencies">Do not run targets' dependencies.</param>
         /// <param name="verbose">Enable verbose output.</param>
         /// <param name="disableAsync">Generate files synchronously (useful for debugging)</param>
+        /// <param name="generateMethods">Generate managed methods (highly experimental!)</param>
+        /// <param name="generateComments">Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.</param>
         public static int Main(
             bool release,
-            bool comments,
             bool xmlDocumentation,
             string[] targets,
             string? version,
@@ -41,7 +41,9 @@ namespace Build
             bool parallel,
             bool skipDependencies,
             bool verbose,
-            bool disableAsync
+            bool disableAsync,
+            bool generateComments,
+            bool generateMethods
         )
         {
             // Initialise Serilog before Bullseye
@@ -49,9 +51,10 @@ namespace Build
             
             var settings = new Settings()
             {
-                GenerateComments = comments,
+                GenerateComments = generateComments,
                 GenerateXmlDocumentation = xmlDocumentation,
                 GenerateAsynchronously = !disableAsync,
+                GenerateMethods = generateMethods,
                 Configuration = release ? Configuration.Release : Configuration.Debug,
                 Version = GetSemanticVersion(version)
             };

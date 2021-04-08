@@ -41,10 +41,11 @@ There are some options which can be used to influence the code generation:
 
 * `--release`: Execute the targets with the Release configuration. If not specified the Debug configuration is used.
 * `--xml-documentation`: Generate the xml documentation.
-* `--comments`: Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.
+* `--generate-comments`: Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.
 * `--targets <targets>`: A list of targets to run or list.
 * `--version <version>`: Specify the version number of the `build`.
 * `--disable-async`: Runs the generator synchronously (useful for debugging if something goes wrong)
+* `--generate-methods`: Highly experimental method generation (**does not compile - only for generator development**)
 
 To get a full list of available options use `--help`.
 
