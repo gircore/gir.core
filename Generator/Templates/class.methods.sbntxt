@@ -1,0 +1,7 @@
+{{~ 
+if generate_methods
+    for $method in methods
+        $method | write_managed_method
+    end
+end 
+~}}

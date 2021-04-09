@@ -13,5 +13,6 @@ namespace {{ namespace.name }}
         {{ include 'class.signals.sbntxt' }}
         {{ include 'class.constructors.sbntxt' }}
         {{ include 'class.property_names.sbntxt' }}
+        {{ include 'class.methods.sbntxt' }}
     }
 }

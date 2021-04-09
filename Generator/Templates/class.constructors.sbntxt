@@ -2,7 +2,7 @@
 #region Constructors
 
 protected internal {{ symbol_name }}(IntPtr ptr, bool ownedRef) : base(ptr, ownedRef) {}
-protected internal {{ symbol_name }}(params ConstructParameter[] properties) : base(properties) {}
+protected internal {{ symbol_name }}(params ConstructArgument[] constructArguments) : base(constructArguments) {}
 
 #endregion
 {{~ end ~}}

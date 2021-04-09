@@ -33,20 +33,20 @@ namespace GObject
         /// <summary>
         /// Constructs a new object
         /// </summary>
-        /// <param name="constructParameters"></param>
+        /// <param name="constructArguments"></param>
         /// <remarks>This constructor is protected to be sure that there is no caller (enduser) keeping a reference to
         /// the construct parameters as the contained values are freed at the end of this constructor.
         /// If certain constructors are needed they need to be implemented with concrete constructor arguments in
         /// a higher layer.</remarks>
-        protected Object(ConstructArgument[] constructParameters)
+        protected Object(ConstructArgument[] constructArguments)
         {
             Type gtype = TypeDictionary.GetGType(GetType());
 
             IntPtr handle = Native.Object.Instance.Methods.NewWithProperties(
                 objectType: gtype.Value,
-                nProperties: (uint) constructParameters.Length, 
-                names: GetNames(constructParameters), 
-                values: GetValues(constructParameters)
+                nProperties: (uint) constructArguments.Length, 
+                names: GetNames(constructArguments), 
+                values: GetValues(constructArguments)
             );
 
             _handle = new ObjectHandle(handle, this, !Native.Object.Instance.Methods.IsFloating(handle));
