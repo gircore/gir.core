@@ -68,6 +68,16 @@ namespace Generator
         
         public static string WriteManaged(this Method? method, Namespace currentNamespace)
         {
+            if (method is null)
+                return string.Empty;
+
+            var generator = new MethodGenerator(method, currentNamespace);
+
+            return generator.Generate();
+        }
+        
+        public static string WriteManagedOld(this Method? method, Namespace currentNamespace)
+        {
             // TODO: Move these outside
             static string ArgToNative(Parameter arg, string toParamName, string fromParamName, Namespace currentNamespace)
             {
