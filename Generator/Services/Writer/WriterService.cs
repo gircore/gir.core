@@ -1,10 +1,16 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
-using Repository;
 using Repository.Model;
 
 namespace Generator.Services.Writer
 {
+    public record WriterOptions
+    {
+        public bool GenerateMethods { get; init; } = false;
+            
+        // TODO: Implement doc comment generation (LGPL-compliant)
+        public bool GenerateDocComments { get; init; } = false;
+    }
+    
     internal class WriterService
     {
         private readonly WriteSymbolsService _writeSymbolsService;
@@ -32,7 +38,7 @@ namespace Generator.Services.Writer
             _writeCallbacksService = writeCallbacksService;
         }
 
-        public void Write(Namespace ns, string outputDir)
+        public void Write(Namespace ns, string outputDir, WriterOptions options)
         {
             if (ns.SharedLibrary is null)
                 Log.Debug($"Not generating DLL import helper for namespace {ns.Name}: It is missing a shared library info.");
@@ -50,7 +56,8 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 classes: ns.Classes.Where(x => !x.IsFundamental),
-                @namespace: ns
+                @namespace: ns,
+                options: options
             );
 
             _writeSymbolsService.Write(

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Generator.Factories;
 using Repository.Model;
+using Scriban.Runtime;
 
 namespace Generator.Services.Writer
 {
@@ -16,12 +17,13 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, IEnumerable<Class> classes, Namespace @namespace)
+        public void Write(string projectName, string outputDir, IEnumerable<Class> classes, Namespace @namespace, WriterOptions options)
         {
             foreach (Class cls in classes)
             {
                 var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, cls);
-
+                scriptObject.Import(options);
+                
                 try
                 {
                     _writeHelperService.Write(
