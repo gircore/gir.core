@@ -6,8 +6,9 @@ namespace Gtk
     {
         #region Constructors
 
-        public Application(string applicationId)
-            : this(ConstructArgument.With(ApplicationIdProperty, applicationId)) { }
+        //TODO
+        //public Application(string applicationId)
+        //    : this(ConstructArgument.With(ApplicationIdProperty, applicationId)) { }
 
         #endregion
     }

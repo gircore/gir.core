@@ -9,7 +9,7 @@ namespace Gtk
         /// </summary>
         /// <param name="title">The window title.</param>
         public Window(string title) 
-            : this(ConstructArgument.With(Properties.Title, title))
+            : this(ConstructArgument.With("title", title))
         {
         }
 

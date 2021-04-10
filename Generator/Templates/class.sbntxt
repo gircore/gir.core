@@ -11,8 +11,8 @@ namespace {{ namespace.name }}
     public partial class {{ symbol_name }} {{ write_inheritance parent implements }}
     {
         {{ include 'class.signals.sbntxt' }}
+        {{ include 'class.properties.sbntxt' }}
         {{ include 'class.constructors.sbntxt' }}
-        {{ include 'class.property_names.sbntxt' }}
         {{ include 'class.methods.sbntxt' }}
     }
 }

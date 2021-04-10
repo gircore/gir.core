@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Generator.Properties;
 using Generator.Services.Writer;
 using Repository.Analysis;
 using Repository.Model;
@@ -37,7 +38,6 @@ namespace Generator.Factories
             scriptObject.Import("write_struct_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
             scriptObject.Import("write_union_fields", new Func<IEnumerable<Field>, string>(f => f.WriteUnionStructFields(currentNamespace)));
             scriptObject.Import("write_native_field_delegates", new Func<IEnumerable<Field>, string>(f => f.WriteNativeDelegates(currentNamespace)));
-
             return scriptObject;
         }
 
@@ -47,6 +47,8 @@ namespace Generator.Factories
             scriptObject.Import(symbol);
             //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
             scriptObject.Import("get_metadata", new Func<string, object?>(key => symbol.Metadata[key]));
+            scriptObject.Import("write_managed_property_descriptor", new Func<Property, string>(p => PropertyGenerator.WriteDescriptor(p, symbol, currentNamespace)));
+            scriptObject.Import("write_managed_property", new Func<Property, string>(p => PropertyGenerator.WriteProperty(p, currentNamespace)));
             return scriptObject;
         }
     }

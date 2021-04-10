@@ -5,6 +5,9 @@ namespace Repository.Model
 {
     public abstract class Element : SymbolReferenceProvider, Resolveable
     {
+        /// <summary>
+        /// Original name of the element
+        /// </summary>
         public ElementName Name { get; }
         public SymbolName SymbolName { get; }
         
