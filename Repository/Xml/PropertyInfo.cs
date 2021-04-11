@@ -10,9 +10,15 @@ namespace Repository.Xml
         [XmlAttribute("writable")]
         public bool Writeable { get; set; }
 
+        [XmlAttribute("readable")] 
+        public bool Readable { get; set; } = true;
+        
+        [XmlAttribute("construct-only")]
+        public bool ConstructOnly { get; set; }
+
         [XmlAttribute("construct")]
         public bool Construct { get; set; }
-
+        
         [XmlAttribute("transfer-ownership")]
         public string? TransferOwnership { get; set; }
 

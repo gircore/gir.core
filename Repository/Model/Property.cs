@@ -7,13 +7,15 @@ namespace Repository.Model
     {
         public Transfer Transfer { get; }
         public bool Writeable { get; }
+        public bool Readable { get; }
         public SymbolReference SymbolReference { get; }
         
-        public Property(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, bool writeable, Transfer transfer) : base(elementName, symbolName)
+        public Property(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, bool writeable, bool readable, Transfer transfer) : base(elementName, symbolName)
         {
             SymbolReference = symbolReference;
             Writeable = writeable;
             Transfer = transfer;
+            Readable = readable;
         }
 
         public override IEnumerable<SymbolReference> GetSymbolReferences()

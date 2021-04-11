@@ -31,6 +31,7 @@ namespace Repository.Factories
                 symbolName: new SymbolName(_caseConverter.ToPascalCase(info.Name)),
                 symbolReference: _symbolReferenceFactory.Create(info, namespaceName),
                 writeable: info.Writeable,
+                readable: info.Readable,
                 transfer:  _transferFactory.FromText(info.TransferOwnership)
             );
         }

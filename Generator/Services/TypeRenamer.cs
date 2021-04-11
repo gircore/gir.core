@@ -8,6 +8,23 @@ namespace Generator.Services
 {
     internal class TypeRenamer
     {
+        public void FixPropertiesNamedLikeClass(IEnumerable<Namespace> namespaces)
+        {
+            foreach (var cls in namespaces.SelectMany(x => x.Classes))
+                FixClassProperties(cls);
+        }
+
+        private static void FixClassProperties(Class cls)
+        {
+            foreach (var prop in cls.Properties)
+            {
+                if (prop.SymbolName == cls.SymbolName)
+                {
+                    prop.SymbolName = prop.SymbolName with { Value = prop.SymbolName + "Prop"};
+                }
+            }
+        }
+
         public void SetMetadata(IEnumerable<Namespace> namespaces)
         {
             foreach (Namespace ns in namespaces)
@@ -17,7 +34,7 @@ namespace Generator.Services
                 SetUnionMetadata(ns.Unions);
                 SetCallbacksMetadata(ns.Callbacks);
             }
-            
+
             Log.Information("Metadata set.");
         }
 
@@ -27,15 +44,15 @@ namespace Generator.Services
             {
                 foreach (var callback in record.Fields.Select(x => x.Callback))
                 {
-                    if(callback is {})
-                        SetCallbackMetadata(callback);   
+                    if (callback is { })
+                        SetCallbackMetadata(callback);
                 }
             }
         }
 
         private void SetCallbacksMetadata(IEnumerable<Callback> callbacks)
         {
-            foreach(var callback in callbacks)
+            foreach (var callback in callbacks)
                 SetCallbackMetadata(callback);
         }
 
@@ -47,10 +64,10 @@ namespace Generator.Services
 
         private void SetUnionMetadata(IEnumerable<Union> unions)
         {
-            foreach(var union in unions)
+            foreach (var union in unions)
                 SetUnionMetadata(union);
         }
-        
+
         private void SetUnionMetadata(Union union)
         {
             union.Metadata["Name"] = union.SymbolName;
@@ -58,7 +75,7 @@ namespace Generator.Services
 
             union.SymbolName = new SymbolName($"{union.SymbolName}.Struct");
         }
-        
+
         private void SetRecordMetadata(IEnumerable<Record> records)
         {
             foreach (var record in records)
@@ -73,13 +90,13 @@ namespace Generator.Services
         private void SetClassStructMetadata(Record record)
         {
             Debug.Assert(record.GLibClassStructFor is not null);
-            
+
             var className = record.GLibClassStructFor.GetSymbol().SymbolName;
             record.Metadata["Name"] = className;
             record.Metadata["PureName"] = "Class";
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{className}.Handle";
-            
+
             record.SymbolName = new SymbolName($"{className}.Class");
         }
 

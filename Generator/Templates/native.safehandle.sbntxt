@@ -49,7 +49,7 @@ namespace {{ namespace.native_name }}
                     Marshal.StructureToPtr(str, ptr, true);
                 }
                 
-                return new {{$safehandle_name}}(ptr);
+                return new Managed{{$safehandle_name}}(ptr);
             }
             
             private Managed{{$safehandle_name}}(IntPtr handle) : base(handle) { }

@@ -54,14 +54,10 @@ namespace GObject
         {
             var handle = Native.Value.ManagedHandle.Create();
             
-            GetProperty(Handle, name, ref handle);
+            Native.Object.Instance.Methods.GetProperty(Handle, name, handle);
 
             return new Value(handle);
         }
-
-        //TODO: Clarify this call use native one if possible
-        [DllImport("GObject", EntryPoint = "g_object_get_property")]
-        public static extern void GetProperty(IntPtr @object, string propertyName, ref Native.Value.Handle value);
 
         #endregion
     }
