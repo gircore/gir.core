@@ -22,7 +22,7 @@ namespace Build
         public const string ProjectPath = "../Libs";
         public const string GirPath = "../gir-files";
         
-        public const string SOLUTION = "../GirCore.sln";
+        public const string SolutionDirectory = "../";
 
         private const string SAMPLE = "../Samples/";
         private const string DBUS_SAMPLE = SAMPLE + "DBus/";
@@ -71,10 +71,10 @@ namespace Build
             Project.FromName("Atk-1.0"),
             Project.FromName("Gtk-3.0"),
             Project.FromName("Gst-1.0"),
-            Project.FromName("GstAudio-1.0"),
-            Project.FromName("GstVideo-1.0"),
-            Project.FromName("GstPbutils-1.0"),
-            Project.FromName("GstBase-1.0")
+            //Project.FromName("GstAudio-1.0"),
+            //Project.FromName("GstVideo-1.0"),
+            //Project.FromName("GstPbutils-1.0"),
+            //Project.FromName("GstBase-1.0")
         };
 
         #endregion
