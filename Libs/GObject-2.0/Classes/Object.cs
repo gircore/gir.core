@@ -79,9 +79,7 @@ namespace GObject
         }
         
         protected internal SignalHelper GetSignalHelper(string name)
-        {
-            return default!;
-        }
+            => new SignalHelper(this, name);
 
         /// <summary>
         /// Notify this object that a property has just changed.
