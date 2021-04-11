@@ -16,5 +16,15 @@ namespace Gtk.Tests
 
             window.Resizable.Should().Be(value);
         }
+
+        [DataTestMethod]
+        [DataRow("NewTitle")]
+        public void TestStringProperty(string str)
+        {
+            var window = new Window("TestWindow");
+            window.Title = str;
+
+            window.Title.Should().Be(str);
+        }
     }
 }
