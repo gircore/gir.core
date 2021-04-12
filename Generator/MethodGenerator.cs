@@ -73,6 +73,17 @@ namespace Generator
 
             return string.Empty;
         }
+        
+        private void AddMethodSignature()
+        {
+            var returnValue = _method.ReturnValue.WriteManaged(_currentNamespace);
+            var parameterList = _method.ParameterList.WriteManaged(_currentNamespace);
+            _stack.Nest(new ()
+            {
+                Start = $"public {returnValue} {_method.SymbolName}({parameterList})\r\n{{",
+                End = "}"
+            });
+        }
 
         private void AddDelegateLifecycleManagement()
         {
@@ -100,17 +111,6 @@ namespace Generator
                     Start = alloc
                 });
             }
-        }
-
-        private void AddMethodSignature()
-        {
-            var returnValue = _method.ReturnValue.WriteManaged(_currentNamespace);
-            var parameterList = _method.ParameterList.WriteManaged(_currentNamespace);
-            _stack.Nest(new ()
-            {
-                Start = $"public {returnValue} {_method.SymbolName}({parameterList})\r\n{{",
-                End = "}"
-            });
         }
 
         private void AddParameterConversions()

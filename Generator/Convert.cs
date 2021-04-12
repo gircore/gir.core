@@ -12,12 +12,15 @@ namespace Generator
             
             return (symbol, typeInfo) switch
             {
-                (Record r, {IsPointer: true, Array: null}) => $"Marshal.StructureToPtr<{qualifiedType}>({fromParam}, {fromParam}Ptr, false);",
-                (Record r, {IsPointer: true, Array:{}}) => $"{fromParam}.MarshalToStructure<{qualifiedType}>();",
-                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{qualifiedType}.From({fromParam});",
+                (Record r, {IsPointer: true, Array: null}) => $"{fromParam}.Handle",
+                (Record r, {IsPointer: true, Array:{}}) => $"{fromParam}.MarshalToStructure<{qualifiedType}>()",
+                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{qualifiedType}.From({fromParam})",
                 (Class c, {IsPointer: true, Array: null}) => $"{fromParam}.Handle",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Can't create delegate for argument {fromParam}"),
-                _ => $"({qualifiedType}){fromParam}" // Other -> Try a brute-force cast
+                
+                // Other -> Try a brute-force cast
+                (_, {Array: {}}) => $"({qualifiedType}[]){fromParam}",
+                _ => $"({qualifiedType}){fromParam}"
             };
         }
         
