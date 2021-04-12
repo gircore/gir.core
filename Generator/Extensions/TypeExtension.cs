@@ -36,6 +36,9 @@ namespace Generator
                 
                 (Record r, _, Target.Managed)
                     => WriteType(currentNamespace, r.Namespace, r.GetMetadataString("Name"), target),
+                
+                (Callback c, _, Target.Managed)
+                    => WriteType(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), target),
 
                 // Pointers to primitive value types can be marshalled directly
                 (PrimitiveValueType, {TypeInformation:{IsPointer: true}}, Target.Native) => symbol.Write(target, currentNamespace),

@@ -1,5 +1,6 @@
 ﻿using System;
 using Repository.Model;
+using Array = System.Array;
 
 namespace Generator
 {
@@ -14,9 +15,12 @@ namespace Generator
             {
                 (Record r, {IsPointer: true, Array: null}) => $"{fromParam}.Handle",
                 (Record r, {IsPointer: true, Array:{}}) => $"{fromParam}.MarshalToStructure<{qualifiedType}>()",
-                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{qualifiedType}.From({fromParam})",
+                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{qualifiedType}.To({fromParam})",
                 (Class c, {IsPointer: true, Array: null}) => $"{fromParam}.Handle",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Can't create delegate for argument {fromParam}"),
+                (Class c, { Array: {}}) => $"{fromParam}.Select(cls => cls.Handle).ToArray()",
+                (Interface i, { Array: {}}) => $"{fromParam}.Select(iface => (iface as GObject.Object).Handle).ToArray()",
+                (Interface i, _) => $"({fromParam} as GObject.Object).Handle",
                 
                 // Other -> Try a brute-force cast
                 (_, {Array: {}}) => $"({qualifiedType}[]){fromParam}",
@@ -31,13 +35,21 @@ namespace Generator
             
             return (symbol, typeInfo) switch
             {
-                (Symbol s, _) when s.SymbolName == "string" => $"Marshal.PtrToStringAnsi({fromParam})",
+                // String Handling
+                (Symbol s, {Array: {}}) when transfer != Transfer.Full && s.SymbolName == "string" => $"{fromParam}.Select(str => Marshal.PtrToStringAnsi(str)).ToArray()",
+                (Symbol s, _) when transfer != Transfer.Full && s.SymbolName == "string" => $"Marshal.PtrToStringAnsi({fromParam})",
+
+                // General Conversions
                 (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{qualifiedType}>({fromParam})",
                 (Record r, {IsPointer: true, Array:{}}) => $"{fromParam}.MarshalToStructure<{qualifiedType}>()",
                 (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{qualifiedType}.From({fromParam})",
                 (Class c, {IsPointer: true, Array: null}) => $"GObject.Object.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Can't create delegate for argument '{fromParam}'"),
-                _ => $"({qualifiedType}){fromParam}" // Other -> Try a brute-force cast
+                (Interface i, _) => $"GObject.Object.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
+                
+                // Other -> Try a brute-force cast
+                (_, {Array: {}}) => $"({qualifiedType}[]){fromParam}",
+                _ => $"({qualifiedType}){fromParam}"
             };
         }
     }

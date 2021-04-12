@@ -12,7 +12,6 @@ namespace Generator
         private readonly Method _method;
         private readonly Namespace _currentNamespace;
         private readonly SymbolName _parent;
-        private readonly bool _generate = true;
 
         private readonly IEnumerable<Parameter> _nativeParams;
         private readonly IEnumerable<SingleParameter> _managedParams;
@@ -41,37 +40,66 @@ namespace Generator
             _delegateParams = _managedParams.Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
             _marshalParams = _managedParams.Except(_delegateParams);
             _instanceParameter = method.ParameterList.InstanceParameter;
+        }
+
+        public string Generate()
+        {
+            if (!CanGenerateMethod())
+                return string.Empty;   
+
+            try
+            {
+                AddMethodSignature();
+                AddInterfaceGuard();
+                AddDelegateLifecycleManagement();
+                AddParameterConversions();
+                AddMethodCall();
+                AddReturnValue(); // TODO: ReturnValue in wrong order
             
-            // We only support a subset of methods at the moment:
+                return _stack.Build();
+            }
+            catch (Exception e)
+            {
+                Log.Warning($"Did not generate method '{_parent}.{_method.SymbolName}': {e.Message}");
+                return string.Empty;
+            }
+        }
+        
+        public bool CanGenerateMethod()
+        {
+            // We only support a subset of methods at the
+            // moment. Determine if we can generate based on
+            // the following criteria:
+            
+            // No static functions (e.g. non class methods)
             if (_instanceParameter == null)
-                _generate = false;
+                return false;
             
             // No in/out/ref parameters
             if (_managedParams.Any(param => param.Direction != Direction.Default))
-                _generate = false;
-        }
-        
-        public string Generate()
-        {
-            if (_generate)
-            {
-                try
-                {
-                    AddMethodSignature();
-                    AddDelegateLifecycleManagement();
-                    AddParameterConversions();
-                    AddMethodCall();
-                    AddReturnValue(); // TODO: ReturnValue in wrong order
-                
-                    return _stack.Build();
-                }
-                catch (Exception e)
-                {
-                    Log.Warning($"Did not generate method '{_parent}.{_method.SymbolName}': {e.Message}");
-                }
-            }
+                return false;
+            
+            // No record parameters
+            if (_managedParams.Any(param => param.SymbolReference.GetSymbol().GetType() == typeof(Record)))
+                return false;
+            
+            // No record return values
+            if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Record))
+                return false;
+            
+            // No GObject array parameters
+            if (_managedParams.Any(param => 
+                param.SymbolReference.GetSymbol().GetType() == typeof(Class) && 
+                param.TypeInformation.Array != null))
+                return false;
+            
+            // No GObject array return values
+            if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Class) &&
+                _method.ReturnValue.TypeInformation.Array != null)
+                return false;
 
-            return string.Empty;
+            // Go ahead and generate
+            return true;
         }
         
         private void AddMethodSignature()
@@ -85,6 +113,15 @@ namespace Generator
             });
         }
 
+        private void AddInterfaceGuard()
+        {
+            // For each interface-type parameter, add an ArgumentException guard to
+            // make sure it really is a GObject. Hopefully we can enforce this with
+            // a code analysis plugin or something similar.
+            
+            // TODO: Implement Interface-Guards
+        }
+
         private void AddDelegateLifecycleManagement()
         {
             // For each delegate-type parameter, we need to create a delegate
@@ -95,8 +132,8 @@ namespace Generator
             foreach (var dlgParam in _delegateParams)
             {
                 Symbol symbol = dlgParam.SymbolReference.GetSymbol();
-                var managedType = symbol.Write(Target.Managed, _currentNamespace);//.Metadata["ManagedName"].ToString();
-                
+                var managedType = dlgParam.WriteType(Target.Managed, _currentNamespace);
+
                 var handlerType = dlgParam.CallbackScope switch
                 {
                     Scope.Call => $"{managedType}CallHandler",
