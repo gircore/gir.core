@@ -2,6 +2,8 @@ using System;
 using GObject;
 using System.Runtime.InteropServices;
 
+using {{ namespace.name }}.Native;
+
 #nullable enable
 
 namespace {{ namespace.name }}
@@ -13,6 +15,6 @@ namespace {{ namespace.name }}
         {{ include 'class.signals.sbntxt' }}
         {{ include 'class.properties.sbntxt' }}
         {{ include 'class.constructors.sbntxt' }}
-        {{ include 'class.methods.sbntxt' }}
+        {{ include 'class.methods.sbntxt' symbol_name }}
     }
 }

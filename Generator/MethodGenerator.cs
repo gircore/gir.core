@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using Repository;
 using Repository.Model;
 
 namespace Generator
@@ -8,35 +11,67 @@ namespace Generator
     {
         private readonly Method _method;
         private readonly Namespace _currentNamespace;
-        private BlockStack _stack = new ();
+        private readonly SymbolName _parent;
+        private readonly bool _generate = true;
 
-        private IEnumerable<Parameter> nativeParams;
-        private IEnumerable<SingleParameter> managedParams;
-        private IEnumerable<SingleParameter> nullParams;
-        private IEnumerable<SingleParameter> delegateParams;
-        private IEnumerable<SingleParameter> marshalParams;
+        private readonly IEnumerable<Parameter> _nativeParams;
+        private readonly IEnumerable<SingleParameter> _managedParams;
+        private readonly IEnumerable<SingleParameter> _nullParams;
+        private readonly IEnumerable<SingleParameter> _delegateParams;
+        private readonly IEnumerable<SingleParameter> _marshalParams;
 
-        public MethodGenerator(Method method, Namespace currentNamespace)
+        private readonly InstanceParameter? _instanceParameter;
+        
+        // We use a system of 'Blocks' to make sure resources are allocated and
+        // deallocated in the correct order. Blocks are nested inside each other,
+        // wrapping the inner blocks with a given 'start' and 'end' statement. This
+        // enforces a system of FILO (first in, last out), which makes sure that
+        // resources are not accidentally deleted while in-use.
+        private readonly BlockStack _stack = new();
+
+        public MethodGenerator(Method method, SymbolName parent_name, Namespace currentNamespace)
         {
             _method = method;
+            _parent = parent_name;
             _currentNamespace = currentNamespace;
 
-            nativeParams = method.ParameterList.GetParameters();
-            managedParams = method.ParameterList.GetManagedParameters();
-            nullParams = method.ParameterList.SingleParameters.Except(managedParams);
-            delegateParams = managedParams.Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
-            marshalParams = managedParams.Except(delegateParams);
+            _nativeParams = method.ParameterList.GetParameters();
+            _managedParams = method.ParameterList.GetManagedParameters();
+            _nullParams = method.ParameterList.SingleParameters.Except(_managedParams);
+            _delegateParams = _managedParams.Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
+            _marshalParams = _managedParams.Except(_delegateParams);
+            _instanceParameter = method.ParameterList.InstanceParameter;
+            
+            // We only support a subset of methods at the moment:
+            if (_instanceParameter == null)
+                _generate = false;
+            
+            // No in/out/ref parameters
+            if (_managedParams.Any(param => param.Direction != Direction.Default))
+                _generate = false;
         }
         
         public string Generate()
         {
-            AddMethodSignature();
-            AddDelegateLifecycleManagement();
-            AddParameterConversions();
-            AddMethodCall();
-            AddReturnValue();
-            
-            return _stack.Build();
+            if (_generate)
+            {
+                try
+                {
+                    AddMethodSignature();
+                    AddDelegateLifecycleManagement();
+                    AddParameterConversions();
+                    AddMethodCall();
+                    AddReturnValue(); // TODO: ReturnValue in wrong order
+                
+                    return _stack.Build();
+                }
+                catch (Exception e)
+                {
+                    Log.Warning($"Did not generate method '{_parent}.{_method.SymbolName}': {e.Message}");
+                }
+            }
+
+            return string.Empty;
         }
 
         private void AddDelegateLifecycleManagement()
@@ -46,16 +81,16 @@ namespace Generator
             // resources are kept valid until the delegate is no longer needed
             // by the C-library.
             
-            foreach (var dlgParam in delegateParams)
+            foreach (var dlgParam in _delegateParams)
             {
                 Symbol symbol = dlgParam.SymbolReference.GetSymbol();
-                var managedName = symbol.Metadata["ManagedName"].ToString();
+                var managedType = symbol.Write(Target.Managed, _currentNamespace);//.Metadata["ManagedName"].ToString();
                 
                 var handlerType = dlgParam.CallbackScope switch
                 {
-                    Scope.Call => $"{symbol.Namespace.Name}.{managedName}CallHandler",
-                    Scope.Async => $"{symbol.Namespace.Name}.{managedName}AsyncHandler",
-                    Scope.Notified => $"{symbol.Namespace.Name}.{managedName}NotifiedHandler"
+                    Scope.Call => $"{managedType}CallHandler",
+                    Scope.Async => $"{managedType}AsyncHandler",
+                    Scope.Notified => $"{managedType}NotifiedHandler"
                 };
 
                 var alloc = $"var {dlgParam.SymbolName}Handler = new {handlerType}({dlgParam.SymbolName});";
@@ -80,18 +115,74 @@ namespace Generator
 
         private void AddParameterConversions()
         {
-            foreach (var parameter in _method.ParameterList.GetParameters())
+            if (_instanceParameter != null)
+                AddParameterConversion(_instanceParameter);
+            
+            foreach (var parameter in _marshalParams)
                 AddParameterConversion(parameter);
         }
 
         private void AddParameterConversion(Parameter parameter)
         {
+            // Skip null parameters
+            if (_nullParams.Contains(parameter))
+                return;
             
+            // If we are the instance parameter, marshal variable 'this'
+            var fromParamName = parameter == _instanceParameter
+                ? "this"
+                : parameter.SymbolName;
+            
+            var expression = Convert.ManagedToNative(
+                fromParam: fromParamName,
+                symbol: parameter.SymbolReference.GetSymbol(),
+                typeInfo: parameter.TypeInformation,
+                currentNamespace: _currentNamespace
+            );
+            
+            var alloc = $"{parameter.WriteType(Target.Native, _currentNamespace)} {parameter.SymbolName}Native = {expression};";
+            var dealloc = $"// TODO: Free {parameter.SymbolName}Native";
+                
+            _stack.Nest(new Block()
+            {
+                Start = alloc,
+                End = dealloc
+            });
         }
 
         private void AddMethodCall()
         {
-            
+            var call = new StringBuilder();
+
+            if (!_method.ReturnValue.IsVoid())
+                call.Append("var result = ");
+                
+            // TODO: Handle excluded items
+            IEnumerable<string> args = _nativeParams.Select(arg =>
+            {
+                // TODO: Better type handling
+                if (_nullParams.Contains(arg))
+                    return "IntPtr.Zero";
+                    
+                // Do something
+                Symbol symbol = arg.SymbolReference.GetSymbol();
+                var argText = symbol switch
+                {
+                    Callback => $"{arg.SymbolName}Handler.NativeCallback",
+                    _ => $"{arg.SymbolName}Native"
+                };
+
+                return argText;
+            });
+
+            call.Append($"Native.{_parent}.Instance.Methods.{_method.SymbolName}(");
+            call.Append(string.Join(", ", args));
+            call.Append(");\n");
+                
+            _stack.Nest(new Block()
+            {
+                Start = call.ToString()
+            });
         }
 
         private void AddReturnValue()

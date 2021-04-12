@@ -14,7 +14,7 @@ namespace Generator
             {
                 //Return values which return a string without transfering ownership to us can not be marshalled automatically
                 //as the marshaller want's to free the unmanaged memory which is not allowed if the ownership is not transferred
-                (_, ReturnValue { Transfer: Transfer.None}, _) when symbol.SymbolName == "string" => "IntPtr",
+                (_, ReturnValue { Transfer: Transfer.None}, Target.Native) when symbol.SymbolName == "string" => "IntPtr",
 
                 //Arrays of string can be marshalled automatically, no IntPtr needed
                 (_, {TypeInformation: {Array:{}}}, Target.Native) when symbol.SymbolName == "string" => "string",

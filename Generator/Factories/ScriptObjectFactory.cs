@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Generator.Properties;
 using Generator.Services.Writer;
+using Repository;
 using Repository.Analysis;
 using Repository.Model;
 using Scriban.Runtime;
@@ -18,7 +19,7 @@ namespace Generator.Factories
             scriptObject.Import("write_native_return_value", new Func<ReturnValue, string>(a => a.WriteNative(currentNamespace)));
             scriptObject.Import("write_managed_return_value", new Func<ReturnValue, string>(a => a.WriteManaged(currentNamespace)));
             scriptObject.Import("write_native_method", new Func<Method, string>(m => m.WriteNative(currentNamespace)));
-            scriptObject.Import("write_managed_method", new Func<Method, string>(m => m.WriteManaged(currentNamespace)));
+            scriptObject.Import("write_managed_method", new Func<Method, string, string>((m, name) => m.WriteManaged(new SymbolName(name), currentNamespace)));
             scriptObject.Import("get_if", new Func<string, bool, string>(TemplateWriter.GetIf));
 
             return scriptObject;
