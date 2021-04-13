@@ -67,6 +67,31 @@ namespace GObject
             _ => throw new NotSupportedException("Unable to create the value from the given type.")
         };
 
+        public void Set(object? value)
+        {
+            switch (value)
+            {
+                case bool b: 
+                    SetBoolean(b); 
+                    break;
+                case uint u: 
+                    SetUInt(u); 
+                    break;
+                case int i: 
+                    SetInt(i); 
+                    break;
+                case string s: 
+                    SetString(s); 
+                    break;
+                case double d: 
+                    SetDouble(d); 
+                    break;
+                case string[] array:
+                    SetBoxed(new StringArrayNullTerminatedSafeHandle(array).DangerousGetHandle());
+                    break;
+            }
+        }
+        
         /// <summary>
         /// Extracts the content of this <see cref="Value"/> into an object.
         /// </summary>
@@ -125,6 +150,13 @@ namespace GObject
         public long GetFlags() => Native.Value.Methods.GetFlags(Handle);
         public long GetEnum() => Native.Value.Methods.GetEnum(Handle);
         public string GetString() => StringHelper.ToAnsiString(Native.Value.Methods.GetString(Handle));
+
+        private void SetBoxed(IntPtr ptr) => Native.Value.Methods.SetBoxed(Handle, ptr);
+        private void SetBoolean(bool b) => Native.Value.Methods.SetBoolean(Handle, b);
+        private void SetUInt(uint u) => Native.Value.Methods.SetUint(Handle, u);
+        private void SetInt(int i) => Native.Value.Methods.SetInt(Handle, i);
+        private void SetDouble(double d) => Native.Value.Methods.SetDouble(Handle, d);
+        private void SetString(string s) => Native.Value.Methods.SetString(Handle, s);
 
         public void Dispose()
         {

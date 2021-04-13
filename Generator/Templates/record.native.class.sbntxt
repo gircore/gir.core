@@ -12,6 +12,8 @@ namespace {{ namespace.native_name }}
         [StructLayout(LayoutKind.Sequential)]
         public struct {{ get_metadata "PureName" }}
         {
+            {{ include 'native.field.delegates.sbntxt' }}
+            {{ include 'native.struct.fields.sbntxt' }}
         }
         
         public partial class Methods

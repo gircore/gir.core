@@ -60,5 +60,16 @@ namespace Gtk.Tests
             //TODO: It lookls like double values are very unprecise?
             Math.Round(window.Opacity, 2).Should().Be(value);
         }
+
+        [TestMethod]
+        public void TestStringArray()
+        {
+            throw new NotImplementedException();
+            /*string[] bla = new[] {"hallo", "123"};
+            var aboutDialog = new AboutDialog();
+            aboutDialog.Artists = bla;
+
+            aboutDialog.Artists.First().Should().Be("hallo");*/
+        }
     }
 }

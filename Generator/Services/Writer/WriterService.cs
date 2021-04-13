@@ -55,18 +55,9 @@ namespace Generator.Services.Writer
             _writeClassService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                classes: ns.Classes.Where(x => !x.IsFundamental),
+                classes: ns.Classes,
                 @namespace: ns,
                 options: options
-            );
-
-            _writeSymbolsService.Write(
-                projectName: ns.ToCanonicalName(),
-                outputDir: outputDir,
-                templateName: "fundamental.class.sbntxt",
-                subfolder: Folder.Managed.Classes,
-                objects: ns.Classes.Where(x => x.IsFundamental),
-                @namespace: ns
             );
 
             _writeInterfaceService.Write(
