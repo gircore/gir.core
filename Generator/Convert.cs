@@ -46,6 +46,7 @@ namespace Generator
                 (Class c, {IsPointer: true, Array: null}) => $"GObject.Object.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Can't create delegate for argument '{fromParam}'"),
                 (Interface i, _) => $"GObject.Object.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
+                (Union u, _) => $"",
                 
                 // Other -> Try a brute-force cast
                 (_, {Array: {}}) => $"({qualifiedType}[]){fromParam}",
