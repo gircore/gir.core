@@ -79,6 +79,10 @@ namespace Generator
             if (_managedParams.Any(param => param.Direction != Direction.Default))
                 return false;
             
+            // No delegate return values
+            if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Callback))
+                return false;
+            
             // No record parameters
             if (_managedParams.Any(param => param.SymbolReference.GetSymbol().GetType() == typeof(Record)))
                 return false;
