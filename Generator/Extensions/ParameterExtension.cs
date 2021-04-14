@@ -43,6 +43,11 @@ namespace Generator
         private static string GetType(this Parameter parameter, Target target, Namespace currentNamespace, bool useSafeHandle)
         {
             Symbol symbol = parameter.SymbolReference.GetSymbol();
+
+            // TODO: Do this check here?
+            // We cannot have a void-type parameter, so use IntPtr instead
+            if (symbol.SymbolName == "void")
+                return "IntPtr";
             
             // Do nullability checks (actual logic in `TypeExtension.WriteType()`)
             return (target, parameter, symbol) switch
@@ -91,7 +96,7 @@ namespace Generator
                 transfer: arg.Transfer
             );
 
-            return $"{type} {arg.SymbolName}Managed = " + expression;
+            return $"{type} {arg.SymbolName}Managed = {expression};";
         }
     }
 }
