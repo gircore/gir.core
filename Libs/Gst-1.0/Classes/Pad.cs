@@ -16,7 +16,7 @@ namespace Gst
         public static bool Unlink(Pad sourcePad, Pad sinkPad)
             => Native.Pad.Instance.Methods.Unlink(sourcePad.Handle, sinkPad.Handle);
 
-        public PadLinkReturn Link(Pad sinkPad) => Link(this, sinkPad);
+        /*public PadLinkReturn Link(Pad sinkPad) => Link(this, sinkPad);
         public bool Unlink(Pad sinkPad) => Unlink(this, sinkPad);
 
         public bool IsLinked() => Native.Pad.Instance.Methods.IsLinked(Handle);
@@ -53,6 +53,6 @@ namespace Gst
 
             // TODO: Should/can this return null?
             //return (Caps?) Marshal.PtrToStructure(ret, typeof(Caps));
-        }
+        }*/
     }
 }

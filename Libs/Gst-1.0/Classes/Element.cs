@@ -53,7 +53,7 @@ namespace Gst
             return WrapHandle<Element>(result, false);
         }
 
-        public Bus? GetBus()
+        /*public Bus? GetBus()
         {
             IntPtr ptr = Native.Element.Instance.Methods.GetBus(Handle);
             return GObject.Native.ObjectWrapper.WrapNullableHandle<Bus>(ptr, true);
@@ -131,7 +131,7 @@ namespace Gst
             => throw new NotImplementedException(); //TODO WrapNullableHandle<Pad>(Native.Instance.Methods.GetRequestPad(Handle, name), true);
 
         public bool SyncStateWithParent()
-            => Native.Element.Instance.Methods.SyncStateWithParent(Handle);
+            => Native.Element.Instance.Methods.SyncStateWithParent(Handle);*/
 
         // Some older mono applications appear to use a
         // string indexer to lookup properties from GLib
