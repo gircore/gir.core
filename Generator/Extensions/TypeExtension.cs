@@ -12,6 +12,12 @@ namespace Generator
             var symbol = type.SymbolReference.GetSymbol();
             var name = (symbol, type, target) switch
             {
+                (Callback, _, Target.Native)
+                    => symbol.Write(target, currentNamespace),
+                
+                (Callback c, _, Target.Managed)
+                    => WriteType(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), target),
+                
                 // Return values which return a string without transferring ownership to us can not be marshalled automatically
                 // as the marshaller want's to free the unmanaged memory which is not allowed if the ownership is not transferred
                 (_, ReturnValue { Transfer: Transfer.None}, Target.Native) when symbol.SymbolName == "string" => "IntPtr",
@@ -36,9 +42,6 @@ namespace Generator
                 
                 (Record r, _, Target.Managed)
                     => WriteType(currentNamespace, r.Namespace, r.GetMetadataString("Name"), target),
-                
-                (Callback c, _, Target.Managed)
-                    => WriteType(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), target),
 
                 // Pointers to primitive value types can be marshalled directly
                 (PrimitiveValueType, {TypeInformation:{IsPointer: true}}, Target.Native) => symbol.Write(target, currentNamespace),

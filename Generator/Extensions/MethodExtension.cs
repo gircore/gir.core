@@ -25,48 +25,6 @@ namespace Generator
             return summaryText + dllImportText + methodText;
         }
 
-        private record Block
-        {
-            public Block? Inner { get; set; }
-            public string Start { get; set; }
-            public string End { get; set; }
-            
-            public string Build()
-                => Build(new StringBuilder()).ToString();
-
-            private StringBuilder Build(StringBuilder builder)
-            {
-                builder.AppendLine(Start);
-                Inner?.Build(builder);
-                builder.AppendLine(End);
-                return builder;
-            }
-        }
-
-        private class BlockStack
-        {
-            private Block root;
-            private Block latest;
-
-            public void Nest(Block block)
-            {
-                if (root is null)
-                {
-                    root = block;
-                    latest = root;
-                }
-
-                latest.Inner = block;
-                latest = block;
-            }
-
-            public void AddWhitespace()
-                => Nest(new Block());
-
-            public string Build()
-                => root.Build();
-        }
-        
         public static string WriteManaged(this Method? method, SymbolName parent_type_name, Namespace currentNamespace)
         {
             if (method is null)
