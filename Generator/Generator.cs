@@ -24,7 +24,7 @@ namespace Generator
 
             var typeRenamer = new TypeRenamer();
             typeRenamer.SetMetadata(namespaces);
-            typeRenamer.FixPropertiesNamedLikeClass(namespaces);
+            typeRenamer.FixClassNameClashes(namespaces);
 
             WriterService writerService = new Container().Resolve().Value;
             

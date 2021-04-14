@@ -8,10 +8,34 @@ namespace Generator.Services
 {
     internal class TypeRenamer
     {
-        public void FixPropertiesNamedLikeClass(IEnumerable<Namespace> namespaces)
+        public void FixClassNameClashes(IEnumerable<Namespace> namespaces)
         {
+            // TODO: Make a decision on member name priority
+            // Priority: Class Name > Method Name > Property Name
             foreach (var cls in namespaces.SelectMany(x => x.Classes))
+            {
+                FixClassMethods(cls);
                 FixClassProperties(cls);
+                FixMethodsAndProperties(cls);
+            }
+        }
+
+        private static void FixMethodsAndProperties(Class cls)
+        {
+            // TODO: This seems very inefficient - Optimise?
+            foreach (var method in cls.Methods)
+                foreach (var prop in cls.Properties)
+                    if (method.SymbolName == prop.SymbolName)
+                        prop.SymbolName = new SymbolName(prop.SymbolName + "Prop");
+        }
+        
+        private static void FixClassMethods(Class cls)
+        {
+            foreach (var method in cls.Methods)
+            {
+                if (method.SymbolName == cls.SymbolName)
+                    method.SymbolName = new SymbolName(method.SymbolName + "Func");
+            }
         }
 
         private static void FixClassProperties(Class cls)
