@@ -139,10 +139,12 @@ namespace GObject
 
         public object? GetBoxed(ulong type)
         {
-            //TODO Currently a boxed value is assumed to be a string array which is not always true.
-            //var strvType = GLib.Native.Functions.StrvGetType(); //Method can not be called to check string array type
-            var ptr = Native.Value.Methods.GetBoxed(Handle);
-            return StringHelper.ToStringArray(ptr);
+            IntPtr ptr = Native.Value.Methods.GetBoxed(Handle);
+            
+            if (type == Functions.StrvGetType())
+                return StringHelper.ToStringArray(ptr);
+
+            throw new NotImplementedException($"Can't get boxed value. Type {type} is not supported.");
         }
 
         public Object? GetObject()
