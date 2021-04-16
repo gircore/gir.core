@@ -6,10 +6,9 @@ namespace Repository.Analysis
 {
     public class SymbolReference : Resolveable
     {
-        private Symbol? _symbol;
-
         #region Properties
 
+        public Symbol? Symbol { get; private set; }
         public NamespaceName? NamespaceName { get; }
         public CTypeName? CTypeName { get; }
         public TypeName? TypeName { get; }
@@ -22,21 +21,21 @@ namespace Repository.Analysis
             TypeName = typeName;
             NamespaceName = namespaceName;
         }
-        
+
         public Symbol GetSymbol()
         {
-            if (_symbol is null)
+            if (Symbol is null)
                 throw new InvalidOperationException($"The symbolreference for {TypeName} has not been resolved.");
 
-            return _symbol;
+            return Symbol;
         }
 
         public void ResolveAs(Symbol symbol)
         {
-            _symbol = symbol;
+            Symbol = symbol;
         }
 
         public bool GetIsResolved()
-            => _symbol is { };
+            => Symbol is { };
     }
 }

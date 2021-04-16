@@ -26,10 +26,8 @@ namespace GObject
         /// <typeparam name="T">The tye of the value to define.</typeparam>
         protected void SetProperty<T>(Property<T> property, T value)
         {
-            if (value is Object o)
-                SetProperty(property.Name, new Value(o.Handle));
-            else
-                SetProperty(property.Name, Value.From(value));
+            Value v = CreateValue(property.Name, value);
+            SetProperty(property.Name, v);
         }
 
         /// <summary>
@@ -58,6 +56,31 @@ namespace GObject
 
             return new Value(handle);
         }
+
+        /// <summary>
+        /// Creates a value with a type matching the property type.
+        /// </summary>
+        private Value CreateValue(string propertyName, object? value)
+        {
+            var instance = Marshal.PtrToStructure<GObject.Native.Object.Instance.Struct>(Handle);
+            var classPtr = instance.GTypeInstance.GClass;
+            var paramSpecPtr = FindProperty(classPtr, propertyName);
+            var paramSpec = Marshal.PtrToStructure<GObject.Native.ParamSpec.Instance.Struct>(paramSpecPtr);
+
+            var v = new Value(new Type(paramSpec.ValueType));
+            v.Set(value);
+            return v;
+        }
+        
+        /// <summary>
+        /// TODO: Only as long as generation is not working
+        /// Calls native method g_object_class_find_property.
+        /// </summary>
+        /// <param name="oclass">Transfer ownership: None Nullable: False</param>
+        /// <param name="propertyName">Transfer ownership: None Nullable: False</param>
+        /// <returns>Transfer ownership: None Nullable: False</returns>
+        [DllImport("GObject", EntryPoint = "g_object_class_find_property")]
+        private static extern IntPtr FindProperty(IntPtr oclass, string propertyName);
 
         #endregion
     }

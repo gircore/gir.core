@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GLib.Tests.Records
+namespace GLib.Tests
 {
-    [TestClass]
+    [TestClass, TestCategory("IntegrationTest")]
     public class VariantTest
     {
         [TestMethod]

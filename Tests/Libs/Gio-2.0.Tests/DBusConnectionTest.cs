@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gio.Tests
 {
-    [TestClass]
+    [TestClass, TestCategory("IntegrationTest")]
     public class DBusConnectionTest
     {
         [TestMethod]

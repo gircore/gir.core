@@ -26,9 +26,18 @@ namespace Build
             Command.Run(Commands.Dotnet, $"{Commands.Run} -c {configuration} {project}", project);
         }
 
-        public static void Test(string project, Configuration configuration)
+        public static void Test(string project, Configuration configuration, string? filter = null)
         {
-            Command.Run(Commands.Dotnet, $"{Commands.Test} -c {configuration}", project);
+            Command.Run(Commands.Dotnet, $"{Commands.Test} -c {configuration} {GetFilterArgument(filter)}", project);
+        }
+
+        private static string? GetFilterArgument(string? filter)
+        {
+            string? filterString = null;
+            if (!string.IsNullOrEmpty(filter))
+                filterString = "--filter " + filter;
+
+            return filterString;
         }
 
         public static void Clean(string project, Configuration configuration)

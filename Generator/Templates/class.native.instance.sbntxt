@@ -15,7 +15,7 @@ namespace {{ namespace.native_name }}
             {
                 #region Fields
                 {{ fields | write_native_fields }}
-                #endregion      
+                #endregion
             }
             
             #region Methods

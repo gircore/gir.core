@@ -1,26 +1,27 @@
-﻿using Bullseye;
+﻿using Build;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Build.Test
+namespace Tests.Build
 {
-    [TestClass]
+    [TestClass, TestCategory("UnitTest")]
     public class RunnerTest
     {
         #region Helper
 
-        private static Runner GetRunner(ITarget? clean = null, ITarget? generate = null, ITarget? build = null, ITarget? pack = null, ITarget? samples = null, ITarget? test = null, ITarget? integration = null, ITarget? docs = null)
+        private static Runner GetRunner(ITarget? clean = null, ITarget? generate = null, ITarget? build = null, ITarget? pack = null, ITarget? samples = null, ITarget? unitTest = null, ITarget? integrationTest = null, ITarget? integration = null, ITarget? docs = null)
         {
             clean ??= Mock.Of<ITarget>();
             generate ??= Mock.Of<ITarget>();
             samples ??= Mock.Of<ITarget>();
             build ??= Mock.Of<ITarget>();
             pack ??= Mock.Of<ITarget>();
-            test ??= Mock.Of<ITarget>();
+            unitTest ??= Mock.Of<ITarget>();
+            integrationTest ??= Mock.Of<ITarget>();
             integration ??= Mock.Of<ITarget>();
             docs ??= Mock.Of<ITarget>();
 
-            return new Runner(clean, generate, build, pack, samples, test, integration, docs);
+            return new Runner(clean, generate, build, pack, samples, unitTest, integrationTest, integration, docs);
         }
 
         private static void RunTarget(Runner runner, string target)
@@ -119,13 +120,30 @@ namespace Build.Test
 
             Runner runner = GetRunner(
                 build: build,
-                test: test
+                unitTest: test
             );
 
             RunTarget(runner, "test");
 
             Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
             Mock.Get(test).Verify((x) => x.Execute(), Times.Once);
+        }
+        
+        [TestMethod]
+        public void InvokingIntegrationTestTargetExecutesTestAndIntegrationTest()
+        {
+            var integrationTest = Mock.Of<ITarget>();
+            var test = Mock.Of<ITarget>();
+
+            Runner runner = GetRunner(
+                unitTest: test,
+                integrationTest: integrationTest
+            );
+
+            RunTarget(runner, "integrationtest");
+            
+            Mock.Get(test).Verify((x) => x.Execute(), Times.Once);
+            Mock.Get(integrationTest).Verify((x) => x.Execute(), Times.Once);
         }
 
         [TestMethod]

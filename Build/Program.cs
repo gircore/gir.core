@@ -6,8 +6,6 @@ namespace Build
 {
     public static class Program
     {
-        #region Methods
-
         /// <summary>Run or list targets.</summary>
         /// <param name="release">Execute the targets with the Release configuration.</param>
         /// <param name="xmlDocumentation">Generate the xml documentation.</param>
@@ -46,7 +44,6 @@ namespace Build
             bool generateMethods
         )
         {
-            // Initialise Serilog before Bullseye
             Log.Information("GirCore Build Tool");
             
             var settings = new Settings()
@@ -80,7 +77,8 @@ namespace Build
                 pack: new Pack(settings),
                 samples: new Samples(settings),
                 integration: new Integration(settings),
-                test: new Test(settings),
+                unitTest: new UnitTest(settings),
+                integrationTest: new IntegrationTest(settings),
                 docs: new Docs(settings)
             );
             
@@ -110,7 +108,5 @@ namespace Build
 
             return semanticVersion;
         }
-
-        #endregion
     }
 }

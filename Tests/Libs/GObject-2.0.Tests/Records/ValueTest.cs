@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GObject.Tests.Records
+namespace GObject.Tests
 {
-    [TestClass]
+    [TestClass, TestCategory("IntegrationTest")]
     public class ValueTest
     {
         [DataTestMethod]

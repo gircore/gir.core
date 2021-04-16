@@ -2,18 +2,18 @@
 
 namespace Build
 {
-    public class Test : ITarget
+    public class IntegrationTest : ITarget
     {
         private readonly Settings _settings;
 
-        public Test(Settings settings)
+        public IntegrationTest(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         public void Execute()
         {
-            DotNet.Test(Projects.SOLUTION, _settings.Configuration);
+            DotNet.Test(Projects.SolutionDirectory, _settings.Configuration, $"TestCategory={nameof(IntegrationTest)}");
         }
     }
 }
