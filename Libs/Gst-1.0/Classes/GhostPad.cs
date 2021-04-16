@@ -14,7 +14,7 @@ namespace Gst
         public static GhostPad? New(string name, Pad target)
             => throw new NotImplementedException(); //TODO WrapNullableHandle<GhostPad>(Native.Methods.New(name, target.Handle), false);
 
-        public bool SetTarget(Pad newTarget)
-            => throw new NotImplementedException(); //TODO Native.Methods.SetTarget(Handle, newTarget.Handle);
+        // public bool SetTarget(Pad newTarget)
+        //     => throw new NotImplementedException(); //TODO Native.Methods.SetTarget(Handle, newTarget.Handle);
     }
 }

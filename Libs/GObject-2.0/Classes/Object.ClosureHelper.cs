@@ -21,14 +21,15 @@ namespace GObject
             }
 
             //private void MarshalCallback(Native.Closure.Struct closure, Native.Value.Struct? returnvalue, uint nparamvalues, Native.Value.Struct[] paramvalues, IntPtr? invocationhint, IntPtr? marshaldata)
-            private void MarshalCallback()
+            public void MarshalCallback(Closure closure, Value? returnValue, uint nParamValues, Value[] paramValues, IntPtr? invocationHint, IntPtr? marshalData)
             {
-                /*Debug.Assert(
-                    condition: paramvalues.Length == nparamvalues,
+                Debug.Assert(
+                    condition: paramValues.Length == nParamValues,
                     message: "Values were not marshalled correctly. Breakage may occur"
                 );
 
-                _callback?.Invoke(ref paramvalues);*/
+                // TODO: ClosureHelper needs rewriting
+                // _callback?.Invoke(ref paramValues);
             }
 
             public void Dispose()

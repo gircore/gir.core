@@ -42,7 +42,14 @@ namespace Generator
 
         private static string GetType(this Parameter parameter, Target target, Namespace currentNamespace, bool useSafeHandle)
         {
-            var symbol = parameter.SymbolReference.GetSymbol();
+            Symbol symbol = parameter.SymbolReference.GetSymbol();
+
+            // TODO: Do this check here?
+            // We cannot have a void-type parameter, so use IntPtr instead
+            if (symbol.SymbolName == "void")
+                return "IntPtr";
+            
+            // Do nullability checks (actual logic in `TypeExtension.WriteType()`)
             return (target, parameter, symbol) switch
             {
                 (Target.Managed, _, _) => Nullable(parameter, target, currentNamespace, useSafeHandle),
@@ -63,6 +70,7 @@ namespace Generator
                 (Target.Native, {TypeInformation: {IsPointer: true}}, PrimitiveValueType) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
 
                 (Target.Native, _, _) => Nullable(parameter, target, currentNamespace, useSafeHandle),
+                
                 _ => throw new Exception($"Unknown {nameof(Target)}")
             };
         }
@@ -80,19 +88,15 @@ namespace Generator
         {
             var type = arg.WriteType(Target.Managed, currentNamespace);
 
-            // TODO: We need to support disguised structs (opaque types)
-            var expression = (arg.SymbolReference.GetSymbol(), arg.TypeInformation) switch
-            {
-                (Record r, {IsPointer: true, Array: null}) => $"default; //TODO Marshal.PtrToStructure<{r.SymbolName}>({arg.SymbolName});",
-                (Record r, {IsPointer: true, Array: { }}) => $"default; //TODO {arg.SymbolName}.MarshalToStructure<{r.SymbolName}>();",
-                (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{c.SymbolName}.From({arg.SymbolName});",
-                (Class c, {IsPointer: true, Array: null}) => $"GObject.Object.WrapHandle<{type}>({arg.SymbolName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
-                (Class c, {IsPointer: true, Array: { }}) => throw new NotImplementedException($"Cant create delegate for argument {arg.SymbolName}"),
-                (Interface i, {IsPointer: true, Array: null}) => $"GObject.Object.WrapHandle<{type}>({arg.SymbolName}, {arg.Transfer.IsOwnedRef().ToString().ToLower()});",
-                _ => $"default; //TODO ({arg.WriteType(Target.Managed, currentNamespace)}){arg.SymbolName};" // Other -> Try a brute-force cast
-            };
+            var expression = Convert.NativeToManaged(
+                fromParam: arg.SymbolName.ToString(),
+                symbol: arg.SymbolReference.GetSymbol(),
+                typeInfo: arg.TypeInformation,
+                currentNamespace: currentNamespace,
+                transfer: arg.Transfer
+            );
 
-            return $"{type} {arg.SymbolName}Managed = " + expression;
+            return $"{type} {arg.SymbolName}Managed = {expression};";
         }
     }
 }

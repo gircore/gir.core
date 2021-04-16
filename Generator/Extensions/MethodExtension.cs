@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Repository;
 using Repository.Model;
 
 namespace Generator
@@ -24,59 +25,17 @@ namespace Generator
             return summaryText + dllImportText + methodText;
         }
 
-        private record Block
-        {
-            public Block? Inner { get; set; }
-            public string Start { get; set; }
-            public string End { get; set; }
-            
-            public string Build()
-                => Build(new StringBuilder()).ToString();
-
-            private StringBuilder Build(StringBuilder builder)
-            {
-                builder.AppendLine(Start);
-                Inner?.Build(builder);
-                builder.AppendLine(End);
-                return builder;
-            }
-        }
-
-        private class BlockStack
-        {
-            private Block root;
-            private Block latest;
-
-            public void Nest(Block block)
-            {
-                if (root is null)
-                {
-                    root = block;
-                    latest = root;
-                }
-
-                latest.Inner = block;
-                latest = block;
-            }
-
-            public void AddWhitespace()
-                => Nest(new Block());
-
-            public string Build()
-                => root.Build();
-        }
-        
-        public static string WriteManaged(this Method? method, Namespace currentNamespace)
+        public static string WriteManaged(this Method? method, SymbolName parent_type_name, Namespace currentNamespace)
         {
             if (method is null)
                 return string.Empty;
 
-            var generator = new MethodGenerator(method, currentNamespace);
+            var generator = new MethodGenerator(method, parent_type_name, currentNamespace);
 
             return generator.Generate();
         }
         
-        public static string WriteManagedOld(this Method? method, Namespace currentNamespace)
+        /*public static string WriteManagedOld(this Method? method, Namespace currentNamespace)
         {
             // TODO: Move these outside
             static string ArgToNative(Parameter arg, string toParamName, string fromParamName, Namespace currentNamespace)
@@ -108,10 +67,10 @@ namespace Generator
                 return string.Empty;
             
             var builder = new StringBuilder();
-
+        
             // The 'true' arguments of the method that we pass to our wrapped call
             IEnumerable<Parameter> nativeParams = method.ParameterList.GetParameters();
-
+        
             // The arguments used in the managed method signature (e.g. no userData)
             IEnumerable<SingleParameter> managedParams = method.ParameterList.GetManagedParameters();
             
@@ -120,7 +79,7 @@ namespace Generator
             
             // Instance argument
             InstanceParameter? instanceArg = method.ParameterList.InstanceParameter;
-
+        
             // Delegate-type arguments only
             IEnumerable<SingleParameter> delegateParams = managedParams
                 .Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
@@ -135,18 +94,18 @@ namespace Generator
             
             // Misc Logging
             var isInstance = method.ParameterList.InstanceParameter != null;
-
+        
             builder.AppendLine("// Method: " + method.SymbolName);
             builder.AppendLine("// IsInstance: " + isInstance);
-
+        
             foreach (var arg in delegateParams)
                 builder.AppendLine("// Delegate Arg: " + arg.SymbolName);
             
             foreach (var arg in marshalParams)
                 builder.AppendLine("// Marshal Arg: " + arg.SymbolName);
-
+        
             builder.AppendLine("// With Return Value: " + returnValue.WriteManaged(currentNamespace));
-
+        
             // We only support a subset of methods at the moment:
             
             // No static functions
@@ -179,9 +138,9 @@ namespace Generator
                     Scope.Async => $"{symbol.Namespace.Name}.{managedName}AsyncHandler",
                     Scope.Notified => $"{symbol.Namespace.Name}.{managedName}NotifiedHandler"
                 };
-
+        
                 var alloc = $"var {dlgParam.SymbolName}Handler = new {handlerType}({dlgParam.SymbolName});";
-
+        
                 stack.Nest(new Block()
                 {
                     Start = alloc
@@ -221,13 +180,13 @@ namespace Generator
                     End = dealloc
                 });
             }
-
+        
             stack.AddWhitespace();
             
             // 4. method call
             {
                 var call = new StringBuilder();
-
+        
                 if (!returnValue.IsVoid())
                     call.Append("var result = ");
                 
@@ -245,10 +204,10 @@ namespace Generator
                         Callback => $"{arg.SymbolName}Handler.NativeCallback",
                         _ => $"{arg.SymbolName}Native"
                     };
-
+        
                     return argText;
                 });
-
+        
                 call.Append($"Native.Instance.Methods.{method.SymbolName}(");
                 call.Append(string.Join(", ", args));
                 call.Append(");\n");
@@ -259,7 +218,7 @@ namespace Generator
                 });    
             }
             
-
+        
             // The BlockStack then automatically inserts the cleanup code
             // in reverse order, making sure we free resources appropriately.
             var methodBody = stack.Build();
@@ -281,13 +240,13 @@ namespace Generator
                 
                 builder.AppendLine($"return {expression};");   
             }
-
+        
             builder.AppendLine("\n}");
-
+        
             exit: // <-- TODO: Avoid labels. Not very idiomatic
             builder.Append("\n\n\n");
             return builder.ToString();
-        }
+        }*/
         
         public static string WriteNativeSummary(Method method)
         {

@@ -18,7 +18,7 @@ namespace Gst
         public uint AddWatchFull(int priority, BusFunc func)
             => AddWatchFull(priority, func, null);
 
-        public uint AddWatchFull(int priority, BusFunc func, DestroyNotify? notify)
-            => throw new NotImplementedException(); //TODO Native.add_watch_full(Handle, priority, func, IntPtr.Zero, notify!);
+        // public uint AddWatchFull(int priority, BusFunc func, DestroyNotify? notify)
+        //     => throw new NotImplementedException(); //TODO Native.add_watch_full(Handle, priority, func, IntPtr.Zero, notify!);
     }
 }

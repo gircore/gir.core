@@ -8,7 +8,7 @@ namespace Gio
     {
         #region Fields
 
-        private Native.AsyncReadyCallbackNativeCallHandler? _callAsyncCallbackHandler;
+        private AsyncReadyCallbackAsyncHandler? _callAsyncCallbackHandler;
         
         #endregion
         
@@ -31,16 +31,17 @@ namespace Gio
         {
             var tcs = new TaskCompletionSource<Variant>();
 
-            void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
+            void Callback(GObject.Object sourceObject, AsyncResult res)
             {
-                var ret = Native.DBusConnection.Instance.Methods.CallFinish(sourceObject, res, out var error);
+                // TODO: Make sure this is correct (can we assume res is a GObject?)
+                var ret = Native.DBusConnection.Instance.Methods.CallFinish(sourceObject.Handle, (res as GObject.Object).Handle, out var error);
                 Error.ThrowOnError(error);
 
                 tcs.SetResult(new Variant(ret));
             }
             
             //TODO: Use on time CallbackHandler
-            _callAsyncCallbackHandler = new Native.AsyncReadyCallbackNativeCallHandler(Callback);
+            _callAsyncCallbackHandler = new AsyncReadyCallbackAsyncHandler(Callback);
 
             Native.DBusConnection.Instance.Methods.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Native.VariantType.Handle.Null, DBusCallFlags.None, -1, IntPtr.Zero, _callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
 
