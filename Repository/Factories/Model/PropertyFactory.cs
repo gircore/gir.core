@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Repository.Analysis;
+using Repository.Factories.Model;
 using Repository.Model;
 using Repository.Services;
 using Repository.Xml;
@@ -13,12 +13,14 @@ namespace Repository.Factories
         private readonly TransferFactory _transferFactory;
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly CaseConverter _caseConverter;
+        private readonly TypeInformationFactory _typeInformationFactory;
 
-        public PropertyFactory(TransferFactory transferFactory, SymbolReferenceFactory symbolReferenceFactory, CaseConverter caseConverter)
+        public PropertyFactory(TransferFactory transferFactory, SymbolReferenceFactory symbolReferenceFactory, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
         {
             _transferFactory = transferFactory;
             _symbolReferenceFactory = symbolReferenceFactory;
             _caseConverter = caseConverter;
+            _typeInformationFactory = typeInformationFactory;
         }
 
         private Property Create(PropertyInfo info, NamespaceName namespaceName)
@@ -32,6 +34,7 @@ namespace Repository.Factories
                 symbolReference: _symbolReferenceFactory.Create(info, namespaceName),
                 writeable: info.Writeable,
                 readable: info.Readable,
+                typeInformation: _typeInformationFactory.Create(info),
                 transfer:  _transferFactory.FromText(info.TransferOwnership)
             );
         }

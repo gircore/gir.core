@@ -61,15 +61,16 @@ namespace Gtk.Tests
             Math.Round(window.Opacity, 2).Should().Be(value);
         }
 
-        [TestMethod]
-        public void TestStringArray()
+        [DataTestMethod]
+        [DataRow("abc", "def")]
+        [DataRow("öö", "ß")]
+        public void TestStringArray(string value1, string value2)
         {
-            throw new NotImplementedException();
-            /*string[] bla = new[] {"hallo", "123"};
             var aboutDialog = new AboutDialog();
-            aboutDialog.Artists = bla;
+            aboutDialog.Artists = new [] {value1, value2};
 
-            aboutDialog.Artists.First().Should().Be("hallo");*/
+            aboutDialog.Artists[0].Should().Be(value1);
+            aboutDialog.Artists[1].Should().Be(value2);
         }
     }
 }

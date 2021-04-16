@@ -78,7 +78,7 @@ namespace GLib
         }
 
         public string GetString()
-            =>  StringHelper.ToAnsiString(Native.Variant.Methods.GetString(_handle, out _));
+            =>  StringHelper.ToAutoString(Native.Variant.Methods.GetString(_handle, out _));
 
         public int GetInt()
             => Native.Variant.Methods.GetInt32(_handle);

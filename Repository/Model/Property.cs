@@ -3,18 +3,20 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Property : Element
+    public class Property : Element, Type
     {
         public Transfer Transfer { get; }
         public bool Writeable { get; }
         public bool Readable { get; }
         public SymbolReference SymbolReference { get; }
-        
-        public Property(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, bool writeable, bool readable, Transfer transfer) : base(elementName, symbolName)
+        public TypeInformation TypeInformation { get; }
+
+        public Property(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, bool writeable, bool readable, Transfer transfer, TypeInformation typeInformation) : base(elementName, symbolName)
         {
             SymbolReference = symbolReference;
             Writeable = writeable;
             Transfer = transfer;
+            TypeInformation = typeInformation;
             Readable = readable;
         }
 

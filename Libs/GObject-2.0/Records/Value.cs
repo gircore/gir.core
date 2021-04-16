@@ -36,10 +36,10 @@ namespace GObject
 
         internal Native.Value.Struct GetData() => Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());
         
-        private Types GetTypeValue()
+        private ulong GetTypeValue()
         {
             var structure = Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());
-            return (Types)structure.GType;
+            return structure.GType;
         }
         
         /// <summary>
@@ -102,7 +102,7 @@ namespace GObject
         public object? Extract()
         {
             var type = GetTypeValue();
-            return type switch
+            return (Types) type switch
             {
                 Types.Boolean => GetBool(),
                 Types.UInt => GetUint(),
@@ -116,13 +116,13 @@ namespace GObject
             };
         }
 
-        private object? CheckComplexTypes(Types gtype)
+        private object? CheckComplexTypes(ulong gtype)
         {
             if (Functions.TypeIsA(gtype, Types.Object))
                 return GetObject();
 
             if (Functions.TypeIsA(gtype, Types.Boxed))
-                throw new NotImplementedException();
+                return GetBoxed(gtype);
 
             if (Functions.TypeIsA(gtype, Types.Enum))
                 return GetEnum();
@@ -136,7 +136,14 @@ namespace GObject
         public T Extract<T>() => (T) Extract()!;
 
         public IntPtr GetPtr() => Native.Value.Methods.GetPointer(Handle);
-        public IntPtr GetBoxed() => Native.Value.Methods.GetBoxed(Handle);
+
+        public object? GetBoxed(ulong type)
+        {
+            //TODO Currently a boxed value is assumed to be a string array which is not always true.
+            //var strvType = GLib.Native.Functions.StrvGetType(); //Method can not be called to check string array type
+            var ptr = Native.Value.Methods.GetBoxed(Handle);
+            return StringHelper.ToStringArray(ptr);
+        }
 
         public Object? GetObject()
             => null; //Object.TryWrapHandle(Native.Methods.GetObject(Handle), false, out Object? obj) ? obj : null;
@@ -149,7 +156,7 @@ namespace GObject
         public float GetFloat() => Native.Value.Methods.GetFloat(Handle);
         public long GetFlags() => Native.Value.Methods.GetFlags(Handle);
         public long GetEnum() => Native.Value.Methods.GetEnum(Handle);
-        public string GetString() => StringHelper.ToAnsiString(Native.Value.Methods.GetString(Handle));
+        public string GetString() => StringHelper.ToAutoString(Native.Value.Methods.GetString(Handle));
 
         private void SetBoxed(IntPtr ptr) => Native.Value.Methods.SetBoxed(Handle, ptr);
         private void SetBoolean(bool b) => Native.Value.Methods.SetBoolean(Handle, b);

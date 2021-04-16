@@ -26,7 +26,8 @@ namespace GObject
         /// <typeparam name="T">The tye of the value to define.</typeparam>
         protected void SetProperty<T>(Property<T> property, T value)
         {
-            Value v = CreateValue(property.Name, value);
+            Value v = CreateValue(property.Name);
+            v.Set(value);
             SetProperty(property.Name, v);
         }
 
@@ -51,7 +52,6 @@ namespace GObject
         protected Value GetProperty(string name)
         {
             var handle = Native.Value.ManagedHandle.Create();
-            
             Native.Object.Instance.Methods.GetProperty(Handle, name, handle);
 
             return new Value(handle);
@@ -60,7 +60,7 @@ namespace GObject
         /// <summary>
         /// Creates a value with a type matching the property type.
         /// </summary>
-        private Value CreateValue(string propertyName, object? value)
+        private Value CreateValue(string propertyName)
         {
             var instance = Marshal.PtrToStructure<GObject.Native.Object.Instance.Struct>(Handle);
             var classPtr = instance.GTypeInstance.GClass;
@@ -68,7 +68,6 @@ namespace GObject
             var paramSpec = Marshal.PtrToStructure<GObject.Native.ParamSpec.Instance.Struct>(paramSpecPtr);
 
             var v = new Value(new Type(paramSpec.ValueType));
-            v.Set(value);
             return v;
         }
         

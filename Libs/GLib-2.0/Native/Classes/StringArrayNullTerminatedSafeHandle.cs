@@ -23,6 +23,7 @@ namespace GLib.Native
 
         protected override bool ReleaseHandle()
         {
+            //TODO: Verify string array is released properly
             _gcHandle.Free();
             foreach (IntPtr ptr in _data)
             {
