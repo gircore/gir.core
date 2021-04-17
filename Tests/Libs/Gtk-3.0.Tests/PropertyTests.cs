@@ -72,5 +72,16 @@ namespace Gtk.Tests
             aboutDialog.Artists[0].Should().Be(value1);
             aboutDialog.Artists[1].Should().Be(value2);
         }
+
+        [DataTestMethod]
+        [DataRow(WindowPosition.Center)]
+        [DataRow(WindowPosition.Mouse)]
+        public void TestEnum(WindowPosition windowPosition)
+        {
+            var window = new Window("TestWindow");
+            window.WindowPosition = windowPosition;
+
+            window.WindowPosition.Should().Be(windowPosition);
+        }
     }
 }

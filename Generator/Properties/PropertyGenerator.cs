@@ -11,7 +11,7 @@ namespace Generator.Properties
         {
             if (symbol.Namespace is null)
                 throw new Exception("Can not write property for symbol with unknown namespace");
-            
+
             var typeName = property.GetTypeName(currentNamespace);
             var descriptorName = property.GetDescriptorName();
             var parentType = symbol.Write(Target.Managed, currentNamespace);
@@ -30,11 +30,11 @@ namespace Generator.Properties
                 $"nativeName: \"{property.Name}\"",
                 $"managedName: nameof({property.SymbolName})"
             };
-            
-            if(property.Readable)
+
+            if (property.Readable)
                 arguments.Add($"get: o => o.{property.SymbolName}");
-            
-            if(property.Writeable)
+
+            if (property.Writeable)
                 arguments.Add($"set: (o, v) => o.{property.SymbolName} = v");
 
             return string.Join(",\r\n    ", arguments);
@@ -54,7 +54,7 @@ namespace Generator.Properties
 
             if (property.Writeable)
                 builder.AppendLine($"    set => SetProperty({descriptorName}, value);");
-            
+
             builder.AppendLine("}");
 
             return CommentIfUnsupported(builder.ToString(), property);
@@ -65,8 +65,9 @@ namespace Generator.Properties
             //TODO: Remove this method if all cases are supported
             return property switch
             {
-                {SymbolReference: {} r} when r.GetSymbol().SymbolName == "string" => str,
-                {SymbolReference: {} r} when r.GetSymbol() is PrimitiveValueType => str, 
+                {SymbolReference: { Symbol: { } s }} when s.SymbolName == "string" => str,
+                {SymbolReference: { Symbol: { } and PrimitiveValueType }}  => str,
+                {SymbolReference: { Symbol: { } and Enumeration }}  => str,
                 _ => "/*" + str + "*/"
             };
         }

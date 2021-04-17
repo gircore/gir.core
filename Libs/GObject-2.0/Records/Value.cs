@@ -86,6 +86,9 @@ namespace GObject
                 case double d: 
                     SetDouble(d); 
                     break;
+                case Enum e:
+                    SetEnum(e);
+                    break;
                 case string[] array:
                     SetBoxed(new StringArrayNullTerminatedSafeHandle(array).DangerousGetHandle());
                     break;
@@ -165,6 +168,7 @@ namespace GObject
         private void SetUInt(uint u) => Native.Value.Methods.SetUint(Handle, u);
         private void SetInt(int i) => Native.Value.Methods.SetInt(Handle, i);
         private void SetDouble(double d) => Native.Value.Methods.SetDouble(Handle, d);
+        private void SetEnum(Enum e) => Native.Value.Methods.SetEnum(Handle, Convert.ToInt32(e));
         private void SetString(string s) => Native.Value.Methods.SetString(Handle, s);
 
         public void Dispose()
