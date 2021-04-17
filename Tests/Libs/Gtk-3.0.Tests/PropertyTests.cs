@@ -83,5 +83,15 @@ namespace Gtk.Tests
 
             window.WindowPosition.Should().Be(windowPosition);
         }
+
+        [TestMethod]
+        public void TestObject()
+        {
+            var pixbuf = GdkPixbuf.Pixbuf.NewFromFile("test.bmp");
+            var aboutDialog = new AboutDialog();
+            aboutDialog.Logo = pixbuf;
+
+            aboutDialog.Logo.Should().Be(pixbuf);
+        }
     }
 }

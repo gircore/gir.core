@@ -69,6 +69,7 @@ namespace Generator.Properties
                 {SymbolReference: { Symbol: { } and String }} => str,
                 {SymbolReference: { Symbol: { } and PrimitiveValueType }}  => str,
                 {SymbolReference: { Symbol: { } and Enumeration }}  => str,
+                {SymbolReference: {Symbol: {} and Class}} => str,
                 _ => "/*" + str + "*/"
             };
         }

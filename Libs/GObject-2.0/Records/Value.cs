@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using GLib.Native;
+using GObject.Native;
 
 namespace GObject
 {
+    //TODO: Consider splitting vlaue into different typ for each type it represents
+    //to avoid breaking the open closed principle.
+    //There could an abstract value base class with generic implementations of the concrete types.
     public partial record Value : IDisposable
     {
         internal Native.Value.Handle Handle { get; }
@@ -21,14 +25,14 @@ namespace GObject
             Handle = Native.Value.Methods.Init(h, type.Value);
         }
 
-        public Value(IntPtr value) : this(Type.Object) => Native.Value.Methods.SetObject(Handle, value);
-        public Value(bool value) : this(Type.Boolean) => Native.Value.Methods.SetBoolean(Handle, value);
-        public Value(int value) : this(Type.Int) => Native.Value.Methods.SetInt(Handle, value);
-        public Value(uint value) : this(Type.UInt) => Native.Value.Methods.SetUint(Handle, value);
-        public Value(long value) : this(Type.Long) => Native.Value.Methods.SetLong(Handle, value);
-        public Value(double value) : this(Type.Double) => Native.Value.Methods.SetDouble(Handle, value);
-        public Value(float value) : this(Type.Float) => Native.Value.Methods.SetFloat(Handle, value);
-        public Value(string value) : this(Type.String) => Native.Value.Methods.SetString(Handle, value);
+        public Value(Object value) : this(Type.Object) => SetObject(value);
+        public Value(bool value) : this(Type.Boolean) => SetBoolean(value);
+        public Value(int value) : this(Type.Int) => SetInt(value);
+        public Value(uint value) : this(Type.UInt) => SetUint(value);
+        public Value(long value) : this(Type.Long) => SetLong(value);
+        public Value(double value) : this(Type.Double) => SetDouble(value);
+        public Value(float value) : this(Type.Float) => SetFloat(value);
+        public Value(string value) : this(Type.String) => SetString(value);
 
         #endregion
 
@@ -51,9 +55,8 @@ namespace GObject
         /// <exception cref="NotSupportedException">
         /// The given <paramref name="value"/> has a type which cannot be parsed as a <see cref="Value"/>.
         /// </exception>
-        public static Value From(object? value) => value switch
+        public static Value From(object value) => value switch
         {
-            null => new Value(IntPtr.Zero),
             bool v1 => new Value(v1),
             uint v2 => new Value(v2),
             int v3 => new Value(v3),
@@ -61,9 +64,8 @@ namespace GObject
             double v5 => new Value(v5),
             float v6 => new Value(v6),
             string v7 => new Value(v7),
-            IntPtr v8 => new Value(v8),
             Enum _ => new Value((long) value),
-            Object obj => new Value(obj.Handle),
+            Object obj => new Value(obj),
             _ => throw new NotSupportedException("Unable to create the value from the given type.")
         };
 
@@ -75,7 +77,7 @@ namespace GObject
                     SetBoolean(b); 
                     break;
                 case uint u: 
-                    SetUInt(u); 
+                    SetUint(u); 
                     break;
                 case int i: 
                     SetInt(i); 
@@ -89,9 +91,22 @@ namespace GObject
                 case Enum e:
                     SetEnum(e);
                     break;
+                case long l:
+                    SetLong(l);
+                    break;
+                case float f:
+                    SetFloat(f);
+                    break;
                 case string[] array:
                     SetBoxed(new StringArrayNullTerminatedSafeHandle(array).DangerousGetHandle());
                     break;
+                case Object o:
+                    SetObject(o);
+                    break;
+                case null:
+                    break;
+                default:
+                    throw new NotSupportedException($"Type {value.GetType()} is not supported as a value type");
             }
         }
         
@@ -147,11 +162,11 @@ namespace GObject
             if (type == Functions.StrvGetType())
                 return StringHelper.ToStringArray(ptr);
 
-            throw new NotImplementedException($"Can't get boxed value. Type {type} is not supported.");
+            throw new NotSupportedException($"Can't get boxed value. Type {type} is not supported.");
         }
 
         public Object? GetObject()
-            => null; //Object.TryWrapHandle(Native.Methods.GetObject(Handle), false, out Object? obj) ? obj : null;
+            => ObjectWrapper.WrapNullableHandle<Object>(Native.Value.Methods.GetObject(Handle), false);
 
         public bool GetBool() => Native.Value.Methods.GetBoolean(Handle);
         public uint GetUint() => Native.Value.Methods.GetUint(Handle);
@@ -165,11 +180,14 @@ namespace GObject
 
         private void SetBoxed(IntPtr ptr) => Native.Value.Methods.SetBoxed(Handle, ptr);
         private void SetBoolean(bool b) => Native.Value.Methods.SetBoolean(Handle, b);
-        private void SetUInt(uint u) => Native.Value.Methods.SetUint(Handle, u);
+        private void SetUint(uint u) => Native.Value.Methods.SetUint(Handle, u);
         private void SetInt(int i) => Native.Value.Methods.SetInt(Handle, i);
         private void SetDouble(double d) => Native.Value.Methods.SetDouble(Handle, d);
+        private void SetFloat(float f) => Native.Value.Methods.SetFloat(Handle, f);
+        private void SetLong(long l) => Native.Value.Methods.SetLong(Handle, l);
         private void SetEnum(Enum e) => Native.Value.Methods.SetEnum(Handle, Convert.ToInt32(e));
         private void SetString(string s) => Native.Value.Methods.SetString(Handle, s);
+        private void SetObject(Object o) => Native.Value.Methods.SetObject(Handle, o.Handle);
 
         public void Dispose()
         {
