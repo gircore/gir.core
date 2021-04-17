@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Repository.Model;
+using String = Repository.Model.String;
 
 namespace Generator.Properties
 {
@@ -65,7 +66,7 @@ namespace Generator.Properties
             //TODO: Remove this method if all cases are supported
             return property switch
             {
-                {SymbolReference: { Symbol: { } s }} when s.SymbolName == "string" => str,
+                {SymbolReference: { Symbol: { } and String }} => str,
                 {SymbolReference: { Symbol: { } and PrimitiveValueType }}  => str,
                 {SymbolReference: { Symbol: { } and Enumeration }}  => str,
                 _ => "/*" + str + "*/"

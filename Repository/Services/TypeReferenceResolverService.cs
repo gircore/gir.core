@@ -83,7 +83,6 @@ namespace Repository.Services
             symbolDictionary.AddSymbol(new PrimitiveValueType("gdouble", "double"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("long double", "double"));
 
-            // AddBasicSymbol(new BasicSymbol("cairo_format_t", "int"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("int", "int"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("gint", "int"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("gint32", "int"));
@@ -95,7 +94,6 @@ namespace Repository.Services
             symbolDictionary.AddSymbol(new PrimitiveValueType("guint32", "uint"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("gunichar", "uint"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("uid_t", "uint"));
-            // AddBasicSymbol(new BasicSymbol("GQuark", "uint"));
 
             symbolDictionary.AddSymbol(new PrimitiveValueType("guchar", "byte"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("gchar", "sbyte"));
@@ -113,9 +111,8 @@ namespace Repository.Services
             symbolDictionary.AddSymbol(new PrimitiveValueType("guint64", "ulong"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("gulong", "ulong"));
 
-            symbolDictionary.AddSymbol(new Symbol("utf8", "string"));
-            symbolDictionary.AddSymbol(new Symbol("filename", "string"));
-            // AddBasicSymbol(new BasicSymbol("Window", "ulong"));
+            symbolDictionary.AddSymbol(new String("utf8"));
+            symbolDictionary.AddSymbol(new String("filename"));
         }
     }
 }
