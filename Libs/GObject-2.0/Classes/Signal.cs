@@ -177,6 +177,8 @@ namespace GObject
         /// </param>
         public void Connect(TSender o, SignalHandler<TSender> action, bool after = false)
         {
+            //TODO: Use SignalMapper to avoid lossing the signalhelper instance? Remove
+            //"GetSignalHelper method from Object class
             Object.SignalHelper signalHelper = o.GetSignalHelper(Name);
             signalHelper.Connect(
                 action: action,

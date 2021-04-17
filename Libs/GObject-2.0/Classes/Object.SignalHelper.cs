@@ -5,6 +5,7 @@ namespace GObject
 {
     public partial class Object
     {
+        //TODO: Move into native namespace?
         protected internal sealed class SignalHelper : IDisposable
         {
             #region Fields
