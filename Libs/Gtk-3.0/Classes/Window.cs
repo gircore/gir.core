@@ -12,7 +12,5 @@ namespace Gtk
             : this(ConstructArgument.With("title", title))
         {
         }
-
-        public void ShowAll() => Native.Widget.Instance.Methods.ShowAll(Handle);
     }
 }
