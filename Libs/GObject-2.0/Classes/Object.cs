@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using GLib;
 using GObject.Native;
 
@@ -16,6 +16,7 @@ namespace GObject
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private readonly ObjectHandle _handle;
+        private SignalRegistry _signalRegistry;
 
         public IntPtr Handle => _handle.Handle;
 
@@ -50,6 +51,8 @@ namespace GObject
             );
 
             _handle = new ObjectHandle(handle, this, !Native.Object.Instance.Methods.IsFloating(handle));
+            
+            Initialize();
         }
 
         private string[] GetNames(ConstructArgument[] constructParameters)
@@ -68,18 +71,23 @@ namespace GObject
         }
 
         /// <summary>
-        /// Wrapper and subclasses can override here to perform immediate initialization
+        /// Does common initialization tasks.
+        /// Wrapper and subclasses can override here to perform immediate initialization.
         /// </summary>
-        protected virtual void Initialize() { }
+        [MemberNotNull(nameof(_signalRegistry))]
+        protected virtual void Initialize()
+        {
+            _signalRegistry = new SignalRegistry(this);
+        }
 
         public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : class
         {
             //TODO REMOVE THIS METHOD
             return default;
         }
-        
-        protected internal SignalHelper GetSignalHelper(string name)
-            => new SignalHelper(this, name);
+
+        internal ClosureRegistry GetClosureRegistry(string signalName)
+            =>  _signalRegistry.GetClosureRegistry(signalName);
 
         /// <summary>
         /// Notify this object that a property has just changed.
@@ -95,6 +103,7 @@ namespace GObject
 
         public virtual void Dispose()
         {
+            _signalRegistry.Dispose();
             _handle.Dispose();
         }
     }

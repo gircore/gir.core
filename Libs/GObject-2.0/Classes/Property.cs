@@ -137,8 +137,8 @@ namespace GObject
         /// <param name="o">The object in which register the property.</param>
         internal void RegisterNotifyEvent(Object o)
         {
-            Object.SignalHelper signalHelper = o.GetSignalHelper($"notify::{Name}");
-            signalHelper.Connect<Action<string>>(
+            Object.ClosureRegistry closureRegistry = o.GetClosureRegistry($"notify::{Name}");
+            closureRegistry.Connect<Action<string>>(
                 action: o.OnPropertyChanged,
                 after: false,
                 mapping: arg => ((ref Native.Value.Struct[] _) => arg(PropertyName))
