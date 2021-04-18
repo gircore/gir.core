@@ -22,7 +22,6 @@ namespace Build
         /// <param name="skipDependencies">Do not run targets' dependencies.</param>
         /// <param name="verbose">Enable verbose output.</param>
         /// <param name="disableAsync">Generate files synchronously (useful for debugging)</param>
-        /// <param name="generateMethods">Generate managed methods (highly experimental!)</param>
         /// <param name="generateComments">Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.</param>
         public static int Main(
             bool release,
@@ -40,8 +39,7 @@ namespace Build
             bool skipDependencies,
             bool verbose,
             bool disableAsync,
-            bool generateComments,
-            bool generateMethods
+            bool generateComments
         )
         {
             Log.Information("GirCore Build Tool");
@@ -51,7 +49,6 @@ namespace Build
                 GenerateComments = generateComments,
                 GenerateXmlDocumentation = xmlDocumentation,
                 GenerateAsynchronously = !disableAsync,
-                GenerateMethods = generateMethods,
                 Configuration = release ? Configuration.Release : Configuration.Debug,
                 Version = GetSemanticVersion(version)
             };

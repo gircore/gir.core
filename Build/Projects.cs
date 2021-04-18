@@ -25,15 +25,22 @@ namespace Build
         public const string SolutionDirectory = "../";
 
         private const string SAMPLE = "../Samples/";
+
+        private const string GLIB_SAMPLE = SAMPLE + "GLib/";
         private const string DBUS_SAMPLE = SAMPLE + "DBus/";
-        private const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
-        private const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
-        private const string GTK3_BUILDER_SAMPLE = SAMPLE + "Gtk3/Builder";
-        private const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
-        private const string GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/UsingSourceGenerator";
-        private const string GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/NoSourceGenerator";
-        private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
-        private const string GDKPIXBUF_TEST_MEMORY_LEAKS = SAMPLE + "GdkPixbuf/TestMemoryLeaks";
+        private const string GDK_PIXBUF_TEST_LOADING = SAMPLE + "GdkPixbuf/TestLoading";
+        private const string GDK_PIXBUF_TEST_MEMORY_LEAKS = SAMPLE + "GdkPixbuf/TestMemoryLeaks";
+        private const string GTK3_WINDOW = SAMPLE + "Gtk3/Window";
+
+        // private const string DBUS_SAMPLE = SAMPLE + "DBus/";
+        // private const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
+        // private const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
+        // private const string GTK3_BUILDER_SAMPLE = SAMPLE + "Gtk3/Builder";
+        // private const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
+        // private const string GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/UsingSourceGenerator";
+        // private const string GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/NoSourceGenerator";
+        // private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
+        // private const string GDKPIXBUF_TEST_MEMORY_LEAKS = SAMPLE + "GdkPixbuf/TestMemoryLeaks";
 
         private const string INTEGRATION = "../Integration/";
         
@@ -48,15 +55,11 @@ namespace Build
 
         public static readonly string[] SampleProjects =
         {
-            DBUS_SAMPLE, 
-            GSTREAMER_SAMPLE,
-            //GTK3_APP_SAMPLE,
-            GTK3_BUILDER_SAMPLE, 
-            GTK3_QUICKSTART,
-            GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR,
-            GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR,
-            //GTK4_SIMPLE_WINDOW_SAMPLE
-            GDKPIXBUF_TEST_MEMORY_LEAKS
+            GLIB_SAMPLE,
+            DBUS_SAMPLE,
+            GDK_PIXBUF_TEST_LOADING,
+            GDK_PIXBUF_TEST_MEMORY_LEAKS,
+            GTK3_WINDOW
         };
 
         public static IEnumerable<Project> AllLibraries = new[]
@@ -71,10 +74,10 @@ namespace Build
             Project.FromName("Atk-1.0"),
             Project.FromName("Gtk-3.0"),
             Project.FromName("Gst-1.0"),
-            //Project.FromName("GstAudio-1.0"),
-            //Project.FromName("GstVideo-1.0"),
-            //Project.FromName("GstPbutils-1.0"),
-            //Project.FromName("GstBase-1.0")
+            // Project.FromName("GstAudio-1.0"),
+            // Project.FromName("GstVideo-1.0"),
+            // Project.FromName("GstPbutils-1.0"),
+            // Project.FromName("GstBase-1.0")
         };
 
         #endregion

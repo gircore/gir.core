@@ -35,7 +35,6 @@ namespace Build
                 {
                     OutputDir = Projects.ProjectPath,
                     UseAsync = _settings.GenerateAsynchronously,
-                    GenerateMethods = _settings.GenerateMethods,
                     GenerateDocComments = _settings.GenerateComments
                 };
 

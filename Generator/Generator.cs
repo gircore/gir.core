@@ -14,7 +14,6 @@ namespace Generator
     {
         public string OutputDir { get; init; } = "output";
         public bool UseAsync { get; init; } = true;
-        public bool GenerateMethods { get; init; } = false;
         public bool GenerateDocComments { get; init; } = false;
 
         public void Write(IEnumerable<string> projects)
@@ -31,12 +30,10 @@ namespace Generator
             // Set writer options
             var options = new WriterOptions
             {
-                GenerateMethods = GenerateMethods,
                 GenerateDocComments = GenerateDocComments,
             };
 
             Log.Information("Optional Writer Properties:");
-            Log.Information($" - Generating Managed Methods: {options.GenerateMethods}");
             Log.Information($" - Generating LGPL Documentation (not implemented yet): {options.GenerateDocComments}");
 
             Log.Information("Ready to write.");
