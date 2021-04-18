@@ -123,7 +123,7 @@ namespace Tests.Build
                 unitTest: test
             );
 
-            RunTarget(runner, "test");
+            RunTarget(runner, "unitTest");
 
             Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
             Mock.Get(test).Verify((x) => x.Execute(), Times.Once);
