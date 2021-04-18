@@ -128,7 +128,7 @@ namespace Tests.Build
             Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
             Mock.Get(test).Verify((x) => x.Execute(), Times.Once);
         }
-        
+
         [TestMethod]
         public void InvokingIntegrationTestTargetExecutesTestAndIntegrationTest()
         {
