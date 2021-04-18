@@ -17,12 +17,11 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, IEnumerable<Class> classes, Namespace @namespace, WriterOptions options)
+        public void Write(string projectName, string outputDir, IEnumerable<Class> classes, Namespace @namespace)
         {
             foreach (Class cls in classes)
             {
                 var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, cls);
-                scriptObject.Import(options);
 
                 try
                 {

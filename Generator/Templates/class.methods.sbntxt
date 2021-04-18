@@ -1,7 +1,5 @@
 {{~ 
-if generate_methods
-    for $method in methods
-        $method | write_managed_method $1
-    end
-end 
+for $method in methods
+    $method | write_managed_method $1
+end
 ~}}
