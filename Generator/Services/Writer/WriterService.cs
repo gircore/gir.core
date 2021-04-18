@@ -5,8 +5,6 @@ namespace Generator.Services.Writer
 {
     public record WriterOptions
     {
-        public bool GenerateMethods { get; init; } = false;
-            
         // TODO: Implement doc comment generation (LGPL-compliant)
         public bool GenerateDocComments { get; init; } = false;
     }
@@ -56,8 +54,7 @@ namespace Generator.Services.Writer
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
                 classes: ns.Classes,
-                @namespace: ns,
-                options: options
+                @namespace: ns
             );
 
             _writeInterfaceService.Write(
