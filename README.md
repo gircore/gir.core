@@ -45,7 +45,6 @@ There are some options which can be used to influence the code generation:
 * `--targets <targets>`: A list of targets to run or list.
 * `--version <version>`: Specify the version number of the `build`.
 * `--disable-async`: Runs the generator synchronously (useful for debugging if something goes wrong)
-* `--generate-methods`: Highly experimental method generation (**does not compile - only for generator development**)
 
 To get a full list of available options use `--help`.
 
