@@ -15,6 +15,7 @@ namespace Generator.Factories
         {
             var scriptObject = new ScriptObject();
             scriptObject.Import("write_native_arguments", new Func<ParameterList, string>(a => a.WriteNative(currentNamespace)));
+            scriptObject.Import("write_native_arguments_no_safehandle", new Func<ParameterList, string>(a => a.WriteNative(currentNamespace, useSafeHandle: false)));
             scriptObject.Import("write_managed_arguments", new Func<ParameterList, string>(a => a.WriteManaged(currentNamespace)));
             scriptObject.Import("write_native_return_value", new Func<ReturnValue, string>(a => a.WriteNative(currentNamespace)));
             scriptObject.Import("write_managed_return_value", new Func<ReturnValue, string>(a => a.WriteManaged(currentNamespace)));
