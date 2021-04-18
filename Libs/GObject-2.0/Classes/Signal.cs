@@ -78,8 +78,8 @@ namespace GObject
         /// <param name="action">The signal handler function.</param>
         public void Disconnect(Object o, object action)
         {
-            Object.SignalHelper signalHelper = o.GetSignalHelper(Name);
-            signalHelper.Disconnect(action);
+            Object.ClosureRegistry closureRegistry = o.GetClosureRegistry(Name);
+            closureRegistry.Disconnect(action);
         }
 
         #endregion
@@ -123,8 +123,8 @@ namespace GObject
         /// </param>
         public void Connect(TSender o, SignalHandler<TSender, TSignalArgs> action, bool after = false)
         {
-            Object.SignalHelper signalHelper = o.GetSignalHelper(Name);
-            signalHelper.Connect(
+            Object.ClosureRegistry closureRegistry = o.GetClosureRegistry(Name);
+            closureRegistry.Connect(
                 action: action,
                 after: after,
                 mapping: callback => ((ref Native.Value.Struct[] items) =>
@@ -177,8 +177,10 @@ namespace GObject
         /// </param>
         public void Connect(TSender o, SignalHandler<TSender> action, bool after = false)
         {
-            Object.SignalHelper signalHelper = o.GetSignalHelper(Name);
-            signalHelper.Connect(
+            //TODO: Use SignalMapper to avoid lossing the signalhelper instance? Remove
+            //"GetSignalHelper method from Object class
+            Object.ClosureRegistry closureRegistry = o.GetClosureRegistry(Name);
+            closureRegistry.Connect(
                 action: action,
                 after: after,
                 mapping: callback => (ref Native.Value.Struct[] _) => callback(o, EventArgs.Empty)

@@ -9,27 +9,37 @@ namespace GObject
 
         private class ClosureHelper : IDisposable
         {
-            private readonly ActionRefValues? _callback;
+            private readonly ActionRefValues _callback;
             private readonly Closure _closure;
 
             public Native.Closure.Handle? Handle => _closure.Handle;
 
             public ClosureHelper(ActionRefValues action)
             {
-                _closure = new Closure(MarshalCallback);
+                //TODO Use MarshalCallback
+                _closure = new Closure(Workaround);
                 _callback = action;
             }
 
-            //private void MarshalCallback(Native.Closure.Struct closure, Native.Value.Struct? returnvalue, uint nparamvalues, Native.Value.Struct[] paramvalues, IntPtr? invocationhint, IntPtr? marshaldata)
+            
+            //TODO: Delete this method
+            private void Workaround()
+            {
+                var data = Array.Empty<Native.Value.Struct>();
+                _callback(ref data);
+            }
+
             public void MarshalCallback(Closure closure, Value? returnValue, uint nParamValues, Value[] paramValues, IntPtr? invocationHint, IntPtr? marshalData)
             {
                 Debug.Assert(
                     condition: paramValues.Length == nParamValues,
                     message: "Values were not marshalled correctly. Breakage may occur"
                 );
+                
+                //TODO forward values
 
-                // TODO: ClosureHelper needs rewriting
-                // _callback?.Invoke(ref paramValues);
+                var data = Array.Empty<Native.Value.Struct>();
+                _callback(ref data);
             }
 
             public void Dispose()

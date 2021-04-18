@@ -5,7 +5,7 @@ namespace GObject
 {
     public partial class Object
     {
-        protected internal sealed class SignalHelper : IDisposable
+        internal sealed class ClosureRegistry : IDisposable
         {
             #region Fields
 
@@ -17,7 +17,7 @@ namespace GObject
 
             #region Constructors
 
-            public SignalHelper(Object obj, string name)
+            public ClosureRegistry(Object obj, string name)
             {
                 _name = name;
                 _object = obj;
