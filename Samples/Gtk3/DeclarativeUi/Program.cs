@@ -21,8 +21,10 @@ namespace DeclarativeUi
                 DefaultWidth = 800,
                 DefaultHeight = 600,
                     
-                Child = new Button("Close window")
+                Child = new Button("Close application")
                 {
+                    // Connect the MainQuit function to the clicked signal
+                    // of the button to close the running application.
                     [Button.ClickedSignal] = (button, args) => Functions.MainQuit()
                 },
             };
