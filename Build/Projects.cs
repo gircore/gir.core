@@ -31,6 +31,7 @@ namespace Build
         private const string GDK_PIXBUF_TEST_LOADING = SAMPLE + "GdkPixbuf/TestLoading";
         private const string GDK_PIXBUF_TEST_MEMORY_LEAKS = SAMPLE + "GdkPixbuf/TestMemoryLeaks";
         private const string GTK3_WINDOW = SAMPLE + "Gtk3/Window";
+        private const string GTK3_DECLARATIVE_UI = SAMPLE + "Gtk3/DeclarativeUi";
 
         // private const string DBUS_SAMPLE = SAMPLE + "DBus/";
         // private const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
@@ -59,7 +60,8 @@ namespace Build
             DBUS_SAMPLE,
             GDK_PIXBUF_TEST_LOADING,
             GDK_PIXBUF_TEST_MEMORY_LEAKS,
-            GTK3_WINDOW
+            GTK3_WINDOW,
+            GTK3_DECLARATIVE_UI
         };
 
         public static IEnumerable<Project> AllLibraries = new[]
