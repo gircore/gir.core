@@ -20,7 +20,11 @@ namespace DeclarativeUi
             {
                 DefaultWidth = 800,
                 DefaultHeight = 600,
-                    
+                
+                // Conenct the MainQuit function to the destroy signal
+                // of the window to close the application if the window is closed
+                [Window.DestroySignal] = (widget, args) => Functions.MainQuit(),
+                
                 Child = new Button("Close application")
                 {
                     // Connect the MainQuit function to the clicked signal
