@@ -7,23 +7,23 @@ namespace GLib.Native
     public static class StringHelper
     {
         /// <summary>
-        /// Interpretes the given ptr as a non nullable string.
+        /// Interprets the given ptr as a non nullable string.
         /// </summary>
         /// <returns>a managed version of the string.</returns>
         /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
         public static string ToStringAuto(IntPtr ptr)
-            => Marshal.PtrToStringAuto(ptr) ?? string.Empty;
+            => Marshal.PtrToStringAnsi(ptr) ?? string.Empty;
         
         /// <summary>
-        /// Interpretes the given ptr as a nullable string.
+        /// Interprets the given ptr as a nullable string.
         /// </summary>
         /// <returns>a managed version of the string.</returns>
         /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
         public static string? ToNullableStringAuto(IntPtr ptr)
-            => Marshal.PtrToStringAuto(ptr);
+            => Marshal.PtrToStringAnsi(ptr);
 
         /// <summary>
-        /// Interpetes the given ptr as a null terminated string array.
+        /// Interprets the given ptr as a null terminated string array.
         /// </summary>
         /// <returns>A managed version of the string array.</returns>
         /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>

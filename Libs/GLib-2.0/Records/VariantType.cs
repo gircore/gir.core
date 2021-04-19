@@ -32,8 +32,8 @@ namespace GLib
         #region Methods
 
         public override string? ToString()
-            => Native.VariantType.Methods.DupString(Handle);
-
+            => Marshal.PtrToStringAnsi(Native.VariantType.Methods.PeekString(Handle));
+        
         #endregion
 
         #region IDisposable Implementation
