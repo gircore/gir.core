@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using GLib.Native;
 
 namespace GLib
@@ -78,14 +77,14 @@ namespace GLib
         }
 
         public string GetString()
-            =>  StringHelper.ToStringAuto(Native.Variant.Methods.GetString(_handle, out _));
+            => StringHelper.ToStringAuto(Native.Variant.Methods.GetString(_handle, out _));
 
         public int GetInt()
             => Native.Variant.Methods.GetInt32(_handle);
-        
+
         public uint GetUInt()
             => Native.Variant.Methods.GetUint32(_handle);
-        
+
         public string Print(bool typeAnnotate)
             => Native.Variant.Methods.Print(_handle, typeAnnotate);
 
@@ -93,14 +92,14 @@ namespace GLib
 
         public void Dispose()
         {
-            foreach(var child in _children)
+            foreach (var child in _children)
                 child.Dispose();
-            
+
             Handle.Dispose();
         }
     }
 
-    public static class  VariantExtension
+    public static class VariantExtension
     {
         public static Native.Variant.Handle GetSafeHandle(this Variant? variant)
             => variant is null ? Native.Variant.Handle.Null : variant.Handle;
