@@ -160,7 +160,7 @@ namespace GObject
             IntPtr ptr = Native.Value.Methods.GetBoxed(Handle);
             
             if (type == Functions.StrvGetType())
-                return StringHelper.ToStringArray(ptr);
+                return StringHelper.ToStringAnsiArray(ptr);
 
             throw new NotSupportedException($"Can't get boxed value. Type {type} is not supported.");
         }
@@ -176,7 +176,7 @@ namespace GObject
         public float GetFloat() => Native.Value.Methods.GetFloat(Handle);
         public long GetFlags() => Native.Value.Methods.GetFlags(Handle);
         public long GetEnum() => Native.Value.Methods.GetEnum(Handle);
-        public string? GetString() => StringHelper.ToNullableStringAuto(Native.Value.Methods.GetString(Handle));
+        public string? GetString() => StringHelper.ToNullableStringAnsi(Native.Value.Methods.GetString(Handle));
 
         private void SetBoxed(IntPtr ptr) => Native.Value.Methods.SetBoxed(Handle, ptr);
         private void SetBoolean(bool b) => Native.Value.Methods.SetBoolean(Handle, b);

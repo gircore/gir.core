@@ -11,7 +11,7 @@ namespace GLib.Native
         /// </summary>
         /// <returns>a managed version of the string.</returns>
         /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
-        public static string ToStringAuto(IntPtr ptr)
+        public static string ToStringAnsi(IntPtr ptr)
             => Marshal.PtrToStringAnsi(ptr) ?? string.Empty;
         
         /// <summary>
@@ -19,7 +19,7 @@ namespace GLib.Native
         /// </summary>
         /// <returns>a managed version of the string.</returns>
         /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
-        public static string? ToNullableStringAuto(IntPtr ptr)
+        public static string? ToNullableStringAnsi(IntPtr ptr)
             => Marshal.PtrToStringAnsi(ptr);
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace GLib.Native
         /// </summary>
         /// <returns>A managed version of the string array.</returns>
         /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
-        public static string[] ToStringArray(IntPtr ptr)
+        public static string[] ToStringAnsiArray(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
                 return System.Array.Empty<string>();
@@ -41,7 +41,7 @@ namespace GLib.Native
                 if (currentPointer == IntPtr.Zero)
                     break;
                 
-                var str = ToStringAuto(currentPointer);
+                var str = ToStringAnsi(currentPointer);
                 data.Add(str);
                 
                 offset++;
