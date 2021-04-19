@@ -1,5 +1,5 @@
 #region Signals
-{{~ if signals | signals_have_args ~}}
+{{~ if signals | array.size > 0 ~}}
 
 /// <summary>
 /// Indexer to connect with a SignalHandler&lt;{{symbol_name}}&gt;

@@ -12,14 +12,5 @@ namespace Gtk
             : this(ConstructArgument.With("label", label))
         {
         }
-        
-        /// <summary>
-        /// TODO: This code must be auto generated.
-        /// Indexer to connect with a SignalHandler&lt;Button&gt;
-        /// </summary>
-        public SignalHandler<Button> this[Signal<Button> signal]
-        {
-            set => signal.Connect(this, value, true);
-        }
     }
 }
