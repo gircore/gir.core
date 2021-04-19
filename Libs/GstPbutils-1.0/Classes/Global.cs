@@ -8,41 +8,44 @@ namespace GstPbutils
     {
         public static bool IsMissingPluginMessage(Gst.Message msg)
         {
-            return MarshalHelper.ToPtrAndFree(msg, (msgPtr) =>
-            {
-                var result = Native.is_missing_plugin_message(msgPtr);
-
-                // Update this structure
-                Marshal.PtrToStructure(msgPtr, msg);
-
-                return result;
-            });
+            throw new NotImplementedException();
+            // return MarshalHelper.ToPtrAndFree(msg, (msgPtr) =>
+            // {
+            //     var result = Native.is_missing_plugin_message(msgPtr);
+            //
+            //     // Update this structure
+            //     Marshal.PtrToStructure(msgPtr, msg);
+            //
+            //     return result;
+            // });
         }
 
         public static string? MissingPluginMessageGetInstallerDetail(Gst.Message msg)
         {
-            return MarshalHelper.ToPtrAndFree(msg, (msgPtr) =>
-            {
-                IntPtr result = Native.missing_plugin_message_get_installer_detail(msgPtr);
-
-                // Update this structure
-                Marshal.PtrToStructure(msgPtr, msg);
-
-                return StringHelper.ToAnsiStringAndFree(result);
-            });
+            throw new NotImplementedException();
+            // return MarshalHelper.ToPtrAndFree(msg, (msgPtr) =>
+            // {
+            //     IntPtr result = Native.missing_plugin_message_get_installer_detail(msgPtr);
+            //
+            //     // Update this structure
+            //     Marshal.PtrToStructure(msgPtr, msg);
+            //
+            //     return StringHelper.ToAnsiStringAndFree(result);
+            // });
         }
 
         public static string? MissingPluginMessageGetDescription(Gst.Message msg)
         {
-            return MarshalHelper.ToPtrAndFree(msg, (msgPtr) =>
-            {
-                IntPtr result = Native.missing_plugin_message_get_description(msgPtr);
-
-                // Update this structure
-                Marshal.PtrToStructure(msgPtr, msg);
-
-                return StringHelper.ToAnsiStringAndFree(result);
-            });
+            throw new NotImplementedException();
+            // return MarshalHelper.ToPtrAndFree(msg, (msgPtr) =>
+            // {
+            //     IntPtr result = Native.missing_plugin_message_get_description(msgPtr);
+            //
+            //     // Update this structure
+            //     Marshal.PtrToStructure(msgPtr, msg);
+            //
+            //     return StringHelper.ToAnsiStringAndFree(result);
+            // });
         }
 
         public static InstallPluginsReturn InstallPluginsAsync(string[] details, InstallPluginsContext? context,

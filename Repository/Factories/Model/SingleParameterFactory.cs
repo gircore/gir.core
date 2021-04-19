@@ -40,8 +40,8 @@ namespace Repository.Factories
             if (parameterInfo.Name is null)
                 throw new Exception("Argument name is null");
 
-            var elementName = new ElementName(_identifierConverter.Convert(parameterInfo.Name));
-            var elementManagedName = new SymbolName(_identifierConverter.Convert(_caseConverter.ToCamelCase(parameterInfo.Name)));
+            var elementName = new ElementName(_identifierConverter.EscapeIdentifier(parameterInfo.Name));
+            var elementManagedName = new SymbolName(_identifierConverter.EscapeIdentifier(_caseConverter.ToCamelCase(parameterInfo.Name)));
 
             return new SingleParameter(
                 elementName: elementName,

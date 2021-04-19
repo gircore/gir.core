@@ -8,7 +8,7 @@ namespace Repository
 {
     internal class IdentifierConverter
     {
-        public string Convert(string identifier)
+        public string EscapeIdentifier(string identifier)
         {
             identifier = FixFirstCharIfNumber(identifier);
             identifier = FixIfIdentifierIsKeyword(identifier);
@@ -31,6 +31,10 @@ namespace Repository
 
             if (char.IsNumber(firstChar))
             {
+                // Capitalise Second Char
+                if (identifier.Length > 1)
+                    identifier = CapitaliseSecondChar(identifier);
+                
                 var number = (int) char.GetNumericValue(firstChar);
                 return number switch
                 {
@@ -53,5 +57,8 @@ namespace Repository
 
         private static string ReplaceFirstChar(string prefix, string str)
             => prefix + str[1..];
+        
+        private static string CapitaliseSecondChar(string identifier)
+            => $"{identifier[0]}{char.ToUpper(identifier[1])}{identifier?[2..]}";
     }
 }

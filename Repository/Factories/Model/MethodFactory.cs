@@ -11,12 +11,14 @@ namespace Repository.Factories
         private readonly ReturnValueFactory _returnValueFactory;
         private readonly ParameterListFactory _parameterListFactory;
         private readonly CaseConverter _caseConverter;
+        private readonly IdentifierConverter _identifierConverter;
 
-        public MethodFactory(ReturnValueFactory returnValueFactory, ParameterListFactory parameterListFactory, CaseConverter caseConverter)
+        public MethodFactory(ReturnValueFactory returnValueFactory, ParameterListFactory parameterListFactory, CaseConverter caseConverter, IdentifierConverter identifierConverter)
         {
             _returnValueFactory = returnValueFactory;
             _parameterListFactory = parameterListFactory;
             _caseConverter = caseConverter;
+            _identifierConverter = identifierConverter;
         }
 
         public Method Create(MethodInfo methodInfo, Namespace @namespace)
@@ -34,7 +36,7 @@ namespace Repository.Factories
             {
                 return new Method(
                     elementName: new ElementName(methodInfo.Identifier),
-                    symbolName: new SymbolName(_caseConverter.ToPascalCase(methodInfo.Name)),
+                    symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(_caseConverter.ToPascalCase(methodInfo.Name))),
                     returnValue: _returnValueFactory.Create(methodInfo.ReturnValue, @namespace.Name),
                     parameterList: _parameterListFactory.Create(methodInfo.Parameters, @namespace.Name, methodInfo.Throws)
                 );
