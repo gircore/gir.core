@@ -83,8 +83,8 @@ namespace Build
             Project.FromName("Gst-1.0"),
             Project.FromName("GstBase-1.0"),
             Project.FromName("GstAudio-1.0"),
-            // Project.FromName("GstVideo-1.0"),
-            // Project.FromName("GstPbutils-1.0"),
+            Project.FromName("GstVideo-1.0"),
+            Project.FromName("GstPbutils-1.0"),
         };
 
         #endregion

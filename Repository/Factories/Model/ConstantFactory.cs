@@ -26,8 +26,8 @@ namespace Repository.Factories
                 throw new Exception($"{nameof(ConstantInfo)} {constantInfo.Name} misses a {nameof(constantInfo.Value)}");
             
             return new Constant(
-                elementName: new ElementName(_identifierConverter.Convert(constantInfo.Name)),
-                symbolName: new SymbolName(_identifierConverter.Convert(constantInfo.Name)),
+                elementName: new ElementName(_identifierConverter.EscapeIdentifier(constantInfo.Name)),
+                symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(constantInfo.Name)),
                 symbolReference: _symbolReferenceFactory.Create(constantInfo, currentNamespace),
                 value: constantInfo.Value
             );

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using GLib;
 using Gst;
 using Object = GObject.Object;
@@ -9,29 +10,32 @@ namespace GstVideo
     {
         public void SendMouseEvent(string @event, int button, double x, double y)
         {
-            // TODO: Can we do this?
-            Object obj = (Object) this;
-            Native.send_mouse_event(obj.Handle, @event, button, x, y);
+            throw new NotImplementedException();
+            // // TODO: Can we do this?
+            // Object obj = (Object) this;
+            // Native.Navigation.Instance.Methods.SendMouseEvent(obj.Handle, @event, button, x, y);
         }
 
         public void SendCommand(NavigationCommand command)
         {
-            Object obj = (Object) this;
-            Native.send_command(obj.Handle, command);
+            throw new NotImplementedException();
+            // Object obj = (Object) this;
+            // Native.Navigation.Instance.Methods.SendCommand(obj.Handle, command);
         }
 
         public static NavigationMessageType MessageGetType(Message message)
         {
-            return MarshalHelper.ToPtrAndFree(message, (messagePtr) =>
-            {
-                var result = Global.Native.navigation_message_get_type(messagePtr);
-
-                // Update message structure
-                // TODO: Not necessary?
-                Marshal.PtrToStructure(messagePtr, message);
-
-                return result;
-            });
+            throw new NotImplementedException();
+            // return MarshalHelper.ToPtrAndFree(message, (messagePtr) =>
+            // {
+            //     var result = Native.Functions.NavigationMessageGetType(messagePtr);
+            //
+            //     // Update message structure
+            //     // TODO: Not necessary?
+            //     Marshal.PtrToStructure(messagePtr, message);
+            //
+            //     return result;
+            // });
         }
     }
 }

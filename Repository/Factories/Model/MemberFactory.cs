@@ -32,7 +32,7 @@ namespace Repository.Factories
             
             return new Member(
                 elementName: new ElementName(info.Identifier), 
-                symbolName: new SymbolName(_identifierConverter.Convert(ident)),
+                symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(ident)),
                 value: info.Value
             );
         }
