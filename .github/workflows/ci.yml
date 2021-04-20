@@ -24,7 +24,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
+          
+      - name: Install dependencies for integration tests
+        run: sudo apt-get install libgtk-3-0
 
       - name: Run release build
-        run: dotnet run -- --release --xml-documentation --targets unitTest samples
+        run: dotnet run -- --release --xml-documentation --targets unitTest integrationTest samples
         working-directory: './Build'
