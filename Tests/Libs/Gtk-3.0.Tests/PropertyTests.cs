@@ -21,6 +21,7 @@ namespace Gtk.Tests
 
         [DataTestMethod]
         [DataRow("NewTitle")]
+        [DataRow("Some Text With Unicode ☀🌙🌧")]
         [DataRow(null)]
         public void TestStringProperty(string str)
         {
