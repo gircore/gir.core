@@ -6,27 +6,29 @@ using GdkPixbuf;
 
 namespace AboutDialog
 {
-    public class SampleDialog : Gtk.AboutDialog
+    public class SampleDialog
     {
-        public SampleDialog(string sampleName)
+        // TODO: Turn this into a subclass when we support that again
+        public static Gtk.AboutDialog CreateDialog(string sampleName)
         {
-            // Default Properties (can override with object initialiser)
-            Artists = new[] {"Person1", "Person2"};
-            Authors = new[] {"Gir.Core Developers"};
-            Comments = "Some comment";
-            // Copyright = "© Gir.Core Developers 2021-present";
-            License = "MIT License";
-            Logo = LoadFromResource("AboutDialog.logo.svg");
-            Version = "0.1.0";
-            Website = "https://gircore.github.io/";
-            LicenseType = Gtk.License.MitX11;
-            ProgramName = $"GirCore - {sampleName}";
+            var dialog = new Gtk.AboutDialog();
+            dialog.Authors = new[] {"Gir.Core Developers", "badcel", "mjakeman"};
+            dialog.Comments = "Gir.Core is a C# wrapper for GObject based libraries providing a C# friendly API surface.";
+            dialog.License = "MIT License";
+            dialog.Logo = LoadFromResource("AboutDialog.logo.svg");
+            dialog.Version = "0.1.0";
+            dialog.Website = "https://gircore.github.io/";
+            dialog.LicenseType = Gtk.License.MitX11;
+            dialog.ProgramName = $"{sampleName} - GirCore";
 
-            // TODO: We cannot use string properties at the moment
-            SetCopyright("© Gir.Core Developers 2021-present");
+            // TODO: We cannot use unicode in string properties at the moment
+            dialog.SetCopyright("© Gir.Core Developers 2021-present");
+            // dialog.Copyright = "© Gir.Core Developers 2021-present";
+
+            return dialog;
         }
 
-        private Pixbuf LoadFromResource(string resourceName)
+        private static Pixbuf LoadFromResource(string resourceName)
         {
             try
             {
