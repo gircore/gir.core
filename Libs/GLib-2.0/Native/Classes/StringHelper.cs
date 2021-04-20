@@ -11,7 +11,7 @@ namespace GLib.Native
         /// Interprets the given ptr as a non nullable string.
         /// </summary>
         /// <returns>a managed version of the string.</returns>
-        /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
+        /// <remarks>This method does not free the unmanaged string represented by ptr.</remarks>
         public static string ToStringUTF8(IntPtr ptr)
             => Marshal.PtrToStringUTF8(ptr) ?? string.Empty;
         
@@ -19,7 +19,7 @@ namespace GLib.Native
         /// Interprets the given ptr as a nullable string.
         /// </summary>
         /// <returns>a managed version of the string.</returns>
-        /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
+        /// <remarks>This method does not free the unmanaged string represented by ptr.</remarks>
         public static string? ToNullableStringUTF8(IntPtr ptr)
             => (ptr != IntPtr.Zero) ? Marshal.PtrToStringUTF8(ptr) : null;
 
@@ -33,22 +33,21 @@ namespace GLib.Native
             if (ptr == IntPtr.Zero)
                 return System.Array.Empty<string>();
 
-            var data = new List<string>();
+            // Build string array
+            List<string> strArray = new();
             var offset = 0;
-            while (true)
+            
+            // Iterate while pointer is zero
+            while (ptr != IntPtr.Zero)
             {
-                var currentPointer = Marshal.ReadIntPtr(ptr, offset * IntPtr.Size);
+                // Marshal memory to a UTF-8 encoded string
+                strArray.Add(ToStringUTF8(ptr));
 
-                if (currentPointer == IntPtr.Zero)
-                    break;
-                
-                var str = ToStringUTF8(currentPointer);
-                data.Add(str);
-                
-                offset++;
+                // Move to the next pointer in memory
+                ptr = Marshal.ReadIntPtr(ptr, ++offset * IntPtr.Size);
             }
             
-            return data.ToArray();
+            return strArray.ToArray();
         }
     }
     
@@ -67,9 +66,9 @@ namespace GLib.Native
             // Populate with UTF-8 encoded bytes
             for (var i = 0; i < numStrings; i++)
             {
-                // Get UTF-8 byte array
-                var bytes = encoding.GetBytes(array[i]);
-                
+                // Get null-terminated UTF-8 byte array
+                var bytes = encoding.GetBytes(array[i] + '\0');
+
                 // Marshal as pointer
                 IntPtr ptr = Marshal.AllocHGlobal(bytes.Length);
                 Marshal.Copy(bytes, 0, ptr, bytes.Length);
