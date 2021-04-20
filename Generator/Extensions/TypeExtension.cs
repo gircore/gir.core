@@ -54,13 +54,14 @@ namespace Generator
                 // Use IntPtr for all types where a pointer is expected
                 {TypeInformation: {IsPointer: true}} => "IntPtr",
                 
+                {TypeInformation: {Array: {}}} => type.SymbolReference.Symbol.Write(Target.Native, currentNamespace) + "[]",
                 _ => type.SymbolReference.Symbol.Write(Target.Native, currentNamespace)
             };
         }
 
         private static string WriteManagedType(Type type, Namespace currentNamespace, bool useSafeHandle = true)
         {
-            return type switch
+            var result = type switch
             {
                 {SymbolReference: {Symbol: Callback c}} => AddNamespace(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
                 {SymbolReference: {Symbol: Record r}} => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), Target.Managed),
@@ -68,6 +69,11 @@ namespace Generator
                 
                 _ => type.SymbolReference.Symbol.Write(Target.Managed, currentNamespace)
             };
+
+            if (type.TypeInformation.Array is { })
+                result += "[]";
+
+            return result;
         }
         
         private static string AddNamespace(Namespace currentNamespace, Namespace? targetNamespace, string str, Target target)
