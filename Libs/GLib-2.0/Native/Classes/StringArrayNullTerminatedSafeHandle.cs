@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace GLib.Native
 {
-    public class StringArrayNullTerminatedSafeHandle : SafeHandle
+    /*public class StringArrayNullTerminatedSafeHandle : SafeHandle
     {
         private GCHandle _gcHandle;
         private readonly IntPtr[] _data;
@@ -34,5 +34,5 @@ namespace GLib.Native
         }
 
         public override bool IsInvalid => !_gcHandle.IsAllocated;
-    }
+    }*/
 }

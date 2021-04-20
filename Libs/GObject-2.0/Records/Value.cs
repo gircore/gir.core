@@ -98,7 +98,11 @@ namespace GObject
                     SetFloat(f);
                     break;
                 case string[] array:
-                    SetBoxed(new StringArrayNullTerminatedSafeHandle(array).DangerousGetHandle());
+                    // Marshalling logic happens inside this safe handle. GValue takes a
+                    // copy of the boxed memory so we do not need to keep it alive. The
+                    // Garbage Collector will automatically free the safe handle for us.
+                    var strArray = new StringArrayNullTerminatedSafeHandle(array);
+                    SetBoxed(strArray.DangerousGetHandle());
                     break;
                 case Object o:
                     SetObject(o);
