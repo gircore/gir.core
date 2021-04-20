@@ -37,16 +37,19 @@ namespace GLib.Native
             List<string> strArray = new();
             var offset = 0;
             
-            // Iterate while pointer is zero
-            while (ptr != IntPtr.Zero)
+            while (true)
             {
-                // Marshal memory to a UTF-8 encoded string
-                strArray.Add(ToStringUtf8(ptr));
+                // Read in the next pointer in memory
+                IntPtr strAddress = Marshal.ReadIntPtr(ptr, offset++ * IntPtr.Size);
 
-                // Move to the next pointer in memory
-                ptr = Marshal.ReadIntPtr(ptr, ++offset * IntPtr.Size);
+                // Break if we reach the end of the array
+                if (strAddress == IntPtr.Zero)
+                    break;
+                
+                // Marshal string and repeat
+                strArray.Add(ToStringUtf8(strAddress));
             }
-            
+
             return strArray.ToArray();
         }
     }
