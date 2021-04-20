@@ -111,8 +111,8 @@ namespace Repository.Services
             symbolDictionary.AddSymbol(new PrimitiveValueType("guint64", "ulong"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("gulong", "ulong"));
 
-            symbolDictionary.AddSymbol(new String("utf8", StringType.Utf8));
-            symbolDictionary.AddSymbol(new String("filename", StringType.Platform));
+            symbolDictionary.AddSymbol(new Utf8String());
+            symbolDictionary.AddSymbol(new PlatformString());
         }
     }
 }

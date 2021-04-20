@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Repository;
 using Repository.Model;
+using String = Repository.Model.String;
 
 namespace Generator
 {
@@ -63,28 +64,23 @@ namespace Generator
             // If we haven't returned, we could be marshalling a single
             // string. In this case, we need to handle both UTF-8 encoded
             // strings and "platform" strings (ASCII for now).
-            
-            Symbol symbol = parameter.SymbolReference.GetSymbol();
-            if (symbol is Repository.Model.String s)
-            {
-                return s.StringType switch
-                {
-                    // Marshal as a UTF-8 encoded string
-                    StringType.Utf8 => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
-                    
-                    // Marshal as a null-terminated array of ANSI characters
-                    // TODO: This is likely incorrect:
-                    //  - GObject introspection specifies that Windows should use
-                    //    UTF-8 and Unix should use ANSI. Does using ANSI for
-                    //    everything cause problems here?
-                    StringType.Platform => "[MarshalAs(UnmanagedType.LPStr)] ",
-                    
-                    // This should not happen and implies an error in the Repository library. 
-                    _ => throw new NotSupportedException($"Invalid {nameof(StringType)} - cannot create attribute")
-                };
-            }
 
-            return string.Empty;
+            return parameter.SymbolReference.GetSymbol() switch
+            {
+                // Marshal as a UTF-8 encoded string
+                Utf8String => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
+                
+                // Marshal as a null-terminated array of ANSI characters
+                // TODO: This is likely incorrect:
+                //  - GObject introspection specifies that Windows should use
+                //    UTF-8 and Unix should use ANSI. Does using ANSI for
+                //    everything cause problems here?
+                PlatformString => "[MarshalAs(UnmanagedType.LPStr)] ",
+                
+                String => throw new NotSupportedException($"Unknown {nameof(String)} type - cannot create attribute"),
+                
+                _ => string.Empty
+            };
         }
         
         public static string WriteSignalArgsProperties(this ParameterList parameterList, Namespace currentNamespace)
