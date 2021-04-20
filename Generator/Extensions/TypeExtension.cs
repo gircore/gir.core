@@ -10,76 +10,46 @@ namespace Generator
     {
         internal static string WriteType(this Type type, Target target, Namespace currentNamespace, bool useSafeHandle = true)
         {
-            var symbol = type.SymbolReference.GetSymbol();
-            var name = (symbol, type, target) switch
-            {
-                (Callback, _, Target.Native)
-                    => symbol.Write(target, currentNamespace),
-                
-                (Callback c, _, Target.Managed)
-                    => AddNamespace(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), target),
-                
-                // Return values which return a string without transferring ownership to us can not be marshalled automatically
-                // as the marshaller want's to free the unmanaged memory which is not allowed if the ownership is not transferred
-                (String, ReturnValue { Transfer: Transfer.None}, Target.Native) => "IntPtr",
-
-                // Arrays of string which do not transfer ownership and have no length index can not be marshalled automatically
-                (String, TransferableType {TypeInformation: {Array:{ Length: null}}, Transfer: Transfer.None}, Target.Native) => "IntPtr",
-                
-                // Arrays of string can be marshalled automatically, no IntPtr needed
-                (String, {TypeInformation: {Array:{}}}, Target.Native) => "string",
-                
-                // Arrays of byte can be marshalled automatically, no IntPtr needed
-                (_, {TypeInformation: {Array:{}}}, Target.Native) when symbol.SymbolName == "byte" => "byte",
-
-                // Parameters of record arrays which do not transfer ownership can be marshalled directly
-                // as struct[]
-                (Record, Parameter {TypeInformation: {IsPointer: false, Array:{}}, Transfer: Transfer.None}, Target.Native) 
-                    => symbol.Write(target, currentNamespace),
-                
-                // Use IntPtr[] for arrays of SafeHandles as those are not supported by the marshaller
-                (Record, {TypeInformation: {IsPointer: true, Array:{}}}, Target.Native) => "IntPtr",
-
-                // Use original symbol name for records (remapped to SafeHandles)
-                (Record r, {TypeInformation: {IsPointer: true}}, Target.Native) when useSafeHandle
-                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), target),
-                
-                (Record r, _, Target.Managed)
-                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), target),
-                
-                (Union u, _, Target.Managed)
-                    => AddNamespace(currentNamespace, u.Namespace, u.GetMetadataString("Name"), target),
-
-                // Pointers to primitive value types can be marshalled directly
-                (PrimitiveValueType, {TypeInformation:{IsPointer: true}}, Target.Native) => symbol.Write(target, currentNamespace),
-                
-                // Use IntPtr for all types where a pointer is expected
-                (_, {TypeInformation: {IsPointer: true}}, Target.Native) => "IntPtr",
-                
-                _ => symbol.Write(target, currentNamespace)
-            };
-
-            if (type.TypeInformation.Array is { })
-                name += "[]";
-
-            return name;
-        }
-
-        internal static string Bla(this Type type, Target target, Namespace currentNamespace, bool useSafeHandle = true)
-        {
             return target switch
             {
-                Target.Managed => BlaManaged(type, currentNamespace, useSafeHandle),
-                Target.Native => BlaNative(type, currentNamespace, useSafeHandle)
+                Target.Managed => WriteManagedType(type, currentNamespace, useSafeHandle),
+                Target.Native => WriteNativeType(type, currentNamespace, useSafeHandle)
             };
         }
 
-        internal static string BlaNative(Type type, Namespace currentNamespace, bool useSafeHandle = true)
+        private static string WriteNativeType(Type type, Namespace currentNamespace, bool useSafeHandle = true)
         {
             return type switch
             {
+                {SymbolReference: {Symbol: Callback c}} => c.Write(Target.Native, currentNamespace),
+
+                // Return values which return a string without transferring ownership to us can not be marshalled automatically
+                // as the marshaller want's to free the unmanaged memory which is not allowed if the ownership is not transferred
+                ReturnValue {Transfer: Transfer.None, SymbolReference: {Symbol: String}} => "IntPtr",
+
+                // Arrays of string which do not transfer ownership and have no length index can not be marshalled automatically
+                TransferableType {TypeInformation: {Array: {Length: null}}, SymbolReference: {Symbol: String}, Transfer: Transfer.None} => "IntPtr",
+
+                // Arrays of string can be marshalled automatically, no IntPtr needed
+                {TypeInformation: {Array:{}}, SymbolReference: {Symbol: String}} => "string[]",
+
+                // Arrays of byte can be marshalled automatically, no IntPtr needed
+                {TypeInformation: {Array: {}}, SymbolReference: {Symbol: {}s }} when s.SymbolName == "byte" => "byte[]",
+
+                // Parameters of record arrays which do not transfer ownership can be marshalled directly
+                // as struct[]
+                Parameter {TypeInformation: {IsPointer: false, Array:{}}, Transfer: Transfer.None, SymbolReference: {Symbol: Record r}}
+                    => r.Write(Target.Native, currentNamespace) + "[]",
+
+                // Use IntPtr[] for arrays of SafeHandles as those are not supported by the marshaller
+                {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Record}} => "IntPtr[]",
+                
+                // Use original symbol name for records (remapped to SafeHandles)
+                {TypeInformation: {IsPointer: true}, SymbolReference: {Symbol: Record r}} when useSafeHandle
+                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
+                
                 // Pointers to primitive value types can be marshalled directly
-                {TypeInformation:{IsPointer: true}, SymbolReference: {Symbol: {}s and PrimitiveValueType}} => s.Write(Target.Native, currentNamespace),
+                {TypeInformation:{IsPointer: true}, SymbolReference: {Symbol: PrimitiveValueType s}} => s.Write(Target.Native, currentNamespace),
                 
                 // Use IntPtr for all types where a pointer is expected
                 {TypeInformation: {IsPointer: true}} => "IntPtr",
@@ -88,15 +58,13 @@ namespace Generator
             };
         }
 
-        internal static string BlaManaged(Type type, Namespace currentNamespace, bool useSafeHandle = true)
+        private static string WriteManagedType(Type type, Namespace currentNamespace, bool useSafeHandle = true)
         {
             return type switch
             {
-                (Record r, _, Target.Managed)
-                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), target),
-                
-                (Union u, _, Target.Managed)
-                    => AddNamespace(currentNamespace, u.Namespace, u.GetMetadataString("Name"), target),
+                {SymbolReference: {Symbol: Callback c}} => AddNamespace(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
+                {SymbolReference: {Symbol: Record r}} => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), Target.Managed),
+                {SymbolReference: {Symbol: Union u}} => AddNamespace(currentNamespace, u.Namespace, u.GetMetadataString("Name"), Target.Managed),
                 
                 _ => type.SymbolReference.Symbol.Write(Target.Managed, currentNamespace)
             };
