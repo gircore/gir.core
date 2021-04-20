@@ -9,9 +9,10 @@ namespace {{ namespace }}
     {
         private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
         {
+            var templateData = Assembly.GetExecutingAssembly().ReadResourceAsByteArray({{ template_name }}); 
             SetTemplate(
                 gtype: gClass, 
-                template: Assembly.GetExecutingAssembly().ReadResourceAsBytes({{ template_name }})
+                template: Bytes.From(templateData)
             );
             BindTemplateSignals(gClass, type);
             {{~ for field in connect_fields ~}}

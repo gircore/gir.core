@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using GLib;
 using GObject;
 using Gtk;
 using Type = GObject.Type;
@@ -12,9 +13,10 @@ namespace GtkDemo
 
         private static void ClassInit(Type gClass, System.Type type, IntPtr classData)
         {
+            var templateData = Assembly.GetExecutingAssembly().ReadResourceAsByteArray("CompositeWidget.ui");
             SetTemplate(
                 gtype: gClass,
-                template: Assembly.GetExecutingAssembly().ReadResourceAsBytes("CompositeWidget.ui")
+                template: Bytes.From(templateData)
             );
             BindTemplateChild(gClass, nameof(Button));
             BindTemplateSignals(gClass, type);

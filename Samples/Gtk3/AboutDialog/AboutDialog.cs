@@ -1,8 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
-using Gtk;
 using GdkPixbuf;
+using GObject;
 
 namespace AboutDialog
 {
@@ -29,10 +28,8 @@ namespace AboutDialog
         {
             try
             {
-                using Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("AboutDialog.logo.svg");
-                var logoBytes = new byte[stream!.Length];
-                stream.Read(logoBytes, 0, logoBytes.Length);
-                return PixbufLoader.FromBytes(logoBytes);
+                var bytes = Assembly.GetExecutingAssembly().ReadResourceAsByteArray(resourceName);
+                return PixbufLoader.FromBytes(bytes);
             }
             catch (Exception e)
             {
