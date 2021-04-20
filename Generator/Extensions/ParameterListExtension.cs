@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Repository;
 using Repository.Model;
+using Array = System.Array;
 using String = Repository.Model.String;
 
 namespace Generator
@@ -52,30 +53,26 @@ namespace Generator
         private static string GetAttribute(Parameter parameter, Target target, int offset)
         {
             if (target == Target.Managed)
-                return "";
+                return string.Empty;
 
-            // First prioritise array attributes
-            // All arrays need to use 'UnmanagedType.LPArray'
-            var arrayAttribute = parameter.TypeInformation.Array.GetMarshallAttribute(offset);
-
-            if (!string.IsNullOrEmpty(arrayAttribute))
-                return arrayAttribute + " ";
-            
-            // If we haven't returned, we could be marshalling a single
-            // string. In this case, we need to handle both UTF-8 encoded
-            // strings and "platform" strings (ASCII for now).
-
-            return parameter.SymbolReference.GetSymbol() switch
+            return parameter switch
             {
+                // Simple array with fixed size length
+                {TypeInformation: {Array: {Length: {} l}}} => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={l + offset})]",
+                
+                // Array without length and no transfer of type string. We assume null terminated array, which should
+                // be marshaled as a SafeHandle: We do not need an attribute.
+                {TypeInformation: {Array: {Length: null}}, Transfer: Transfer.None, SymbolReference: {Symbol: {} and String}} => string.Empty,
+
                 // Marshal as a UTF-8 encoded string
-                Utf8String => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
+                {SymbolReference: {Symbol: {} and Utf8String}} => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
                 
                 // Marshal as a null-terminated array of ANSI characters
                 // TODO: This is likely incorrect:
                 //  - GObject introspection specifies that Windows should use
                 //    UTF-8 and Unix should use ANSI. Does using ANSI for
                 //    everything cause problems here?
-                PlatformString => "[MarshalAs(UnmanagedType.LPStr)] ",
+                {SymbolReference: {Symbol: {} and PlatformString}} => "[MarshalAs(UnmanagedType.LPStr)] ",
                 
                 String => throw new NotSupportedException($"Unknown {nameof(String)} type - cannot create attribute"),
                 

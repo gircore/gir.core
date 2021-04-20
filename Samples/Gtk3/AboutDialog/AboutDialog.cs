@@ -11,7 +11,8 @@ namespace AboutDialog
         public static Gtk.AboutDialog CreateDialog(string sampleName)
         {
             var dialog = new Gtk.AboutDialog();
-            dialog.Authors = new[] {"Gir.Core Developers", "badcel", "mjakeman"};
+            //dialog.Authors = new[] {"Gir.Core Developers", "badcel", "mjakeman"};
+            dialog.SetAuthors(new[] {"Gir.Core Developers", "badcel", "mjakeman"});
             dialog.Comments = "Gir.Core is a C# wrapper for GObject based libraries providing a C# friendly API surface.";
             dialog.Copyright = "© Gir.Core Developers 2021-present";
             dialog.License = "MIT License";
