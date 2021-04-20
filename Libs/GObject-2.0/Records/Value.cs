@@ -98,7 +98,11 @@ namespace GObject
                     SetFloat(f);
                     break;
                 case string[] array:
-                    SetBoxed(new StringArrayNullTerminatedSafeHandle(array).DangerousGetHandle());
+                    // Marshalling logic happens inside this safe handle. GValue takes a
+                    // copy of the boxed memory so we do not need to keep it alive. The
+                    // Garbage Collector will automatically free the safe handle for us.
+                    var strArray = new StringArrayNullTerminatedSafeHandle(array);
+                    SetBoxed(strArray.DangerousGetHandle());
                     break;
                 case Object o:
                     SetObject(o);
@@ -160,7 +164,7 @@ namespace GObject
             IntPtr ptr = Native.Value.Methods.GetBoxed(Handle);
             
             if (type == Functions.StrvGetType())
-                return StringHelper.ToStringAnsiArray(ptr);
+                return StringHelper.ToStringArrayUtf8(ptr);
 
             throw new NotSupportedException($"Can't get boxed value. Type {type} is not supported.");
         }
@@ -176,7 +180,7 @@ namespace GObject
         public float GetFloat() => Native.Value.Methods.GetFloat(Handle);
         public long GetFlags() => Native.Value.Methods.GetFlags(Handle);
         public long GetEnum() => Native.Value.Methods.GetEnum(Handle);
-        public string? GetString() => StringHelper.ToNullableStringAnsi(Native.Value.Methods.GetString(Handle));
+        public string? GetString() => StringHelper.ToNullableStringUtf8(Native.Value.Methods.GetString(Handle));
 
         private void SetBoxed(IntPtr ptr) => Native.Value.Methods.SetBoxed(Handle, ptr);
         private void SetBoolean(bool b) => Native.Value.Methods.SetBoolean(Handle, b);
