@@ -14,16 +14,13 @@ namespace AboutDialog
             var dialog = new Gtk.AboutDialog();
             dialog.Authors = new[] {"Gir.Core Developers", "badcel", "mjakeman"};
             dialog.Comments = "Gir.Core is a C# wrapper for GObject based libraries providing a C# friendly API surface.";
+            dialog.Copyright = "© Gir.Core Developers 2021-present";
             dialog.License = "MIT License";
             dialog.Logo = LoadFromResource("AboutDialog.logo.svg");
             dialog.Version = "0.1.0";
             dialog.Website = "https://gircore.github.io/";
             dialog.LicenseType = Gtk.License.MitX11;
             dialog.ProgramName = $"{sampleName} - GirCore";
-
-            // TODO: We cannot use unicode in string properties at the moment
-            dialog.SetCopyright("© Gir.Core Developers 2021-present");
-            // dialog.Copyright = "© Gir.Core Developers 2021-present";
 
             return dialog;
         }

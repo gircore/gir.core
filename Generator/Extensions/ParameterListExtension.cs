@@ -52,13 +52,39 @@ namespace Generator
         {
             if (target == Target.Managed)
                 return "";
-            
-            var attribute = parameter.TypeInformation.Array.GetMarshallAttribute(offset);
-            
-            if (attribute.Length > 0)
-                attribute += " ";
 
-            return attribute;
+            // First prioritise array attributes
+            // All arrays need to use 'UnmanagedType.LPArray'
+            var arrayAttribute = parameter.TypeInformation.Array.GetMarshallAttribute(offset);
+
+            if (!string.IsNullOrEmpty(arrayAttribute))
+                return arrayAttribute + " ";
+            
+            // If we haven't returned, we could be marshalling a single
+            // string. In this case, we need to handle both UTF-8 encoded
+            // strings and "platform" strings (ASCII for now).
+            
+            Symbol symbol = parameter.SymbolReference.GetSymbol();
+            if (symbol is Repository.Model.String s)
+            {
+                return s.StringType switch
+                {
+                    // Marshal as a UTF-8 encoded string
+                    StringType.Utf8 => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
+                    
+                    // Marshal as a null-terminated array of ANSI characters
+                    // TODO: This is likely incorrect:
+                    //  - GObject introspection specifies that Windows should use
+                    //    UTF-8 and Unix should use ANSI. Does using ANSI for
+                    //    everything cause problems here?
+                    StringType.Platform => "[MarshalAs(UnmanagedType.LPStr)] ",
+                    
+                    // This should not happen and implies an error in the Repository library. 
+                    _ => throw new NotSupportedException($"Invalid {nameof(StringType)} - cannot create attribute")
+                };
+            }
+
+            return string.Empty;
         }
         
         public static string WriteSignalArgsProperties(this ParameterList parameterList, Namespace currentNamespace)

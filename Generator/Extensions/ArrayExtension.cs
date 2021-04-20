@@ -8,9 +8,7 @@ namespace Generator
         {               
             string attribute = "";
             if (array?.Length is { } length)
-            {
                 attribute = $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={length + offset})]";
-            }
 
             return attribute;
         }

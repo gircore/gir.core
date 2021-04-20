@@ -12,7 +12,7 @@ namespace GLib.Native
         /// <returns>a managed version of the string.</returns>
         /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
         public static string ToStringAnsi(IntPtr ptr)
-            => Marshal.PtrToStringAnsi(ptr) ?? string.Empty;
+            => Marshal.PtrToStringUTF8(ptr) ?? string.Empty;
         
         /// <summary>
         /// Interprets the given ptr as a nullable string.
@@ -20,7 +20,7 @@ namespace GLib.Native
         /// <returns>a managed version of the string.</returns>
         /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
         public static string? ToNullableStringAnsi(IntPtr ptr)
-            => Marshal.PtrToStringAnsi(ptr);
+            => Marshal.PtrToStringUTF8(ptr);
 
         /// <summary>
         /// Interprets the given ptr as a null terminated string array.
