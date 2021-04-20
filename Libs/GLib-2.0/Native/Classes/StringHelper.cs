@@ -12,7 +12,7 @@ namespace GLib.Native
         /// </summary>
         /// <returns>a managed version of the string.</returns>
         /// <remarks>This method does not free the unmanaged string represented by ptr.</remarks>
-        public static string ToStringUTF8(IntPtr ptr)
+        public static string ToStringUtf8(IntPtr ptr)
             => Marshal.PtrToStringUTF8(ptr) ?? string.Empty;
         
         /// <summary>
@@ -20,15 +20,15 @@ namespace GLib.Native
         /// </summary>
         /// <returns>a managed version of the string.</returns>
         /// <remarks>This method does not free the unmanaged string represented by ptr.</remarks>
-        public static string? ToNullableStringUTF8(IntPtr ptr)
+        public static string? ToNullableStringUtf8(IntPtr ptr)
             => (ptr != IntPtr.Zero) ? Marshal.PtrToStringUTF8(ptr) : null;
 
         /// <summary>
         /// Interprets the given ptr as a null terminated string array.
         /// </summary>
         /// <returns>A managed version of the string array.</returns>
-        /// <remarks>Use this method if the ptr should not be freed by the marshaller.</remarks>
-        public static string[] ToStringUTF8Array(IntPtr ptr)
+        /// <remarks>This method does not free the unmanaged strings represented by ptr.</remarks>
+        public static string[] ToStringArrayUtf8(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
                 return System.Array.Empty<string>();
@@ -41,7 +41,7 @@ namespace GLib.Native
             while (ptr != IntPtr.Zero)
             {
                 // Marshal memory to a UTF-8 encoded string
-                strArray.Add(ToStringUTF8(ptr));
+                strArray.Add(ToStringUtf8(ptr));
 
                 // Move to the next pointer in memory
                 ptr = Marshal.ReadIntPtr(ptr, ++offset * IntPtr.Size);
@@ -55,6 +55,7 @@ namespace GLib.Native
     {
         private GCHandle _gcHandle;
         private readonly IntPtr[] _data;
+        
         public StringArrayNullTerminatedSafeHandle(string[] array) : base(IntPtr.Zero, true)
         {
             var numStrings = array.Length;
