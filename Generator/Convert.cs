@@ -1,6 +1,7 @@
 ﻿using System;
 using Repository.Model;
 using Array = System.Array;
+using String = Repository.Model.String;
 
 namespace Generator
 {
@@ -37,8 +38,8 @@ namespace Generator
             return (symbol, typeInfo) switch
             {
                 // String Handling
-                (Symbol s, {Array: {}}) when transfer == Transfer.None && s.SymbolName == "string" => $"{fromParam}.Select(str => Marshal.PtrToStringAnsi(str)).ToArray()",
-                (Symbol s, _) when transfer == Transfer.None && s.SymbolName == "string" => $"Marshal.PtrToStringAnsi({fromParam})",
+                (String s, {Array: {}}) when transfer == Transfer.None => $"{fromParam}.Select(str => GLib.Native.StringHelper.ToStringUtf8(str)).ToArray()",
+                (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // General Conversions
                 (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{qualifiedType}>({fromParam})",
