@@ -7,7 +7,7 @@ namespace Generator
 {
     internal static class Convert
     {
-        internal static string ManagedToNative(string fromParam, Symbol symbol, TypeInformation typeInfo, Namespace currentNamespace)
+        internal static string ManagedToNative(string fromParam, Symbol symbol, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
         {
             // TODO: We need to support disguised structs (opaque types)
             var qualifiedNativeType = symbol.Write(Target.Native, currentNamespace);
@@ -15,6 +15,13 @@ namespace Generator
             
             return (symbol, typeInfo) switch
             {
+                // String Handling
+                // String Arrays which do not have a length index need to be marshalled as IntPtr
+                (String s, {Array: {Length: null}}) when transfer == Transfer.None => $"new GLib.Native.StringArrayNullTerminatedSafeHandle({fromParam}).DangerousGetHandle()",
+                
+                // All other string types can be marshalled directly
+                (String, _) => fromParam,
+
                 (Record r, {IsPointer: true, Array: null}) => $"{fromParam}.Handle",
                 (Record r, {IsPointer: true, Array:{}}) => $"{fromParam}.MarshalToStructure<{qualifiedNativeType}>()",
                 (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{qualifiedManagedType}.To({fromParam})",
@@ -38,7 +45,7 @@ namespace Generator
             return (symbol, typeInfo) switch
             {
                 // String Handling
-                (String s, {Array: {}}) when transfer == Transfer.None => $"{fromParam}.Select(str => GLib.Native.StringHelper.ToStringUtf8(str)).ToArray()",
+                (String s, {Array: {}}) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",
                 (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // General Conversions
