@@ -38,7 +38,7 @@ namespace Generator
             return (symbol, typeInfo) switch
             {
                 // String Handling
-                (String s, {Array: {}}) when transfer == Transfer.None => $"{fromParam}.Select(str => GLib.Native.StringHelper.ToStringUtf8(str)).ToArray()",
+                (String s, {Array: {}}) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",
                 (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // General Conversions
