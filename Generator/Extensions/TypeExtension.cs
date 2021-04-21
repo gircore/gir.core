@@ -38,11 +38,14 @@ namespace Generator
 
                 // Parameters of record arrays which do not transfer ownership can be marshalled directly
                 // as struct[]
-                Parameter {TypeInformation: {IsPointer: false, Array:{}}, Transfer: Transfer.None, SymbolReference: {Symbol: Record r}}
+                Parameter {TypeInformation: {IsPointer: false, Array: {}}, Transfer: Transfer.None, SymbolReference: {Symbol: Record r}}
                     => r.Write(Target.Native, currentNamespace) + "[]",
 
-                // Use IntPtr[] for arrays of SafeHandles as those are not supported by the marshaller
-                {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Record}} => "IntPtr[]",
+                // Arrays of Opaque Structs, GObjects, and GInterfaces cannot be marshalled natively
+                // Instead marshal them as variable width pointer arrays (LPArray)
+                {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Record}} => "IntPtr[]",    // SafeHandles
+                {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Class}} => "IntPtr[]",     // GObjects
+                {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Interface}} => "IntPtr[]", // GInterfaces
                 
                 // Use original symbol name for records (remapped to SafeHandles)
                 {TypeInformation: {IsPointer: true}, SymbolReference: {Symbol: Record r}} when useSafeHandle
@@ -52,6 +55,7 @@ namespace Generator
                 {TypeInformation:{IsPointer: true}, SymbolReference: {Symbol: PrimitiveValueType s}} => s.Write(Target.Native, currentNamespace),
                 
                 // Use IntPtr for all types where a pointer is expected
+                {TypeInformation: {IsPointer: true, Array: {Length: not null}}} => "IntPtr[]",
                 {TypeInformation: {IsPointer: true}} => "IntPtr",
                 
                 {TypeInformation: {Array: {}}} => type.SymbolReference.Symbol.Write(Target.Native, currentNamespace) + "[]",
