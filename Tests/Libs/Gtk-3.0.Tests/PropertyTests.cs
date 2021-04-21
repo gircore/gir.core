@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gtk.Tests
 {
-    [TestClass, TestCategory("IntegrationTest")]
+    [TestClass, TestCategory("SystemTest")]
     public class PropertyTests
     {
         [DataTestMethod]
