@@ -3,7 +3,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Property : Element, Type
+    public class Property : Element, TransferableType
     {
         public Transfer Transfer { get; }
         public bool Writeable { get; }

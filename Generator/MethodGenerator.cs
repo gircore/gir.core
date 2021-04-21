@@ -186,7 +186,8 @@ namespace Generator
                 fromParam: fromParamName,
                 symbol: parameter.SymbolReference.GetSymbol(),
                 typeInfo: parameter.TypeInformation,
-                currentNamespace: _currentNamespace
+                currentNamespace: _currentNamespace,
+                transfer: parameter.Transfer
             );
             
             var alloc = $"{parameter.WriteType(Target.Native, _currentNamespace)} {parameter.SymbolName}Native = {expression};";

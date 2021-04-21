@@ -3,7 +3,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class SingleParameter : Element, Type, Parameter
+    public class SingleParameter : Element, Parameter
     {
         public SymbolReference SymbolReference { get; }
         public Direction Direction { get; }

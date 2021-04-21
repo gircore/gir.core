@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -22,6 +23,15 @@ namespace GLib.Native
         /// <remarks>This method does not free the unmanaged string represented by ptr.</remarks>
         public static string? ToNullableStringUtf8(IntPtr ptr)
             => (ptr != IntPtr.Zero) ? Marshal.PtrToStringUTF8(ptr) : null;
+
+        /// <summary>
+        /// Marshals each pointer in the IntPtr array as a UTF-8 encoded string.
+        /// </summary>
+        /// <param name="ptrArray"></param>
+        /// <returns>A managed version of the string array.</returns>
+        /// <remarks>This method does not free the unmanaged strings represented by ptr.</remarks>
+        public static string[] ToStringArrayUtf8(IntPtr[] ptrArray)
+            => ptrArray.Select(ToStringUtf8).ToArray();
 
         /// <summary>
         /// Interprets the given ptr as a null terminated string array.
