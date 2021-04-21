@@ -9,7 +9,7 @@ namespace Tests.Build
     {
         #region Helper
 
-        private static Runner GetRunner(ITarget? clean = null, ITarget? generate = null, ITarget? build = null, ITarget? pack = null, ITarget? samples = null, ITarget? unitTest = null, ITarget? integrationTest = null, ITarget? integration = null, ITarget? docs = null)
+        private static Runner GetRunner(ITarget? clean = null, ITarget? generate = null, ITarget? build = null, ITarget? pack = null, ITarget? samples = null, ITarget? unitTest = null, ITarget? integrationTest = null, ITarget? systemTest = null, ITarget? integration = null, ITarget? docs = null)
         {
             clean ??= Mock.Of<ITarget>();
             generate ??= Mock.Of<ITarget>();
@@ -18,10 +18,11 @@ namespace Tests.Build
             pack ??= Mock.Of<ITarget>();
             unitTest ??= Mock.Of<ITarget>();
             integrationTest ??= Mock.Of<ITarget>();
+            systemTest ??= Mock.Of<ITarget>();
             integration ??= Mock.Of<ITarget>();
             docs ??= Mock.Of<ITarget>();
 
-            return new Runner(clean, generate, build, pack, samples, unitTest, integrationTest, integration, docs);
+            return new Runner(clean, generate, build, pack, samples, unitTest, integrationTest, systemTest, integration, docs);
         }
 
         private static void RunTarget(Runner runner, string target)

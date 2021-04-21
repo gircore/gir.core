@@ -2,7 +2,7 @@
 
 namespace Gtk.Tests
 {
-    [TestClass]
+    [TestClass, TestCategory("SystemTest")]
     public class Initialize
     {
         [AssemblyInitialize]

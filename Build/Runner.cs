@@ -12,11 +12,12 @@ namespace Build
         private readonly ITarget _samples;
         private readonly ITarget _unitTest;
         private readonly ITarget _integrationTest;
+        private readonly ITarget _systemTest;
         private readonly ITarget _pack;
         private readonly ITarget _integration;
         private readonly ITarget _docs;
 
-        public Runner(ITarget clean, ITarget generate, ITarget build, ITarget pack, ITarget samples, ITarget unitTest, ITarget integrationTest, ITarget integration, ITarget docs)
+        public Runner(ITarget clean, ITarget generate, ITarget build, ITarget pack, ITarget samples, ITarget unitTest, ITarget integrationTest, ITarget systemTest, ITarget integration, ITarget docs)
         {
             _clean = clean;
             _generate = generate;
@@ -25,6 +26,7 @@ namespace Build
             _integration = integration;
             _unitTest = unitTest;
             _integrationTest = integrationTest;
+            _systemTest = systemTest;
             _pack = pack;
             _docs = docs;
         }
@@ -91,6 +93,13 @@ namespace Build
                 action: _integrationTest.Execute,
                 description: "Execute all integration tests."
             );
+            
+            targets.Add(
+                name: Targets.SystemTest,
+                dependsOn: new[] { Targets.IntegrationTest },
+                action: _systemTest.Execute,
+                description: "Execute all system tests."
+            );
 
             targets.Add(
                 name: Targets.Docs,
@@ -121,6 +130,7 @@ namespace Build
             public const string Samples = "samples";
             public const string UnitTest = "unittest";
             public const string IntegrationTest = "integrationtest";
+            public const string SystemTest = "systemtest";
             public const string Integration = "integration";
             public const string Docs = "docs";
 

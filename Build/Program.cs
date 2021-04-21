@@ -76,6 +76,7 @@ namespace Build
                 integration: new Integration(settings),
                 unitTest: new UnitTest(settings),
                 integrationTest: new IntegrationTest(settings),
+                systemTest: new SystemTest(settings),
                 docs: new Docs(settings)
             );
             
