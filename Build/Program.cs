@@ -68,16 +68,17 @@ namespace Build
             };
 
             var runner = new Runner(
-                clean: new Clean(settings),
-                generate: new Generate(settings),
-                build: new Build(settings),
-                pack: new Pack(settings),
-                samples: new Samples(settings),
-                integration: new Integration(settings),
-                unitTest: new UnitTest(settings),
-                integrationTest: new IntegrationTest(settings),
-                systemTest: new SystemTest(settings),
-                docs: new Docs(settings)
+                new Clean(settings),
+                new Generate(settings),
+                new Build(settings),
+                new Pack(settings),
+                new Samples(settings),
+                new Integration(settings),
+                new UnitTest(settings),
+                new IntegrationTest(settings),
+                new SystemTest(settings),
+                new Docs(settings),
+                new Default()
             );
             
             try

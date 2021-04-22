@@ -5,10 +5,13 @@ using XmlDocMarkdown.Core;
 
 namespace Build
 {
-    public class Docs : ITarget
+    public class Docs : ExecuteableTarget
     {
         private readonly Settings _settings;
 
+        public string Description => "Generate API documentation.";
+        public string[] DependsOn => new [] { nameof(Build)};
+        
         public Docs(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));

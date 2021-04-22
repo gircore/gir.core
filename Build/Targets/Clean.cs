@@ -4,9 +4,11 @@ using System.Linq;
 
 namespace Build
 {
-    public class Clean : ITarget
+    public class Clean : ExecuteableTarget
     {
         private readonly Settings _settings;
+
+        public string Description => "Cleans samples and build output including generated source code files.";
 
         public Clean(Settings settings)
         {

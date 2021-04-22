@@ -1,19 +1,10 @@
-﻿using System;
-
-namespace Build
+﻿namespace Build
 {
-    public class UnitTest : ITarget
+    public class UnitTest : Test
     {
-        private readonly Settings _settings;
+        public override string Description => "Execute all unit tests.";
+        public override string[] DependsOn => new [] { nameof(Build)};
 
-        public UnitTest(Settings settings)
-        {
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-        }
-
-        public void Execute()
-        {
-            DotNet.Test(Projects.SolutionDirectory, _settings.Configuration, $"TestCategory={nameof(UnitTest)}");
-        }
+        public UnitTest(Settings settings) : base(settings) { }
     }
 }

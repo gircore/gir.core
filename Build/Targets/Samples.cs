@@ -2,9 +2,12 @@
 
 namespace Build
 {
-    public class Samples : ITarget
+    public class Samples : ExecuteableTarget
     {
         private readonly Settings _settings;
+
+        public string Description => "Builds the sample applications.";
+        public string[] DependsOn => new[] { nameof(Build), nameof(Integration) };
 
         public Samples(Settings settings)
         {

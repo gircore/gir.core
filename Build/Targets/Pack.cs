@@ -2,10 +2,13 @@
 
 namespace Build
 {
-    public class Pack : ITarget
+    public class Pack : ExecuteableTarget
     {
         private readonly Settings _settings;
 
+        public string Description => "Packs the libraries into the 'Nuget' folder in the project root.";
+        public string[] DependsOn => new [] {nameof(Build)};
+        
         public Pack(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));

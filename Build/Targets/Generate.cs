@@ -3,10 +3,12 @@ using System.Linq;
 
 namespace Build
 {
-    public class Generate : ITarget
+    public class Generate : ExecuteableTarget
     {
         private readonly Settings _settings;
         private const string EnvXmlDocumentation = "GirComments";
+
+        public string Description => "Generates the source code files.";
 
         public Generate(Settings settings)
         {

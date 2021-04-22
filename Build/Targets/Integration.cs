@@ -2,10 +2,12 @@
 
 namespace Build
 {
-    public class Integration : ITarget
+    public class Integration : ExecuteableTarget
     {
         private readonly Settings _settings;
 
+        public string Description => "Builds the integration library.";
+        
         public Integration(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));

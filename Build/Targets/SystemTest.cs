@@ -1,19 +1,10 @@
-﻿using System;
-
-namespace Build
+﻿namespace Build
 {
-    public class SystemTest : ITarget
+    public class SystemTest : Test
     {
-        private readonly Settings _settings;
+        public override string[] DependsOn => new [] { nameof(IntegrationTest)};
+        public override string Description => "Execute all system tests.";
 
-        public SystemTest(Settings settings)
-        {
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-        }
-
-        public void Execute()
-        {
-            DotNet.Test(Projects.SolutionDirectory, _settings.Configuration, $"TestCategory={nameof(SystemTest)}");
-        }
+        public SystemTest(Settings settings) : base(settings) { }
     }
 }
