@@ -22,6 +22,10 @@ namespace GObject.Native
             if(ObjectMapper.TryGetObject(handle, out T? obj))
                 return obj;
 
+            // TODO: This is wrong - we need the constructor of the true type, not
+            // type T (which is only the type we want to return as)
+            // System.Type trueType = TypeDictionary.GetSystemType(handle);
+            
             var ctor = GetObjectConstructor<T>();
 
             if (ctor == null)
