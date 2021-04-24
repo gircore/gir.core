@@ -43,8 +43,8 @@ namespace Generator
 
                 // Arrays of Opaque Structs, GObjects, and GInterfaces cannot be marshalled natively
                 // Instead marshal them as variable width pointer arrays (LPArray)
-                {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Record}} => "IntPtr[]",    // SafeHandles
-                {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Class}} => "IntPtr[]",     // GObjects
+                {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Record r}} when r.Disguised => "IntPtr[]",    // SafeHandles
+                {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Class c}} => "IntPtr[]",     // GObjects
                 {TypeInformation: {IsPointer: true, Array:{}}, SymbolReference: {Symbol: Interface}} => "IntPtr[]", // GInterfaces
                 
                 // Use original symbol name for records (remapped to SafeHandles)

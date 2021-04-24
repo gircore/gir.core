@@ -22,12 +22,17 @@ namespace Generator
                 // All other string types can be marshalled directly
                 (String, _) => fromParam,
 
+                // Misc
                 (Record r, {IsPointer: true, Array: null}) => $"{fromParam}.Handle",
                 (Record r, {IsPointer: true, Array:{}}) => $"{fromParam}.MarshalToStructure<{qualifiedNativeType}>()",
                 (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{qualifiedManagedType}.To({fromParam})",
+                
+                // Handle GObjects
                 (Class c, {IsPointer: true, Array: null}) => $"{fromParam}.Handle",
-                (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Can't create delegate for argument {fromParam}"),
-                (Class c, { Array: {}}) => $"{fromParam}.Select(cls => cls.Handle).ToArray()",
+                (Class c, {IsPointer: true, Array: {}}) => $"{fromParam}.Select(cls => cls.Handle).ToArray()",
+                (Class c, {IsPointer: false, Array: {}}) => throw new NotImplementedException($"Can't marshal an array of non-pointer GObjects (param: '{fromParam}')"),
+                
+                // Handle GInterfaces
                 (Interface i, { Array: {}}) => $"{fromParam}.Select(iface => (iface as GObject.Object).Handle).ToArray()",
                 (Interface i, _) => $"({fromParam} as GObject.Object).Handle",
                 

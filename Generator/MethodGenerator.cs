@@ -99,12 +99,6 @@ namespace Generator
             if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Union))
                 return false;
             
-            // No GObject array parameters
-            if (_managedParams.Any(param => 
-                param.SymbolReference.GetSymbol().GetType() == typeof(Class) && 
-                param.TypeInformation.Array != null))
-                return false;
-            
             // No GObject array return values
             if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Class) &&
                 _method.ReturnValue.TypeInformation.Array != null)

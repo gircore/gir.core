@@ -35,10 +35,13 @@ namespace Repository.Factories.Model
 
         private bool IsPointer(Typed typed)
         {
+            // For some reason, arrays can have a CType parameter too. For the
+            // purposes of determining whether the type is a pointer, we check
+            // both the array and the type (see case #2).
             return typed switch
             {
                 {Type: { } t} => GetIsPointer(t.Name, t.CType),
-                {Array: {Type: { } t}} => GetIsPointer(t.Name, t.CType),
+                {Array: {Type: { } t} a} => GetCTypeIsPointer(a.CType) || GetIsPointer(t.Name, t.CType),
                 {Array: {Array:{}}} => true,
                 FieldInfo {Callback: {}} => false, //Callbacks are no pointer as they are handled as delegates
                 _ => throw new Exception("Can not get pointer information from type: " + typed)
@@ -52,10 +55,13 @@ namespace Repository.Factories.Model
                 ("utf8", _) => false,
                 ("filename", _) => false,
                 (_, "gpointer") => true,
-                (_, {} c) => c.EndsWith("*"),
+                (_, {} c) => GetCTypeIsPointer(c),
                 _ => false
             };
         }
+
+        private bool GetCTypeIsPointer(string? ctype)
+            => ctype?.EndsWith("*") ?? false;
 
         private bool IsVolatile(Typed typed)
         {
