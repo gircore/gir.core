@@ -16,6 +16,9 @@ namespace GObject.Native
         {
             if (!_systemTypeDict.TryGetValue(type, out Type result))
                 throw new Exception($"Can not find native type for system type {type.FullName}. Is the type registered?");
+            
+            // TODO: Check if subclass via lack of TypeDescriptor
+            // If so, register us as a new type
 
             return result;
         }
