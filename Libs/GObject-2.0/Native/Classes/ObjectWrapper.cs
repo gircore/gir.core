@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using GLib;
 
 namespace GObject.Native
@@ -19,14 +20,18 @@ namespace GObject.Native
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException($"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
 
-            if(ObjectMapper.TryGetObject(handle, out T? obj))
+            // Have we already mapped the object?
+            if (ObjectMapper.TryGetObject(handle, out T? obj))
                 return obj;
 
-            // TODO: This is wrong - we need the constructor of the true type, not
-            // type T (which is only the type we want to return as)
-            // System.Type trueType = TypeDictionary.GetSystemType(handle);
+            // We need to find the "true type" of the object so that the user
+            // can upcast/downcast as necessary. Retrieve the gtype from the
+            // object's class struct.
+            Type gtype = GetTypeFromClassStruct(handle);
+            System.Type trueType = TypeDictionary.GetSystemType(gtype);
             
-            var ctor = GetObjectConstructor<T>();
+            // Get constructor for the true type
+            ConstructorInfo? ctor = GetObjectConstructor(trueType);
 
             if (ctor == null)
                 throw new Exception($"Type {typeof(T).FullName} does not define an IntPtr constructor. This could mean improperly defined bindings");
@@ -34,10 +39,16 @@ namespace GObject.Native
             return (T) ctor.Invoke(new object[] { handle, ownedRef });
         }
 
-        private static ConstructorInfo? GetObjectConstructor<T>() where T : class
+        private static Type GetTypeFromClassStruct(IntPtr handle)
+        {
+            Object.Class classStruct = Marshal.PtrToStructure<Object.Class>(handle);
+            return new Type(classStruct.GTypeClass.GType);
+        }
+
+        private static ConstructorInfo? GetObjectConstructor(System.Type type)
         {
             // Create using 'IntPtr' constructor
-            ConstructorInfo? ctor = typeof(T).GetConstructor(
+            ConstructorInfo? ctor = type.GetConstructor(
                 System.Reflection.BindingFlags.NonPublic
                 | System.Reflection.BindingFlags.Public
                 | System.Reflection.BindingFlags.Instance,
