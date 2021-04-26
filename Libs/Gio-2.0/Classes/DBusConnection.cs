@@ -19,7 +19,6 @@ namespace Gio
             var error = new GLib.Native.Error.Handle(IntPtr.Zero);
             var handle = Native.Functions.BusGetSync(busType, IntPtr.Zero, error);
             Error.ThrowOnError(error);
-            error.Dispose();
 
             return GObject.Native.ObjectWrapper.WrapHandle<DBusConnection>(handle, true);
         }

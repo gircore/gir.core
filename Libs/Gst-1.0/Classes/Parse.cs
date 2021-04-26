@@ -16,7 +16,6 @@ namespace Gst
             var error = new GLib.Native.Error.Handle(IntPtr.Zero);
             IntPtr ret = Native.Functions.ParseLaunch(pipelineDescription, error);
             GLib.Error.ThrowOnError(error);
-            error.Dispose();
 
             return ObjectWrapper.WrapHandle<Element>(ret, false);
         }
@@ -26,7 +25,6 @@ namespace Gst
             var error = new GLib.Native.Error.Handle(IntPtr.Zero);
             IntPtr ret = Native.Functions.ParseBinFromDescription(binDescription, ghostUnlinkedPads, error);
             GLib.Error.ThrowOnError(error);
-            error.Dispose();
 
             return ObjectWrapper.WrapHandle<Element>(ret, false);
         }

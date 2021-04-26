@@ -18,8 +18,6 @@ namespace GdkPixbuf
             IntPtr handle = Native.Pixbuf.Instance.Methods.NewFromFile(fileName, error);
             Error.ThrowOnError(error);
             
-            error.Dispose();
-
             return new Pixbuf(handle, true);
         }
 

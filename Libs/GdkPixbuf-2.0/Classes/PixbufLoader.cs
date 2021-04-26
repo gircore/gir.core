@@ -19,7 +19,6 @@ namespace GdkPixbuf
 
                 Native.PixbufLoader.Instance.Methods.Close(handle, error);
                 Error.ThrowOnError(error);
-                error.Dispose();
 
                 return new Pixbuf(Native.PixbufLoader.Instance.Methods.GetPixbuf(handle), false);
             }

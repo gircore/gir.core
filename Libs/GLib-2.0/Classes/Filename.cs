@@ -12,7 +12,6 @@ namespace GLib
             var uri = Native.Functions.FilenameToUri(filename, hostname, error);
 
             Error.ThrowOnError(error);
-            error.Dispose();
 
             return uri;
         }
@@ -22,7 +21,6 @@ namespace GLib
             var error = new Native.Error.Handle(IntPtr.Zero);
             var fileName = Native.Functions.FilenameFromUri(uri, out hostname, error);
             Error.ThrowOnError(error);
-            error.Dispose();
 
             return fileName;
         }
