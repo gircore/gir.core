@@ -10,6 +10,9 @@ namespace GObject.Native
         private static readonly Dictionary<System.Type, Type> _systemTypeDict = new();
         private static readonly Dictionary<Type, System.Type> _reverseTypeDict = new();
 
+        private static DynamicRegistrar DynamicRegistrar { get; } = new();
+        public static StaticRegistrar StaticRegistrar { get; } = new();
+
         public static void Add(System.Type systemType, Type type)
         {
             _systemTypeDict[systemType] = type;
@@ -32,7 +35,7 @@ namespace GObject.Native
                 // an unregistered managed subclass type. Therefore, we should
                 // register ourselves and every type we inherit from that has also
                 // not been registered.
-                TypeRegistrar.RegisterSubclass(type);
+                DynamicRegistrar.RegisterSubclassDynamic(type);
             }
 
             return _systemTypeDict[type];
