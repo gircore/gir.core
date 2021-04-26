@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace GObject.Native
 {
-    public static partial class TypeDictionary
+    public static class TypeDictionary
     {
         private static readonly Dictionary<System.Type, Type> _systemTypeDict = new();
         private static readonly Dictionary<Type, System.Type> _reverseTypeDict = new();
@@ -32,7 +32,7 @@ namespace GObject.Native
                 // an unregistered managed subclass type. Therefore, we should
                 // register ourselves and every type we inherit from that has also
                 // not been registered.
-                RegisterSubclassRecursive(type);
+                TypeRegistrar.RegisterSubclass(type);
             }
 
             return _systemTypeDict[type];
@@ -56,5 +56,11 @@ namespace GObject.Native
 
             return sysType;
         }
+
+        internal static bool ContainsGType(Type gtype)
+            => _reverseTypeDict.ContainsKey(gtype);
+        
+        internal static bool ContainsSystemType(System.Type type)
+            => _systemTypeDict.ContainsKey(type);
     }
 }

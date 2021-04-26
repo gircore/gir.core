@@ -4,15 +4,15 @@ using System.Runtime.InteropServices;
 
 namespace GObject.Native
 {
-    public static partial class TypeDictionary
+    internal class TypeRegistrationException : Exception
     {
-        // TODO: This stuff needs to be hidden behind a ITypeInitialiser interface
-        // so we can switch between reflection and source generation at compile time
-
-        private class TypeRegistrationException : Exception
-        {
-            public TypeRegistrationException(string message) : base(message) { }
-        }
+        public TypeRegistrationException(string message) : base(message) { }
+    }
+    
+    internal static class TypeRegistrar
+    {
+        // TODO: Split into two classes + abstract base class so we can
+        // switch between reflection and source generation at compile time
 
         private static string QualifyName(System.Type type)
             => type.FullName?.Replace(".", "") ?? type.Name;
@@ -25,7 +25,7 @@ namespace GObject.Native
             return Marshal.PtrToStructure<TypeQuery.Struct>(handle.DangerousGetHandle());
         }
 
-        private static void RegisterSubclassRecursive(System.Type type)
+        public static void RegisterSubclass(System.Type type)
         {
             Debug.Assert(
                 condition: type.BaseType != null,
@@ -33,27 +33,27 @@ namespace GObject.Native
             );
             
             System.Type baseType = type.BaseType;
-            if (!_systemTypeDict.ContainsKey(baseType))
-                RegisterSubclassRecursive(baseType);
+            if (!TypeDictionary.ContainsSystemType(baseType))
+                RegisterSubclass(baseType);
             
-            RegisterSubclass(type);
+            RegisterType(type);
         }
         
         // Registers a new type class with the underlying GType type system
-        private static void RegisterSubclass(System.Type type)
+        private static void RegisterType(System.Type type)
         {
             Debug.Assert(
-                condition: !_systemTypeDict.ContainsKey(type),
+                condition: !TypeDictionary.ContainsSystemType(type),
                 message: "The type dictionary should not contain the current type - we have not registered it yet"
             );
             
             Debug.Assert(
-                condition: _systemTypeDict.ContainsKey(type.BaseType!),
+                condition: TypeDictionary.ContainsSystemType(type.BaseType!),
                 message: "The type dictionary should contain the immediate parent type"
             );
             
             // Get metrics about parent type
-            Type parentType = _systemTypeDict[type.BaseType];
+            Type parentType = TypeDictionary.GetGType(type.BaseType!);
             TypeQuery.Struct query = GetTypeMetrics(parentType);
 
             if (query.Type == 0)
@@ -79,7 +79,7 @@ namespace GObject.Native
                 throw new TypeRegistrationException("Type Registration Failed!");
 
             // Register type in type dictionary
-            Add(type, new Type(typeid));
+            TypeDictionary.Add(type, new Type(typeid));
         }
         
         private static void DoClassInit(IntPtr gClass, IntPtr classData)
