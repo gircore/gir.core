@@ -26,7 +26,7 @@ namespace Repository.Factories
 
             Method? getTypeFunction = @record.GetTypeFunction switch
             {
-                { } f => _methodFactory.CreateGetTypeMethod(f, @namespace),
+                { } f => _methodFactory.CreateGetTypeMethod(f),
                 _ => null
             };
 

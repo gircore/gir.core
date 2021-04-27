@@ -30,7 +30,7 @@ namespace GLib
 
         public static Bytes From(byte[] data)
         {
-            var obj = new Bytes(Native.Bytes.Methods.New(data, (ulong) data.Length));
+            var obj = new Bytes(Native.Bytes.Methods.New(data, (nuint) data.Length));
             return obj;
         }
 

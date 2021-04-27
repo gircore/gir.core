@@ -66,13 +66,13 @@ namespace GLib
         {
             _children = children;
 
-            var count = children.Length;
+            var count = (nuint) children.Length;
             var ptrs = new IntPtr[count];
 
-            for (var i = 0; i < count; i++)
+            for (nuint i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle.DangerousGetHandle();
 
-            handle = Native.Variant.Methods.NewTuple(ptrs, (ulong) count);
+            handle = Native.Variant.Methods.NewTuple(ptrs, count);
             Native.Variant.Methods.RefSink(handle);
         }
 
