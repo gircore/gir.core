@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace GObject.Native
 {
+    /// <summary>
+    /// Thrown when type registration with GType fails
+    /// </summary>
     internal class TypeRegistrationException : Exception
     {
         public TypeRegistrationException(string message) : base(message) { }
@@ -59,21 +61,13 @@ namespace GObject.Native
             return new Type(typeid);
         }
         
-        /// <summary>
-        /// Default Handler for class initialisation.
-        /// </summary>
-        /// <param name="gClass"></param>
-        /// <param name="classData"></param>
+        // Default Handler for class initialisation.
         private static void DoClassInit(IntPtr gClass, IntPtr classData)
         {
             Console.WriteLine("Subclass type class initialised!");
         }
         
-        /// <summary>
-        /// Default Handler for instance initialisation.
-        /// </summary>
-        /// <param name="gClass"></param>
-        /// <param name="classData"></param>
+        // Default Handler for instance initialisation.
         private static void DoInstanceInit(IntPtr gClass, IntPtr classData)
         {
             Console.WriteLine("Subclass instance initialised!");
