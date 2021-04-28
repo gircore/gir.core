@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libs\Gtk3\Gtk3.csproj" />
+    <ProjectReference Include="..\..\..\Libs\Gtk-3.0\Gtk-3.0.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

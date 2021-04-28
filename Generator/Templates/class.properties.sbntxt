@@ -1,0 +1,6 @@
+{{~ 
+for $property in properties
+    $property | write_managed_property_descriptor
+    $property | write_managed_property
+end
+~}}

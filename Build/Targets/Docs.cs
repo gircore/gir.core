@@ -1,15 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Generator;
 using XmlDocMarkdown.Core;
 
 namespace Build
 {
-    public class Docs : ITarget
+    public class Docs : ExecuteableTarget
     {
         private readonly Settings _settings;
 
+        public string Description => "Generate API documentation.";
+        public string[] DependsOn => new [] { nameof(Build)};
+        
         public Docs(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
@@ -17,7 +19,7 @@ namespace Build
 
         public void Execute()
         {
-            foreach ((Project project, Type _) in Projects.LibraryProjects)
+            foreach (Project project in Projects.AllLibraries)
             {
                 var settings = new XmlDocMarkdownSettings()
                 {

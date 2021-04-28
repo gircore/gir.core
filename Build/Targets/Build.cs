@@ -1,12 +1,15 @@
 ﻿using System;
-using Generator;
 
 namespace Build
 {
-    public class Build : ITarget
+    public class Build : ExecuteableTarget
     {
         private readonly Settings _settings;
 
+        public string Description => "Builds the project.";
+
+        public string[] DependsOn => new [] { nameof(Generate) };
+        
         public Build(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
@@ -14,10 +17,10 @@ namespace Build
 
         public void Execute()
         {
-            foreach ((Project project, Type _) in Projects.LibraryProjects)
+            foreach (Project proj in Projects.AllLibraries)
             {
                 DotNet.Build(
-                    project: project.Folder,
+                    project: proj.Folder,
                     configuration: _settings.Configuration,
                     version: _settings.Version?.ToNormalizedString()
                 );

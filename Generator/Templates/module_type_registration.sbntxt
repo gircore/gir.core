@@ -1,0 +1,22 @@
+using GObject.Native;
+using System;
+
+namespace {{ namespace.name }}
+{
+    internal partial class Module
+    {
+        static partial void RegisterTypes()
+        {
+            {{ for $class in classes}}
+            try
+            {
+                {{ $class | write_type_registration }}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not register type '{{ $class.symbol_name }}': {e.Message}");
+            }
+            {{ end }}
+        }
+    }
+}

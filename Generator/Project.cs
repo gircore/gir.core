@@ -1,28 +1,12 @@
-﻿namespace Generator
+﻿namespace Repository.Xml
 {
-    public class Project
+    internal class Project
     {
-        #region Properties
+        public string Gir { get; }
 
-        public string Folder { get; }
-        public string Gir { get; set; }
-
-        #endregion
-
-        #region Constructors
-
-        public Project(string folder, string gir)
+        public Project(string girFile)
         {
-            Folder = folder;
-            Gir = gir;
+            Gir = girFile;
         }
-
-        #endregion
-
-        #region Methods
-
-        public override string ToString() => Gir;
-
-        #endregion
     }
 }

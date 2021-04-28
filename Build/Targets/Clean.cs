@@ -4,9 +4,11 @@ using System.Linq;
 
 namespace Build
 {
-    public class Clean : ITarget
+    public class Clean : ExecuteableTarget
     {
         private readonly Settings _settings;
+
+        public string Description => "Cleans samples and build output including generated source code files.";
 
         public Clean(Settings settings)
         {
@@ -29,17 +31,29 @@ namespace Build
 
         private void CleanLibraries()
         {
-            foreach (var libraryProject in Projects.LibraryProjects)
+            foreach (Project project in Projects.AllLibraries)
             {
-                CleanUp(libraryProject.Project.Folder, _settings.Configuration);
+                CleanUp(project.Folder, _settings.Configuration);
             }
         }
 
         private static void CleanUp(string project, Configuration configuration)
         {
+            try
+            {
+                CleanUpInternal(project, configuration);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Could not clean {project} ({configuration}): {ex.Message}");
+            }
+        }
+
+        private static void CleanUpInternal(string project, Configuration configuration)
+        {
             if (Directory.Exists(project))
             {
-                foreach (var d in Directory.EnumerateDirectories(project))
+                foreach (var d in Directory.EnumerateDirectories(project, "*", SearchOption.AllDirectories))
                 {
                     foreach (var file in Directory.EnumerateFiles(d).Where(FileIsGenerated))
                     {

@@ -1,26 +1,29 @@
-﻿using Bullseye;
+﻿using Build;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Build.Test
+namespace Tests.Build
 {
-    [TestClass]
+    [TestClass, TestCategory("UnitTest")]
     public class RunnerTest
     {
         #region Helper
 
-        private static Runner GetRunner(ITarget? clean = null, ITarget? generate = null, ITarget? build = null, ITarget? pack = null, ITarget? samples = null, ITarget? test = null, ITarget? integration = null, ITarget? docs = null)
+        private static ExecuteableTarget GetActionTarget(string name)
         {
-            clean ??= Mock.Of<ITarget>();
-            generate ??= Mock.Of<ITarget>();
-            samples ??= Mock.Of<ITarget>();
-            build ??= Mock.Of<ITarget>();
-            pack ??= Mock.Of<ITarget>();
-            test ??= Mock.Of<ITarget>();
-            integration ??= Mock.Of<ITarget>();
-            docs ??= Mock.Of<ITarget>();
+            var targetMock = new Mock<ExecuteableTarget>();
+            targetMock.Setup(x => x.Name).Returns(name);
 
-            return new Runner(clean, generate, build, pack, samples, test, integration, docs);
+            return targetMock.Object;
+        }
+
+        private static Target GetTarget(string name, params string[] dependencies)
+        {
+            var targetMock = new Mock<Target>();
+            targetMock.Setup(x => x.Name).Returns(name);
+            targetMock.Setup(x => x.DependsOn).Returns(dependencies);
+
+            return targetMock.Object;
         }
 
         private static void RunTarget(Runner runner, string target)
@@ -31,135 +34,30 @@ namespace Build.Test
         #endregion
 
         [TestMethod]
-        public void InvokingCleanTargetExecutesProjectCleaner()
+        public void RunningActionTargetExecutesAction()
         {
-            var target = Mock.Of<ITarget>();
-
-            Runner runner = GetRunner(
-                clean: target
-            );
-
-            RunTarget(runner, "clean");
-
-            Mock.Get(target).Verify((x) => x.Execute(), Times.Once);
+            const string Name = "testName";
+            
+            ExecuteableTarget target = GetActionTarget(Name);
+            Runner runner = new (target);
+            RunTarget(runner, Name);
+            
+            Mock.Get(target).Verify(x => x.Execute(), Times.Once);
         }
-
+        
         [TestMethod]
-        public void InvokingGenerateTargetExecutesLibraryGenerator()
+        public void RunningTargetExecutesDependencies()
         {
-            var target = Mock.Of<ITarget>();
+            const string TargetName = "testName";
+            const string DependencyName = "dependencyName";
+            
+            Target target = GetTarget(TargetName, dependencies: DependencyName);
+            ExecuteableTarget depdendency = GetActionTarget(DependencyName);
 
-            Runner runner = GetRunner(
-                generate: target
-            );
-
-            RunTarget(runner, "generate");
-
-            Mock.Get(target).Verify((x) => x.Execute(), Times.Once);
-        }
-
-        [TestMethod]
-        public void InvokingIntegrationTargetExecutesIntegrationBuilder()
-        {
-            var target = Mock.Of<ITarget>();
-
-            Runner runner = GetRunner(
-                integration: target
-            );
-
-            RunTarget(runner, "integration");
-
-            Mock.Get(target).Verify((x) => x.Execute(), Times.Once);
-        }
-
-        [TestMethod]
-        [DataRow("build")]
-        [DataRow("default")] //Default target is equal to build target
-        public void InvokingBuildTargetExecutesLibraryGeneratorAndLibraryBuilder(string target)
-        {
-            var generate = Mock.Of<ITarget>();
-            var build = Mock.Of<ITarget>();
-
-            Runner runner = GetRunner(
-                generate: generate,
-                build: build
-            );
-
-            RunTarget(runner, target);
-
-            Mock.Get(generate).Verify((x) => x.Execute(), Times.Once);
-            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
-        }
-
-        [TestMethod]
-        public void InvokingSamplesTargetExecutesLibraryBuilderIntegrationBuilderSampleBuilder()
-        {
-            var samples = Mock.Of<ITarget>();
-            var build = Mock.Of<ITarget>();
-            var integration = Mock.Of<ITarget>();
-
-            Runner runner = GetRunner(
-                build: build,
-                samples: samples,
-                integration: integration
-            );
-
-            RunTarget(runner, "samples");
-
-            Mock.Get(integration).Verify(x => x.Execute(), Times.Once);
-            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
-            Mock.Get(samples).Verify((x) => x.Execute(), Times.Once);
-        }
-
-        [TestMethod]
-        public void InvokingTestTargetExecutesLibraryBuilderAndTester()
-        {
-            var build = Mock.Of<ITarget>();
-            var test = Mock.Of<ITarget>();
-
-            Runner runner = GetRunner(
-                build: build,
-                test: test
-            );
-
-            RunTarget(runner, "test");
-
-            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
-            Mock.Get(test).Verify((x) => x.Execute(), Times.Once);
-        }
-
-        [TestMethod]
-        public void InvokingPackTargetExecutesLibraryBuilderAndPacker()
-        {
-            var build = Mock.Of<ITarget>();
-            var pack = Mock.Of<ITarget>();
-
-            Runner runner = GetRunner(
-                build: build,
-                pack: pack
-            );
-
-            RunTarget(runner, "pack");
-
-            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
-            Mock.Get(pack).Verify((x) => x.Execute(), Times.Once);
-        }
-
-        [TestMethod]
-        public void InvokingPackDocsExecutesDocsAndBuild()
-        {
-            var build = Mock.Of<ITarget>();
-            var docs = Mock.Of<ITarget>();
-
-            Runner runner = GetRunner(
-                build: build,
-                docs: docs
-            );
-
-            RunTarget(runner, "docs");
-
-            Mock.Get(build).Verify((x) => x.Execute(), Times.Once);
-            Mock.Get(docs).Verify((x) => x.Execute(), Times.Once);
+            Runner runner = new (target, depdendency);
+            
+            RunTarget(runner, TargetName);
+            Mock.Get(depdendency).Verify(x => x.Execute(), Times.Once);
         }
     }
 }

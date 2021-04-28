@@ -1,0 +1,20 @@
+﻿using System;
+using GObject;
+
+namespace Gst
+{
+    public partial class GhostPad
+    {
+
+        // TODO: Replace with constructor once we've found a pattern for
+        // implementing constructor logic. Note that gst_ghost_pad_new is
+        // not simply a wrapper for g_object_new and has essential logic inside
+        // which *must* be run. Therefore our existing constructor design is
+        // inadequate.
+        public static GhostPad? New(string name, Pad target)
+            => throw new NotImplementedException(); //TODO WrapNullableHandle<GhostPad>(Native.Methods.New(name, target.Handle), false);
+
+        // public bool SetTarget(Pad newTarget)
+        //     => throw new NotImplementedException(); //TODO Native.Methods.SetTarget(Handle, newTarget.Handle);
+    }
+}

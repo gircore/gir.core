@@ -2,15 +2,9 @@
 
 namespace Generator
 {
-    public static class ObjectExtension
+    internal static class ObjectExtension
     {
-        #region Methods
-
-        public static bool In<T>(this T obj, params T[] p)
-        {
-            return p.Contains(obj);
-        }
-
-        #endregion
+        public static bool In<T>(this T obj, params T[] parameters)
+            => parameters.Contains(obj);
     }
 }

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>GObject-2.0.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GLib-2.0\GLib-2.0.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.GObject</PackageId>
+    <RootNamespace>GObject</RootNamespace>
+  </PropertyGroup>
+</Project>

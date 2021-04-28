@@ -1,0 +1,8 @@
+#region Properties
+
+{{~ for $property in properties }}
+{{  }}
+{{ include 'property.sbntxt' $property ~}}
+{{ end ~}}
+
+#endregion

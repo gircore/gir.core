@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Gtk.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="test.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\Gtk-3.0\Gtk-3.0.csproj" />
+  </ItemGroup>
+</Project>

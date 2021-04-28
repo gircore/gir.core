@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libs\GLib\GLib.csproj" />
+    <ProjectReference Include="..\..\Libs\GLib-2.0\GLib-2.0.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,0 @@
-using System;
-using System.Runtime.InteropServices;
-
-namespace {{ namespace }}
-{
-    {{ include 'header.sbntxt' this ~}}
-    public delegate {{ return_value | resolve_type }} {{ name | fix_identifier }}({{ this | get_parameters }});
-}

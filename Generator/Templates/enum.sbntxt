@@ -1,0 +1,14 @@
+using System;
+
+namespace {{ namespace.name }}
+{
+    {{~ if has_flags ~}}
+    [Flags]
+    {{~ end ~}}
+    public enum {{ symbol_name }} : long
+    {
+        {{~ for member in members }}
+        {{ include 'enum.member.sbntxt' member ~}}
+        {{ end }}
+    }
+}

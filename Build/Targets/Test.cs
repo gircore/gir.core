@@ -1,20 +1,19 @@
-﻿using System;
-
-namespace Build
+﻿namespace Build
 {
-    public class Test : ITarget
+    public abstract class Test : ExecuteableTarget
     {
         private readonly Settings _settings;
+        public abstract string[] DependsOn { get; }
+        public abstract string Description { get; }
 
-        public Test(Settings settings)
+        protected Test(Settings settings)
         {
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _settings = settings;
         }
-
+        
         public void Execute()
         {
-            foreach (var project in Projects.TestProjects)
-                DotNet.Test(project, _settings.Configuration);
+            DotNet.Test(Projects.SolutionDirectory, _settings.Configuration, $"TestCategory={((Target)this).Name}");
         }
     }
 }

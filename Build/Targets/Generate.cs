@@ -1,12 +1,14 @@
 ﻿using System;
-using Generator;
+using System.Linq;
 
 namespace Build
 {
-    public class Generate : ITarget
+    public class Generate : ExecuteableTarget
     {
         private readonly Settings _settings;
         private const string EnvXmlDocumentation = "GirComments";
+
+        public string Description => "Generates the source code files.";
 
         public Generate(Settings settings)
         {
@@ -29,22 +31,22 @@ namespace Build
 
         private void RunGenerator()
         {
-            foreach (var (project, type) in Projects.LibraryProjects)
+            try
             {
-                var generator = CreateGenerator(project, type);
-                generator.GenerateComments = _settings.GenerateComments;
-                generator.Generate();
+                var generator = new Generator.Generator
+                {
+                    OutputDir = Projects.ProjectPath,
+                    UseAsync = _settings.GenerateAsynchronously,
+                    GenerateDocComments = _settings.GenerateComments
+                };
+
+                generator.Write(Projects.AllLibraries.Select(x => x.GirFile));
             }
-        }
-
-        private static global::Generator.IGenerator CreateGenerator(Project project, Type type)
-        {
-            project.Gir = $"../gir-files/{project.Gir}";
-
-            if (Activator.CreateInstance(type, project) is global::Generator.IGenerator generator)
-                return generator;
-
-            throw new Exception($"{type.Name} is not a {nameof(global::Generator.IGenerator)}");
+            catch (Exception e)
+            {
+                Log.Exception(e);
+                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
+            }
         }
     }
 }

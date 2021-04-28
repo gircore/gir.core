@@ -1,4 +1,0 @@
-{{~
-include 'helper.sbntxt'
-get_field($1)
-~}}

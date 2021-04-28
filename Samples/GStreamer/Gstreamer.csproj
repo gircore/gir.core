@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libs\Gst\Gst.csproj" />
+    <ProjectReference Include="..\..\Libs\Gst-1.0\Gst-1.0.csproj" />
   </ItemGroup>
 
 </Project>
