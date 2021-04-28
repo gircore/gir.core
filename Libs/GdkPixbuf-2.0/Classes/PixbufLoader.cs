@@ -13,10 +13,11 @@ namespace GdkPixbuf
             {
                 using var bytes = Bytes.From(data);
 
-                Native.PixbufLoader.Instance.Methods.WriteBytes(handle, bytes.Handle, out var error);
+                var error = new GLib.Native.Error.Handle(IntPtr.Zero);
+                Native.PixbufLoader.Instance.Methods.WriteBytes(handle, bytes.Handle, error);
                 Error.ThrowOnError(error);
 
-                Native.PixbufLoader.Instance.Methods.Close(handle, out error);
+                Native.PixbufLoader.Instance.Methods.Close(handle, error);
                 Error.ThrowOnError(error);
 
                 return new Pixbuf(Native.PixbufLoader.Instance.Methods.GetPixbuf(handle), false);
