@@ -27,7 +27,7 @@ namespace GObject.Native
             // We need to find the "true type" of the object so that the user
             // can upcast/downcast as necessary. Retrieve the gtype from the
             // object's class struct.
-            Type gtype = GetTypeFromClassStruct(handle);
+            Type gtype = GetTypeFromHandle(handle);
             System.Type trueType = TypeDictionary.GetSystemType(gtype);
             
             // Get constructor for the true type
@@ -39,10 +39,11 @@ namespace GObject.Native
             return (T) ctor.Invoke(new object[] { handle, ownedRef });
         }
 
-        private static Type GetTypeFromClassStruct(IntPtr handle)
+        private static Type GetTypeFromHandle(IntPtr handle)
         {
-            Object.Class classStruct = Marshal.PtrToStructure<Object.Class>(handle);
-            return new Type(classStruct.GTypeClass.GType);
+            TypeInstance.Struct instance = Marshal.PtrToStructure<TypeInstance.Struct>(handle);
+            TypeClass.Struct classStruct = Marshal.PtrToStructure<TypeClass.Struct>(instance.GClass);
+            return new Type(classStruct.GType);
         }
 
         private static ConstructorInfo? GetObjectConstructor(System.Type type)
