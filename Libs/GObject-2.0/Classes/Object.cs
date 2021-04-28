@@ -41,7 +41,7 @@ namespace GObject
         /// a higher layer.</remarks>
         protected Object(ConstructArgument[] constructArguments)
         {
-            Type gtype = TypeDictionary.GetGType(GetType());
+            Type gtype = GetGTypeOrRegister(GetType());
 
             IntPtr handle = Native.Object.Instance.Methods.NewWithProperties(
                 objectType: gtype.Value,

@@ -46,7 +46,7 @@ namespace {{ namespace.native_name }}
                 else
                 {
                     var str = new {{symbol_name}}();
-                    Marshal.StructureToPtr(str, ptr, true);
+                    Marshal.StructureToPtr(str, ptr, false);
                 }
                 
                 return new Managed{{$safehandle_name}}(ptr);

@@ -20,7 +20,12 @@ namespace Generator
 
         private static string GetFullType(this Parameter parameter, Target target, Namespace currentNamespace, bool useSafeHandle)
         {
-            var direction = GetDirection(parameter);
+            // FIXME: SafeHandles and ref *do not* work together when marshalling
+            // apparently. For any Record-type parameters, we do not generate a direction
+            // attribute for the native method. Find a more reliable way of doing this?
+            var useDirection = !(parameter.SymbolReference.Symbol is Record && target == Target.Native);
+
+            var direction = useDirection ? GetDirection(parameter) : string.Empty;
             var type = GetType(parameter, target, currentNamespace, useSafeHandle);
 
             return $"{direction}{type}";
