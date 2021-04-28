@@ -9,7 +9,11 @@ namespace GObject.Native
         public TypeRegistrationException(string message) : base(message) { }
     }
 
-    public abstract class TypeRegistrar
+    /// <summary>
+    /// A set of utility functions to register new types with the
+    /// GType dynamic type system.
+    /// </summary>
+    public static class TypeRegistrar
     {
         private static TypeQuery.Struct GetTypeMetrics(Type parentType)
         {
@@ -19,22 +23,17 @@ namespace GObject.Native
             return Marshal.PtrToStructure<TypeQuery.Struct>(handle.DangerousGetHandle());
         }
         
-        // Registers a new type class with the underlying GType type system
-        protected void RegisterSubclass(System.Type type, System.Type parentType, string qualifiedName)
+        /// <summary>
+        /// Registers with GType a new child class of 'parentType'.
+        /// </summary>
+        /// <param name="qualifiedName">The name of the class</param>
+        /// <param name="parentType">The parent class to derive from</param>
+        /// <returns>The newly registered type</returns>
+        /// <exception cref="TypeRegistrationException">The type could not be registered</exception>
+        internal static Type RegisterGType(string qualifiedName, Type parentType)
         {
-            Debug.Assert(
-                condition: !TypeDictionary.ContainsSystemType(type),
-                message: "The type dictionary should not contain the current type - we have not registered it yet"
-            );
-            
-            Debug.Assert(
-                condition: TypeDictionary.ContainsSystemType(type.BaseType!),
-                message: "The type dictionary should contain the immediate parent type"
-            );
-            
             // Get metrics about parent type
-            Type parentGType = TypeDictionary.GetGType(parentType);
-            TypeQuery.Struct query = GetTypeMetrics(parentGType);
+            TypeQuery.Struct query = GetTypeMetrics(parentType);
 
             if (query.Type == 0)
                 throw new TypeRegistrationException("Could not query parent type");
@@ -49,23 +48,32 @@ namespace GObject.Native
             };
 
             // Perform Registration
-            Console.WriteLine($"Registering type {type.Name} as {qualifiedName}");
+            Console.WriteLine($"Registering new type {qualifiedName} with parent {parentType.ToString()}");
 
             TypeInfo.Handle handle = TypeInfo.ManagedHandle.Create(typeInfo);
-            var typeid = Functions.TypeRegisterStatic(parentGType.Value, qualifiedName, handle, 0);
-            
+            var typeid = Functions.TypeRegisterStatic(parentType.Value, qualifiedName, handle, 0);
+
             if (typeid == 0)
                 throw new TypeRegistrationException("Type Registration Failed!");
 
-            // Register type in type dictionary
-            TypeDictionary.Add(type, new Type(typeid));
+            return new Type(typeid);
         }
         
+        /// <summary>
+        /// Default Handler for class initialisation.
+        /// </summary>
+        /// <param name="gClass"></param>
+        /// <param name="classData"></param>
         private static void DoClassInit(IntPtr gClass, IntPtr classData)
         {
             Console.WriteLine("Subclass type class initialised!");
         }
         
+        /// <summary>
+        /// Default Handler for instance initialisation.
+        /// </summary>
+        /// <param name="gClass"></param>
+        /// <param name="classData"></param>
         private static void DoInstanceInit(IntPtr gClass, IntPtr classData)
         {
             Console.WriteLine("Subclass instance initialised!");
