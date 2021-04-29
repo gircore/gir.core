@@ -10,42 +10,42 @@ namespace GObject
     {
         #region Fields
 
-        [FieldOffset(0)] private readonly ulong _value;
+        [FieldOffset(0)] private readonly nuint _value;
 
-        public ulong Value => _value;
+        public nuint Value => _value;
 
         #endregion
 
         #region Statics
 
-        public static readonly Type Invalid = new Type((ulong) Types.Invalid);
-        public static readonly Type None = new Type((ulong) Types.None);
-        public static readonly Type Interface = new Type((ulong) Types.Interface);
-        public static readonly Type Char = new Type((ulong) Types.Char);
-        public static readonly Type UChar = new Type((ulong) Types.UChar);
-        public static readonly Type Boolean = new Type((ulong) Types.Boolean);
-        public static readonly Type Int = new Type((ulong) Types.Int);
-        public static readonly Type UInt = new Type((ulong) Types.UInt);
-        public static readonly Type Long = new Type((ulong) Types.Long);
-        public static readonly Type ULong = new Type((ulong) Types.ULong);
-        public static readonly Type Int64 = new Type((ulong) Types.Int64);
-        public static readonly Type UInt64 = new Type((ulong) Types.UInt64);
-        public static readonly Type Enum = new Type((ulong) Types.Enum);
-        public static readonly Type Flags = new Type((ulong) Types.Flags);
-        public static readonly Type Float = new Type((ulong) Types.Float);
-        public static readonly Type Double = new Type((ulong) Types.Double);
-        public static readonly Type String = new Type((ulong) Types.String);
-        public static readonly Type Pointer = new Type((ulong) Types.Pointer);
-        public static readonly Type Boxed = new Type((ulong) Types.Boxed);
-        public static readonly Type Param = new Type((ulong) Types.Param);
-        public static readonly Type Object = new Type((ulong) Types.Object);
-        public static readonly Type Variant = new Type((ulong) Types.Variant);
+        public static readonly Type Invalid = new Type((nuint) BasicTypes.Invalid);
+        public static readonly Type None = new Type((nuint) BasicTypes.None);
+        public static readonly Type Interface = new Type((nuint) BasicTypes.Interface);
+        public static readonly Type Char = new Type((nuint) BasicTypes.Char);
+        public static readonly Type UChar = new Type((nuint) BasicTypes.UChar);
+        public static readonly Type Boolean = new Type((nuint) BasicTypes.Boolean);
+        public static readonly Type Int = new Type((nuint) BasicTypes.Int);
+        public static readonly Type UInt = new Type((nuint) BasicTypes.UInt);
+        public static readonly Type Long = new Type((nuint) BasicTypes.Long);
+        public static readonly Type ULong = new Type((nuint) BasicTypes.ULong);
+        public static readonly Type Int64 = new Type((nuint) BasicTypes.Int64);
+        public static readonly Type UInt64 = new Type((nuint) BasicTypes.UInt64);
+        public static readonly Type Enum = new Type((nuint) BasicTypes.Enum);
+        public static readonly Type Flags = new Type((nuint) BasicTypes.Flags);
+        public static readonly Type Float = new Type((nuint) BasicTypes.Float);
+        public static readonly Type Double = new Type((nuint) BasicTypes.Double);
+        public static readonly Type String = new Type((nuint) BasicTypes.String);
+        public static readonly Type Pointer = new Type((nuint) BasicTypes.Pointer);
+        public static readonly Type Boxed = new Type((nuint) BasicTypes.Boxed);
+        public static readonly Type Param = new Type((nuint) BasicTypes.Param);
+        public static readonly Type Object = new Type((nuint) BasicTypes.Object);
+        public static readonly Type Variant = new Type((nuint) BasicTypes.Variant);
 
         #endregion Statics
 
         #region Constructors
 
-        public Type(ulong value)
+        public Type(nuint value)
         {
             _value = value;
         }
@@ -61,7 +61,7 @@ namespace GObject
         //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
     }
 
-    internal enum Types : ulong
+    internal enum BasicTypes
     {
         Invalid = 0 << 2,
         None = 1 << 2,

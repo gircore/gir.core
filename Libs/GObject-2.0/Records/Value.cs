@@ -40,7 +40,7 @@ namespace GObject
 
         internal Native.Value.Struct GetData() => Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());
         
-        private ulong GetTypeValue()
+        private nuint GetTypeValue()
         {
             var structure = Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());
             return structure.GType;
@@ -124,32 +124,32 @@ namespace GObject
         public object? Extract()
         {
             var type = GetTypeValue();
-            return (Types) type switch
+            return type switch
             {
-                Types.Boolean => GetBool(),
-                Types.UInt => GetUint(),
-                Types.Int => GetInt(),
-                Types.Long => GetLong(),
-                Types.Double => GetDouble(),
-                Types.Float => GetFloat(),
-                Types.String => GetString(),
-                Types.Pointer => GetPtr(),
+                (nuint) BasicTypes.Boolean => GetBool(),
+                (nuint) BasicTypes.UInt => GetUint(),
+                (nuint) BasicTypes.Int => GetInt(),
+                (nuint) BasicTypes.Long => GetLong(),
+                (nuint) BasicTypes.Double => GetDouble(),
+                (nuint) BasicTypes.Float => GetFloat(),
+                (nuint) BasicTypes.String => GetString(),
+                (nuint) BasicTypes.Pointer => GetPtr(),
                 _ => CheckComplexTypes(type)
             };
         }
 
-        private object? CheckComplexTypes(ulong gtype)
+        private object? CheckComplexTypes(nuint gtype)
         {
-            if (Functions.TypeIsA(gtype, Types.Object))
+            if (Functions.TypeIsA(gtype,(nuint) BasicTypes.Object))
                 return GetObject();
 
-            if (Functions.TypeIsA(gtype, Types.Boxed))
+            if (Functions.TypeIsA(gtype, (nuint) BasicTypes.Boxed))
                 return GetBoxed(gtype);
 
-            if (Functions.TypeIsA(gtype, Types.Enum))
+            if (Functions.TypeIsA(gtype, (nuint) BasicTypes.Enum))
                 return GetEnum();
 
-            if (Functions.TypeIsA(gtype, Types.Flags))
+            if (Functions.TypeIsA(gtype, (nuint) BasicTypes.Flags))
                 return GetFlags();
 
             throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
