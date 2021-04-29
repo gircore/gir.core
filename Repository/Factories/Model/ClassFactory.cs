@@ -44,7 +44,7 @@ namespace Repository.Factories
                 implements: _symbolReferenceFactory.Create(cls.Implements, @namespace.Name),
                 methods: _methodFactory.Create(cls.Methods, @namespace),
                 functions: _methodFactory.Create(cls.Functions, @namespace),
-                getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, @namespace),
+                getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction),
                 properties: _propertyFactory.Create(cls.Properties, @namespace.Name),
                 fields: _fieldFactory.Create(cls.Fields, @namespace),
                 signals: _signalFactory.Create(cls.Signals, @namespace.Name),

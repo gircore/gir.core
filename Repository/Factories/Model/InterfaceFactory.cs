@@ -41,7 +41,7 @@ namespace Repository.Factories
                 implements: _symbolReferenceFactory.Create(iface.Implements, @namespace.Name),
                 methods: _methodFactory.Create(iface.Methods, @namespace),
                 functions: _methodFactory.Create(iface.Functions, @namespace),
-                getTypeFunction: _methodFactory.CreateGetTypeMethod(iface.GetTypeFunction, @namespace),
+                getTypeFunction: _methodFactory.CreateGetTypeMethod(iface.GetTypeFunction),
                 properties: _propertyFactory.Create(iface.Properties, @namespace.Name)
             );
         }

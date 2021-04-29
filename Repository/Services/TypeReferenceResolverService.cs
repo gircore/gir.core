@@ -107,7 +107,7 @@ namespace Repository.Services
             symbolDictionary.AddSymbol(new PrimitiveValueType("goffset", "long"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("time_t", "long"));
 
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gsize", "ulong"));
+            symbolDictionary.AddSymbol(new PrimitiveValueType("gsize", "nuint"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("guint64", "ulong"));
             symbolDictionary.AddSymbol(new PrimitiveValueType("gulong", "ulong"));
 

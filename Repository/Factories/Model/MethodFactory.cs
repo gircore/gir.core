@@ -49,13 +49,13 @@ namespace Repository.Factories
 
         }
 
-        public Method CreateGetTypeMethod(string getTypeMethodName, Namespace @namespace)
+        public Method CreateGetTypeMethod(string getTypeMethodName)
         {
             ReturnValue returnValue = _returnValueFactory.Create(
-                type: "gulong",
+                type: "GType",
                 transfer: Transfer.None,
                 nullable: false,
-                namespaceName: @namespace.Name
+                namespaceName: new NamespaceName("GLib")
             );
 
             return new Method(
