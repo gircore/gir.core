@@ -33,13 +33,14 @@ namespace GObject.Native
             // We need to find the "true type" of the object so that the user
             // can upcast/downcast as necessary. Retrieve the gtype from the
             // object's class struct.
+
             Type gtype = GetTypeFromInstance(handle);
 
             Debug.Assert(
                 condition: Marshal.PtrToStringUTF8(Functions.TypeName(gtype.Value)) == Marshal.PtrToStringUTF8(Functions.TypeNameFromInstance(new TypeInstance.Handle(handle))),
                 message: "GType name of instance and class do not match - have we read the wrong pointer?"
             );
-            
+
             System.Type trueType = TypeDictionary.GetSystemType(gtype);
             
             // Get constructor for the true type
