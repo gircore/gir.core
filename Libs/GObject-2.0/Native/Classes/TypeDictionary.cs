@@ -75,9 +75,12 @@ namespace GObject.Native
             // tree until we find a type that is. As all objects are
             // descended from GObject, we will eventually find a parent
             // type that is registered.
-            
+
             while (!_reverseTypeDict.TryGetValue(gtype, out sysType))
+            {
                 gtype = new Type(Functions.TypeParent(gtype.Value));
+                if (gtype.Value == 0) throw new Exception("Could not retrieve parent type - is the typeid valid?");
+            }
 
             // Store for future lookups
             _reverseTypeDict[gtype] = sysType;

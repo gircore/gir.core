@@ -52,9 +52,9 @@ namespace Generator
                 (Record r, {IsPointer: true, Array: null}) => $"Marshal.PtrToStructure<{qualifiedType}>({fromParam})",
                 (Record r, {IsPointer: true, Array:{}}) => $"{fromParam}.MarshalToStructure<{qualifiedType}>()",
                 (Class {IsFundamental: true} c, {IsPointer: true, Array: null}) => $"{qualifiedType}.From({fromParam})",
-                (Class c, {IsPointer: true, Array: null}) => $"GObject.Object.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
+                (Class c, {IsPointer: true, Array: null}) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Class c, {IsPointer: true, Array: {}}) => throw new NotImplementedException($"Can't create delegate for argument '{fromParam}'"),
-                (Interface i, _) => $"GObject.Object.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
+                (Interface i, _) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Union u, _) => $"",
                 
                 // Other -> Try a brute-force cast
