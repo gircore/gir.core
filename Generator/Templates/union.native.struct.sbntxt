@@ -1,4 +1,5 @@
-[StructLayout(LayoutKind.Explicit)]
+//TODO: Enable explicit union generation
+//[StructLayout(LayoutKind.Explicit)]
 public partial struct {{ get_metadata "PureName" }}
 {
     {{ include 'union.native.struct.fields.sbntxt' }}
