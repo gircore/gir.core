@@ -1,4 +1,4 @@
-//TODO: Enable explicit union generation
+//TODO: Enable explicit union generation if it does not break documentation generation anymore
 //[StructLayout(LayoutKind.Explicit)]
 public partial struct {{ get_metadata "PureName" }}
 {
