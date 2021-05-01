@@ -1,4 +1,4 @@
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
@@ -12,10 +12,10 @@ namespace Repository.Xml
 
         [XmlElement("type")]
         public TypeInfo? Type { get; set; }
-        
+
         [XmlElement("array")]
         public ArrayInfo? Array { get; set; }
-        
+
         [XmlElement("doc")]
         public DocInfo? Doc { get; set; }
     }

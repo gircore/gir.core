@@ -23,7 +23,7 @@ namespace Generator.Services.Writer
                 code: GenerateCode(template, scriptObject)
             );
         }
-        
+
         private static void WriteCode(string folder, string filename, string code)
         {
             var path = Path.Combine(folder, $"{filename}.Generated.cs");
@@ -42,7 +42,7 @@ namespace Generator.Services.Writer
         {
             var templateContext = new TemplateContext
             {
-                IndentWithInclude = true, 
+                IndentWithInclude = true,
                 TemplateLoader = new TemplateLoader(),
                 LoopLimit = 10000 // Some libraries define more than 1000 elements (e.g. GDK constants)
             };

@@ -20,7 +20,7 @@ namespace Repository.Factories
         {
             List<SingleParameter> list = new();
             InstanceParameter? instanceParameter = null;
-            
+
             if (parameters is { })
             {
                 if (parameters.InstanceParameter is { })
@@ -42,14 +42,14 @@ namespace Repository.Factories
                             CType = "GError*"
                         }
                     };
-                    
+
                     list.Add(_singleParameterFactory.Create(parameterInfo, currentNamespace));
                 }
             }
 
             return new ParameterList()
             {
-                InstanceParameter =  instanceParameter,
+                InstanceParameter = instanceParameter,
                 SingleParameters = list
             };
         }

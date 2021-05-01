@@ -1,4 +1,4 @@
-namespace WebKit2
+﻿namespace WebKit2
 {
     public interface UserScript
     {

@@ -7,7 +7,7 @@ namespace Repository.Model
     {
         public string Value { get; }
         public SymbolReference SymbolReference { get; }
-        
+
         public Constant(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, string value) : base(elementName, symbolName)
         {
             SymbolReference = symbolReference;

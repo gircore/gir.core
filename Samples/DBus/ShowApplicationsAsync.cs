@@ -13,7 +13,7 @@ namespace Sample
 
             //var busname = "org.gnome.Panel"; //For gnome < 40
             var busname = "org.gnome.Shell"; //For gnome 40
-            
+
             var bus = DBusConnection.Get(BusType.Session);
             using Variant ret = await bus.CallAsync(
                 busName: busname,

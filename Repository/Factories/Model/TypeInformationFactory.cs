@@ -12,7 +12,7 @@ namespace Repository.Factories.Model
         {
             _arrayFactory = arrayFactory;
         }
-        
+
         public TypeInformation CreateDefault()
         {
             return new TypeInformation(
@@ -22,7 +22,7 @@ namespace Repository.Factories.Model
                 isConst: false
             );
         }
-        
+
         public TypeInformation Create(Typed typed)
         {
             return new TypeInformation(
@@ -37,10 +37,10 @@ namespace Repository.Factories.Model
         {
             return typed switch
             {
-                {Type: { } t} => GetIsPointer(t.Name, t.CType),
-                {Array: {Type: { } t}} => GetIsPointer(t.Name, t.CType),
-                {Array: {Array:{}}} => true,
-                FieldInfo {Callback: {}} => false, //Callbacks are no pointer as they are handled as delegates
+                { Type: { } t } => GetIsPointer(t.Name, t.CType),
+                { Array: { Type: { } t } } => GetIsPointer(t.Name, t.CType),
+                { Array: { Array: { } } } => true,
+                FieldInfo { Callback: { } } => false, //Callbacks are no pointer as they are handled as delegates
                 _ => throw new Exception("Can not get pointer information from type: " + typed)
             };
         }
@@ -52,7 +52,7 @@ namespace Repository.Factories.Model
                 ("utf8", _) => false,
                 ("filename", _) => false,
                 (_, "gpointer") => true,
-                (_, {} c) => c.EndsWith("*"),
+                (_, { } c) => c.EndsWith("*"),
                 _ => false
             };
         }
@@ -64,7 +64,7 @@ namespace Repository.Factories.Model
 
             return GetIsVolatile(typed.Type?.CType);
         }
-        
+
         private bool GetIsVolatile(string? ctype)
             => ctype?.Contains("volatile") ?? false;
 
@@ -75,7 +75,7 @@ namespace Repository.Factories.Model
 
             return GetIsConst(typed.Type?.CType);
         }
-        
+
         private bool GetIsConst(string? ctype)
             => ctype?.Contains("const") ?? false;
     }

@@ -15,9 +15,9 @@
     /// </summary>
     public class PlatformString : String
     {
-        public PlatformString() : base("filename"){ }
+        public PlatformString() : base("filename") { }
     }
-    
+
     public abstract class String : Symbol
     {
         protected String(string nativeName)

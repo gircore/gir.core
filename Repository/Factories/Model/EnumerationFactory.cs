@@ -13,7 +13,7 @@ namespace Repository.Factories
         {
             _memberFactory = memberFactory;
         }
-        
+
         public Enumeration Create(EnumInfo @enum, Namespace @namespace, bool hasFlags)
         {
             if (@enum.Name is null)
@@ -24,9 +24,9 @@ namespace Repository.Factories
 
             if (@enum.Name == "TokenType")
             {
-                
+
             }
-            
+
             return new Enumeration(
                 @namespace: @namespace,
                 typeName: new TypeName(@enum.Name),

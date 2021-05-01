@@ -50,7 +50,7 @@ namespace Repository.Model
             //
             // If the callback is null the symbol reference is still unresolved
             // and must be returned to get resolved.
-            
+
             if (Callback is not null)
                 return Callback.GetSymbolReferences();
             else

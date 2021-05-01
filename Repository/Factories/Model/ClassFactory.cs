@@ -34,7 +34,7 @@ namespace Repository.Factories
             CTypeName? cTypeName = null;
             if (cls.Type is { })
                 cTypeName = new CTypeName(cls.Type);
-            
+
             return new Class(
                 @namespace: @namespace,
                 typeName: new TypeName(cls.Name),
@@ -56,8 +56,8 @@ namespace Repository.Factories
         private SymbolReference? GetParent(string? parentName, NamespaceName currentNamespace)
         {
             SymbolReference? parent = null;
-            
-            if (parentName is {})
+
+            if (parentName is { })
                 parent = _symbolReferenceFactory.Create(parentName, null, currentNamespace);
 
             return parent;

@@ -56,7 +56,7 @@ namespace Repository
             SetFunctions(nspace, namespaceInfo.Functions);
             SetUnions(nspace, namespaceInfo.Unions);
             SetConstants(nspace, namespaceInfo.Constants);
-            
+
             return nspace;
         }
 

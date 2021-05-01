@@ -6,7 +6,7 @@ namespace GObject.Native
     public class ObjectHandle : SafeHandle
     {
         public IntPtr Handle => IsInvalid ? IntPtr.Zero : DangerousGetHandle();
-        
+
         public ObjectHandle(IntPtr handle, object obj, bool ownedRef) : base(IntPtr.Zero, true)
         {
             ObjectMapper.Map(handle, obj, ownedRef);

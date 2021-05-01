@@ -18,7 +18,7 @@ namespace GObject
         {
             Handle = handle;
         }
-        
+
         public Value(Type type)
         {
             var h = Native.Value.ManagedHandle.Create();
@@ -39,13 +39,13 @@ namespace GObject
         #region Methods
 
         internal Native.Value.Struct GetData() => Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());
-        
+
         private nuint GetTypeValue()
         {
             var structure = Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());
             return structure.GType;
         }
-        
+
         /// <summary>
         /// Gets an instance of <see cref="Value"/> from the given <paramref name="value"/>.
         /// </summary>
@@ -73,20 +73,20 @@ namespace GObject
         {
             switch (value)
             {
-                case bool b: 
-                    SetBoolean(b); 
+                case bool b:
+                    SetBoolean(b);
                     break;
-                case uint u: 
-                    SetUint(u); 
+                case uint u:
+                    SetUint(u);
                     break;
-                case int i: 
-                    SetInt(i); 
+                case int i:
+                    SetInt(i);
                     break;
-                case string s: 
-                    SetString(s); 
+                case string s:
+                    SetString(s);
                     break;
-                case double d: 
-                    SetDouble(d); 
+                case double d:
+                    SetDouble(d);
                     break;
                 case Enum e:
                     SetEnum(e);
@@ -113,7 +113,7 @@ namespace GObject
                     throw new NotSupportedException($"Type {value.GetType()} is not supported as a value type");
             }
         }
-        
+
         /// <summary>
         /// Extracts the content of this <see cref="Value"/> into an object.
         /// </summary>
@@ -140,7 +140,7 @@ namespace GObject
 
         private object? CheckComplexTypes(nuint gtype)
         {
-            if (Functions.TypeIsA(gtype,(nuint) BasicType.Object))
+            if (Functions.TypeIsA(gtype, (nuint) BasicType.Object))
                 return GetObject();
 
             if (Functions.TypeIsA(gtype, (nuint) BasicType.Boxed))
@@ -162,7 +162,7 @@ namespace GObject
         public object? GetBoxed(ulong type)
         {
             IntPtr ptr = Native.Value.Methods.GetBoxed(Handle);
-            
+
             if (type == Functions.StrvGetType())
                 return StringHelper.ToStringArrayUtf8(ptr);
 
@@ -197,8 +197,8 @@ namespace GObject
         {
             Handle.Dispose();
         }
-        
+
         #endregion
-        
+
     }
 }

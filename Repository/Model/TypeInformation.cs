@@ -6,7 +6,7 @@
         public bool IsPointer { get; }
         public bool IsVolatile { get; }
         public bool IsConst { get; }
-        
+
         public TypeInformation(Array? array, bool isPointer, bool isVolatile, bool isConst)
         {
             Array = array;

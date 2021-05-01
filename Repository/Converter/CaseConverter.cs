@@ -8,7 +8,7 @@ namespace Repository
         public string ToCamelCase(string str)
         {
             var pascalCase = ToPascal(str);
-            
+
             return str switch
             {
                 { Length: 0 } => "",
@@ -16,7 +16,7 @@ namespace Repository
                 _ => char.ToLower(pascalCase[0]) + pascalCase[1..]
             };
         }
-        
+
         public string ToPascalCase(string str)
         {
             return str switch

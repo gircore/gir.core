@@ -27,7 +27,7 @@ namespace Repository.Factories
         {
             if (info.Name is null)
                 throw new Exception("Property is missing a name");
-            
+
             return new Property(
                 elementName: new ElementName(info.Name),
                 symbolName: new SymbolName(_caseConverter.ToPascalCase(info.Name)),
@@ -35,7 +35,7 @@ namespace Repository.Factories
                 writeable: info.Writeable,
                 readable: info.Readable,
                 typeInformation: _typeInformationFactory.Create(info),
-                transfer:  _transferFactory.FromText(info.TransferOwnership)
+                transfer: _transferFactory.FromText(info.TransferOwnership)
             );
         }
 

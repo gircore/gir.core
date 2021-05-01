@@ -47,12 +47,12 @@ namespace GObject
         public static ConstructArgument With<T>(Property<T> property, T value) => new ConstructArgument(property.Name, value);
 
         public static ConstructArgument With(string propertyName, object value) => new ConstructArgument(propertyName, value);
-        
+
         public void Dispose()
         {
             Value.Dispose();
         }
-        
+
         #endregion
     }
 }

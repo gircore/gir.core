@@ -7,7 +7,7 @@ namespace Repository.Model
     public class ParameterList
     {
         public InstanceParameter? InstanceParameter { get; init; }
-        
+
         public IEnumerable<SingleParameter> SingleParameters { get; init; } = Enumerable.Empty<SingleParameter>();
 
         public IEnumerable<SymbolReference> GetSymbolReferences()
@@ -28,7 +28,7 @@ namespace Repository.Model
 
         public bool Any()
         {
-            return InstanceParameter is {} || SingleParameters.Any();
+            return InstanceParameter is { } || SingleParameters.Any();
         }
 
         public IEnumerable<Parameter> GetParameters()

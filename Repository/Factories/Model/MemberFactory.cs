@@ -8,7 +8,7 @@ namespace Repository.Factories
 {
     internal class MemberFactory
     {
-        private readonly CaseConverter _caseConverter; 
+        private readonly CaseConverter _caseConverter;
         private readonly IdentifierConverter _identifierConverter;
 
         public MemberFactory(CaseConverter caseConverter, IdentifierConverter identifierConverter)
@@ -29,9 +29,9 @@ namespace Repository.Factories
                 throw new Exception($"Member {info.Name} is missing a value");
 
             var ident = _caseConverter.ToPascalCase(info.Name);
-            
+
             return new Member(
-                elementName: new ElementName(info.Identifier), 
+                elementName: new ElementName(info.Identifier),
                 symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(ident)),
                 value: info.Value
             );

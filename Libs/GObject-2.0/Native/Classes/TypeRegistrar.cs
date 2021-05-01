@@ -24,7 +24,7 @@ namespace GObject.Native
 
             return Marshal.PtrToStructure<TypeQuery.Struct>(handle.DangerousGetHandle());
         }
-        
+
         /// <summary>
         /// Registers with GType a new child class of 'parentType'.
         /// </summary>
@@ -60,13 +60,13 @@ namespace GObject.Native
 
             return new Type(typeid);
         }
-        
+
         // Default Handler for class initialisation.
         private static void DoClassInit(IntPtr gClass, IntPtr classData)
         {
             Console.WriteLine("Subclass type class initialised!");
         }
-        
+
         // Default Handler for instance initialisation.
         private static void DoInstanceInit(IntPtr gClass, IntPtr classData)
         {

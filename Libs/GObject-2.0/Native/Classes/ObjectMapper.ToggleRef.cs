@@ -10,7 +10,7 @@ namespace GObject.Native
             private object _reference;
             private readonly ToggleNotifyCallback _callback;
             private readonly IntPtr _handle;
-            
+
             public object? Object
             {
                 get
@@ -76,7 +76,7 @@ namespace GObject.Native
             {
                 if (!isLastRef && _reference is WeakReference weakRef)
                 {
-                    if (weakRef.Target is {} weakObj)
+                    if (weakRef.Target is { } weakObj)
                         _reference = weakObj;
                     else
                         throw new Exception("Could not toggle reference to strong. It is garbage collected.");

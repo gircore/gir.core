@@ -8,7 +8,7 @@ namespace Gst
         public string? GetName()
         {
             throw new NotImplementedException(); //TODO
-            
+
             // Marshal this structure
             /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);
@@ -26,7 +26,7 @@ namespace Gst
         public void SetName(string structureName)
         {
             throw new NotImplementedException(); //TODO
-            
+
             // Marshal this structure
             /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
             Marshal.StructureToPtr(this, thisPtr, false);

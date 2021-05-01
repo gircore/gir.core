@@ -34,7 +34,7 @@ namespace Repository
                 // Capitalise Second Char
                 if (identifier.Length > 1)
                     identifier = CapitaliseSecondChar(identifier);
-                
+
                 var number = (int) char.GetNumericValue(firstChar);
                 return number switch
                 {
@@ -48,7 +48,7 @@ namespace Repository
                     7 => ReplaceFirstChar("Seven", identifier),
                     8 => ReplaceFirstChar("Eight", identifier),
                     9 => ReplaceFirstChar("Nine", identifier),
-                    _ => throw new Exception("Can't fix identifier "  + identifier)
+                    _ => throw new Exception("Can't fix identifier " + identifier)
                 };
             }
 
@@ -57,7 +57,7 @@ namespace Repository
 
         private static string ReplaceFirstChar(string prefix, string str)
             => prefix + str[1..];
-        
+
         private static string CapitaliseSecondChar(string identifier)
             => $"{identifier[0]}{char.ToUpper(identifier[1])}{identifier?[2..]}";
     }

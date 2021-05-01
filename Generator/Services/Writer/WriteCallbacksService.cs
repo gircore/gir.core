@@ -22,7 +22,7 @@ namespace Generator.Services.Writer
             {
                 try
                 {
-                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, callback);
+                    var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, callback);
 
                     _writeHelperService.Write(
                         projectName: projectName,
@@ -32,7 +32,7 @@ namespace Generator.Services.Writer
                         fileName: callback.SymbolName,
                         scriptObject: scriptObject
                     );
-                    
+
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,

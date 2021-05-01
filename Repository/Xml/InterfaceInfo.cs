@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Repository.Xml
@@ -19,10 +19,10 @@ namespace Repository.Xml
 
         [XmlElement("method")]
         public List<MethodInfo> Methods { get; set; } = default!;
-        
+
         [XmlElement("constructor")]
         public List<MethodInfo> Constructors { get; set; } = default!;
-        
+
         [XmlElement("function")]
         public List<MethodInfo> Functions { get; set; } = default!;
 
@@ -31,7 +31,7 @@ namespace Repository.Xml
 
         [XmlElement("property")]
         public List<PropertyInfo> Properties { get; set; } = default!;
-        
+
         [XmlElement("implements")]
         public List<ImplementInfo> Implements { get; set; } = default!;
     }

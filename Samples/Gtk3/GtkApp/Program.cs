@@ -23,18 +23,18 @@ namespace GtkApp
 
         private void OnStartup(object? sender, EventArgs args)
         {
-            if (!(sender is Application app)) 
+            if (!(sender is Application app))
                 return;
-            
+
             var menu = new Menu("menu.glade");
             app.SetAppMenu(menu);
         }
 
         private void OnActivate(object? sender, EventArgs args)
         {
-            if (!(sender is Application app)) 
+            if (!(sender is Application app))
                 return;
-            
+
             var headerBar = new HeaderBar();
             headerBar.Title.Value = "Title";
             headerBar.Subtitle.Value = "Subtitle";

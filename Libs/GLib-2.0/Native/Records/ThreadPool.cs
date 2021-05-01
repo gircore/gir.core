@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 #nullable enable
 
@@ -9,7 +9,7 @@ namespace GLib.Native
     {
 
         #region Methods
-        
+
         public partial class Methods
         {
             public static void Free(IntPtr pool)

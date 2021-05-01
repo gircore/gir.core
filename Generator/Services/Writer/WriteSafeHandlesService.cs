@@ -23,11 +23,11 @@ namespace Generator.Services.Writer
             {
                 try
                 {
-                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, record);
+                    var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, record);
                     scriptObject.Import("write_release_memory_call", new Func<string>(() => record.WriteReleaseMemoryCall()));
-                    
+
                     var name = record.Metadata["Name"]?.ToString() ?? throw new Exception("Record is missing it's name");
-                    
+
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,

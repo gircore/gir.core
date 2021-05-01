@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Gtk;
 using Handy;
 using WebKit2;
@@ -9,7 +9,7 @@ namespace GtkApp
     {
         [Connect]
         private Button Button = default!;
-        
+
         [Connect]
         private Box Box = default!;
 
@@ -31,8 +31,8 @@ namespace GtkApp
 
         private GtkChamplain.Embed map;
 
-        public MyWindow(Application application) : base(application, "ui.glade") 
-        { 
+        public MyWindow(Application application) : base(application, "ui.glade")
+        {
             notebook = new Notebook();
 
             button = new Button("Test");
@@ -44,11 +44,11 @@ namespace GtkApp
 
             notebook.InsertPage("Image", image, 0);
             notebook.InsertPage("Box", innerBox, 1);
-            
+
             context = new WebContext();
             context.InitializeWebExtensions += OnInitializeWebExtension;
             webView = new WebView(context);
-            
+
             var settings = webView.GetSettings();
             settings.AllowModalDialogs.Value = true;
             settings.EnableDeveloperExtras.Value = true;
@@ -56,7 +56,7 @@ namespace GtkApp
             var ucm = webView.GetUserContentManager();
             var ret = ucm.RegisterScriptMessageHandler("foobar", JsCallback);
 
-            if(ret)
+            if (ret)
             {
                 const string code = @"                    
                     (function(globalContext) {
@@ -121,12 +121,12 @@ namespace GtkApp
 
         private void JsCallback(JavaScriptCore.Value value)
         {
-            if(value.IsString())
+            if (value.IsString())
                 Console.WriteLine(value.GetString());
 
-            if (!value.IsObject()) 
+            if (!value.IsObject())
                 return;
-            
+
             var p = value.GetProperty("myProp");
             Console.WriteLine(p.GetString());
         }
@@ -147,6 +147,6 @@ namespace GtkApp
 
             var value = await webView.RunJavascriptAsync("test()");
             Console.WriteLine(value.GetString());
-        } 
+        }
     }
 }

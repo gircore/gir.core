@@ -28,7 +28,7 @@ namespace Generator.Services
                     if (method.SymbolName == prop.SymbolName)
                         prop.SymbolName = new SymbolName(prop.SymbolName + "Prop");
         }
-        
+
         private static void FixClassMethods(Class cls)
         {
             foreach (var method in cls.Methods)
@@ -44,7 +44,7 @@ namespace Generator.Services
             {
                 if (prop.SymbolName == cls.SymbolName)
                 {
-                    prop.SymbolName = prop.SymbolName with { Value = prop.SymbolName + "Prop"};
+                    prop.SymbolName = prop.SymbolName with { Value = prop.SymbolName + "Prop" };
                 }
             }
         }

@@ -13,7 +13,7 @@ namespace Generator
             var builder = new StringBuilder();
             if (parent is { })
                 builder.Append(": " + parent.GetSymbol().Write(Target.Managed, currentNamespace));
-            
+
             var refs = implements.ToList();
             if (refs.Count == 0)
                 return builder.ToString();
@@ -22,7 +22,7 @@ namespace Generator
             builder.Append(string.Join(", ", refs.Select(x => x.GetSymbol().Write(Target.Managed, currentNamespace))));
             return builder.ToString();
         }
-        
+
         public static string WriteInterfaceInheritance(IEnumerable<SymbolReference> implements, Namespace currentNamespace)
         {
             StringBuilder builder = new();

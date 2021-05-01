@@ -10,8 +10,8 @@ namespace Build
         private readonly Settings _settings;
 
         public string Description => "Generate API documentation.";
-        public string[] DependsOn => new [] { nameof(Build)};
-        
+        public string[] DependsOn => new[] { nameof(Build) };
+
         public Docs(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));

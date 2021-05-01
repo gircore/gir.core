@@ -7,7 +7,7 @@ namespace Build
         private readonly Settings _settings;
 
         public string Description => "Builds the integration library.";
-        
+
         public Integration(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));

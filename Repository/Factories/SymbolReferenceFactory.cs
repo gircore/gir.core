@@ -6,7 +6,7 @@ using Repository.Xml;
 
 namespace Repository.Services
 {
-    internal class SymbolReferenceFactory 
+    internal class SymbolReferenceFactory
     {
         public SymbolReference Create(string? type, string? ctype, NamespaceName currentNamespace)
         {
@@ -21,10 +21,10 @@ namespace Repository.Services
         {
             if (TryCreate(typed?.Type, currentNamespace, out var type))
                 return type;
-            
+
             if (TryCreate(typed?.Array?.Type, currentNamespace, out var array))
                 return array;
-            
+
             return Create("void", "none", currentNamespace);
         }
 
@@ -35,14 +35,14 @@ namespace Repository.Services
 
             throw new Exception("Could not create SymbolReference vrom TypeInfo");
         }
-        
+
         private bool TryCreate(TypeInfo? typeInfo, NamespaceName currentNamespace, [MaybeNullWhen(false)] out SymbolReference symbolReference)
         {
             symbolReference = null;
-            
+
             if (typeInfo is null)
                 return false;
-            
+
             symbolReference = Create(typeInfo.Name, typeInfo.CType, currentNamespace);
             return true;
         }
@@ -72,7 +72,7 @@ namespace Repository.Services
 
             return new NamespaceName(type.Split('.', 2)[0]);
         }
-        
+
         private static TypeName? GetType(string? type)
         {
             if (type is null)
@@ -88,7 +88,7 @@ namespace Repository.Services
         {
             if (ctype is null)
                 return null;
-            
+
             ctype = ctype
                 .Replace("*", "")
                 .Replace("const ", "")

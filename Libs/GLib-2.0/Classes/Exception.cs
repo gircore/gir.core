@@ -13,10 +13,10 @@ namespace GLib
 
         #region Constructors
 
-        internal GException(Native.Error.Handle errorHandle) 
+        internal GException(Native.Error.Handle errorHandle)
             : base(Marshal.PtrToStructure<Native.Error.Struct>(errorHandle.DangerousGetHandle()).Message)
         {
-            
+
             _errorHandle = errorHandle;
         }
 

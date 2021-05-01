@@ -18,7 +18,7 @@ namespace Repository.Factories
             _transferFactory = transferFactory;
             _typeInformationFactory = typeInformationFactory;
         }
-        
+
         public ReturnValue Create(ReturnValueInfo returnValueInfo, NamespaceName namespaceName)
         {
             return new ReturnValue(

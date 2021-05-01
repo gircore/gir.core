@@ -12,7 +12,7 @@ namespace Generator
             // We store GIR files in the format 'Gtk-3.0.gir'
             // where 'Gtk' is the namespace and '3.0' the version
             var filename = $"{nspace}-{version}.gir";
-            
+
             if (File.Exists(filename))
                 return new FileInfo(filename);
 

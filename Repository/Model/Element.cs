@@ -10,7 +10,7 @@ namespace Repository.Model
         /// </summary>
         public ElementName Name { get; }
         public SymbolName SymbolName { get; set; }
-        
+
         protected Element(ElementName name, SymbolName symbolName)
         {
             Name = name;

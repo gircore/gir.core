@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Repository.Xml
@@ -19,17 +19,17 @@ namespace Repository.Xml
 
         [XmlElement("method")]
         public List<MethodInfo> Methods { get; set; } = default!;
-        
+
         [XmlElement("constructor")]
         public List<MethodInfo> Constructors { get; set; } = default!;
-        
+
         [XmlElement("function")]
         public List<MethodInfo> Functions { get; set; } = default!;
 
         [XmlAttribute("get-type", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public string? GetTypeFunction { get; set; }
 
-        [XmlElement ("field")]
+        [XmlElement("field")]
         public List<FieldInfo> Fields { get; set; } = default!;
 
         [XmlAttribute("disguised")]

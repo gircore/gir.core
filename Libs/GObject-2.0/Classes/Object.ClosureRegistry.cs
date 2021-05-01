@@ -36,7 +36,7 @@ namespace GObject
 
                 if (closureHelper.Handle is null)
                     throw new Exception("Closure handle is invalid");
-                
+
                 var handlerId = Native.Functions.SignalConnectClosure(_object.Handle, _name, closureHelper.Handle, after);
 
                 if (handlerId == 0)

@@ -1,4 +1,4 @@
-namespace GtkChamplain
+﻿namespace GtkChamplain
 {
     public class Embed : Gtk.Bin
     {

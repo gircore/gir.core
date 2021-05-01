@@ -12,7 +12,7 @@ namespace Gtk.Tests
         public void TestStringArray(string value1, string value2)
         {
             var aboutDialog = new AboutDialog();
-            aboutDialog.SetAuthors(new [] {value1, value2});
+            aboutDialog.SetAuthors(new[] { value1, value2 });
 
             //TODO USE GET METHOD
             aboutDialog.Authors[0].Should().Be(value1);

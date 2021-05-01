@@ -32,7 +32,7 @@ namespace TestMemoryLeaks
             }
             Task.WaitAll(tasks);
             Done();
-            
+
             Console.WriteLine("Concurrent bytes finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
             for (int i = 0; i < cycles; i++)
             {
@@ -58,7 +58,7 @@ namespace TestMemoryLeaks
             }
             Done();
 
-           Console.WriteLine("File dispose: Memory should not go up as it is freed explicity via Dispose().");
+            Console.WriteLine("File dispose: Memory should not go up as it is freed explicity via Dispose().");
 
             for (int i = 0; i < cycles; i++)
             {
@@ -66,7 +66,7 @@ namespace TestMemoryLeaks
                 a.Dispose();
             }
             Done();
-           
+
             Console.WriteLine("Bytes dispose: Memory should not go up as it is freed explicity via Dispose().");
 
             for (int i = 0; i < cycles; i++)

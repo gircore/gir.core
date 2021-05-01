@@ -2,7 +2,7 @@
 
 namespace Repository.Factories
 {
-    internal class TransferFactory 
+    internal class TransferFactory
     {
         public Transfer FromText(string? text)
         {
@@ -12,7 +12,7 @@ namespace Repository.Factories
                 "container" => Transfer.Container,
                 "full" => Transfer.Full,
                 "floating" => Transfer.None,
-                _ => Transfer.Unknown 
+                _ => Transfer.Unknown
             };
         }
     }

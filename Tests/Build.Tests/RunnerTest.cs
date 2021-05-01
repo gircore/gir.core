@@ -37,25 +37,25 @@ namespace Tests.Build
         public void RunningActionTargetExecutesAction()
         {
             const string Name = "testName";
-            
+
             ExecuteableTarget target = GetActionTarget(Name);
-            Runner runner = new (target);
+            Runner runner = new(target);
             RunTarget(runner, Name);
-            
+
             Mock.Get(target).Verify(x => x.Execute(), Times.Once);
         }
-        
+
         [TestMethod]
         public void RunningTargetExecutesDependencies()
         {
             const string TargetName = "testName";
             const string DependencyName = "dependencyName";
-            
+
             Target target = GetTarget(TargetName, dependencies: DependencyName);
             ExecuteableTarget depdendency = GetActionTarget(DependencyName);
 
-            Runner runner = new (target, depdendency);
-            
+            Runner runner = new(target, depdendency);
+
             RunTarget(runner, TargetName);
             Mock.Get(depdendency).Verify(x => x.Execute(), Times.Once);
         }

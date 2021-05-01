@@ -12,18 +12,18 @@ namespace GObject
         public Native.ClosureMarshalCallback NativeCallback;
 
         private readonly System.Action _managedCallback;
-    
+
         public ClosureMarshalCallHandlerWorkaround(System.Action managed)
         {
             NativeCallback = NativeCallbackMarshaller;
             _managedCallback = managed;
         }
-        
-        private void NativeCallbackMarshaller(IntPtr closure, IntPtr returnValue, uint nParamValues, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=2)] GObject.Native.Value.Struct[] paramValues, IntPtr invocationHint, IntPtr marshalData)
+
+        private void NativeCallbackMarshaller(IntPtr closure, IntPtr returnValue, uint nParamValues, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GObject.Native.Value.Struct[] paramValues, IntPtr invocationHint, IntPtr marshalData)
         {
             _managedCallback();
         }
-        
+
         public void Dispose()
         {
             // This implements IDisposable just to signal to the caller that this class contains

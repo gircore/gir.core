@@ -45,13 +45,13 @@ namespace GObject
 
             IntPtr handle = Native.Object.Instance.Methods.NewWithProperties(
                 objectType: gtype.Value,
-                nProperties: (uint) constructArguments.Length, 
-                names: GetNames(constructArguments), 
+                nProperties: (uint) constructArguments.Length,
+                names: GetNames(constructArguments),
                 values: GetValues(constructArguments)
             );
 
             _handle = new ObjectHandle(handle, this, !Native.Object.Instance.Methods.IsFloating(handle));
-            
+
             Initialize();
         }
 
@@ -81,7 +81,7 @@ namespace GObject
         }
 
         internal ClosureRegistry GetClosureRegistry(string signalName)
-            =>  _signalRegistry.GetClosureRegistry(signalName);
+            => _signalRegistry.GetClosureRegistry(signalName);
 
         /// <summary>
         /// Notify this object that a property has just changed.

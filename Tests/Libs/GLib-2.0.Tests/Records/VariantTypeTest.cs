@@ -31,7 +31,7 @@ namespace GLib.Tests
         {
             VariantType.String.ToString().Should().Be("s");
         }
-        
+
         [TestMethod]
         public void TypeVariantIsVariant()
         {

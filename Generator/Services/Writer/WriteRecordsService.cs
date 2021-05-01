@@ -23,10 +23,10 @@ namespace Generator.Services.Writer
             {
                 try
                 {
-                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, record);
+                    var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, record);
 
                     var name = record.Metadata["Name"]?.ToString() ?? throw new Exception("Record is missing it's name");
-                    
+
                     if (record.GLibClassStructFor is null)
                     {
                         //Regular struct
@@ -37,7 +37,7 @@ namespace Generator.Services.Writer
                             folder: Folder.Managed.Records,
                             fileName: name,
                             scriptObject: scriptObject
-                        );   
+                        );
                     }
 
                     _writeHelperService.Write(

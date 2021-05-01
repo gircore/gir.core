@@ -13,7 +13,7 @@ namespace GObject.Native
         public TypeNotFoundException(System.Type managedType)
             : base($"Type {managedType.FullName} not registered in type dictionary") { }
     }
-    
+
     internal enum BasicType
     {
         Invalid = 0 << 2,
@@ -61,11 +61,11 @@ namespace GObject.Native
                 condition: !_systemTypeDict.ContainsKey(systemType),
                 message: $"Type {nameof(systemType)} is already registered in the type dictionary."
             );
-            
+
             _systemTypeDict[systemType] = type;
             _reverseTypeDict[type] = systemType;
         }
-        
+
         /// <summary>
         /// For a given managed GObject-based class, retrieve the corresponding gtype.
         /// </summary>
@@ -86,7 +86,7 @@ namespace GObject.Native
 
             return _systemTypeDict[type];
         }
-        
+
         /// <summary>
         /// For a given gtype, retrieve the corresponding managed type.  
         /// </summary>
@@ -105,8 +105,8 @@ namespace GObject.Native
             while (!_reverseTypeDict.TryGetValue(gtype, out sysType))
             {
                 gtype = new Type(Functions.TypeParent(gtype.Value));
-                if (gtype.Value == (nuint)BasicType.Invalid || 
-                    gtype.Value == (nuint)BasicType.None)
+                if (gtype.Value == (nuint) BasicType.Invalid ||
+                    gtype.Value == (nuint) BasicType.None)
                     throw new Exception("Could not retrieve parent type - is the typeid valid?");
             }
 
@@ -119,7 +119,7 @@ namespace GObject.Native
         // These may be unneeded - keep for now 
         internal static bool ContainsGType(Type gtype)
             => _reverseTypeDict.ContainsKey(gtype);
-        
+
         internal static bool ContainsSystemType(System.Type type)
             => _systemTypeDict.ContainsKey(type);
     }
