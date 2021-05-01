@@ -9,9 +9,9 @@ namespace Gio
         #region Fields
 
         private AsyncReadyCallbackAsyncHandler? _callAsyncCallbackHandler;
-        
+
         #endregion
-        
+
         #region Static methods
 
         public static DBusConnection Get(BusType busType)
@@ -41,7 +41,7 @@ namespace Gio
 
                 tcs.SetResult(new Variant(ret));
             }
-            
+
             //TODO: Use on time CallbackHandler
             _callAsyncCallbackHandler = new AsyncReadyCallbackAsyncHandler(Callback);
 

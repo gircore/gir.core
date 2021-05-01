@@ -41,7 +41,7 @@ namespace Generator
                 else
                 {
                     _latest.Inner = block;
-                    _latest = block;   
+                    _latest = block;
                 }
             }
 
@@ -50,6 +50,6 @@ namespace Generator
 
             public string Build()
                 => _root.Build();
-        }       
+        }
     }
 }

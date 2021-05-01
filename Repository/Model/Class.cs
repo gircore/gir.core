@@ -28,7 +28,7 @@ namespace Repository.Model
             Parent = parent;
             Implements = implements;
             GetTypeFunction = getTypeFunction;
-            
+
             this._methods = methods.ToList();
             this._functions = functions.ToList();
             this._constructors = constructors.ToList();
@@ -62,18 +62,18 @@ namespace Repository.Model
         {
             if (Parent is { } && !Parent.GetIsResolved())
                 return false;
-            
-            if(!Implements.AllResolved())
+
+            if (!Implements.AllResolved())
                 return false;
 
             if (!GetTypeFunction.GetIsResolved())
                 return false;
 
-            return Methods.AllResolved() 
-                   && Functions.AllResolved() 
-                   && Constructors.AllResolved() 
-                   && Properties.AllResolved() 
-                   && Fields.AllResolved() 
+            return Methods.AllResolved()
+                   && Functions.AllResolved()
+                   && Constructors.AllResolved()
+                   && Properties.AllResolved()
+                   && Fields.AllResolved()
                    && Signals.AllResolved();
         }
 
@@ -88,12 +88,12 @@ namespace Repository.Model
             _properties.RemoveAll(Remove);
             _signals.RemoveAll(Remove);
         }
-        
+
         private bool Remove(Element element)
         {
             var result = element.GetIsResolved();
-            
-            if(!result)
+
+            if (!result)
                 Log.Information($"Class {Namespace?.Name}.{TypeName}: Stripping symbol {element.Name}");
 
             return !result;

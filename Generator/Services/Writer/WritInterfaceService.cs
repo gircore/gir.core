@@ -23,14 +23,14 @@ namespace Generator.Services.Writer
             {
                 try
                 {
-                    var scriptObject =  _scriptObjectFactory.CreateComplexForSymbol(@namespace, iface);
+                    var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, iface);
 
                     _writeHelperService.Write(
                         projectName: projectName,
                         outputDir: outputDir,
                         templateName: "interface.sbntxt",
                         folder: Folder.Managed.Interfaces,
-                        fileName: iface.SymbolName ,
+                        fileName: iface.SymbolName,
                         scriptObject: scriptObject
                     );
 

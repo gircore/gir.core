@@ -6,7 +6,7 @@ using StrongInject;
 namespace Repository
 {
     public delegate FileInfo ResolveFileFunc(string name, string version);
-    
+
     public class Repository
     {
         public IEnumerable<Namespace> Load(ResolveFileFunc fileFunc, IEnumerable<string> targets)

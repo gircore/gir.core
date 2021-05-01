@@ -18,7 +18,7 @@ namespace Repository.Xml
 
         [XmlElement("type")]
         public TypeInfo? Type { get; set; }
-        
+
         [XmlElement("array")]
         public ArrayInfo? Array { get; set; }
     }

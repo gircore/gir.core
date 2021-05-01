@@ -25,13 +25,13 @@ namespace Repository.Factories
             _callbackFactory = callbackFactory;
             _typeInformationFactory = typeInformationFactory;
         }
-        
+
         public Field Create(FieldInfo info, Namespace @namespace)
         {
             if (info.Name is null)
                 throw new Exception("Field is missing name");
 
-            Callback ? callback = null;
+            Callback? callback = null;
             if (info.Callback is not null)
                 callback = _callbackFactory.Create(info.Callback, @namespace);
 
@@ -42,13 +42,13 @@ namespace Repository.Factories
                 callback: callback,
                 typeInformation: _typeInformationFactory.Create(info),
                 readable: info.Readable,
-                @private: info.Private 
+                @private: info.Private
             );
         }
 
         public IEnumerable<Field> Create(IEnumerable<FieldInfo> infos, Namespace @namespace)
             => infos.Select(x => Create(x, @namespace)).ToList();
-        
+
         private SymbolReference CreateSymbolReference(FieldInfo field, NamespaceName currentNamespace)
         {
             if (field.Callback is null)
@@ -56,7 +56,7 @@ namespace Repository.Factories
 
             if (field.Callback.Name is null)
                 throw new Exception($"Field {field.Name} has a callback without a name.");
-            
+
             return _symbolReferenceFactory.Create(field.Callback.Name, field.Callback.Type, currentNamespace);
         }
     }

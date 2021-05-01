@@ -11,7 +11,7 @@ namespace Gtk
                 hAdjustment?.Handle ?? IntPtr.Zero,
                 vAdjustment?.Handle ?? IntPtr.Zero
             );
-            
+
             return new(ptr, false);
         }
     }

@@ -8,8 +8,8 @@ namespace Build
 
         public string Description => "Builds the project.";
 
-        public string[] DependsOn => new [] { nameof(Generate) };
-        
+        public string[] DependsOn => new[] { nameof(Generate) };
+
         public Build(Settings settings)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));

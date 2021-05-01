@@ -8,7 +8,7 @@ namespace Gtk
         /// Creates a new instance of <see cref="Window"/>.
         /// </summary>
         /// <param name="title">The window title.</param>
-        public Window(string title) 
+        public Window(string title)
             : this(ConstructArgument.With("title", title))
         {
         }

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 using Repository.Graph;
 using Repository.Model;
 using Repository.Services;
@@ -58,7 +58,7 @@ namespace Repository
 
                 if (repoinfo.Namespace is null)
                     throw new Exception($"Repository does not include any {nameof(repoinfo.Namespace)}.");
-                
+
                 var repositoryInfoData = _infoFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
 
                 if (TryLoadProject(namespaces, repositoryInfoData, out Namespace? project))
@@ -68,7 +68,7 @@ namespace Repository
                 var nspace = _namespaceFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
                 nspace.SetDependencies(dependencies);
                 namespaces.Add(nspace);
-                
+
                 Log.Information($"Loaded '{nspace.ToCanonicalName()}' (provided by '{target.Name}')");
 
                 return project;
@@ -131,7 +131,7 @@ namespace Repository
 
             if (repoInfo is null)
                 throw new Exception($"File {target} could not be deserialized");
-            
+
             if (repoInfo.Namespace == null)
                 throw new InvalidDataException($"File '{target} does not define a namespace.");
 

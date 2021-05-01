@@ -5,7 +5,7 @@ using Repository.Model;
 
 namespace Repository.Services
 {
-    internal class TypeReferenceResolverService 
+    internal class TypeReferenceResolverService
     {
         public static void Resolve(IEnumerable<Namespace> namespaces)
         {
@@ -16,7 +16,7 @@ namespace Repository.Services
             {
                 Log.Debug($"Analysing '{ns.Name}'.");
                 FillSymbolDictionary(symbolDictionary, ns);
-                
+
                 symbolDictionary.ResolveAliases(ns.Aliases);
 
                 ResolveReferences(symbolDictionary, ns);
@@ -47,7 +47,7 @@ namespace Repository.Services
 
         private static void Resolve(SymbolDictionary symbolDictionary, SymbolReference reference)
         {
-            if(symbolDictionary.TryLookup(reference, out var symbol))
+            if (symbolDictionary.TryLookup(reference, out var symbol))
                 reference.ResolveAs(symbol);
         }
 
@@ -69,7 +69,7 @@ namespace Repository.Services
             symbolDictionary.AddSymbol(new Symbol("va_list", "IntPtr"));
             symbolDictionary.AddSymbol(new Symbol("gpointer", "IntPtr"));
             symbolDictionary.AddSymbol(new Symbol("tm", "IntPtr"));
-            
+
             // TODO: Should we use UIntPtr here? Non-CLR compliant
             symbolDictionary.AddSymbol(new Symbol("guintptr", "UIntPtr"));
 

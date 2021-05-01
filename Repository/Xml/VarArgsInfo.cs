@@ -1,4 +1,4 @@
-namespace Repository.Xml
+﻿namespace Repository.Xml
 {
     public class VarArgsInfo
     {

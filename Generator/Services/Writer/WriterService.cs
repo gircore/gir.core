@@ -8,7 +8,7 @@ namespace Generator.Services.Writer
         // TODO: Implement doc comment generation (LGPL-compliant)
         public bool GenerateDocComments { get; init; } = false;
     }
-    
+
     internal class WriterService
     {
         private readonly WriteSymbolsService _writeSymbolsService;

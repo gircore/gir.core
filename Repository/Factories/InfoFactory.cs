@@ -16,7 +16,7 @@ namespace Repository.Services
         {
             if (namespaceInfo.Name is null || namespaceInfo.Version is null)
                 throw new Exception("Can't create info because data is missing");
-            
+
             return new Info(namespaceInfo.Name, namespaceInfo.Version);
         }
 
@@ -26,7 +26,7 @@ namespace Repository.Services
             {
                 if (includeInfo.Name is null || includeInfo.Version is null)
                     throw new Exception("Can't create info because data is missing");
-                
+
                 yield return new Info(includeInfo.Name, includeInfo.Version);
             }
         }

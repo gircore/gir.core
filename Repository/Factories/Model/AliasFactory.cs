@@ -5,7 +5,7 @@ using Repository.Xml;
 
 namespace Repository.Factories
 {
-    internal class AliasFactory 
+    internal class AliasFactory
     {
         private readonly SymbolReferenceFactory _symbolReferenceFactory;
 
@@ -13,12 +13,12 @@ namespace Repository.Factories
         {
             _symbolReferenceFactory = symbolReferenceFactory;
         }
-        
+
         public Alias Create(AliasInfo aliasInfo, Namespace @namespace)
         {
             if (aliasInfo.Type is null)
                 throw new Exception("Alias is missing a type");
-            
+
             if (aliasInfo.Name is null)
                 throw new Exception("Alias is missing a name");
 

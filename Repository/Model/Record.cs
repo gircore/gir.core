@@ -26,7 +26,7 @@ namespace Repository.Model
             GLibClassStructFor = gLibClassStructFor;
             GetTypeFunction = getTypeFunction;
             Disguised = disguised;
-            
+
             this._constructors = constructors.ToList();
             this._methods = methods.ToList();
             this._functions = functions.ToList();
@@ -61,22 +61,22 @@ namespace Repository.Model
                    && Constructors.AllResolved()
                    && Fields.AllResolved();
         }
-        
+
         internal override void Strip()
         {
             //Fields are not cleaned as those are needed
             //to represent the native structure of the object / class
-            
+
             _methods.RemoveAll(Remove);
             _functions.RemoveAll(Remove);
             _constructors.RemoveAll(Remove);
         }
-        
+
         private bool Remove(Element symbol)
         {
             var result = symbol.GetIsResolved();
-            
-            if(!result)
+
+            if (!result)
                 Log.Information($"Record {Namespace?.Name}.{TypeName}: Stripping symbol {symbol.Name}");
 
             return !result;

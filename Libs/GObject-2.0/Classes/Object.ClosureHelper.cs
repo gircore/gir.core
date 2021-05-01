@@ -21,7 +21,7 @@ namespace GObject
                 _callback = action;
             }
 
-            
+
             //TODO: Delete this method
             private void Workaround()
             {
@@ -35,7 +35,7 @@ namespace GObject
                     condition: paramValues.Length == nParamValues,
                     message: "Values were not marshalled correctly. Breakage may occur"
                 );
-                
+
                 //TODO forward values
 
                 var data = Array.Empty<Native.Value.Struct>();

@@ -33,13 +33,13 @@ namespace Repository.Factories
             CTypeName? cTypeName = null;
             if (unionInfo.CType is { })
                 cTypeName = new CTypeName(unionInfo.CType);
-            
+
             return new Union(
                 @namespace: @namespace,
                 cTypeName: cTypeName,
                 typeName: new TypeName(unionInfo.Name),
                 symbolName: new SymbolName(unionInfo.Name),
-                methods:_methodFactory.Create(unionInfo.Methods, @namespace),
+                methods: _methodFactory.Create(unionInfo.Methods, @namespace),
                 functions: _methodFactory.Create(unionInfo.Functions, @namespace),
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(unionInfo.Fields, @namespace),

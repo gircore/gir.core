@@ -1,4 +1,4 @@
-using Gtk;
+﻿using Gtk;
 
 namespace GtkApp
 {
@@ -13,7 +13,7 @@ namespace GtkApp
         [Connect]
         private Label Label3 = default!;
 
-        public MyBox() : base("box.glade") 
+        public MyBox() : base("box.glade")
         {
         }
     }

@@ -8,7 +8,7 @@ namespace GObject.Native
     public static partial class ObjectMapper
     {
         private static readonly Dictionary<IntPtr, ToggleRef> WrapperObjects = new();
-        
+
         public static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : class, IHandle
         {
             if (WrapperObjects.TryGetValue(handle, out ToggleRef? weakRef))
@@ -36,7 +36,7 @@ namespace GObject.Native
         {
             lock (WrapperObjects)
             {
-                if(WrapperObjects.Remove(handle, out var toggleRef))
+                if (WrapperObjects.Remove(handle, out var toggleRef))
                     toggleRef.Dispose();
             }
         }

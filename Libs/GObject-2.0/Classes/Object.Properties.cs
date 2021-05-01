@@ -70,7 +70,7 @@ namespace GObject
             var v = new Value(new Type(paramSpec.ValueType));
             return v;
         }
-        
+
         /// <summary>
         /// TODO: Only as long as generation is not working
         /// Calls native method g_object_class_find_property.

@@ -70,7 +70,7 @@ namespace Gtk.Tests
         public void TestStringArray(string value1, string value2)
         {
             var aboutDialog = new AboutDialog();
-            aboutDialog.Artists = new [] {value1, value2};
+            aboutDialog.Artists = new[] { value1, value2 };
 
             aboutDialog.Artists[0].Should().Be(value1);
             aboutDialog.Artists[1].Should().Be(value2);

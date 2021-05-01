@@ -25,7 +25,7 @@ namespace Repository
             StripProjects(loadedProjects);
 
             Log.Information($"Repository initialised with {loadedProjects.Count} top-level project(s) and {loadedProjects.Count - targets.Count()} dependencies.");
-            
+
             return loadedProjects;
         }
 

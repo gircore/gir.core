@@ -15,7 +15,7 @@ namespace Generator
         {
             // Exclude "userData" parameters
             SingleParameter[] args = parameterList.SingleParameters.ToArray();//.Where(x => x.ClosureIndex == null);
-            
+
             var exclude = new List<SingleParameter>();
             foreach (var arg in args)
             {
@@ -30,7 +30,7 @@ namespace Generator
             IEnumerable<string> paramArray = parameterList
                 .GetManagedParameters()
                 .Select(x => x.Write(Target.Managed, currentNamespace));
-            
+
             return string.Join(
                 separator: ", ",
                 values: paramArray
@@ -46,10 +46,10 @@ namespace Generator
                 var attribute = GetAttribute(parameter, Target.Native, offset);
                 parameters.Add(attribute + parameter.Write(Target.Native, currentNamespace, useSafeHandle));
             }
-            
+
             return string.Join(", ", parameters);
         }
-        
+
         private static string GetAttribute(Parameter parameter, Target target, int offset)
         {
             if (target == Target.Managed)
@@ -58,28 +58,28 @@ namespace Generator
             return parameter switch
             {
                 // Simple array with fixed size length
-                {TypeInformation: {Array: {Length: {} l}}} => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={l + offset})]",
-                
+                { TypeInformation: { Array: { Length: { } l } } } => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={l + offset})]",
+
                 // Array without length and no transfer of type string. We assume null terminated array, which should
                 // be marshaled as a SafeHandle: We do not need an attribute.
-                {TypeInformation: {Array: {Length: null}}, Transfer: Transfer.None, SymbolReference: {Symbol: String}} => string.Empty,
+                { TypeInformation: { Array: { Length: null } }, Transfer: Transfer.None, SymbolReference: { Symbol: String } } => string.Empty,
 
                 // Marshal as a UTF-8 encoded string
-                {SymbolReference: {Symbol: Utf8String}} => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
-                
+                { SymbolReference: { Symbol: Utf8String } } => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
+
                 // Marshal as a null-terminated array of ANSI characters
                 // TODO: This is likely incorrect:
                 //  - GObject introspection specifies that Windows should use
                 //    UTF-8 and Unix should use ANSI. Does using ANSI for
                 //    everything cause problems here?
-                {SymbolReference: {Symbol: PlatformString}} => "[MarshalAs(UnmanagedType.LPStr)] ",
-                
+                { SymbolReference: { Symbol: PlatformString } } => "[MarshalAs(UnmanagedType.LPStr)] ",
+
                 String => throw new NotSupportedException($"Unknown {nameof(String)} type - cannot create attribute"),
-                
+
                 _ => string.Empty
             };
         }
-        
+
         public static string WriteSignalArgsProperties(this ParameterList parameterList, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
@@ -98,7 +98,7 @@ namespace Generator
 
             return builder.ToString();
         }
-        
+
         public static string WriteCallbackMarshaller(this ParameterList parameterList, ReturnValue returnValue, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
@@ -107,7 +107,7 @@ namespace Generator
             foreach (Parameter arg in parameterList.GetParameters())
             {
                 // Skip 'user_data' parameters (for callbacks, when closure index is not zero)
-                if (arg is SingleParameter {ClosureIndex: { } })
+                if (arg is SingleParameter { ClosureIndex: { } })
                     continue;
 
                 builder.AppendLine(arg.WriteMarshalArgumentToManaged(currentNamespace));
@@ -115,12 +115,12 @@ namespace Generator
             }
 
             var funcArgs = string.Join(
-                separator: ", ", 
+                separator: ", ",
                 values: args
             );
 
             var funcCall = returnValue.IsVoid()
-                ? $"managedCallback({funcArgs});" 
+                ? $"managedCallback({funcArgs});"
                 : $"var managed_callback_result = managedCallback({funcArgs});";
 
             builder.Append(funcCall);

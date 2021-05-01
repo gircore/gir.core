@@ -33,7 +33,7 @@ namespace GLib
 
         public override string? ToString()
             => Marshal.PtrToStringAnsi(Native.VariantType.Methods.PeekString(Handle));
-        
+
         #endregion
 
         #region IDisposable Implementation

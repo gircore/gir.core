@@ -25,7 +25,7 @@ namespace Generator.Services.Writer
 
                 try
                 {
-                    if(cls.IsFundamental)
+                    if (cls.IsFundamental)
                         WriteFundamentalClass(projectName, outputDir, cls, scriptObject);
                     else
                         WriteNonFundamentalClass(projectName, outputDir, cls, scriptObject);
@@ -61,10 +61,10 @@ namespace Generator.Services.Writer
                 fileName: cls.SymbolName,
                 scriptObject: scriptObject
             );
-            
+
             WriteNativeClassInstance(projectName, outputDir, cls, scriptObject);
         }
-        
+
         private void WriteNativeClassInstance(string projectName, string outputDir, Class cls, ScriptObject scriptObject)
         {
             _writeHelperService.Write(

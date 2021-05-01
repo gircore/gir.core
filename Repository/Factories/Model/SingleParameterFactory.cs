@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Repository.Analysis;
 using Repository.Factories.Model;
 using Repository.Model;
@@ -24,7 +24,7 @@ namespace Repository.Factories
             _caseConverter = caseConverter;
             _typeInformationFactory = typeInformationFactory;
         }
-        
+
         public SingleParameter Create(ParameterInfo parameterInfo, NamespaceName currentNamespace)
         {
             if (parameterInfo.VarArgs is { })
@@ -62,7 +62,7 @@ namespace Repository.Factories
         {
             public VarArgsNotSupportedException(string message) : base(message)
             {
-                
+
             }
         }
     }

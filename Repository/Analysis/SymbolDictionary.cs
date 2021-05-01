@@ -19,7 +19,7 @@ namespace Repository.Analysis
 
             if (TryResolveAlias(symbolReference, out symbol))
                 return true;
-            
+
             if (symbolReference.NamespaceName is null)
                 return false; //If the reference has no namespace it must be a global symbol or can not be resolved
 
@@ -32,7 +32,7 @@ namespace Repository.Analysis
         private bool TryResolveAlias(SymbolReference symbolReference, [MaybeNullWhen(false)] out Symbol symbol)
         {
             symbol = null;
-            
+
             if (symbolReference.NamespaceName is null)
                 return false;
 
@@ -45,8 +45,8 @@ namespace Repository.Analysis
                 throw new Exception("Namespace is missing");
 
             symbol = RecursiveResolveAlias(ns, symbolReference);
-            
-            return symbol is {};
+
+            return symbol is { };
         }
 
         private Symbol? RecursiveResolveAlias(Namespace ns, SymbolReference symbolReference)
@@ -73,7 +73,7 @@ namespace Repository.Analysis
 
         public void AddSymbols(IEnumerable<Symbol> symbols)
         {
-            foreach(var symbol in symbols)
+            foreach (var symbol in symbols)
                 AddSymbol(symbol);
         }
 
@@ -88,20 +88,20 @@ namespace Repository.Analysis
         private void AddGlobalSymbol(Symbol symbol)
         {
             Debug.Assert(
-                condition: symbol.Namespace is null, 
+                condition: symbol.Namespace is null,
                 message: "A default symbol is not allowed to have a namespace"
             );
-            
+
             _globalSymbols.Add(symbol);
         }
-        
+
         private void AddConcreteSymbol(Symbol symbol)
         {
             Debug.Assert(
-                condition: symbol.Namespace is not null, 
+                condition: symbol.Namespace is not null,
                 message: "A concrete symbol is must have a namespace"
             );
-            
+
             if (!_data.TryGetValue(symbol.Namespace.Name, out var cache))
             {
                 cache = new SymbolCache(symbol.Namespace);

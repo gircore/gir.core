@@ -5,7 +5,7 @@ namespace Build
 {
     public class Runner
     {
-        private Targets Targets { get; } = new ();
+        private Targets Targets { get; } = new();
 
         public Runner(params Target[] targets)
         {

@@ -5,7 +5,7 @@ namespace Generator
 {
     internal static class SymbolExtension
     {
-        internal static string Write(this Symbol symbol, Target target,  Namespace currentNamespace)
+        internal static string Write(this Symbol symbol, Target target, Namespace currentNamespace)
         {
             var name = symbol.SymbolName;
             if (!symbol.Namespace.IsForeignTo(currentNamespace))
@@ -18,10 +18,10 @@ namespace Generator
             {
                 //Enumerations do not have a native representation they always live in the managed namespace
                 Enumeration => symbol.Namespace.Name,
-                
+
                 _ => symbol.Namespace.GetName(target)
             };
-            
+
             return ns + "." + name;
         }
 

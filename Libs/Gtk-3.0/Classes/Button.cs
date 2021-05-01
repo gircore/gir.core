@@ -1,4 +1,4 @@
-using GObject;
+﻿using GObject;
 
 namespace Gtk
 {
@@ -8,7 +8,7 @@ namespace Gtk
         /// Creates a new instance of <see cref="Button"/>.
         /// </summary>
         /// <param name="label">The button text.</param>
-        public Button(string label) 
+        public Button(string label)
             : this(ConstructArgument.With("label", label))
         {
         }

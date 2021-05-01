@@ -43,7 +43,7 @@ namespace Build
         )
         {
             Log.Information("GirCore Build Tool");
-            
+
             var settings = new Settings()
             {
                 GenerateComments = generateComments,
@@ -80,7 +80,7 @@ namespace Build
                 new Docs(settings),
                 new Default()
             );
-            
+
             try
             {
                 runner.Run(targets, options);

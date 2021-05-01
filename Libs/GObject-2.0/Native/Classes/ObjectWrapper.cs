@@ -22,7 +22,7 @@ namespace GObject.Native
                 condition: typeof(T).IsInterface || typeof(T).IsClass && typeof(T).IsAssignableTo(typeof(GObject.Object)),
                 message: "Type 'T' must be either an interface or a GObject-based class"
             );
-            
+
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException($"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
 
@@ -42,7 +42,7 @@ namespace GObject.Native
             );
 
             System.Type trueType = TypeDictionary.GetSystemType(gtype);
-            
+
             // Get constructor for the true type
             ConstructorInfo? ctor = GetObjectConstructor(trueType);
 
@@ -60,7 +60,7 @@ namespace GObject.Native
 
             if (typeid == 0)
                 throw new Exception("Could not retrieve type from class struct - is the struct valid?");
-            
+
             return new Type(typeid);
         }
 

@@ -25,7 +25,7 @@ namespace GtkDemo
             {
                 var w = new DemoWindow(app)
                 {
-                    DefaultHeight = 600, 
+                    DefaultHeight = 600,
                     DefaultWidth = 800,
                 };
 

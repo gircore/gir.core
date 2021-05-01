@@ -10,7 +10,7 @@ namespace GLib
         private readonly Native.Bytes.Handle _handle;
 
         #endregion
-        
+
         #region Properties
         public Native.Bytes.Handle Handle => _handle;
         #endregion

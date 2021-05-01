@@ -10,10 +10,10 @@
         {
             _settings = settings;
         }
-        
+
         public void Execute()
         {
-            DotNet.Test(Projects.SolutionDirectory, _settings.Configuration, $"TestCategory={((Target)this).Name}");
+            DotNet.Test(Projects.SolutionDirectory, _settings.Configuration, $"TestCategory={((Target) this).Name}");
         }
     }
 }

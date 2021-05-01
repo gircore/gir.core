@@ -7,8 +7,8 @@ namespace Repository.Graph
     // https://www.electricmonk.nl/docs/dependency_resolving_algorithm/dependency_resolving_algorithm.html
     internal class DependencyResolverService<T> where T : INode<T>
     {
-        private List<INode<T>> _resolvedNodes = new ();
-        private List<INode<T>> _unresolvedNodes = new ();
+        private List<INode<T>> _resolvedNodes = new();
+        private List<INode<T>> _unresolvedNodes = new();
 
         public IEnumerable<INode<T>> ResolveOrdered(IEnumerable<INode<T>> nodeList)
         {

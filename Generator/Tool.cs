@@ -20,7 +20,7 @@ namespace Generator
                 {
                     Log.Error($"Could not find file at '{arg}'. Make sure it is a valid path");
                     return -1;
-                }   
+                }
             }
 
             try
@@ -32,7 +32,7 @@ namespace Generator
             {
                 Log.Exception(ex);
                 Log.Error("An error occured during processing. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
-                
+
                 return -1;
             }
         }

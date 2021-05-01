@@ -17,7 +17,7 @@ namespace Repository.Factories
             _parameterListFactory = parameterListFactory;
             _caseConverter = caseConverter;
         }
-        
+
         public Callback Create(CallbackInfo callbackInfo, Namespace @namespace)
         {
             if (callbackInfo.Name is null)
@@ -29,7 +29,7 @@ namespace Repository.Factories
             CTypeName? cTypeName = null;
             if (callbackInfo.Type is { })
                 cTypeName = new CTypeName(callbackInfo.Type);
-            
+
             return new Callback(
                 @namespace: @namespace,
                 ctypeName: cTypeName,

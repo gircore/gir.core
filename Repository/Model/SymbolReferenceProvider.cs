@@ -3,7 +3,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public interface  SymbolReferenceProvider
+    public interface SymbolReferenceProvider
     {
         IEnumerable<SymbolReference> GetSymbolReferences();
     }

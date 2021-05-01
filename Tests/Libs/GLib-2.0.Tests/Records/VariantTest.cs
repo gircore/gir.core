@@ -14,7 +14,7 @@ namespace GLib.Tests
 
             variant.GetInt().Should().Be(value);
         }
-        
+
         [TestMethod]
         public void CanCreateString()
         {

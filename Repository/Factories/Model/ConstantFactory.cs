@@ -24,7 +24,7 @@ namespace Repository.Factories
 
             if (constantInfo.Value is null)
                 throw new Exception($"{nameof(ConstantInfo)} {constantInfo.Name} misses a {nameof(constantInfo.Value)}");
-            
+
             return new Constant(
                 elementName: new ElementName(_identifierConverter.EscapeIdentifier(constantInfo.Name)),
                 symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(constantInfo.Name)),

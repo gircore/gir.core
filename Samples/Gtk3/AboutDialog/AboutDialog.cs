@@ -26,7 +26,7 @@ namespace AboutDialog
 
         public SampleDialog(string sampleName)
         {
-            this.Authors = new[] {"Gir.Core Developers", "badcel", "mjakeman"};
+            this.Authors = new[] { "Gir.Core Developers", "badcel", "mjakeman" };
             this.Comments = "Gir.Core is a C# wrapper for GObject based libraries providing a C# friendly API surface.";
             this.Copyright = "© Gir.Core Developers 2021-present";
             this.License = "MIT License";
@@ -36,7 +36,7 @@ namespace AboutDialog
             this.LicenseType = Gtk.License.MitX11;
             this.ProgramName = $"{sampleName} - GirCore";
         }
-        
+
 
         private static Pixbuf LoadFromResource(string resourceName)
         {

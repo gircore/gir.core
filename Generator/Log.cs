@@ -10,7 +10,7 @@ namespace Generator
 
         static Log()
         {
-            _logger =  new LoggerConfiguration()
+            _logger = new LoggerConfiguration()
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
         }

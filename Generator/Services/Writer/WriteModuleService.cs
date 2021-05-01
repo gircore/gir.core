@@ -40,7 +40,7 @@ namespace Generator.Services.Writer
 
             if (!classes.Any())
                 return;
-            
+
             var scriptObject = new ScriptObject()
             {
                 { "namespace", ns },
@@ -57,7 +57,7 @@ namespace Generator.Services.Writer
                 scriptObject: scriptObject
             );
         }
-        
+
         private void WriteDllImport(Namespace ns, string outputDir)
         {
             Debug.Assert(

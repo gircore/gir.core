@@ -12,7 +12,7 @@ namespace Repository
         {
             return lists.SelectMany(x => x);
         }
-        
+
         public static IEnumerable<SymbolReference> GetSymbolReferences(this IEnumerable<SymbolReferenceProvider> providers)
         {
             return providers.SelectMany(x => x.GetSymbolReferences());
@@ -25,7 +25,7 @@ namespace Repository
 
         internal static void Strip<T>(this IEnumerable<T> symbols) where T : Symbol
         {
-            foreach(var symbol in symbols)
+            foreach (var symbol in symbols)
                 symbol.Strip();
         }
     }

@@ -23,7 +23,7 @@ namespace Repository.Model
             yield return SymbolReference;
         }
 
-        public bool GetIsResolved() 
+        public bool GetIsResolved()
             => SymbolReference.GetIsResolved();
     }
 }

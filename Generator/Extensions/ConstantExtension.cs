@@ -10,8 +10,8 @@ namespace Generator
 
             var value = type switch
             {
-                { Value: {}t} when t.EndsWith("Flags") => $"({t}) {constant.Value}",
-                { Value: {}t} when t == "string" => "\"" + constant.Value + "\"",
+                { Value: { } t } when t.EndsWith("Flags") => $"({t}) {constant.Value}",
+                { Value: { } t } when t == "string" => "\"" + constant.Value + "\"",
                 _ => constant.Value
             };
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Gtk;
 
 namespace GtkDemo
@@ -18,7 +18,7 @@ namespace GtkDemo
         {
             Application = application;
             builder.Connect(this);
-            
+
             // Connect Button
             Button.OnClicked += Button_Clicked;
 

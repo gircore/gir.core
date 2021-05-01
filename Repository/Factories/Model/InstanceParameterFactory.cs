@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Repository.Factories.Model;
 using Repository.Model;
 using Repository.Services;
@@ -22,7 +22,7 @@ namespace Repository.Factories
             _caseConverter = caseConverter;
             _typeInformationFactory = typeInformationFactory;
         }
-        
+
         public InstanceParameter Create(InstanceParameterInfo parameterInfo, NamespaceName currentNamespace)
         {
             if (parameterInfo.Name is null)

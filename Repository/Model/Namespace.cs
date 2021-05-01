@@ -9,16 +9,16 @@ namespace Repository.Model
     {
         #region Properties
 
-        public NamespaceName NativeName => Name with { Value = Name.Value + ".Native"};
+        public NamespaceName NativeName => Name with { Value = Name.Value + ".Native" };
         public NamespaceName Name { get; }
         public string Version { get; }
-        
+
         public string? SharedLibrary { get; }
         public IEnumerable<Namespace> Dependencies { get; private set; }
 
         private readonly List<Alias> _aliases = new();
         public IEnumerable<Alias> Aliases => _aliases;
-        
+
         private readonly List<Callback> _callbacks = new();
         public IEnumerable<Callback> Callbacks => _callbacks;
 
@@ -36,14 +36,14 @@ namespace Repository.Model
 
         private readonly List<Record> _records = new();
         public IEnumerable<Record> Records => _records;
-        
+
         private readonly List<Method> _functions = new();
         public IEnumerable<Method> Functions => _functions;
 
         private readonly List<Union> _unions = new();
         public IEnumerable<Union> Unions => _unions;
 
-        private readonly  List<Constant> _constants = new();
+        private readonly List<Constant> _constants = new();
         public IEnumerable<Constant> Constants => _constants;
 
         #endregion
@@ -91,7 +91,7 @@ namespace Repository.Model
 
         internal void AddConstant(Constant constant)
             => _constants.Add(constant);
-        
+
         public IEnumerable<SymbolReference> GetSymbolReferences()
         {
             return IEnumerables.Concat(
@@ -109,7 +109,7 @@ namespace Repository.Model
         }
 
         public string ToCanonicalName() => $"{Name}-{Version}";
-        
+
         internal void Strip()
         {
             Classes.Strip();
@@ -130,18 +130,18 @@ namespace Repository.Model
         private bool Remove(Element element)
         {
             var result = element.GetIsResolved();
-            
-            if(!result)
+
+            if (!result)
                 Log.Information($"{element.GetType().Name} {element.Name}: Removed because parts of it could not be completely resolvled");
 
             return !result;
         }
-        
+
         private bool Remove(Symbol symbol)
         {
             var result = symbol.GetIsResolved();
-            
-            if(!result)
+
+            if (!result)
                 Log.Information($"{symbol.GetType().Name} {symbol.Namespace?.Name}.{symbol.TypeName}: Removed because parts of it could not be completely resolvled");
 
             return !result;

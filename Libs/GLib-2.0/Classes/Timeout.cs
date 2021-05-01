@@ -7,7 +7,7 @@ namespace GLib
     {
         public static uint AddFull(int priority, uint interval, SourceFunc function)
             => AddFull(priority, interval, function, null);
-        
+
         public static uint AddFull(int priority, uint interval, SourceFunc function, Action? destroyNotify)
         {
             // This uses scope=notified (see timeout_add_full's gir data)

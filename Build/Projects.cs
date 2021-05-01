@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,14 +14,14 @@ namespace Build
             return new Project($"{Projects.GirPath}/{name}.gir", $"{Projects.ProjectPath}/{name}");
         }
     }
-    
+
     public static class Projects
     {
         #region Constants
-        
+
         public const string ProjectPath = "../Libs";
         public const string GirPath = "../gir-files";
-        
+
         public const string SolutionDirectory = "../";
 
         private const string SAMPLE = "../Samples/";
@@ -44,9 +44,9 @@ namespace Build
         // private const string GDKPIXBUF_TEST_MEMORY_LEAKS = SAMPLE + "GdkPixbuf/TestMemoryLeaks";
 
         private const string INTEGRATION = "../Integration/";
-        
+
         #endregion
-        
+
         #region Fields
 
         public static readonly string[] IntegrationProjects =

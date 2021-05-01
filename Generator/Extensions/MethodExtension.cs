@@ -12,7 +12,7 @@ namespace Generator
     {
         public static string WriteNative(this Method? method, Namespace currentNamespace)
         {
-            if (method is null )
+            if (method is null)
                 return string.Empty;
 
             var returnValue = method.ReturnValue.WriteNative(currentNamespace);
@@ -34,7 +34,7 @@ namespace Generator
 
             return generator.Generate();
         }
-        
+
         /*public static string WriteManagedOld(this Method? method, Namespace currentNamespace)
         {
             // TODO: Move these outside
@@ -247,7 +247,7 @@ namespace Generator
             builder.Append("\n\n\n");
             return builder.ToString();
         }*/
-        
+
         public static string WriteNativeSummary(Method method)
         {
             var builder = new StringBuilder();
@@ -265,7 +265,7 @@ namespace Generator
 
             return builder.ToString();
         }
-        
+
         public static bool IsUnref(this Method method) => method.SymbolName == "Unref";
         public static bool IsFree(this Method method) => method.SymbolName == "Free";
     }

@@ -10,7 +10,7 @@
             public const string Records = "Records";
             public const string Delegates = "Delegates";
         }
-        
+
         public static class Native
         {
             public const string Delegates = "Native/Delegates";

@@ -16,7 +16,7 @@ namespace Repository.Analysis
             {
                 Namespace = @namespace;
             }
-            
+
             public void Add(Symbol symbol)
             {
                 _symbols.Add(symbol);
@@ -39,8 +39,8 @@ namespace Repository.Analysis
 
             private static bool CheckNamespace(Symbol symbol, SymbolReference symbolReference) => (symbol, symbolReference) switch
             {
-                ({Namespace: {} }, {NamespaceName: null}) => false,
-                ({Namespace: {Name: {}n1}}, {NamespaceName:{}n2}) when n1 != n2 => false,
+                ({ Namespace: { } }, { NamespaceName: null }) => false,
+                ({ Namespace: { Name: { } n1 } }, { NamespaceName: { } n2 }) when n1 != n2 => false,
                 _ => true
             };
         }

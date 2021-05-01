@@ -1,12 +1,11 @@
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Repository;
-using StrongInject;
-
 using Generator.Services;
 using Generator.Services.Writer;
+using Repository;
 using Repository.Model;
+using StrongInject;
 
 namespace Generator
 {
@@ -26,7 +25,7 @@ namespace Generator
             typeRenamer.FixClassNameClashes(namespaces);
 
             WriterService writerService = new Container().Resolve().Value;
-            
+
             // Set writer options
             var options = new WriterOptions
             {
@@ -46,7 +45,7 @@ namespace Generator
             else
             {
                 Log.Warning("Async Generation is disabled. Generation may be slower than normal.");
-                
+
                 // Disable asynchronous writing for an easier debugging experience
                 foreach (Namespace ns in namespaces)
                     writerService.Write(ns, OutputDir, options);

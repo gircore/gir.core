@@ -17,7 +17,7 @@ namespace AboutDialog
         {
             // Make sure to initialise Gtk beforehand
             Functions.Init();
-            
+
             // Create the about dialog
             SampleDialog dialog = SampleDialog.CreateDialog("Custom AboutDialog");
             dialog.OnClose += (dlg, args) => Functions.MainQuit();

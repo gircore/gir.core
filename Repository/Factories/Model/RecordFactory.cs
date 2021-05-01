@@ -33,14 +33,14 @@ namespace Repository.Factories
             CTypeName? cTypeName = null;
             if (@record.CType is { })
                 cTypeName = new CTypeName(@record.CType);
-            
+
             return new Record(
                 @namespace: @namespace,
                 cTypeName: cTypeName,
                 typeName: new TypeName(@record.Name),
                 symbolName: new SymbolName(@record.Name),
                 gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, @namespace.Name),
-                methods:_methodFactory.Create(@record.Methods, @namespace),
+                methods: _methodFactory.Create(@record.Methods, @namespace),
                 functions: _methodFactory.Create(@record.Functions, @namespace),
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(@record.Fields, @namespace),
@@ -52,8 +52,8 @@ namespace Repository.Factories
         private SymbolReference? GetGLibClassStructFor(string? classStructForName, NamespaceName namespaceName)
         {
             SymbolReference? getGLibClassStructFor = null;
-            
-            if (classStructForName is {})
+
+            if (classStructForName is { })
                 getGLibClassStructFor = _symbolReferenceFactory.Create(classStructForName, null, namespaceName);
 
             return getGLibClassStructFor;

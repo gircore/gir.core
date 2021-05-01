@@ -28,7 +28,7 @@ namespace GObject
 
             public void Dispose()
             {
-                foreach(var closureRegistry in _closureRegistries.Values)
+                foreach (var closureRegistry in _closureRegistries.Values)
                     closureRegistry.Dispose();
             }
         }
