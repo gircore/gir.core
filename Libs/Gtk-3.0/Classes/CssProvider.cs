@@ -11,7 +11,7 @@ namespace Gtk
     public partial class CssProvider
     {
         public static CssProvider New()
-            => ObjectWrapper.WrapHandle<CssProvider>(Native.CssProvider.Instance.Methods.New(), false);
+            => new(Native.CssProvider.Instance.Methods.New(), false);
 
         public bool LoadFromData(string data)
         {

@@ -12,7 +12,7 @@ namespace Gtk
                 vAdjustment?.Handle ?? IntPtr.Zero
             );
             
-            return ObjectWrapper.WrapHandle<ScrolledWindow>(ptr, false);
+            return new(ptr, false);
         }
     }
 }
