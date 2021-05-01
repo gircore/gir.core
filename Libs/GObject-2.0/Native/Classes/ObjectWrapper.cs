@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using GLib;
@@ -14,9 +15,14 @@ namespace GObject.Native
 
             return WrapHandle<T>(handle, ownedRef);
         }
-        
+
         public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : class, IHandle
         {
+            Debug.Assert(
+                condition: typeof(T).IsInterface || typeof(T).IsClass && typeof(T).IsAssignableTo(typeof(GObject.Object)),
+                message: "Type 'T' must be either an interface or a GObject-based class"
+            );
+            
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException($"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
 
@@ -27,7 +33,14 @@ namespace GObject.Native
             // We need to find the "true type" of the object so that the user
             // can upcast/downcast as necessary. Retrieve the gtype from the
             // object's class struct.
-            Type gtype = GetTypeFromHandle(handle);
+
+            Type gtype = GetTypeFromInstance(handle);
+
+            Debug.Assert(
+                condition: Marshal.PtrToStringUTF8(Functions.TypeName(gtype.Value)) == Marshal.PtrToStringUTF8(Functions.TypeNameFromInstance(new TypeInstance.Handle(handle))),
+                message: "GType name of instance and class do not match - have we read the wrong pointer?"
+            );
+
             System.Type trueType = TypeDictionary.GetSystemType(gtype);
             
             // Get constructor for the true type
@@ -39,11 +52,16 @@ namespace GObject.Native
             return (T) ctor.Invoke(new object[] { handle, ownedRef });
         }
 
-        private static Type GetTypeFromHandle(IntPtr handle)
+        private static Type GetTypeFromInstance(IntPtr handle)
         {
             TypeInstance.Struct instance = Marshal.PtrToStructure<TypeInstance.Struct>(handle);
-            TypeClass.Struct classStruct = Marshal.PtrToStructure<TypeClass.Struct>(instance.GClass);
-            return new Type(classStruct.GType);
+            TypeClass.Struct klass = Marshal.PtrToStructure<TypeClass.Struct>(instance.GClass);
+            var typeid = klass.GType;
+
+            if (typeid == 0)
+                throw new Exception("Could not retrieve type from class struct - is the struct valid?");
+            
+            return new Type(typeid);
         }
 
         private static ConstructorInfo? GetObjectConstructor(System.Type type)

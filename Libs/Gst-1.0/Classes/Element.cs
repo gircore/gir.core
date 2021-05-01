@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using GLib;
-using GObject;
+using GObject.Native;
+using Value = GObject.Value;
 
 namespace Gst
 {
@@ -51,7 +52,7 @@ namespace Gst
 
             Error.ThrowOnError(error);
 
-            return WrapHandle<Element>(result, false);
+            return ObjectWrapper.WrapHandle<Element>(result, false);
         }
 
         /*public Bus? GetBus()

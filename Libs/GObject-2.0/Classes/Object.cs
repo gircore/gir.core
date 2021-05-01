@@ -80,12 +80,6 @@ namespace GObject
             _signalRegistry = new SignalRegistry(this);
         }
 
-        public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : class
-        {
-            //TODO REMOVE THIS METHOD
-            return default;
-        }
-
         internal ClosureRegistry GetClosureRegistry(string signalName)
             =>  _signalRegistry.GetClosureRegistry(signalName);
 

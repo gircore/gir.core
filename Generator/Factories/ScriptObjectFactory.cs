@@ -29,7 +29,8 @@ namespace Generator.Factories
         public ScriptObject CreateComplex(Namespace currentNamespace)
         {
             var scriptObject = CreateBase(currentNamespace);
-            scriptObject.Import("write_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>((s, l) => TemplateWriter.WriteInheritance(s, l, currentNamespace)));
+            scriptObject.Import("write_class_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>((s, l) => TemplateWriter.WriteClassInheritance(s, l, currentNamespace)));
+            scriptObject.Import("write_iface_inheritance", new Func<IEnumerable<SymbolReference>, string>(l => TemplateWriter.WriteInterfaceInheritance(l, currentNamespace)));
             scriptObject.Import("write_native_parent", new Func<SymbolReference?, string>(s => TemplateWriter.WriteNativeParent(s, currentNamespace)));
             scriptObject.Import("write_native_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
             scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));

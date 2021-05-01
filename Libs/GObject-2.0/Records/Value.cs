@@ -5,9 +5,9 @@ using GObject.Native;
 
 namespace GObject
 {
-    //TODO: Consider splitting vlaue into different typ for each type it represents
-    //to avoid breaking the open closed principle.
-    //There could an abstract value base class with generic implementations of the concrete types.
+    // TODO: Consider splitting value into different types for each type it represents
+    // to avoid breaking the open closed principle.
+    // There could an abstract value base class with generic implementations of the concrete types.
     public partial record Value : IDisposable
     {
         internal Native.Value.Handle Handle { get; }
@@ -126,30 +126,30 @@ namespace GObject
             var type = GetTypeValue();
             return type switch
             {
-                (nuint) BasicTypes.Boolean => GetBool(),
-                (nuint) BasicTypes.UInt => GetUint(),
-                (nuint) BasicTypes.Int => GetInt(),
-                (nuint) BasicTypes.Long => GetLong(),
-                (nuint) BasicTypes.Double => GetDouble(),
-                (nuint) BasicTypes.Float => GetFloat(),
-                (nuint) BasicTypes.String => GetString(),
-                (nuint) BasicTypes.Pointer => GetPtr(),
+                (nuint) BasicType.Boolean => GetBool(),
+                (nuint) BasicType.UInt => GetUint(),
+                (nuint) BasicType.Int => GetInt(),
+                (nuint) BasicType.Long => GetLong(),
+                (nuint) BasicType.Double => GetDouble(),
+                (nuint) BasicType.Float => GetFloat(),
+                (nuint) BasicType.String => GetString(),
+                (nuint) BasicType.Pointer => GetPtr(),
                 _ => CheckComplexTypes(type)
             };
         }
 
         private object? CheckComplexTypes(nuint gtype)
         {
-            if (Functions.TypeIsA(gtype,(nuint) BasicTypes.Object))
+            if (Functions.TypeIsA(gtype,(nuint) BasicType.Object))
                 return GetObject();
 
-            if (Functions.TypeIsA(gtype, (nuint) BasicTypes.Boxed))
+            if (Functions.TypeIsA(gtype, (nuint) BasicType.Boxed))
                 return GetBoxed(gtype);
 
-            if (Functions.TypeIsA(gtype, (nuint) BasicTypes.Enum))
+            if (Functions.TypeIsA(gtype, (nuint) BasicType.Enum))
                 return GetEnum();
 
-            if (Functions.TypeIsA(gtype, (nuint) BasicTypes.Flags))
+            if (Functions.TypeIsA(gtype, (nuint) BasicType.Flags))
                 return GetFlags();
 
             throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
