@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using XmlDocMarkdown.Core;
 
 namespace Build
@@ -19,24 +20,34 @@ namespace Build
 
         public void Execute()
         {
-            foreach (Project project in Projects.AllLibraries)
+            if (_settings.GenerateAsynchronously)
             {
-                var settings = new XmlDocMarkdownSettings()
-                {
-                    VisibilityLevel = XmlDocVisibilityLevel.Public,
-                    ShouldClean = true,
-                    GenerateToc = true
-                };
-
-                XmlDocMarkdownResult result = XmlDocMarkdownGenerator.Generate(
-                    inputPath: GetAssemblyFile(project.Folder),
-                    outputPath: "../Docs/Api",
-                    settings: settings
-                );
-
-                foreach (var message in result.Messages)
-                    Console.WriteLine(message);
+                Parallel.ForEach(Projects.AllLibraries, CreateMarkdown);
             }
+            else
+            {
+                foreach (Project project in Projects.AllLibraries)
+                    CreateMarkdown(project);
+            }
+        }
+
+        private void CreateMarkdown(Project project)
+        {
+            var settings = new XmlDocMarkdownSettings()
+            {
+                VisibilityLevel = XmlDocVisibilityLevel.Public,
+                ShouldClean = true,
+                GenerateToc = true
+            };
+
+            XmlDocMarkdownResult result = XmlDocMarkdownGenerator.Generate(
+                inputPath: GetAssemblyFile(project.Folder),
+                outputPath: "../Docs/Api",
+                settings: settings
+            );
+
+            foreach (var message in result.Messages)
+                Console.WriteLine(message);
         }
 
         private string GetAssemblyFile(string folder)
