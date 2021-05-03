@@ -55,8 +55,13 @@ namespace Generator
                 { TypeInformation: { IsPointer: true }, SymbolReference: { Symbol: Record r } } when useSafeHandle
                     => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
 
-                // Pointers to primitive value types can be marshalled directly
-                { TypeInformation: { IsPointer: true }, SymbolReference: { Symbol: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace),
+                // Primitives - Marshal directly
+                { TypeInformation: { Array: {} }, SymbolReference: { Symbol: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",
+                { SymbolReference: { Symbol: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace),
+                
+                // Enumerations - Marshal directly
+                { SymbolReference: {Symbol: Enumeration}, TypeInformation: {Array: {}}} => type.SymbolReference.Symbol.Write(Target.Native, currentNamespace) + "[]",
+                { SymbolReference: {Symbol: Enumeration}} => type.SymbolReference.Symbol.Write(Target.Native, currentNamespace),
 
                 // Use IntPtr for all types where a pointer is expected
                 { TypeInformation: { IsPointer: true, Array: { Length: not null } } } => "IntPtr[]",
