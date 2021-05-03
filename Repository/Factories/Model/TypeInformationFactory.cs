@@ -38,7 +38,7 @@ namespace Repository.Factories.Model
             return typed switch
             {
                 { Type: { } t } => GetIsPointer(t.Name, t.CType),
-                { Array: { Type: { } t } } => GetIsPointer(t.Name, t.CType),
+                { Array: { Type: { } t } a } => GetIsPointer(string.Empty, a.CType) || GetIsPointer(t.Name, t.CType),
                 { Array: { Array: { } } } => true,
                 FieldInfo { Callback: { } } => false, //Callbacks are no pointer as they are handled as delegates
                 _ => throw new Exception("Can not get pointer information from type: " + typed)

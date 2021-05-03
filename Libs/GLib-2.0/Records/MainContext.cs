@@ -2,13 +2,13 @@
 
 namespace GLib
 {
-    public partial record MainContext
+    public partial class MainContext
     {
-        public Native.MainContext.Handle Handle { get; private set; }
+        public Native.MainContext.Handle Handle => _handle;
 
         private MainContext(Native.MainContext.Handle handle)
         {
-            Handle = handle;
+            _handle = handle;
         }
 
         public static MainContext New()

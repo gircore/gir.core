@@ -47,6 +47,10 @@ namespace Generator
                 { TypeInformation: { IsPointer: true, Array: { } }, SymbolReference: { Symbol: Class } } => "IntPtr[]",     // GObjects
                 { TypeInformation: { IsPointer: true, Array: { } }, SymbolReference: { Symbol: Interface } } => "IntPtr[]", // GInterfaces
 
+                // For non-pointer records, we want to embed the entire struct inside the parent struct
+                Field { TypeInformation: { IsPointer: false }, SymbolReference: { Symbol: Record { } r } }
+                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("StructRefName"), Target.Native),
+                
                 // Use original symbol name for records (remapped to SafeHandles)
                 { TypeInformation: { IsPointer: true }, SymbolReference: { Symbol: Record r } } when useSafeHandle
                     => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
@@ -68,7 +72,6 @@ namespace Generator
             var result = type switch
             {
                 { SymbolReference: { Symbol: Callback c } } => AddNamespace(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
-                { SymbolReference: { Symbol: Record r } } => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), Target.Managed),
                 { SymbolReference: { Symbol: Union u } } => AddNamespace(currentNamespace, u.Namespace, u.GetMetadataString("Name"), Target.Managed),
 
                 _ => type.SymbolReference.Symbol.Write(Target.Managed, currentNamespace)

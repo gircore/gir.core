@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 #nullable enable
 
 {{~ $safehandle_name = get_metadata "SafeHandleName" ~}}
+{{~ $struct_name = get_metadata "StructRefName" ~}}
 
 namespace {{ namespace.native_name }}
 {
@@ -34,9 +35,9 @@ namespace {{ namespace.native_name }}
         
         public class Managed{{$safehandle_name}} : {{$safehandle_name}}
         {
-            public static {{$safehandle_name}} Create({{symbol_name}}? data = null)
+            public static {{$safehandle_name}} Create({{$struct_name}}? data = null)
             {
-                var size = Marshal.SizeOf<{{symbol_name}}>();
+                var size = Marshal.SizeOf<{{$struct_name}}>();
                 IntPtr ptr = Marshal.AllocHGlobal(size);
                 
                 if (data.HasValue)
@@ -45,7 +46,7 @@ namespace {{ namespace.native_name }}
                 }
                 else
                 {
-                    var str = new {{symbol_name}}();
+                    var str = new {{$struct_name}}();
                     Marshal.StructureToPtr(str, ptr, false);
                 }
                 

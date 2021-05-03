@@ -3,12 +3,11 @@ using GLib.Native;
 
 namespace GLib
 {
-    public partial record Variant : IDisposable
+    public partial class Variant : IDisposable
     {
         #region Fields
 
         private Variant[] _children;
-        private readonly Native.Variant.Handle _handle;
 
         #endregion
 

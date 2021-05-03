@@ -4,10 +4,9 @@ using System.Runtime.InteropServices;
 namespace GObject
 {
     //TODO: This should be in the native namespace. It does not belong into the managed api. We have events to handle this.
-    public partial record Closure : IDisposable
+    public partial class Closure : IDisposable
     {
         private readonly ClosureMarshalCallHandlerWorkaround _closureMarshalCallHandler;
-        private readonly Native.Closure.Handle _handle;
 
         public Native.Closure.Handle? Handle => _handle.IsInvalid ? null : _handle;
 

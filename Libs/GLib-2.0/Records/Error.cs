@@ -1,6 +1,6 @@
 ﻿namespace GLib
 {
-    public partial record Error
+    public partial class Error
     {
         public static void ThrowOnError(Native.Error.Handle error)
         {

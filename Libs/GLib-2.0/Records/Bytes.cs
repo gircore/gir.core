@@ -2,12 +2,11 @@
 
 namespace GLib
 {
-    public sealed partial record Bytes : IDisposable
+    public sealed partial class Bytes : IDisposable
     {
         #region Fields
 
         private readonly long _size;
-        private readonly Native.Bytes.Handle _handle;
 
         #endregion
 
