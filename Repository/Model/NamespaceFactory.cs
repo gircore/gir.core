@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Repository.Factories;
-using Repository.Model;
 using Repository.Xml;
 
-namespace Repository
+namespace Repository.Model
 {
     internal class NamespaceFactory
     {

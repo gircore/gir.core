@@ -1,20 +1,15 @@
 ﻿using System;
-using Repository.Analysis;
-using Repository.Model;
-using Repository.Services;
 using Repository.Xml;
 
-namespace Repository.Factories
+namespace Repository.Model
 {
     internal class UnionFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
         private readonly MethodFactory _methodFactory;
         private readonly FieldFactory _fieldFactory;
 
-        public UnionFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory, FieldFactory fieldFactory)
+        public UnionFactory(MethodFactory methodFactory, FieldFactory fieldFactory)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
             _methodFactory = methodFactory;
             _fieldFactory = fieldFactory;
         }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
-using Repository.Model;
 using Repository.Xml;
 
-namespace Repository.Factories
+namespace Repository.Model
 {
     internal class CallbackFactory
     {

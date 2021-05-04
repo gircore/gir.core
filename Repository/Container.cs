@@ -1,6 +1,5 @@
-﻿using Repository.Factories;
-using Repository.Factories.Model;
-using Repository.Graph;
+﻿using Repository.Graph;
+using Repository.Model;
 using Repository.Services;
 using StrongInject;
 
