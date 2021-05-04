@@ -14,7 +14,7 @@ namespace GLib
 
         #region Properties
 
-        internal Native.VariantType.Handle Handle { get; }
+        internal Native.VariantType.Handle Handle => _handle;
 
         #endregion
 
