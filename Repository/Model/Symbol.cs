@@ -4,7 +4,7 @@ using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Symbol : SymbolReferenceProvider, Resolveable
+    public abstract class Symbol : SymbolReferenceProvider, Resolveable
     {
         public Namespace? Namespace { get; }
         public Metadata Metadata { get; } = new();
