@@ -12,12 +12,6 @@ namespace GLib
 
         #endregion
 
-        #region Properties
-
-        internal Native.VariantType.Handle Handle => _handle;
-
-        #endregion
-
         #region Constructors
 
         public VariantType(string type) : this(Native.VariantType.Methods.New(type)) { }

@@ -12,10 +12,5 @@ namespace Gst
 
         // public bool Add(Element element) => throw new NotImplementedException(); //TODO Native.Methods.Add(Handle, element.Handle);
         // public bool Remove(Element element) => throw new NotImplementedException(); //TODO Native.Methods.Remove(Handle, element.Handle);
-
-        public IEnumerable<Element> IterateRecurse()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

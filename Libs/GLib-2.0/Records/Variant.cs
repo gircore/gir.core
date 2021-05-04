@@ -11,12 +11,6 @@ namespace GLib
 
         #endregion
 
-        #region Properties
-
-        public Native.Variant.Handle Handle => _handle;
-
-        #endregion
-
         #region Constructors
 
         public Variant(params Variant[] children)

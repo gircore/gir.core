@@ -4,8 +4,6 @@ namespace GLib
 {
     public sealed partial class MainLoop
     {
-        public Native.MainLoop.Handle Handle => _handle;
-
         public MainLoop(MainContext context, bool isRunning = false)
             : this(context.Handle, isRunning) { }
 

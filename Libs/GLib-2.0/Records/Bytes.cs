@@ -10,10 +10,6 @@ namespace GLib
 
         #endregion
 
-        #region Properties
-        public Native.Bytes.Handle Handle => _handle;
-        #endregion
-
         #region Constructors
 
         partial void Initialize()

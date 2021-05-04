@@ -87,10 +87,6 @@ namespace Generator
             if (_managedParams.Any(param => param.SymbolReference.GetSymbol().GetType() == typeof(Record)))
                 return false;
 
-            // No record return values
-            if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Record))
-                return false;
-
             // No union parameters
             if (_managedParams.Any(param => param.SymbolReference.GetSymbol().GetType() == typeof(Union)))
                 return false;

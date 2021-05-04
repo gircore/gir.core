@@ -8,8 +8,6 @@ namespace GObject
     {
         private readonly ClosureMarshalCallHandlerWorkaround _closureMarshalCallHandler;
 
-        public Native.Closure.Handle? Handle => _handle.IsInvalid ? null : _handle;
-
         internal Closure(Action action) //TODO: Restore: ClosureMarshal action)
         {
             _closureMarshalCallHandler = new ClosureMarshalCallHandlerWorkaround(action);

@@ -10,8 +10,6 @@ namespace GObject
     // There could an abstract value base class with generic implementations of the concrete types.
     public partial class Value : IDisposable
     {
-        internal Native.Value.Handle Handle => _handle;
-
         #region Constructors
 
         public Value(Type type)
