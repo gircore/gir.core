@@ -13,7 +13,7 @@ namespace {{ namespace.name }}
     {
         private readonly {{ $safe_handle }} _handle;
         
-        public {{ $safe_handle }}? Handle => !_handle.IsInvalid ? _handle : throw new Exception("Invalid Handle");
+        public {{ $safe_handle }} Handle => !_handle.IsInvalid ? _handle : throw new Exception("Invalid Handle");
         
         // TODO: Having these both called Handle is confusing - rename?
         IntPtr GLib.IHandle.Handle => _handle.DangerousGetHandle();
@@ -30,5 +30,7 @@ namespace {{ namespace.name }}
         // TODO: Default Constructor (allocate in managed memory and free on Dispose?)
         // We need to be able to create instances of records with full access to
         // fields, e.g. Gdk.Rectangle, Gtk.TreeIter, etc. 
+        
+        // TODO: Implement IDispose and free safe handle
     }
 }

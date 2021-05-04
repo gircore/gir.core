@@ -16,7 +16,7 @@ namespace Generator
             return (symbol, typeInfo) switch
             {
                 // TODO: Unsupported
-                (Record r, { IsPointer: false}) => throw new NotImplementedException("Cannot convert non-pointer records (yet)"),
+                (Record r, { IsPointer: false}) => throw new NotImplementedException("Cannot convert non-pointer records to native (yet)"),
                 
                 // String Handling
                 // String Arrays which do not have a length index need to be marshalled as IntPtr
@@ -48,7 +48,7 @@ namespace Generator
             return (symbol, typeInfo) switch
             {
                 // TODO: Unsupported
-                (Record r, { IsPointer: false}) => throw new NotImplementedException("Cannot convert non-pointer records"),
+                (Record r, { IsPointer: false}) => throw new NotImplementedException("Cannot convert non-pointer records to managed (yet)"),
                 
                 // String Handling
                 (String s, { Array: { } }) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",
