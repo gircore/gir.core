@@ -22,11 +22,6 @@ namespace GLib
 
         public VariantType(string type) : this(Native.VariantType.Methods.New(type)) { }
 
-        internal VariantType(Native.VariantType.Handle handle)
-        {
-            Handle = handle;
-        }
-
         #endregion
 
         #region Methods

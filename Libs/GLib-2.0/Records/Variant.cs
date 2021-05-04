@@ -39,11 +39,10 @@ namespace GLib
             Init(out this.handle, data);
         }*/
 
-        public Variant(Native.Variant.Handle handle)
+        partial void Initialize()
         {
             _children = new Variant[0];
-            _handle = handle;
-            Native.Variant.Methods.RefSink(handle);
+            Native.Variant.Methods.RefSink(_handle);
         }
 
         #endregion

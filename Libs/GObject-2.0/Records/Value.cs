@@ -14,11 +14,6 @@ namespace GObject
 
         #region Constructors
 
-        internal Value(Native.Value.Handle handle)
-        {
-            _handle = handle;
-        }
-
         public Value(Type type)
         {
             var h = Native.Value.ManagedHandle.Create();

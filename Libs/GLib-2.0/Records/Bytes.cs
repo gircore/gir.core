@@ -6,7 +6,7 @@ namespace GLib
     {
         #region Fields
 
-        private readonly long _size;
+        private long _size;
 
         #endregion
 
@@ -16,10 +16,9 @@ namespace GLib
 
         #region Constructors
 
-        private Bytes(Native.Bytes.Handle handle)
+        partial void Initialize()
         {
-            _handle = handle;
-            _size = (long) Native.Bytes.Methods.GetSize(handle);
+            _size = (long) Native.Bytes.Methods.GetSize(_handle);
             GC.AddMemoryPressure(_size);
         }
 
