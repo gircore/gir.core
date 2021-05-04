@@ -15,9 +15,6 @@ namespace Generator
 
             return (symbol, typeInfo) switch
             {
-                // TODO: Unsupported
-                (Record r, { IsPointer: false}) => throw new NotImplementedException("Cannot convert non-pointer records to native (yet)"),
-                
                 // String Handling
                 // String Arrays which do not have a length index need to be marshalled as IntPtr
                 (String s, { Array: { Length: null } }) when transfer == Transfer.None => $"new GLib.Native.StringArrayNullTerminatedSafeHandle({fromParam}).DangerousGetHandle()",
@@ -25,8 +22,8 @@ namespace Generator
                 // All other string types can be marshalled directly
                 (String, _) => fromParam,
 
-                (Record r, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
-                (Record r, { IsPointer: true, Array: { } }) => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
+                (Record r, { Array: null }) => $"{fromParam}.Handle",
+                (Record r, { Array: { } }) => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedManagedType}.To({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
                 (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument {fromParam}"),
@@ -47,16 +44,13 @@ namespace Generator
 
             return (symbol, typeInfo) switch
             {
-                // TODO: Unsupported
-                (Record r, { IsPointer: false}) => throw new NotImplementedException("Cannot convert non-pointer records to managed (yet)"),
-                
                 // String Handling
                 (String s, { Array: { } }) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",
                 (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // General Conversions
-                (Record r, { IsPointer: true, Array: null }) => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
-                (Record r, { IsPointer: true, Array: { } }) => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
+                (Record r, { Array: null }) => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
+                (Record r, { Array: { } }) => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedType}.From({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument '{fromParam}'"),

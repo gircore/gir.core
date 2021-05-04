@@ -36,14 +36,9 @@ namespace Generator
                 // Arrays of byte can be marshalled automatically, no IntPtr needed
                 { TypeInformation: { Array: { } }, SymbolReference: { Symbol: { } s } } when s.SymbolName == "byte" => "byte[]",
 
-                // Parameters of record arrays which do not transfer ownership can be marshalled directly
-                // as struct[]
-                Parameter { TypeInformation: { IsPointer: false, Array: { } }, Transfer: Transfer.None, SymbolReference: { Symbol: Record r } }
-                    => r.Write(Target.Native, currentNamespace) + "[]",
-
                 // Arrays of Opaque Structs, GObjects, and GInterfaces cannot be marshalled natively
                 // Instead marshal them as variable width pointer arrays (LPArray)
-                { TypeInformation: { IsPointer: true, Array: { } }, SymbolReference: { Symbol: Record } } => "IntPtr[]",    // SafeHandles
+                { TypeInformation: { Array: { } }, SymbolReference: { Symbol: Record } } => "IntPtr[]",    // SafeHandles
                 { TypeInformation: { IsPointer: true, Array: { } }, SymbolReference: { Symbol: Class } } => "IntPtr[]",     // GObjects
                 { TypeInformation: { IsPointer: true, Array: { } }, SymbolReference: { Symbol: Interface } } => "IntPtr[]", // GInterfaces
 
@@ -52,7 +47,7 @@ namespace Generator
                     => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("StructRefName"), Target.Native),
                 
                 // Use original symbol name for records (remapped to SafeHandles)
-                { TypeInformation: { IsPointer: true }, SymbolReference: { Symbol: Record r } } when useSafeHandle
+                { SymbolReference: { Symbol: Record r } } when useSafeHandle
                     => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
 
                 // Primitives - Marshal directly
