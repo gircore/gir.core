@@ -13,8 +13,7 @@ namespace {{ namespace.name }}
     {
         private readonly {{ $safe_handle }} _handle;
         
-        // TODO: Instead of making this nullable, throw on invalid?
-        public {{ $safe_handle }}? Handle => _handle.IsInvalid ? null : _handle;
+        public {{ $safe_handle }}? Handle => !_handle.IsInvalid ? _handle : throw new Exception("Invalid Handle");
         
         // TODO: Having these both called Handle is confusing - rename?
         IntPtr GLib.IHandle.Handle => _handle.DangerousGetHandle();

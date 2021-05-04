@@ -16,7 +16,7 @@ namespace Generator
             return (symbol, typeInfo) switch
             {
                 // TODO: Unsupported
-                (Record r, { IsPointer: false}) => throw new NotImplementedException("Cannot convert non-pointer records"),
+                (Record r, { IsPointer: false}) => throw new NotImplementedException("Cannot convert non-pointer records (yet)"),
                 
                 // String Handling
                 // String Arrays which do not have a length index need to be marshalled as IntPtr
@@ -26,7 +26,7 @@ namespace Generator
                 (String, _) => fromParam,
 
                 (Record r, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
-                (Record r, { IsPointer: true, Array: { } }) => $"{fromParam}.Select(x => x.Handle).ToArray()",
+                (Record r, { IsPointer: true, Array: { } }) => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedManagedType}.To({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
                 (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument {fromParam}"),

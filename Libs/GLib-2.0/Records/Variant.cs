@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GLib.Native;
 
 namespace GLib
@@ -60,7 +61,7 @@ namespace GLib
 
             var count = (nuint) children.Length;
             var ptrs = new IntPtr[count];
-
+            
             for (nuint i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle.DangerousGetHandle();
 

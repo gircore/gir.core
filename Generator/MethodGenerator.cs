@@ -83,10 +83,6 @@ namespace Generator
             if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Callback))
                 return false;
 
-            // No record parameters
-            if (_managedParams.Any(param => param.SymbolReference.GetSymbol().GetType() == typeof(Record)))
-                return false;
-
             // No union parameters
             if (_managedParams.Any(param => param.SymbolReference.GetSymbol().GetType() == typeof(Union)))
                 return false;
@@ -186,7 +182,8 @@ namespace Generator
                 transfer: parameter.Transfer
             );
 
-            var alloc = $"{parameter.WriteType(Target.Native, _currentNamespace)} {parameter.SymbolName}Native = {expression};";
+            // TODO: Use actual parameter type again: {parameter.WriteType(Target.Native, _currentNamespace)}
+            var alloc = $"var {parameter.SymbolName}Native = {expression};";
             var dealloc = $"// TODO: Free {parameter.SymbolName}Native";
 
             _stack.Nest(new Block()
