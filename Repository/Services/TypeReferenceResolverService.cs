@@ -61,14 +61,14 @@ namespace Repository.Services
             symbolDictionary.AddSymbol(new Float("gfloat"));
             symbolDictionary.AddSymbol(new Float("float"));
 
-            symbolDictionary.AddSymbol(new IntPtr("any"));
-            symbolDictionary.AddSymbol(new IntPtr("gconstpointer"));
-            symbolDictionary.AddSymbol(new IntPtr("va_list"));
-            symbolDictionary.AddSymbol(new IntPtr("gpointer"));
-            symbolDictionary.AddSymbol(new IntPtr("tm"));
+            symbolDictionary.AddSymbol(new Pointer("any"));
+            symbolDictionary.AddSymbol(new Pointer("gconstpointer"));
+            symbolDictionary.AddSymbol(new Pointer("va_list"));
+            symbolDictionary.AddSymbol(new Pointer("gpointer"));
+            symbolDictionary.AddSymbol(new Pointer("tm"));
 
             // TODO: Should we use UIntPtr here? Non-CLR compliant
-            symbolDictionary.AddSymbol(new UnsignedIntPtr("guintptr"));
+            symbolDictionary.AddSymbol(new UnsignedPointer("guintptr"));
 
             symbolDictionary.AddSymbol(new UnsignedShort("guint16"));
             symbolDictionary.AddSymbol(new UnsignedShort("gushort"));
