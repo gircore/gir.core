@@ -1,6 +1,4 @@
-﻿using Repository.Model;
-
-namespace Repository.Factories
+﻿namespace Repository.Model
 {
     internal class TransferFactory
     {

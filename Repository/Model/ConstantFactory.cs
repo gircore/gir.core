@@ -1,10 +1,7 @@
 ﻿using System;
-using Repository.Analysis;
-using Repository.Model;
-using Repository.Services;
 using Repository.Xml;
 
-namespace Repository.Factories
+namespace Repository.Model
 {
     internal class ConstantFactory
     {

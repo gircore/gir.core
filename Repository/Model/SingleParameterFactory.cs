@@ -1,12 +1,7 @@
 ﻿using System;
-using Repository.Analysis;
-using Repository.Factories.Model;
-using Repository.Model;
-using Repository.Services;
 using Repository.Xml;
-using Array = Repository.Model.Array;
 
-namespace Repository.Factories
+namespace Repository.Model
 {
     internal class SingleParameterFactory
     {

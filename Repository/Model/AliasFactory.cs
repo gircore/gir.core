@@ -1,9 +1,7 @@
 ﻿using System;
-using Repository.Model;
-using Repository.Services;
 using Repository.Xml;
 
-namespace Repository.Factories
+namespace Repository.Model
 {
     internal class AliasFactory
     {

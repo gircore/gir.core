@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Repository.Analysis;
 using Repository.Xml;
 
-namespace Repository.Services
+namespace Repository.Model
 {
     internal class SymbolReferenceFactory
     {

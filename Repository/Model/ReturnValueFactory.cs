@@ -1,10 +1,6 @@
-﻿using Repository.Analysis;
-using Repository.Factories.Model;
-using Repository.Model;
-using Repository.Services;
-using Repository.Xml;
+﻿using Repository.Xml;
 
-namespace Repository.Factories
+namespace Repository.Model
 {
     internal class ReturnValueFactory
     {

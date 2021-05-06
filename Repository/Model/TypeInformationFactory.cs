@@ -1,8 +1,7 @@
 ﻿using System;
-using Repository.Model;
 using Repository.Xml;
 
-namespace Repository.Factories.Model
+namespace Repository.Model
 {
     internal class TypeInformationFactory
     {
