@@ -1,9 +1,8 @@
-﻿using Repository.Model;
-using Repository.Xml;
+﻿using Repository.Xml;
 
-namespace Repository.Factories.Model
+namespace Repository.Model
 {
-    public class ArrayFactory
+    internal class ArrayFactory
     {
         public Array? Create(ArrayInfo? info)
         {

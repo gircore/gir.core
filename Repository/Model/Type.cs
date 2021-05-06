@@ -1,6 +1,4 @@
-﻿using Repository.Analysis;
-
-namespace Repository.Model
+﻿namespace Repository.Model
 {
     public interface TransferableType : Type
     {

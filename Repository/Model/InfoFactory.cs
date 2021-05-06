@@ -2,14 +2,8 @@
 using System.Collections.Generic;
 using Repository.Xml;
 
-namespace Repository.Services
+namespace Repository.Model
 {
-    public record Info(string Name, string Version)
-    {
-        public string ToCanonicalName()
-            => $"{Name}-{Version}";
-    };
-
     internal class InfoFactory
     {
         public Info CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)

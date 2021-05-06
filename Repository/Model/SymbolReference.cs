@@ -1,8 +1,6 @@
 ﻿using System;
-using Repository.Model;
-using Array = Repository.Model.Array;
 
-namespace Repository.Analysis
+namespace Repository.Model
 {
     public class SymbolReference : Resolveable
     {

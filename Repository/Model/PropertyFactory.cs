@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Repository.Factories.Model;
-using Repository.Model;
-using Repository.Services;
 using Repository.Xml;
 
-namespace Repository.Factories
+namespace Repository.Model
 {
     internal class PropertyFactory
     {

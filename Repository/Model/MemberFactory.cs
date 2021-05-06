@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Repository.Model;
 using Repository.Xml;
 
-namespace Repository.Factories
+namespace Repository.Model
 {
     internal class MemberFactory
     {
