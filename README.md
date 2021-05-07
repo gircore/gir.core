@@ -72,6 +72,7 @@ Supported targets are:
 * `integration`: Builds the integration library.
 * `unittest`: Execute unit tests with `Debug` or `Release` configuration. Depends on `build`.
 * `integrationtest`: Execute integrations tests with `Debug` or `Release` configuration. Depends on `unittest`.
+* `systemtest`: Execute integration tests that require system services like the DBus System Bus or Wayland Display Server. Depends on `integrationtest`.
 * `pack`: Packs the libraries into the `Nuget` folder in the project root. Recognizes `version` option. Depends on `build`.
 * `clean`:  Cleans `samples` and `build` output including generated source code files.
 * `samples`: Builds the sample applications with `Debug` or `Release` configuration. Depends on `build` and `integration`.
