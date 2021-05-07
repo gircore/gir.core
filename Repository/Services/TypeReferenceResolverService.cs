@@ -57,7 +57,7 @@ namespace Repository.Services
             symbolDictionary.AddSymbol(new Void("void"));
 
             symbolDictionary.AddSymbol(new Boolean("gboolean"));
-            
+
             symbolDictionary.AddSymbol(new Float("gfloat"));
             symbolDictionary.AddSymbol(new Float("float"));
 
