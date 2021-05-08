@@ -5,20 +5,20 @@ namespace Repository.Model
     public class Constant : Element
     {
         public string Value { get; }
-        public SymbolReference SymbolReference { get; }
+        public TypeReference TypeReference { get; }
 
-        public Constant(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, string value) : base(elementName, symbolName)
+        public Constant(ElementName elementName, SymbolName symbolName, TypeReference typeReference, string value) : base(elementName, symbolName)
         {
-            SymbolReference = symbolReference;
+            TypeReference = typeReference;
             Value = value;
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
+        public override IEnumerable<TypeReference> GetTypeReferences()
         {
-            yield return SymbolReference;
+            yield return TypeReference;
         }
 
         public override bool GetIsResolved()
-            => SymbolReference.GetIsResolved();
+            => TypeReference.GetIsResolved();
     }
 }

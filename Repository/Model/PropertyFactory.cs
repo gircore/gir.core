@@ -7,14 +7,14 @@ namespace Repository.Model
     internal class PropertyFactory
     {
         private readonly TransferFactory _transferFactory;
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly CaseConverter _caseConverter;
         private readonly TypeInformationFactory _typeInformationFactory;
 
-        public PropertyFactory(TransferFactory transferFactory, SymbolReferenceFactory symbolReferenceFactory, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
+        public PropertyFactory(TransferFactory transferFactory, TypeReferenceFactory typeReferenceFactory, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
         {
             _transferFactory = transferFactory;
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
             _caseConverter = caseConverter;
             _typeInformationFactory = typeInformationFactory;
         }
@@ -27,7 +27,7 @@ namespace Repository.Model
             return new Property(
                 elementName: new ElementName(property.Name),
                 symbolName: new SymbolName(_caseConverter.ToPascalCase(property.Name)),
-                symbolReference: _symbolReferenceFactory.Create(property, namespaceName),
+                typeReference: _typeReferenceFactory.Create(property, namespaceName),
                 writeable: property.Writeable,
                 readable: property.Readable,
                 typeInformation: _typeInformationFactory.Create(property),

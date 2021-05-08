@@ -4,13 +4,13 @@ namespace Repository.Model
 {
     internal class RecordFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly MethodFactory _methodFactory;
         private readonly FieldFactory _fieldFactory;
 
-        public RecordFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory, FieldFactory fieldFactory)
+        public RecordFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, FieldFactory fieldFactory)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
             _methodFactory = methodFactory;
             _fieldFactory = fieldFactory;
         }
@@ -45,12 +45,12 @@ namespace Repository.Model
             );
         }
 
-        private SymbolReference? GetGLibClassStructFor(string? classStructForName, NamespaceName namespaceName)
+        private TypeReference? GetGLibClassStructFor(string? classStructForName, NamespaceName namespaceName)
         {
-            SymbolReference? getGLibClassStructFor = null;
+            TypeReference? getGLibClassStructFor = null;
 
             if (classStructForName is { })
-                getGLibClassStructFor = _symbolReferenceFactory.Create(classStructForName, null, namespaceName);
+                getGLibClassStructFor = _typeReferenceFactory.Create(classStructForName, null, namespaceName);
 
             return getGLibClassStructFor;
         }

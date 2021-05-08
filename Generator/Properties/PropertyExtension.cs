@@ -13,14 +13,14 @@ namespace Generator.Properties
         {
             var type = property.WriteType(Target.Managed, currentNamespace);
 
-            if (property.SymbolReference.Symbol is null)
+            if (property.TypeReference.ResolvedType is null)
                 throw new Exception($"Can not get type of property {property.Name}. Symbol is missing");
 
             // Properties need special nullable handling as each C value is implicitly nullable.
             // The C# Marshaller returns default values for primitive value types. But there
             // can be null values for strings and objects, even if the nullability attribute
             // is not present in the gir file
-            return property.SymbolReference.Symbol switch
+            return property.TypeReference.ResolvedType switch
             {
                 String => type + "?",
                 Class => type + "?",

@@ -20,45 +20,45 @@ namespace Generator
         {
             return anyType switch
             {
-                { SymbolReference: { Symbol: Callback c } } => c.Write(Target.Native, currentNamespace),
+                { TypeReference: { ResolvedType: Callback c } } => c.Write(Target.Native, currentNamespace),
 
                 // Return values which return a string without transferring ownership to us can not be marshalled automatically
                 // as the marshaller want's to free the unmanaged memory which is not allowed if the ownership is not transferred
-                ReturnValue { Transfer: Transfer.None, SymbolReference: { Symbol: String } } => "IntPtr",
+                ReturnValue { Transfer: Transfer.None, TypeReference: { ResolvedType: String } } => "IntPtr",
 
                 // Arrays of string which do not transfer ownership and have no length index can not be marshalled automatically
-                TransferableAnyType { TypeInformation: { Array: { Length: null } }, SymbolReference: { Symbol: String }, Transfer: Transfer.None } => "IntPtr",
+                TransferableAnyType { TypeInformation: { Array: { Length: null } }, TypeReference: { ResolvedType: String }, Transfer: Transfer.None } => "IntPtr",
 
                 // Arrays of string can be marshalled automatically, no IntPtr needed
-                { TypeInformation: { Array: { } }, SymbolReference: { Symbol: String } } => "string[]",
+                { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: String } } => "string[]",
 
                 // Arrays of byte can be marshalled automatically, no IntPtr needed
-                { TypeInformation: { Array: { } }, SymbolReference: { Symbol: { } s } } when s.SymbolName == "byte" => "byte[]",
+                { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: { } s } } when s.SymbolName == "byte" => "byte[]",
 
                 // Parameters of record arrays which do not transfer ownership can be marshalled directly
                 // as struct[]
-                Parameter { TypeInformation: { IsPointer: false, Array: { } }, Transfer: Transfer.None, SymbolReference: { Symbol: Record r } }
+                Parameter { TypeInformation: { IsPointer: false, Array: { } }, Transfer: Transfer.None, TypeReference: { ResolvedType: Record r } }
                     => r.Write(Target.Native, currentNamespace) + "[]",
 
                 // Arrays of Opaque Structs, GObjects, and GInterfaces cannot be marshalled natively
                 // Instead marshal them as variable width pointer arrays (LPArray)
-                { TypeInformation: { IsPointer: true, Array: { } }, SymbolReference: { Symbol: Record } } => "IntPtr[]",    // SafeHandles
-                { TypeInformation: { IsPointer: true, Array: { } }, SymbolReference: { Symbol: Class } } => "IntPtr[]",     // GObjects
-                { TypeInformation: { IsPointer: true, Array: { } }, SymbolReference: { Symbol: Interface } } => "IntPtr[]", // GInterfaces
+                { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Record } } => "IntPtr[]",    // SafeHandles
+                { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Class } } => "IntPtr[]",     // GObjects
+                { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Interface } } => "IntPtr[]", // GInterfaces
 
                 // Use original symbol name for records (remapped to SafeHandles)
-                { TypeInformation: { IsPointer: true }, SymbolReference: { Symbol: Record r } } when useSafeHandle
+                { TypeInformation: { IsPointer: true }, TypeReference: { ResolvedType: Record r } } when useSafeHandle
                     => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
 
                 // Pointers to primitive value types can be marshalled directly
-                { TypeInformation: { IsPointer: true }, SymbolReference: { Symbol: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace),
+                { TypeInformation: { IsPointer: true }, TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace),
 
                 // Use IntPtr for all types where a pointer is expected
                 { TypeInformation: { IsPointer: true, Array: { Length: not null } } } => "IntPtr[]",
                 { TypeInformation: { IsPointer: true } } => "IntPtr",
 
-                { TypeInformation: { Array: { } } } => anyType.SymbolReference.Symbol.Write(Target.Native, currentNamespace) + "[]",
-                _ => anyType.SymbolReference.Symbol.Write(Target.Native, currentNamespace)
+                { TypeInformation: { Array: { } } } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace) + "[]",
+                _ => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace)
             };
         }
 
@@ -66,11 +66,11 @@ namespace Generator
         {
             var result = anyType switch
             {
-                { SymbolReference: { Symbol: Callback c } } => AddNamespace(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
-                { SymbolReference: { Symbol: Record r } } => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), Target.Managed),
-                { SymbolReference: { Symbol: Union u } } => AddNamespace(currentNamespace, u.Namespace, u.GetMetadataString("Name"), Target.Managed),
+                { TypeReference: { ResolvedType: Callback c } } => AddNamespace(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
+                { TypeReference: { ResolvedType: Record r } } => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), Target.Managed),
+                { TypeReference: { ResolvedType: Union u } } => AddNamespace(currentNamespace, u.Namespace, u.GetMetadataString("Name"), Target.Managed),
 
-                _ => anyType.SymbolReference.Symbol.Write(Target.Managed, currentNamespace)
+                _ => anyType.TypeReference.ResolvedType.Write(Target.Managed, currentNamespace)
             };
 
             if (anyType.TypeInformation.Array is { })

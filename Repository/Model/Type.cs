@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Repository.Model
 {
-    public abstract class Symbol : SymbolReferenceProvider, Resolveable
+    public abstract class Type : TypeReferenceProvider, Resolveable
     {
         public Namespace? Namespace { get; }
         public Metadata Metadata { get; } = new();
@@ -23,14 +23,14 @@ namespace Repository.Model
         /// </summary>
         public SymbolName SymbolName { get; set; }
 
-        public Symbol(string nativeName, string managedName)
+        public Type(string nativeName, string managedName)
             : this(new CTypeName(nativeName), new TypeName(nativeName), new SymbolName(managedName)) { }
 
-        protected internal Symbol(CTypeName? ctypeName, TypeName typeName, SymbolName symbolName) : this(null, ctypeName, typeName, symbolName)
+        protected internal Type(CTypeName? ctypeName, TypeName typeName, SymbolName symbolName) : this(null, ctypeName, typeName, symbolName)
         {
         }
 
-        protected internal Symbol(Namespace? @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName)
+        protected internal Type(Namespace? @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName)
         {
             Namespace = @namespace;
             CTypeName = cTypeName;
@@ -38,8 +38,8 @@ namespace Repository.Model
             SymbolName = symbolName;
         }
 
-        public virtual IEnumerable<SymbolReference> GetSymbolReferences()
-            => Enumerable.Empty<SymbolReference>();
+        public virtual IEnumerable<TypeReference> GetTypeReferences()
+            => Enumerable.Empty<TypeReference>();
 
         public virtual bool GetIsResolved()
             => true;

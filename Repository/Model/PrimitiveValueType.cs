@@ -1,6 +1,6 @@
 ﻿namespace Repository.Model
 {
-    public abstract class PrimitiveValueType : Symbol
+    public abstract class PrimitiveValueType : Type
     {
         protected PrimitiveValueType(string nativeName, string managedName)
             : base(new CTypeName(nativeName), new TypeName(nativeName), new SymbolName(managedName))

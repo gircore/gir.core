@@ -8,29 +8,29 @@ namespace Generator
 {
     internal static class TemplateWriter
     {
-        public static string WriteClassInheritance(SymbolReference? parent, IEnumerable<SymbolReference> implements, Namespace currentNamespace)
+        public static string WriteClassInheritance(TypeReference? parent, IEnumerable<TypeReference> implements, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
             if (parent is { })
-                builder.Append(": " + parent.GetSymbol().Write(Target.Managed, currentNamespace));
+                builder.Append(": " + parent.GetResolvedType().Write(Target.Managed, currentNamespace));
 
             var refs = implements.ToList();
             if (refs.Count == 0)
                 return builder.ToString();
 
             builder.Append(parent is { } ? ", " : ": ");
-            builder.Append(string.Join(", ", refs.Select(x => x.GetSymbol().Write(Target.Managed, currentNamespace))));
+            builder.Append(string.Join(", ", refs.Select(x => x.GetResolvedType().Write(Target.Managed, currentNamespace))));
             return builder.ToString();
         }
 
-        public static string WriteInterfaceInheritance(IEnumerable<SymbolReference> implements, Namespace currentNamespace)
+        public static string WriteInterfaceInheritance(IEnumerable<TypeReference> implements, Namespace currentNamespace)
         {
             StringBuilder builder = new();
             builder.Append(": GLib.IHandle");
 
             var implementString = string.Join(
                 separator: ",",
-                values: implements.Select(x => x.Symbol?.Write(Target.Managed, currentNamespace))
+                values: implements.Select(x => x.ResolvedType?.Write(Target.Managed, currentNamespace))
             );
 
             if (!string.IsNullOrWhiteSpace(implementString))
@@ -39,10 +39,10 @@ namespace Generator
             return builder.ToString();
         }
 
-        public static string WriteNativeParent(SymbolReference? parent, Namespace currentNamespace)
+        public static string WriteNativeParent(TypeReference? parent, Namespace currentNamespace)
         {
             if (parent is { })
-                return ": " + parent.GetSymbol().Write(Target.Managed, currentNamespace) + ".Native";
+                return ": " + parent.GetResolvedType().Write(Target.Managed, currentNamespace) + ".Native";
 
             return "";
         }

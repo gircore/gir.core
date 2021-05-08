@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Repository.Model
 {
-    public class Class : Symbol
+    public class Class : Type
     {
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;
@@ -13,16 +13,16 @@ namespace Repository.Model
         private readonly List<Signal> _signals;
         public bool IsFundamental { get; }
         public Method GetTypeFunction { get; }
-        public IEnumerable<SymbolReference> Implements { get; }
+        public IEnumerable<TypeReference> Implements { get; }
         public IEnumerable<Method> Methods => _methods;
         public IEnumerable<Method> Functions => _functions;
-        public SymbolReference? Parent { get; }
+        public TypeReference? Parent { get; }
         public IEnumerable<Property> Properties => _properties;
         public IEnumerable<Field> Fields => _fields;
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Method> Constructors => _constructors;
 
-        public Class(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, SymbolReference? parent, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(@namespace, cTypeName, typeName, symbolName)
+        public Class(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(@namespace, cTypeName, typeName, symbolName)
         {
             Parent = parent;
             Implements = implements;
@@ -38,11 +38,11 @@ namespace Repository.Model
             IsFundamental = isFundamental;
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
+        public override IEnumerable<TypeReference> GetTypeReferences()
         {
             var symbolReferences = IEnumerables.Concat(
                 Implements,
-                GetTypeFunction.GetSymbolReferences(),
+                GetTypeFunction.GetTypeReferences(),
                 Constructors.GetSymbolReferences(),
                 Methods.GetSymbolReferences(),
                 Functions.GetSymbolReferences(),

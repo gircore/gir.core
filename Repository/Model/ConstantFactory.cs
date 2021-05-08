@@ -4,12 +4,12 @@ namespace Repository.Model
 {
     internal class ConstantFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly IdentifierConverter _identifierConverter;
 
-        public ConstantFactory(SymbolReferenceFactory symbolReferenceFactory, IdentifierConverter identifierConverter)
+        public ConstantFactory(TypeReferenceFactory typeReferenceFactory, IdentifierConverter identifierConverter)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
             _identifierConverter = identifierConverter;
         }
 
@@ -24,7 +24,7 @@ namespace Repository.Model
             return new Constant(
                 elementName: new ElementName(_identifierConverter.EscapeIdentifier(constant.Name)),
                 symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(constant.Name)),
-                symbolReference: _symbolReferenceFactory.Create(constant, currentNamespace),
+                typeReference: _typeReferenceFactory.Create(constant, currentNamespace),
                 value: constant.Value
             );
         }

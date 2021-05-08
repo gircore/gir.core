@@ -2,18 +2,19 @@
 using Repository.Model;
 using Array = System.Array;
 using String = Repository.Model.String;
+using Type = Repository.Model.Type;
 
 namespace Generator
 {
     internal static class Convert
     {
-        internal static string ManagedToNative(string fromParam, Symbol symbol, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
+        internal static string ManagedToNative(string fromParam, Type type, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
         {
             // TODO: We need to support disguised structs (opaque types)
-            var qualifiedNativeType = symbol.Write(Target.Native, currentNamespace);
-            var qualifiedManagedType = symbol.Write(Target.Managed, currentNamespace);
+            var qualifiedNativeType = type.Write(Target.Native, currentNamespace);
+            var qualifiedManagedType = type.Write(Target.Managed, currentNamespace);
 
-            return (symbol, typeInfo) switch
+            return (symbol: type, typeInfo) switch
             {
                 // String Handling
                 // String Arrays which do not have a length index need to be marshalled as IntPtr
@@ -37,12 +38,12 @@ namespace Generator
             };
         }
 
-        internal static string NativeToManaged(string fromParam, Symbol symbol, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
+        internal static string NativeToManaged(string fromParam, Type type, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
         {
             // TODO: We need to support disguised structs (opaque types)
-            var qualifiedType = symbol.Write(Target.Managed, currentNamespace);
+            var qualifiedType = type.Write(Target.Managed, currentNamespace);
 
-            return (symbol, typeInfo) switch
+            return (symbol: type, typeInfo) switch
             {
                 // String Handling
                 (String s, { Array: { } }) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",

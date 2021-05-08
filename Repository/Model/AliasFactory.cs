@@ -4,11 +4,11 @@ namespace Repository.Model
 {
     internal class AliasFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
 
-        public AliasFactory(SymbolReferenceFactory symbolReferenceFactory)
+        public AliasFactory(TypeReferenceFactory typeReferenceFactory)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
         }
 
         public Alias Create(Xml.Alias alias, Namespace @namespace)
@@ -25,7 +25,7 @@ namespace Repository.Model
             return new Alias(
                 elementName: new ElementName(alias.Type),
                 symbolName: new SymbolName(alias.Name),
-                symbolReference: _symbolReferenceFactory.Create(alias.For, @namespace.Name),
+                typeReference: _typeReferenceFactory.Create(alias.For, @namespace.Name),
                 @namespace: @namespace
             );
         }

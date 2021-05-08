@@ -6,7 +6,7 @@ namespace Generator
     {
         public static string WriteManaged(this Constant constant)
         {
-            var type = constant.SymbolReference.GetSymbol().SymbolName;
+            var type = constant.TypeReference.GetResolvedType().SymbolName;
 
             var value = type switch
             {

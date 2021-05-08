@@ -2,38 +2,38 @@
 
 namespace Repository.Model
 {
-    public class SymbolReference : Resolveable
+    public class TypeReference : Resolveable
     {
         #region Properties
 
-        public Symbol? Symbol { get; private set; }
+        public Type? ResolvedType { get; private set; }
         public NamespaceName? NamespaceName { get; }
         public CTypeName? CTypeName { get; }
         public TypeName? TypeName { get; }
 
         #endregion
 
-        public SymbolReference(TypeName? typeName, CTypeName? ctypeName, NamespaceName? namespaceName)
+        public TypeReference(TypeName? typeName, CTypeName? ctypeName, NamespaceName? namespaceName)
         {
             CTypeName = ctypeName;
             TypeName = typeName;
             NamespaceName = namespaceName;
         }
 
-        public Symbol GetSymbol()
+        public Type GetResolvedType()
         {
-            if (Symbol is null)
+            if (ResolvedType is null)
                 throw new InvalidOperationException($"The symbolreference for {TypeName} has not been resolved.");
 
-            return Symbol;
+            return ResolvedType;
         }
 
-        public void ResolveAs(Symbol symbol)
+        public void ResolveAs(Type type)
         {
-            Symbol = symbol;
+            ResolvedType = type;
         }
 
         public bool GetIsResolved()
-            => Symbol is { };
+            => ResolvedType is { };
     }
 }

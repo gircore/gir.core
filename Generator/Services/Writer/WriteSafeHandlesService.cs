@@ -46,7 +46,7 @@ namespace Generator.Services.Writer
 
         private string GetFolder(Record record)
         {
-            return record.GLibClassStructFor?.GetSymbol() switch
+            return record.GLibClassStructFor?.GetResolvedType() switch
             {
                 Class => Folder.Native.Classes,
                 Interface => Folder.Native.Interfaces,

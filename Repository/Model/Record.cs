@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Repository.Model
 {
-    public class Record : Symbol
+    public class Record : Type
     {
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;
@@ -18,9 +18,9 @@ namespace Repository.Model
         public IEnumerable<Method> Methods => _methods;
         public IEnumerable<Method> Constructors => _constructors;
         public IEnumerable<Method> Functions => _functions;
-        public SymbolReference? GLibClassStructFor { get; }
+        public TypeReference? GLibClassStructFor { get; }
 
-        public Record(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, SymbolReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(@namespace, cTypeName, typeName, symbolName)
+        public Record(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(@namespace, cTypeName, typeName, symbolName)
         {
             GLibClassStructFor = gLibClassStructFor;
             GetTypeFunction = getTypeFunction;
@@ -32,7 +32,7 @@ namespace Repository.Model
             this._fields = fields.ToList();
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
+        public override IEnumerable<TypeReference> GetTypeReferences()
         {
             var symbolReferences = IEnumerables.Concat(
                 Constructors.GetSymbolReferences(),
@@ -42,7 +42,7 @@ namespace Repository.Model
             );
 
             if (GetTypeFunction is { })
-                symbolReferences = symbolReferences.Concat(GetTypeFunction.GetSymbolReferences());
+                symbolReferences = symbolReferences.Concat(GetTypeFunction.GetTypeReferences());
 
             if (GLibClassStructFor is { })
                 symbolReferences = symbolReferences.Append(GLibClassStructFor);

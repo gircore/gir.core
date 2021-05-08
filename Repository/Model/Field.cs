@@ -4,7 +4,7 @@ namespace Repository.Model
 {
     public class Field : Element, AnyType
     {
-        public SymbolReference SymbolReference { get; }
+        public TypeReference TypeReference { get; }
         public TypeInformation TypeInformation { get; }
 
         public Callback? Callback { get; }
@@ -15,15 +15,15 @@ namespace Repository.Model
         /// Creates a new field.
         /// </summary>
         /// <param name="symbolName"></param>
-        /// <param name="symbolReference"></param>
+        /// <param name="typeReference"></param>
         /// <param name="typeInformation"></param>
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
         /// <param name="readable"></param>
         /// <param name="private"></param>
         /// <param name="elementName"></param>
-        public Field(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, TypeInformation typeInformation, Callback? callback = null, bool readable = true, bool @private = false) : base(elementName, symbolName)
+        public Field(ElementName elementName, SymbolName symbolName, TypeReference typeReference, TypeInformation typeInformation, Callback? callback = null, bool readable = true, bool @private = false) : base(elementName, symbolName)
         {
-            SymbolReference = symbolReference;
+            TypeReference = typeReference;
             TypeInformation = typeInformation;
             Callback = callback;
             Readable = readable;
@@ -37,10 +37,10 @@ namespace Repository.Model
             if (Callback is null)
                 return;
 
-            SymbolReference.ResolveAs(Callback);
+            TypeReference.ResolveAs(Callback);
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
+        public override IEnumerable<TypeReference> GetTypeReferences()
         {
             // If the callback is not null this means the symbol reference
             // of this field was already resolved automatically. Meaning we
@@ -51,12 +51,12 @@ namespace Repository.Model
             // and must be returned to get resolved.
 
             if (Callback is not null)
-                return Callback.GetSymbolReferences();
+                return Callback.GetTypeReferences();
             else
-                return new List<SymbolReference>() { SymbolReference };
+                return new List<TypeReference>() { TypeReference };
         }
 
         public override bool GetIsResolved()
-            => SymbolReference.GetIsResolved() && (Callback?.GetIsResolved() ?? true);
+            => TypeReference.GetIsResolved() && (Callback?.GetIsResolved() ?? true);
     }
 }

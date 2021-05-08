@@ -4,13 +4,13 @@ namespace Repository.Model
 {
     internal class InterfaceFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly MethodFactory _methodFactory;
         private readonly PropertyFactory _propertyFactory;
 
-        public InterfaceFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory)
+        public InterfaceFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
             _methodFactory = methodFactory;
             _propertyFactory = propertyFactory;
         }
@@ -35,7 +35,7 @@ namespace Repository.Model
                 typeName: new TypeName(@interface.Name),
                 cTypeName: ctypeName,
                 symbolName: new SymbolName(@interface.Name),
-                implements: _symbolReferenceFactory.Create(@interface.Implements, @namespace.Name),
+                implements: _typeReferenceFactory.Create(@interface.Implements, @namespace.Name),
                 methods: _methodFactory.Create(@interface.Methods, @namespace),
                 functions: _methodFactory.Create(@interface.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(@interface.GetTypeFunction),

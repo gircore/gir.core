@@ -9,7 +9,7 @@ namespace Repository.Services
     {
         public static void Resolve(IEnumerable<Namespace> namespaces)
         {
-            var symbolDictionary = new SymbolDictionary();
+            var symbolDictionary = new TypeDictionary();
 
             var namespaceList = namespaces.ToList();
             foreach (var ns in namespaceList)
@@ -24,93 +24,93 @@ namespace Repository.Services
             }
         }
 
-        private static void FillSymbolDictionary(SymbolDictionary symbolDictionary, Namespace @namespace)
+        private static void FillSymbolDictionary(TypeDictionary typeDictionary, Namespace @namespace)
         {
-            AddFundamentalTypes(symbolDictionary);
+            AddFundamentalTypes(typeDictionary);
 
-            symbolDictionary.AddSymbols(@namespace.Classes);
-            symbolDictionary.AddSymbols(@namespace.Interfaces);
-            symbolDictionary.AddSymbols(@namespace.Callbacks);
-            symbolDictionary.AddSymbols(@namespace.Enumerations);
-            symbolDictionary.AddSymbols(@namespace.Bitfields);
-            symbolDictionary.AddSymbols(@namespace.Records);
-            symbolDictionary.AddSymbols(@namespace.Unions);
+            typeDictionary.AddTypes(@namespace.Classes);
+            typeDictionary.AddTypes(@namespace.Interfaces);
+            typeDictionary.AddTypes(@namespace.Callbacks);
+            typeDictionary.AddTypes(@namespace.Enumerations);
+            typeDictionary.AddTypes(@namespace.Bitfields);
+            typeDictionary.AddTypes(@namespace.Records);
+            typeDictionary.AddTypes(@namespace.Unions);
         }
 
-        private static void ResolveReferences(SymbolDictionary symbolDictionary, Namespace ns)
+        private static void ResolveReferences(TypeDictionary typeDictionary, Namespace ns)
         {
-            foreach (var reference in ns.GetSymbolReferences())
+            foreach (var reference in ns.GetTypeReferences())
             {
-                Resolve(symbolDictionary, reference);
+                Resolve(typeDictionary, reference);
             }
         }
 
-        private static void Resolve(SymbolDictionary symbolDictionary, SymbolReference reference)
+        private static void Resolve(TypeDictionary typeDictionary, TypeReference reference)
         {
-            if (symbolDictionary.TryLookup(reference, out var symbol))
+            if (typeDictionary.TryLookup(reference, out var symbol))
                 reference.ResolveAs(symbol);
         }
 
-        private static void AddFundamentalTypes(SymbolDictionary symbolDictionary)
+        private static void AddFundamentalTypes(TypeDictionary typeDictionary)
         {
-            symbolDictionary.AddSymbol(new Void("none"));
-            symbolDictionary.AddSymbol(new Void("void"));
+            typeDictionary.AddType(new Void("none"));
+            typeDictionary.AddType(new Void("void"));
 
-            symbolDictionary.AddSymbol(new Boolean("gboolean"));
+            typeDictionary.AddType(new Boolean("gboolean"));
 
-            symbolDictionary.AddSymbol(new Float("gfloat"));
-            symbolDictionary.AddSymbol(new Float("float"));
+            typeDictionary.AddType(new Float("gfloat"));
+            typeDictionary.AddType(new Float("float"));
 
-            symbolDictionary.AddSymbol(new Pointer("any"));
-            symbolDictionary.AddSymbol(new Pointer("gconstpointer"));
-            symbolDictionary.AddSymbol(new Pointer("va_list"));
-            symbolDictionary.AddSymbol(new Pointer("gpointer"));
-            symbolDictionary.AddSymbol(new Pointer("tm"));
+            typeDictionary.AddType(new Pointer("any"));
+            typeDictionary.AddType(new Pointer("gconstpointer"));
+            typeDictionary.AddType(new Pointer("va_list"));
+            typeDictionary.AddType(new Pointer("gpointer"));
+            typeDictionary.AddType(new Pointer("tm"));
 
             // TODO: Should we use UIntPtr here? Non-CLR compliant
-            symbolDictionary.AddSymbol(new UnsignedPointer("guintptr"));
+            typeDictionary.AddType(new UnsignedPointer("guintptr"));
 
-            symbolDictionary.AddSymbol(new UnsignedShort("guint16"));
-            symbolDictionary.AddSymbol(new UnsignedShort("gushort"));
+            typeDictionary.AddType(new UnsignedShort("guint16"));
+            typeDictionary.AddType(new UnsignedShort("gushort"));
 
-            symbolDictionary.AddSymbol(new Short("gint16"));
-            symbolDictionary.AddSymbol(new Short("gshort"));
+            typeDictionary.AddType(new Short("gint16"));
+            typeDictionary.AddType(new Short("gshort"));
 
-            symbolDictionary.AddSymbol(new Double("double"));
-            symbolDictionary.AddSymbol(new Double("gdouble"));
-            symbolDictionary.AddSymbol(new Double("long double"));
+            typeDictionary.AddType(new Double("double"));
+            typeDictionary.AddType(new Double("gdouble"));
+            typeDictionary.AddType(new Double("long double"));
 
-            symbolDictionary.AddSymbol(new Integer("int"));
-            symbolDictionary.AddSymbol(new Integer("gint"));
-            symbolDictionary.AddSymbol(new Integer("gint32"));
-            symbolDictionary.AddSymbol(new Integer("pid_t"));
+            typeDictionary.AddType(new Integer("int"));
+            typeDictionary.AddType(new Integer("gint"));
+            typeDictionary.AddType(new Integer("gint32"));
+            typeDictionary.AddType(new Integer("pid_t"));
 
-            symbolDictionary.AddSymbol(new UnsignedInteger("unsigned int"));
-            symbolDictionary.AddSymbol(new UnsignedInteger("unsigned"));
-            symbolDictionary.AddSymbol(new UnsignedInteger("guint"));
-            symbolDictionary.AddSymbol(new UnsignedInteger("guint32"));
-            symbolDictionary.AddSymbol(new UnsignedInteger("gunichar"));
-            symbolDictionary.AddSymbol(new UnsignedInteger("uid_t"));
+            typeDictionary.AddType(new UnsignedInteger("unsigned int"));
+            typeDictionary.AddType(new UnsignedInteger("unsigned"));
+            typeDictionary.AddType(new UnsignedInteger("guint"));
+            typeDictionary.AddType(new UnsignedInteger("guint32"));
+            typeDictionary.AddType(new UnsignedInteger("gunichar"));
+            typeDictionary.AddType(new UnsignedInteger("uid_t"));
 
-            symbolDictionary.AddSymbol(new Byte("guchar"));
-            symbolDictionary.AddSymbol(new Byte("guint8"));
+            typeDictionary.AddType(new Byte("guchar"));
+            typeDictionary.AddType(new Byte("guint8"));
 
-            symbolDictionary.AddSymbol(new SignedByte("gchar"));
-            symbolDictionary.AddSymbol(new SignedByte("char"));
-            symbolDictionary.AddSymbol(new SignedByte("gint8"));
+            typeDictionary.AddType(new SignedByte("gchar"));
+            typeDictionary.AddType(new SignedByte("char"));
+            typeDictionary.AddType(new SignedByte("gint8"));
 
-            symbolDictionary.AddSymbol(new Long("glong"));
-            symbolDictionary.AddSymbol(new Long("gssize"));
-            symbolDictionary.AddSymbol(new Long("gint64"));
-            symbolDictionary.AddSymbol(new Long("goffset"));
-            symbolDictionary.AddSymbol(new Long("time_t"));
+            typeDictionary.AddType(new Long("glong"));
+            typeDictionary.AddType(new Long("gssize"));
+            typeDictionary.AddType(new Long("gint64"));
+            typeDictionary.AddType(new Long("goffset"));
+            typeDictionary.AddType(new Long("time_t"));
 
-            symbolDictionary.AddSymbol(new NativeUnsignedInteger("gsize"));
-            symbolDictionary.AddSymbol(new UnsignedLong("guint64"));
-            symbolDictionary.AddSymbol(new UnsignedLong("gulong"));
+            typeDictionary.AddType(new NativeUnsignedInteger("gsize"));
+            typeDictionary.AddType(new UnsignedLong("guint64"));
+            typeDictionary.AddType(new UnsignedLong("gulong"));
 
-            symbolDictionary.AddSymbol(new Utf8String());
-            symbolDictionary.AddSymbol(new PlatformString());
+            typeDictionary.AddType(new Utf8String());
+            typeDictionary.AddType(new PlatformString());
         }
     }
 }

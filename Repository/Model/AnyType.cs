@@ -6,7 +6,7 @@
     }
     public interface AnyType
     {
-        SymbolReference SymbolReference { get; }
+        TypeReference TypeReference { get; }
         TypeInformation TypeInformation { get; }
     }
 }

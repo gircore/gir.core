@@ -5,15 +5,15 @@ namespace Repository.Model
 {
     internal class InstanceParameterFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly TransferFactory _transferFactory;
         private readonly IdentifierConverter _identifierConverter;
         private readonly CaseConverter _caseConverter;
         private readonly TypeInformationFactory _typeInformationFactory;
 
-        public InstanceParameterFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
+        public InstanceParameterFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
             _transferFactory = transferFactory;
             _identifierConverter = identifierConverter;
             _caseConverter = caseConverter;
@@ -31,7 +31,7 @@ namespace Repository.Model
             return new InstanceParameter(
                 elementName: elementName,
                 symbolName: elementManagedName,
-                symbolReference: _symbolReferenceFactory.Create(parameterInfo, currentNamespace),
+                typeReference: _typeReferenceFactory.Create(parameterInfo, currentNamespace),
                 direction: DirectionFactory.Create(parameterInfo.Direction),
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
                 nullable: parameterInfo.Nullable,

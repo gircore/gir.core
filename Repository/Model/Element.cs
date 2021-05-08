@@ -2,7 +2,7 @@
 
 namespace Repository.Model
 {
-    public abstract class Element : SymbolReferenceProvider, Resolveable
+    public abstract class Element : TypeReferenceProvider, Resolveable
     {
         /// <summary>
         /// Original name of the element
@@ -16,7 +16,7 @@ namespace Repository.Model
             SymbolName = symbolName;
         }
 
-        public abstract IEnumerable<SymbolReference> GetSymbolReferences();
+        public abstract IEnumerable<TypeReference> GetTypeReferences();
         public abstract bool GetIsResolved();
 
         public override string ToString()

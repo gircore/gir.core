@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Repository.Model
 {
-    public class Enumeration : Symbol
+    public class Enumeration : Type
     {
         public bool HasFlags { get; }
         public IEnumerable<Member> Members { get; }
@@ -14,8 +14,8 @@ namespace Repository.Model
             Members = members;
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
-            => Members.SelectMany(x => x.GetSymbolReferences());
+        public override IEnumerable<TypeReference> GetTypeReferences()
+            => Members.SelectMany(x => x.GetTypeReferences());
 
         public override bool GetIsResolved()
             => Members.AllResolved();

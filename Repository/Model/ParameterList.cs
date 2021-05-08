@@ -9,12 +9,12 @@ namespace Repository.Model
 
         public IEnumerable<SingleParameter> SingleParameters { get; init; } = Enumerable.Empty<SingleParameter>();
 
-        public IEnumerable<SymbolReference> GetSymbolReferences()
+        public IEnumerable<TypeReference> GetSymbolReferences()
         {
             var ret = SingleParameters.GetSymbolReferences();
 
             if (InstanceParameter is { })
-                ret = ret.Append(InstanceParameter.SymbolReference);
+                ret = ret.Append(InstanceParameter.TypeReference);
 
             return ret;
         }

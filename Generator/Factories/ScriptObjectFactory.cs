@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Generator.Properties;
 using Generator.Services.Writer;
 using Repository;
-using Repository.Analysis;
 using Repository.Model;
 using Scriban.Runtime;
 
@@ -29,9 +28,9 @@ namespace Generator.Factories
         public ScriptObject CreateComplex(Namespace currentNamespace)
         {
             var scriptObject = CreateBase(currentNamespace);
-            scriptObject.Import("write_class_inheritance", new Func<SymbolReference?, IEnumerable<SymbolReference>, string>((s, l) => TemplateWriter.WriteClassInheritance(s, l, currentNamespace)));
-            scriptObject.Import("write_iface_inheritance", new Func<IEnumerable<SymbolReference>, string>(l => TemplateWriter.WriteInterfaceInheritance(l, currentNamespace)));
-            scriptObject.Import("write_native_parent", new Func<SymbolReference?, string>(s => TemplateWriter.WriteNativeParent(s, currentNamespace)));
+            scriptObject.Import("write_class_inheritance", new Func<TypeReference?, IEnumerable<TypeReference>, string>((s, l) => TemplateWriter.WriteClassInheritance(s, l, currentNamespace)));
+            scriptObject.Import("write_iface_inheritance", new Func<IEnumerable<TypeReference>, string>(l => TemplateWriter.WriteInterfaceInheritance(l, currentNamespace)));
+            scriptObject.Import("write_native_parent", new Func<TypeReference?, string>(s => TemplateWriter.WriteNativeParent(s, currentNamespace)));
             scriptObject.Import("write_native_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
             scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
             scriptObject.Import("write_signal_args_properties", new Func<ParameterList, string>(a => a.WriteSignalArgsProperties(currentNamespace)));
@@ -43,13 +42,13 @@ namespace Generator.Factories
             return scriptObject;
         }
 
-        public ScriptObject CreateComplexForSymbol(Namespace currentNamespace, Symbol symbol)
+        public ScriptObject CreateComplexForSymbol(Namespace currentNamespace, Repository.Model.Type type)
         {
             var scriptObject = CreateComplex(currentNamespace);
-            scriptObject.Import(symbol);
+            scriptObject.Import(type);
             //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
-            scriptObject.Import("get_metadata", new Func<string, object?>(key => symbol.Metadata[key]));
-            scriptObject.Import("write_managed_property_descriptor", new Func<Property, string>(p => PropertyGenerator.WriteDescriptor(p, symbol, currentNamespace)));
+            scriptObject.Import("get_metadata", new Func<string, object?>(key => type.Metadata[key]));
+            scriptObject.Import("write_managed_property_descriptor", new Func<Property, string>(p => PropertyGenerator.WriteDescriptor(p, type, currentNamespace)));
             scriptObject.Import("write_managed_property", new Func<Property, string>(p => PropertyGenerator.WriteProperty(p, currentNamespace)));
             return scriptObject;
         }

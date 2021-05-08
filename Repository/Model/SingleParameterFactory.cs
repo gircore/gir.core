@@ -4,15 +4,15 @@ namespace Repository.Model
 {
     internal class SingleParameterFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly TransferFactory _transferFactory;
         private readonly IdentifierConverter _identifierConverter;
         private readonly CaseConverter _caseConverter;
         private readonly TypeInformationFactory _typeInformationFactory;
 
-        public SingleParameterFactory(SymbolReferenceFactory symbolReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
+        public SingleParameterFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory, IdentifierConverter identifierConverter, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
             _transferFactory = transferFactory;
             _identifierConverter = identifierConverter;
             _caseConverter = caseConverter;
@@ -40,7 +40,7 @@ namespace Repository.Model
             return new SingleParameter(
                 elementName: elementName,
                 symbolName: elementManagedName,
-                symbolReference: _symbolReferenceFactory.Create(parameter, currentNamespace),
+                typeReference: _typeReferenceFactory.Create(parameter, currentNamespace),
                 direction: DirectionFactory.Create(parameter.Direction),
                 transfer: _transferFactory.FromText(parameter.TransferOwnership),
                 nullable: parameter.Nullable,

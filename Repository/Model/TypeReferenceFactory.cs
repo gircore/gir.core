@@ -4,18 +4,18 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Repository.Model
 {
-    internal class SymbolReferenceFactory
+    internal class TypeReferenceFactory
     {
-        public SymbolReference Create(string? type, string? ctype, NamespaceName currentNamespace)
+        public TypeReference Create(string? type, string? ctype, NamespaceName currentNamespace)
         {
-            return new SymbolReference(
+            return new TypeReference(
                 typeName: GetType(type),
                 ctypeName: GetCType(ctype),
                 namespaceName: GetNamespace(type, currentNamespace)
             );
         }
 
-        public SymbolReference Create(Xml.AnyType anyType, NamespaceName currentNamespace)
+        public TypeReference Create(Xml.AnyType anyType, NamespaceName currentNamespace)
         {
             if (TryCreate(anyType?.Type, currentNamespace, out var type))
                 return type;
@@ -26,7 +26,7 @@ namespace Repository.Model
             return Create("void", "none", currentNamespace);
         }
 
-        public SymbolReference Create(Xml.Type type, NamespaceName currentNamespace)
+        public TypeReference Create(Xml.Type type, NamespaceName currentNamespace)
         {
             if (TryCreate(type, currentNamespace, out var symbolReference))
                 return symbolReference;
@@ -34,20 +34,20 @@ namespace Repository.Model
             throw new Exception("Could not create SymbolReference vrom TypeInfo");
         }
 
-        private bool TryCreate(Xml.Type? type, NamespaceName currentNamespace, [MaybeNullWhen(false)] out SymbolReference symbolReference)
+        private bool TryCreate(Xml.Type? type, NamespaceName currentNamespace, [MaybeNullWhen(false)] out TypeReference typeReference)
         {
-            symbolReference = null;
+            typeReference = null;
 
             if (type is null)
                 return false;
 
-            symbolReference = Create(type.Name, type.CType, currentNamespace);
+            typeReference = Create(type.Name, type.CType, currentNamespace);
             return true;
         }
 
-        public IEnumerable<SymbolReference> Create(IEnumerable<Xml.Implement> implements, NamespaceName currentNamespace)
+        public IEnumerable<TypeReference> Create(IEnumerable<Xml.Implement> implements, NamespaceName currentNamespace)
         {
-            var list = new List<SymbolReference>();
+            var list = new List<TypeReference>();
 
             foreach (Xml.Implement implement in implements)
             {
