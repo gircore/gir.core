@@ -2,7 +2,7 @@
 
 namespace Repository.Model
 {
-    public class Property : Element, TransferableType
+    public class Property : Element, TransferableAnyType
     {
         public Transfer Transfer { get; }
         public bool Writeable { get; }

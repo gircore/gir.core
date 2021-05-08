@@ -2,24 +2,23 @@
 using Repository;
 using Repository.Model;
 using String = Repository.Model.String;
-using Type = Repository.Model.Type;
 
 namespace Generator
 {
-    internal static class TypeExtension
+    internal static class AnyTypeExtension
     {
-        internal static string WriteType(this Type type, Target target, Namespace currentNamespace, bool useSafeHandle = true)
+        internal static string WriteType(this AnyType anyType, Target target, Namespace currentNamespace, bool useSafeHandle = true)
         {
             return target switch
             {
-                Target.Managed => WriteManagedType(type, currentNamespace, useSafeHandle),
-                Target.Native => WriteNativeType(type, currentNamespace, useSafeHandle)
+                Target.Managed => WriteManagedType(anyType, currentNamespace, useSafeHandle),
+                Target.Native => WriteNativeType(anyType, currentNamespace, useSafeHandle)
             };
         }
 
-        private static string WriteNativeType(Type type, Namespace currentNamespace, bool useSafeHandle = true)
+        private static string WriteNativeType(AnyType anyType, Namespace currentNamespace, bool useSafeHandle = true)
         {
-            return type switch
+            return anyType switch
             {
                 { SymbolReference: { Symbol: Callback c } } => c.Write(Target.Native, currentNamespace),
 
@@ -28,7 +27,7 @@ namespace Generator
                 ReturnValue { Transfer: Transfer.None, SymbolReference: { Symbol: String } } => "IntPtr",
 
                 // Arrays of string which do not transfer ownership and have no length index can not be marshalled automatically
-                TransferableType { TypeInformation: { Array: { Length: null } }, SymbolReference: { Symbol: String }, Transfer: Transfer.None } => "IntPtr",
+                TransferableAnyType { TypeInformation: { Array: { Length: null } }, SymbolReference: { Symbol: String }, Transfer: Transfer.None } => "IntPtr",
 
                 // Arrays of string can be marshalled automatically, no IntPtr needed
                 { TypeInformation: { Array: { } }, SymbolReference: { Symbol: String } } => "string[]",
@@ -58,23 +57,23 @@ namespace Generator
                 { TypeInformation: { IsPointer: true, Array: { Length: not null } } } => "IntPtr[]",
                 { TypeInformation: { IsPointer: true } } => "IntPtr",
 
-                { TypeInformation: { Array: { } } } => type.SymbolReference.Symbol.Write(Target.Native, currentNamespace) + "[]",
-                _ => type.SymbolReference.Symbol.Write(Target.Native, currentNamespace)
+                { TypeInformation: { Array: { } } } => anyType.SymbolReference.Symbol.Write(Target.Native, currentNamespace) + "[]",
+                _ => anyType.SymbolReference.Symbol.Write(Target.Native, currentNamespace)
             };
         }
 
-        private static string WriteManagedType(Type type, Namespace currentNamespace, bool useSafeHandle = true)
+        private static string WriteManagedType(AnyType anyType, Namespace currentNamespace, bool useSafeHandle = true)
         {
-            var result = type switch
+            var result = anyType switch
             {
                 { SymbolReference: { Symbol: Callback c } } => AddNamespace(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
                 { SymbolReference: { Symbol: Record r } } => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), Target.Managed),
                 { SymbolReference: { Symbol: Union u } } => AddNamespace(currentNamespace, u.Namespace, u.GetMetadataString("Name"), Target.Managed),
 
-                _ => type.SymbolReference.Symbol.Write(Target.Managed, currentNamespace)
+                _ => anyType.SymbolReference.Symbol.Write(Target.Managed, currentNamespace)
             };
 
-            if (type.TypeInformation.Array is { })
+            if (anyType.TypeInformation.Array is { })
                 result += "[]";
 
             return result;

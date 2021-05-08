@@ -2,7 +2,7 @@
 
 namespace Repository.Model
 {
-    public class ReturnValue : Type, SymbolReferenceProvider
+    public class ReturnValue : AnyType, SymbolReferenceProvider
     {
         public Transfer Transfer { get; }
         public bool Nullable { get; }

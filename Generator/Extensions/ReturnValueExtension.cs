@@ -1,5 +1,4 @@
 ﻿using Repository.Model;
-using Type = Repository.Model.Type;
 
 namespace Generator
 {

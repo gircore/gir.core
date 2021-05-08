@@ -1,10 +1,10 @@
 ﻿namespace Repository.Model
 {
-    public interface TransferableType : Type
+    public interface TransferableAnyType : AnyType
     {
         Transfer Transfer { get; }
     }
-    public interface Type
+    public interface AnyType
     {
         SymbolReference SymbolReference { get; }
         TypeInformation TypeInformation { get; }

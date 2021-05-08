@@ -2,7 +2,7 @@
 
 namespace Repository.Model
 {
-    public class Field : Element, Type
+    public class Field : Element, AnyType
     {
         public SymbolReference SymbolReference { get; }
         public TypeInformation TypeInformation { get; }
