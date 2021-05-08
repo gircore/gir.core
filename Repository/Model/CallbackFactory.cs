@@ -1,5 +1,4 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -16,25 +15,25 @@ namespace Repository.Model
             _caseConverter = caseConverter;
         }
 
-        public Callback Create(CallbackInfo callbackInfo, Namespace @namespace)
+        public Callback Create(Xml.Callback callback, Namespace @namespace)
         {
-            if (callbackInfo.Name is null)
+            if (callback.Name is null)
                 throw new Exception("Callback is missing a name");
 
-            if (callbackInfo.ReturnValue is null)
-                throw new Exception($"Callback {callbackInfo.Name} is  missing a return value");
+            if (callback.ReturnValue is null)
+                throw new Exception($"Callback {callback.Name} is  missing a return value");
 
             CTypeName? cTypeName = null;
-            if (callbackInfo.Type is { })
-                cTypeName = new CTypeName(callbackInfo.Type);
+            if (callback.Type is { })
+                cTypeName = new CTypeName(callback.Type);
 
             return new Callback(
                 @namespace: @namespace,
                 ctypeName: cTypeName,
-                typeName: new TypeName(callbackInfo.Name),
-                symbolName: new SymbolName(_caseConverter.ToPascal(callbackInfo.Name)),
-                returnValue: _returnValueFactory.Create(callbackInfo.ReturnValue, @namespace.Name),
-                parameterList: _parameterListFactory.Create(callbackInfo.Parameters, @namespace.Name)
+                typeName: new TypeName(callback.Name),
+                symbolName: new SymbolName(_caseConverter.ToPascal(callback.Name)),
+                returnValue: _returnValueFactory.Create(callback.ReturnValue, @namespace.Name),
+                parameterList: _parameterListFactory.Create(callback.Parameters, @namespace.Name)
             );
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class FieldInfo : Typed
+    public class Field : Typed
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -20,15 +20,15 @@ namespace Repository.Xml
         public int Bits { get; set; }
 
         [XmlElement("callback")]
-        public CallbackInfo? Callback { get; set; }
+        public Callback? Callback { get; set; }
 
         [XmlElement("type")]
-        public TypeInfo? Type { get; set; }
+        public Type? Type { get; set; }
 
         [XmlElement("array")]
-        public ArrayInfo? Array { get; set; }
+        public Array? Array { get; set; }
 
         [XmlElement("doc")]
-        public DocInfo? Doc { get; set; }
+        public Doc? Doc { get; set; }
     }
 }

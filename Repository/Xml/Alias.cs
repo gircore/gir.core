@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class AliasInfo
+    public class Alias
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -11,9 +11,9 @@ namespace Repository.Xml
         public string? Type { get; set; }
 
         [XmlElement("doc")]
-        public DocInfo? Doc { get; set; }
+        public Doc? Doc { get; set; }
 
         [XmlElement("type")]
-        public TypeInfo? For { get; set; }
+        public Type? For { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class TypeInfo
+    public class Type
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Repository.Xml
 {
-    public class VarArgsInfo
+    public class VarArgs
     {
     }
 }

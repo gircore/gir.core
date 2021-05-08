@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class MemberInfo
+    public class Constant : Typed
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -10,10 +10,13 @@ namespace Repository.Xml
         [XmlAttribute("value")]
         public string? Value { get; set; }
 
-        [XmlAttribute("identifier", Namespace = "http://www.gtk.org/introspection/c/1.0")]
-        public string? Identifier { get; set; }
+        [XmlElement("type")]
+        public Type? Type { get; set; }
+
+        [XmlElement("array")]
+        public Array? Array { get; set; }
 
         [XmlElement("doc")]
-        public DocInfo? Doc { get; set; }
+        public Doc? Doc { get; set; }
     }
 }

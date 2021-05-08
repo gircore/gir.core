@@ -1,5 +1,4 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -22,7 +21,7 @@ namespace Repository.Model
             );
         }
 
-        public TypeInformation Create(Typed typed)
+        public TypeInformation Create(Xml.Typed typed)
         {
             return new TypeInformation(
                 array: _arrayFactory.Create(typed.Array),
@@ -32,14 +31,14 @@ namespace Repository.Model
             );
         }
 
-        private bool IsPointer(Typed typed)
+        private bool IsPointer(Xml.Typed typed)
         {
             return typed switch
             {
                 { Type: { } t } => GetIsPointer(t.Name, t.CType),
                 { Array: { Type: { } t } } => GetIsPointer(t.Name, t.CType),
-                { Array: { Array: { } } } => true,
-                FieldInfo { Callback: { } } => false, //Callbacks are no pointer as they are handled as delegates
+                { Array: { SubArray: { } } } => true,
+                Xml.Field { Callback: { } } => false, //Callbacks are no pointer as they are handled as delegates
                 _ => throw new Exception("Can not get pointer information from type: " + typed)
             };
         }
@@ -56,7 +55,7 @@ namespace Repository.Model
             };
         }
 
-        private bool IsVolatile(Typed typed)
+        private bool IsVolatile(Xml.Typed typed)
         {
             if (typed.Array is { })
                 return GetIsVolatile(typed.Array?.Type?.CType);
@@ -67,7 +66,7 @@ namespace Repository.Model
         private bool GetIsVolatile(string? ctype)
             => ctype?.Contains("volatile") ?? false;
 
-        private bool IsConst(Typed typed)
+        private bool IsConst(Xml.Typed typed)
         {
             if (typed.Array is { })
                 return GetIsConst(typed.Array?.Type?.CType);

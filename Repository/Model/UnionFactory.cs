@@ -1,5 +1,4 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -14,32 +13,32 @@ namespace Repository.Model
             _fieldFactory = fieldFactory;
         }
 
-        public Union Create(UnionInfo unionInfo, Namespace @namespace)
+        public Union Create(Xml.Union union, Namespace @namespace)
         {
-            if (unionInfo.Name is null)
+            if (union.Name is null)
                 throw new Exception("Union is missing a name");
 
-            Method? getTypeFunction = unionInfo.GetTypeFunction switch
+            Method? getTypeFunction = union.GetTypeFunction switch
             {
                 { } f => _methodFactory.CreateGetTypeMethod(f),
                 _ => null
             };
 
             CTypeName? cTypeName = null;
-            if (unionInfo.CType is { })
-                cTypeName = new CTypeName(unionInfo.CType);
+            if (union.CType is { })
+                cTypeName = new CTypeName(union.CType);
 
             return new Union(
                 @namespace: @namespace,
                 cTypeName: cTypeName,
-                typeName: new TypeName(unionInfo.Name),
-                symbolName: new SymbolName(unionInfo.Name),
-                methods: _methodFactory.Create(unionInfo.Methods, @namespace),
-                functions: _methodFactory.Create(unionInfo.Functions, @namespace),
+                typeName: new TypeName(union.Name),
+                symbolName: new SymbolName(union.Name),
+                methods: _methodFactory.Create(union.Methods, @namespace),
+                functions: _methodFactory.Create(union.Functions, @namespace),
                 getTypeFunction: getTypeFunction,
-                fields: _fieldFactory.Create(unionInfo.Fields, @namespace),
-                disguised: unionInfo.Disguised,
-                constructors: _methodFactory.Create(unionInfo.Constructors, @namespace)
+                fields: _fieldFactory.Create(union.Fields, @namespace),
+                disguised: union.Disguised,
+                constructors: _methodFactory.Create(union.Constructors, @namespace)
             );
         }
     }

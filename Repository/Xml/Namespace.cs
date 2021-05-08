@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    public class NamespaceInfo
+    public class Namespace
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -21,33 +21,33 @@ namespace Repository.Xml
         public string? SharedLibrary { get; set; }
 
         [XmlElement("class")]
-        public List<ClassInfo> Classes { get; set; } = default!;
+        public List<Class> Classes { get; set; } = default!;
 
         [XmlElement("interface")]
-        public List<InterfaceInfo> Interfaces { get; set; } = default!;
+        public List<Interface> Interfaces { get; set; } = default!;
 
         [XmlElement("bitfield")]
-        public List<EnumInfo> Bitfields { get; set; } = default!;
+        public List<Enum> Bitfields { get; set; } = default!;
 
         [XmlElement("enumeration")]
-        public List<EnumInfo> Enumerations { get; set; } = default!;
+        public List<Enum> Enumerations { get; set; } = default!;
 
         [XmlElement("alias")]
-        public List<AliasInfo> Aliases { get; set; } = default!;
+        public List<Alias> Aliases { get; set; } = default!;
 
         [XmlElement("callback")]
-        public List<CallbackInfo> Callbacks { get; set; } = default!;
+        public List<Callback> Callbacks { get; set; } = default!;
 
         [XmlElement("record")]
-        public List<RecordInfo> Records { get; set; } = default!;
+        public List<Record> Records { get; set; } = default!;
 
         [XmlElement("function")]
-        public List<MethodInfo> Functions { get; set; } = default!;
+        public List<Method> Functions { get; set; } = default!;
 
         [XmlElement("union")]
-        public List<UnionInfo> Unions { get; set; } = default!;
+        public List<Union> Unions { get; set; } = default!;
 
         [XmlElement("constant")]
-        public List<ConstantInfo> Constants { get; set; } = default!;
+        public List<Constant> Constants { get; set; } = default!;
     }
 }

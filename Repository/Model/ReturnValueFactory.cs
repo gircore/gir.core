@@ -1,6 +1,4 @@
-﻿using Repository.Xml;
-
-namespace Repository.Model
+﻿namespace Repository.Model
 {
     internal class ReturnValueFactory
     {
@@ -15,13 +13,13 @@ namespace Repository.Model
             _typeInformationFactory = typeInformationFactory;
         }
 
-        public ReturnValue Create(ReturnValueInfo returnValueInfo, NamespaceName namespaceName)
+        public ReturnValue Create(Xml.ReturnValue returnValue, NamespaceName namespaceName)
         {
             return new ReturnValue(
-                symbolReference: _symbolReferenceFactory.Create(returnValueInfo, namespaceName),
-                transfer: _transferFactory.FromText(returnValueInfo.TransferOwnership),
-                nullable: returnValueInfo.Nullable,
-                typeInformation: _typeInformationFactory.Create(returnValueInfo)
+                symbolReference: _symbolReferenceFactory.Create(returnValue, namespaceName),
+                transfer: _transferFactory.FromText(returnValue.TransferOwnership),
+                nullable: returnValue.Nullable,
+                typeInformation: _typeInformationFactory.Create(returnValue)
             );
         }
 

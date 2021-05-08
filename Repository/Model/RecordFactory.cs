@@ -1,5 +1,4 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -16,7 +15,7 @@ namespace Repository.Model
             _fieldFactory = fieldFactory;
         }
 
-        public Record Create(RecordInfo @record, Namespace @namespace)
+        public Record Create(Xml.Record @record, Namespace @namespace)
         {
             if (@record.Name is null)
                 throw new Exception("Record is missing a name");

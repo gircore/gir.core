@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class ArrayInfo
+    public class Array
     {
         [XmlAttribute("length")]
         public string? Length { get; set; }
@@ -17,9 +17,9 @@ namespace Repository.Xml
         public string? CType { get; set; }
 
         [XmlElement("type")]
-        public TypeInfo? Type { get; set; }
+        public Type? Type { get; set; }
 
         [XmlElement("array")]
-        public ArrayInfo? Array { get; set; }
+        public Array? SubArray { get; set; }
     }
 }

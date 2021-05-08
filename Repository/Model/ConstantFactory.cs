@@ -1,5 +1,4 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -14,19 +13,19 @@ namespace Repository.Model
             _identifierConverter = identifierConverter;
         }
 
-        public Constant Create(ConstantInfo constantInfo, NamespaceName currentNamespace)
+        public Constant Create(Xml.Constant constant, NamespaceName currentNamespace)
         {
-            if (constantInfo.Name is null)
-                throw new Exception($"{nameof(ConstantInfo)} misses a {nameof(constantInfo.Name)}");
+            if (constant.Name is null)
+                throw new Exception($"{nameof(Xml.Constant)} misses a {nameof(constant.Name)}");
 
-            if (constantInfo.Value is null)
-                throw new Exception($"{nameof(ConstantInfo)} {constantInfo.Name} misses a {nameof(constantInfo.Value)}");
+            if (constant.Value is null)
+                throw new Exception($"{nameof(Xml.Constant)} {constant.Name} misses a {nameof(constant.Value)}");
 
             return new Constant(
-                elementName: new ElementName(_identifierConverter.EscapeIdentifier(constantInfo.Name)),
-                symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(constantInfo.Name)),
-                symbolReference: _symbolReferenceFactory.Create(constantInfo, currentNamespace),
-                value: constantInfo.Value
+                elementName: new ElementName(_identifierConverter.EscapeIdentifier(constant.Name)),
+                symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(constant.Name)),
+                symbolReference: _symbolReferenceFactory.Create(constant, currentNamespace),
+                value: constant.Value
             );
         }
     }

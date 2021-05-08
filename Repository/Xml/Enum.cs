@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    public class EnumInfo
+    public class Enum
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -15,9 +15,9 @@ namespace Repository.Xml
         public string? TypeName { get; set; }
 
         [XmlElement("doc")]
-        public DocInfo? Doc { get; set; }
+        public Doc? Doc { get; set; }
 
         [XmlElement("member")]
-        public List<MemberInfo> Members { get; set; } = default!;
+        public List<Member> Members { get; set; } = default!;
     }
 }

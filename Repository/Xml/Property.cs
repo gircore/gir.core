@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class PropertyInfo : Typed
+    public class Property : Typed
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -29,15 +29,15 @@ namespace Repository.Xml
         public string? DeprecatedVersion { get; set; }
 
         [XmlElement("doc")]
-        public DocInfo? Doc { get; set; }
+        public Doc? Doc { get; set; }
 
         [XmlElement("doc-deprecated")]
-        public DocInfo? DocDeprecated { get; set; }
+        public Doc? DocDeprecated { get; set; }
 
         [XmlElement("type")]
-        public TypeInfo? Type { get; set; }
+        public Type? Type { get; set; }
 
         [XmlElement("array")]
-        public ArrayInfo? Array { get; set; }
+        public Array? Array { get; set; }
     }
 }

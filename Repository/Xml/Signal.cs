@@ -2,19 +2,19 @@
 
 namespace Repository.Xml
 {
-    public class SignalInfo
+    public class Signal
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
 
         [XmlElement("return-value", Namespace = "http://www.gtk.org/introspection/core/1.0")]
-        public ReturnValueInfo? ReturnValue { get; set; }
+        public ReturnValue? ReturnValue { get; set; }
 
         [XmlElement("doc", Namespace = "http://www.gtk.org/introspection/core/1.0")]
-        public DocInfo? Doc { get; set; }
+        public Doc? Doc { get; set; }
 
         [XmlElement("parameters", Namespace = "http://www.gtk.org/introspection/core/1.0")]
-        public ParametersInfo? Parameters { get; set; }
+        public Parameters? Parameters { get; set; }
 
         [XmlAttribute("deprecated")]
         public bool Deprecated { get; set; }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -16,7 +15,7 @@ namespace Repository.Model
             );
         }
 
-        public SymbolReference Create(Typed typed, NamespaceName currentNamespace)
+        public SymbolReference Create(Xml.Typed typed, NamespaceName currentNamespace)
         {
             if (TryCreate(typed?.Type, currentNamespace, out var type))
                 return type;
@@ -27,30 +26,30 @@ namespace Repository.Model
             return Create("void", "none", currentNamespace);
         }
 
-        public SymbolReference Create(TypeInfo typeInfo, NamespaceName currentNamespace)
+        public SymbolReference Create(Xml.Type type, NamespaceName currentNamespace)
         {
-            if (TryCreate(typeInfo, currentNamespace, out var symbolReference))
+            if (TryCreate(type, currentNamespace, out var symbolReference))
                 return symbolReference;
 
             throw new Exception("Could not create SymbolReference vrom TypeInfo");
         }
 
-        private bool TryCreate(TypeInfo? typeInfo, NamespaceName currentNamespace, [MaybeNullWhen(false)] out SymbolReference symbolReference)
+        private bool TryCreate(Xml.Type? type, NamespaceName currentNamespace, [MaybeNullWhen(false)] out SymbolReference symbolReference)
         {
             symbolReference = null;
 
-            if (typeInfo is null)
+            if (type is null)
                 return false;
 
-            symbolReference = Create(typeInfo.Name, typeInfo.CType, currentNamespace);
+            symbolReference = Create(type.Name, type.CType, currentNamespace);
             return true;
         }
 
-        public IEnumerable<SymbolReference> Create(IEnumerable<ImplementInfo> implements, NamespaceName currentNamespace)
+        public IEnumerable<SymbolReference> Create(IEnumerable<Xml.Implement> implements, NamespaceName currentNamespace)
         {
             var list = new List<SymbolReference>();
 
-            foreach (ImplementInfo implement in implements)
+            foreach (Xml.Implement implement in implements)
             {
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");

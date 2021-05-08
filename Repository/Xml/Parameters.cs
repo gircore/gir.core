@@ -3,12 +3,12 @@ using System.Xml.Serialization;
 
 namespace Repository.Xml
 {
-    public class ParametersInfo
+    public class Parameters
     {
         [XmlElement("instance-parameter")]
         public InstanceParameterInfo? InstanceParameter { get; set; }
 
         [XmlElement("parameter")]
-        public List<ParameterInfo> Parameters { get; set; } = default!;
+        public List<Parameter> List { get; set; } = default!;
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface Typed
     {
-        public TypeInfo? Type { get; set; }
-        public ArrayInfo? Array { get; set; }
+        public Type? Type { get; set; }
+        public Array? Array { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -22,7 +21,7 @@ namespace Repository.Model
             _typeInformationFactory = typeInformationFactory;
         }
 
-        public Field Create(FieldInfo info, Namespace @namespace)
+        public Field Create(Xml.Field info, Namespace @namespace)
         {
             if (info.Name is null)
                 throw new Exception("Field is missing name");
@@ -42,10 +41,10 @@ namespace Repository.Model
             );
         }
 
-        public IEnumerable<Field> Create(IEnumerable<FieldInfo> infos, Namespace @namespace)
+        public IEnumerable<Field> Create(IEnumerable<Xml.Field> infos, Namespace @namespace)
             => infos.Select(x => Create(x, @namespace)).ToList();
 
-        private SymbolReference CreateSymbolReference(FieldInfo field, NamespaceName currentNamespace)
+        private SymbolReference CreateSymbolReference(Xml.Field field, NamespaceName currentNamespace)
         {
             if (field.Callback is null)
                 return _symbolReferenceFactory.Create(field, currentNamespace);

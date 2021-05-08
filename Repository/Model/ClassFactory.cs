@@ -1,5 +1,4 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -20,7 +19,7 @@ namespace Repository.Model
             _signalFactory = signalFactory;
         }
 
-        public Class Create(ClassInfo cls, Namespace @namespace)
+        public Class Create(Xml.Class cls, Namespace @namespace)
         {
             if (cls.Name is null)
                 throw new Exception("Class is missing data");

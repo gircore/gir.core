@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -29,107 +28,95 @@ namespace Repository.Model
             _unionFactory = unionFactory;
         }
 
-        public Namespace CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
+        public Namespace CreateFromNamespaceInfo(Xml.Namespace @namespace)
         {
-            if (namespaceInfo.Name is null)
+            if (@namespace.Name is null)
                 throw new Exception("Namespace does not have a name");
 
-            if (namespaceInfo.Version is null)
-                throw new Exception($"Namespace {namespaceInfo.Name} does not have version");
+            if (@namespace.Version is null)
+                throw new Exception($"Namespace {@namespace.Name} does not have version");
 
             var nspace = new Namespace(
-                name: namespaceInfo.Name,
-                version: namespaceInfo.Version,
-                sharedLibrary: namespaceInfo.SharedLibrary
+                name: @namespace.Name,
+                version: @namespace.Version,
+                sharedLibrary: @namespace.SharedLibrary
             );
 
-            SetAliases(nspace, namespaceInfo.Aliases);
-            SetCallbacks(nspace, namespaceInfo.Callbacks);
-            SetEnumerations(nspace, namespaceInfo.Enumerations);
-            SetBitfields(nspace, namespaceInfo.Bitfields);
-            SetInterfaces(nspace, namespaceInfo.Interfaces);
-            SetRecords(nspace, namespaceInfo.Records);
-            SetClasses(nspace, namespaceInfo.Classes);
-            SetFunctions(nspace, namespaceInfo.Functions);
-            SetUnions(nspace, namespaceInfo.Unions);
-            SetConstants(nspace, namespaceInfo.Constants);
+            SetAliases(nspace, @namespace.Aliases);
+            SetCallbacks(nspace, @namespace.Callbacks);
+            SetEnumerations(nspace, @namespace.Enumerations);
+            SetBitfields(nspace, @namespace.Bitfields);
+            SetInterfaces(nspace, @namespace.Interfaces);
+            SetRecords(nspace, @namespace.Records);
+            SetClasses(nspace, @namespace.Classes);
+            SetFunctions(nspace, @namespace.Functions);
+            SetUnions(nspace, @namespace.Unions);
+            SetConstants(nspace, @namespace.Constants);
 
             return nspace;
         }
 
-        private void SetAliases(Namespace nspace, IEnumerable<AliasInfo> aliases)
+        private void SetAliases(Namespace nspace, IEnumerable<Xml.Alias> aliases)
         {
-            foreach (var alias in aliases)
+            foreach (Xml.Alias alias in aliases)
                 nspace.AddAlias(_aliasFactory.Create(alias, nspace));
         }
 
-        private void SetClasses(Namespace nspace, IEnumerable<ClassInfo> classes)
+        private void SetClasses(Namespace nspace, IEnumerable<Xml.Class> classes)
         {
-            foreach (var classInfo in classes)
+            foreach (Xml.Class @class in classes)
             {
-                Class cls = _classFactory.Create(classInfo, nspace);
+                Class cls = _classFactory.Create(@class, nspace);
                 nspace.AddClass(cls);
             }
         }
 
-        private void SetCallbacks(Namespace nspace, IEnumerable<CallbackInfo> callbacks)
+        private void SetCallbacks(Namespace nspace, IEnumerable<Xml.Callback> callbacks)
         {
-            foreach (CallbackInfo callbackInfo in callbacks)
-            {
-                var callback = _callbackFactory.Create(callbackInfo, nspace);
-                nspace.AddCallback(callback);
-            }
+            foreach (Xml.Callback callback in callbacks)
+                nspace.AddCallback(_callbackFactory.Create(callback, nspace));
         }
 
-        private void SetEnumerations(Namespace nspace, IEnumerable<EnumInfo> enumerations)
+        private void SetEnumerations(Namespace nspace, IEnumerable<Xml.Enum> enumerations)
         {
-            foreach (var enumInfo in enumerations)
-                nspace.AddEnumeration(_enumartionFactory.Create(enumInfo, nspace, false));
+            foreach (Xml.Enum @enum in enumerations)
+                nspace.AddEnumeration(_enumartionFactory.Create(@enum, nspace, false));
         }
 
-        private void SetBitfields(Namespace nspace, IEnumerable<EnumInfo> enumerations)
+        private void SetBitfields(Namespace nspace, IEnumerable<Xml.Enum> enumerations)
         {
-            foreach (var enumInfo in enumerations)
-                nspace.AddBitfield(_enumartionFactory.Create(enumInfo, nspace, true));
+            foreach (Xml.Enum @enum in enumerations)
+                nspace.AddBitfield(_enumartionFactory.Create(@enum, nspace, true));
         }
 
-        private void SetInterfaces(Namespace nspace, IEnumerable<InterfaceInfo> ifaces)
+        private void SetInterfaces(Namespace nspace, IEnumerable<Xml.Interface> interfaces)
         {
-            foreach (var iface in ifaces)
-                nspace.AddInterface(_interfaceFactory.Create(iface, nspace));
+            foreach (Xml.Interface @interface in interfaces)
+                nspace.AddInterface(_interfaceFactory.Create(@interface, nspace));
         }
 
-        private void SetRecords(Namespace nspace, IEnumerable<RecordInfo> records)
+        private void SetRecords(Namespace nspace, IEnumerable<Xml.Record> records)
         {
-            foreach (RecordInfo recordInfo in records)
-            {
-                var record = _recordFactory.Create(recordInfo, nspace);
-                nspace.AddRecord(record);
-            }
+            foreach (Xml.Record record in records)
+                nspace.AddRecord(_recordFactory.Create(record, nspace));
         }
 
-        private void SetUnions(Namespace nspace, IEnumerable<UnionInfo> unions)
+        private void SetUnions(Namespace nspace, IEnumerable<Xml.Union> unions)
         {
-            foreach (UnionInfo unionInfo in unions)
-            {
-                var union = _unionFactory.Create(unionInfo, nspace);
-                nspace.AddUnion(union);
-            }
+            foreach (Xml.Union union in unions)
+                nspace.AddUnion(_unionFactory.Create(union, nspace));
         }
 
-        private void SetFunctions(Namespace nspace, IEnumerable<MethodInfo> functions)
+        private void SetFunctions(Namespace nspace, IEnumerable<Xml.Method> functions)
         {
             foreach (Method method in _methodFactory.Create(functions, nspace))
                 nspace.AddFunction(method);
         }
 
-        private void SetConstants(Namespace nspace, IEnumerable<ConstantInfo> constantInfos)
+        private void SetConstants(Namespace nspace, IEnumerable<Xml.Constant> constants)
         {
-            foreach (var info in constantInfos)
-            {
-                var constant = _constantFactory.Create(info, nspace.Name);
-                nspace.AddConstant(constant);
-            }
+            foreach (Xml.Constant constant in constants)
+                nspace.AddConstant(_constantFactory.Create(constant, nspace.Name));
         }
     }
 }

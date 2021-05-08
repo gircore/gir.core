@@ -2,12 +2,9 @@
 
 namespace Repository.Xml
 {
-    public class IncludeInfo
+    public class Implement
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
-
-        [XmlAttribute("version")]
-        public string? Version { get; set; }
     }
 }

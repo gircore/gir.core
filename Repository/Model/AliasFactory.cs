@@ -1,5 +1,4 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -12,21 +11,21 @@ namespace Repository.Model
             _symbolReferenceFactory = symbolReferenceFactory;
         }
 
-        public Alias Create(AliasInfo aliasInfo, Namespace @namespace)
+        public Alias Create(Xml.Alias alias, Namespace @namespace)
         {
-            if (aliasInfo.Type is null)
+            if (alias.Type is null)
                 throw new Exception("Alias is missing a type");
 
-            if (aliasInfo.Name is null)
+            if (alias.Name is null)
                 throw new Exception("Alias is missing a name");
 
-            if (aliasInfo.For?.Name is null)
-                throw new Exception($"Alias {aliasInfo.Name} is missing target");
+            if (alias.For?.Name is null)
+                throw new Exception($"Alias {alias.Name} is missing target");
 
             return new Alias(
-                elementName: new ElementName(aliasInfo.Type),
-                symbolName: new SymbolName(aliasInfo.Name),
-                symbolReference: _symbolReferenceFactory.Create(aliasInfo.For, @namespace.Name),
+                elementName: new ElementName(alias.Type),
+                symbolName: new SymbolName(alias.Name),
+                symbolReference: _symbolReferenceFactory.Create(alias.For, @namespace.Name),
                 @namespace: @namespace
             );
         }

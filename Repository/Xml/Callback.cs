@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class CallbackInfo
+    public class Callback
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -11,12 +11,12 @@ namespace Repository.Xml
         public string? Type { get; set; }
 
         [XmlElement("return-value")]
-        public ReturnValueInfo? ReturnValue { get; set; }
+        public ReturnValue? ReturnValue { get; set; }
 
         [XmlElement("doc", Namespace = "http://www.gtk.org/introspection/core/1.0")]
-        public DocInfo? Doc { get; set; }
+        public Doc? Doc { get; set; }
 
         [XmlElement("parameters")]
-        public ParametersInfo? Parameters { get; set; }
+        public Parameters? Parameters { get; set; }
     }
 }

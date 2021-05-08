@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class MethodInfo
+    public class Method
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -20,16 +20,16 @@ namespace Repository.Xml
         public string? DeprecatedVersion { get; set; }
 
         [XmlElement("return-value")]
-        public ReturnValueInfo? ReturnValue { get; set; }
+        public ReturnValue? ReturnValue { get; set; }
 
         [XmlElement("doc")]
-        public DocInfo? Doc { get; set; }
+        public Doc? Doc { get; set; }
 
         [XmlElement("doc-deprecated")]
-        public DocInfo? DocDeprecated { get; set; }
+        public Doc? DocDeprecated { get; set; }
 
         [XmlElement("parameters")]
-        public ParametersInfo? Parameters { get; set; }
+        public Parameters? Parameters { get; set; }
 
         [XmlAttribute("moved-to")]
         public string? MovedTo { get; set; }

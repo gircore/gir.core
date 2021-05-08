@@ -1,21 +1,19 @@
-﻿using Repository.Xml;
-
-namespace Repository.Model
+﻿namespace Repository.Model
 {
     internal class ArrayFactory
     {
-        public Array? Create(ArrayInfo? info)
+        public Array? Create(Xml.Array? array)
         {
-            if (info is null)
+            if (array is null)
                 return null;
 
-            int? length = int.TryParse(info.Length, out var l) ? l : null;
-            int? fixedSize = int.TryParse(info.FixedSize, out var f) ? f : null;
+            int? length = int.TryParse(array.Length, out var l) ? l : null;
+            int? fixedSize = int.TryParse(array.FixedSize, out var f) ? f : null;
 
             return new Array()
             {
                 Length = length,
-                IsZeroTerminated = info.ZeroTerminated,
+                IsZeroTerminated = array.ZeroTerminated,
                 FixedSize = fixedSize
             };
         }
