@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class Parameter : Typed
+    public class Parameter : AnyType
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

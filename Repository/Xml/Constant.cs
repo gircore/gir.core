@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class Constant : Typed
+    public class Constant : AnyType
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

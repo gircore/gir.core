@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class Property : Typed
+    public class Property : AnyType
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }

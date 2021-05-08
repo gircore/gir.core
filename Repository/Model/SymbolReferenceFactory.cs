@@ -15,12 +15,12 @@ namespace Repository.Model
             );
         }
 
-        public SymbolReference Create(Xml.Typed typed, NamespaceName currentNamespace)
+        public SymbolReference Create(Xml.AnyType anyType, NamespaceName currentNamespace)
         {
-            if (TryCreate(typed?.Type, currentNamespace, out var type))
+            if (TryCreate(anyType?.Type, currentNamespace, out var type))
                 return type;
 
-            if (TryCreate(typed?.Array?.Type, currentNamespace, out var array))
+            if (TryCreate(anyType?.Array?.Type, currentNamespace, out var array))
                 return array;
 
             return Create("void", "none", currentNamespace);

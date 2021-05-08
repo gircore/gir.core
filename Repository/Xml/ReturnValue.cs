@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class ReturnValue : Typed
+    public class ReturnValue : AnyType
     {
         [XmlAttribute("transfer-ownership")]
         public string? TransferOwnership { get; set; }
