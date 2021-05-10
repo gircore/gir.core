@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Repository;
 using Repository.Model;
+using Type = Repository.Model.Type;
 
 namespace Generator
 {
@@ -37,7 +38,7 @@ namespace Generator
             _nativeParams = method.ParameterList.GetParameters();
             _managedParams = method.ParameterList.GetManagedParameters();
             _nullParams = method.ParameterList.SingleParameters.Except(_managedParams);
-            _delegateParams = _managedParams.Where(arg => arg.SymbolReference.GetSymbol().GetType() == typeof(Callback));
+            _delegateParams = _managedParams.Where(arg => arg.TypeReference.GetResolvedType().GetType() == typeof(Callback));
             _marshalParams = _managedParams.Except(_delegateParams);
             _instanceParameter = method.ParameterList.InstanceParameter;
         }
@@ -84,25 +85,25 @@ namespace Generator
                 return false;
 
             // No delegate return values
-            if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Callback))
+            if (_method.ReturnValue.TypeReference.GetResolvedType().GetType() == typeof(Callback))
                 return false;
 
             // No union parameters
-            if (_managedParams.Any(param => param.SymbolReference.GetSymbol().GetType() == typeof(Union)))
+            if (_managedParams.Any(param => param.TypeReference.GetResolvedType().GetType() == typeof(Union)))
                 return false;
 
             // No union return values
-            if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Union))
+            if (_method.ReturnValue.TypeReference.GetResolvedType().GetType() == typeof(Union))
                 return false;
 
             // No GObject array parameters
             if (_managedParams.Any(param =>
-                param.SymbolReference.GetSymbol().GetType() == typeof(Class) &&
+                param.TypeReference.GetResolvedType().GetType() == typeof(Class) &&
                 param.TypeInformation.Array != null))
                 return false;
 
             // No GObject array return values
-            if (_method.ReturnValue.SymbolReference.GetSymbol().GetType() == typeof(Class) &&
+            if (_method.ReturnValue.TypeReference.GetResolvedType().GetType() == typeof(Class) &&
                 _method.ReturnValue.TypeInformation.Array != null)
                 return false;
 
@@ -139,7 +140,6 @@ namespace Generator
 
             foreach (var dlgParam in _delegateParams)
             {
-                Symbol symbol = dlgParam.SymbolReference.GetSymbol();
                 var managedType = dlgParam.WriteType(Target.Managed, _currentNamespace);
 
                 var handlerType = dlgParam.CallbackScope switch
@@ -180,7 +180,7 @@ namespace Generator
 
             var expression = Convert.ManagedToNative(
                 fromParam: fromParamName,
-                symbol: parameter.SymbolReference.GetSymbol(),
+                type: parameter.TypeReference.GetResolvedType(),
                 typeInfo: parameter.TypeInformation,
                 currentNamespace: _currentNamespace,
                 transfer: parameter.Transfer
@@ -212,8 +212,8 @@ namespace Generator
                     return "IntPtr.Zero";
 
                 // Do something
-                Symbol symbol = arg.SymbolReference.GetSymbol();
-                var argText = symbol switch
+                Type type = arg.TypeReference.GetResolvedType();
+                var argText = type switch
                 {
                     Callback => $"{arg.SymbolName}Handler.NativeCallback",
                     _ => $"{arg.SymbolName}Native"
@@ -239,7 +239,7 @@ namespace Generator
 
             var expression = Convert.NativeToManaged(
                 fromParam: "result",
-                symbol: _method.ReturnValue.SymbolReference.GetSymbol(),
+                type: _method.ReturnValue.TypeReference.GetResolvedType(),
                 typeInfo: _method.ReturnValue.TypeInformation,
                 currentNamespace: _currentNamespace,
                 transfer: _method.ReturnValue.Transfer

@@ -2,7 +2,7 @@
 
 namespace Repository.Xml
 {
-    public class InstanceParameterInfo : Typed
+    public class InstanceParameterInfo : AnyType
     {
         [XmlAttribute("name")]
         public string? Name { get; set; }
@@ -17,13 +17,13 @@ namespace Repository.Xml
         public bool CallerAllocates;
 
         [XmlElement("doc")]
-        public DocInfo? Doc { get; set; }
+        public Doc? Doc { get; set; }
 
         [XmlElement("type")]
-        public TypeInfo? Type { get; set; }
+        public Type? Type { get; set; }
 
         [XmlElement("array")]
-        public ArrayInfo? Array { get; set; }
+        public Array? Array { get; set; }
 
         [XmlAttribute("nullable")]
         public bool Nullable;

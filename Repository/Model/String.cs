@@ -18,7 +18,7 @@
         public PlatformString() : base("filename") { }
     }
 
-    public abstract class String : Symbol
+    public abstract class String : Type
     {
         protected String(string nativeName)
             : base(new CTypeName(nativeName), new TypeName(nativeName), new SymbolName("string"))

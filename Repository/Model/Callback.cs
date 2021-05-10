@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class Callback : Symbol
+    public class Callback : Type
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
@@ -15,10 +13,10 @@ namespace Repository.Model
             ParameterList = parameterList;
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
+        public override IEnumerable<TypeReference> GetTypeReferences()
         {
             return IEnumerables.Concat(
-                ReturnValue.GetSymbolReferences(),
+                ReturnValue.GetTypeReferences(),
                 ParameterList.GetSymbolReferences()
             );
         }

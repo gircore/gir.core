@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 using Repository.Model;
 using String = Repository.Model.String;
+using Type = Repository.Model.Type;
 
 namespace Generator.Properties
 {
     public class PropertyGenerator
     {
-        public static string WriteDescriptor(Property property, Symbol symbol, Namespace currentNamespace)
+        public static string WriteDescriptor(Property property, Type type, Namespace currentNamespace)
         {
-            if (symbol.Namespace is null)
+            if (type.Namespace is null)
                 throw new Exception("Can not write property for symbol with unknown namespace");
 
             var typeName = property.GetTypeName(currentNamespace);
             var descriptorName = property.GetDescriptorName();
-            var parentType = symbol.Write(Target.Managed, currentNamespace);
+            var parentType = type.Write(Target.Managed, currentNamespace);
 
             var definition = @$"public static readonly Property<{typeName}> {descriptorName} = Property<{typeName}>.Register<{parentType}>(
     {GetArguments(property)}
@@ -66,10 +67,10 @@ namespace Generator.Properties
             //TODO: Remove this method if all cases are supported
             return property switch
             {
-                { SymbolReference: { Symbol: { } and String } } => str,
-                { SymbolReference: { Symbol: { } and PrimitiveValueType } } => str,
-                { SymbolReference: { Symbol: { } and Enumeration } } => str,
-                { SymbolReference: { Symbol: { } and Class } } => str,
+                { TypeReference: { ResolvedType: { } and String } } => str,
+                { TypeReference: { ResolvedType: { } and PrimitiveValueType } } => str,
+                { TypeReference: { ResolvedType: { } and Enumeration } } => str,
+                { TypeReference: { ResolvedType: { } and Class } } => str,
                 _ => "/*" + str + "*/"
             };
         }

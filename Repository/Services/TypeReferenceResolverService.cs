@@ -9,7 +9,7 @@ namespace Repository.Services
     {
         public static void Resolve(IEnumerable<Namespace> namespaces)
         {
-            var symbolDictionary = new SymbolDictionary();
+            var symbolDictionary = new TypeDictionary();
 
             var namespaceList = namespaces.ToList();
             foreach (var ns in namespaceList)
@@ -24,95 +24,93 @@ namespace Repository.Services
             }
         }
 
-        private static void FillSymbolDictionary(SymbolDictionary symbolDictionary, Namespace @namespace)
+        private static void FillSymbolDictionary(TypeDictionary typeDictionary, Namespace @namespace)
         {
-            AddPrimitives(symbolDictionary);
+            AddFundamentalTypes(typeDictionary);
 
-            symbolDictionary.AddSymbols(@namespace.Classes);
-            symbolDictionary.AddSymbols(@namespace.Interfaces);
-            symbolDictionary.AddSymbols(@namespace.Callbacks);
-            symbolDictionary.AddSymbols(@namespace.Enumerations);
-            symbolDictionary.AddSymbols(@namespace.Bitfields);
-            symbolDictionary.AddSymbols(@namespace.Records);
-            symbolDictionary.AddSymbols(@namespace.Unions);
+            typeDictionary.AddTypes(@namespace.Classes);
+            typeDictionary.AddTypes(@namespace.Interfaces);
+            typeDictionary.AddTypes(@namespace.Callbacks);
+            typeDictionary.AddTypes(@namespace.Enumerations);
+            typeDictionary.AddTypes(@namespace.Bitfields);
+            typeDictionary.AddTypes(@namespace.Records);
+            typeDictionary.AddTypes(@namespace.Unions);
         }
 
-        private static void ResolveReferences(SymbolDictionary symbolDictionary, Namespace ns)
+        private static void ResolveReferences(TypeDictionary typeDictionary, Namespace ns)
         {
-            foreach (var reference in ns.GetSymbolReferences())
+            foreach (var reference in ns.GetTypeReferences())
             {
-                Resolve(symbolDictionary, reference);
+                Resolve(typeDictionary, reference);
             }
         }
 
-        private static void Resolve(SymbolDictionary symbolDictionary, SymbolReference reference)
+        private static void Resolve(TypeDictionary typeDictionary, TypeReference reference)
         {
-            if (symbolDictionary.TryLookup(reference, out var symbol))
+            if (typeDictionary.TryLookup(reference, out var symbol))
                 reference.ResolveAs(symbol);
         }
 
-        private static void AddPrimitives(SymbolDictionary symbolDictionary)
+        private static void AddFundamentalTypes(TypeDictionary typeDictionary)
         {
-            // Add Fundamental Types
-            // Fundamental types are accessible regardless of namespace and
-            // take priority over any namespaced variant.
+            typeDictionary.AddType(new Void("none"));
+            typeDictionary.AddType(new Void("void"));
 
-            symbolDictionary.AddSymbol(new Symbol("none", "void"));
-            symbolDictionary.AddSymbol(new Symbol("any", "IntPtr"));
+            typeDictionary.AddType(new Boolean("gboolean"));
 
-            symbolDictionary.AddSymbol(new Symbol("void", "void"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gboolean", "bool"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gfloat", "float"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("float", "float"));
+            typeDictionary.AddType(new Float("gfloat"));
+            typeDictionary.AddType(new Float("float"));
 
-            symbolDictionary.AddSymbol(new Symbol("gconstpointer", "IntPtr"));
-            symbolDictionary.AddSymbol(new Symbol("va_list", "IntPtr"));
-            symbolDictionary.AddSymbol(new Symbol("gpointer", "IntPtr"));
-            symbolDictionary.AddSymbol(new Symbol("tm", "IntPtr"));
+            typeDictionary.AddType(new Pointer("any"));
+            typeDictionary.AddType(new Pointer("gconstpointer"));
+            typeDictionary.AddType(new Pointer("va_list"));
+            typeDictionary.AddType(new Pointer("gpointer"));
+            typeDictionary.AddType(new Pointer("tm"));
 
             // TODO: Should we use UIntPtr here? Non-CLR compliant
-            symbolDictionary.AddSymbol(new Symbol("guintptr", "UIntPtr"));
+            typeDictionary.AddType(new UnsignedPointer("guintptr"));
 
-            symbolDictionary.AddSymbol(new PrimitiveValueType("guint16", "ushort"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gushort", "ushort"));
+            typeDictionary.AddType(new UnsignedShort("guint16"));
+            typeDictionary.AddType(new UnsignedShort("gushort"));
 
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gint16", "short"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gshort", "short"));
+            typeDictionary.AddType(new Short("gint16"));
+            typeDictionary.AddType(new Short("gshort"));
 
-            symbolDictionary.AddSymbol(new PrimitiveValueType("double", "double"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gdouble", "double"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("long double", "double"));
+            typeDictionary.AddType(new Double("double"));
+            typeDictionary.AddType(new Double("gdouble"));
+            typeDictionary.AddType(new Double("long double"));
 
-            symbolDictionary.AddSymbol(new PrimitiveValueType("int", "int"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gint", "int"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gint32", "int"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("pid_t", "int"));
+            typeDictionary.AddType(new Integer("int"));
+            typeDictionary.AddType(new Integer("gint"));
+            typeDictionary.AddType(new Integer("gint32"));
+            typeDictionary.AddType(new Integer("pid_t"));
 
-            symbolDictionary.AddSymbol(new PrimitiveValueType("unsigned int", "uint"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("unsigned", "uint"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("guint", "uint"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("guint32", "uint"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gunichar", "uint"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("uid_t", "uint"));
+            typeDictionary.AddType(new UnsignedInteger("unsigned int"));
+            typeDictionary.AddType(new UnsignedInteger("unsigned"));
+            typeDictionary.AddType(new UnsignedInteger("guint"));
+            typeDictionary.AddType(new UnsignedInteger("guint32"));
+            typeDictionary.AddType(new UnsignedInteger("gunichar"));
+            typeDictionary.AddType(new UnsignedInteger("uid_t"));
 
-            symbolDictionary.AddSymbol(new PrimitiveValueType("guchar", "byte"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gchar", "sbyte"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("char", "sbyte"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("guint8", "byte"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gint8", "sbyte"));
+            typeDictionary.AddType(new Byte("guchar"));
+            typeDictionary.AddType(new Byte("guint8"));
 
-            symbolDictionary.AddSymbol(new PrimitiveValueType("glong", "long"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gssize", "long"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gint64", "long"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("goffset", "long"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("time_t", "long"));
+            typeDictionary.AddType(new SignedByte("gchar"));
+            typeDictionary.AddType(new SignedByte("char"));
+            typeDictionary.AddType(new SignedByte("gint8"));
 
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gsize", "nuint"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("guint64", "ulong"));
-            symbolDictionary.AddSymbol(new PrimitiveValueType("gulong", "ulong"));
+            typeDictionary.AddType(new Long("glong"));
+            typeDictionary.AddType(new Long("gssize"));
+            typeDictionary.AddType(new Long("gint64"));
+            typeDictionary.AddType(new Long("goffset"));
+            typeDictionary.AddType(new Long("time_t"));
 
-            symbolDictionary.AddSymbol(new Utf8String());
-            symbolDictionary.AddSymbol(new PlatformString());
+            typeDictionary.AddType(new NativeUnsignedInteger("gsize"));
+            typeDictionary.AddType(new UnsignedLong("guint64"));
+            typeDictionary.AddType(new UnsignedLong("gulong"));
+
+            typeDictionary.AddType(new Utf8String());
+            typeDictionary.AddType(new PlatformString());
         }
     }
 }

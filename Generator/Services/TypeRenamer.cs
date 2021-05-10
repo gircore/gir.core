@@ -115,7 +115,7 @@ namespace Generator.Services
         {
             Debug.Assert(record.GLibClassStructFor is not null);
 
-            var className = record.GLibClassStructFor.GetSymbol().SymbolName;
+            var className = record.GLibClassStructFor.GetResolvedType().SymbolName;
             record.Metadata["Name"] = className;
             record.Metadata["StructName"] = "Class";
             record.Metadata["StructRefName"] = $"{className}.Class";

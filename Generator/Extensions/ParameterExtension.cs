@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Repository.Model;
+using Type = Repository.Model.Type;
 
 namespace Generator
 {
@@ -23,7 +24,7 @@ namespace Generator
             // FIXME: SafeHandles and ref *do not* work together when marshalling
             // apparently. For any Record-type parameters, we do not generate a direction
             // attribute for the native method. Find a more reliable way of doing this?
-            var useDirection = !(parameter.SymbolReference.Symbol is Record && target == Target.Native);
+            var useDirection = !(parameter.TypeReference.ResolvedType is Record && target == Target.Native);
 
             var direction = useDirection ? GetDirection(parameter) : string.Empty;
             var type = GetType(parameter, target, currentNamespace, useSafeHandle);
@@ -47,15 +48,15 @@ namespace Generator
 
         private static string GetType(this Parameter parameter, Target target, Namespace currentNamespace, bool useSafeHandle)
         {
-            Symbol symbol = parameter.SymbolReference.GetSymbol();
+            Type type = parameter.TypeReference.GetResolvedType();
 
             // TODO: Do this check here?
             // We cannot have a void-type parameter, so use IntPtr instead
-            if (symbol.SymbolName == "void")
+            if (type.SymbolName == "void")
                 return "IntPtr";
 
             // Do nullability checks (actual logic in `TypeExtension.WriteType()`)
-            return (target, parameter, symbol) switch
+            return (target, parameter, symbol: type) switch
             {
                 (Target.Managed, _, _) => Nullable(parameter, target, currentNamespace, useSafeHandle),
 
@@ -95,7 +96,7 @@ namespace Generator
 
             var expression = Convert.NativeToManaged(
                 fromParam: arg.SymbolName.ToString(),
-                symbol: arg.SymbolReference.GetSymbol(),
+                type: arg.TypeReference.GetResolvedType(),
                 typeInfo: arg.TypeInformation,
                 currentNamespace: currentNamespace,
                 transfer: arg.Transfer

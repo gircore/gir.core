@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Repository.Analysis;
 
 namespace Repository.Model
 {
     public class SingleParameter : Element, Parameter
     {
-        public SymbolReference SymbolReference { get; }
+        public TypeReference TypeReference { get; }
         public Direction Direction { get; }
         public Transfer Transfer { get; }
         public bool Nullable { get; }
@@ -15,9 +14,9 @@ namespace Repository.Model
         public Scope CallbackScope { get; }
         public TypeInformation TypeInformation { get; }
 
-        public SingleParameter(ElementName elementName, SymbolName symbolName, SymbolReference symbolReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope, TypeInformation typeInformation) : base(elementName, symbolName)
+        public SingleParameter(ElementName elementName, SymbolName symbolName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope, TypeInformation typeInformation) : base(elementName, symbolName)
         {
-            SymbolReference = symbolReference;
+            TypeReference = typeReference;
             Direction = direction;
             Transfer = transfer;
             Nullable = nullable;
@@ -28,12 +27,12 @@ namespace Repository.Model
             TypeInformation = typeInformation;
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
+        public override IEnumerable<TypeReference> GetTypeReferences()
         {
-            yield return SymbolReference;
+            yield return TypeReference;
         }
 
         public override bool GetIsResolved()
-            => SymbolReference.GetIsResolved();
+            => TypeReference.GetIsResolved();
     }
 }

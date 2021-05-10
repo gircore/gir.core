@@ -1,29 +1,28 @@
 ﻿using System.Collections.Generic;
-using Repository.Analysis;
 
 namespace Repository.Model
 {
-    public class ReturnValue : Type, SymbolReferenceProvider
+    public class ReturnValue : AnyType, TypeReferenceProvider
     {
         public Transfer Transfer { get; }
         public bool Nullable { get; }
-        public SymbolReference SymbolReference { get; }
+        public TypeReference TypeReference { get; }
         public TypeInformation TypeInformation { get; }
 
-        public ReturnValue(SymbolReference symbolReference, Transfer transfer, bool nullable, TypeInformation typeInformation)
+        public ReturnValue(TypeReference typeReference, Transfer transfer, bool nullable, TypeInformation typeInformation)
         {
-            SymbolReference = symbolReference;
+            TypeReference = typeReference;
             Transfer = transfer;
             Nullable = nullable;
             TypeInformation = typeInformation;
         }
 
-        public IEnumerable<SymbolReference> GetSymbolReferences()
+        public IEnumerable<TypeReference> GetTypeReferences()
         {
-            yield return SymbolReference;
+            yield return TypeReference;
         }
 
         public bool GetIsResolved()
-            => SymbolReference.GetIsResolved();
+            => TypeReference.GetIsResolved();
     }
 }

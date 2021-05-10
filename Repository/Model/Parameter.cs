@@ -1,9 +1,8 @@
 ﻿namespace Repository.Model
 {
-    public interface Parameter : TransferableType
+    public interface Parameter : TransferableAnyType
     {
         SymbolName SymbolName { get; }
-        Transfer Transfer { get; }
         Direction Direction { get; }
         bool Nullable { get; }
         bool CallerAllocates { get; }

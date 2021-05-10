@@ -4,6 +4,7 @@ using Generator.Factories;
 using Repository.Analysis;
 using Repository.Model;
 using Scriban.Runtime;
+using Type = Repository.Model.Type;
 
 namespace Generator.Services.Writer
 {
@@ -18,9 +19,9 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Symbol> objects, Namespace @namespace)
+        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Type> objects, Namespace @namespace)
         {
-            foreach (Symbol obj in objects)
+            foreach (Type obj in objects)
             {
                 var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, obj);
 
