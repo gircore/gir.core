@@ -9,7 +9,6 @@ namespace Generator
     {
         internal static string ManagedToNative(string fromParam, Symbol symbol, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
         {
-            // TODO: We need to support disguised structs (opaque types)
             var qualifiedNativeType = symbol.Write(Target.Native, currentNamespace);
             var qualifiedManagedType = symbol.Write(Target.Managed, currentNamespace);
 
@@ -39,7 +38,6 @@ namespace Generator
 
         internal static string NativeToManaged(string fromParam, Symbol symbol, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
         {
-            // TODO: We need to support disguised structs (opaque types)
             var qualifiedType = symbol.Write(Target.Managed, currentNamespace);
 
             return (symbol, typeInfo) switch
