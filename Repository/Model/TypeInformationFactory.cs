@@ -1,5 +1,4 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -22,25 +21,25 @@ namespace Repository.Model
             );
         }
 
-        public TypeInformation Create(Typed typed)
+        public TypeInformation Create(Xml.AnyType anyType)
         {
             return new TypeInformation(
-                array: _arrayFactory.Create(typed.Array),
-                isPointer: IsPointer(typed),
-                isVolatile: IsVolatile(typed),
-                isConst: IsConst(typed)
+                array: _arrayFactory.Create(anyType.Array),
+                isPointer: IsPointer(anyType),
+                isVolatile: IsVolatile(anyType),
+                isConst: IsConst(anyType)
             );
         }
 
-        private bool IsPointer(Typed typed)
+        private bool IsPointer(Xml.AnyType anyType)
         {
-            return typed switch
+            return anyType switch
             {
                 { Type: { } t } => GetIsPointer(t.Name, t.CType),
                 { Array: { Type: { } t } } => GetIsPointer(t.Name, t.CType),
-                { Array: { Array: { } } } => true,
-                FieldInfo { Callback: { } } => false, //Callbacks are no pointer as they are handled as delegates
-                _ => throw new Exception("Can not get pointer information from type: " + typed)
+                { Array: { SubArray: { } } } => true,
+                Xml.Field { Callback: { } } => false, //Callbacks are no pointer as they are handled as delegates
+                _ => throw new Exception("Can not get pointer information from type: " + anyType)
             };
         }
 
@@ -56,23 +55,23 @@ namespace Repository.Model
             };
         }
 
-        private bool IsVolatile(Typed typed)
+        private bool IsVolatile(Xml.AnyType anyType)
         {
-            if (typed.Array is { })
-                return GetIsVolatile(typed.Array?.Type?.CType);
+            if (anyType.Array is { })
+                return GetIsVolatile(anyType.Array?.Type?.CType);
 
-            return GetIsVolatile(typed.Type?.CType);
+            return GetIsVolatile(anyType.Type?.CType);
         }
 
         private bool GetIsVolatile(string? ctype)
             => ctype?.Contains("volatile") ?? false;
 
-        private bool IsConst(Typed typed)
+        private bool IsConst(Xml.AnyType anyType)
         {
-            if (typed.Array is { })
-                return GetIsConst(typed.Array?.Type?.CType);
+            if (anyType.Array is { })
+                return GetIsConst(anyType.Array?.Type?.CType);
 
-            return GetIsConst(typed.Type?.CType);
+            return GetIsConst(anyType.Type?.CType);
         }
 
         private bool GetIsConst(string? ctype)

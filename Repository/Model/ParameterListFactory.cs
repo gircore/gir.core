@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -15,7 +14,7 @@ namespace Repository.Model
             _instanceParameterFactory = instanceParameterFactory;
         }
 
-        public ParameterList Create(ParametersInfo? parameters, NamespaceName currentNamespace, bool throws = false)
+        public ParameterList Create(Xml.Parameters? parameters, NamespaceName currentNamespace, bool throws = false)
         {
             List<SingleParameter> list = new();
             InstanceParameter? instanceParameter = null;
@@ -25,17 +24,17 @@ namespace Repository.Model
                 if (parameters.InstanceParameter is { })
                     instanceParameter = _instanceParameterFactory.Create(parameters.InstanceParameter, currentNamespace);
 
-                list = parameters.Parameters.Select(arg => _singleParameterFactory.Create(arg, currentNamespace)).ToList();
+                list = parameters.List.Select(arg => _singleParameterFactory.Create(arg, currentNamespace)).ToList();
 
                 if (throws)
                 {
-                    var parameterInfo = new ParameterInfo()
+                    var parameterInfo = new Xml.Parameter()
                     {
                         Name = "error",
                         TransferOwnership = "full",
                         Direction = "out",
                         CallerAllocates = false,
-                        Type = new TypeInfo()
+                        Type = new Xml.Type()
                         {
                             Name = "GLib.Error",
                             CType = "GError*"

@@ -1,42 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Repository.Xml;
 
 namespace Repository.Model
 {
     internal class PropertyFactory
     {
         private readonly TransferFactory _transferFactory;
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly CaseConverter _caseConverter;
         private readonly TypeInformationFactory _typeInformationFactory;
 
-        public PropertyFactory(TransferFactory transferFactory, SymbolReferenceFactory symbolReferenceFactory, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
+        public PropertyFactory(TransferFactory transferFactory, TypeReferenceFactory typeReferenceFactory, CaseConverter caseConverter, TypeInformationFactory typeInformationFactory)
         {
             _transferFactory = transferFactory;
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
             _caseConverter = caseConverter;
             _typeInformationFactory = typeInformationFactory;
         }
 
-        private Property Create(PropertyInfo info, NamespaceName namespaceName)
+        private Property Create(Xml.Property property, NamespaceName namespaceName)
         {
-            if (info.Name is null)
+            if (property.Name is null)
                 throw new Exception("Property is missing a name");
 
             return new Property(
-                elementName: new ElementName(info.Name),
-                symbolName: new SymbolName(_caseConverter.ToPascalCase(info.Name)),
-                symbolReference: _symbolReferenceFactory.Create(info, namespaceName),
-                writeable: info.Writeable,
-                readable: info.Readable,
-                typeInformation: _typeInformationFactory.Create(info),
-                transfer: _transferFactory.FromText(info.TransferOwnership)
+                elementName: new ElementName(property.Name),
+                symbolName: new SymbolName(_caseConverter.ToPascalCase(property.Name)),
+                typeReference: _typeReferenceFactory.Create(property, namespaceName),
+                writeable: property.Writeable,
+                readable: property.Readable,
+                typeInformation: _typeInformationFactory.Create(property),
+                transfer: _transferFactory.FromText(property.TransferOwnership)
             );
         }
 
-        public IEnumerable<Property> Create(IEnumerable<PropertyInfo> infos, NamespaceName namespaceName)
-            => infos.Select(x => Create(x, namespaceName)).ToList();
+        public IEnumerable<Property> Create(IEnumerable<Xml.Property> properties, NamespaceName namespaceName)
+            => properties.Select(x => Create(x, namespaceName)).ToList();
     }
 }

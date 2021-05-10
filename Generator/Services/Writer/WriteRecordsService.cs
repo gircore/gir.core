@@ -57,7 +57,7 @@ namespace Generator.Services.Writer
         }
 
         private string GetNativeFolder(Record record)
-            => record.GLibClassStructFor?.GetSymbol() switch
+            => record.GLibClassStructFor?.GetResolvedType() switch
             {
                 Interface => Folder.Native.Interfaces,
                 Class => Folder.Native.Classes,
@@ -65,7 +65,7 @@ namespace Generator.Services.Writer
             };
 
         private string GetNativeTemplateName(Record record)
-            => record.GLibClassStructFor?.GetSymbol() switch
+            => record.GLibClassStructFor?.GetResolvedType() switch
             {
                 Interface => "record.native.interface.sbntxt",
                 Class => "record.native.class.sbntxt",

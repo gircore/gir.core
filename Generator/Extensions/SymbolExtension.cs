@@ -1,33 +1,34 @@
 ﻿using System;
 using Repository.Model;
+using Type = Repository.Model.Type;
 
 namespace Generator
 {
     internal static class SymbolExtension
     {
-        internal static string Write(this Symbol symbol, Target target, Namespace currentNamespace)
+        internal static string Write(this Type type, Target target, Namespace currentNamespace)
         {
-            var name = symbol.SymbolName;
-            if (!symbol.Namespace.IsForeignTo(currentNamespace))
+            var name = type.SymbolName;
+            if (!type.Namespace.IsForeignTo(currentNamespace))
                 return name;
 
-            if (symbol.Namespace is null)
-                throw new Exception($"Can not write {nameof(Symbol)}, because namespace is missing");
+            if (type.Namespace is null)
+                throw new Exception($"Can not write {nameof(Type)}, because namespace is missing");
 
-            var ns = symbol switch
+            var ns = type switch
             {
                 //Enumerations do not have a native representation they always live in the managed namespace
-                Enumeration => symbol.Namespace.Name,
+                Enumeration => type.Namespace.Name,
 
-                _ => symbol.Namespace.GetName(target)
+                _ => type.Namespace.GetName(target)
             };
 
             return ns + "." + name;
         }
 
-        public static string WriteTypeRegistration(this Symbol symbol)
+        public static string WriteTypeRegistration(this Type type)
         {
-            return $"TypeDictionary.Add(typeof({symbol.SymbolName}), new GObject.Type(Native.{symbol.SymbolName}.Instance.Methods.GetGType()));\r\n";
+            return $"TypeDictionary.Add(typeof({type.SymbolName}), new GObject.Type(Native.{type.SymbolName}.Instance.Methods.GetGType()));\r\n";
         }
     }
 }

@@ -6,7 +6,6 @@ using System.Linq;
 using Repository.Graph;
 using Repository.Model;
 using Repository.Services;
-using Repository.Xml;
 
 namespace Repository
 {
@@ -83,7 +82,7 @@ namespace Repository
             }
         }
 
-        private IEnumerable<Namespace> LoadDependencies(ICollection<Namespace> ns, IEnumerable<IncludeInfo> includes)
+        private IEnumerable<Namespace> LoadDependencies(ICollection<Namespace> ns, IEnumerable<Xml.Include> includes)
         {
             var dependencies = new List<Namespace>();
             foreach (var dependency in _infoFactory.CreateFromIncludes(includes))
@@ -125,9 +124,9 @@ namespace Repository
             return _lookupFunc(data.Name, data.Version);
         }
 
-        private RepositoryInfo LoadRepositoryInfo(FileInfo target)
+        private Xml.Repository LoadRepositoryInfo(FileInfo target)
         {
-            RepositoryInfo? repoInfo = _xmlService.Deserialize<RepositoryInfo>(target);
+            Xml.Repository? repoInfo = _xmlService.Deserialize<Xml.Repository>(target);
 
             if (repoInfo is null)
                 throw new Exception($"File {target} could not be deserialized");

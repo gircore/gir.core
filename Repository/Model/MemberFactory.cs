@@ -1,5 +1,4 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -14,23 +13,23 @@ namespace Repository.Model
             _identifierConverter = identifierConverter;
         }
 
-        public Member Create(MemberInfo info)
+        public Member Create(Xml.Member member)
         {
-            if (info.Name is null)
+            if (member.Name is null)
                 throw new Exception("Member is missing name");
 
-            if (info.Identifier is null)
-                throw new Exception($"Member {info.Name} is missing an identifier");
+            if (member.Identifier is null)
+                throw new Exception($"Member {member.Name} is missing an identifier");
 
-            if (info.Value is null)
-                throw new Exception($"Member {info.Name} is missing a value");
+            if (member.Value is null)
+                throw new Exception($"Member {member.Name} is missing a value");
 
-            var ident = _caseConverter.ToPascalCase(info.Name);
+            var ident = _caseConverter.ToPascalCase(member.Name);
 
             return new Member(
-                elementName: new ElementName(info.Identifier),
+                elementName: new ElementName(member.Identifier),
                 symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(ident)),
-                value: info.Value
+                value: member.Value
             );
         }
     }

@@ -13,10 +13,10 @@ namespace Repository.Model
             ParameterList = parameterList;
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
+        public override IEnumerable<TypeReference> GetTypeReferences()
         {
             return IEnumerables.Concat(
-                ReturnValue.GetSymbolReferences(),
+                ReturnValue.GetTypeReferences(),
                 ParameterList.GetSymbolReferences()
             );
         }

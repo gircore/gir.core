@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using Repository.Xml;
 
 namespace Repository.Model
 {
     internal class InfoFactory
     {
-        public Info CreateFromNamespaceInfo(NamespaceInfo namespaceInfo)
+        public Info CreateFromNamespaceInfo(Xml.Namespace @namespace)
         {
-            if (namespaceInfo.Name is null || namespaceInfo.Version is null)
+            if (@namespace.Name is null || @namespace.Version is null)
                 throw new Exception("Can't create info because data is missing");
 
-            return new Info(namespaceInfo.Name, namespaceInfo.Version);
+            return new Info(@namespace.Name, @namespace.Version);
         }
 
-        public IEnumerable<Info> CreateFromIncludes(IEnumerable<IncludeInfo> includes)
+        public IEnumerable<Info> CreateFromIncludes(IEnumerable<Xml.Include> includes)
         {
-            foreach (IncludeInfo includeInfo in includes)
+            foreach (Xml.Include include in includes)
             {
-                if (includeInfo.Name is null || includeInfo.Version is null)
+                if (include.Name is null || include.Version is null)
                     throw new Exception("Can't create info because data is missing");
 
-                yield return new Info(includeInfo.Name, includeInfo.Version);
+                yield return new Info(include.Name, include.Version);
             }
         }
     }

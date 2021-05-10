@@ -4,6 +4,7 @@ using System.Linq;
 using Generator.Factories;
 using Repository.Model;
 using Scriban.Runtime;
+using Type = Repository.Model.Type;
 
 namespace Generator.Services.Writer
 {
@@ -46,7 +47,7 @@ namespace Generator.Services.Writer
                 { "namespace", ns },
                 { "classes",  classes},
             };
-            scriptObject.Import("write_type_registration", new Func<Symbol, string>(s => s.WriteTypeRegistration()));
+            scriptObject.Import("write_type_registration", new Func<Type, string>(s => s.WriteTypeRegistration()));
 
             _writeHelperService.Write(
                 projectName: ns.ToCanonicalName(),

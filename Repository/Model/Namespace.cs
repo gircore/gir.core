@@ -4,7 +4,7 @@ using Repository.Graph;
 
 namespace Repository.Model
 {
-    public class Namespace : SymbolReferenceProvider, INode<Namespace>
+    public class Namespace : TypeReferenceProvider, INode<Namespace>
     {
         #region Properties
 
@@ -91,7 +91,7 @@ namespace Repository.Model
         internal void AddConstant(Constant constant)
             => _constants.Add(constant);
 
-        public IEnumerable<SymbolReference> GetSymbolReferences()
+        public IEnumerable<TypeReference> GetTypeReferences()
         {
             return IEnumerables.Concat(
                 Aliases.GetSymbolReferences(),
@@ -136,12 +136,12 @@ namespace Repository.Model
             return !result;
         }
 
-        private bool Remove(Symbol symbol)
+        private bool Remove(Type type)
         {
-            var result = symbol.GetIsResolved();
+            var result = type.GetIsResolved();
 
             if (!result)
-                Log.Information($"{symbol.GetType().Name} {symbol.Namespace?.Name}.{symbol.TypeName}: Removed because parts of it could not be completely resolvled");
+                Log.Information($"{type.GetType().Name} {type.Namespace?.Name}.{type.TypeName}: Removed because parts of it could not be completely resolvled");
 
             return !result;
         }

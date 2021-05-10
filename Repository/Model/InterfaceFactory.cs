@@ -1,46 +1,45 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
     internal class InterfaceFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly MethodFactory _methodFactory;
         private readonly PropertyFactory _propertyFactory;
 
-        public InterfaceFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory)
+        public InterfaceFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
             _methodFactory = methodFactory;
             _propertyFactory = propertyFactory;
         }
 
-        public Interface Create(InterfaceInfo iface, Namespace @namespace)
+        public Interface Create(Xml.Interface @interface, Namespace @namespace)
         {
-            if (iface.Name is null)
+            if (@interface.Name is null)
                 throw new Exception("Interface is missing a name");
 
-            if (iface.TypeName is null)
-                throw new Exception($"Interface {iface.Name} is missing a {nameof(iface.TypeName)}");
+            if (@interface.TypeName is null)
+                throw new Exception($"Interface {@interface.Name} is missing a {nameof(@interface.TypeName)}");
 
-            if (iface.GetTypeFunction is null)
-                throw new Exception($"Interface {iface.Name} is missing a {nameof(iface.GetTypeFunction)}");
+            if (@interface.GetTypeFunction is null)
+                throw new Exception($"Interface {@interface.Name} is missing a {nameof(@interface.GetTypeFunction)}");
 
             CTypeName? ctypeName = null;
-            if (iface.Type is { })
-                ctypeName = new CTypeName(iface.Type);
+            if (@interface.Type is { })
+                ctypeName = new CTypeName(@interface.Type);
 
             return new Interface(
                 @namespace: @namespace,
-                typeName: new TypeName(iface.Name),
+                typeName: new TypeName(@interface.Name),
                 cTypeName: ctypeName,
-                symbolName: new SymbolName(iface.Name),
-                implements: _symbolReferenceFactory.Create(iface.Implements, @namespace.Name),
-                methods: _methodFactory.Create(iface.Methods, @namespace),
-                functions: _methodFactory.Create(iface.Functions, @namespace),
-                getTypeFunction: _methodFactory.CreateGetTypeMethod(iface.GetTypeFunction),
-                properties: _propertyFactory.Create(iface.Properties, @namespace.Name)
+                symbolName: new SymbolName(@interface.Name),
+                implements: _typeReferenceFactory.Create(@interface.Implements, @namespace.Name),
+                methods: _methodFactory.Create(@interface.Methods, @namespace),
+                functions: _methodFactory.Create(@interface.Functions, @namespace),
+                getTypeFunction: _methodFactory.CreateGetTypeMethod(@interface.GetTypeFunction),
+                properties: _propertyFactory.Create(@interface.Properties, @namespace.Name)
             );
         }
     }

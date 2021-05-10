@@ -1,26 +1,25 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
     internal class ClassFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly MethodFactory _methodFactory;
         private readonly PropertyFactory _propertyFactory;
         private readonly FieldFactory _fieldFactory;
         private readonly SignalFactory _signalFactory;
 
-        public ClassFactory(SymbolReferenceFactory symbolReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory, FieldFactory fieldFactory, SignalFactory signalFactory)
+        public ClassFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory, FieldFactory fieldFactory, SignalFactory signalFactory)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
             _methodFactory = methodFactory;
             _propertyFactory = propertyFactory;
             _fieldFactory = fieldFactory;
             _signalFactory = signalFactory;
         }
 
-        public Class Create(ClassInfo cls, Namespace @namespace)
+        public Class Create(Xml.Class cls, Namespace @namespace)
         {
             if (cls.Name is null)
                 throw new Exception("Class is missing data");
@@ -38,7 +37,7 @@ namespace Repository.Model
                 symbolName: new SymbolName(cls.Name),
                 cTypeName: cTypeName,
                 parent: GetParent(cls.Parent, @namespace.Name),
-                implements: _symbolReferenceFactory.Create(cls.Implements, @namespace.Name),
+                implements: _typeReferenceFactory.Create(cls.Implements, @namespace.Name),
                 methods: _methodFactory.Create(cls.Methods, @namespace),
                 functions: _methodFactory.Create(cls.Functions, @namespace),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction),
@@ -50,12 +49,12 @@ namespace Repository.Model
             );
         }
 
-        private SymbolReference? GetParent(string? parentName, NamespaceName currentNamespace)
+        private TypeReference? GetParent(string? parentName, NamespaceName currentNamespace)
         {
-            SymbolReference? parent = null;
+            TypeReference? parent = null;
 
             if (parentName is { })
-                parent = _symbolReferenceFactory.Create(parentName, null, currentNamespace);
+                parent = _typeReferenceFactory.Create(parentName, null, currentNamespace);
 
             return parent;
         }

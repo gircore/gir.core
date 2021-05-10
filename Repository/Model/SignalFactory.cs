@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -18,23 +17,23 @@ namespace Repository.Model
             _parameterListFactory = parameterListFactory;
         }
 
-        public Signal Create(SignalInfo signalInfo, NamespaceName namespaceName)
+        public Signal Create(Xml.Signal signal, NamespaceName namespaceName)
         {
-            if (signalInfo.Name is null)
-                throw new Exception($"{nameof(signalInfo)} is missing a {nameof(signalInfo.Name)}");
+            if (signal.Name is null)
+                throw new Exception($"{nameof(signal)} is missing a {nameof(signal.Name)}");
 
-            if (signalInfo.ReturnValue is null)
-                throw new Exception($"{nameof(SignalInfo)} {signalInfo.Name} {nameof(signalInfo.ReturnValue)} is null");
+            if (signal.ReturnValue is null)
+                throw new Exception($"{nameof(Xml.Signal)} {signal.Name} {nameof(signal.ReturnValue)} is null");
 
             return new Signal(
-                elementName: new ElementName(signalInfo.Name),
-                symbolName: new SymbolName(_caseConverter.ToPascalCase(signalInfo.Name)),
-                returnValue: _returnValueFactory.Create(signalInfo.ReturnValue, namespaceName),
-                parameterList: _parameterListFactory.Create(signalInfo.Parameters, namespaceName)
+                elementName: new ElementName(signal.Name),
+                symbolName: new SymbolName(_caseConverter.ToPascalCase(signal.Name)),
+                returnValue: _returnValueFactory.Create(signal.ReturnValue, namespaceName),
+                parameterList: _parameterListFactory.Create(signal.Parameters, namespaceName)
             );
         }
 
-        public IEnumerable<Signal> Create(IEnumerable<SignalInfo> signals, NamespaceName namespaceName)
+        public IEnumerable<Signal> Create(IEnumerable<Xml.Signal> signals, NamespaceName namespaceName)
             => signals.Select(x => Create(x, namespaceName)).ToList();
     }
 }

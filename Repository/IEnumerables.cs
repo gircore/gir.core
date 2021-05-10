@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Repository.Analysis;
 using Repository.Model;
 
 namespace Repository
@@ -13,9 +11,9 @@ namespace Repository
             return lists.SelectMany(x => x);
         }
 
-        public static IEnumerable<SymbolReference> GetSymbolReferences(this IEnumerable<SymbolReferenceProvider> providers)
+        public static IEnumerable<TypeReference> GetSymbolReferences(this IEnumerable<TypeReferenceProvider> providers)
         {
-            return providers.SelectMany(x => x.GetSymbolReferences());
+            return providers.SelectMany(x => x.GetTypeReferences());
         }
 
         internal static bool AllResolved(this IEnumerable<Resolveable> symbols)
@@ -23,7 +21,7 @@ namespace Repository
             return symbols.All(x => x.GetIsResolved());
         }
 
-        internal static void Strip<T>(this IEnumerable<T> symbols) where T : Symbol
+        internal static void Strip<T>(this IEnumerable<T> symbols) where T : Type
         {
             foreach (var symbol in symbols)
                 symbol.Strip();

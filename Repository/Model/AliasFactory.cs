@@ -1,32 +1,31 @@
 ﻿using System;
-using Repository.Xml;
 
 namespace Repository.Model
 {
     internal class AliasFactory
     {
-        private readonly SymbolReferenceFactory _symbolReferenceFactory;
+        private readonly TypeReferenceFactory _typeReferenceFactory;
 
-        public AliasFactory(SymbolReferenceFactory symbolReferenceFactory)
+        public AliasFactory(TypeReferenceFactory typeReferenceFactory)
         {
-            _symbolReferenceFactory = symbolReferenceFactory;
+            _typeReferenceFactory = typeReferenceFactory;
         }
 
-        public Alias Create(AliasInfo aliasInfo, Namespace @namespace)
+        public Alias Create(Xml.Alias alias, Namespace @namespace)
         {
-            if (aliasInfo.Type is null)
+            if (alias.Type is null)
                 throw new Exception("Alias is missing a type");
 
-            if (aliasInfo.Name is null)
+            if (alias.Name is null)
                 throw new Exception("Alias is missing a name");
 
-            if (aliasInfo.For?.Name is null)
-                throw new Exception($"Alias {aliasInfo.Name} is missing target");
+            if (alias.For?.Name is null)
+                throw new Exception($"Alias {alias.Name} is missing target");
 
             return new Alias(
-                elementName: new ElementName(aliasInfo.Type),
-                symbolName: new SymbolName(aliasInfo.Name),
-                symbolReference: _symbolReferenceFactory.Create(aliasInfo.For, @namespace.Name),
+                elementName: new ElementName(alias.Type),
+                symbolName: new SymbolName(alias.Name),
+                typeReference: _typeReferenceFactory.Create(alias.For, @namespace.Name),
                 @namespace: @namespace
             );
         }

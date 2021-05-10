@@ -12,8 +12,8 @@ namespace Repository.Model
             Value = value;
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
-            => Enumerable.Empty<SymbolReference>();
+        public override IEnumerable<TypeReference> GetTypeReferences()
+            => Enumerable.Empty<TypeReference>();
 
         public override bool GetIsResolved()
             => true;

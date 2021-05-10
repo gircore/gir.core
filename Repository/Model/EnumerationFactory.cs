@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -13,18 +12,13 @@ namespace Repository.Model
             _memberFactory = memberFactory;
         }
 
-        public Enumeration Create(EnumInfo @enum, Namespace @namespace, bool hasFlags)
+        public Enumeration Create(Xml.Enum @enum, Namespace @namespace, bool hasFlags)
         {
             if (@enum.Name is null)
                 throw new Exception("Enum has no name");
 
             if (@enum.Type is null)
                 throw new Exception("Enum is missing a type");
-
-            if (@enum.Name == "TokenType")
-            {
-
-            }
 
             return new Enumeration(
                 @namespace: @namespace,

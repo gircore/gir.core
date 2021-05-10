@@ -3,20 +3,20 @@ using System.Linq;
 
 namespace Repository.Model
 {
-    public class Interface : Symbol
+    public class Interface : Type
     {
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;
         private readonly List<Property> _properties;
 
         public Method GetTypeFunction { get; }
-        public IEnumerable<SymbolReference> Implements { get; }
+        public IEnumerable<TypeReference> Implements { get; }
 
         public IEnumerable<Method> Methods => _methods;
         public IEnumerable<Method> Functions => _functions;
         public IEnumerable<Property> Properties => _properties;
 
-        public Interface(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, IEnumerable<SymbolReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(@namespace, cTypeName, typeName, symbolName)
+        public Interface(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(@namespace, cTypeName, typeName, symbolName)
         {
             Implements = implements;
             this._methods = methods.ToList();
@@ -25,11 +25,11 @@ namespace Repository.Model
             _properties = properties.ToList();
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
+        public override IEnumerable<TypeReference> GetTypeReferences()
         {
             return IEnumerables.Concat(
                 Implements,
-                GetTypeFunction.GetSymbolReferences(),
+                GetTypeFunction.GetTypeReferences(),
                 Methods.GetSymbolReferences(),
                 Functions.GetSymbolReferences()
             );

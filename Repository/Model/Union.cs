@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Repository.Model
 {
-    public class Union : Symbol
+    public class Union : Type
     {
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;
@@ -28,7 +28,7 @@ namespace Repository.Model
             this._fields = fields.ToList();
         }
 
-        public override IEnumerable<SymbolReference> GetSymbolReferences()
+        public override IEnumerable<TypeReference> GetTypeReferences()
         {
             var symbolReferences = IEnumerables.Concat(
                 Constructors.GetSymbolReferences(),
@@ -38,7 +38,7 @@ namespace Repository.Model
             );
 
             if (GetTypeFunction is { })
-                symbolReferences = symbolReferences.Concat(GetTypeFunction.GetSymbolReferences());
+                symbolReferences = symbolReferences.Concat(GetTypeFunction.GetTypeReferences());
             return symbolReferences;
         }
 
