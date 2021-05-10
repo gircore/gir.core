@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace GLib
 {
-    public partial record VariantType : IDisposable
+    public partial class VariantType : IDisposable
     {
         #region Static Member
 
@@ -12,20 +12,9 @@ namespace GLib
 
         #endregion
 
-        #region Properties
-
-        internal Native.VariantType.Handle Handle { get; }
-
-        #endregion
-
         #region Constructors
 
         public VariantType(string type) : this(Native.VariantType.Methods.New(type)) { }
-
-        internal VariantType(Native.VariantType.Handle handle)
-        {
-            Handle = handle;
-        }
 
         #endregion
 

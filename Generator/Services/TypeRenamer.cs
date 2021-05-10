@@ -95,7 +95,7 @@ namespace Generator.Services
         private void SetUnionMetadata(Union union)
         {
             union.Metadata["Name"] = union.SymbolName;
-            union.Metadata["PureName"] = "Struct";
+            union.Metadata["StructName"] = "Struct";
 
             union.SymbolName = new SymbolName($"{union.SymbolName}.Struct");
         }
@@ -117,21 +117,23 @@ namespace Generator.Services
 
             var className = record.GLibClassStructFor.GetResolvedType().SymbolName;
             record.Metadata["Name"] = className;
-            record.Metadata["PureName"] = "Class";
+            record.Metadata["StructName"] = "Class";
+            record.Metadata["StructRefName"] = $"{className}.Class";
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{className}.Handle";
-
+            
             record.SymbolName = new SymbolName($"{className}.Class");
         }
 
         private void SetRecordMetadata(Record record)
         {
             record.Metadata["Name"] = record.SymbolName;
-            record.Metadata["PureName"] = "Struct";
+            record.Metadata["StructName"] = "Struct";
+            record.Metadata["StructRefName"] = $"{record.SymbolName}.Struct";
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{record.SymbolName}.Handle";
 
-            record.SymbolName = new SymbolName($"{record.SymbolName}.Struct");
+            record.SymbolName = new SymbolName($"{record.SymbolName}");
         }
     }
 }

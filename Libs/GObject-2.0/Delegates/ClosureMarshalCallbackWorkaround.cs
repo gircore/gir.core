@@ -19,7 +19,7 @@ namespace GObject
             _managedCallback = managed;
         }
 
-        private void NativeCallbackMarshaller(IntPtr closure, IntPtr returnValue, uint nParamValues, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] GObject.Native.Value.Struct[] paramValues, IntPtr invocationHint, IntPtr marshalData)
+        private void NativeCallbackMarshaller(IntPtr closure, IntPtr returnValue, uint nParamValues, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] paramValues, IntPtr invocationHint, IntPtr marshalData)
         {
             _managedCallback();
         }

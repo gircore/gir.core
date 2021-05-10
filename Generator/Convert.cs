@@ -10,7 +10,6 @@ namespace Generator
     {
         internal static string ManagedToNative(string fromParam, Type type, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
         {
-            // TODO: We need to support disguised structs (opaque types)
             var qualifiedNativeType = type.Write(Target.Native, currentNamespace);
             var qualifiedManagedType = type.Write(Target.Managed, currentNamespace);
 
@@ -23,8 +22,8 @@ namespace Generator
                 // All other string types can be marshalled directly
                 (String, _) => fromParam,
 
-                (Record r, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
-                (Record r, { IsPointer: true, Array: { } }) => $"{fromParam}.MarshalToStructure<{qualifiedNativeType}>()",
+                (Record r, { Array: null }) => $"{fromParam}.Handle",
+                (Record r, { Array: { } }) => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedManagedType}.To({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
                 (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument {fromParam}"),
@@ -40,7 +39,6 @@ namespace Generator
 
         internal static string NativeToManaged(string fromParam, Type type, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
         {
-            // TODO: We need to support disguised structs (opaque types)
             var qualifiedType = type.Write(Target.Managed, currentNamespace);
 
             return (symbol: type, typeInfo) switch
@@ -50,8 +48,8 @@ namespace Generator
                 (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // General Conversions
-                (Record r, { IsPointer: true, Array: null }) => $"Marshal.PtrToStructure<{qualifiedType}>({fromParam})",
-                (Record r, { IsPointer: true, Array: { } }) => $"{fromParam}.MarshalToStructure<{qualifiedType}>()",
+                (Record r, { Array: null }) => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
+                (Record r, { Array: { } }) => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedType}.From({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument '{fromParam}'"),

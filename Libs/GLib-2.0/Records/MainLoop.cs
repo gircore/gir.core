@@ -2,10 +2,8 @@
 
 namespace GLib
 {
-    public sealed partial record MainLoop
+    public sealed partial class MainLoop
     {
-        public Native.MainLoop.Handle Handle { get; private set; }
-
         public MainLoop(MainContext context, bool isRunning = false)
             : this(context.Handle, isRunning) { }
 
@@ -13,7 +11,7 @@ namespace GLib
 
         private MainLoop(Native.MainContext.Handle context, bool isRunning)
         {
-            Handle = Native.MainLoop.Methods.New(context, isRunning);
+            _handle = Native.MainLoop.Methods.New(context, isRunning);
         }
 
         public bool IsRunning() => Native.MainLoop.Methods.IsRunning(Handle);

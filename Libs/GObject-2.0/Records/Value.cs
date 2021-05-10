@@ -8,21 +8,14 @@ namespace GObject
     // TODO: Consider splitting value into different types for each type it represents
     // to avoid breaking the open closed principle.
     // There could an abstract value base class with generic implementations of the concrete types.
-    public partial record Value : IDisposable
+    public partial class Value : IDisposable
     {
-        internal Native.Value.Handle Handle { get; }
-
         #region Constructors
-
-        internal Value(Native.Value.Handle handle)
-        {
-            Handle = handle;
-        }
 
         public Value(Type type)
         {
             var h = Native.Value.ManagedHandle.Create();
-            Handle = Native.Value.Methods.Init(h, type.Value);
+            _handle = Native.Value.Methods.Init(h, type.Value);
         }
 
         public Value(Object value) : this(Type.Object) => SetObject(value);

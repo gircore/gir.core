@@ -2,25 +2,19 @@
 
 namespace GLib
 {
-    public sealed partial record Bytes : IDisposable
+    public sealed partial class Bytes : IDisposable
     {
         #region Fields
 
-        private readonly long _size;
-        private readonly Native.Bytes.Handle _handle;
+        private long _size;
 
-        #endregion
-
-        #region Properties
-        public Native.Bytes.Handle Handle => _handle;
         #endregion
 
         #region Constructors
 
-        private Bytes(Native.Bytes.Handle handle)
+        partial void Initialize()
         {
-            _handle = handle;
-            _size = (long) Native.Bytes.Methods.GetSize(handle);
+            _size = (long) Native.Bytes.Methods.GetSize(_handle);
             GC.AddMemoryPressure(_size);
         }
 

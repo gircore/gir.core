@@ -35,23 +35,27 @@ namespace Generator
                 // Arrays of byte can be marshalled automatically, no IntPtr needed
                 { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: { } s } } when s.SymbolName == "byte" => "byte[]",
 
-                // Parameters of record arrays which do not transfer ownership can be marshalled directly
-                // as struct[]
-                Parameter { TypeInformation: { IsPointer: false, Array: { } }, Transfer: Transfer.None, TypeReference: { ResolvedType: Record r } }
-                    => r.Write(Target.Native, currentNamespace) + "[]",
-
                 // Arrays of Opaque Structs, GObjects, and GInterfaces cannot be marshalled natively
                 // Instead marshal them as variable width pointer arrays (LPArray)
-                { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Record } } => "IntPtr[]",    // SafeHandles
+                { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: Record } } => "IntPtr[]",    // SafeHandles
                 { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Class } } => "IntPtr[]",     // GObjects
                 { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Interface } } => "IntPtr[]", // GInterfaces
+                
+                // For non-pointer records, we want to embed the entire struct inside the parent struct
+                Field { TypeInformation: { IsPointer: false }, TypeReference: { ResolvedType: Record { } r } }
+                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("StructRefName"), Target.Native),
 
                 // Use original symbol name for records (remapped to SafeHandles)
-                { TypeInformation: { IsPointer: true }, TypeReference: { ResolvedType: Record r } } when useSafeHandle
+                { TypeReference: { ResolvedType: Record r } } when useSafeHandle
                     => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
 
-                // Pointers to primitive value types can be marshalled directly
-                { TypeInformation: { IsPointer: true }, TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace),
+                // Primitives - Marshal directly
+                { TypeInformation: { Array: {} }, TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",
+                { TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace),
+                
+                // Enumerations - Marshal directly
+                { TypeReference: {ResolvedType: Enumeration}, TypeInformation: {Array: {}}} => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace) + "[]",
+                { TypeReference: {ResolvedType: Enumeration}} => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace),
 
                 // Use IntPtr for all types where a pointer is expected
                 { TypeInformation: { IsPointer: true, Array: { Length: not null } } } => "IntPtr[]",

@@ -31,7 +31,8 @@ namespace GObject
             SetProperty(property.Name, v);
         }
 
-        /// <summary>
+        // TODO: Remove this soon - we generate it!
+        /*/// <summary>
         /// Assigns the value of a GObject's property given its <paramref name="name"/>
         /// </summary>
         /// <param name="value">The property name.</param>
@@ -40,7 +41,7 @@ namespace GObject
         {
             Native.Object.Instance.Methods.SetProperty(Handle, name, value.Handle);
             value.Dispose();
-        }
+        }*/
 
         /// <summary>
         /// Gets the value of a GObject's property given its <paramref name="name"/>.

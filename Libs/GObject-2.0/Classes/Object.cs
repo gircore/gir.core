@@ -47,7 +47,7 @@ namespace GObject
                 objectType: gtype.Value,
                 nProperties: (uint) constructArguments.Length,
                 names: GetNames(constructArguments),
-                values: GetValues(constructArguments)
+                values: GetValues(constructArguments).Select(x => x.DangerousGetHandle()).ToArray()
             );
 
             _handle = new ObjectHandle(handle, this, !Native.Object.Instance.Methods.IsFloating(handle));
@@ -58,7 +58,7 @@ namespace GObject
         private string[] GetNames(ConstructArgument[] constructParameters)
             => constructParameters.Select(x => x.Name).ToArray();
 
-        private Native.Value.Struct[] GetValues(ConstructArgument[] constructParameters)
+        private Native.Value.Handle[] GetValues(ConstructArgument[] constructParameters)
         {
             var values = new Native.Value.Struct[constructParameters.Length];
 
@@ -67,7 +67,7 @@ namespace GObject
                 values[i] = constructParameters[i].Value.GetData();
             }
 
-            return values;
+            return values.Select(val => Native.Value.ManagedHandle.Create(val)).ToArray();
         }
 
         /// <summary>

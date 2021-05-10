@@ -11,7 +11,7 @@ namespace {{ namespace.native_name }}
     {
 
         [StructLayout(LayoutKind.Sequential)]
-        public partial struct {{ get_metadata "PureName" }}
+        public partial struct {{ get_metadata "StructName" }}
         {
             {{ include 'native.field.delegates.sbntxt' }}
             {{ include 'native.struct.fields.sbntxt' }}

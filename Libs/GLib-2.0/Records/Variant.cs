@@ -1,20 +1,14 @@
 ﻿using System;
+using System.Linq;
 using GLib.Native;
 
 namespace GLib
 {
-    public partial record Variant : IDisposable
+    public partial class Variant : IDisposable
     {
         #region Fields
 
         private Variant[] _children;
-        private readonly Native.Variant.Handle _handle;
-
-        #endregion
-
-        #region Properties
-
-        public Native.Variant.Handle Handle => _handle;
 
         #endregion
 
@@ -40,11 +34,10 @@ namespace GLib
             Init(out this.handle, data);
         }*/
 
-        public Variant(Native.Variant.Handle handle)
+        partial void Initialize()
         {
             _children = new Variant[0];
-            _handle = handle;
-            Native.Variant.Methods.RefSink(handle);
+            Native.Variant.Methods.RefSink(_handle);
         }
 
         #endregion
@@ -68,7 +61,7 @@ namespace GLib
 
             var count = (nuint) children.Length;
             var ptrs = new IntPtr[count];
-
+            
             for (nuint i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle.DangerousGetHandle();
 

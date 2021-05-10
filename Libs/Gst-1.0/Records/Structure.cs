@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Gst
 {
-    public partial record Structure
+    public partial class Structure
     {
         public string? GetName()
         {

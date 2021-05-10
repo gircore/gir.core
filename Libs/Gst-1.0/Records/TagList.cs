@@ -4,7 +4,7 @@ using GObject;
 
 namespace Gst
 {
-    public partial record TagList
+    public partial class TagList
     {
         public void Foreach(TagForeachFunc func)
         {

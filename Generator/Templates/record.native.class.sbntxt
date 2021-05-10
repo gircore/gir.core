@@ -10,7 +10,7 @@ namespace {{ namespace.native_name }}
     public partial class {{get_metadata "Name"}}
     {
         [StructLayout(LayoutKind.Sequential)]
-        public struct {{ get_metadata "PureName" }}
+        public struct {{ get_metadata "StructName" }}
         {
             {{ include 'native.field.delegates.sbntxt' }}
             {{ include 'native.struct.fields.sbntxt' }}

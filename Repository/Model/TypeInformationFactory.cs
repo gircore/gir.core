@@ -1,4 +1,6 @@
 ﻿using System;
+using Repository.Model;
+using Repository.Xml;
 
 namespace Repository.Model
 {
@@ -36,7 +38,7 @@ namespace Repository.Model
             return anyType switch
             {
                 { Type: { } t } => GetIsPointer(t.Name, t.CType),
-                { Array: { Type: { } t } } => GetIsPointer(t.Name, t.CType),
+                { Array: { Type: { } t } a } => GetIsPointer(string.Empty, a.CType) || GetIsPointer(t.Name, t.CType),
                 { Array: { SubArray: { } } } => true,
                 Xml.Field { Callback: { } } => false, //Callbacks are no pointer as they are handled as delegates
                 _ => throw new Exception("Can not get pointer information from type: " + anyType)

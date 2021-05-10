@@ -75,6 +75,10 @@ namespace Generator
             // No static functions (e.g. non class methods)
             if (_instanceParameter == null)
                 return false;
+            
+            // No free/unref methods (these will need some kind of special generation)
+            if (_method.IsFree() || _method.IsUnref())
+                return false;
 
             // No in/out/ref parameters
             if (_managedParams.Any(param => param.Direction != Direction.Default))
@@ -82,14 +86,6 @@ namespace Generator
 
             // No delegate return values
             if (_method.ReturnValue.TypeReference.GetResolvedType().GetType() == typeof(Callback))
-                return false;
-
-            // No record parameters
-            if (_managedParams.Any(param => param.TypeReference.GetResolvedType().GetType() == typeof(Record)))
-                return false;
-
-            // No record return values
-            if (_method.ReturnValue.TypeReference.GetResolvedType().GetType() == typeof(Record))
                 return false;
 
             // No union parameters
@@ -144,7 +140,6 @@ namespace Generator
 
             foreach (var dlgParam in _delegateParams)
             {
-                Type type = dlgParam.TypeReference.GetResolvedType();
                 var managedType = dlgParam.WriteType(Target.Managed, _currentNamespace);
 
                 var handlerType = dlgParam.CallbackScope switch
@@ -191,7 +186,8 @@ namespace Generator
                 transfer: parameter.Transfer
             );
 
-            var alloc = $"{parameter.WriteType(Target.Native, _currentNamespace)} {parameter.SymbolName}Native = {expression};";
+            // TODO: Use actual parameter type again: {parameter.WriteType(Target.Native, _currentNamespace)}
+            var alloc = $"var {parameter.SymbolName}Native = {expression};";
             var dealloc = $"// TODO: Free {parameter.SymbolName}Native";
 
             _stack.Nest(new Block()

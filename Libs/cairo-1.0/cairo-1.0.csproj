@@ -3,4 +3,7 @@
     <PackageId>Gir.Cairo</PackageId>
     <RootNamespace>Cairo</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GLib-2.0\GLib-2.0.csproj" />
+  </ItemGroup>
 </Project>
