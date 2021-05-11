@@ -121,7 +121,7 @@ namespace Generator.Services
             record.Metadata["StructRefName"] = $"{className}.Class";
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{className}.Handle";
-            
+
             record.SymbolName = new SymbolName($"{className}.Class");
         }
 

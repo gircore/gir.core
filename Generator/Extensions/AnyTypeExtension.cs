@@ -40,7 +40,7 @@ namespace Generator
                 { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: Record } } => "IntPtr[]",    // SafeHandles
                 { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Class } } => "IntPtr[]",     // GObjects
                 { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Interface } } => "IntPtr[]", // GInterfaces
-                
+
                 // For non-pointer records, we want to embed the entire struct inside the parent struct
                 Field { TypeInformation: { IsPointer: false }, TypeReference: { ResolvedType: Record { } r } }
                     => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("StructRefName"), Target.Native),
@@ -50,12 +50,12 @@ namespace Generator
                     => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
 
                 // Primitives - Marshal directly
-                { TypeInformation: { Array: {} }, TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",
+                { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",
                 { TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace),
-                
+
                 // Enumerations - Marshal directly
-                { TypeReference: {ResolvedType: Enumeration}, TypeInformation: {Array: {}}} => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace) + "[]",
-                { TypeReference: {ResolvedType: Enumeration}} => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace),
+                { TypeReference: { ResolvedType: Enumeration }, TypeInformation: { Array: { } } } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace) + "[]",
+                { TypeReference: { ResolvedType: Enumeration } } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace),
 
                 // Use IntPtr for all types where a pointer is expected
                 { TypeInformation: { IsPointer: true, Array: { Length: not null } } } => "IntPtr[]",
