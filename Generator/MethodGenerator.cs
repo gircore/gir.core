@@ -75,7 +75,7 @@ namespace Generator
             // No static functions (e.g. non class methods)
             if (_instanceParameter == null)
                 return false;
-            
+
             // No free/unref methods (these will need some kind of special generation)
             if (_method.IsFree() || _method.IsUnref())
                 return false;
