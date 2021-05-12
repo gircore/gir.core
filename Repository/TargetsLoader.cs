@@ -5,16 +5,16 @@ using Repository.Services;
 
 namespace Repository
 {
-    internal class RepositoryInternal
+    internal class TargetsLoader
     {
-        private readonly LoaderService _loaderService;
-
-        public RepositoryInternal(LoaderService loaderService)
+         private readonly LoaderService _loaderService;
+        
+        public TargetsLoader(LoaderService loaderService)
         {
             _loaderService = loaderService;
         }
 
-        public IEnumerable<Namespace> Load(ResolveFileFunc fileFunc, IEnumerable<string> targets)
+        internal IEnumerable<Namespace> GetNamespaces(ResolveFileFunc fileFunc, IEnumerable<string> targets)
         {
             Log.Information($"Initialising repository with {targets.Count()} toplevel project(s)");
 

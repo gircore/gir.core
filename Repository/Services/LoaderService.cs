@@ -5,26 +5,26 @@ using System.IO;
 using System.Linq;
 using Repository.Graph;
 using Repository.Model;
-using Repository.Services;
 
 namespace Repository
 {
+
     internal class LoaderService
     {
         private readonly DependencyResolverService<Namespace> _dependencyResolverService;
-        private readonly InfoFactory _infoFactory;
-        private readonly XmlService _xmlService;
+        private readonly IncludeFactory _includeFactory;
         private readonly NamespaceFactory _namespaceFactory;
+        private readonly Xml.Loader _xmlLoader;
         private ResolveFileFunc? _lookupFunc;
 
         private bool _projectLoadFailed;
 
-        public LoaderService(DependencyResolverService<Namespace> dependencyResolverService, InfoFactory infoFactory, XmlService xmlService, NamespaceFactory namespaceFactory)
+        public LoaderService(DependencyResolverService<Namespace> dependencyResolverService, IncludeFactory includeFactory, NamespaceFactory namespaceFactory, Xml.Loader xmlLoader)
         {
             _dependencyResolverService = dependencyResolverService;
-            _infoFactory = infoFactory;
-            _xmlService = xmlService;
+            _includeFactory = includeFactory;
             _namespaceFactory = namespaceFactory;
+            _xmlLoader = xmlLoader;
         }
 
         // Where 'targets' are toplevel projects. LoaderService resolves
@@ -53,18 +53,18 @@ namespace Repository
         {
             try
             {
-                var repoinfo = LoadRepositoryInfo(target);
+                var repoinfo = _xmlLoader.LoadRepository(target);
 
                 if (repoinfo.Namespace is null)
                     throw new Exception($"Repository does not include any {nameof(repoinfo.Namespace)}.");
 
-                var repositoryInfoData = _infoFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
+                var repositoryInfoData = _includeFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
 
                 if (TryLoadProject(namespaces, repositoryInfoData, out Namespace? project))
                     return project;
 
                 var dependencies = LoadDependencies(namespaces, repoinfo.Includes);
-                var nspace = _namespaceFactory.CreateFromNamespaceInfo(repoinfo.Namespace);
+                var nspace = _namespaceFactory.CreateFromNamespace(repoinfo.Namespace);
                 nspace.SetDependencies(dependencies);
                 namespaces.Add(nspace);
 
@@ -85,7 +85,7 @@ namespace Repository
         private IEnumerable<Namespace> LoadDependencies(ICollection<Namespace> ns, IEnumerable<Xml.Include> includes)
         {
             var dependencies = new List<Namespace>();
-            foreach (var dependency in _infoFactory.CreateFromIncludes(includes))
+            foreach (var dependency in includes.Select(_includeFactory.Create))
             {
                 FileInfo dependentGirFile = GetGirFileInfo(dependency);
                 var dependentProject = LoadRecursive(ns, dependentGirFile);
@@ -97,7 +97,7 @@ namespace Repository
             return dependencies;
         }
 
-        private bool TryLoadProject(IEnumerable<Namespace> loadedProjects, Info repo, [NotNullWhen(true)] out Namespace? loadedProject)
+        private bool TryLoadProject(IEnumerable<Namespace> loadedProjects, Include repo, [NotNullWhen(true)] out Namespace? loadedProject)
         {
             var foundProjects = loadedProjects.Where(x => NameMatches(x, repo)).ToArray();
             switch (foundProjects.Length)
@@ -113,10 +113,10 @@ namespace Repository
             }
         }
 
-        private bool NameMatches(Namespace ns, Info repo)
+        private bool NameMatches(Namespace ns, Include repo)
             => ns.ToCanonicalName() == repo.ToCanonicalName();
 
-        private FileInfo GetGirFileInfo(Info data)
+        private FileInfo GetGirFileInfo(Include data)
         {
             if (_lookupFunc is null)
                 throw new Exception("Lookup func is not initialized");
@@ -124,17 +124,6 @@ namespace Repository
             return _lookupFunc(data.Name, data.Version);
         }
 
-        private Xml.Repository LoadRepositoryInfo(FileInfo target)
-        {
-            Xml.Repository? repoInfo = _xmlService.Deserialize<Xml.Repository>(target);
-
-            if (repoInfo is null)
-                throw new Exception($"File {target} could not be deserialized");
-
-            if (repoInfo.Namespace == null)
-                throw new InvalidDataException($"File '{target} does not define a namespace.");
-
-            return repoInfo;
-        }
+       
     }
 }

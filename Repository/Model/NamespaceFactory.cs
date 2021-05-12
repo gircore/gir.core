@@ -28,7 +28,7 @@ namespace Repository.Model
             _unionFactory = unionFactory;
         }
 
-        public Namespace CreateFromNamespaceInfo(Xml.Namespace @namespace)
+        public Namespace CreateFromNamespace(Xml.Namespace @namespace)
         {
             if (@namespace.Name is null)
                 throw new Exception("Namespace does not have a name");

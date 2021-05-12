@@ -17,8 +17,7 @@ namespace Generator
 
         public void Write(IEnumerable<string> projects)
         {
-            var repository = new Repository.Repository();
-            var namespaces = repository.Load(FileResolver.ResolveFile, projects).ToList();
+            var namespaces = Loader.Load(FileResolver.ResolveFile, projects).ToList();
 
             var typeRenamer = new TypeRenamer();
             typeRenamer.SetMetadata(namespaces);
