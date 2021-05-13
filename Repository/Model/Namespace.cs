@@ -4,16 +4,14 @@ using Repository.Graph;
 
 namespace Repository.Model
 {
-    public class Namespace : TypeReferenceProvider, INode<Namespace>
+    public class Namespace : TypeReferenceProvider
     {
         #region Properties
 
         public NamespaceName NativeName => Name with { Value = Name.Value + ".Native" };
         public NamespaceName Name { get; }
         public string Version { get; }
-
         public string? SharedLibrary { get; }
-        public IEnumerable<Namespace> Dependencies { get; private set; }
 
         private readonly List<Alias> _aliases = new();
         public IEnumerable<Alias> Aliases => _aliases;
@@ -52,11 +50,7 @@ namespace Repository.Model
             Name = new NamespaceName(name);
             Version = version;
             SharedLibrary = sharedLibrary;
-            Dependencies = Enumerable.Empty<Namespace>();
         }
-
-        internal void SetDependencies(IEnumerable<Namespace> dependencies)
-            => Dependencies = dependencies;
 
         internal void AddAlias(Alias alias)
             => _aliases.Add(alias);

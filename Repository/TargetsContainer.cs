@@ -1,16 +1,30 @@
-﻿using Repository.Graph;
-using Repository.Services;
+﻿using Repository.Services;
 using StrongInject;
 
 namespace Repository
 {
-    [Register(typeof(TargetsLoader))]
+    [Register(typeof(TargetsLoader2))]
     [Register(typeof(Xml.Loader))]
     [Register(typeof(XmlService))]
     [Register(typeof(LoaderService))]
     [Register(typeof(TypeReferenceResolverService))]
     [Register(typeof(IdentifierConverter))]
     [Register(typeof(CaseConverter))]
+    [RegisterModule(typeof(ModelFactoriesModule))]
+    internal partial class TargetsContainer : IContainer<TargetsLoader2>
+    {
+        private readonly GetFileInfo _getFileInfo;
+
+        public TargetsContainer(GetFileInfo getFileInfo)
+        {
+            _getFileInfo = getFileInfo;
+        }
+
+        [Factory]
+        public GetFileInfo GetResolveInclude() => _getFileInfo;
+
+    }
+
     [Register(typeof(Model.NamespaceFactory))]
     [Register(typeof(Model.TypeReferenceFactory))]
     [Register(typeof(Model.IncludeFactory))]
@@ -34,10 +48,6 @@ namespace Repository
     [Register(typeof(Model.ArrayFactory))]
     [Register(typeof(Model.TypeInformationFactory))]
     [Register(typeof(Model.UnionFactory))]
-    internal partial class TargetsContainer : IContainer<TargetsLoader>
-    {
-        [Factory]
-        public static DependencyResolverService<T> GetResolver<T>() where T : INode<T> => new DependencyResolverService<T>();
-
-    }
+    [Register(typeof(Model.RepositoryFactory))]
+    internal class ModelFactoriesModule { }
 }

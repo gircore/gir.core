@@ -11,7 +11,6 @@ namespace Repository
 
     internal class LoaderService
     {
-        private readonly DependencyResolverService<Namespace> _dependencyResolverService;
         private readonly IncludeFactory _includeFactory;
         private readonly NamespaceFactory _namespaceFactory;
         private readonly Xml.Loader _xmlLoader;
@@ -19,9 +18,8 @@ namespace Repository
 
         private bool _projectLoadFailed;
 
-        public LoaderService(DependencyResolverService<Namespace> dependencyResolverService, IncludeFactory includeFactory, NamespaceFactory namespaceFactory, Xml.Loader xmlLoader)
+        public LoaderService(IncludeFactory includeFactory, NamespaceFactory namespaceFactory, Xml.Loader xmlLoader, RepositoryFactory repositoryFactory)
         {
-            _dependencyResolverService = dependencyResolverService;
             _includeFactory = includeFactory;
             _namespaceFactory = namespaceFactory;
             _xmlLoader = xmlLoader;
@@ -40,7 +38,7 @@ namespace Repository
             if (_projectLoadFailed)
                 Log.Warning($"Failed to load some projects. Please check the log for more information.");
 
-            return _dependencyResolverService.ResolveOrdered(namespaces).Cast<Namespace>();
+            return namespaces;// _dependencyResolverService.ResolveOrdered(namespaces).Cast<Namespace>();
         }
 
         private void LoadAndAddProjects(ICollection<Namespace> namespaces, string target)
@@ -65,7 +63,7 @@ namespace Repository
 
                 var dependencies = LoadDependencies(namespaces, repoinfo.Includes);
                 var nspace = _namespaceFactory.CreateFromNamespace(repoinfo.Namespace);
-                nspace.SetDependencies(dependencies);
+                //nspace.SetDependencies(dependencies);
                 namespaces.Add(nspace);
 
                 Log.Information($"Loaded '{nspace.ToCanonicalName()}' (provided by '{target.Name}')");

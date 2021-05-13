@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Repository.Model;
 using StrongInject;
 
 namespace Repository
 {
+    public delegate FileInfo GetFileInfo(Model.Include include);
+    
+    //TODO: Delete
     public delegate FileInfo ResolveFileFunc(string name, string version);
 
     public class Loader
     {
-        public static IEnumerable<Namespace> Load(ResolveFileFunc fileFunc, IEnumerable<string> targets)
+        public static IEnumerable<Model.Repository> Load(GetFileInfo fileFunc, IEnumerable<FileInfo> targets)
         {
-            return new TargetsContainer().Run(targetsLoader => targetsLoader.GetNamespaces(fileFunc, targets));
+            return new TargetsContainer(fileFunc).Run(targetsLoader => targetsLoader.GetRepositories(targets));
         }
     }
 }

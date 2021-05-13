@@ -7,6 +7,18 @@ namespace Repository.Services
 {
     internal class TypeReferenceResolverService
     {
+        public static void Resolve(IEnumerable<Model.Repository> repositories)
+        {
+            var symbolDictionary = new TypeDictionary();
+            AddFundamentalTypes(symbolDictionary);
+
+            foreach (var repository in repositories)
+            {
+                
+            }
+        }
+        
+        
         public static void Resolve(IEnumerable<Namespace> namespaces)
         {
             var symbolDictionary = new TypeDictionary();

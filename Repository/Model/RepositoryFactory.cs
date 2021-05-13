@@ -10,12 +10,14 @@ namespace Repository.Model
         private readonly NamespaceFactory _namespaceFactory;
         private readonly IncludeFactory _includeFactory;
         private readonly Xml.Loader _xmlLoader;
+        private readonly GetFileInfo _getFileInfo;
 
-        public RepositoryFactory(NamespaceFactory namespaceFactory, IncludeFactory includeFactory, Xml.Loader xmlLoader)
+        public RepositoryFactory(NamespaceFactory namespaceFactory, IncludeFactory includeFactory, Xml.Loader xmlLoader, GetFileInfo getFileInfo)
         {
             _namespaceFactory = namespaceFactory;
             _includeFactory = includeFactory;
             _xmlLoader = xmlLoader;
+            _getFileInfo = getFileInfo;
         }
         
         public Repository Create(FileInfo girFile)
@@ -29,42 +31,23 @@ namespace Repository.Model
             if (repository.Namespace is null)
                 throw new Exception($"Repository does not include any {nameof(repository.Namespace)}.");
             
-            var includes = repository.Includes.Select(_includeFactory.Create);
-            var dependencies = includes.Select(Create);
-            
             var @namespace = _namespaceFactory.CreateFromNamespace(repository.Namespace);
-            
-            //TODO: "Include class" is a reference to a different repository.
-            //Add the Reference of this repository to the "incldue class", which makes
-            //the dependencies property on the namespace obsolete.
-            @namespace.SetDependencies(FlattenDependencies(dependencies));
-            
+            var includes = repository.Includes.Select(_includeFactory.Create).ToList();
+            ResolveIncludes(includes);
+
             return new Repository(@namespace, includes);
+        }
+
+        private void ResolveIncludes(IEnumerable<Include> includes)
+        {
+            foreach (var include in includes)
+                include.Resolve(Create(include));
         }
 
         private Repository Create(Include include)
         {
-            return default!;
-        }
-
-        private IEnumerable<Namespace> FlattenDependencies(IEnumerable<Repository> repositories)
-        {
-            var data = new HashSet<Namespace>();
-            
-            foreach (var repository in repositories)
-            {
-                foreach (var ns in GetDependencies(repository.Namespace))
-                    data.Add(ns);
-            }
-
-            return data;
-        }
-        
-        private IEnumerable<Namespace> GetDependencies(Namespace nsa)
-        {
-            foreach (var ns in nsa.Dependencies)
-                foreach (var n in GetDependencies(ns))
-                    yield return n;
+            var includeFileInfo = _getFileInfo(include);
+            return Create(includeFileInfo);
         }
     }
 }

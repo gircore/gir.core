@@ -55,12 +55,12 @@ namespace Repository.Analysis
             if (directResult is { })
                 return directResult.TypeReference.GetResolvedType();
 
-            foreach (var parent in ns.Dependencies)
+            /*foreach (var parent in ns.Dependencies)
             {
                 var parentResult = RecursiveResolveAlias(parent, typeReference);
                 if (parentResult is { })
                     return parentResult;
-            }
+            }*/
 
             return null;
         }
