@@ -1,8 +1,8 @@
 ﻿using System;
-using Repository.Model;
+using Gir.Model;
 using Array = System.Array;
-using String = Repository.Model.String;
-using Type = Repository.Model.Type;
+using String = Gir.Model.String;
+using Type = Gir.Model.Type;
 
 namespace Generator
 {

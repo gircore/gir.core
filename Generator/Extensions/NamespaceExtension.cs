@@ -1,6 +1,6 @@
 ﻿
 using System;
-using Repository.Model;
+using Gir.Model;
 
 namespace Generator
 {

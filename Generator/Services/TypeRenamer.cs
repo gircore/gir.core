@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Repository;
-using Repository.Model;
+using Gir;
+using Gir.Model;
 
 namespace Generator.Services
 {
@@ -115,6 +115,7 @@ namespace Generator.Services
         {
             Debug.Assert(record.GLibClassStructFor is not null);
 
+            //TODO: Classname can get ulong for window
             var className = record.GLibClassStructFor.GetResolvedType().SymbolName;
             record.Metadata["Name"] = className;
             record.Metadata["StructName"] = "Class";

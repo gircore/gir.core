@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Repository.Model;
-using String = Repository.Model.String;
-using Type = Repository.Model.Type;
+using Gir.Model;
+using String = Gir.Model.String;
+using Type = Gir.Model.Type;
 
 namespace Generator.Properties
 {

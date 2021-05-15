@@ -1,4 +1,4 @@
-﻿namespace Repository.Xml
+﻿namespace Gir.Xml
 {
     internal class Project
     {

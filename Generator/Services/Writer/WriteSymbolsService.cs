@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Generator.Factories;
-using Repository.Analysis;
-using Repository.Model;
+using Gir.Analysis;
+using Gir.Model;
 using Scriban.Runtime;
-using Type = Repository.Model.Type;
+using Type = Gir.Model.Type;
 
 namespace Generator.Services.Writer
 {

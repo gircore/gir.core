@@ -1,7 +1,7 @@
 ﻿using System;
-using Repository;
-using Repository.Model;
-using String = Repository.Model.String;
+using Gir;
+using Gir.Model;
+using String = Gir.Model.String;
 
 namespace Generator
 {

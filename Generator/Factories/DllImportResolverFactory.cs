@@ -1,5 +1,5 @@
-﻿using Repository;
-using Repository.Analysis;
+﻿using Gir;
+using Gir.Analysis;
 
 namespace Generator.Factories
 {

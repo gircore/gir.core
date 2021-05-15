@@ -4,9 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Generator.Services;
 using Generator.Services.Writer;
-using Repository;
-using Repository.Model;
+using Gir;
+using Gir.Model;
 using StrongInject;
+using File = Gir.File;
 
 namespace Generator
 {
@@ -16,7 +17,7 @@ namespace Generator
         public bool UseAsync { get; init; } = true;
         public bool GenerateDocComments { get; init; } = false;
 
-        public void Write(IEnumerable<GirFile> projects)
+        public void Write(IEnumerable<File> projects)
         {
             var repositories = Loader.Load(FileResolver.ResolveFile, projects).ToList();
 

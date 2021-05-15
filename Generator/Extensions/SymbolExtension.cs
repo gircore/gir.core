@@ -1,6 +1,6 @@
 ﻿using System;
-using Repository.Model;
-using Type = Repository.Model.Type;
+using Gir.Model;
+using Type = Gir.Model.Type;
 
 namespace Generator
 {

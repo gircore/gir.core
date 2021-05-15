@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Repository;
-using Repository.Model;
-using Type = Repository.Model.Type;
+using Gir;
+using Gir.Model;
+using Type = Gir.Model.Type;
 
 namespace Generator
 {

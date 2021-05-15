@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Repository;
-using Repository.Model;
+using Gir;
+using Gir.Model;
 using Array = System.Array;
-using String = Repository.Model.String;
+using String = Gir.Model.String;
 
 namespace Generator
 {
