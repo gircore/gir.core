@@ -22,7 +22,7 @@ namespace Repository.Model
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Method> Constructors => _constructors;
 
-        public Class(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(@namespace, cTypeName, typeName, symbolName)
+        public Class(Repository repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(repository, cTypeName, typeName, symbolName)
         {
             Parent = parent;
             Implements = implements;
@@ -93,7 +93,7 @@ namespace Repository.Model
             var result = element.GetIsResolved();
 
             if (!result)
-                Log.Information($"Class {Namespace?.Name}.{TypeName}: Stripping symbol {element.Name}");
+                Log.Information($"Class {Repository?.Namespace.Name}.{TypeName}: Stripping symbol {element.Name}");
 
             return !result;
         }

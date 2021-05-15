@@ -11,7 +11,7 @@ namespace Repository.Model
             _typeReferenceFactory = typeReferenceFactory;
         }
 
-        public Alias Create(Xml.Alias alias, Namespace @namespace)
+        public Alias Create(Xml.Alias alias, Repository repository)
         {
             if (alias.Type is null)
                 throw new Exception("Alias is missing a type");
@@ -25,8 +25,8 @@ namespace Repository.Model
             return new Alias(
                 elementName: new ElementName(alias.Type),
                 symbolName: new SymbolName(alias.Name),
-                typeReference: _typeReferenceFactory.Create(alias.For, @namespace.Name),
-                @namespace: @namespace
+                typeReference: _typeReferenceFactory.Create(alias.For, repository.Namespace.Name),
+                repository: repository
             );
         }
     }

@@ -7,7 +7,7 @@ namespace Repository.Model
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
 
-        public Callback(Namespace @namespace, CTypeName? ctypeName, TypeName typeName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(@namespace, ctypeName, typeName, symbolName)
+        public Callback(Repository repository, CTypeName? ctypeName, TypeName typeName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctypeName, typeName, symbolName)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;

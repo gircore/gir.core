@@ -13,16 +13,19 @@ namespace Repository.Model
             _namespaceFactory = namespaceFactory;
             _includeFactory = includeFactory;
         }
-        
-        public Repository Create(Xml.Repository repository)
+
+        public Repository Create(Xml.Repository xmlRepository)
         {
-            if (repository.Namespace is null)
-                throw new Exception($"Repository does not include any {nameof(repository.Namespace)}.");
+            if (xmlRepository.Namespace is null)
+                throw new Exception($"Repository does not include any {nameof(xmlRepository.Namespace)}.");
+
+            var includes = xmlRepository.Includes.Select(_includeFactory.Create).ToList();
+            var repository = new Repository(includes);
             
-            var @namespace = _namespaceFactory.CreateFromNamespace(repository.Namespace);
-            var includes = repository.Includes.Select(_includeFactory.Create).ToList();
-            
-            return new Repository(@namespace, includes);
+            //The factory sets the namespace automatically into the repository
+            _ = _namespaceFactory.Create(xmlRepository.Namespace, repository);
+
+            return repository;
         }
     }
 }

@@ -21,19 +21,19 @@ namespace Repository.Model
             _typeInformationFactory = typeInformationFactory;
         }
 
-        public Field Create(Xml.Field info, Namespace @namespace)
+        public Field Create(Xml.Field info, Repository repository)
         {
             if (info.Name is null)
                 throw new Exception("Field is missing name");
 
             Callback? callback = null;
             if (info.Callback is not null)
-                callback = _callbackFactory.Create(info.Callback, @namespace);
+                callback = _callbackFactory.Create(info.Callback, repository);
 
             return new Field(
                 elementName: new ElementName(_identifierConverter.EscapeIdentifier(info.Name)),
                 symbolName: new SymbolName(_caseConverter.ToPascalCase(_identifierConverter.EscapeIdentifier(info.Name))),
-                typeReference: CreateSymbolReference(info, @namespace.Name),
+                typeReference: CreateSymbolReference(info, repository.Namespace.Name),
                 callback: callback,
                 typeInformation: _typeInformationFactory.Create(info),
                 readable: info.Readable,
@@ -41,8 +41,8 @@ namespace Repository.Model
             );
         }
 
-        public IEnumerable<Field> Create(IEnumerable<Xml.Field> infos, Namespace @namespace)
-            => infos.Select(x => Create(x, @namespace)).ToList();
+        public IEnumerable<Field> Create(IEnumerable<Xml.Field> infos, Repository repository)
+            => infos.Select(x => Create(x, repository)).ToList();
 
         private TypeReference CreateSymbolReference(Xml.Field field, NamespaceName currentNamespace)
         {

@@ -15,7 +15,7 @@ namespace Repository.Model
             _propertyFactory = propertyFactory;
         }
 
-        public Interface Create(Xml.Interface @interface, Namespace @namespace)
+        public Interface Create(Xml.Interface @interface, Repository repository)
         {
             if (@interface.Name is null)
                 throw new Exception("Interface is missing a name");
@@ -31,15 +31,15 @@ namespace Repository.Model
                 ctypeName = new CTypeName(@interface.Type);
 
             return new Interface(
-                @namespace: @namespace,
+                repository: repository,
                 typeName: new TypeName(@interface.Name),
                 cTypeName: ctypeName,
                 symbolName: new SymbolName(@interface.Name),
-                implements: _typeReferenceFactory.Create(@interface.Implements, @namespace.Name),
-                methods: _methodFactory.Create(@interface.Methods, @namespace),
-                functions: _methodFactory.Create(@interface.Functions, @namespace),
+                implements: _typeReferenceFactory.Create(@interface.Implements, repository.Namespace.Name),
+                methods: _methodFactory.Create(@interface.Methods, repository.Namespace.Name),
+                functions: _methodFactory.Create(@interface.Functions, repository.Namespace.Name),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(@interface.GetTypeFunction),
-                properties: _propertyFactory.Create(@interface.Properties, @namespace.Name)
+                properties: _propertyFactory.Create(@interface.Properties, repository.Namespace.Name)
             );
         }
     }

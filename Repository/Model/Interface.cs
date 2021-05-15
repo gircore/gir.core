@@ -16,7 +16,7 @@ namespace Repository.Model
         public IEnumerable<Method> Functions => _functions;
         public IEnumerable<Property> Properties => _properties;
 
-        public Interface(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(@namespace, cTypeName, typeName, symbolName)
+        public Interface(Repository repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cTypeName, typeName, symbolName)
         {
             Implements = implements;
             this._methods = methods.ToList();
@@ -58,7 +58,7 @@ namespace Repository.Model
             var result = element.GetIsResolved();
 
             if (!result)
-                Log.Information($"Interface {Namespace?.Name}.{TypeName}: Stripping symbol {element.Name}");
+                Log.Information($"Interface {Repository?.Namespace.Name}.{TypeName}: Stripping symbol {element.Name}");
 
             return !result;
         }

@@ -13,9 +13,10 @@ namespace Repository.Xml
             _xmlService = xmlService;
         }
 
-        public Repository LoadRepository(FileInfo target)
+        public Repository LoadRepository(GirFile target)
         {
-            Repository? repoInfo = _xmlService.Deserialize<Repository>(target);
+            var file = new FileInfo(target.Path);
+            Repository? repoInfo = _xmlService.Deserialize<Repository>(file);
 
             if (repoInfo is null)
                 throw new Exception($"File {target} could not be deserialized");

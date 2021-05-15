@@ -48,6 +48,8 @@ namespace Generator.Factories
         {
             var scriptObject = CreateComplex(currentNamespace);
             scriptObject.Import(type);
+            scriptObject.Add("namespace", type.Repository.Namespace);
+            
             //TODO: Workaround as long as scriban indexer are broken see https://github.com/scriban/scriban/issues/333
             scriptObject.Import("get_metadata", new Func<string, object?>(key => type.Metadata[key]));
             scriptObject.Import("write_managed_property_descriptor", new Func<Property, string>(p => PropertyGenerator.WriteDescriptor(p, type, currentNamespace)));

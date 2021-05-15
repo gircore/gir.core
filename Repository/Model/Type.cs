@@ -5,7 +5,7 @@ namespace Repository.Model
 {
     public abstract class Type : TypeReferenceProvider, Resolveable
     {
-        public Namespace? Namespace { get; }
+        public Repository? Repository { get; }
         public Metadata Metadata { get; } = new();
 
         /// <summary>
@@ -30,9 +30,9 @@ namespace Repository.Model
         {
         }
 
-        protected internal Type(Namespace? @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName)
+        protected internal Type(Repository? repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName)
         {
-            Namespace = @namespace;
+            Repository = repository;
             CTypeName = cTypeName;
             TypeName = typeName;
             SymbolName = symbolName;

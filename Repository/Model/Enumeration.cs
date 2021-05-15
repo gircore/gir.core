@@ -8,7 +8,7 @@ namespace Repository.Model
         public bool HasFlags { get; }
         public IEnumerable<Member> Members { get; }
 
-        public Enumeration(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, bool hasFlags, IEnumerable<Member> members) : base(@namespace, cTypeName, typeName, symbolName)
+        public Enumeration(Repository repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, bool hasFlags, IEnumerable<Member> members) : base(repository, cTypeName, typeName, symbolName)
         {
             HasFlags = hasFlags;
             Members = members;

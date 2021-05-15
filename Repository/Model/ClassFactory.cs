@@ -19,7 +19,7 @@ namespace Repository.Model
             _signalFactory = signalFactory;
         }
 
-        public Class Create(Xml.Class cls, Namespace @namespace)
+        public Class Create(Xml.Class cls, Repository repository)
         {
             if (cls.Name is null)
                 throw new Exception("Class is missing data");
@@ -32,19 +32,19 @@ namespace Repository.Model
                 cTypeName = new CTypeName(cls.Type);
 
             return new Class(
-                @namespace: @namespace,
+                repository: repository,
                 typeName: new TypeName(cls.Name),
                 symbolName: new SymbolName(cls.Name),
                 cTypeName: cTypeName,
-                parent: GetParent(cls.Parent, @namespace.Name),
-                implements: _typeReferenceFactory.Create(cls.Implements, @namespace.Name),
-                methods: _methodFactory.Create(cls.Methods, @namespace),
-                functions: _methodFactory.Create(cls.Functions, @namespace),
+                parent: GetParent(cls.Parent, repository.Namespace.Name),
+                implements: _typeReferenceFactory.Create(cls.Implements, repository.Namespace.Name),
+                methods: _methodFactory.Create(cls.Methods, repository.Namespace.Name),
+                functions: _methodFactory.Create(cls.Functions, repository.Namespace.Name),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction),
-                properties: _propertyFactory.Create(cls.Properties, @namespace.Name),
-                fields: _fieldFactory.Create(cls.Fields, @namespace),
-                signals: _signalFactory.Create(cls.Signals, @namespace.Name),
-                constructors: _methodFactory.Create(cls.Constructors, @namespace),
+                properties: _propertyFactory.Create(cls.Properties, repository.Namespace.Name),
+                fields: _fieldFactory.Create(cls.Fields, repository),
+                signals: _signalFactory.Create(cls.Signals, repository.Namespace.Name),
+                constructors: _methodFactory.Create(cls.Constructors, repository.Namespace.Name),
                 isFundamental: cls.Fundamental
             );
         }

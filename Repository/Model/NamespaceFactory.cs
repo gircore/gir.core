@@ -28,7 +28,7 @@ namespace Repository.Model
             _unionFactory = unionFactory;
         }
 
-        public Namespace CreateFromNamespace(Xml.Namespace @namespace)
+        public Namespace Create(Xml.Namespace @namespace, Repository repository)
         {
             if (@namespace.Name is null)
                 throw new Exception("Namespace does not have a name");
@@ -41,75 +41,78 @@ namespace Repository.Model
                 version: @namespace.Version,
                 sharedLibrary: @namespace.SharedLibrary
             );
+            
+            repository.SetNamespace(nspace);
 
-            SetAliases(nspace, @namespace.Aliases);
-            SetCallbacks(nspace, @namespace.Callbacks);
-            SetEnumerations(nspace, @namespace.Enumerations);
-            SetBitfields(nspace, @namespace.Bitfields);
-            SetInterfaces(nspace, @namespace.Interfaces);
-            SetRecords(nspace, @namespace.Records);
-            SetClasses(nspace, @namespace.Classes);
+            SetAliases(repository, @namespace.Aliases);
+            SetCallbacks(repository, @namespace.Callbacks);
+            SetEnumerations(repository, @namespace.Enumerations);
+            SetBitfields(repository, @namespace.Bitfields);
+            SetInterfaces(repository, @namespace.Interfaces);
+            SetRecords(repository, @namespace.Records);
+            SetClasses(repository, @namespace.Classes);
+            SetUnions(repository, @namespace.Unions);
+            
             SetFunctions(nspace, @namespace.Functions);
-            SetUnions(nspace, @namespace.Unions);
             SetConstants(nspace, @namespace.Constants);
 
             return nspace;
         }
 
-        private void SetAliases(Namespace nspace, IEnumerable<Xml.Alias> aliases)
+        private void SetAliases(Repository repository, IEnumerable<Xml.Alias> aliases)
         {
             foreach (Xml.Alias alias in aliases)
-                nspace.AddAlias(_aliasFactory.Create(alias, nspace));
+                repository.Namespace.AddAlias(_aliasFactory.Create(alias, repository));
         }
 
-        private void SetClasses(Namespace nspace, IEnumerable<Xml.Class> classes)
+        private void SetClasses(Repository repository, IEnumerable<Xml.Class> classes)
         {
             foreach (Xml.Class @class in classes)
             {
-                Class cls = _classFactory.Create(@class, nspace);
-                nspace.AddClass(cls);
+                Class cls = _classFactory.Create(@class, repository);
+                repository.Namespace.AddClass(cls);
             }
         }
 
-        private void SetCallbacks(Namespace nspace, IEnumerable<Xml.Callback> callbacks)
+        private void SetCallbacks(Repository repository, IEnumerable<Xml.Callback> callbacks)
         {
             foreach (Xml.Callback callback in callbacks)
-                nspace.AddCallback(_callbackFactory.Create(callback, nspace));
+                repository.Namespace.AddCallback(_callbackFactory.Create(callback, repository));
         }
 
-        private void SetEnumerations(Namespace nspace, IEnumerable<Xml.Enum> enumerations)
+        private void SetEnumerations(Repository repository, IEnumerable<Xml.Enum> enumerations)
         {
             foreach (Xml.Enum @enum in enumerations)
-                nspace.AddEnumeration(_enumartionFactory.Create(@enum, nspace, false));
+                repository.Namespace.AddEnumeration(_enumartionFactory.Create(@enum, repository, false));
         }
 
-        private void SetBitfields(Namespace nspace, IEnumerable<Xml.Enum> enumerations)
+        private void SetBitfields(Repository repository, IEnumerable<Xml.Enum> enumerations)
         {
             foreach (Xml.Enum @enum in enumerations)
-                nspace.AddBitfield(_enumartionFactory.Create(@enum, nspace, true));
+                repository.Namespace.AddBitfield(_enumartionFactory.Create(@enum, repository, true));
         }
 
-        private void SetInterfaces(Namespace nspace, IEnumerable<Xml.Interface> interfaces)
+        private void SetInterfaces(Repository repository, IEnumerable<Xml.Interface> interfaces)
         {
             foreach (Xml.Interface @interface in interfaces)
-                nspace.AddInterface(_interfaceFactory.Create(@interface, nspace));
+                repository.Namespace.AddInterface(_interfaceFactory.Create(@interface, repository));
         }
 
-        private void SetRecords(Namespace nspace, IEnumerable<Xml.Record> records)
+        private void SetRecords(Repository repository, IEnumerable<Xml.Record> records)
         {
             foreach (Xml.Record record in records)
-                nspace.AddRecord(_recordFactory.Create(record, nspace));
+                repository.Namespace.AddRecord(_recordFactory.Create(record, repository));
         }
 
-        private void SetUnions(Namespace nspace, IEnumerable<Xml.Union> unions)
+        private void SetUnions(Repository repository, IEnumerable<Xml.Union> unions)
         {
             foreach (Xml.Union union in unions)
-                nspace.AddUnion(_unionFactory.Create(union, nspace));
+                repository.Namespace.AddUnion(_unionFactory.Create(union, repository));
         }
 
         private void SetFunctions(Namespace nspace, IEnumerable<Xml.Method> functions)
         {
-            foreach (Method method in _methodFactory.Create(functions, nspace))
+            foreach (Method method in _methodFactory.Create(functions, nspace.Name))
                 nspace.AddFunction(method);
         }
 

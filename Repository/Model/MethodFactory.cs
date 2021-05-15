@@ -18,7 +18,7 @@ namespace Repository.Model
             _identifierConverter = identifierConverter;
         }
 
-        public Method Create(Xml.Method method, Namespace @namespace)
+        public Method Create(Xml.Method method, NamespaceName namespaceName)
         {
             if (method.Name is null)
                 throw new Exception("Methodinfo name is null");
@@ -34,8 +34,8 @@ namespace Repository.Model
                 return new Method(
                     elementName: new ElementName(method.Identifier),
                     symbolName: new SymbolName(_identifierConverter.EscapeIdentifier(_caseConverter.ToPascalCase(method.Name))),
-                    returnValue: _returnValueFactory.Create(method.ReturnValue, @namespace.Name),
-                    parameterList: _parameterListFactory.Create(method.Parameters, @namespace.Name, method.Throws)
+                    returnValue: _returnValueFactory.Create(method.ReturnValue, namespaceName),
+                    parameterList: _parameterListFactory.Create(method.Parameters, namespaceName, method.Throws)
                 );
             }
 
@@ -63,7 +63,7 @@ namespace Repository.Model
             );
         }
 
-        public IEnumerable<Method> Create(IEnumerable<Xml.Method> methods, Namespace @namespace)
+        public IEnumerable<Method> Create(IEnumerable<Xml.Method> methods, NamespaceName namespaceName)
         {
             var list = new List<Method>();
 
@@ -71,7 +71,7 @@ namespace Repository.Model
             {
                 try
                 {
-                    list.Add(Create(method, @namespace));
+                    list.Add(Create(method, namespaceName));
                 }
                 catch (SingleParameterFactory.VarArgsNotSupportedException ex)
                 {

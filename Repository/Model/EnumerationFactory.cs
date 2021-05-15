@@ -12,7 +12,7 @@ namespace Repository.Model
             _memberFactory = memberFactory;
         }
 
-        public Enumeration Create(Xml.Enum @enum, Namespace @namespace, bool hasFlags)
+        public Enumeration Create(Xml.Enum @enum, Repository repository, bool hasFlags)
         {
             if (@enum.Name is null)
                 throw new Exception("Enum has no name");
@@ -21,7 +21,7 @@ namespace Repository.Model
                 throw new Exception("Enum is missing a type");
 
             return new Enumeration(
-                @namespace: @namespace,
+                repository: repository,
                 typeName: new TypeName(@enum.Name),
                 symbolName: new SymbolName(@enum.Name),
                 hasFlags: hasFlags,

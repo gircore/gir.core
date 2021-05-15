@@ -4,16 +4,13 @@ using StrongInject;
 
 namespace Repository
 {
-    public delegate FileInfo GetFileInfo(Model.Include include);
-    
-    //TODO: Delete
-    public delegate FileInfo ResolveFileFunc(string name, string version);
+    public delegate GirFile GetGirFile(Model.Include include);
 
     public class Loader
     {
-        public static IEnumerable<Model.Repository> Load(GetFileInfo fileFunc, IEnumerable<FileInfo> targets)
+        public static IEnumerable<Model.Repository> Load(GetGirFile girFileFunc, IEnumerable<GirFile> targets)
         {
-            return new RepositoryLoaderContainer(fileFunc).Run(repositoryLoader => repositoryLoader.GetRepositories(targets));
+            return new GirFileLoaderContainer(girFileFunc).Run(girFileLoader => girFileLoader.LoadRepositories(targets));
         }
     }
 }

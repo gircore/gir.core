@@ -38,29 +38,29 @@ namespace Repository.Analysis
             if (!_data.TryGetValue(typeReference.NamespaceName, out var symbolCache))
                 return false;
 
-            var ns = symbolCache.Namespace;
+            var repository = symbolCache.Repository;
 
-            if (ns is null)
+            if (repository is null)
                 throw new Exception("Namespace is missing");
 
-            type = RecursiveResolveAlias(ns, typeReference);
+            type = RecursiveResolveAlias(repository, typeReference);
 
             return type is { };
         }
 
-        private Model.Type? RecursiveResolveAlias(Model.Namespace ns, Model.TypeReference typeReference)
+        private Model.Type? RecursiveResolveAlias(Model.Repository repository, Model.TypeReference typeReference)
         {
-            var directResult = ns.Aliases.FirstOrDefault(x => Resolves(x, typeReference));
+            var directResult = repository.Namespace.Aliases.FirstOrDefault(x => Resolves(x, typeReference));
 
             if (directResult is { })
                 return directResult.TypeReference.GetResolvedType();
 
-            /*foreach (var parent in ns.Dependencies)
+            foreach (var parent in repository.Dependencies)
             {
                 var parentResult = RecursiveResolveAlias(parent, typeReference);
                 if (parentResult is { })
                     return parentResult;
-            }*/
+            }
 
             return null;
         }
@@ -78,7 +78,7 @@ namespace Repository.Analysis
 
         public void AddType(Model.Type type)
         {
-            if (type.Namespace is null)
+            if (type.Repository is null)
                 AddGlobalType(type);
             else
                 AddConcreteType(type);
@@ -87,7 +87,7 @@ namespace Repository.Analysis
         private void AddGlobalType(Model.Type type)
         {
             Debug.Assert(
-                condition: type.Namespace is null,
+                condition: type.Repository is null,
                 message: "A default symbol is not allowed to have a namespace"
             );
 
@@ -97,26 +97,17 @@ namespace Repository.Analysis
         private void AddConcreteType(Model.Type type)
         {
             Debug.Assert(
-                condition: type.Namespace is not null,
+                condition: type.Repository is not null,
                 message: "A concrete symbol is must have a namespace"
             );
 
-            if (!_data.TryGetValue(type.Namespace.Name, out var cache))
+            if (!_data.TryGetValue(type.Repository.Namespace.Name, out var cache))
             {
-                cache = new TypeCache(type.Namespace);
-                _data[type.Namespace.Name] = cache;
+                cache = new TypeCache(type.Repository);
+                _data[type.Repository.Namespace.Name] = cache;
             }
 
             cache.Add(type);
-        }
-
-        public void ResolveAliases(IEnumerable<Model.Alias> aliases)
-        {
-            foreach (var alias in aliases)
-            {
-                if (TryLookup(alias.TypeReference, out var symbol))
-                    alias.TypeReference.ResolveAs(symbol);
-            }
         }
     }
 }

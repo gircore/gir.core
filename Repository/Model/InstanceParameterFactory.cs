@@ -20,7 +20,7 @@ namespace Repository.Model
             _typeInformationFactory = typeInformationFactory;
         }
 
-        public InstanceParameter Create(InstanceParameterInfo parameterInfo, NamespaceName currentNamespace)
+        public InstanceParameter Create(InstanceParameterInfo parameterInfo, NamespaceName namespaceName)
         {
             if (parameterInfo.Name is null)
                 throw new Exception("Argument name is null");
@@ -31,7 +31,7 @@ namespace Repository.Model
             return new InstanceParameter(
                 elementName: elementName,
                 symbolName: elementManagedName,
-                typeReference: _typeReferenceFactory.Create(parameterInfo, currentNamespace),
+                typeReference: _typeReferenceFactory.Create(parameterInfo, namespaceName),
                 direction: DirectionFactory.Create(parameterInfo.Direction),
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
                 nullable: parameterInfo.Nullable,

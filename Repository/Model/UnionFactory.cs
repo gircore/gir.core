@@ -13,7 +13,7 @@ namespace Repository.Model
             _fieldFactory = fieldFactory;
         }
 
-        public Union Create(Xml.Union union, Namespace @namespace)
+        public Union Create(Xml.Union union, Repository repository)
         {
             if (union.Name is null)
                 throw new Exception("Union is missing a name");
@@ -29,16 +29,16 @@ namespace Repository.Model
                 cTypeName = new CTypeName(union.CType);
 
             return new Union(
-                @namespace: @namespace,
+                repository: repository,
                 cTypeName: cTypeName,
                 typeName: new TypeName(union.Name),
                 symbolName: new SymbolName(union.Name),
-                methods: _methodFactory.Create(union.Methods, @namespace),
-                functions: _methodFactory.Create(union.Functions, @namespace),
+                methods: _methodFactory.Create(union.Methods, repository.Namespace.Name),
+                functions: _methodFactory.Create(union.Functions, repository.Namespace.Name),
                 getTypeFunction: getTypeFunction,
-                fields: _fieldFactory.Create(union.Fields, @namespace),
+                fields: _fieldFactory.Create(union.Fields, repository),
                 disguised: union.Disguised,
-                constructors: _methodFactory.Create(union.Constructors, @namespace)
+                constructors: _methodFactory.Create(union.Constructors, repository.Namespace.Name)
             );
         }
     }

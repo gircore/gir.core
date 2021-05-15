@@ -1,110 +1,130 @@
-﻿using Repository.Analysis;
-using Repository.Model;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Repository.Analysis;
+using Repository.Graph;
 
 namespace Repository
 {
     internal class RepositoryResolver
     {
-        private TypeDictionary TypeDictionary { get; } = new();
+        private readonly DependencyResolverService<Model.Repository> _repositoryDependencyResolver;
+        private readonly TypeDictionary _typeDictionary = new();
+        private readonly HashSet<Model.Repository> _knownRepositories = new();
         
-        public RepositoryResolver()
+        public RepositoryResolver(DependencyResolverService<Model.Repository> repositoryDependencyResolver)
         {
+            _repositoryDependencyResolver = repositoryDependencyResolver;
             AddFundamentalTypes();
         }
         
         private void AddFundamentalTypes()
         {
-            TypeDictionary.AddType(new Void("none"));
-            TypeDictionary.AddType(new Void("void"));
+            _typeDictionary.AddType(new Model.Void("none"));
+            _typeDictionary.AddType(new Model.Void("void"));
 
-            TypeDictionary.AddType(new Boolean("gboolean"));
+            _typeDictionary.AddType(new Model.Boolean("gboolean"));
 
-            TypeDictionary.AddType(new Float("gfloat"));
-            TypeDictionary.AddType(new Float("float"));
+            _typeDictionary.AddType(new Model.Float("gfloat"));
+            _typeDictionary.AddType(new Model.Float("float"));
 
-            TypeDictionary.AddType(new Pointer("any"));
-            TypeDictionary.AddType(new Pointer("gconstpointer"));
-            TypeDictionary.AddType(new Pointer("va_list"));
-            TypeDictionary.AddType(new Pointer("gpointer"));
-            TypeDictionary.AddType(new Pointer("tm"));
+            _typeDictionary.AddType(new Model.Pointer("any"));
+            _typeDictionary.AddType(new Model.Pointer("gconstpointer"));
+            _typeDictionary.AddType(new Model.Pointer("va_list"));
+            _typeDictionary.AddType(new Model.Pointer("gpointer"));
+            _typeDictionary.AddType(new Model.Pointer("tm"));
 
             // TODO: Should we use UIntPtr here? Non-CLR compliant
-            TypeDictionary.AddType(new UnsignedPointer("guintptr"));
+            _typeDictionary.AddType(new Model.UnsignedPointer("guintptr"));
 
-            TypeDictionary.AddType(new UnsignedShort("guint16"));
-            TypeDictionary.AddType(new UnsignedShort("gushort"));
+            _typeDictionary.AddType(new Model.UnsignedShort("guint16"));
+            _typeDictionary.AddType(new Model.UnsignedShort("gushort"));
 
-            TypeDictionary.AddType(new Short("gint16"));
-            TypeDictionary.AddType(new Short("gshort"));
+            _typeDictionary.AddType(new Model.Short("gint16"));
+            _typeDictionary.AddType(new Model.Short("gshort"));
 
-            TypeDictionary.AddType(new Double("double"));
-            TypeDictionary.AddType(new Double("gdouble"));
-            TypeDictionary.AddType(new Double("long double"));
+            _typeDictionary.AddType(new Model.Double("double"));
+            _typeDictionary.AddType(new Model.Double("gdouble"));
+            _typeDictionary.AddType(new Model.Double("long double"));
 
-            TypeDictionary.AddType(new Integer("int"));
-            TypeDictionary.AddType(new Integer("gint"));
-            TypeDictionary.AddType(new Integer("gint32"));
-            TypeDictionary.AddType(new Integer("pid_t"));
+            _typeDictionary.AddType(new Model.Integer("int"));
+            _typeDictionary.AddType(new Model.Integer("gint"));
+            _typeDictionary.AddType(new Model.Integer("gint32"));
+            _typeDictionary.AddType(new Model.Integer("pid_t"));
 
-            TypeDictionary.AddType(new UnsignedInteger("unsigned int"));
-            TypeDictionary.AddType(new UnsignedInteger("unsigned"));
-            TypeDictionary.AddType(new UnsignedInteger("guint"));
-            TypeDictionary.AddType(new UnsignedInteger("guint32"));
-            TypeDictionary.AddType(new UnsignedInteger("gunichar"));
-            TypeDictionary.AddType(new UnsignedInteger("uid_t"));
+            _typeDictionary.AddType(new Model.UnsignedInteger("unsigned int"));
+            _typeDictionary.AddType(new Model.UnsignedInteger("unsigned"));
+            _typeDictionary.AddType(new Model.UnsignedInteger("guint"));
+            _typeDictionary.AddType(new Model.UnsignedInteger("guint32"));
+            _typeDictionary.AddType(new Model.UnsignedInteger("gunichar"));
+            _typeDictionary.AddType(new Model.UnsignedInteger("uid_t"));
 
-            TypeDictionary.AddType(new Byte("guchar"));
-            TypeDictionary.AddType(new Byte("guint8"));
+            _typeDictionary.AddType(new Model.Byte("guchar"));
+            _typeDictionary.AddType(new Model.Byte("guint8"));
 
-            TypeDictionary.AddType(new SignedByte("gchar"));
-            TypeDictionary.AddType(new SignedByte("char"));
-            TypeDictionary.AddType(new SignedByte("gint8"));
+            _typeDictionary.AddType(new Model.SignedByte("gchar"));
+            _typeDictionary.AddType(new Model.SignedByte("char"));
+            _typeDictionary.AddType(new Model.SignedByte("gint8"));
 
-            TypeDictionary.AddType(new Long("glong"));
-            TypeDictionary.AddType(new Long("gssize"));
-            TypeDictionary.AddType(new Long("gint64"));
-            TypeDictionary.AddType(new Long("goffset"));
-            TypeDictionary.AddType(new Long("time_t"));
+            _typeDictionary.AddType(new Model.Long("glong"));
+            _typeDictionary.AddType(new Model.Long("gssize"));
+            _typeDictionary.AddType(new Model.Long("gint64"));
+            _typeDictionary.AddType(new Model.Long("goffset"));
+            _typeDictionary.AddType(new Model.Long("time_t"));
 
-            TypeDictionary.AddType(new NativeUnsignedInteger("gsize"));
-            TypeDictionary.AddType(new UnsignedLong("guint64"));
-            TypeDictionary.AddType(new UnsignedLong("gulong"));
+            _typeDictionary.AddType(new Model.NativeUnsignedInteger("gsize"));
+            _typeDictionary.AddType(new Model.UnsignedLong("guint64"));
+            _typeDictionary.AddType(new Model.UnsignedLong("gulong"));
 
-            TypeDictionary.AddType(new Utf8String());
-            TypeDictionary.AddType(new PlatformString());
+            _typeDictionary.AddType(new Model.Utf8String());
+            _typeDictionary.AddType(new Model.PlatformString());
         }
-        
+
+
         /// <summary>
-        /// It is important to resolve repositories from the most basic one
-        /// to the most derived one.
+        /// Loads the given repository and all its dependencies
         /// </summary>
-        public void Resolve(Model.Repository repository)
+        public void Load(Model.Repository repository)
         {
+            if (!_knownRepositories.Add(repository))
+                return; //Ignore known repositories
+            
             FillTypeDictionary(repository.Namespace);
-            TypeDictionary.ResolveAliases(repository.Namespace.Aliases);
-            ResolveTypeReferences(repository.Namespace);
-        }
-        
-        private void FillTypeDictionary(Namespace @namespace)
-        {
-            TypeDictionary.AddTypes(@namespace.Classes);
-            TypeDictionary.AddTypes(@namespace.Interfaces);
-            TypeDictionary.AddTypes(@namespace.Callbacks);
-            TypeDictionary.AddTypes(@namespace.Enumerations);
-            TypeDictionary.AddTypes(@namespace.Bitfields);
-            TypeDictionary.AddTypes(@namespace.Records);
-            TypeDictionary.AddTypes(@namespace.Unions);
+            
+            foreach (var depdenentRepository in repository.Includes.Select(x => x.GetResolvedRepository()))
+                Load(depdenentRepository);
         }
 
-        private void ResolveTypeReferences(Namespace ns)
+        /// <summary>
+        /// Resolves all loaded repositories
+        /// </summary>
+        public void Resolve()
+        {
+            var orderedRepositories = _repositoryDependencyResolver.ResolveOrdered(_knownRepositories).Cast<Model.Repository>();
+
+            foreach(var repository in orderedRepositories)
+                ResolveTypeReferences(repository.Namespace);
+        }
+
+        private void FillTypeDictionary(Model.Namespace @namespace)
+        {
+            _typeDictionary.AddTypes(@namespace.Classes);
+            _typeDictionary.AddTypes(@namespace.Interfaces);
+            _typeDictionary.AddTypes(@namespace.Callbacks);
+            _typeDictionary.AddTypes(@namespace.Enumerations);
+            _typeDictionary.AddTypes(@namespace.Bitfields);
+            _typeDictionary.AddTypes(@namespace.Records);
+            _typeDictionary.AddTypes(@namespace.Unions);
+        }
+
+        private void ResolveTypeReferences(Model.Namespace ns)
         {
             foreach (var reference in ns.GetTypeReferences())
                 ResolveTypeReference(reference);
         }
         
-        private void ResolveTypeReference(TypeReference reference)
+        private void ResolveTypeReference(Model.TypeReference reference)
         {
-            if (TypeDictionary.TryLookup(reference, out var type))
+            if (_typeDictionary.TryLookup(reference, out var type))
                 reference.ResolveAs(type);
         }
     }

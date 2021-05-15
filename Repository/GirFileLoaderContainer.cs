@@ -1,27 +1,31 @@
-﻿using Repository.Services;
+﻿using Repository.Graph;
+using Repository.Services;
 using StrongInject;
 
 namespace Repository
 {
-    [Register(typeof(RepositoriesLoader))]
+    [Register(typeof(GirFileLoader))]
     [Register(typeof(Xml.Loader))]
     [Register(typeof(XmlService))]
-    [Register(typeof(LoaderService))]
     [Register(typeof(IdentifierConverter))]
     [Register(typeof(CaseConverter))]
     [RegisterModule(typeof(ModelFactoriesModule))]
     [Register(typeof(RepositoryLoader))]
-    internal partial class RepositoryLoaderContainer : IContainer<RepositoriesLoader>
+    [Register(typeof(RepositoryResolver))]
+    internal partial class GirFileLoaderContainer : IContainer<GirFileLoader>
     {
-        private readonly GetFileInfo _getFileInfo;
+        private readonly GetGirFile _getGirFile;
 
-        public RepositoryLoaderContainer(GetFileInfo getFileInfo)
+        public GirFileLoaderContainer(GetGirFile getGirFile)
         {
-            _getFileInfo = getFileInfo;
+            _getGirFile = getGirFile;
         }
 
         [Factory]
-        public GetFileInfo GetResolveInclude() => _getFileInfo;
+        public GetGirFile GetGirFileDelegate() => _getGirFile;
+        
+        [Factory]
+        public static DependencyResolverService<T> GetResolver<T>() where T : INode<T> => new ();
 
     }
 

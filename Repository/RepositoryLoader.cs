@@ -1,34 +1,33 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace Repository
 {
     internal class RepositoryLoader
     {
         private readonly Xml.Loader _xmlLoader;
-        private readonly GetFileInfo _getFileInfo;
+        private readonly GetGirFile _getGirFile;
         private readonly Model.RepositoryFactory _repositoryFactory;
-        private readonly Dictionary<FileInfo, Model.Repository> _knownRepositories = new ();
+        private readonly Dictionary<GirFile, Model.Repository> _knownRepositories = new ();
 
-        public RepositoryLoader(Xml.Loader xmlLoader, GetFileInfo getFileInfo, Model.RepositoryFactory repositoryFactory)
+        public RepositoryLoader(Xml.Loader xmlLoader, GetGirFile getGirFile, Model.RepositoryFactory repositoryFactory)
         {
             _xmlLoader = xmlLoader;
-            _getFileInfo = getFileInfo;
+            _getGirFile = getGirFile;
             _repositoryFactory = repositoryFactory;
         }
-        
-        public Model.Repository Load(FileInfo girFile)
+
+        public Model.Repository Load(GirFile girFile)
         {
             if (_knownRepositories.TryGetValue(girFile, out Model.Repository repository))
                 return repository;
 
             repository = Create(girFile);
             _knownRepositories[girFile] = repository;
-            
+
             return repository;
         }
 
-        private Model.Repository Create(FileInfo girFile)
+        private Model.Repository Create(GirFile girFile)
         {
             Xml.Repository xmlRepository = _xmlLoader.LoadRepository(girFile);
             var repository = _repositoryFactory.Create(xmlRepository);
@@ -44,7 +43,7 @@ namespace Repository
 
         private Model.Repository Load(Model.Include include)
         {
-            var includeFileInfo = _getFileInfo(include);
+            var includeFileInfo = _getGirFile(include);
             return Load(includeFileInfo);
         }
     }

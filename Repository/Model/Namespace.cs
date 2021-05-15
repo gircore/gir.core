@@ -135,7 +135,7 @@ namespace Repository.Model
             var result = type.GetIsResolved();
 
             if (!result)
-                Log.Information($"{type.GetType().Name} {type.Namespace?.Name}.{type.TypeName}: Removed because parts of it could not be completely resolvled");
+                Log.Information($"{type.GetType().Name} {type.Repository?.Namespace.Name}.{type.TypeName}: Removed because parts of it could not be completely resolvled");
 
             return !result;
         }

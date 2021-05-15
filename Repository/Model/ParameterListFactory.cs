@@ -14,7 +14,7 @@ namespace Repository.Model
             _instanceParameterFactory = instanceParameterFactory;
         }
 
-        public ParameterList Create(Xml.Parameters? parameters, NamespaceName currentNamespace, bool throws = false)
+        public ParameterList Create(Xml.Parameters? parameters, NamespaceName namespaceName, bool throws = false)
         {
             List<SingleParameter> list = new();
             InstanceParameter? instanceParameter = null;
@@ -22,9 +22,9 @@ namespace Repository.Model
             if (parameters is { })
             {
                 if (parameters.InstanceParameter is { })
-                    instanceParameter = _instanceParameterFactory.Create(parameters.InstanceParameter, currentNamespace);
+                    instanceParameter = _instanceParameterFactory.Create(parameters.InstanceParameter, namespaceName);
 
-                list = parameters.List.Select(arg => _singleParameterFactory.Create(arg, currentNamespace)).ToList();
+                list = parameters.List.Select(arg => _singleParameterFactory.Create(arg, namespaceName)).ToList();
 
                 if (throws)
                 {
@@ -41,7 +41,7 @@ namespace Repository.Model
                         }
                     };
 
-                    list.Add(_singleParameterFactory.Create(parameterInfo, currentNamespace));
+                    list.Add(_singleParameterFactory.Create(parameterInfo, namespaceName));
                 }
             }
 

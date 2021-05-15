@@ -15,7 +15,7 @@ namespace Repository.Model
             _fieldFactory = fieldFactory;
         }
 
-        public Record Create(Xml.Record @record, Namespace @namespace)
+        public Record Create(Xml.Record @record, Repository repository)
         {
             if (@record.Name is null)
                 throw new Exception("Record is missing a name");
@@ -31,17 +31,17 @@ namespace Repository.Model
                 cTypeName = new CTypeName(@record.CType);
 
             return new Record(
-                @namespace: @namespace,
+                repository: repository,
                 cTypeName: cTypeName,
                 typeName: new TypeName(@record.Name),
                 symbolName: new SymbolName(@record.Name),
-                gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, @namespace.Name),
-                methods: _methodFactory.Create(@record.Methods, @namespace),
-                functions: _methodFactory.Create(@record.Functions, @namespace),
+                gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, repository.Namespace.Name),
+                methods: _methodFactory.Create(@record.Methods, repository.Namespace.Name),
+                functions: _methodFactory.Create(@record.Functions, repository.Namespace.Name),
                 getTypeFunction: getTypeFunction,
-                fields: _fieldFactory.Create(@record.Fields, @namespace),
+                fields: _fieldFactory.Create(@record.Fields, repository),
                 disguised: @record.Disguised,
-                constructors: _methodFactory.Create(@record.Constructors, @namespace)
+                constructors: _methodFactory.Create(@record.Constructors, repository.Namespace.Name)
             );
         }
 

@@ -8,12 +8,12 @@ namespace Repository.Analysis
     {
         private class TypeCache
         {
-            public Model.Namespace? Namespace { get; }
+            public Model.Repository? Repository { get; }
             private readonly HashSet<Model.Type> _types = new();
 
-            public TypeCache(Model.Namespace? @namespace)
+            public TypeCache(Model.Repository? repository)
             {
-                Namespace = @namespace;
+                Repository = repository;
             }
 
             public void Add(Model.Type type)
@@ -38,8 +38,8 @@ namespace Repository.Analysis
 
             private static bool CheckNamespace(Model.Type type, Model.TypeReference typeReference) => (symbol: type, symbolReference: typeReference) switch
             {
-                ({ Namespace: { } }, { NamespaceName: null }) => false,
-                ({ Namespace: { Name: { } n1 } }, { NamespaceName: { } n2 }) when n1 != n2 => false,
+                ({ Repository: { } }, { NamespaceName: null }) => false,
+                ({ Repository: { Namespace: {Name: { } n1 }} }, { NamespaceName: { } n2 }) when n1 != n2 => false,
                 _ => true
             };
         }

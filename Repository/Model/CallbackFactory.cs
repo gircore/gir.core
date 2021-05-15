@@ -15,7 +15,7 @@ namespace Repository.Model
             _caseConverter = caseConverter;
         }
 
-        public Callback Create(Xml.Callback callback, Namespace @namespace)
+        public Callback Create(Xml.Callback callback, Repository repository)
         {
             if (callback.Name is null)
                 throw new Exception("Callback is missing a name");
@@ -28,12 +28,12 @@ namespace Repository.Model
                 cTypeName = new CTypeName(callback.Type);
 
             return new Callback(
-                @namespace: @namespace,
+                repository: repository,
                 ctypeName: cTypeName,
                 typeName: new TypeName(callback.Name),
                 symbolName: new SymbolName(_caseConverter.ToPascal(callback.Name)),
-                returnValue: _returnValueFactory.Create(callback.ReturnValue, @namespace.Name),
-                parameterList: _parameterListFactory.Create(callback.Parameters, @namespace.Name)
+                returnValue: _returnValueFactory.Create(callback.ReturnValue, repository.Namespace.Name),
+                parameterList: _parameterListFactory.Create(callback.Parameters, repository.Namespace.Name)
             );
         }
     }

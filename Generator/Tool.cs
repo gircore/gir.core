@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Repository;
 
 namespace Generator
 {
@@ -26,7 +27,7 @@ namespace Generator
 
             try
             {
-                new Generator().Write(args.Select(x => new FileInfo(x)));
+                new Generator().Write(args.Select(x => new GirFile(x)));
                 return 0;
             }
             catch (Exception ex)

@@ -11,7 +11,7 @@ namespace Generator.Properties
     {
         public static string WriteDescriptor(Property property, Type type, Namespace currentNamespace)
         {
-            if (type.Namespace is null)
+            if (type.Repository is null)
                 throw new Exception("Can not write property for symbol with unknown namespace");
 
             var typeName = property.GetTypeName(currentNamespace);

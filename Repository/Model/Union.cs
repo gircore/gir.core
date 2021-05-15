@@ -17,7 +17,7 @@ namespace Repository.Model
         public IEnumerable<Method> Constructors => _constructors;
         public IEnumerable<Method> Functions => _functions;
 
-        public Union(Namespace @namespace, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(@namespace, cTypeName, typeName, symbolName)
+        public Union(Repository repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(repository, cTypeName, typeName, symbolName)
         {
             GetTypeFunction = getTypeFunction;
             Disguised = disguised;
@@ -68,7 +68,7 @@ namespace Repository.Model
             var result = symbol.GetIsResolved();
 
             if (!result)
-                Log.Information($"Record {Namespace?.Name}.{TypeName}: Stripping symbol {symbol.Name}");
+                Log.Information($"Record {Repository?.Namespace.Name}.{TypeName}: Stripping symbol {symbol.Name}");
 
             return !result;
         }

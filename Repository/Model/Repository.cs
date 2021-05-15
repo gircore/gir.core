@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Repository.Graph;
 
@@ -6,14 +7,19 @@ namespace Repository.Model
 {
     public class Repository : INode<Repository>
     {
-        public Namespace Namespace { get; }
+        private Namespace? _namespace;
+        public Namespace Namespace => _namespace ?? throw new Exception("Namespace not initialized.");
         public IEnumerable<Include> Includes { get; }
         public IEnumerable<Repository> Dependencies => Includes.Select(x => x.ResolvedRepository);
 
-        public Repository(Namespace @namespace, IEnumerable<Include> includes)
+        public Repository(IEnumerable<Include> includes)
         {
-            Namespace = @namespace;
             Includes = includes;
+        }
+
+        internal void SetNamespace(Namespace @namespace)
+        {
+            this._namespace = @namespace;
         }
     }
 }
