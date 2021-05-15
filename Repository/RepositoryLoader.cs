@@ -1,47 +1,51 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Repository.Graph;
-using Repository.Services;
 
 namespace Repository
 {
     internal class RepositoryLoader
     {
+        private readonly Xml.Loader _xmlLoader;
+        private readonly GetFileInfo _getFileInfo;
         private readonly Model.RepositoryFactory _repositoryFactory;
+        private readonly Dictionary<FileInfo, Model.Repository> _knownRepositories = new ();
 
-        public RepositoryLoader(Model.RepositoryFactory repositoryFactory)
+        public RepositoryLoader(Xml.Loader xmlLoader, GetFileInfo getFileInfo, Model.RepositoryFactory repositoryFactory)
         {
+            _xmlLoader = xmlLoader;
+            _getFileInfo = getFileInfo;
             _repositoryFactory = repositoryFactory;
         }
-
-        internal IEnumerable<Model.Repository> GetRepositories(IEnumerable<FileInfo> girFiles)
+        
+        public Model.Repository Load(FileInfo girFile)
         {
-            Log.Information($"Initialising with {girFiles.Count()} toplevel project(s)");
+            if (_knownRepositories.TryGetValue(girFile, out Model.Repository repository))
+                return repository;
 
-            var repositories = CreateRepositories(girFiles);
-            repositories = OrderRepositories(repositories);
-            ResolveRepositories(repositories);
-
-            return repositories;
+            repository = Create(girFile);
+            _knownRepositories[girFile] = repository;
+            
+            return repository;
         }
 
-        private IEnumerable<Model.Repository> CreateRepositories(IEnumerable<FileInfo> girFiles)
+        private Model.Repository Create(FileInfo girFile)
         {
-            return girFiles.Select(_repositoryFactory.Create);
+            Xml.Repository xmlRepository = _xmlLoader.LoadRepository(girFile);
+            var repository = _repositoryFactory.Create(xmlRepository);
+            ResolveIncludes(repository.Includes);
+            return repository;
         }
 
-        private IEnumerable<Model.Repository> OrderRepositories(IEnumerable<Model.Repository> repositories)
+        private void ResolveIncludes(IEnumerable<Model.Include> includes)
         {
-            var resolverService = new DependencyResolverService<Model.Repository>();
-            return resolverService.ResolveOrdered(repositories).Cast<Model.Repository>();
+            foreach (var include in includes)
+                include.Resolve(Load(include));
         }
 
-        private void ResolveRepositories(IEnumerable<Model.Repository> repositories)
+        private Model.Repository Load(Model.Include include)
         {
-            var repositoryResolver = new RepositoryResolver();
-            foreach (var repository in repositories)
-                repositoryResolver.Resolve(repository);
+            var includeFileInfo = _getFileInfo(include);
+            return Load(includeFileInfo);
         }
     }
 }

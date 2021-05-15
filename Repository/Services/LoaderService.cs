@@ -9,6 +9,7 @@ using Repository.Model;
 namespace Repository
 {
 
+    //TODO: Delete
     internal class LoaderService
     {
         private readonly IncludeFactory _includeFactory;
@@ -18,7 +19,7 @@ namespace Repository
 
         private bool _projectLoadFailed;
 
-        public LoaderService(IncludeFactory includeFactory, NamespaceFactory namespaceFactory, Xml.Loader xmlLoader, RepositoryFactory repositoryFactory)
+        public LoaderService(IncludeFactory includeFactory, NamespaceFactory namespaceFactory, Xml.Loader xmlLoader, RepositoryLoader repositoryLoader)
         {
             _includeFactory = includeFactory;
             _namespaceFactory = namespaceFactory;

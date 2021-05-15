@@ -3,14 +3,15 @@ using StrongInject;
 
 namespace Repository
 {
-    [Register(typeof(RepositoryLoader))]
+    [Register(typeof(RepositoriesLoader))]
     [Register(typeof(Xml.Loader))]
     [Register(typeof(XmlService))]
     [Register(typeof(LoaderService))]
     [Register(typeof(IdentifierConverter))]
     [Register(typeof(CaseConverter))]
     [RegisterModule(typeof(ModelFactoriesModule))]
-    internal partial class RepositoryLoaderContainer : IContainer<RepositoryLoader>
+    [Register(typeof(RepositoryLoader))]
+    internal partial class RepositoryLoaderContainer : IContainer<RepositoriesLoader>
     {
         private readonly GetFileInfo _getFileInfo;
 

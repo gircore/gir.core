@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace Generator
 {
@@ -25,7 +26,7 @@ namespace Generator
 
             try
             {
-                new Generator().Write(args);
+                new Generator().Write(args.Select(x => new FileInfo(x)));
                 return 0;
             }
             catch (Exception ex)

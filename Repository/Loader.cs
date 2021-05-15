@@ -13,7 +13,7 @@ namespace Repository
     {
         public static IEnumerable<Model.Repository> Load(GetFileInfo fileFunc, IEnumerable<FileInfo> targets)
         {
-            return new RepositoryLoaderContainer(fileFunc).Run(targetsLoader => targetsLoader.GetRepositories(targets));
+            return new RepositoryLoaderContainer(fileFunc).Run(repositoryLoader => repositoryLoader.GetRepositories(targets));
         }
     }
 }

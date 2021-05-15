@@ -5,13 +5,14 @@ namespace Generator
 {
     internal static class FileResolver
     {
-        private const string _cacheDir = "../gir-files";
+        private const string CacheDir = "../gir-files";
 
-        public static FileInfo ResolveFile(string nspace, string version)
+        
+        public static FileInfo ResolveFile(Repository.Model.Include include)
         {
             // We store GIR files in the format 'Gtk-3.0.gir'
             // where 'Gtk' is the namespace and '3.0' the version
-            var filename = $"{nspace}-{version}.gir";
+            var filename = $"{include.Name}-{include.Version}.gir";
 
             if (File.Exists(filename))
                 return new FileInfo(filename);
@@ -25,7 +26,7 @@ namespace Generator
 
         private static bool CheckCacheDirectory(string fileName, [NotNullWhen(true)] out FileInfo? fileInfo)
         {
-            var altPath = Path.Combine(_cacheDir, fileName);
+            var altPath = Path.Combine(CacheDir, fileName);
             if (File.Exists(altPath))
             {
                 fileInfo = new FileInfo(altPath);

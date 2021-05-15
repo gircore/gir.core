@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace Build
@@ -40,7 +41,7 @@ namespace Build
                     GenerateDocComments = _settings.GenerateComments
                 };
 
-                generator.Write(Projects.AllLibraries.Select(x => x.GirFile));
+                generator.Write(Projects.AllLibraries.Select(x => new FileInfo(x.GirFile)));
             }
             catch (Exception e)
             {
