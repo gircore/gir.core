@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Gir.Analysis;
-using Gir.Model;
+using Gir.Output.Model;
 
 namespace Generator
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-using Gir.Model;
-using Type = Gir.Model.Type;
+using Gir.Output.Model;
+using Type = Gir.Output.Model.Type;
 
 namespace Generator
 {

@@ -1,5 +1,4 @@
-﻿using Gir;
-using Gir.Analysis;
+﻿using Gir.Output.Model;
 
 namespace Generator.Factories
 {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Gir;
-using Gir.Model;
+using Gir.Output.Model;
 using Array = System.Array;
-using String = Gir.Model.String;
+using String = Gir.Output.Model.String;
 
 namespace Generator
 {
@@ -83,14 +83,13 @@ namespace Generator
         public static string WriteSignalArgsProperties(this ParameterList parameterList, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
-            var converter = new CaseConverter(); //TODO Make this a service
 
             var index = 0;
             foreach (var argument in parameterList.GetParameters())
             {
                 index += 1;
                 var type = argument.WriteType(Target.Native, currentNamespace);
-                var name = converter.ToPascalCase(argument.SymbolName);
+                var name = Gir.Helper.String.ToPascalCase(argument.SymbolName);
 
                 builder.AppendLine($"//TODO: public {type} {name} => Args[{index}].Extract<{type}>();");
                 builder.AppendLine($"public string {name} => \"\";");

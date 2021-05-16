@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using Gir;
-using Gir.Model;
+using Gir.Output.Model;
 
 namespace Generator
 {

@@ -1,6 +1,5 @@
 ﻿using System;
-using Gir;
-using Gir.Analysis;
+using Gir.Output.Model;
 
 namespace Generator
 {
@@ -46,7 +45,7 @@ namespace Generator
             if (_sharedLibrary.Contains(","))
             {
                 var libs = _sharedLibrary.Split(',');
-                var result = Array.Find(libs, x => x.Contains(_namespaceName, StringComparison.OrdinalIgnoreCase));
+                var result = System.Array.Find(libs, x => x.Contains(_namespaceName, StringComparison.OrdinalIgnoreCase));
 
                 lib = result ?? throw new Exception($"Cant find dll import for {_namespaceName}, no match found in: {_sharedLibrary}");
             }

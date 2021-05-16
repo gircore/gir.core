@@ -1,4 +1,4 @@
-﻿namespace Gir.Xml
+﻿namespace Gir.Input.Model
 {
     internal class Project
     {

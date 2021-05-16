@@ -10,7 +10,7 @@ namespace Generator
         private const string CacheDir = "../gir-files";
 
         
-        public static File ResolveFile(Gir.Model.Include include)
+        public static File ResolveFile(Gir.Output.Model.Include include)
         {
             // We store GIR files in the format 'Gtk-3.0.gir'
             // where 'Gtk' is the namespace and '3.0' the version

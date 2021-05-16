@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Generator.Services;
 using Generator.Services.Writer;
 using Gir;
-using Gir.Model;
+using Gir.Output.Model;
 using StrongInject;
 using File = Gir.File;
 

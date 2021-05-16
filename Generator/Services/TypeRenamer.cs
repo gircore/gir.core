@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using Gir;
-using Gir.Model;
+using Gir.Output.Model;
 
 namespace Generator.Services
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Generator.Factories;
-using Gir.Model;
+using Gir.Output.Model;
 using Scriban.Runtime;
 
 namespace Generator.Services.Writer

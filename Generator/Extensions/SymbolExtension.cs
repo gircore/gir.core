@@ -1,6 +1,6 @@
 ﻿using System;
-using Gir.Model;
-using Type = Gir.Model.Type;
+using Gir.Output.Model;
+using Type = Gir.Output.Model.Type;
 
 namespace Generator
 {
