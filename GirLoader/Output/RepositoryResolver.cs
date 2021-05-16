@@ -117,6 +117,8 @@ namespace GirLoader.Output
         {
             foreach (var reference in ns.GetTypeReferences())
                 ResolveTypeReference(reference);
+            
+            Log.Debug($"Resolved type references for repository {ns.Name}");
         }
         
         private void ResolveTypeReference(Model.TypeReference reference)

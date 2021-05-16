@@ -7,7 +7,6 @@ using Generator.Services.Writer;
 using GirLoader;
 using GirLoader.Output.Model;
 using StrongInject;
-using File = GirLoader.File;
 
 namespace Generator
 {
@@ -17,7 +16,7 @@ namespace Generator
         public bool UseAsync { get; init; } = true;
         public bool GenerateDocComments { get; init; } = false;
 
-        public void Write(IEnumerable<File> projects)
+        public void Write(IEnumerable<GirFile> projects)
         {
             var repositories = Loader.Load(FileResolver.ResolveFile, projects).ToList();
 

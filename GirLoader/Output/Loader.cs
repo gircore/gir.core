@@ -14,7 +14,7 @@ namespace GirLoader.Output
             _repositoryResolver = repositoryResolver;
         }
 
-        internal IEnumerable<Model.Repository> LoadRepositories(IEnumerable<File> files)
+        internal IEnumerable<Model.Repository> LoadRepositories(IEnumerable<GirFile> files)
         {
             Log.Information($"Initialising with {files.Count()} toplevel project(s)");
 

@@ -5,7 +5,7 @@ namespace GirLoader.Input
 {
     internal class Loader
     {
-        public Model.Repository LoadRepository(File target)
+        public Model.Repository LoadRepository(GirFile target)
         {
             var file = new FileInfo(target.Path);
             Model.Repository? repoInfo = Helper.Xml.Deserialize<Model.Repository>(file);

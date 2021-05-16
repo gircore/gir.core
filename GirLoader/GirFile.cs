@@ -2,11 +2,11 @@
 
 namespace GirLoader
 {
-    public record File
+    public record GirFile
     {
         public string Path { get;}
         
-        public File(string path)
+        public GirFile(string path)
         {
             if (!System.IO.File.Exists(path))
                 throw new ArgumentException($"{path} was not found");

@@ -7,7 +7,7 @@ namespace GirLoader.Output
         private readonly Input.Loader _inputLoader;
         private readonly GetGirFile _getGirFile;
         private readonly Model.RepositoryFactory _repositoryFactory;
-        private readonly Dictionary<File, Model.Repository> _knownRepositories = new ();
+        private readonly Dictionary<GirFile, Model.Repository> _knownRepositories = new ();
 
         public RepositoryLoader(Input.Loader inputLoader, GetGirFile getGirFile, Model.RepositoryFactory repositoryFactory)
         {
@@ -16,22 +16,23 @@ namespace GirLoader.Output
             _repositoryFactory = repositoryFactory;
         }
 
-        public Model.Repository LoadRepository(File file)
+        public Model.Repository LoadRepository(GirFile girFile)
         {
-            if (_knownRepositories.TryGetValue(file, out Model.Repository repository))
+            if (_knownRepositories.TryGetValue(girFile, out Model.Repository repository))
                 return repository;
 
-            repository = Create(file);
-            _knownRepositories[file] = repository;
+            repository = Create(girFile);
+            _knownRepositories[girFile] = repository;
 
             return repository;
         }
 
-        private Model.Repository Create(File file)
+        private Model.Repository Create(GirFile girFile)
         {
-            Input.Model.Repository xmlRepository = _inputLoader.LoadRepository(file);
+            Input.Model.Repository xmlRepository = _inputLoader.LoadRepository(girFile);
             var repository = _repositoryFactory.Create(xmlRepository);
             ResolveIncludes(repository.Includes);
+            Log.Debug($"Created repository {repository.Namespace.Name}.");
             return repository;
         }
 

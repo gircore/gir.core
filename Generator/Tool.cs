@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using GirLoader;
-using File = GirLoader.File;
 
 namespace Generator
 {
@@ -28,7 +27,7 @@ namespace Generator
 
             try
             {
-                new Generator().Write(args.Select(x => new File(x)));
+                new Generator().Write(args.Select(x => new GirFile(x)));
                 return 0;
             }
             catch (Exception ex)

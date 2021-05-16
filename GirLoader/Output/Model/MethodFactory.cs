@@ -71,11 +71,11 @@ namespace GirLoader.Output.Model
                 }
                 catch (SingleParameterFactory.VarArgsNotSupportedException ex)
                 {
-                    Log.Debug($"Method {method.Name} could not be created: {ex.Message}");
+                    Log.Verbose($"Method {method.Name} could not be created: {ex.Message}");
                 }
                 catch (MethodMovedException ex)
                 {
-                    Log.Debug($"Method ignored: {ex.Message}");
+                    Log.Verbose($"Method ignored: {ex.Message}");
                 }
             }
 

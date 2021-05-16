@@ -40,7 +40,7 @@ namespace Build
                     GenerateDocComments = _settings.GenerateComments
                 };
 
-                generator.Write(Projects.AllLibraries.Select(x => new GirLoader.File(x.GirFile)));
+                generator.Write(Projects.AllLibraries.Select(x => new GirLoader.GirFile(x.GirFile)));
             }
             catch (Exception e)
             {
