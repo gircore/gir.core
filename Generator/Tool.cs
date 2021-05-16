@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Gir;
-using File = Gir.File;
+using GirLoader;
+using File = GirLoader.File;
 
 namespace Generator
 {

@@ -1,6 +1,6 @@
 ﻿using StrongInject;
 
-namespace Gir.Output
+namespace GirLoader.Output
 {
     [Register(typeof(Loader))]
     [Register(typeof(RepositoryLoader))]

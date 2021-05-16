@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Generator.Services;
 using Generator.Services.Writer;
-using Gir;
-using Gir.Output.Model;
+using GirLoader;
+using GirLoader.Output.Model;
 using StrongInject;
-using File = Gir.File;
+using File = GirLoader.File;
 
 namespace Generator
 {

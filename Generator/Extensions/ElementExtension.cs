@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Gir.Output.Model;
+using GirLoader.Output.Model;
 
 namespace Generator
 {

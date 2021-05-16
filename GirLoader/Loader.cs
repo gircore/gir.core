@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using StrongInject;
 
-namespace Gir
+namespace GirLoader
 {
     public delegate File GetGirFile(Output.Model.Include include);
 

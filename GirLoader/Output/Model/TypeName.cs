@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     public record TypeName(string Value)
     {

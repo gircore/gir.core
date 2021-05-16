@@ -1,7 +1,7 @@
 ﻿using System;
-using Gir.Input.Model;
+using GirLoader.Input.Model;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     internal class InstanceParameterFactory
     {

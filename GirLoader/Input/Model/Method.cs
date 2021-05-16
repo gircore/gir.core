@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Gir.Input.Model
+namespace GirLoader.Input.Model
 {
     public class Method
     {

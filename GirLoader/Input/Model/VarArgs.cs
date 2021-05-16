@@ -1,4 +1,4 @@
-﻿namespace Gir.Input.Model
+﻿namespace GirLoader.Input.Model
 {
     public class VarArgs
     {

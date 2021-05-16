@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 
-namespace Gir.Helper
+namespace GirLoader.Helper
 {
     internal class Xml
     {

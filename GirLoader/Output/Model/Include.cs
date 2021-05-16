@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     public record Include(string Name, string Version)
     {

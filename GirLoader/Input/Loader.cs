@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Gir.Input
+namespace GirLoader.Input
 {
     internal class Loader
     {

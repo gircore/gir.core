@@ -1,6 +1,6 @@
 ﻿using System;
-using Gir.Output.Model;
-using String = Gir.Output.Model.String;
+using GirLoader.Output.Model;
+using String = GirLoader.Output.Model.String;
 
 namespace Generator.Properties
 {

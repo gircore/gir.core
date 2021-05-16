@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Gir.Helper;
+using GirLoader.Helper;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     public class ParameterList
     {

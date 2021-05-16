@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     public class TypeReference : Resolveable
     {

@@ -1,6 +1,6 @@
 ﻿using StrongInject;
 
-namespace Gir.Input
+namespace GirLoader.Input
 {
     [Register(typeof(Loader))]
     internal class Module { }

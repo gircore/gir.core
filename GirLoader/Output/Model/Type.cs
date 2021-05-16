@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     public abstract class Type : TypeReferenceProvider, Resolveable
     {

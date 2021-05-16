@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gir
+namespace GirLoader
 {
     public record File
     {

@@ -1,4 +1,4 @@
-﻿namespace Gir.Output.Model
+﻿namespace GirLoader.Output.Model
 {
     internal class ArrayFactory
     {

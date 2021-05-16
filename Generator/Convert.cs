@@ -1,8 +1,8 @@
 ﻿using System;
-using Gir.Output.Model;
+using GirLoader.Output.Model;
 using Array = System.Array;
-using String = Gir.Output.Model.String;
-using Type = Gir.Output.Model.Type;
+using String = GirLoader.Output.Model.String;
+using Type = GirLoader.Output.Model.Type;
 
 namespace Generator
 {

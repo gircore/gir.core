@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using Gir;
-using Gir.Output.Model;
+using GirLoader;
+using GirLoader.Output.Model;
 
 namespace Generator
 {

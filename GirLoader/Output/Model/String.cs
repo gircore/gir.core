@@ -1,4 +1,4 @@
-﻿namespace Gir.Output.Model
+﻿namespace GirLoader.Output.Model
 {
     /// <summary>
     /// Unicode string using UTF-8 encoding

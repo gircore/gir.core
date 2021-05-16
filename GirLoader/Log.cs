@@ -2,7 +2,7 @@
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace Gir
+namespace GirLoader
 {
     internal static class Log
     {

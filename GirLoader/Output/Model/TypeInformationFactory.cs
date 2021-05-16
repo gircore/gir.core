@@ -1,8 +1,8 @@
 ﻿using System;
-using Gir.Output.Model;
-using Gir.Input.Model;
+using GirLoader.Output.Model;
+using GirLoader.Input.Model;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     internal class TypeInformationFactory
     {

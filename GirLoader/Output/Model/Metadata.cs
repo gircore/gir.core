@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     public class Metadata
     {

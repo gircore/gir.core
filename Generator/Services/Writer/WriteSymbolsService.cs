@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Generator.Factories;
-using Gir.Output.Model;
-using Type = Gir.Output.Model.Type;
+using GirLoader.Output.Model;
+using Type = GirLoader.Output.Model.Type;
 
 namespace Generator.Services.Writer
 {

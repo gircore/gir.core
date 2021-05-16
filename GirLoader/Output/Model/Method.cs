@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Gir.Helper;
+using GirLoader.Helper;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     public class Method : Element
     {

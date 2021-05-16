@@ -3,7 +3,7 @@ using Generator.Services;
 using Generator.Services.Writer;
 using StrongInject;
 
-namespace Gir
+namespace Generator
 {
     [Register(typeof(WriterService))]
     [Register(typeof(TemplateReaderService))]

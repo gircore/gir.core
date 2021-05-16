@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Gir.Output.Model;
-using String = Gir.Output.Model.String;
-using Type = Gir.Output.Model.Type;
+using GirLoader.Output.Model;
+using String = GirLoader.Output.Model.String;
+using Type = GirLoader.Output.Model.Type;
 
 namespace Generator.Properties
 {

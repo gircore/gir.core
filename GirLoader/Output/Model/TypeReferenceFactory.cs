@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Gir.Output.Model
+namespace GirLoader.Output.Model
 {
     internal class TypeReferenceFactory
     {

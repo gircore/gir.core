@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Gir.Output
+namespace GirLoader.Output
 {
     internal partial class TypeDictionary
     {

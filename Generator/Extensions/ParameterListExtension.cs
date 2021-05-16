@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Gir;
-using Gir.Output.Model;
+using GirLoader;
+using GirLoader.Output.Model;
 using Array = System.Array;
-using String = Gir.Output.Model.String;
+using String = GirLoader.Output.Model.String;
 
 namespace Generator
 {
@@ -89,7 +89,7 @@ namespace Generator
             {
                 index += 1;
                 var type = argument.WriteType(Target.Native, currentNamespace);
-                var name = Gir.Helper.String.ToPascalCase(argument.SymbolName);
+                var name = GirLoader.Helper.String.ToPascalCase(argument.SymbolName);
 
                 builder.AppendLine($"//TODO: public {type} {name} => Args[{index}].Extract<{type}>();");
                 builder.AppendLine($"public string {name} => \"\";");

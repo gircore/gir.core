@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Gir.Output
+namespace GirLoader.Output
 {
     internal class RepositoryLoader
     {

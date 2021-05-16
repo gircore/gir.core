@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Gir.Output.Model;
+using GirLoader.Output.Model;
 
-namespace Gir.Helper
+namespace GirLoader.Helper
 {
     internal static class IEnumerables
     {

@@ -6,7 +6,7 @@ using Sk = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 using St = Microsoft.CodeAnalysis.SyntaxToken;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Gir.Helper
+namespace GirLoader.Helper
 {
     public class String
     {

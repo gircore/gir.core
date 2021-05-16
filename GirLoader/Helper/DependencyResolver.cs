@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Gir.Helper
+namespace GirLoader.Helper
 {
     internal interface Node<out T> where T : Node<T>
     {
