@@ -1,50 +1,35 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Gir.Output
 {
     internal class Loader
     {
-        private readonly Input.Loader _inputLoader;
-        private readonly GetGirFile _getGirFile;
-        private readonly Model.RepositoryFactory _repositoryFactory;
-        private readonly Dictionary<File, Model.Repository> _knownRepositories = new ();
+        private readonly RepositoryLoader _repositoryLoader;
+        private readonly RepositoryResolver _repositoryResolver;
 
-        public Loader(Input.Loader inputLoader, GetGirFile getGirFile, Model.RepositoryFactory repositoryFactory)
+        public Loader(RepositoryLoader repositoryLoader, RepositoryResolver repositoryResolver)
         {
-            _inputLoader = inputLoader;
-            _getGirFile = getGirFile;
-            _repositoryFactory = repositoryFactory;
+            _repositoryLoader = repositoryLoader;
+            _repositoryResolver = repositoryResolver;
         }
 
-        public Model.Repository LoadRepository(File file)
+        internal IEnumerable<Model.Repository> LoadRepositories(IEnumerable<File> files)
         {
-            if (_knownRepositories.TryGetValue(file, out Model.Repository repository))
-                return repository;
+            Log.Information($"Initialising with {files.Count()} toplevel project(s)");
 
-            repository = Create(file);
-            _knownRepositories[file] = repository;
+            var repositories = files.Select(_repositoryLoader.LoadRepository);
+            ResolveRepositories(repositories);
 
-            return repository;
+            return repositories;
         }
 
-        private Model.Repository Create(File file)
+        private void ResolveRepositories(IEnumerable<Model.Repository> repositories)
         {
-            Input.Model.Repository xmlRepository = _inputLoader.LoadRepository(file);
-            var repository = _repositoryFactory.Create(xmlRepository);
-            ResolveIncludes(repository.Includes);
-            return repository;
-        }
-
-        private void ResolveIncludes(IEnumerable<Model.Include> includes)
-        {
-            foreach (var include in includes)
-                include.Resolve(LoadRepository(include));
-        }
-
-        private Model.Repository LoadRepository(Model.Include include)
-        {
-            var includeFileInfo = _getGirFile(include);
-            return LoadRepository(includeFileInfo);
+            foreach (var repository in repositories)
+                _repositoryResolver.Add(repository);
+            
+            _repositoryResolver.Resolve();
         }
     }
 }

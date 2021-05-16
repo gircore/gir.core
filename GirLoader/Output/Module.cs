@@ -3,7 +3,8 @@
 namespace Gir.Output
 {
     [Register(typeof(Loader))]
-    [Register(typeof(Resolver))]
+    [Register(typeof(RepositoryLoader))]
+    [Register(typeof(RepositoryResolver))]
     [Register(typeof(Model.NamespaceFactory))]
     [Register(typeof(Model.TypeReferenceFactory))]
     [Register(typeof(Model.IncludeFactory))]

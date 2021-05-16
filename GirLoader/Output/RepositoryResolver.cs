@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace Gir.Output
 {
-    internal class Resolver
+    internal class RepositoryResolver
     {
         private readonly TypeDictionary _typeDictionary = new();
         private readonly HashSet<Model.Repository> _knownRepositories = new();
         
-        public Resolver()
+        public RepositoryResolver()
         {
             AddFundamentalTypes();
         }
@@ -79,7 +79,7 @@ namespace Gir.Output
         /// <summary>
         /// Loads the given repository and all its dependencies
         /// </summary>
-        public void AddRepository(Model.Repository repository)
+        public void Add(Model.Repository repository)
         {
             if (!_knownRepositories.Add(repository))
                 return; //Ignore known repositories
@@ -87,7 +87,7 @@ namespace Gir.Output
             FillTypeDictionary(repository.Namespace);
             
             foreach (var depdenentRepository in repository.Includes.Select(x => x.GetResolvedRepository()))
-                AddRepository(depdenentRepository);
+                Add(depdenentRepository);
         }
 
         /// <summary>
