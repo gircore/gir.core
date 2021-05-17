@@ -50,7 +50,15 @@ namespace GirLoader.Output
 
         private Model.Type? RecursiveResolveAlias(Model.Repository repository, Model.TypeReference typeReference)
         {
-            var directResult = repository.Namespace.Aliases.FirstOrDefault(x => Resolves(x, typeReference));
+            bool ResolvesReference(Model.Alias alias)
+            {
+                if (!string.IsNullOrEmpty(typeReference.CTypeName?.Value))
+                    return typeReference.CTypeName == alias.Name;//Prefer CType
+
+                return typeReference.TypeName == alias.SymbolName;
+            }
+            
+            var directResult = repository.Namespace.Aliases.FirstOrDefault(ResolvesReference);
 
             if (directResult is { })
                 return directResult.TypeReference.GetResolvedType();
@@ -63,11 +71,6 @@ namespace GirLoader.Output
             }
 
             return null;
-        }
-
-        private static bool Resolves(Model.Alias alias, Model.TypeReference typeReference)
-        {
-            return (typeReference.TypeName == alias.SymbolName) || (typeReference.CTypeName == alias.Name);
         }
 
         public void AddTypes(IEnumerable<Model.Type> types)

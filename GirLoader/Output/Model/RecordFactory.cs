@@ -50,7 +50,12 @@ namespace GirLoader.Output.Model
             TypeReference? getGLibClassStructFor = null;
 
             if (classStructForName is { })
-                getGLibClassStructFor = _typeReferenceFactory.Create(classStructForName, null, namespaceName);
+            {
+                //We can generate the CType automatically because the class struct
+                //of a class must be part of the repository of the class itself.
+                var ctype = namespaceName + classStructForName;
+                getGLibClassStructFor = _typeReferenceFactory.Create(classStructForName, ctype, namespaceName);
+            }
 
             return getGLibClassStructFor;
         }

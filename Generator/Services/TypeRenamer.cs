@@ -115,7 +115,6 @@ namespace Generator.Services
         {
             Debug.Assert(record.GLibClassStructFor is not null);
 
-            //TODO: Classname can get ulong for window
             var className = record.GLibClassStructFor.GetResolvedType().SymbolName;
             record.Metadata["Name"] = className;
             record.Metadata["StructName"] = "Class";
