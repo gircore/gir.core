@@ -89,20 +89,5 @@ namespace Generator
 
         private static string GetNullable(Parameter singleParameter)
             => singleParameter.Nullable ? "?" : string.Empty;
-
-        internal static string WriteMarshalArgumentToManaged(this Parameter arg, Namespace currentNamespace)
-        {
-            var type = arg.WriteType(Target.Managed, currentNamespace);
-
-            var expression = Convert.NativeToManaged(
-                fromParam: arg.SymbolName.ToString(),
-                type: arg.TypeReference.GetResolvedType(),
-                typeInfo: arg.TypeInformation,
-                currentNamespace: currentNamespace,
-                transfer: arg.Transfer
-            );
-
-            return $"{type} {arg.SymbolName}Managed = {expression};";
-        }
     }
 }

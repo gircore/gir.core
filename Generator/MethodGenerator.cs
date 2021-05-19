@@ -146,7 +146,8 @@ namespace Generator
                 {
                     Scope.Call => $"{managedType}CallHandler",
                     Scope.Async => $"{managedType}AsyncHandler",
-                    Scope.Notified => $"{managedType}NotifiedHandler"
+                    Scope.Notified => $"{managedType}NotifiedHandler",
+                    _ => throw new NotSupportedException($"{nameof(Scope)}: '{dlgParam.CallbackScope}' was not recognised")
                 };
 
                 var alloc = $"var {dlgParam.SymbolName}Handler = new {handlerType}({dlgParam.SymbolName});";
