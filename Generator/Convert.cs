@@ -28,12 +28,17 @@ namespace Generator
                 // All other string types can be marshalled directly
                 (String, _) => fromParam,
 
+                // Record Conversions
                 (Record r, { Array: null }) => $"{fromParam}.Handle",
                 (Record r, { Array: { } }) => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
+                
+                // Class Conversions
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedManagedType}.To({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
                 (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument {fromParam}"),
                 (Class c, { Array: { } }) => $"{fromParam}.Select(cls => cls.Handle).ToArray()",
+                
+                // Interface Conversions
                 (Interface i, { Array: { } }) => $"{fromParam}.Select(iface => (iface as GObject.Object).Handle).ToArray()",
                 (Interface i, _) => $"({fromParam} as GObject.Object).Handle",
 
@@ -52,41 +57,26 @@ namespace Generator
             
             var qualifiedType = type.Write(Target.Managed, currentNamespace);
 
-            if (!useSafeHandle)
-            {
-                return (symbol: type, typeInfo) switch
-                {
-                    // String Handling
-                    (String s, { Array: { Length: null } }) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",
-                    (String s, _) when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
-
-                    // General Conversions
-                    (Record r, { Array: null }) => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
-                    (Record r, { Array: { } }) => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
-                    (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedType}.From({fromParam})",
-                    (Class c, { IsPointer: true, Array: null }) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
-                    (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument '{fromParam}'"),
-                    (Interface i, _) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
-                    (Union u, _) => $"",
-
-                    // Other -> Try a brute-force cast
-                    (_, { Array: { } }) => $"({qualifiedType}[]){fromParam}",
-                    _ => $"({qualifiedType}){fromParam}"
-                };
-            }
-
             return (symbol: type, typeInfo) switch
             {
                 // String Handling
-                (String s, { Array: { } }) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",
-                (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
+                (String s, { Array: { Length: null } }) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",
+                (String s, _) when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
-                // General Conversions
-                (Record r, { Array: null }) => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
-                (Record r, { Array: { } }) => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
+                // Record Conversions (safe handles)
+                (Record r, { Array: null }) when useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
+                (Record r, { Array: { } }) when useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
+                
+                // Record Conversions (raw pointers)
+                (Record r, { Array: null }) when !useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
+                (Record r, { Array: { } }) when !useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
+                
+                // Class Conversions
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedType}.From({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument '{fromParam}'"),
+                
+                // Misc
                 (Interface i, _) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Union u, _) => $"",
 
