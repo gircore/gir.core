@@ -89,7 +89,7 @@ namespace Generator
             foreach (var argument in parameterList.GetParameters())
             {
                 index += 1;
-                var type = argument.WriteType(Target.Native, currentNamespace);
+                var type = argument.WriteType(Target.Managed, currentNamespace);
                 var name = converter.ToPascalCase(argument.SymbolName);
 
                 builder.AppendLine($"//TODO: public {type} {name} => Args[{index}].Extract<{type}>();");
