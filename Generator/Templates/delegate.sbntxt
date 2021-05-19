@@ -28,12 +28,12 @@ namespace {{ namespace.name }}
         public {{ $managed_name }}CallHandler({{ $managed_name }} managed)
         {
             managedCallback = managed;
-            NativeCallback = ({{ write_callback_marshaller_params parameter_list }}) =>
+            NativeCallback = {{ write_callback_marshaller_params parameter_list return_value }}
             {
                 {{ include 'native.delegate.marshaller.sbntxt' }}
             
                 {{~ if return_value | return_value_is_void != true ~}}
-                return {{ write_callback_marshaller_return return_value "managedCallbackResult" }};
+                return {{ write_callback_marshaller_return parameter_list return_value "managedCallbackResult" }};
                 {{~ end ~}}
             };
         }
@@ -62,7 +62,7 @@ namespace {{ namespace.name }}
         {
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
-            NativeCallback = ({{ write_callback_marshaller_params parameter_list }}) =>
+            NativeCallback = {{ write_callback_marshaller_params parameter_list return_value }}
             {
                 {{ include 'native.delegate.marshaller.sbntxt' }}
 
@@ -70,7 +70,7 @@ namespace {{ namespace.name }}
                 gch.Free();
             
                 {{~ if return_value | return_value_is_void != true ~}}
-                return {{ write_callback_marshaller_return return_value "managedCallbackResult" }};
+                return {{ write_callback_marshaller_return parameter_list return_value "managedCallbackResult" }};
                 {{~ end ~}}
             };
         }
@@ -103,12 +103,12 @@ namespace {{ namespace.name }}
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
 
-            NativeCallback = ({{ write_callback_marshaller_params parameter_list }}) =>
+            NativeCallback = {{ write_callback_marshaller_params parameter_list return_value }}
             {
                 {{ include 'native.delegate.marshaller.sbntxt' }}
             
                 {{~ if return_value | return_value_is_void != true ~}}
-                return {{ write_callback_marshaller_return return_value "managedCallbackResult" }};
+                return {{ write_callback_marshaller_return parameter_list return_value "managedCallbackResult" }};
                 {{~ end ~}}
             };
         }

@@ -180,11 +180,9 @@ namespace Generator
                 : parameter.SymbolName;
 
             var expression = Convert.ManagedToNative(
+                transferable: parameter,
                 fromParam: fromParamName,
-                type: parameter.TypeReference.GetResolvedType(),
-                typeInfo: parameter.TypeInformation,
-                currentNamespace: _currentNamespace,
-                transfer: parameter.Transfer
+                currentNamespace: _currentNamespace
             );
 
             // TODO: Use actual parameter type again: {parameter.WriteType(Target.Native, _currentNamespace)}
@@ -239,11 +237,9 @@ namespace Generator
                 return;
 
             var expression = Convert.NativeToManaged(
+                transferable: _method.ReturnValue,
                 fromParam: "result",
-                type: _method.ReturnValue.TypeReference.GetResolvedType(),
-                typeInfo: _method.ReturnValue.TypeInformation,
-                currentNamespace: _currentNamespace,
-                transfer: _method.ReturnValue.Transfer
+                currentNamespace: _currentNamespace
             );
 
             _stack.Nest(new()

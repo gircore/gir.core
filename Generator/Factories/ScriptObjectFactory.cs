@@ -35,8 +35,8 @@ namespace Generator.Factories
             scriptObject.Import("get_signal_data", new Func<Signal, SignalHelper>(s => new SignalHelper(s)));
             scriptObject.Import("write_signal_args_properties", new Func<ParameterList, string>(a => a.WriteSignalArgsProperties(currentNamespace)));
             scriptObject.Import("write_callback_marshaller_body", new Func<ParameterList, ReturnValue, string>((a, r) => DelegateGenerator.WriteCallbackMarshallerBody(a, r, currentNamespace)));
-            scriptObject.Import("write_callback_marshaller_params", new Func<ParameterList, string>(a => DelegateGenerator.WriteCallbackMarshallerParams(a)));
-            scriptObject.Import("write_callback_marshaller_return", new Func<ReturnValue, string, string>((r, n) => DelegateGenerator.WriteCallbackMarshallerReturn(r, n, currentNamespace)));
+            scriptObject.Import("write_callback_marshaller_params", new Func<ParameterList, ReturnValue, string>((a, r) => DelegateGenerator.WriteCallbackMarshallerParams(a, r)));
+            scriptObject.Import("write_callback_marshaller_return", new Func<ParameterList, ReturnValue, string, string>((a, r, n) => DelegateGenerator.WriteCallbackMarshallerReturn(a, r, n, currentNamespace)));
             scriptObject.Import("return_value_is_void", new Func<ReturnValue, bool>(r => r.IsVoid()));
             scriptObject.Import("write_struct_fields", new Func<IEnumerable<Field>, string>(f => f.WriteNative(currentNamespace)));
             scriptObject.Import("write_union_fields", new Func<IEnumerable<Field>, string>(f => f.WriteUnionStructFields(currentNamespace)));

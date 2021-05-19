@@ -8,8 +8,13 @@ namespace Generator
 {
     internal static class Convert
     {
-        internal static string ManagedToNative(string fromParam, Type type, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown)
+        internal static string ManagedToNative(TransferableAnyType transferable, string fromParam, Namespace currentNamespace)
         {
+            Transfer transfer = transferable.Transfer;
+            TypeInformation typeInfo = transferable.TypeInformation;
+            Type type = transferable.TypeReference.ResolvedType
+                        ?? throw new NullReferenceException($"Error: Conversion of '{fromParam}' to {nameof(Target.Native)} failed - {transferable.GetType().Name} does not have a type");
+
             var qualifiedNativeType = type.Write(Target.Native, currentNamespace);
             var qualifiedManagedType = type.Write(Target.Managed, currentNamespace);
 
@@ -18,7 +23,7 @@ namespace Generator
                 // String Handling
                 // String Arrays which do not have a length index need to be marshalled as IntPtr
                 (String s, { Array: { Length: null } }) when transfer == Transfer.None => $"new GLib.Native.StringArrayNullTerminatedSafeHandle({fromParam}).DangerousGetHandle()",
-                (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.StringToHGlobalUTF8({fromParam})",
+                (String s, _) when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.StringToHGlobalUTF8({fromParam})",
 
                 // All other string types can be marshalled directly
                 (String, _) => fromParam,
@@ -38,8 +43,13 @@ namespace Generator
             };
         }
 
-        internal static string NativeToManaged(string fromParam, Type type, TypeInformation typeInfo, Namespace currentNamespace, Transfer transfer = Transfer.Unknown, bool useSafeHandle = true)
+        internal static string NativeToManaged(TransferableAnyType transferable, string fromParam, Namespace currentNamespace, bool useSafeHandle = true)
         {
+            Transfer transfer = transferable.Transfer;
+            TypeInformation typeInfo = transferable.TypeInformation;
+            Type type = transferable.TypeReference.ResolvedType
+                        ?? throw new NullReferenceException($"Error: Conversion of '{fromParam}' to {nameof(Target.Managed)} failed - {transferable.GetType().Name} does not have a type");
+            
             var qualifiedType = type.Write(Target.Managed, currentNamespace);
 
             if (!useSafeHandle)
@@ -48,7 +58,7 @@ namespace Generator
                 {
                     // String Handling
                     (String s, { Array: { } }) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",
-                    // (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
+                    (String s, _) when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                     // General Conversions
                     (Record r, { Array: null }) => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
@@ -69,7 +79,7 @@ namespace Generator
             {
                 // String Handling
                 (String s, { Array: { } }) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringArrayUtf8({fromParam})",
-                // (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
+                (String s, _) when transfer == Transfer.None => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // General Conversions
                 (Record r, { Array: null }) => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
