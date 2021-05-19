@@ -48,6 +48,9 @@ namespace Generator
                 // Use original symbol name for records (remapped to SafeHandles)
                 { TypeReference: { ResolvedType: Record r } } when useSafeHandle
                     => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
+                
+                // If safe handle mode is "off", use an IntPtr instead
+                { TypeReference: { ResolvedType: Record r } } when !useSafeHandle => "IntPtr",
 
                 // Primitives - Marshal directly
                 { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",

@@ -69,20 +69,20 @@ namespace Build
             Project.FromName("GObject-2.0"),
             Project.FromName("Gio-2.0"),
             
-            // // GTK Stack
-            // Project.FromName("cairo-1.0"),
-            // Project.FromName("Pango-1.0"),
-            // Project.FromName("Gdk-3.0"),
-            // Project.FromName("GdkPixbuf-2.0"),
-            // Project.FromName("Atk-1.0"),
-            // Project.FromName("Gtk-3.0"),
+            // GTK Stack
+            Project.FromName("cairo-1.0"),
+            Project.FromName("Pango-1.0"),
+            Project.FromName("Gdk-3.0"),
+            Project.FromName("GdkPixbuf-2.0"),
+            Project.FromName("Atk-1.0"),
+            Project.FromName("Gtk-3.0"),
             
-            // // GStreamer Stack
-            // Project.FromName("Gst-1.0"),
-            // Project.FromName("GstBase-1.0"),
-            // Project.FromName("GstAudio-1.0"),
-            // Project.FromName("GstVideo-1.0"),
-            // Project.FromName("GstPbutils-1.0"),
+            // GStreamer Stack
+            Project.FromName("Gst-1.0"),
+            Project.FromName("GstBase-1.0"),
+            Project.FromName("GstAudio-1.0"),
+            Project.FromName("GstVideo-1.0"),
+            Project.FromName("GstPbutils-1.0"),
         };
 
         #endregion
