@@ -14,8 +14,8 @@ namespace GObject
 
         public Value(Type type)
         {
-            var h = Native.Value.ManagedHandle.Create();
-            _handle = Native.Value.Methods.Init(h, type.Value);
+            _handle = Native.Value.ManagedHandle.Create();
+            Native.Value.Methods.Init(_handle, type.Value);
         }
 
         public Value(Object value) : this(Type.Object) => SetObject(value);
@@ -145,7 +145,9 @@ namespace GObject
             if (Functions.TypeIsA(gtype, (nuint) BasicType.Flags))
                 return GetFlags();
 
-            throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
+            var name = StringHelper.ToStringUtf8(Native.Functions.TypeName(gtype));
+
+            throw new NotSupportedException($"Unable to extract the value for type '{name}'. The type (id: {gtype}) is unknown.");
         }
 
         public T Extract<T>() => (T) Extract()!;
