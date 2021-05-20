@@ -8,19 +8,19 @@ namespace GirLoader.Output.Model
         private readonly ClassFactory _classFactory;
         private readonly AliasFactory _aliasFactory;
         private readonly CallbackFactory _callbackFactory;
-        private readonly EnumerationFactory _enumartionFactory;
+        private readonly EnumerationFactory _enumerationFactory;
         private readonly InterfaceFactory _interfaceFactory;
         private readonly RecordFactory _recordFactory;
         private readonly MethodFactory _methodFactory;
         private readonly ConstantFactory _constantFactory;
         private readonly UnionFactory _unionFactory;
 
-        public NamespaceFactory(ClassFactory classFactory, AliasFactory aliasFactory, CallbackFactory callbackFactory, EnumerationFactory enumartionFactory, InterfaceFactory interfaceFactory, RecordFactory recordFactory, MethodFactory methodFactory, ConstantFactory constantFactory, UnionFactory unionFactory)
+        public NamespaceFactory(ClassFactory classFactory, AliasFactory aliasFactory, CallbackFactory callbackFactory, EnumerationFactory enumerationFactory, InterfaceFactory interfaceFactory, RecordFactory recordFactory, MethodFactory methodFactory, ConstantFactory constantFactory, UnionFactory unionFactory)
         {
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;
             _callbackFactory = callbackFactory;
-            _enumartionFactory = enumartionFactory;
+            _enumerationFactory = enumerationFactory;
             _interfaceFactory = interfaceFactory;
             _recordFactory = recordFactory;
             _methodFactory = methodFactory;
@@ -83,13 +83,13 @@ namespace GirLoader.Output.Model
         private void SetEnumerations(Repository repository, IEnumerable<Input.Model.Enum> enumerations)
         {
             foreach (Input.Model.Enum @enum in enumerations)
-                repository.Namespace.AddEnumeration(_enumartionFactory.Create(@enum, repository, false));
+                repository.Namespace.AddEnumeration(_enumerationFactory.Create(@enum, repository, false));
         }
 
         private void SetBitfields(Repository repository, IEnumerable<Input.Model.Enum> enumerations)
         {
             foreach (Input.Model.Enum @enum in enumerations)
-                repository.Namespace.AddBitfield(_enumartionFactory.Create(@enum, repository, true));
+                repository.Namespace.AddBitfield(_enumerationFactory.Create(@enum, repository, true));
         }
 
         private void SetInterfaces(Repository repository, IEnumerable<Input.Model.Interface> interfaces)
