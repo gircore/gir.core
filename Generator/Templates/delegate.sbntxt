@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 {{~
@@ -26,18 +27,16 @@ namespace {{ namespace.name }}
     
         public {{ $managed_name }}CallHandler({{ $managed_name }} managed)
         {
-            NativeCallback = default!; // TODO: NativeCallbackMarshaller;
             managedCallback = managed;
-        }
-        
-        /*private {{ return_value | write_native_return_value }} NativeCallbackMarshaller({{ parameter_list | write_native_arguments}})
-        {
-            {{ include 'native.delegate.marshaller.sbntxt' }}
+            NativeCallback = {{ write_callback_marshaller_params parameter_list return_value }}
+            {
+                {{ include 'native.delegate.marshaller.sbntxt' }}
             
-            {{~ if return_value | return_value_is_void != true ~}}
-            return managed_callback_result;
-            {{~ end ~}}
-        }*/
+                {{~ if return_value | return_value_is_void != true ~}}
+                return {{ write_callback_marshaller_return parameter_list return_value "managedCallbackResult" }};
+                {{~ end ~}}
+            };
+        }
         
         public void Dispose()
         {
@@ -61,22 +60,20 @@ namespace {{ namespace.name }}
     
         public {{ $managed_name }}AsyncHandler({{ $managed_name }} managed)
         {
-            NativeCallback = default!; // TODO: NativeCallbackMarshaller;
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
+            NativeCallback = {{ write_callback_marshaller_params parameter_list return_value }}
+            {
+                {{ include 'native.delegate.marshaller.sbntxt' }}
+
+                // Async callbacks are only ever called once
+                gch.Free();
+            
+                {{~ if return_value | return_value_is_void != true ~}}
+                return {{ write_callback_marshaller_return parameter_list return_value "managedCallbackResult" }};
+                {{~ end ~}}
+            };
         }
-    
-        /*private {{ return_value | write_native_return_value }} NativeCallbackMarshaller({{ parameter_list | write_native_arguments}})
-        {
-            {{ include 'native.delegate.marshaller.sbntxt' }}
-            
-            // Async callbacks are only ever called once
-            gch.Free();
-            
-            {{~ if return_value | return_value_is_void != true ~}}
-            return managed_callback_result;
-            {{~ end ~}}
-        }*/
         
         public void Dispose()
         {
@@ -103,19 +100,18 @@ namespace {{ namespace.name }}
         public {{ $managed_name }}NotifiedHandler({{ $managed_name }} managed)
         {
             DestroyNotify = DestroyCallback;
-            NativeCallback = default!; // TODO: NativeCallbackMarshaller;
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
-        }
 
-        /*private {{ return_value | write_native_return_value }} NativeCallbackMarshaller({{ parameter_list | write_native_arguments}})
-        {
-            {{ include 'native.delegate.marshaller.sbntxt' }}
+            NativeCallback = {{ write_callback_marshaller_params parameter_list return_value }}
+            {
+                {{ include 'native.delegate.marshaller.sbntxt' }}
             
-            {{~ if return_value | return_value_is_void != true ~}}
-            return managed_callback_result;
-            {{~ end ~}}
-        }*/
+                {{~ if return_value | return_value_is_void != true ~}}
+                return {{ write_callback_marshaller_return parameter_list return_value "managedCallbackResult" }};
+                {{~ end ~}}
+            };
+        }
 
         private void DestroyCallback(IntPtr userData)
         {

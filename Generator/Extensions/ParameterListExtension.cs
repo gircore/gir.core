@@ -98,34 +98,5 @@ namespace Generator
 
             return builder.ToString();
         }
-
-        public static string WriteCallbackMarshaller(this ParameterList parameterList, ReturnValue returnValue, Namespace currentNamespace)
-        {
-            var builder = new StringBuilder();
-            var args = new List<string>();
-
-            foreach (Parameter arg in parameterList.GetParameters())
-            {
-                // Skip 'user_data' parameters (for callbacks, when closure index is not zero)
-                if (arg is SingleParameter { ClosureIndex: { } })
-                    continue;
-
-                builder.AppendLine(arg.WriteMarshalArgumentToManaged(currentNamespace));
-                args.Add(arg.SymbolName + "Managed");
-            }
-
-            var funcArgs = string.Join(
-                separator: ", ",
-                values: args
-            );
-
-            var funcCall = returnValue.IsVoid()
-                ? $"managedCallback({funcArgs});"
-                : $"var managed_callback_result = managedCallback({funcArgs});";
-
-            builder.Append(funcCall);
-
-            return builder.ToString();
-        }
     }
 }

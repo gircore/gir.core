@@ -62,6 +62,22 @@ namespace GLib.Native
 
             return strArray.ToArray();
         }
+
+        public static IntPtr StringToHGlobalUTF8(string str)
+        {
+            // For some methods/delegates (e.g. TranslateFunc), we need to return
+            // a string that Glib will own and we cannot free. Create a new
+            // null-terminated string in unmanaged memory and pass it to GLib.
+
+            // TODO: Check if GLib needs to free this
+            
+            byte[] bytes = Encoding.UTF8.GetBytes(str);
+            IntPtr alloc = Marshal.AllocHGlobal(bytes.Length + 1);
+            Marshal.Copy(bytes, 0, alloc, bytes.Length);
+            Marshal.WriteByte(alloc, bytes.Length, 0);
+
+            return alloc;
+        }
     }
 
     public class StringArrayNullTerminatedSafeHandle : SafeHandle
