@@ -89,7 +89,7 @@ namespace Generator
         private static string SafeHandleFromRecord(Record r)
         {
             var type = r.GetMetadataString("SafeHandleRefName");
-            var nspace = $"{r.Namespace}.Native";
+            var nspace = $"{r.Repository.Namespace}.Native";
             return nspace + "." + type;
         }
     }

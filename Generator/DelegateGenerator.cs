@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Repository;
-using Repository.Model;
-using Type = Repository.Model.Type;
+using GirLoader.Output.Model;
 
 namespace Generator
 {
