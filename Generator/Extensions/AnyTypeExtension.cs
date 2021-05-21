@@ -1,7 +1,7 @@
 ﻿using System;
-using Repository;
-using Repository.Model;
-using String = Repository.Model.String;
+using GirLoader;
+using GirLoader.Output.Model;
+using String = GirLoader.Output.Model.String;
 
 namespace Generator
 {
@@ -43,12 +43,12 @@ namespace Generator
 
                 // For non-pointer records, we want to embed the entire struct inside the parent struct
                 Field { TypeInformation: { IsPointer: false }, TypeReference: { ResolvedType: Record { } r } }
-                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("StructRefName"), Target.Native),
+                    => AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("StructRefName"), Target.Native),
 
                 // Use original symbol name for records (remapped to SafeHandles)
                 { TypeReference: { ResolvedType: Record r } } when useSafeHandle
-                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
-                
+                    => AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
+
                 // If safe handle mode is "off", use an IntPtr instead
                 { TypeReference: { ResolvedType: Record r } } when !useSafeHandle => "IntPtr",
 
@@ -73,9 +73,9 @@ namespace Generator
         {
             var result = anyType switch
             {
-                { TypeReference: { ResolvedType: Callback c } } => AddNamespace(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
-                { TypeReference: { ResolvedType: Record r } } => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), Target.Managed),
-                { TypeReference: { ResolvedType: Union u } } => AddNamespace(currentNamespace, u.Namespace, u.GetMetadataString("Name"), Target.Managed),
+                { TypeReference: { ResolvedType: Callback c } } => AddNamespace(currentNamespace, c.Repository.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
+                { TypeReference: { ResolvedType: Record r } } => AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("Name"), Target.Managed),
+                { TypeReference: { ResolvedType: Union u } } => AddNamespace(currentNamespace, u.Repository.Namespace, u.GetMetadataString("Name"), Target.Managed),
 
                 _ => anyType.TypeReference.ResolvedType.Write(Target.Managed, currentNamespace)
             };

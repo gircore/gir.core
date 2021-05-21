@@ -1,4 +1,4 @@
-﻿namespace Repository.Xml
+﻿namespace GirLoader.Input.Model
 {
     internal class Project
     {

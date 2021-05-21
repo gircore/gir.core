@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Generator.Factories;
-using Repository.Model;
+using GirLoader.Output.Model;
 using Scriban.Runtime;
 
 namespace Generator.Services.Writer
@@ -26,7 +26,7 @@ namespace Generator.Services.Writer
                     var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, record);
 
                     var name = record.Metadata["Name"]?.ToString() ?? throw new Exception("Record is missing it's name");
-
+                    
                     if (record.GLibClassStructFor is null)
                     {
                         //Regular struct

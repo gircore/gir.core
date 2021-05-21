@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using Generator.Factories;
-using Repository.Model;
+using GirLoader.Output.Model;
 using Scriban.Runtime;
-using Type = Repository.Model.Type;
+using Type = GirLoader.Output.Model.Type;
 
 namespace Generator.Services.Writer
 {

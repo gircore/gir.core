@@ -1,8 +1,8 @@
 ﻿using System;
-using Repository.Model;
+using GirLoader.Output.Model;
 using Array = System.Array;
-using String = Repository.Model.String;
-using Type = Repository.Model.Type;
+using String = GirLoader.Output.Model.String;
+using Type = GirLoader.Output.Model.Type;
 
 namespace Generator
 {
@@ -89,7 +89,7 @@ namespace Generator
         private static string SafeHandleFromRecord(Record r)
         {
             var type = r.GetMetadataString("SafeHandleRefName");
-            var nspace = $"{r.Namespace}.Native";
+            var nspace = $"{r.Repository.Namespace}.Native";
             return nspace + "." + type;
         }
     }
