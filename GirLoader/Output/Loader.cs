@@ -28,7 +28,7 @@ namespace GirLoader.Output
         {
             foreach (var repository in repositories)
                 _repositoryResolver.Add(repository);
-            
+
             _repositoryResolver.Resolve();
         }
     }

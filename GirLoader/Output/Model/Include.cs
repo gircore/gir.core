@@ -18,7 +18,7 @@ namespace GirLoader.Output.Model
 
             return ResolvedRepository;
         }
-        
+
         public string ToCanonicalName()
             => $"{Name}-{Version}";
     };

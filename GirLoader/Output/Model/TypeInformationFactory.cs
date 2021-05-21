@@ -1,6 +1,6 @@
 ﻿using System;
-using GirLoader.Output.Model;
 using GirLoader.Input.Model;
+using GirLoader.Output.Model;
 
 namespace GirLoader.Output.Model
 {

@@ -63,9 +63,9 @@ namespace GirLoader.Output.Model
             if (!type.Contains("."))
             {
                 //Prefix type if it is not prefixed already
-                ctype = currentNamespace + type;   
+                ctype = currentNamespace + type;
             }
-            return _typeReferenceFactory.Create(type, ctype, currentNamespace);   
+            return _typeReferenceFactory.Create(type, ctype, currentNamespace);
         }
     }
 }

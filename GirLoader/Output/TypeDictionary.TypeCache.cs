@@ -39,7 +39,7 @@ namespace GirLoader.Output
             private static bool CheckNamespace(Model.Type type, Model.TypeReference typeReference) => (symbol: type, symbolReference: typeReference) switch
             {
                 ({ Repository: { } }, { NamespaceName: null }) => false,
-                ({ Repository: { Namespace: {Name: { } n1 }} }, { NamespaceName: { } n2 }) when n1 != n2 => false,
+                ({ Repository: { Namespace: { Name: { } n1 } } }, { NamespaceName: { } n2 }) when n1 != n2 => false,
                 _ => true
             };
         }

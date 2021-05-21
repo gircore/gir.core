@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GirLoader.Output.Model;
@@ -32,7 +32,7 @@ namespace Generator
             // return anything. TODO: Generate all delegates (see above)
             if (!CanGenerateDelegate(parameterList, returnValue))
                 return string.Empty;
-            
+
             return Convert.ManagedToNative(
                 transferable: returnValue,
                 fromParam: paramName,
@@ -81,7 +81,7 @@ namespace Generator
 
             return builder.ToString();
         }
-        
+
         private static bool CanGenerateDelegate(ParameterList parameterList, ReturnValue returnValue)
         {
             // We only support a subset of delegates at the
@@ -106,11 +106,11 @@ namespace Generator
             // No delegate return values
             if (returnValue.TypeReference.GetResolvedType() is Callback)
                 return false;
-            
+
             // No union return values
             if (returnValue.TypeReference.GetResolvedType() is Union)
                 return false;
-            
+
             // No GObject array return values
             if (returnValue.TypeReference.GetResolvedType() is Class &&
                 returnValue.TypeInformation.Array != null)

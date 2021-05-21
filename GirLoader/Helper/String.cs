@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis.CSharp;
 using Sf = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Sk = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 using St = Microsoft.CodeAnalysis.SyntaxToken;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace GirLoader.Helper
 {
@@ -45,8 +45,8 @@ namespace GirLoader.Helper
 
             return builder.ToString();
         }
-        
-                public static string EscapeIdentifier(string identifier)
+
+        public static string EscapeIdentifier(string identifier)
         {
             identifier = FixFirstCharIfNumber(identifier);
             identifier = FixIfIdentifierIsKeyword(identifier);
