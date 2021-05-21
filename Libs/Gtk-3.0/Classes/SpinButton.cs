@@ -1,4 +1,4 @@
-namespace Gtk
+﻿namespace Gtk
 {
     public partial class SpinButton
     {

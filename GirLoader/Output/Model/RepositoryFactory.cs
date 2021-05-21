@@ -21,7 +21,7 @@ namespace GirLoader.Output.Model
 
             var includes = xmlRepository.Includes.Select(_includeFactory.Create).ToList();
             var repository = new Repository(includes);
-            
+
             //The factory sets the namespace automatically into the repository
             _ = _namespaceFactory.Create(xmlRepository.Namespace, repository);
 

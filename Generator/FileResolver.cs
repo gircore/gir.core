@@ -8,7 +8,7 @@ namespace Generator
     {
         private const string CacheDir = "../gir-files";
 
-        
+
         public static GirFile ResolveFile(GirLoader.Output.Model.Include include)
         {
             // We store GIR files in the format 'Gtk-3.0.gir'

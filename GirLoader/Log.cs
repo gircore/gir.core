@@ -10,11 +10,11 @@ namespace GirLoader
     {
         private static readonly Logger Logger;
         private static readonly LoggingLevelSwitch Switch;
-        
+
         static Log()
         {
             Switch = new LoggingLevelSwitch();
-            
+
             Logger = new LoggerConfiguration()
                 .MinimumLevel.ControlledBy(Switch)
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)

@@ -7,7 +7,7 @@ namespace GirLoader.Helper
     {
         public IEnumerable<T> Dependencies { get; }
     }
-    
+
     // Dependency Resolver Algorithm
     // https://www.electricmonk.nl/docs/dependency_resolving_algorithm/dependency_resolving_algorithm.html
     internal class DependencyResolver<T> where T : Node<T>

@@ -41,7 +41,7 @@ namespace GirLoader.Output.Model
                 version: @namespace.Version,
                 sharedLibrary: @namespace.SharedLibrary
             );
-            
+
             repository.SetNamespace(nspace);
 
             SetAliases(repository, @namespace.Aliases);
@@ -52,7 +52,7 @@ namespace GirLoader.Output.Model
             SetRecords(repository, @namespace.Records);
             SetClasses(repository, @namespace.Classes);
             SetUnions(repository, @namespace.Unions);
-            
+
             SetFunctions(nspace, @namespace.Functions);
             SetConstants(nspace, @namespace.Constants);
 

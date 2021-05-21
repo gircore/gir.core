@@ -57,7 +57,7 @@ namespace GirLoader.Output
 
                 return typeReference.TypeName == alias.SymbolName;
             }
-            
+
             var directResult = repository.Namespace.Aliases.FirstOrDefault(ResolvesReference);
 
             if (directResult is { })

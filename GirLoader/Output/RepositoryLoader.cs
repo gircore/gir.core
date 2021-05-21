@@ -7,7 +7,7 @@ namespace GirLoader.Output
         private readonly Input.Loader _inputLoader;
         private readonly GetGirFile _getGirFile;
         private readonly Model.RepositoryFactory _repositoryFactory;
-        private readonly Dictionary<GirFile, Model.Repository> _knownRepositories = new ();
+        private readonly Dictionary<GirFile, Model.Repository> _knownRepositories = new();
 
         public RepositoryLoader(Input.Loader inputLoader, GetGirFile getGirFile, Model.RepositoryFactory repositoryFactory)
         {

@@ -7,12 +7,12 @@ namespace GirLoader.Output
     {
         private readonly TypeDictionary _typeDictionary = new();
         private readonly HashSet<Model.Repository> _knownRepositories = new();
-        
+
         public RepositoryResolver()
         {
             AddFundamentalTypes();
         }
-        
+
         private void AddFundamentalTypes()
         {
             _typeDictionary.AddType(new Model.Void("none"));
@@ -83,9 +83,9 @@ namespace GirLoader.Output
         {
             if (!_knownRepositories.Add(repository))
                 return; //Ignore known repositories
-            
+
             FillTypeDictionary(repository.Namespace);
-            
+
             foreach (var depdenentRepository in repository.Includes.Select(x => x.GetResolvedRepository()))
                 Add(depdenentRepository);
         }
@@ -98,7 +98,7 @@ namespace GirLoader.Output
             var dependencyResolver = new Helper.DependencyResolver<Model.Repository>();
             var orderedRepositories = dependencyResolver.ResolveOrdered(_knownRepositories).Cast<Model.Repository>();
 
-            foreach(var repository in orderedRepositories)
+            foreach (var repository in orderedRepositories)
                 ResolveTypeReferences(repository.Namespace);
         }
 
@@ -117,10 +117,10 @@ namespace GirLoader.Output
         {
             foreach (var reference in ns.GetTypeReferences())
                 ResolveTypeReference(reference);
-            
+
             Log.Debug($"Resolved type references for repository {ns.Name}");
         }
-        
+
         private void ResolveTypeReference(Model.TypeReference reference)
         {
             if (_typeDictionary.TryLookup(reference, out var type))
