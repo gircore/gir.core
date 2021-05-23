@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Generator.Services;
 using Generator.Services.Writer;
-using Repository;
-using Repository.Model;
+using GirLoader;
+using GirLoader.Output.Model;
 using StrongInject;
 
 namespace Generator
@@ -15,14 +16,13 @@ namespace Generator
         public bool UseAsync { get; init; } = true;
         public bool GenerateDocComments { get; init; } = false;
 
-        public void Write(IEnumerable<string> projects)
+        public void Write(IEnumerable<GirFile> projects)
         {
-            var repository = new Repository.Repository();
-            var namespaces = repository.Load(FileResolver.ResolveFile, projects).ToList();
+            var repositories = Loader.Load(FileResolver.ResolveFile, projects).ToList();
 
             var typeRenamer = new TypeRenamer();
-            typeRenamer.SetMetadata(namespaces);
-            typeRenamer.FixClassNameClashes(namespaces);
+            typeRenamer.SetMetadata(repositories.Select(x => x.Namespace));
+            typeRenamer.FixClassNameClashes(repositories.Select(x => x.Namespace));
 
             WriterService writerService = new Container().Resolve().Value;
 
@@ -39,15 +39,15 @@ namespace Generator
 
             if (UseAsync)
             {
-                Parallel.ForEach(namespaces,
-                    proj => writerService.Write(proj, OutputDir, options));
+                Parallel.ForEach(repositories,
+                    proj => writerService.Write(proj.Namespace, OutputDir, options));
             }
             else
             {
                 Log.Warning("Async Generation is disabled. Generation may be slower than normal.");
 
                 // Disable asynchronous writing for an easier debugging experience
-                foreach (Namespace ns in namespaces)
+                foreach (Namespace ns in repositories.Select(x => x.Namespace))
                     writerService.Write(ns, OutputDir, options);
             }
 

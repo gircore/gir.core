@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -44,14 +43,11 @@ namespace GObject
         {
             Type gtype = GetGTypeOrRegister(GetType());
 
-            Value[] v = GetValues(constructArguments).ToArray();
-            IntPtr[] i = v.Select(v => v.Handle.DangerousGetHandle()).ToArray();
-
             IntPtr handle = Native.Object.Instance.Methods.NewWithProperties(
                 objectType: gtype.Value,
                 nProperties: (uint) constructArguments.Length,
                 names: GetNames(constructArguments),
-                values: i.Select(x => System.Runtime.InteropServices.Marshal.PtrToStructure<Native.Value.Struct>(x)).ToArray()
+                values: GetValues(constructArguments)
             );
 
             _handle = new ObjectHandle(handle, this, !Native.Object.Instance.Methods.IsFloating(handle));
@@ -62,10 +58,16 @@ namespace GObject
         private string[] GetNames(ConstructArgument[] constructParameters)
             => constructParameters.Select(x => x.Name).ToArray();
 
-        private IEnumerable<Value> GetValues(ConstructArgument[] constructParameters)
+        private Native.Value.Struct[] GetValues(ConstructArgument[] constructParameters)
         {
-            foreach (var arg in constructParameters)
-                yield return arg.Value;
+            var values = new Native.Value.Struct[constructParameters.Length];
+
+            for (int i = 0; i < constructParameters.Length; i++)
+            {
+                values[i] = constructParameters[i].Value.GetData();
+            }
+
+            return values;
         }
 
         /// <summary>

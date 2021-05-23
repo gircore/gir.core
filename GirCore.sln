@@ -61,7 +61,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsingSourceGenerator", "Sam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Generator.csproj", "{28F5A326-D1F9-42E7-985F-C69E01DB4C4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{8385F95E-E778-44EF-96F2-8F357B1B6348}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirLoader", "GirLoader\GirLoader.csproj", "{8385F95E-E778-44EF-96F2-8F357B1B6348}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-3.0", "Libs\Gtk-3.0\Gtk-3.0.csproj", "{B4C179CA-89E5-4638-BAEC-8E37B5BBED12}"
 EndProject

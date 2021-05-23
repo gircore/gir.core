@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Repository;
-using Repository.Model;
-using Type = Repository.Model.Type;
+using GirLoader.Output.Model;
 
 namespace Generator
 {
@@ -35,7 +32,7 @@ namespace Generator
             // return anything. TODO: Generate all delegates (see above)
             if (!CanGenerateDelegate(parameterList, returnValue))
                 return string.Empty;
-            
+
             return Convert.ManagedToNative(
                 transferable: returnValue,
                 fromParam: paramName,
@@ -84,7 +81,7 @@ namespace Generator
 
             return builder.ToString();
         }
-        
+
         private static bool CanGenerateDelegate(ParameterList parameterList, ReturnValue returnValue)
         {
             // We only support a subset of delegates at the
@@ -97,25 +94,25 @@ namespace Generator
 
             // No union parameters
             if (parameterList.SingleParameters.Any(param =>
-                param.TypeReference.GetResolvedType().GetType() == typeof(Union)))
+                param.TypeReference.GetResolvedType() is Union))
                 return false;
 
             // No GObject array parameters
             if (parameterList.SingleParameters.Any(param =>
-                param.TypeReference.GetResolvedType().GetType() == typeof(Class) &&
+                param.TypeReference.GetResolvedType() is Class &&
                 param.TypeInformation.Array != null))
                 return false;
 
             // No delegate return values
-            if (returnValue.TypeReference.GetResolvedType().GetType() == typeof(Callback))
+            if (returnValue.TypeReference.GetResolvedType() is Callback)
                 return false;
-            
+
             // No union return values
-            if (returnValue.TypeReference.GetResolvedType().GetType() == typeof(Union))
+            if (returnValue.TypeReference.GetResolvedType() is Union)
                 return false;
-            
+
             // No GObject array return values
-            if (returnValue.TypeReference.GetResolvedType().GetType() == typeof(Class) &&
+            if (returnValue.TypeReference.GetResolvedType() is Class &&
                 returnValue.TypeInformation.Array != null)
                 return false;
 

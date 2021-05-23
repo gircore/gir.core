@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Repository.Model;
-using String = Repository.Model.String;
-using Type = Repository.Model.Type;
+using GirLoader.Output.Model;
+using String = GirLoader.Output.Model.String;
+using Type = GirLoader.Output.Model.Type;
 
 namespace Generator.Properties
 {
@@ -11,7 +11,7 @@ namespace Generator.Properties
     {
         public static string WriteDescriptor(Property property, Type type, Namespace currentNamespace)
         {
-            if (type.Namespace is null)
+            if (type.Repository is null)
                 throw new Exception("Can not write property for symbol with unknown namespace");
 
             var typeName = property.GetTypeName(currentNamespace);

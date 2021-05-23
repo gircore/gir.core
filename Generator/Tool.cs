@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using GirLoader;
 
 namespace Generator
 {
@@ -16,7 +18,7 @@ namespace Generator
 
             foreach (var arg in args)
             {
-                if (!File.Exists(arg))
+                if (!System.IO.File.Exists(arg))
                 {
                     Log.Error($"Could not find file at '{arg}'. Make sure it is a valid path");
                     return -1;
@@ -25,7 +27,7 @@ namespace Generator
 
             try
             {
-                new Generator().Write(args);
+                new Generator().Write(args.Select(x => new GirFile(x)));
                 return 0;
             }
             catch (Exception ex)

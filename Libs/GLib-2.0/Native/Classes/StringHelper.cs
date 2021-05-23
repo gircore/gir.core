@@ -70,7 +70,7 @@ namespace GLib.Native
             // null-terminated string in unmanaged memory and pass it to GLib.
 
             // TODO: Check if GLib needs to free this
-            
+
             byte[] bytes = Encoding.UTF8.GetBytes(str);
             IntPtr alloc = Marshal.AllocHGlobal(bytes.Length + 1);
             Marshal.Copy(bytes, 0, alloc, bytes.Length);

@@ -1,8 +1,7 @@
 ﻿using System;
-using Repository.Model;
-using Array = System.Array;
-using String = Repository.Model.String;
-using Type = Repository.Model.Type;
+using GirLoader.Output.Model;
+using String = GirLoader.Output.Model.String;
+using Type = GirLoader.Output.Model.Type;
 
 namespace Generator
 {
@@ -28,16 +27,20 @@ namespace Generator
                 // All other string types can be marshalled directly
                 (String, _) => fromParam,
 
-                // Record Conversions
-                (Record r, { Array: null }) => $"{fromParam}.Handle",
-                (Record r, { Array: { } }) => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
+                //Pointed Record Conversions 
+                (Record, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
+                (Record, { IsPointer: true, Array: { } }) => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
+
+                //Unpointed Record Conversions are not yet supported
+                (Record r, { IsPointer: false, Array: null }) => $"({r.Repository.Namespace}.Native.{r.GetMetadataString("StructRefName")}) default!; //TODO: Fixme",
+                (Record r, { IsPointer: false, Array: { } }) => $"({r.Repository.Namespace}.Native.{r.GetMetadataString("StructRefName")}[]) default!; //TODO: Fixme",
                 
                 // Class Conversions
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedManagedType}.To({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
                 (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument {fromParam}"),
                 (Class c, { Array: { } }) => $"{fromParam}.Select(cls => cls.Handle).ToArray()",
-                
+
                 // Interface Conversions
                 (Interface i, { Array: { } }) => $"{fromParam}.Select(iface => (iface as GObject.Object).Handle).ToArray()",
                 (Interface i, _) => $"({fromParam} as GObject.Object).Handle",
@@ -54,7 +57,7 @@ namespace Generator
             TypeInformation typeInfo = transferable.TypeInformation;
             Type type = transferable.TypeReference.ResolvedType
                         ?? throw new NullReferenceException($"Error: Conversion of '{fromParam}' to {nameof(Target.Managed)} failed - {transferable.GetType().Name} does not have a type");
-            
+
             var qualifiedType = type.Write(Target.Managed, currentNamespace);
 
             return (symbol: type, typeInfo) switch
@@ -64,18 +67,22 @@ namespace Generator
                 (String s, _) when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // Record Conversions (safe handles)
-                (Record r, { Array: null }) when useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
-                (Record r, { Array: { } }) when useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
-                
+                (Record r, { IsPointer: true, Array: null }) when useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
+                (Record r, { IsPointer: true, Array: { } }) when useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
+
                 // Record Conversions (raw pointers)
-                (Record r, { Array: null }) when !useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
-                (Record r, { Array: { } }) when !useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
+                (Record r, {IsPointer: true, Array: null }) when !useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
+                (Record r, {IsPointer: true, Array: { } }) when !useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
+
+                //Record Conversions without pointers are not working yet
+                (Record r, {IsPointer: false, Array: null}) => $"({r.Write(Target.Managed, currentNamespace)}) default!; //TODO: Fixme",
+                (Record r, {IsPointer: false, Array: {}}) => $"({r.Write(Target.Managed, currentNamespace)}[]) default!; //TODO: Fixme",
                 
                 // Class Conversions
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedType}.From({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Class c, { IsPointer: true, Array: { } }) => throw new NotImplementedException($"Can't create delegate for argument '{fromParam}'"),
-                
+
                 // Misc
                 (Interface i, _) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
                 (Union u, _) => $"",
@@ -89,7 +96,7 @@ namespace Generator
         private static string SafeHandleFromRecord(Record r)
         {
             var type = r.GetMetadataString("SafeHandleRefName");
-            var nspace = $"{r.Namespace}.Native";
+            var nspace = $"{r.Repository.Namespace}.Native";
             return nspace + "." + type;
         }
     }

@@ -1,5 +1,4 @@
-﻿using Repository;
-using Repository.Analysis;
+﻿using GirLoader.Output.Model;
 
 namespace Generator.Factories
 {

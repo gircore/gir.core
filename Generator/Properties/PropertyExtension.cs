@@ -1,6 +1,6 @@
 ﻿using System;
-using Repository.Model;
-using String = Repository.Model.String;
+using GirLoader.Output.Model;
+using String = GirLoader.Output.Model.String;
 
 namespace Generator.Properties
 {

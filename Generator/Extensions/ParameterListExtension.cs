@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Repository;
-using Repository.Model;
+using GirLoader;
+using GirLoader.Output.Model;
 using Array = System.Array;
-using String = Repository.Model.String;
+using String = GirLoader.Output.Model.String;
 
 namespace Generator
 {
@@ -83,14 +83,13 @@ namespace Generator
         public static string WriteSignalArgsProperties(this ParameterList parameterList, Namespace currentNamespace)
         {
             var builder = new StringBuilder();
-            var converter = new CaseConverter(); //TODO Make this a service
 
             var index = 0;
             foreach (var argument in parameterList.GetParameters())
             {
                 index += 1;
                 var type = argument.WriteType(Target.Managed, currentNamespace);
-                var name = converter.ToPascalCase(argument.SymbolName);
+                var name = GirLoader.Helper.String.ToPascalCase(argument.SymbolName);
 
                 builder.AppendLine($"public {type} {name} => Args[{index}].Extract<{type}>();");
             }

@@ -1,7 +1,7 @@
 ﻿using System;
-using Repository;
-using Repository.Model;
-using String = Repository.Model.String;
+using GirLoader;
+using GirLoader.Output.Model;
+using String = GirLoader.Output.Model.String;
 
 namespace Generator
 {
@@ -35,22 +35,13 @@ namespace Generator
                 // Arrays of byte can be marshalled automatically, no IntPtr needed
                 { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: { } s } } when s.SymbolName == "byte" => "byte[]",
 
-                // Arrays of Opaque Structs, GObjects, and GInterfaces cannot be marshalled natively
-                // Instead marshal them as variable width pointer arrays (LPArray)
-                { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: Record } } => "IntPtr[]",    // SafeHandles
-                { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Class } } => "IntPtr[]",     // GObjects
-                { TypeInformation: { IsPointer: true, Array: { } }, TypeReference: { ResolvedType: Interface } } => "IntPtr[]", // GInterfaces
-
-                // For non-pointer records, we want to embed the entire struct inside the parent struct
-                Field { TypeInformation: { IsPointer: false }, TypeReference: { ResolvedType: Record { } r } }
-                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("StructRefName"), Target.Native),
-
-                // Use original symbol name for records (remapped to SafeHandles)
-                { TypeReference: { ResolvedType: Record r } } when useSafeHandle
-                    => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native),
+                //References to records which are not using a pointer
+                {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: false, Array: null}} => GetStructName(r, currentNamespace),
+                {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: false, Array: { }}} => GetStructName(r, currentNamespace) + "[]",
                 
-                // If safe handle mode is "off", use an IntPtr instead
-                { TypeReference: { ResolvedType: Record r } } when !useSafeHandle => "IntPtr",
+                //References to records which are using a pointer
+                {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: true, Array: null}} => GetSafeHandleName(r, currentNamespace, useSafeHandle),
+                {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: true, Array: { }}} => "IntPtr[]", //Array of SafeHandle not supported by runtime
 
                 // Primitives - Marshal directly
                 { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",
@@ -69,13 +60,26 @@ namespace Generator
             };
         }
 
+        private static string GetStructName(Record r, Namespace currentNamespace)
+        {
+            return AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("StructRefName"), Target.Native);
+        }
+        
+        private static string GetSafeHandleName(Record r, Namespace currentNamespace, bool useSafeHandle)
+        {
+            if (useSafeHandle)
+                return AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native);
+            
+            return "IntPtr";
+        }
+
         private static string WriteManagedType(AnyType anyType, Namespace currentNamespace, bool useSafeHandle = true)
         {
             var result = anyType switch
             {
-                { TypeReference: { ResolvedType: Callback c } } => AddNamespace(currentNamespace, c.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
-                { TypeReference: { ResolvedType: Record r } } => AddNamespace(currentNamespace, r.Namespace, r.GetMetadataString("Name"), Target.Managed),
-                { TypeReference: { ResolvedType: Union u } } => AddNamespace(currentNamespace, u.Namespace, u.GetMetadataString("Name"), Target.Managed),
+                { TypeReference: { ResolvedType: Callback c } } => AddNamespace(currentNamespace, c.Repository.Namespace, c.GetMetadataString("ManagedName"), Target.Managed),
+                { TypeReference: { ResolvedType: Record r } } => AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("Name"), Target.Managed),
+                { TypeReference: { ResolvedType: Union u } } => AddNamespace(currentNamespace, u.Repository.Namespace, u.GetMetadataString("Name"), Target.Managed),
 
                 _ => anyType.TypeReference.ResolvedType.Write(Target.Managed, currentNamespace)
             };
