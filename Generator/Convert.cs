@@ -1,6 +1,5 @@
 ﻿using System;
 using GirLoader.Output.Model;
-using Array = System.Array;
 using String = GirLoader.Output.Model.String;
 using Type = GirLoader.Output.Model.Type;
 
@@ -28,10 +27,14 @@ namespace Generator
                 // All other string types can be marshalled directly
                 (String, _) => fromParam,
 
-                // Record Conversions
-                (Record r, { Array: null }) => $"{fromParam}.Handle",
-                (Record r, { Array: { } }) => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
+                //Pointed Record Conversions 
+                (Record, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
+                (Record, { IsPointer: true, Array: { } }) => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
 
+                //Unpointed Record Conversions are not yet supported
+                (Record r, { IsPointer: false, Array: null }) => $"({r.Repository.Namespace}.Native.{r.GetMetadataString("StructRefName")}) default!; //TODO: Fixme",
+                (Record r, { IsPointer: false, Array: { } }) => $"({r.Repository.Namespace}.Native.{r.GetMetadataString("StructRefName")}[]) default!; //TODO: Fixme",
+                
                 // Class Conversions
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedManagedType}.To({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"{fromParam}.Handle",
@@ -64,13 +67,17 @@ namespace Generator
                 (String s, _) when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // Record Conversions (safe handles)
-                (Record r, { Array: null }) when useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
-                (Record r, { Array: { } }) when useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
+                (Record r, { IsPointer: true, Array: null }) when useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
+                (Record r, { IsPointer: true, Array: { } }) when useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
 
                 // Record Conversions (raw pointers)
-                (Record r, { Array: null }) when !useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
-                (Record r, { Array: { } }) when !useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
+                (Record r, {IsPointer: true, Array: null }) when !useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
+                (Record r, {IsPointer: true, Array: { } }) when !useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
 
+                //Record Conversions without pointers are not working yet
+                (Record r, {IsPointer: false, Array: null}) => $"({r.Write(Target.Managed, currentNamespace)}) default!; //TODO: Fixme",
+                (Record r, {IsPointer: false, Array: {}}) => $"({r.Write(Target.Managed, currentNamespace)}[]) default!; //TODO: Fixme",
+                
                 // Class Conversions
                 (Class { IsFundamental: true } c, { IsPointer: true, Array: null }) => $"{qualifiedType}.From({fromParam})",
                 (Class c, { IsPointer: true, Array: null }) => $"GObject.Native.ObjectWrapper.WrapHandle<{qualifiedType}>({fromParam}, {transfer.IsOwnedRef().ToString().ToLower()})",
