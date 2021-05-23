@@ -25,7 +25,7 @@ namespace GirLoader.Output.Model
 
             return new Signal(
                 originalName: new SymbolName(signal.Name),
-                symbolName: new SymbolName(Helper.String.ToPascalCase(signal.Name)),
+                symbolName: new SymbolName(new Helper.String(signal.Name).ToPascalCase()),
                 returnValue: _returnValueFactory.Create(signal.ReturnValue, namespaceName),
                 parameterList: _parameterListFactory.Create(signal.Parameters, namespaceName)
             );

@@ -30,11 +30,9 @@ namespace GirLoader.Output.Model
             if (parameter.Name is null)
                 throw new Exception("Argument name is null");
 
-            var name = Helper.String.EscapeIdentifier(parameter.Name);
-
             return new SingleParameter(
-                originalName: new SymbolName(name),
-                symbolName: new SymbolName(Helper.String.ToCamelCase(parameter.Name)),
+                originalName: new SymbolName(parameter.Name),
+                symbolName: new SymbolName(new Helper.String(parameter.Name).EscapeIdentifier().ToCamelCase()),
                 typeReference: _typeReferenceFactory.Create(parameter, currentNamespace),
                 direction: DirectionFactory.Create(parameter.Direction),
                 transfer: _transferFactory.FromText(parameter.TransferOwnership),

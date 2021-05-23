@@ -89,7 +89,7 @@ namespace Generator
             {
                 index += 1;
                 var type = argument.WriteType(Target.Native, currentNamespace);
-                var name = GirLoader.Helper.String.ToPascalCase(argument.SymbolName);
+                var name = new GirLoader.Helper.String(argument.Name).ToPascalCase();
 
                 builder.AppendLine($"//TODO: public {type} {name} => Args[{index}].Extract<{type}>();");
                 builder.AppendLine($"public string {name} => \"\";");

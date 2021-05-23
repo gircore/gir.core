@@ -33,7 +33,7 @@ namespace Generator
                 { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: String } } => "string[]",
 
                 // Arrays of byte can be marshalled automatically, no IntPtr needed
-                { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: { } s } } when s.SymbolName == "byte" => "byte[]",
+                { TypeInformation: { Array: { } }, TypeReference: { ResolvedType: { } s } } when s.Name == "byte" => "byte[]",
 
                 //References to records which are not using a pointer
                 {TypeReference: { ResolvedType: Record r}, TypeInformation: { IsPointer: false, Array: null}} => GetStructName(r, currentNamespace),

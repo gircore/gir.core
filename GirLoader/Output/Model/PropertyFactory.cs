@@ -24,7 +24,7 @@ namespace GirLoader.Output.Model
 
             return new Property(
                 originalName: new SymbolName(property.Name),
-                symbolName: new SymbolName(Helper.String.ToPascalCase(property.Name)),
+                symbolName: new SymbolName(new Helper.String(property.Name).ToPascalCase()),
                 typeReference: _typeReferenceFactory.Create(property, namespaceName),
                 writeable: property.Writeable,
                 readable: property.Readable,

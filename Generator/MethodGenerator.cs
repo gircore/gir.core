@@ -177,7 +177,7 @@ namespace Generator
             // If we are the instance parameter, marshal variable 'this'
             var fromParamName = parameter == _instanceParameter
                 ? "this"
-                : parameter.SymbolName;
+                : parameter.Name;
 
             var expression = Convert.ManagedToNative(
                 transferable: parameter,
@@ -186,8 +186,8 @@ namespace Generator
             );
 
             // TODO: Use actual parameter type again: {parameter.WriteType(Target.Native, _currentNamespace)}
-            var alloc = $"var {parameter.SymbolName}Native = {expression};";
-            var dealloc = $"// TODO: Free {parameter.SymbolName}Native";
+            var alloc = $"var {parameter.Name}Native = {expression};";
+            var dealloc = $"// TODO: Free {parameter.Name}Native";
 
             _stack.Nest(new Block()
             {
@@ -214,8 +214,8 @@ namespace Generator
                 Type type = arg.TypeReference.GetResolvedType();
                 var argText = type switch
                 {
-                    Callback => $"{arg.SymbolName}Handler.NativeCallback",
-                    _ => $"{arg.SymbolName}Native"
+                    Callback => $"{arg.Name}Handler.NativeCallback",
+                    _ => $"{arg.Name}Native"
                 };
 
                 return argText;

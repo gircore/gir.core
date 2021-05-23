@@ -258,7 +258,7 @@ namespace Generator
 
             foreach (var argument in method.ParameterList.GetParameters())
             {
-                builder.AppendLine($"/// <param name=\"{argument.SymbolName}\">Transfer ownership: {argument.Transfer} Nullable: {argument.Nullable}</param>");
+                builder.AppendLine($"/// <param name=\"{argument.Name}\">Transfer ownership: {argument.Transfer} Nullable: {argument.Nullable}</param>");
             }
 
             builder.AppendLine($"/// <returns>Transfer ownership: {method.ReturnValue.Transfer} Nullable: {method.ReturnValue.Nullable}</returns>");

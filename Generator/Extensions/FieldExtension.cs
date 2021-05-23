@@ -9,7 +9,7 @@ namespace Generator
         {
             string type = field switch
             {
-                { Callback: { } c } => c.SymbolName,
+                { Callback: { } c } => c.Name,
 
                 // A native field which points to a record should never be a safehandle but always an IntPtr
                 { TypeInformation: { IsPointer: true }, TypeReference: { ResolvedType: Record { } } } => "IntPtr",

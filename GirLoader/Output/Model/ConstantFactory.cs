@@ -19,11 +19,9 @@ namespace GirLoader.Output.Model
             if (constant.Value is null)
                 throw new Exception($"{nameof(Input.Model.Constant)} {constant.Name} misses a {nameof(constant.Value)}");
 
-            var name = Helper.String.EscapeIdentifier(constant.Name);
-            
             return new Constant(
-                originalName: new SymbolName(name),
-                symbolName: new SymbolName(name),
+                originalName: new SymbolName(constant.Name),
+                symbolName: new SymbolName(new Helper.String(constant.Name).EscapeIdentifier()),
                 typeReference: _typeReferenceFactory.Create(constant, currentNamespace),
                 value: constant.Value
             );

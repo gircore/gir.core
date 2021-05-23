@@ -55,17 +55,17 @@ namespace Generator
             // Remove userData, closure data parameters
             var managedParams = parameterList.GetManagedParameters();
 
-            foreach (Parameter arg in managedParams)
+            foreach (Parameter parameter in managedParams)
             {
                 var expression = Convert.NativeToManaged(
-                    transferable: arg,
-                    fromParam: arg.SymbolName,
+                    transferable: parameter,
+                    fromParam: parameter.Name,
                     currentNamespace: currentNamespace,
                     useSafeHandle: false
                 );
 
-                builder.AppendLine($"var {arg.SymbolName}Managed = {expression};");
-                args.Add(arg.SymbolName + "Managed");
+                builder.AppendLine($"var {parameter.Name}Managed = {expression};");
+                args.Add(parameter.Name + "Managed");
             }
 
             var funcArgs = string.Join(

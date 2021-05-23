@@ -29,7 +29,7 @@ namespace GirLoader.Output.Model
                 repository: repository,
                 ctypeName: cTypeName,
                 originalName: new SymbolName(callback.Name),
-                symbolName: new SymbolName(Helper.String.ToPascalCase(callback.Name)),
+                symbolName: new SymbolName(new Helper.String(callback.Name).ToPascalCase()),
                 returnValue: _returnValueFactory.Create(callback.ReturnValue, repository.Namespace.Name),
                 parameterList: _parameterListFactory.Create(callback.Parameters, repository.Namespace.Name)
             );

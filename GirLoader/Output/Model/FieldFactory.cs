@@ -26,11 +26,9 @@ namespace GirLoader.Output.Model
             if (info.Callback is not null)
                 callback = _callbackFactory.Create(info.Callback, repository);
 
-            var name = Helper.String.EscapeIdentifier(info.Name);
-            
             return new Field(
-                orignalName: new SymbolName(name),
-                symbolName: new SymbolName(Helper.String.ToPascalCase(name)),
+                orignalName: new SymbolName(info.Name),
+                symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),
                 typeReference: CreateSymbolReference(info, repository.Namespace.Name),
                 callback: callback,
                 typeInformation: _typeInformationFactory.Create(info),
