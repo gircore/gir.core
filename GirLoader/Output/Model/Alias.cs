@@ -2,23 +2,27 @@
 
 namespace GirLoader.Output.Model
 {
-    public class Alias : Element
+    public class Alias : TypeReferenceProvider, Resolveable
     {
+        public SymbolName Name { get; set; }
+        public CTypeName CTypeName { get; }
         public Repository Repository { get; }
         public TypeReference TypeReference { get; }
 
-        public Alias(Repository repository, ElementName elementName, SymbolName symbolName, TypeReference typeReference) : base(elementName, symbolName)
+        public Alias(Repository repository, SymbolName name, CTypeName cTypeName, TypeReference typeReference)
         {
             TypeReference = typeReference;
             Repository = repository;
+            Name = name;
+            CTypeName = cTypeName;
         }
 
-        public override IEnumerable<TypeReference> GetTypeReferences()
+        public IEnumerable<TypeReference> GetTypeReferences()
         {
             yield return TypeReference;
         }
 
-        public override bool GetIsResolved()
+        public bool GetIsResolved()
             => TypeReference.GetIsResolved();
     }
 }

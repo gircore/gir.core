@@ -53,9 +53,9 @@ namespace GirLoader.Output
             bool ResolvesReference(Model.Alias alias)
             {
                 if (!string.IsNullOrEmpty(typeReference.CTypeName?.Value))
-                    return typeReference.CTypeName == alias.Name;//Prefer CType
+                    return typeReference.CTypeName == alias.CTypeName;//Prefer CType
 
-                return typeReference.TypeName == alias.SymbolName;
+                return typeReference.TypeName == alias.Name;
             }
 
             var directResult = repository.Namespace.Aliases.FirstOrDefault(ResolvesReference);

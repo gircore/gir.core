@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output.Model
 {
-    public class Field : Element, AnyType
+    public class Field : Symbol, AnyType
     {
         public TypeReference TypeReference { get; }
         public TypeInformation TypeInformation { get; }
@@ -20,8 +20,8 @@ namespace GirLoader.Output.Model
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
         /// <param name="readable"></param>
         /// <param name="private"></param>
-        /// <param name="elementName"></param>
-        public Field(ElementName elementName, SymbolName symbolName, TypeReference typeReference, TypeInformation typeInformation, Callback? callback = null, bool readable = true, bool @private = false) : base(elementName, symbolName)
+        /// <param name="orignalName"></param>
+        public Field(SymbolName orignalName, SymbolName symbolName, TypeReference typeReference, TypeInformation typeInformation, Callback? callback = null, bool readable = true, bool @private = false) : base(orignalName, symbolName)
         {
             TypeReference = typeReference;
             TypeInformation = typeInformation;

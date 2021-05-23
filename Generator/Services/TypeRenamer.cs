@@ -25,16 +25,16 @@ namespace Generator.Services
             // TODO: This seems very inefficient - Optimise?
             foreach (var method in cls.Methods)
                 foreach (var prop in cls.Properties)
-                    if (method.SymbolName == prop.SymbolName)
-                        prop.SymbolName = new SymbolName(prop.SymbolName + "Prop");
+                    if (method.Name == prop.Name)
+                        prop.Name = new SymbolName(prop.Name + "Prop");
         }
 
         private static void FixClassMethods(Class cls)
         {
             foreach (var method in cls.Methods)
             {
-                if (method.SymbolName == cls.SymbolName)
-                    method.SymbolName = new SymbolName(method.SymbolName + "Func");
+                if (method.Name == cls.SymbolName)
+                    method.Name = new SymbolName(method.Name + "Func");
             }
         }
 
@@ -42,9 +42,9 @@ namespace Generator.Services
         {
             foreach (var prop in cls.Properties)
             {
-                if (prop.SymbolName == cls.SymbolName)
+                if (prop.Name == cls.SymbolName)
                 {
-                    prop.SymbolName = prop.SymbolName with { Value = prop.SymbolName + "Prop" };
+                    prop.Name = prop.Name with { Value = prop.Name + "Prop" };
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output.Model
 {
-    public class SingleParameter : Element, Parameter
+    public class SingleParameter : Symbol, Parameter
     {
         public TypeReference TypeReference { get; }
         public Direction Direction { get; }
@@ -14,7 +14,7 @@ namespace GirLoader.Output.Model
         public Scope CallbackScope { get; }
         public TypeInformation TypeInformation { get; }
 
-        public SingleParameter(ElementName elementName, SymbolName symbolName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope, TypeInformation typeInformation) : base(elementName, symbolName)
+        public SingleParameter(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope, TypeInformation typeInformation) : base(originalName, symbolName)
         {
             TypeReference = typeReference;
             Direction = direction;

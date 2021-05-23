@@ -1,7 +1,7 @@
 ﻿namespace GirLoader.Output.Model
 {
-    public class Pointer : Type
+    public class Pointer : PrimitiveType
     {
-        public Pointer(string nativeName) : base(nativeName, "IntPtr") { }
+        public Pointer(string ctypeName) : base(new CTypeName(ctypeName), new SymbolName("IntPtr")) { }
     }
 }

@@ -21,7 +21,7 @@ namespace Generator
             if (!CanGenerateDelegate(parameterList, returnValue))
                 return "default!;";
 
-            var nativeParams = parameterList.SingleParameters.Select(x => x.SymbolName);
+            var nativeParams = parameterList.SingleParameters.Select(x => x.Name);
             return "(" + string.Join(',', nativeParams) + ") =>";
         }
 

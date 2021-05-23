@@ -23,7 +23,7 @@ namespace GirLoader.Output.Model
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Method> Constructors => _constructors;
 
-        public Class(Repository repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(repository, cTypeName, typeName, symbolName)
+        public Class(Repository repository, CTypeName? cTypeName, SymbolName originalName, SymbolName symbolName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(repository, cTypeName, originalName, symbolName)
         {
             Parent = parent;
             Implements = implements;
@@ -89,12 +89,12 @@ namespace GirLoader.Output.Model
             _signals.RemoveAll(Remove);
         }
 
-        private bool Remove(Element element)
+        private bool Remove(Symbol symbol)
         {
-            var result = element.GetIsResolved();
+            var result = symbol.GetIsResolved();
 
             if (!result)
-                Log.Information($"Class {Repository?.Namespace.Name}.{TypeName}: Stripping symbol {element.Name}");
+                Log.Information($"Class {Repository?.Namespace.Name}.{OriginalName}: Stripping symbol {symbol.OriginalName}");
 
             return !result;
         }

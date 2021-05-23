@@ -26,7 +26,7 @@ namespace Generator
             if (type == "string")
                 builder.AppendLine($"[MarshalAs(UnmanagedType.LPStr)]");
 
-            builder.AppendLine($"{GetAccessibility(field)} {type} {field.SymbolName};");
+            builder.AppendLine($"{GetAccessibility(field)} {type} {field.Name};");
             return builder.ToString();
         }
 

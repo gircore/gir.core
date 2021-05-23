@@ -1,7 +1,7 @@
 ﻿namespace GirLoader.Output.Model
 {
-    public class Void : Type
+    public class Void : PrimitiveType
     {
-        public Void(string nativeName) : base(nativeName, "void") { }
+        public Void(string nativeName) : base(new CTypeName(nativeName), new SymbolName("void")) { }
     }
 }

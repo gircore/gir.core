@@ -119,12 +119,22 @@ namespace GirLoader.Output.Model
             _constants.RemoveAll(Remove);
         }
 
-        private bool Remove(Element element)
+        private bool Remove(Alias alias)
         {
-            var result = element.GetIsResolved();
+            var result = alias.GetIsResolved();
 
             if (!result)
-                Log.Information($"{element.GetType().Name} {element.Name}: Removed because parts of it could not be completely resolvled");
+                Log.Information($"{nameof(Alias)} {alias.Name}: Removed because parts of it could not be completely resolvled");
+
+            return !result;
+        }
+
+        private bool Remove(Symbol symbol)
+        {
+            var result = symbol.GetIsResolved();
+
+            if (!result)
+                Log.Information($"{symbol.GetType().Name} {symbol.OriginalName}: Removed because parts of it could not be completely resolvled");
 
             return !result;
         }
@@ -134,7 +144,7 @@ namespace GirLoader.Output.Model
             var result = type.GetIsResolved();
 
             if (!result)
-                Log.Information($"{type.GetType().Name} {type.Repository?.Namespace.Name}.{type.TypeName}: Removed because parts of it could not be completely resolvled");
+                Log.Information($"{type.GetType().Name} {type.Repository?.Namespace.Name}.{type.OriginalName}: Removed because parts of it could not be completely resolvled");
 
             return !result;
         }

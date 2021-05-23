@@ -21,12 +21,11 @@ namespace GirLoader.Output.Model
             if (parameterInfo.Name is null)
                 throw new Exception("Argument name is null");
 
-            var elementName = new ElementName(Helper.String.EscapeIdentifier(parameterInfo.Name));
-            var elementManagedName = new SymbolName(Helper.String.EscapeIdentifier(Helper.String.ToCamelCase(parameterInfo.Name)));
+            var name = Helper.String.EscapeIdentifier(parameterInfo.Name);
 
             return new InstanceParameter(
-                elementName: elementName,
-                symbolName: elementManagedName,
+                originalName: new SymbolName(name),
+                symbolName: new SymbolName(Helper.String.ToCamelCase(name)),
                 typeReference: _typeReferenceFactory.Create(parameterInfo, namespaceName),
                 direction: DirectionFactory.Create(parameterInfo.Direction),
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),

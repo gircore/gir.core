@@ -9,7 +9,7 @@ namespace GirLoader.Output.Model
         public bool HasFlags { get; }
         public IEnumerable<Member> Members { get; }
 
-        public Enumeration(Repository repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, bool hasFlags, IEnumerable<Member> members) : base(repository, cTypeName, typeName, symbolName)
+        public Enumeration(Repository repository, CTypeName? cTypeName, SymbolName originalName, SymbolName symbolName, bool hasFlags, IEnumerable<Member> members) : base(repository, cTypeName, originalName, symbolName)
         {
             HasFlags = hasFlags;
             Members = members;

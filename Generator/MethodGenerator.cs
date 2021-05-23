@@ -61,7 +61,7 @@ namespace Generator
             }
             catch (Exception e)
             {
-                Log.Warning($"Did not generate method '{_parent}.{_method.SymbolName}': {e.Message}");
+                Log.Warning($"Did not generate method '{_parent}.{_method.Name}': {e.Message}");
                 return string.Empty;
             }
         }
@@ -117,7 +117,7 @@ namespace Generator
             var parameterList = _method.ParameterList.WriteManaged(_currentNamespace);
             _stack.Nest(new()
             {
-                Start = $"public {returnValue} {_method.SymbolName}({parameterList})\r\n{{",
+                Start = $"public {returnValue} {_method.Name}({parameterList})\r\n{{",
                 End = "}"
             });
         }
@@ -150,7 +150,7 @@ namespace Generator
                     _ => throw new NotSupportedException($"{nameof(Scope)}: '{dlgParam.CallbackScope}' was not recognised")
                 };
 
-                var alloc = $"var {dlgParam.SymbolName}Handler = new {handlerType}({dlgParam.SymbolName});";
+                var alloc = $"var {dlgParam.Name}Handler = new {handlerType}({dlgParam.Name});";
 
                 _stack.Nest(new Block()
                 {
@@ -221,7 +221,7 @@ namespace Generator
                 return argText;
             });
 
-            call.Append($"Native.{_parent}.Instance.Methods.{_method.SymbolName}(");
+            call.Append($"Native.{_parent}.Instance.Methods.{_method.Name}(");
             call.Append(string.Join(", ", args));
             call.Append(");\n");
 

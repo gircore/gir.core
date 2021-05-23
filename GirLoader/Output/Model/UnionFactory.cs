@@ -31,7 +31,7 @@ namespace GirLoader.Output.Model
             return new Union(
                 repository: repository,
                 cTypeName: cTypeName,
-                typeName: new TypeName(union.Name),
+                originalName: new SymbolName(union.Name),
                 symbolName: new SymbolName(union.Name),
                 methods: _methodFactory.Create(union.Methods, repository.Namespace.Name),
                 functions: _methodFactory.Create(union.Functions, repository.Namespace.Name),

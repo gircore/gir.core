@@ -1,7 +1,7 @@
 ﻿namespace GirLoader.Output.Model
 {
-    public class UnsignedPointer : Type
+    public class UnsignedPointer : PrimitiveType
     {
-        public UnsignedPointer(string nativeName) : base(nativeName, "UIntPtr") { }
+        public UnsignedPointer(string cTypeName) : base(new CTypeName(cTypeName), new SymbolName("UIntPtr")) { }
     }
 }

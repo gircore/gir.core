@@ -23,7 +23,7 @@ namespace GirLoader.Output.Model
                 throw new Exception("Property is missing a name");
 
             return new Property(
-                elementName: new ElementName(property.Name),
+                originalName: new SymbolName(property.Name),
                 symbolName: new SymbolName(Helper.String.ToPascalCase(property.Name)),
                 typeReference: _typeReferenceFactory.Create(property, namespaceName),
                 writeable: property.Writeable,

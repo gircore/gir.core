@@ -17,7 +17,7 @@ namespace GirLoader.Output.Model
         public IEnumerable<Method> Functions => _functions;
         public IEnumerable<Property> Properties => _properties;
 
-        public Interface(Repository repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cTypeName, typeName, symbolName)
+        public Interface(Repository repository, CTypeName? cTypeName, SymbolName originalName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cTypeName, originalName, symbolName)
         {
             Implements = implements;
             this._methods = methods.ToList();
@@ -54,12 +54,12 @@ namespace GirLoader.Output.Model
                    && Functions.AllResolved();
         }
 
-        private bool Remove(Element element)
+        private bool Remove(Symbol symbol)
         {
-            var result = element.GetIsResolved();
+            var result = symbol.GetIsResolved();
 
             if (!result)
-                Log.Information($"Interface {Repository?.Namespace.Name}.{TypeName}: Stripping symbol {element.Name}");
+                Log.Information($"Interface {Repository?.Namespace.Name}.{OriginalName}: Stripping symbol {symbol.OriginalName}");
 
             return !result;
         }

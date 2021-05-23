@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output.Model
 {
-    public class InstanceParameter : Element, Parameter
+    public class InstanceParameter : Symbol, Parameter
     {
         public TypeReference TypeReference { get; }
         public Direction Direction { get; }
@@ -11,7 +11,7 @@ namespace GirLoader.Output.Model
         public bool CallerAllocates { get; }
         public TypeInformation TypeInformation { get; }
 
-        public InstanceParameter(ElementName elementName, SymbolName symbolName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, TypeInformation typeInformation) : base(elementName, symbolName)
+        public InstanceParameter(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, TypeInformation typeInformation) : base(originalName, symbolName)
         {
             TypeReference = typeReference;
             Direction = direction;

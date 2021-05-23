@@ -24,7 +24,7 @@ namespace GirLoader.Output.Model
                 throw new Exception($"{nameof(Input.Model.Signal)} {signal.Name} {nameof(signal.ReturnValue)} is null");
 
             return new Signal(
-                elementName: new ElementName(signal.Name),
+                originalName: new SymbolName(signal.Name),
                 symbolName: new SymbolName(Helper.String.ToPascalCase(signal.Name)),
                 returnValue: _returnValueFactory.Create(signal.ReturnValue, namespaceName),
                 parameterList: _parameterListFactory.Create(signal.Parameters, namespaceName)

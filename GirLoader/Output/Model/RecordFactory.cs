@@ -33,7 +33,7 @@ namespace GirLoader.Output.Model
             return new Record(
                 repository: repository,
                 cTypeName: cTypeName,
-                typeName: new TypeName(@record.Name),
+                originalName: new SymbolName(@record.Name),
                 symbolName: new SymbolName(@record.Name),
                 gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, repository.Namespace.Name),
                 methods: _methodFactory.Create(@record.Methods, repository.Namespace.Name),

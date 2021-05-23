@@ -28,7 +28,7 @@ namespace GirLoader.Output.Model
             if (method.Name != string.Empty)
             {
                 return new Method(
-                    elementName: new ElementName(method.Identifier),
+                    originalName: new SymbolName(method.Identifier),
                     symbolName: new SymbolName(Helper.String.EscapeIdentifier(Helper.String.ToPascalCase(method.Name))),
                     returnValue: _returnValueFactory.Create(method.ReturnValue, namespaceName),
                     parameterList: _parameterListFactory.Create(method.Parameters, namespaceName, method.Throws)
@@ -52,7 +52,7 @@ namespace GirLoader.Output.Model
             );
 
             return new Method(
-                elementName: new ElementName(getTypeMethodName),
+                originalName: new SymbolName(getTypeMethodName),
                 symbolName: new SymbolName("GetGType"),
                 returnValue: returnValue,
                 parameterList: new ParameterList()
