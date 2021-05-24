@@ -6,13 +6,11 @@ namespace GirLoader.Output.Model
     {
         private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly TransferFactory _transferFactory;
-        private readonly TypeInformationFactory _typeInformationFactory;
 
-        public SingleParameterFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory, TypeInformationFactory typeInformationFactory)
+        public SingleParameterFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _transferFactory = transferFactory;
-            _typeInformationFactory = typeInformationFactory;
         }
 
         public SingleParameter Create(Input.Model.Parameter parameter, NamespaceName currentNamespace)
@@ -40,8 +38,7 @@ namespace GirLoader.Output.Model
                 callerAllocates: parameter.CallerAllocates,
                 closureIndex: parameter.Closure == -1 ? null : parameter.Closure,
                 destroyIndex: parameter.Destroy == -1 ? null : parameter.Destroy,
-                scope: callbackScope,
-                typeInformation: _typeInformationFactory.Create(parameter)
+                scope: callbackScope
             );
         }
 

@@ -8,13 +8,11 @@ namespace GirLoader.Output.Model
     {
         private readonly TransferFactory _transferFactory;
         private readonly TypeReferenceFactory _typeReferenceFactory;
-        private readonly TypeInformationFactory _typeInformationFactory;
 
-        public PropertyFactory(TransferFactory transferFactory, TypeReferenceFactory typeReferenceFactory, TypeInformationFactory typeInformationFactory)
+        public PropertyFactory(TransferFactory transferFactory, TypeReferenceFactory typeReferenceFactory)
         {
             _transferFactory = transferFactory;
             _typeReferenceFactory = typeReferenceFactory;
-            _typeInformationFactory = typeInformationFactory;
         }
 
         private Property Create(Input.Model.Property property, NamespaceName namespaceName)
@@ -28,7 +26,6 @@ namespace GirLoader.Output.Model
                 typeReference: _typeReferenceFactory.Create(property, namespaceName),
                 writeable: property.Writeable,
                 readable: property.Readable,
-                typeInformation: _typeInformationFactory.Create(property),
                 transfer: _transferFactory.FromText(property.TransferOwnership)
             );
         }

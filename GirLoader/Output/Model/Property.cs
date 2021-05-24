@@ -8,14 +8,12 @@ namespace GirLoader.Output.Model
         public bool Writeable { get; }
         public bool Readable { get; }
         public TypeReference TypeReference { get; }
-        public TypeInformation TypeInformation { get; }
 
-        public Property(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, bool writeable, bool readable, Transfer transfer, TypeInformation typeInformation) : base(originalName, symbolName)
+        public Property(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, bool writeable, bool readable, Transfer transfer) : base(originalName, symbolName)
         {
             TypeReference = typeReference;
             Writeable = writeable;
             Transfer = transfer;
-            TypeInformation = typeInformation;
             Readable = readable;
         }
 

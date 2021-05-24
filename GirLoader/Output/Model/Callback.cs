@@ -8,7 +8,7 @@ namespace GirLoader.Output.Model
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
 
-        public Callback(Repository repository, CTypeName? ctypeName, SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctypeName, originalName, symbolName)
+        public Callback(Repository repository, CType? ctype, SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctype, originalName, symbolName)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;

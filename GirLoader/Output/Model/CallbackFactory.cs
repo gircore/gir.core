@@ -21,13 +21,13 @@ namespace GirLoader.Output.Model
             if (callback.ReturnValue is null)
                 throw new Exception($"Callback {callback.Name} is  missing a return value");
 
-            CTypeName? cTypeName = null;
+            CType? cTypeName = null;
             if (callback.Type is { })
-                cTypeName = new CTypeName(callback.Type);
+                cTypeName = new CType(callback.Type);
 
             return new Callback(
                 repository: repository,
-                ctypeName: cTypeName,
+                ctype: cTypeName,
                 originalName: new SymbolName(callback.Name),
                 symbolName: new SymbolName(new Helper.String(callback.Name).ToPascalCase()),
                 returnValue: _returnValueFactory.Create(callback.ReturnValue, repository.Namespace.Name),

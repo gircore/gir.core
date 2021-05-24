@@ -52,8 +52,8 @@ namespace GirLoader.Output
         {
             bool ResolvesReference(Model.Alias alias)
             {
-                if (!string.IsNullOrEmpty(typeReference.CTypeName?.Value))
-                    return typeReference.CTypeName == alias.CTypeName;//Prefer CType
+                if (!string.IsNullOrEmpty(typeReference.CType?.Value))
+                    return typeReference.CType == alias.CType;//Prefer CType
 
                 return typeReference.OriginalName == alias.Name;
             }

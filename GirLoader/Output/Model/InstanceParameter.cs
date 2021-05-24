@@ -9,16 +9,14 @@ namespace GirLoader.Output.Model
         public Transfer Transfer { get; }
         public bool Nullable { get; }
         public bool CallerAllocates { get; }
-        public TypeInformation TypeInformation { get; }
 
-        public InstanceParameter(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, TypeInformation typeInformation) : base(originalName, symbolName)
+        public InstanceParameter(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates) : base(originalName, symbolName)
         {
             TypeReference = typeReference;
             Direction = direction;
             Transfer = transfer;
             Nullable = nullable;
             CallerAllocates = callerAllocates;
-            TypeInformation = typeInformation;
         }
 
         public override IEnumerable<TypeReference> GetTypeReferences()

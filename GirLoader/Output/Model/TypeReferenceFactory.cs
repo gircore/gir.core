@@ -10,38 +10,62 @@ namespace GirLoader.Output.Model
         {
             return new TypeReference(
                 originalName: GetName(name),
-                ctypeName: GetCType(ctype),
+                ctype: GetCType(ctype),
                 namespaceName: GetNamespace(name, currentNamespace)
             );
         }
 
         public TypeReference Create(Input.Model.AnyType anyType, NamespaceName currentNamespace)
         {
-            if (TryCreate(anyType?.Type, currentNamespace, out var type))
-                return type;
+            if (TryCreateTypeReference(anyType, currentNamespace, out var typeRefernece))
+                return typeRefernece;
 
-            if (TryCreate(anyType?.Array?.Type, currentNamespace, out var array))
-                return array;
+            if (TryCreateArrayTypeReference(anyType, currentNamespace, out var arrayTypeRefernece))
+                return arrayTypeRefernece;
 
             return Create("void", "none", currentNamespace);
         }
 
-        public TypeReference Create(Input.Model.Type type, NamespaceName currentNamespace)
+        private bool TryCreateTypeReference(Input.Model.AnyType anyType, NamespaceName currentNamespace, [NotNullWhen(true)] out TypeReference? typeReference)
         {
-            if (TryCreate(type, currentNamespace, out var symbolReference))
-                return symbolReference;
+            if (anyType.Type is null)
+            {
+                typeReference = null;
+                return false;
+            }
 
-            throw new Exception("Could not create SymbolReference vrom TypeInfo");
+            typeReference = new TypeReference(
+                originalName: GetName(anyType.Type.Name),
+                ctype: GetCType(anyType.Type.CType),
+                namespaceName: GetNamespace(anyType.Type.Name, currentNamespace));
+
+            return true;
         }
 
-        private bool TryCreate(Input.Model.Type? type, NamespaceName currentNamespace, [MaybeNullWhen(false)] out TypeReference typeReference)
+        private bool TryCreateArrayTypeReference(Input.Model.AnyType anyType, NamespaceName currentNamespace, [NotNullWhen(true)] out ArrayTypeReference? arrayTypeReference)
         {
-            typeReference = null;
-
-            if (type is null)
+            if (anyType.Array is null)
+            {
+                arrayTypeReference = null;
                 return false;
+            }
 
-            typeReference = Create(type.Name, type.CType, currentNamespace);
+            var typeReference = Create(anyType.Array, currentNamespace);
+
+            int? length = int.TryParse(anyType.Array.Length, out var l) ? l : null;
+            int? fixedSize = int.TryParse(anyType.Array.FixedSize, out var f) ? f : null;
+
+            arrayTypeReference = new ArrayTypeReference(
+                typeReference: typeReference,
+                originalName: null,
+                ctype: GetCType(anyType.Array.CType),
+                namespaceName: GetNamespace(anyType.Array.Type.Name, currentNamespace))
+            {
+                Length = length, 
+                FixedSize = fixedSize, 
+                IsZeroTerminated = anyType.Array.ZeroTerminated
+            };
+            
             return true;
         }
 
@@ -82,18 +106,12 @@ namespace GirLoader.Output.Model
             return new SymbolName(name.Split('.', 2)[1]);
         }
 
-        private static CTypeName? GetCType(string? ctype)
+        private static CType? GetCType(string? ctype)
         {
             if (ctype is null)
                 return null;
 
-            ctype = ctype
-                .Replace("*", "")
-                .Replace("const ", "")
-                .Replace("volatile ", "")
-                .Replace(" const", "");
-
-            return new CTypeName(ctype);
+            return new CType(ctype);
         }
     }
 }

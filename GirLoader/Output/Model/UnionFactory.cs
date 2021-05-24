@@ -24,13 +24,13 @@ namespace GirLoader.Output.Model
                 _ => null
             };
 
-            CTypeName? cTypeName = null;
+            CType? cTypeName = null;
             if (union.CType is { })
-                cTypeName = new CTypeName(union.CType);
+                cTypeName = new CType(union.CType);
 
             return new Union(
                 repository: repository,
-                cTypeName: cTypeName,
+                cType: cTypeName,
                 originalName: new SymbolName(union.Name),
                 symbolName: new SymbolName(union.Name),
                 methods: _methodFactory.Create(union.Methods, repository.Namespace.Name),

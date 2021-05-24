@@ -17,7 +17,7 @@ namespace GirLoader.Output.Model
         public IEnumerable<Method> Functions => _functions;
         public IEnumerable<Property> Properties => _properties;
 
-        public Interface(Repository repository, CTypeName? cTypeName, SymbolName originalName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cTypeName, originalName, symbolName)
+        public Interface(Repository repository, CType? cType, SymbolName originalName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cType, originalName, symbolName)
         {
             Implements = implements;
             this._methods = methods.ToList();

@@ -2,6 +2,6 @@
 {
     public class Float : PrimitiveValueType
     {
-        public Float(string ctypeName) : base(new CTypeName(ctypeName), new SymbolName("float")) { }
+        public Float(string ctypeName) : base(new CType(ctypeName), new SymbolName("float")) { }
     }
 }

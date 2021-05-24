@@ -20,7 +20,7 @@
 
     public abstract class String : PrimitiveType
     {
-        protected String(string ctypeName) : base(new CTypeName(ctypeName), new SymbolName("string"))
+        protected String(string ctypeName) : base(new CType(ctypeName), new SymbolName("string"))
         {
         }
     }

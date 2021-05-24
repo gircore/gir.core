@@ -2,6 +2,6 @@
 {
     public class UnsignedShort : PrimitiveValueType
     {
-        public UnsignedShort(string ctypeName) : base(new CTypeName(ctypeName), new SymbolName("ushort")) { }
+        public UnsignedShort(string ctypeName) : base(new CType(ctypeName), new SymbolName("ushort")) { }
     }
 }

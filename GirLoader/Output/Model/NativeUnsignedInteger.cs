@@ -2,6 +2,6 @@
 {
     public class NativeUnsignedInteger : PrimitiveValueType
     {
-        public NativeUnsignedInteger(string ctypeName) : base(new CTypeName(ctypeName), new SymbolName("nuint")) { }
+        public NativeUnsignedInteger(string ctypeName) : base(new CType(ctypeName), new SymbolName("nuint")) { }
     }
 }

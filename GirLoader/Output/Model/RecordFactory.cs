@@ -26,13 +26,13 @@ namespace GirLoader.Output.Model
                 _ => null
             };
 
-            CTypeName? cTypeName = null;
+            CType? cTypeName = null;
             if (@record.CType is { })
-                cTypeName = new CTypeName(@record.CType);
+                cTypeName = new CType(@record.CType);
 
             return new Record(
                 repository: repository,
-                cTypeName: cTypeName,
+                cType: cTypeName,
                 originalName: new SymbolName(@record.Name),
                 symbolName: new SymbolName(@record.Name),
                 gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, repository.Namespace.Name),

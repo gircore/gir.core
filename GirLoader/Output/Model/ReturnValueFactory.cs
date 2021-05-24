@@ -4,13 +4,11 @@
     {
         private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly TransferFactory _transferFactory;
-        private readonly TypeInformationFactory _typeInformationFactory;
 
-        public ReturnValueFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory, TypeInformationFactory typeInformationFactory)
+        public ReturnValueFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _transferFactory = transferFactory;
-            _typeInformationFactory = typeInformationFactory;
         }
 
         public ReturnValue Create(Input.Model.ReturnValue returnValue, NamespaceName namespaceName)
@@ -18,8 +16,7 @@
             return new ReturnValue(
                 typeReference: _typeReferenceFactory.Create(returnValue, namespaceName),
                 transfer: _transferFactory.FromText(returnValue.TransferOwnership),
-                nullable: returnValue.Nullable,
-                typeInformation: _typeInformationFactory.Create(returnValue)
+                nullable: returnValue.Nullable
             );
         }
 
@@ -28,8 +25,7 @@
             return new ReturnValue(
                 typeReference: _typeReferenceFactory.Create(ctype, ctype, namespaceName),
                 transfer: transfer,
-                nullable: nullable,
-                typeInformation: _typeInformationFactory.CreateDefault()
+                nullable: nullable
             );
         }
     }

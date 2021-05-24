@@ -5,7 +5,6 @@ namespace GirLoader.Output.Model
     public class Field : Symbol, AnyType
     {
         public TypeReference TypeReference { get; }
-        public TypeInformation TypeInformation { get; }
 
         public Callback? Callback { get; }
         public bool Readable { get; }
@@ -21,10 +20,9 @@ namespace GirLoader.Output.Model
         /// <param name="readable"></param>
         /// <param name="private"></param>
         /// <param name="orignalName"></param>
-        public Field(SymbolName orignalName, SymbolName symbolName, TypeReference typeReference, TypeInformation typeInformation, Callback? callback = null, bool readable = true, bool @private = false) : base(orignalName, symbolName)
+        public Field(SymbolName orignalName, SymbolName symbolName, TypeReference typeReference, Callback? callback = null, bool readable = true, bool @private = false) : base(orignalName, symbolName)
         {
             TypeReference = typeReference;
-            TypeInformation = typeInformation;
             Callback = callback;
             Readable = readable;
             Private = @private;

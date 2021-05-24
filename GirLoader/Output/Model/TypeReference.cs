@@ -8,14 +8,14 @@ namespace GirLoader.Output.Model
 
         public Type? ResolvedType { get; private set; }
         public NamespaceName? NamespaceName { get; }
-        public CTypeName? CTypeName { get; }
+        public CType? CType { get; }
         public SymbolName? OriginalName { get; }
 
         #endregion
 
-        public TypeReference(SymbolName? originalName, CTypeName? ctypeName, NamespaceName? namespaceName)
+        public TypeReference(SymbolName? originalName, CType? ctype, NamespaceName? namespaceName)
         {
-            CTypeName = ctypeName;
+            CType = ctype;
             OriginalName = originalName;
             NamespaceName = namespaceName;
         }

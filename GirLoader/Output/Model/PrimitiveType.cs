@@ -5,7 +5,7 @@ namespace GirLoader.Output.Model
 {
     public class PrimitiveType : Type
     {
-        public PrimitiveType(CTypeName cTypeName, SymbolName symbolName) : base(cTypeName, symbolName)
+        public PrimitiveType(CType cType, SymbolName symbolName) : base(cType, symbolName)
         {
         }
         

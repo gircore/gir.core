@@ -26,7 +26,7 @@ namespace GirLoader.Output.Model
                 symbolName: new SymbolName(@enum.Name),
                 hasFlags: hasFlags,
                 members: @enum.Members.Select(x => _memberFactory.Create(x)).ToList(),
-                cTypeName: new CTypeName(@enum.Type)
+                cType: new CType(@enum.Type)
             );
         }
     }

@@ -8,13 +8,11 @@ namespace GirLoader.Output.Model
     {
         private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly CallbackFactory _callbackFactory;
-        private readonly TypeInformationFactory _typeInformationFactory;
 
-        public FieldFactory(TypeReferenceFactory typeReferenceFactory, CallbackFactory callbackFactory, TypeInformationFactory typeInformationFactory)
+        public FieldFactory(TypeReferenceFactory typeReferenceFactory, CallbackFactory callbackFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _callbackFactory = callbackFactory;
-            _typeInformationFactory = typeInformationFactory;
         }
 
         public Field Create(Input.Model.Field info, Repository repository)
@@ -31,7 +29,6 @@ namespace GirLoader.Output.Model
                 symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),
                 typeReference: CreateTypeReference(info, repository.Namespace.Name),
                 callback: callback,
-                typeInformation: _typeInformationFactory.Create(info),
                 readable: info.Readable,
                 @private: info.Private
             );

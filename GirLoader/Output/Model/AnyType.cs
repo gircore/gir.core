@@ -8,6 +8,5 @@
     public interface AnyType
     {
         TypeReference TypeReference { get; }
-        TypeInformation TypeInformation { get; }
     }
 }

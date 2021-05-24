@@ -8,20 +8,20 @@
         /// <summary>
         /// Name of the symbol in the c world
         /// </summary>
-        public CTypeName? CTypeName { get; }
+        public CType? CType { get; }
 
-        protected internal Type(CTypeName ctypeName, SymbolName name) : this(ctypeName, name, name)
+        protected internal Type(CType ctype, SymbolName name) : this(ctype, name, name)
         {
         }
 
-        protected internal Type(CTypeName? ctypeName, SymbolName originalName, SymbolName symbolName) : this(null, ctypeName, originalName, symbolName)
+        protected internal Type(CType? ctype, SymbolName originalName, SymbolName symbolName) : this(null, ctype, originalName, symbolName)
         {
         }
 
-        protected internal Type(Repository? repository, CTypeName? cTypeName, SymbolName orignalName, SymbolName symbolName) : base(orignalName, symbolName)
+        protected internal Type(Repository? repository, CType? cType, SymbolName orignalName, SymbolName symbolName) : base(orignalName, symbolName)
         {
             Repository = repository;
-            CTypeName = cTypeName;
+            CType = cType;
         }
 
         internal virtual void Strip() { }

@@ -27,15 +27,15 @@ namespace GirLoader.Output.Model
             if (cls.GetTypeFunction is null)
                 throw new Exception($"Class {cls.Name} is missing a get type function");
 
-            CTypeName? cTypeName = null;
+            CType? cTypeName = null;
             if (cls.Type is { })
-                cTypeName = new CTypeName(cls.Type);
+                cTypeName = new CType(cls.Type);
 
             return new Class(
                 repository: repository,
                 originalName: new SymbolName(cls.Name),
                 symbolName: new SymbolName(cls.Name),
-                cTypeName: cTypeName,
+                cType: cTypeName,
                 parent: CreateParentTypeReference(cls.Parent, repository.Namespace.Name),
                 implements: _typeReferenceFactory.Create(cls.Implements, repository.Namespace.Name),
                 methods: _methodFactory.Create(cls.Methods, repository.Namespace.Name),
