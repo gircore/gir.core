@@ -55,7 +55,7 @@ namespace GirLoader.Output
                 if (!string.IsNullOrEmpty(typeReference.CTypeName?.Value))
                     return typeReference.CTypeName == alias.CTypeName;//Prefer CType
 
-                return typeReference.TypeName == alias.Name;
+                return typeReference.OriginalName == alias.Name;
             }
 
             var directResult = repository.Namespace.Aliases.FirstOrDefault(ResolvesReference);

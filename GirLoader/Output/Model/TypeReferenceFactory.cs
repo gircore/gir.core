@@ -6,12 +6,12 @@ namespace GirLoader.Output.Model
 {
     internal class TypeReferenceFactory
     {
-        public TypeReference Create(string? type, string? ctype, NamespaceName currentNamespace)
+        public TypeReference Create(string? name, string? ctype, NamespaceName currentNamespace)
         {
             return new TypeReference(
-                typeName: GetType(type),
+                originalName: GetName(name),
                 ctypeName: GetCType(ctype),
-                namespaceName: GetNamespace(type, currentNamespace)
+                namespaceName: GetNamespace(name, currentNamespace)
             );
         }
 
@@ -71,15 +71,15 @@ namespace GirLoader.Output.Model
             return new NamespaceName(type.Split('.', 2)[0]);
         }
 
-        private static TypeName? GetType(string? type)
+        private static SymbolName? GetName(string? name)
         {
-            if (type is null)
+            if (name is null)
                 return null;
 
-            if (!type.Contains("."))
-                return new TypeName(type);
+            if (!name.Contains("."))
+                return new SymbolName(name);
 
-            return new TypeName(type.Split('.', 2)[1]);
+            return new SymbolName(name.Split('.', 2)[1]);
         }
 
         private static CTypeName? GetCType(string? ctype)

@@ -23,10 +23,10 @@
             );
         }
 
-        public ReturnValue Create(string type, Transfer transfer, bool nullable, NamespaceName namespaceName)
+        public ReturnValue Create(string ctype, Transfer transfer, bool nullable, NamespaceName namespaceName)
         {
             return new ReturnValue(
-                typeReference: _typeReferenceFactory.Create(type, type, namespaceName),
+                typeReference: _typeReferenceFactory.Create(ctype, ctype, namespaceName),
                 transfer: transfer,
                 nullable: nullable,
                 typeInformation: _typeInformationFactory.CreateDefault()

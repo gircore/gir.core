@@ -45,7 +45,7 @@ namespace GirLoader.Output.Model
         public Method CreateGetTypeMethod(string getTypeMethodName)
         {
             ReturnValue returnValue = _returnValueFactory.Create(
-                type: "GType",
+                ctype: "GType",
                 transfer: Transfer.None,
                 nullable: false,
                 namespaceName: new NamespaceName("GLib")

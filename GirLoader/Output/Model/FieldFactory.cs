@@ -29,7 +29,7 @@ namespace GirLoader.Output.Model
             return new Field(
                 orignalName: new SymbolName(info.Name),
                 symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),
-                typeReference: CreateSymbolReference(info, repository.Namespace.Name),
+                typeReference: CreateTypeReference(info, repository.Namespace.Name),
                 callback: callback,
                 typeInformation: _typeInformationFactory.Create(info),
                 readable: info.Readable,
@@ -40,7 +40,7 @@ namespace GirLoader.Output.Model
         public IEnumerable<Field> Create(IEnumerable<Input.Model.Field> infos, Repository repository)
             => infos.Select(x => Create(x, repository)).ToList();
 
-        private TypeReference CreateSymbolReference(Input.Model.Field field, NamespaceName currentNamespace)
+        private TypeReference CreateTypeReference(Input.Model.Field field, NamespaceName currentNamespace)
         {
             if (field.Callback is null)
                 return _typeReferenceFactory.Create(field, currentNamespace);

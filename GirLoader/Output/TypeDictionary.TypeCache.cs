@@ -33,7 +33,9 @@ namespace GirLoader.Output
                 if (!CheckNamespace(type, typeReference))
                     return false;
 
-                return type.OriginalName == typeReference.TypeName;
+                return type.OriginalName == typeReference.OriginalName ||
+                       type.CTypeName == typeReference.CTypeName ||
+                       type.CTypeName == typeReference.OriginalName;
             }
 
             private static bool CheckNamespace(Model.Type type, Model.TypeReference typeReference) => (symbol: type, symbolReference: typeReference) switch

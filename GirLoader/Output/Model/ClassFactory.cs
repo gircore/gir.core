@@ -57,15 +57,15 @@ namespace GirLoader.Output.Model
             return null;
         }
 
-        private TypeReference CreateTypeReference(string type, NamespaceName currentNamespace)
+        private TypeReference CreateTypeReference(string name, NamespaceName currentNamespace)
         {
             string? ctype = null;
-            if (!type.Contains("."))
+            if (!name.Contains("."))
             {
                 //Prefix type if it is not prefixed already
-                ctype = currentNamespace + type;
+                ctype = currentNamespace + name;
             }
-            return _typeReferenceFactory.Create(type, ctype, currentNamespace);
+            return _typeReferenceFactory.Create(name, ctype, currentNamespace);
         }
     }
 }

@@ -9,21 +9,21 @@ namespace GirLoader.Output.Model
         public Type? ResolvedType { get; private set; }
         public NamespaceName? NamespaceName { get; }
         public CTypeName? CTypeName { get; }
-        public TypeName? TypeName { get; }
+        public SymbolName? OriginalName { get; }
 
         #endregion
 
-        public TypeReference(TypeName? typeName, CTypeName? ctypeName, NamespaceName? namespaceName)
+        public TypeReference(SymbolName? originalName, CTypeName? ctypeName, NamespaceName? namespaceName)
         {
             CTypeName = ctypeName;
-            TypeName = typeName;
+            OriginalName = originalName;
             NamespaceName = namespaceName;
         }
 
         public Type GetResolvedType()
         {
             if (ResolvedType is null)
-                throw new InvalidOperationException($"The symbolreference for {TypeName} has not been resolved.");
+                throw new InvalidOperationException($"The {nameof(TypeReference)} for {OriginalName} has not been resolved.");
 
             return ResolvedType;
         }
