@@ -100,7 +100,7 @@ namespace Generator
             // No GObject array parameters
             if (parameterList.SingleParameters.Any(param =>
                 param.TypeReference.GetResolvedType() is Class &&
-                param.TypeInformation.Array != null))
+                param.TypeReference is ArrayTypeReference))
                 return false;
 
             // No delegate return values
@@ -113,7 +113,7 @@ namespace Generator
 
             // No GObject array return values
             if (returnValue.TypeReference.GetResolvedType() is Class &&
-                returnValue.TypeInformation.Array != null)
+                returnValue.TypeReference is ArrayTypeReference)
                 return false;
 
             // Go ahead and generate

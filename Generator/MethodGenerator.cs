@@ -99,12 +99,12 @@ namespace Generator
             // No GObject array parameters
             if (_managedParams.Any(param =>
                 param.TypeReference.GetResolvedType().GetType() == typeof(Class) &&
-                param.TypeInformation.Array != null))
+                param.TypeReference is ArrayTypeReference))
                 return false;
 
             // No GObject array return values
             if (_method.ReturnValue.TypeReference.GetResolvedType().GetType() == typeof(Class) &&
-                _method.ReturnValue.TypeInformation.Array != null)
+                _method.ReturnValue.TypeReference is ArrayTypeReference)
                 return false;
 
             // Go ahead and generate

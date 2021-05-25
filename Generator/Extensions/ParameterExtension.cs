@@ -37,7 +37,7 @@ namespace Generator
             return parameter switch
             {
                 // Arrays are automatically marshalled correctly. They don't need any direction
-                { Direction: Direction.Ref, TypeInformation: { Array: { } } } => "",
+                { Direction: Direction.Ref, TypeReference: ArrayTypeReference } => "",
 
                 { Direction: Direction.Ref } => "ref ",
                 { Direction: Direction.Out, CallerAllocates: true } => "ref ",
@@ -64,7 +64,7 @@ namespace Generator
                 (Target.Native, _, { Name: { Value: "IntPtr" } }) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
 
                 //Native arrays can not be nullable
-                (Target.Native, { TypeInformation: { Array: { } } }, _) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
+                (Target.Native, { TypeReference: ArrayTypeReference }, _) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
 
                 //Classes are represented as IntPtr and should not be nullable
                 (Target.Native, _, Class) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
@@ -73,7 +73,7 @@ namespace Generator
                 (Target.Native, _, Record) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
 
                 //Pointer to primitive value types are not nullable
-                (Target.Native, { TypeInformation: { IsPointer: true } }, PrimitiveValueType) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
+                (Target.Native, { TypeReference: { CType:{ IsPointer: true }} }, PrimitiveValueType) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
 
                 (Target.Native, _, _) => Nullable(parameter, target, currentNamespace, useSafeHandle),
 
