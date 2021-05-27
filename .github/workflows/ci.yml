@@ -10,10 +10,13 @@ on:
   pull_request:
 
 jobs:
-  build:
+  compile:
     name: Build
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@v2.3.4
@@ -25,6 +28,12 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
-      - name: Run release build
-        run: dotnet run -- --release --xml-documentation --targets unitTest integrationTest samples
+      - name: Run release build (unit tests)
+        if: ${{ matrix.os == 'windows-latest' || matrix.os == 'macos-latest' }}
+        run: dotnet run -- --release --xml-documentation --targets unitTest samples
+        working-directory: './Build'
+
+      - name: Run release build (integration tests)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: dotnet run -- --release --xml-documentation --targets integrationTest samples
         working-directory: './Build'
