@@ -126,9 +126,6 @@ namespace GirLoader.Output
 
         private void ResolveTypeReference(Model.TypeReference reference)
         {
-            if (reference.TypeName == "PixbufFormat")
-                System.Console.WriteLine("hello?");
-
             if (_typeDictionary.TryLookup(reference, out var type))
                 reference.ResolveAs(type);
         }
