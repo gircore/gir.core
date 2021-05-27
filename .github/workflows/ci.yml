@@ -10,7 +10,7 @@ on:
   pull_request:
 
 jobs:
-  compile:
+  build:
     name: Build
     runs-on: ${{ matrix.os }}
     strategy:
