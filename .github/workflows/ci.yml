@@ -29,7 +29,7 @@ jobs:
           dotnet-version: '5.0.x'
 
       - name: Run release build (no tests)
-        run: dotnet run -- --release --xml-documentation --targets build samples
+        run: dotnet run -- --release --xml-documentation --targets unitTest samples
         working-directory: './Build'
   
   build:
