@@ -93,13 +93,16 @@ namespace GirLoader.Output
         /// <summary>
         /// Resolves all loaded repositories
         /// </summary>
-        public void Resolve()
+        public IEnumerable<Model.Repository> Resolve()
         {
             var dependencyResolver = new Helper.DependencyResolver<Model.Repository>();
             var orderedRepositories = dependencyResolver.ResolveOrdered(_knownRepositories).Cast<Model.Repository>();
 
             foreach (var repository in orderedRepositories)
+            {
                 ResolveTypeReferences(repository.Namespace);
+                yield return repository;
+            }
         }
 
         private void FillTypeDictionary(Model.Namespace @namespace)
@@ -123,6 +126,9 @@ namespace GirLoader.Output
 
         private void ResolveTypeReference(Model.TypeReference reference)
         {
+            if (reference.TypeName == "PixbufFormat")
+                System.Console.WriteLine("hello?");
+
             if (_typeDictionary.TryLookup(reference, out var type))
                 reference.ResolveAs(type);
         }

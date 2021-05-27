@@ -19,17 +19,17 @@ namespace GirLoader.Output
             Log.Information($"Initialising with {files.Count()} toplevel project(s)");
 
             var repositories = files.Select(_repositoryLoader.LoadRepository);
-            ResolveRepositories(repositories);
+            repositories = ResolveRepositories(repositories);
 
             return repositories;
         }
 
-        private void ResolveRepositories(IEnumerable<Model.Repository> repositories)
+        private IEnumerable<Model.Repository> ResolveRepositories(IEnumerable<Model.Repository> repositories)
         {
             foreach (var repository in repositories)
                 _repositoryResolver.Add(repository);
 
-            _repositoryResolver.Resolve();
+            return _repositoryResolver.Resolve();
         }
     }
 }
