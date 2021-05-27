@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Build
 {
@@ -9,7 +10,10 @@ namespace Build
     {
         public static Project FromName(string name)
         {
-            return new Project($"{Projects.GirPath}/{name}.gir", $"{Projects.ProjectPath}/{name}");
+            var file = Path.Combine(Projects.GirPath, $"{name}.gir");
+            var folder = Path.Combine(Projects.ProjectPath, name);
+
+            return new Project(file, folder);
         }
     }
 
