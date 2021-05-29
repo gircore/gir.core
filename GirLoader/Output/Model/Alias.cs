@@ -7,9 +7,9 @@ namespace GirLoader.Output.Model
         public SymbolName Name { get; set; }
         public CType CType { get; }
         public Repository Repository { get; }
-        public TypeReference TypeReference { get; }
+        public ResolveableTypeReference TypeReference { get; }
 
-        public Alias(Repository repository, SymbolName name, CType cType, TypeReference typeReference)
+        public Alias(Repository repository, SymbolName name, CType cType, ResolveableTypeReference typeReference)
         {
             TypeReference = typeReference;
             Repository = repository;

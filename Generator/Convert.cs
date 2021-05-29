@@ -22,30 +22,30 @@ namespace Generator
                 ArrayTypeReference { Length: null, ResolvedType: String } when transfer == Transfer.None => $"new GLib.Native.StringArrayNullTerminatedSafeHandle({fromParam}).DangerousGetHandle()",
                 
                 // String Handling
-                { ResolvedType: String } when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.StringToHGlobalUTF8({fromParam})",
-                { ResolvedType: String } => fromParam,
+                ResolveableTypeReference { ResolvedType: String } when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.StringToHGlobalUTF8({fromParam})",
+                ResolveableTypeReference { ResolvedType: String } => fromParam,
                 
                 //Record Array Conversions 
                 ArrayTypeReference { ResolvedType: Record, CType: {IsPointer: true}} => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
                 ArrayTypeReference { ResolvedType: Record r, CType: {IsPointer: false}} => $"({r.Repository.Namespace}.Native.{r.GetMetadataString("StructRefName")}[]) default!; //TODO: Fixme",
 
                 //Record Conversions
-                { ResolvedType: Record, CType: { IsPointer: true }} => $"{fromParam}.Handle",
-                { ResolvedType: Record r, CType: { IsPointer: false }} => $"({r.Repository.Namespace}.Native.{r.GetMetadataString("StructRefName")}) default!; //TODO: Fixme",
+                ResolveableTypeReference { ResolvedType: Record, CType: { IsPointer: true }} => $"{fromParam}.Handle",
+                ResolveableTypeReference { ResolvedType: Record r, CType: { IsPointer: false }} => $"({r.Repository.Namespace}.Native.{r.GetMetadataString("StructRefName")}) default!; //TODO: Fixme",
 
                 // Class Array Conversions
                 ArrayTypeReference { ResolvedType: Class, CType: {IsPointer: true}} => throw new NotImplementedException($"Can't create delegate for argument {fromParam}"),
                 ArrayTypeReference { ResolvedType: Class} => $"{fromParam}.Select(cls => cls.Handle).ToArray()",
                 
                 // Class Conversions
-                { ResolvedType: Class {IsFundamental: true}, CType: {IsPointer: true}} => $"{qualifiedManagedType}.To({fromParam})",
-                { ResolvedType: Class, CType: {IsPointer: true}} => $"{fromParam}.Handle",
+                ResolveableTypeReference { ResolvedType: Class {IsFundamental: true}, CType: {IsPointer: true}} => $"{qualifiedManagedType}.To({fromParam})",
+                ResolveableTypeReference { ResolvedType: Class, CType: {IsPointer: true}} => $"{fromParam}.Handle",
 
                 // Interface Array Conversions
                 ArrayTypeReference { ResolvedType: Interface } => $"{fromParam}.Select(iface => (iface as GObject.Object).Handle).ToArray()",
                 
                 // Interface Array Conversions
-                {ResolvedType: Interface} => $"({fromParam} as GObject.Object).Handle",
+                ResolveableTypeReference {ResolvedType: Interface} => $"({fromParam} as GObject.Object).Handle",
 
                 // Other -> Try a brute-force cast
                 ArrayTypeReference { } => $"({qualifiedNativeType}[]){fromParam}",

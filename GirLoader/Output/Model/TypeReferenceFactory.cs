@@ -6,9 +6,9 @@ namespace GirLoader.Output.Model
 {
     internal class TypeReferenceFactory
     {
-        public TypeReference Create(string? name, string? ctype, NamespaceName currentNamespace)
+        public ResolveableTypeReference CreateResolveable(string? name, string? ctype, NamespaceName currentNamespace)
         {
-            return new TypeReference(
+            return new ResolveableTypeReference(
                 originalName: GetName(name),
                 ctype: GetCType(ctype),
                 namespaceName: GetNamespace(name, currentNamespace)
@@ -17,16 +17,16 @@ namespace GirLoader.Output.Model
 
         public TypeReference Create(Input.Model.AnyType anyType, NamespaceName currentNamespace)
         {
-            if (TryCreateTypeReference(anyType, currentNamespace, out var typeRefernece))
+            if (TryCreateResolveableTypeReference(anyType, currentNamespace, out var typeRefernece))
                 return typeRefernece;
 
             if (TryCreateArrayTypeReference(anyType, currentNamespace, out var arrayTypeRefernece))
                 return arrayTypeRefernece;
 
-            return Create("void", "none", currentNamespace);
+            return CreateResolveable("void", "none", currentNamespace);
         }
 
-        private bool TryCreateTypeReference(Input.Model.AnyType anyType, NamespaceName currentNamespace, [NotNullWhen(true)] out TypeReference? typeReference)
+        private bool TryCreateResolveableTypeReference(Input.Model.AnyType anyType, NamespaceName currentNamespace, [NotNullWhen(true)] out TypeReference? typeReference)
         {
             if (anyType.Type is null)
             {
@@ -34,7 +34,7 @@ namespace GirLoader.Output.Model
                 return false;
             }
 
-            typeReference = new TypeReference(
+            typeReference = new ResolveableTypeReference(
                 originalName: GetName(anyType.Type.Name),
                 ctype: GetCType(anyType.Type.CType),
                 namespaceName: GetNamespace(anyType.Type.Name, currentNamespace));
@@ -59,7 +59,7 @@ namespace GirLoader.Output.Model
                 typeReference: typeReference,
                 originalName: null,
                 ctype: GetCType(anyType.Array.CType),
-                namespaceName: GetNamespace(anyType.Array.Type.Name, currentNamespace))
+                namespaceName: GetNamespace(anyType.Array.Type?.Name, currentNamespace))
             {
                 Length = length, 
                 FixedSize = fixedSize, 
@@ -78,13 +78,13 @@ namespace GirLoader.Output.Model
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
 
-                list.Add(Create(implement.Name, null, currentNamespace));
+                list.Add(CreateResolveable(implement.Name, null, currentNamespace));
             }
 
             return list;
         }
 
-        private static NamespaceName? GetNamespace(string? type, NamespaceName currentNamespace)
+        private static NamespaceName GetNamespace(string? type, NamespaceName currentNamespace)
         {
             if (type is null)
                 return currentNamespace;

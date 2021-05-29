@@ -23,7 +23,7 @@
         public ReturnValue Create(string ctype, Transfer transfer, bool nullable, NamespaceName namespaceName)
         {
             return new ReturnValue(
-                typeReference: _typeReferenceFactory.Create(ctype, ctype, namespaceName),
+                typeReference: _typeReferenceFactory.CreateResolveable(ctype, ctype, namespaceName),
                 transfer: transfer,
                 nullable: nullable
             );

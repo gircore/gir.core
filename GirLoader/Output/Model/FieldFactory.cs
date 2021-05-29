@@ -20,15 +20,25 @@ namespace GirLoader.Output.Model
             if (info.Name is null)
                 throw new Exception("Field is missing name");
 
-            Callback? callback = null;
             if (info.Callback is not null)
-                callback = _callbackFactory.Create(info.Callback, repository);
+            {
+                if (info.Callback.Name is null)
+                    throw new Exception($"Field {info.Name} has a callback without a name.");
+                
+                return new Field(
+                    orignalName: new SymbolName(info.Name),
+                    symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),
+                    resolveableTypeReference: _typeReferenceFactory.CreateResolveable(info.Callback.Name, info.Callback.Type, repository.Namespace.Name),
+                    callback: _callbackFactory.Create(info.Callback, repository),
+                    readable: info.Readable,
+                    @private: info.Private
+                );
+            }
 
             return new Field(
                 orignalName: new SymbolName(info.Name),
                 symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),
-                typeReference: CreateTypeReference(info, repository.Namespace.Name),
-                callback: callback,
+                typeReference: _typeReferenceFactory.Create(info, repository.Namespace.Name),
                 readable: info.Readable,
                 @private: info.Private
             );
@@ -36,16 +46,5 @@ namespace GirLoader.Output.Model
 
         public IEnumerable<Field> Create(IEnumerable<Input.Model.Field> infos, Repository repository)
             => infos.Select(x => Create(x, repository)).ToList();
-
-        private TypeReference CreateTypeReference(Input.Model.Field field, NamespaceName currentNamespace)
-        {
-            if (field.Callback is null)
-                return _typeReferenceFactory.Create(field, currentNamespace);
-
-            if (field.Callback.Name is null)
-                throw new Exception($"Field {field.Name} has a callback without a name.");
-
-            return _typeReferenceFactory.Create(field.Callback.Name, field.Callback.Type, currentNamespace);
-        }
     }
 }

@@ -65,7 +65,7 @@ namespace GirLoader.Output.Model
                 //Prefix type if it is not prefixed already
                 ctype = currentNamespace + name;
             }
-            return _typeReferenceFactory.Create(name, ctype, currentNamespace);
+            return _typeReferenceFactory.CreateResolveable(name, ctype, currentNamespace);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GirLoader.Output
@@ -129,12 +130,16 @@ namespace GirLoader.Output
                 // because arrays are no type themself. They only provide structure.
                 ResolveTypeReference(arrayTypeReference.TypeReference);
             }
-            else
+            else if(reference is Model.ResolveableTypeReference resolveableTypeReference)
             {
-                if (_typeDictionary.TryLookup(reference, out var type))
-                    reference.ResolveAs(type);
+                if (_typeDictionary.TryLookup(resolveableTypeReference, out var type))
+                    resolveableTypeReference.ResolveAs(type);
                 else
                     Log.Verbose($"Could not resolve type reference {reference}");   
+            }
+            else
+            {
+                throw new Exception($"Unknown {nameof(Model.TypeReference)} {reference.GetType().Name}");
             }
         }
     }
