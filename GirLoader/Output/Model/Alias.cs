@@ -24,5 +24,10 @@ namespace GirLoader.Output.Model
 
         public bool GetIsResolved()
             => TypeReference.GetIsResolved();
+
+        public override string ToString()
+        {
+            return CType.ToString();
+        }
     }
 }

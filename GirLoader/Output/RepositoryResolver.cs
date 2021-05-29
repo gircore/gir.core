@@ -123,8 +123,19 @@ namespace GirLoader.Output
 
         private void ResolveTypeReference(Model.TypeReference reference)
         {
-            if (_typeDictionary.TryLookup(reference, out var type))
-                reference.ResolveAs(type);
+            if (reference is Model.ArrayTypeReference arrayTypeReference)
+            {
+                // Array type references are not resolved directly. Only their type get's resolved
+                // because arrays are no type themself. They only provide structure.
+                ResolveTypeReference(arrayTypeReference.TypeReference);
+            }
+            else
+            {
+                if (_typeDictionary.TryLookup(reference, out var type))
+                    reference.ResolveAs(type);
+                else
+                    Log.Verbose($"Could not resolve type reference {reference}");   
+            }
         }
     }
 }
