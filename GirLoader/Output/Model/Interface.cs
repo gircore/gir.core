@@ -38,8 +38,8 @@ namespace GirLoader.Output.Model
 
         internal override void Strip()
         {
-            _methods.RemoveAll(Remove);
-            _functions.RemoveAll(Remove);
+            _methods.RemoveAll(SymbolIsNotResolved);
+            _functions.RemoveAll(SymbolIsNotResolved);
         }
 
         public override bool GetIsResolved()
@@ -54,7 +54,7 @@ namespace GirLoader.Output.Model
                    && Functions.AllResolved();
         }
 
-        private bool Remove(Symbol symbol)
+        private bool SymbolIsNotResolved(Symbol symbol)
         {
             var result = symbol.GetIsResolved();
 
@@ -62,6 +62,17 @@ namespace GirLoader.Output.Model
                 Log.Information($"Interface {Repository?.Namespace.Name}.{OriginalName}: Stripping symbol {symbol.OriginalName}");
 
             return !result;
+        }
+        
+        internal override bool Matches(TypeReference typeReference)
+        {
+            if (!SameNamespace(typeReference))
+                return false;
+            
+            if (typeReference.CType is null)
+                return false;
+            
+            return typeReference.CType.Value == CType.Value;
         }
     }
 }

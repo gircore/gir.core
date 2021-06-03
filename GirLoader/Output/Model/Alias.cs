@@ -4,7 +4,7 @@ namespace GirLoader.Output.Model
 {
     public class Alias : TypeReferenceProvider, Resolveable
     {
-        public SymbolName Name { get; set; }
+        public SymbolName Name { get; }
         public CType CType { get; }
         public Repository Repository { get; }
         public ResolveableTypeReference TypeReference { get; }
@@ -26,8 +26,14 @@ namespace GirLoader.Output.Model
             => TypeReference.GetIsResolved();
 
         public override string ToString()
+            => CType;
+
+        internal bool Matches(TypeReference typeReference)
         {
-            return CType.ToString();
+            if (!string.IsNullOrEmpty(typeReference.CType?.Value))
+                return typeReference.CType.Value == CType.Value;//Prefer CType
+
+            return typeReference.OriginalName == Name;
         }
     }
 }

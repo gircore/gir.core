@@ -20,5 +20,16 @@ namespace GirLoader.Output.Model
 
         public override bool GetIsResolved()
             => Members.AllResolved();
+
+        internal override bool Matches(TypeReference typeReference)
+        {
+            if (!SameNamespace(typeReference))
+                return false;
+            
+            if (typeReference.CType is null)
+                return false;
+            
+            return typeReference.CType.Value == CType.Value;
+        }
     }
 }

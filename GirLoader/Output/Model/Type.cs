@@ -28,5 +28,14 @@
 
         public string GetMetadataString(string key)
             => Metadata[key]?.ToString() ?? "";
+
+        internal abstract bool Matches(TypeReference typeReference);
+        
+        protected bool SameNamespace(TypeReference typeReference) => (this, typeReference) switch
+        {
+            ({ Repository: { } }, { NamespaceName: null }) => false,
+            ({ Repository: { Namespace: { Name: { } n1 } } }, { NamespaceName: { } n2 }) when n1 != n2 => false,
+            _ => true
+        };
     }
 }

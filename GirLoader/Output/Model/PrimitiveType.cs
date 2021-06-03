@@ -3,9 +3,13 @@ using System.Linq;
 
 namespace GirLoader.Output.Model
 {
-    public class PrimitiveType : Type
+    public abstract class PrimitiveType : Type
     {
-        public PrimitiveType(CType cType, SymbolName symbolName) : base(cType, symbolName)
+        protected PrimitiveType(CType ctype, SymbolName originalName, SymbolName symbolName) : base(ctype, originalName, symbolName)
+        {
+        }
+        
+        protected PrimitiveType(CType cType, SymbolName symbolName) : base(cType, symbolName)
         {
         }
         

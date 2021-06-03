@@ -30,7 +30,7 @@ namespace GirLoader.Output.Model
 
         public override string ToString()
         {
-            return CType.ToString();
+            return $"CType: {CType}, OriginalName: {OriginalName}";
         }
 
         public bool GetIsResolved()

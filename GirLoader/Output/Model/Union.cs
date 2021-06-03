@@ -73,5 +73,16 @@ namespace GirLoader.Output.Model
 
             return !result;
         }
+        
+        internal override bool Matches(TypeReference typeReference)
+        {
+            if (!SameNamespace(typeReference))
+                return false;
+
+            if (typeReference.CType is not null)
+                return typeReference.CType.Value == CType?.Value;
+
+            return OriginalName == typeReference.OriginalName;
+        }
     }
 }

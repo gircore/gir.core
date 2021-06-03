@@ -89,6 +89,17 @@ namespace GirLoader.Output.Model
             _signals.RemoveAll(Remove);
         }
 
+        internal override bool Matches(TypeReference typeReference)
+        {
+            if (!SameNamespace(typeReference))
+                return false;
+            
+            if (typeReference.CType is null)
+                return false;
+            
+            return typeReference.CType.Value == CType?.Value;
+        }
+
         private bool Remove(Symbol symbol)
         {
             var result = symbol.GetIsResolved();

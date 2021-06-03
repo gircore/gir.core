@@ -23,27 +23,10 @@ namespace GirLoader.Output
 
             public bool TryLookup(Model.TypeReference typeReference, [MaybeNullWhen(false)] out Model.Type type)
             {
-                type = _types.FirstOrDefault(x => CheckTypeReference(x, typeReference));
+                type = _types.FirstOrDefault(x => x.Matches(typeReference));
 
                 return type is not null;
             }
-
-            private bool CheckTypeReference(Model.Type type, Model.TypeReference typeReference)
-            {
-                if (!CheckNamespace(type, typeReference))
-                    return false;
-
-                return type.OriginalName == typeReference.OriginalName ||
-                       type.CType == typeReference.CType ||
-                       type.CType == typeReference.OriginalName;
-            }
-
-            private static bool CheckNamespace(Model.Type type, Model.TypeReference typeReference) => (symbol: type, symbolReference: typeReference) switch
-            {
-                ({ Repository: { } }, { NamespaceName: null }) => false,
-                ({ Repository: { Namespace: { Name: { } n1 } } }, { NamespaceName: { } n2 }) when n1 != n2 => false,
-                _ => true
-            };
         }
     }
 }

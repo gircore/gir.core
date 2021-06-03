@@ -1,9 +1,8 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace GirLoader.Output.Model
 {
-    public class CType : IEquatable<CType>
+    public class CType
     {
         public string Value { get; }
         public bool IsPointer { get; }
@@ -34,45 +33,5 @@ namespace GirLoader.Output.Model
 
         public override string ToString()
             => Value;
-
-        public bool Equals(CType? other)
-        {
-            if (ReferenceEquals(null, other))
-                return false;
-
-            if (ReferenceEquals(this, other))
-                return true;
-
-            return Value == other.Value;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (ReferenceEquals(null, obj))
-                return false;
-
-            if (ReferenceEquals(this, obj))
-                return true;
-
-            if (obj.GetType() != typeof(CType))
-                return false;
-
-            return Equals((CType) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
-        }
-
-        public static bool operator ==(CType? left, CType? right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(CType? left, CType? right)
-        {
-            return !Equals(left, right);
-        }
     }
 }

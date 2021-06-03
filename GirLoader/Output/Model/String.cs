@@ -20,8 +20,16 @@
 
     public abstract class String : PrimitiveType
     {
-        protected String(string ctypeName) : base(new CType(ctypeName), new SymbolName("string"))
+        protected String(string originalName) : base(new CType("gchar*"), new SymbolName(originalName), new SymbolName("string"))
         {
+        }
+        
+        internal override bool Matches(TypeReference typeReference)
+        {
+            if (!SameNamespace(typeReference))
+                return false;
+            
+            return typeReference.OriginalName == OriginalName;
         }
     }
 }
