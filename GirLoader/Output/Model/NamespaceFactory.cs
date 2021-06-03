@@ -39,7 +39,9 @@ namespace GirLoader.Output.Model
             var nspace = new Namespace(
                 name: @namespace.Name,
                 version: @namespace.Version,
-                sharedLibrary: @namespace.SharedLibrary
+                sharedLibrary: @namespace.SharedLibrary,
+                identifierPrefixes: @namespace.IdentifierPrefixes,
+                symbolPrefixes: @namespace.SymbolPrefixes
             );
 
             repository.SetNamespace(nspace);

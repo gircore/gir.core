@@ -26,11 +26,6 @@ namespace GirLoader.Output
                 
                 type = _types.FirstOrDefault(x => x.Matches(typeReference));
 
-                if (type is null && typeReference.OriginalName.Value == "InitiallyUnowned")
-                {
-                    
-                }
-                
                 return type is not null;
             }
         }
