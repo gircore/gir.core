@@ -38,7 +38,7 @@ namespace Generator
             _nativeParams = method.ParameterList.GetParameters();
             _managedParams = method.ParameterList.GetManagedParameters();
             _nullParams = method.ParameterList.SingleParameters.Except(_managedParams);
-            _delegateParams = _managedParams.Where(arg => arg.TypeReference.GetResolvedType().GetType() == typeof(Callback));
+            _delegateParams = _managedParams.Where(arg => arg.TypeReference.GetResolvedType() is Callback);
             _marshalParams = _managedParams.Except(_delegateParams);
             _instanceParameter = method.ParameterList.InstanceParameter;
         }
@@ -85,25 +85,25 @@ namespace Generator
                 return false;
 
             // No delegate return values
-            if (_method.ReturnValue.TypeReference.GetResolvedType().GetType() == typeof(Callback))
+            if (_method.ReturnValue.TypeReference.ResolvedType is Callback)
                 return false;
 
             // No union parameters
-            if (_managedParams.Any(param => param.TypeReference.GetResolvedType().GetType() == typeof(Union)))
+            if (_managedParams.Any(param => param.TypeReference.ResolvedType is Union))
                 return false;
 
             // No union return values
-            if (_method.ReturnValue.TypeReference.GetResolvedType().GetType() == typeof(Union))
+            if (_method.ReturnValue.TypeReference.ResolvedType is Union)
                 return false;
 
             // No GObject array parameters
             if (_managedParams.Any(param =>
-                param.TypeReference.GetResolvedType().GetType() == typeof(Class) &&
+                param.TypeReference.ResolvedType is Class &&
                 param.TypeReference is ArrayTypeReference))
                 return false;
 
             // No GObject array return values
-            if (_method.ReturnValue.TypeReference.GetResolvedType().GetType() == typeof(Class) &&
+            if (_method.ReturnValue.TypeReference.ResolvedType is Class &&
                 _method.ReturnValue.TypeReference is ArrayTypeReference)
                 return false;
 

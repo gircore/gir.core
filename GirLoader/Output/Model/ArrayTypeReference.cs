@@ -8,12 +8,11 @@
         public int? FixedSize { get; init; }
         public TypeReference TypeReference { get; }
 
+        public override Type? ResolvedType => TypeReference.ResolvedType;
+        
         public ArrayTypeReference(TypeReference typeReference, SymbolName? originalName, CType? ctype, NamespaceName? namespaceName) : base(originalName, ctype, namespaceName)
         {
             TypeReference = typeReference;
         }
-
-        public override bool GetIsResolved()
-            => TypeReference.GetIsResolved();
     }
 }

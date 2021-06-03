@@ -1,4 +1,6 @@
-﻿namespace GirLoader.Output.Model
+﻿using System;
+
+namespace GirLoader.Output.Model
 {
     public abstract class TypeReference : Resolveable
     {
@@ -7,7 +9,8 @@
         public NamespaceName? NamespaceName { get; }
         public CType? CType { get; }
         public SymbolName? OriginalName { get; }
-
+        public abstract Type? ResolvedType { get; }
+        
         #endregion
 
         public TypeReference(SymbolName? originalName, CType? ctype, NamespaceName? namespaceName)
@@ -16,12 +19,21 @@
             OriginalName = originalName;
             NamespaceName = namespaceName;
         }
+        
+        public Type GetResolvedType()
+        {
+            if (ResolvedType is null)
+                throw new InvalidOperationException($"The {GetType().Namespace} for {OriginalName} has not been resolved.");
+
+            return ResolvedType;
+        }
 
         public override string ToString()
         {
             return CType.ToString();
         }
 
-        public abstract bool GetIsResolved();
+        public bool GetIsResolved()
+            => ResolvedType is { };
     }
 }

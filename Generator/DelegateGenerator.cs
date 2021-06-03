@@ -94,25 +94,25 @@ namespace Generator
 
             // No union parameters
             if (parameterList.SingleParameters.Any(param =>
-                param.TypeReference.GetResolvedType() is Union))
+                param.TypeReference.ResolvedType is Union))
                 return false;
 
             // No GObject array parameters
             if (parameterList.SingleParameters.Any(param =>
-                param.TypeReference.GetResolvedType() is Class &&
+                param.TypeReference.ResolvedType is Class &&
                 param.TypeReference is ArrayTypeReference))
                 return false;
 
             // No delegate return values
-            if (returnValue.TypeReference.GetResolvedType() is Callback)
+            if (returnValue.TypeReference.ResolvedType is Callback)
                 return false;
 
             // No union return values
-            if (returnValue.TypeReference.GetResolvedType() is Union)
+            if (returnValue.TypeReference.ResolvedType is Union)
                 return false;
 
             // No GObject array return values
-            if (returnValue.TypeReference.GetResolvedType() is Class &&
+            if (returnValue.TypeReference.ResolvedType is Class &&
                 returnValue.TypeReference is ArrayTypeReference)
                 return false;
 

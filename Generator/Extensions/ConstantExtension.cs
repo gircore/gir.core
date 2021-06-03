@@ -14,13 +14,12 @@ namespace Generator
 
         private static string GetValue(Constant constant)
         {
-            var referencedTypeName = constant.TypeReference.GetResolvedType().Name;
-            var name = referencedTypeName.Value;
+            var resolvedType = constant.TypeReference.GetResolvedType();
 
-            if (name.EndsWith("Flags"))
-                return $"({name}) {constant.Value}";
+            if (resolvedType.Name.Value.EndsWith("Flags"))
+                return $"({resolvedType.Name}) {constant.Value}";
 
-            if (name == "string")
+            if (resolvedType is String)
                 return "\"" + constant.Value + "\"";
 
             return constant.Value;
