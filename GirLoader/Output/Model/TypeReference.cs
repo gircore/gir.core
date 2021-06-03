@@ -7,15 +7,15 @@ namespace GirLoader.Output.Model
         #region Properties
 
         public NamespaceName? NamespaceName { get; }
-        public CType? CType { get; }
+        public CTypeReference? CTypeReference { get; }
         public SymbolName? OriginalName { get; }
         public abstract Type? ResolvedType { get; }
         
         #endregion
 
-        public TypeReference(SymbolName? originalName, CType? ctype, NamespaceName? namespaceName)
+        public TypeReference(SymbolName? originalName, CTypeReference? ctype, NamespaceName? namespaceName)
         {
-            CType = ctype;
+            CTypeReference = ctype;
             OriginalName = originalName;
             NamespaceName = namespaceName;
         }
@@ -30,7 +30,7 @@ namespace GirLoader.Output.Model
 
         public override string ToString()
         {
-            return $"CType: {CType}, OriginalName: {OriginalName}";
+            return $"CType: {CTypeReference}, OriginalName: {OriginalName}";
         }
 
         public bool GetIsResolved()

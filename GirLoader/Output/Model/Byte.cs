@@ -2,6 +2,6 @@
 {
     public class Byte : PrimitiveValueType
     {
-        public Byte(string ctypeName) : base(new CType(ctypeName), new SymbolName("byte")) { }
+        public Byte(string ctype) : base(new CType(ctype), new SymbolName("byte")) { }
     }
 }

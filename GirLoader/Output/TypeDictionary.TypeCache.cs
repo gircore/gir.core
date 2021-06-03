@@ -23,8 +23,14 @@ namespace GirLoader.Output
 
             public bool TryLookup(Model.TypeReference typeReference, [MaybeNullWhen(false)] out Model.Type type)
             {
+                
                 type = _types.FirstOrDefault(x => x.Matches(typeReference));
 
+                if (type is null && typeReference.OriginalName.Value == "InitiallyUnowned")
+                {
+                    
+                }
+                
                 return type is not null;
             }
         }

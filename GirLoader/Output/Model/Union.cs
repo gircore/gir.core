@@ -79,8 +79,8 @@ namespace GirLoader.Output.Model
             if (!SameNamespace(typeReference))
                 return false;
 
-            if (typeReference.CType is not null)
-                return typeReference.CType.Value == CType?.Value;
+            if (typeReference.CTypeReference is not null)
+                return typeReference.CTypeReference.CType == CType;
 
             return OriginalName == typeReference.OriginalName;
         }

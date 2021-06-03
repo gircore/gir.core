@@ -3,7 +3,7 @@ namespace GirLoader.Output.Model
 {
     public abstract class PrimitiveValueType : PrimitiveType
     {
-        protected PrimitiveValueType(CType cType, SymbolName symbolName) : base(cType, symbolName)
+        protected PrimitiveValueType(CType ctype, SymbolName symbolName) : base(ctype, symbolName)
         {
         }
 
@@ -12,10 +12,10 @@ namespace GirLoader.Output.Model
             if (!SameNamespace(typeReference))
                 return false;
 
-            if (typeReference.CType is null)
+            if (typeReference.CTypeReference is null)
                 return false;
             
-            return typeReference.CType.Value == CType.Value && !typeReference.CType.IsPointer;
+            return typeReference.CTypeReference.CType == CType && !typeReference.CTypeReference.IsPointer;
         }
     }
 }

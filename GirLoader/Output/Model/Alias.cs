@@ -30,8 +30,8 @@ namespace GirLoader.Output.Model
 
         internal bool Matches(TypeReference typeReference)
         {
-            if (!string.IsNullOrEmpty(typeReference.CType?.Value))
-                return typeReference.CType.Value == CType.Value;//Prefer CType
+            if (typeReference.CTypeReference?.CType is not null)
+                return typeReference.CTypeReference.CType == CType;//Prefer CType
 
             return typeReference.OriginalName == Name;
         }

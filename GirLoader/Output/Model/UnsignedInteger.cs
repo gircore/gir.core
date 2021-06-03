@@ -2,6 +2,6 @@
 {
     public class UnsignedInteger : PrimitiveValueType
     {
-        public UnsignedInteger(string ctypeName) : base(new CType(ctypeName), new SymbolName("uint")) { }
+        public UnsignedInteger(string ctype) : base(new CType(ctype), new SymbolName("uint")) { }
     }
 }

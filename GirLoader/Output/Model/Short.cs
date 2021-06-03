@@ -2,6 +2,6 @@
 {
     public class Short : PrimitiveValueType
     {
-        public Short(string nativeName) : base(new CType(nativeName), new SymbolName("short")) { }
+        public Short(string ctype) : base(new CType(ctype), new SymbolName("short")) { }
     }
 }

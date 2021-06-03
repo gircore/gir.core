@@ -9,7 +9,7 @@ namespace GirLoader.Output.Model
         {
         }
         
-        protected PrimitiveType(CType cType, SymbolName symbolName) : base(cType, symbolName)
+        protected PrimitiveType(CType ctype, SymbolName symbolName) : base(ctype, symbolName)
         {
         }
         

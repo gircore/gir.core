@@ -36,13 +36,13 @@ namespace Generator
                 { TypeReference:  ArrayTypeReference { ResolvedType: { } s } } when s.Name == "byte" => "byte[]",
 
                 //References to records which are not using a pointer
-                {TypeReference: ArrayTypeReference { ResolvedType: Record r, CType: {IsPointer: false}}} => GetStructName(r, currentNamespace) + "[]",
-                {TypeReference: { ResolvedType: Record r, CType: {IsPointer: false}}} => GetStructName(r, currentNamespace),
+                {TypeReference: ArrayTypeReference { ResolvedType: Record r, CTypeReference: {IsPointer: false}}} => GetStructName(r, currentNamespace) + "[]",
+                {TypeReference: { ResolvedType: Record r, CTypeReference: {IsPointer: false}}} => GetStructName(r, currentNamespace),
                 
                 
                 //References to records which are using a pointer
-                {TypeReference: ArrayTypeReference { ResolvedType: Record, CType: {IsPointer: true}}} => "IntPtr[]", //Array of SafeHandle not supported by runtime
-                {TypeReference: { ResolvedType: Record r, CType: {IsPointer: true}}} => GetSafeHandleName(r, currentNamespace, useSafeHandle),
+                {TypeReference: ArrayTypeReference { ResolvedType: Record, CTypeReference: {IsPointer: true}}} => "IntPtr[]", //Array of SafeHandle not supported by runtime
+                {TypeReference: { ResolvedType: Record r, CTypeReference: {IsPointer: true}}} => GetSafeHandleName(r, currentNamespace, useSafeHandle),
                 
                 // Primitives - Marshal directly
                 { TypeReference: ArrayTypeReference { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",
@@ -53,8 +53,8 @@ namespace Generator
                 { TypeReference: { ResolvedType: Enumeration } } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace),
 
                 // Use IntPtr for all types where a pointer is expected
-                { TypeReference: ArrayTypeReference { Length: not null, CType: {IsPointer: true}}} => "IntPtr[]",
-                { TypeReference: { CType: { IsPointer: true } }} => "IntPtr",
+                { TypeReference: ArrayTypeReference { Length: not null, CTypeReference: {IsPointer: true}}} => "IntPtr[]",
+                { TypeReference: { CTypeReference: { IsPointer: true } }} => "IntPtr",
 
                 { TypeReference: ArrayTypeReference } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace) + "[]",
                 _ => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace)

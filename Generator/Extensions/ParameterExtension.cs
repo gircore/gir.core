@@ -73,7 +73,7 @@ namespace Generator
                 (Target.Native, _, Record) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
 
                 //Pointer to primitive value types are not nullable
-                (Target.Native, { TypeReference: { CType:{ IsPointer: true }} }, PrimitiveValueType) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
+                (Target.Native, { TypeReference: { CTypeReference:{ IsPointer: true }} }, PrimitiveValueType) => NotNullable(parameter, target, currentNamespace, useSafeHandle),
 
                 (Target.Native, _, _) => Nullable(parameter, target, currentNamespace, useSafeHandle),
 

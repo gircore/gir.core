@@ -106,12 +106,12 @@ namespace GirLoader.Output.Model
             return new SymbolName(name.Split('.', 2)[1]);
         }
 
-        private static CType? GetCType(string? ctype)
+        private static CTypeReference? GetCType(string? ctype)
         {
             if (ctype is null)
                 return null;
 
-            return new CType(ctype);
+            return new CTypeReference(ctype);
         }
     }
 }

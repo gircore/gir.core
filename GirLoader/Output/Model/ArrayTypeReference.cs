@@ -10,7 +10,7 @@
 
         public override Type? ResolvedType => TypeReference.ResolvedType;
         
-        public ArrayTypeReference(TypeReference typeReference, SymbolName? originalName, CType? ctype, NamespaceName? namespaceName) : base(originalName, ctype, namespaceName)
+        public ArrayTypeReference(TypeReference typeReference, SymbolName? originalName, CTypeReference? ctype, NamespaceName? namespaceName) : base(originalName, ctype, namespaceName)
         {
             TypeReference = typeReference;
         }
