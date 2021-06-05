@@ -14,8 +14,8 @@ namespace GObject
 
         public Value(Type type)
         {
-            var h = Native.Value.ManagedHandle.Create();
-            _handle = Native.Value.Methods.Init(h, type.Value);
+            _handle = Native.Value.ManagedHandle.Create();
+            _handle = Native.Value.Methods.Init(_handle, type.Value);
         }
 
         public Value(Object value) : this(Type.Object) => SetObject(value);
@@ -145,21 +145,26 @@ namespace GObject
             if (Functions.TypeIsA(gtype, (nuint) BasicType.Flags))
                 return GetFlags();
 
-            throw new NotSupportedException($"Unable to extract the value to the given type. The type {gtype} is unknown.");
+            var name = StringHelper.ToStringUtf8(Native.Functions.TypeName(gtype));
+
+            throw new NotSupportedException($"Unable to extract the value for type '{name}'. The type (id: {gtype}) is unknown.");
         }
 
         public T Extract<T>() => (T) Extract()!;
 
         public IntPtr GetPtr() => Native.Value.Methods.GetPointer(Handle);
 
-        public object? GetBoxed(ulong type)
+        public object? GetBoxed(nuint type)
         {
             IntPtr ptr = Native.Value.Methods.GetBoxed(Handle);
 
             if (type == Functions.StrvGetType())
                 return StringHelper.ToStringArrayUtf8(ptr);
+            
+            // TODO: Very temporary !!! Return a pointer
+            return Native.Value.Methods.GetBoxed(Handle);
 
-            throw new NotSupportedException($"Can't get boxed value. Type {type} is not supported.");
+            throw new NotSupportedException($"Can't get boxed value. Type '{new Type((nuint)type)}' is not supported.");
         }
 
         public Object? GetObject()
