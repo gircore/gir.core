@@ -161,8 +161,14 @@ namespace GObject
             if (type == Functions.StrvGetType())
                 return StringHelper.ToStringArrayUtf8(ptr);
             
-            // TODO: Very temporary !!! Return a pointer
-            return Native.Value.Methods.GetBoxed(Handle);
+            // TODO: It would be nice to support boxing arbitrary managed types
+            // One idea for how to achieve this is creating our own 'OpaqueBoxed' type
+            // which wraps a GCHandle or similar. We can then retrieve this at runtime
+            // from a static dictionary, etc. Alternatively, perhaps we want to find a
+            // method which plays nice with AOT compilation.
+            
+            // TODO: Should this be GetBoxed/TakeBoxed/DupBoxed? 
+            return RecordWrapper.WrapHandle(Native.Value.Methods.GetBoxed(Handle), new Type(type));
 
             throw new NotSupportedException($"Can't get boxed value. Type '{new Type((nuint)type)}' is not supported.");
         }
