@@ -31,7 +31,7 @@ namespace GObject.Native
                 System.Reflection.BindingFlags.NonPublic
                 | System.Reflection.BindingFlags.Public
                 | System.Reflection.BindingFlags.Instance,
-                null, new[] { typeof(IntPtr), typeof(bool) }, null
+                null, new[] { typeof(IntPtr) }, null
             );
             return ctor;
         }

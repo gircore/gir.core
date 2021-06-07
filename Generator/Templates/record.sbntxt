@@ -27,6 +27,12 @@ namespace {{ namespace.name }}
             Initialize();
         }
         
+        public {{ $record_name }}(IntPtr ptr)
+        {
+            _handle = new {{ $safe_handle }}(ptr);
+            Initialize();
+        }
+        
         // TODO: Default Constructor (allocate in managed memory and free on Dispose?)
         // We need to be able to create instances of records with full access to
         // fields, e.g. Gdk.Rectangle, Gtk.TreeIter, etc. 

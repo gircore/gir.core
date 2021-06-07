@@ -14,7 +14,18 @@ namespace {{ namespace.name }}
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Could not register type '{{ $class.symbol_name }}': {e.Message}");
+                Console.WriteLine($"Could not register class type '{{ $class.symbol_name }}': {e.Message}");
+            }
+            {{ end }}
+            
+            {{ for $record in records }}
+            try
+            {
+                {{ $record | write_type_registration_record }}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not register record type '{{ $record.symbol_name }}': {e.Message}");
             }
             {{ end }}
         }
