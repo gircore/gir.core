@@ -9,20 +9,17 @@
 
         public CTypeReference(string cTypeReference)
         {
-            cTypeReference = cTypeReference.Replace(" ", "");
-            IsPointer = TryRemove(ref cTypeReference, "*");
-            IsConst = TryRemove(ref cTypeReference, "const");
-            IsVolatile = TryRemove(ref cTypeReference, "volatile");
+            IsPointer = cTypeReference.Contains("*");
+            IsConst = cTypeReference.Contains("const ") || cTypeReference.Contains(" const");
+            IsVolatile = cTypeReference.Contains("volatile ");
+
+            cTypeReference = cTypeReference
+                .Replace("*", "")
+                .Replace("const ", "")
+                .Replace(" const", "")
+                .Replace("volatile ", "");
 
             CType = new CType(cTypeReference);
-        }
-
-        private bool TryRemove(ref string value, string remove)
-        {
-            var originalLength = value.Length;
-            value = value.Replace(remove, "");
-
-            return originalLength != value.Length;
         }
 
         public override string ToString()

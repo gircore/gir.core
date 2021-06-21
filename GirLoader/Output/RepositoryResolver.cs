@@ -45,6 +45,7 @@ namespace GirLoader.Output
 
             _typeDictionary.AddType(new Model.Integer("int"));
             _typeDictionary.AddType(new Model.Integer("gint"));
+            _typeDictionary.AddType(new Model.Integer("gatomicrefcount"));
             _typeDictionary.AddType(new Model.Integer("gint32"));
             _typeDictionary.AddType(new Model.Integer("pid_t"));
 
