@@ -15,7 +15,7 @@ namespace GirLoader.Output.Model
             _typeReferenceFactory = typeReferenceFactory;
         }
 
-        private Property Create(Input.Model.Property property, NamespaceName namespaceName)
+        private Property Create(Input.Model.Property property)
         {
             if (property.Name is null)
                 throw new Exception("Property is missing a name");
@@ -23,14 +23,14 @@ namespace GirLoader.Output.Model
             return new Property(
                 originalName: new SymbolName(property.Name),
                 symbolName: new SymbolName(new Helper.String(property.Name).ToPascalCase()),
-                typeReference: _typeReferenceFactory.Create(property, namespaceName),
+                typeReference: _typeReferenceFactory.Create(property),
                 writeable: property.Writeable,
                 readable: property.Readable,
                 transfer: _transferFactory.FromText(property.TransferOwnership)
             );
         }
 
-        public IEnumerable<Property> Create(IEnumerable<Input.Model.Property> properties, NamespaceName namespaceName)
-            => properties.Select(x => Create(x, namespaceName)).ToList();
+        public IEnumerable<Property> Create(IEnumerable<Input.Model.Property> properties)
+            => properties.Select(Create).ToList();
     }
 }

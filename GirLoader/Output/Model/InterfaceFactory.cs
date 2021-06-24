@@ -35,11 +35,11 @@ namespace GirLoader.Output.Model
                 cType: ctypeName,
                 originalName: new SymbolName(@interface.Name),
                 symbolName: new SymbolName(@interface.Name),
-                implements: _typeReferenceFactory.Create(@interface.Implements, repository.Namespace.Name),
-                methods: _methodFactory.Create(@interface.Methods, repository.Namespace.Name),
-                functions: _methodFactory.Create(@interface.Functions, repository.Namespace.Name),
+                implements: _typeReferenceFactory.Create(@interface.Implements),
+                methods: _methodFactory.Create(@interface.Methods),
+                functions: _methodFactory.Create(@interface.Functions),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(@interface.GetTypeFunction),
-                properties: _propertyFactory.Create(@interface.Properties, repository.Namespace.Name)
+                properties: _propertyFactory.Create(@interface.Properties)
             );
         }
     }

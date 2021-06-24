@@ -37,14 +37,14 @@ namespace GirLoader.Output.Model
                 symbolName: new SymbolName(cls.Name),
                 cType: cTypeName,
                 parent: CreateParentTypeReference(cls.Parent, repository.Namespace),
-                implements: _typeReferenceFactory.Create(cls.Implements, repository.Namespace.Name),
-                methods: _methodFactory.Create(cls.Methods, repository.Namespace.Name),
-                functions: _methodFactory.Create(cls.Functions, repository.Namespace.Name),
+                implements: _typeReferenceFactory.Create(cls.Implements),
+                methods: _methodFactory.Create(cls.Methods),
+                functions: _methodFactory.Create(cls.Functions),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction),
-                properties: _propertyFactory.Create(cls.Properties, repository.Namespace.Name),
+                properties: _propertyFactory.Create(cls.Properties),
                 fields: _fieldFactory.Create(cls.Fields, repository),
-                signals: _signalFactory.Create(cls.Signals, repository.Namespace.Name),
-                constructors: _methodFactory.Create(cls.Constructors, repository.Namespace.Name),
+                signals: _signalFactory.Create(cls.Signals),
+                constructors: _methodFactory.Create(cls.Constructors),
                 isFundamental: cls.Fundamental
             );
         }
@@ -61,7 +61,7 @@ namespace GirLoader.Output.Model
         {
             var ctype = !name.Contains(".") ? @namespace.IdentifierPrefixes + name : null;
 
-            return _typeReferenceFactory.CreateResolveable(name, ctype, @namespace.Name);
+            return _typeReferenceFactory.CreateResolveable(name, ctype);
         }
     }
 }

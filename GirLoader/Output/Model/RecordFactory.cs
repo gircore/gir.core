@@ -36,12 +36,12 @@ namespace GirLoader.Output.Model
                 originalName: new SymbolName(@record.Name),
                 symbolName: new SymbolName(@record.Name),
                 gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, repository.Namespace),
-                methods: _methodFactory.Create(@record.Methods, repository.Namespace.Name),
-                functions: _methodFactory.Create(@record.Functions, repository.Namespace.Name),
+                methods: _methodFactory.Create(@record.Methods),
+                functions: _methodFactory.Create(@record.Functions),
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(@record.Fields, repository),
                 disguised: @record.Disguised,
-                constructors: _methodFactory.Create(@record.Constructors, repository.Namespace.Name)
+                constructors: _methodFactory.Create(@record.Constructors)
             );
         }
 
@@ -54,7 +54,7 @@ namespace GirLoader.Output.Model
                 //We can generate the CType automatically because the class struct
                 //of a class must be part of the repository of the class itself.
                 var ctype = @namespace.IdentifierPrefixes + classStructForName;
-                getGLibClassStructFor = _typeReferenceFactory.CreateResolveable(classStructForName, ctype, @namespace.Name);
+                getGLibClassStructFor = _typeReferenceFactory.CreateResolveable(classStructForName, ctype);
             }
 
             return getGLibClassStructFor;

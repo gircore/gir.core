@@ -11,12 +11,12 @@ namespace GirLoader.Output
         private readonly Dictionary<Model.NamespaceName, TypeCache> _data = new();
         private readonly TypeCache _globalTypes = new(null);
 
-        public bool TryLookup(Model.TypeReference typeReference, [MaybeNullWhen(false)] out Model.Type type)
+        public bool TryLookup(Model.TypeReference typeReference, Model.NamespaceName currentNamespace, [MaybeNullWhen(false)] out Model.Type type)
         {
             if (_globalTypes.TryLookup(typeReference, out type))
                 return true;
 
-            if (TryResolveAlias(typeReference, out type))
+            if (TryResolveAlias(typeReference, currentNamespace, out type))
                 return true;
 
             foreach (var cache in _data.Values)
@@ -28,14 +28,11 @@ namespace GirLoader.Output
             return false;
         }
 
-        private bool TryResolveAlias(Model.TypeReference typeReference, [MaybeNullWhen(false)] out Model.Type type)
+        private bool TryResolveAlias(Model.TypeReference typeReference, Model.NamespaceName currentNamespace, [MaybeNullWhen(false)] out Model.Type type)
         {
             type = null;
 
-            if (typeReference.NamespaceName is null)
-                return false;
-
-            if (!_data.TryGetValue(typeReference.NamespaceName, out var symbolCache))
+            if (!_data.TryGetValue(currentNamespace, out var symbolCache))
                 return false;
 
             var repository = symbolCache.Repository;

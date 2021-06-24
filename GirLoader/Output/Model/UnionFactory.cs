@@ -33,12 +33,12 @@ namespace GirLoader.Output.Model
                 cType: cTypeName,
                 originalName: new SymbolName(union.Name),
                 symbolName: new SymbolName(union.Name),
-                methods: _methodFactory.Create(union.Methods, repository.Namespace.Name),
-                functions: _methodFactory.Create(union.Functions, repository.Namespace.Name),
+                methods: _methodFactory.Create(union.Methods),
+                functions: _methodFactory.Create(union.Functions),
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(union.Fields, repository),
                 disguised: union.Disguised,
-                constructors: _methodFactory.Create(union.Constructors, repository.Namespace.Name)
+                constructors: _methodFactory.Create(union.Constructors)
             );
         }
     }

@@ -28,7 +28,7 @@ namespace GirLoader.Output.Model
                 return new Field(
                     orignalName: new SymbolName(info.Name),
                     symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),
-                    resolveableTypeReference: _typeReferenceFactory.CreateResolveable(info.Callback.Name, info.Callback.Type, repository.Namespace.Name),
+                    resolveableTypeReference: _typeReferenceFactory.CreateResolveable(info.Callback.Name, info.Callback.Type),
                     callback: _callbackFactory.Create(info.Callback, repository),
                     readable: info.Readable,
                     @private: info.Private
@@ -38,7 +38,7 @@ namespace GirLoader.Output.Model
             return new Field(
                 orignalName: new SymbolName(info.Name),
                 symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),
-                typeReference: _typeReferenceFactory.Create(info, repository.Namespace.Name),
+                typeReference: _typeReferenceFactory.Create(info),
                 readable: info.Readable,
                 @private: info.Private
             );

@@ -6,27 +6,26 @@ namespace GirLoader.Output.Model
 {
     internal class TypeReferenceFactory
     {
-        public ResolveableTypeReference CreateResolveable(string? name, string? ctype, NamespaceName currentNamespace)
+        public ResolveableTypeReference CreateResolveable(string? name, string? ctype)
         {
             return new ResolveableTypeReference(
                 originalName: GetName(name),
-                ctype: GetCType(ctype),
-                namespaceName: GetNamespace(name, currentNamespace)
+                ctype: GetCType(ctype)
             );
         }
 
-        public TypeReference Create(Input.Model.AnyType anyType, NamespaceName currentNamespace)
+        public TypeReference Create(Input.Model.AnyType anyType)
         {
-            if (TryCreateResolveableTypeReference(anyType, currentNamespace, out var typeRefernece))
+            if (TryCreateResolveableTypeReference(anyType, out var typeRefernece))
                 return typeRefernece;
 
-            if (TryCreateArrayTypeReference(anyType, currentNamespace, out var arrayTypeRefernece))
+            if (TryCreateArrayTypeReference(anyType, out var arrayTypeRefernece))
                 return arrayTypeRefernece;
 
-            return CreateResolveable("void", "none", currentNamespace);
+            return CreateResolveable("void", "none");
         }
 
-        private bool TryCreateResolveableTypeReference(Input.Model.AnyType anyType, NamespaceName currentNamespace, [NotNullWhen(true)] out TypeReference? typeReference)
+        private bool TryCreateResolveableTypeReference(Input.Model.AnyType anyType, [NotNullWhen(true)] out TypeReference? typeReference)
         {
             if (anyType.Type is null)
             {
@@ -36,13 +35,12 @@ namespace GirLoader.Output.Model
 
             typeReference = new ResolveableTypeReference(
                 originalName: GetName(anyType.Type.Name),
-                ctype: GetCType(anyType.Type.CType),
-                namespaceName: GetNamespace(anyType.Type.Name, currentNamespace));
+                ctype: GetCType(anyType.Type.CType));
 
             return true;
         }
 
-        private bool TryCreateArrayTypeReference(Input.Model.AnyType anyType, NamespaceName currentNamespace, [NotNullWhen(true)] out ArrayTypeReference? arrayTypeReference)
+        private bool TryCreateArrayTypeReference(Input.Model.AnyType anyType, [NotNullWhen(true)] out ArrayTypeReference? arrayTypeReference)
         {
             if (anyType.Array is null)
             {
@@ -50,7 +48,7 @@ namespace GirLoader.Output.Model
                 return false;
             }
 
-            var typeReference = Create(anyType.Array, currentNamespace);
+            var typeReference = Create(anyType.Array);
 
             int? length = int.TryParse(anyType.Array.Length, out var l) ? l : null;
             int? fixedSize = int.TryParse(anyType.Array.FixedSize, out var f) ? f : null;
@@ -58,8 +56,7 @@ namespace GirLoader.Output.Model
             arrayTypeReference = new ArrayTypeReference(
                 typeReference: typeReference,
                 originalName: null,
-                ctype: GetCType(anyType.Array.CType),
-                namespaceName: GetNamespace(anyType.Array.Type?.Name, currentNamespace))
+                ctype: GetCType(anyType.Array.CType))
             {
                 Length = length, 
                 FixedSize = fixedSize, 
@@ -69,7 +66,7 @@ namespace GirLoader.Output.Model
             return true;
         }
 
-        public IEnumerable<TypeReference> Create(IEnumerable<Input.Model.Implement> implements, NamespaceName currentNamespace)
+        public IEnumerable<TypeReference> Create(IEnumerable<Input.Model.Implement> implements)
         {
             var list = new List<TypeReference>();
 
@@ -78,21 +75,10 @@ namespace GirLoader.Output.Model
                 if (implement.Name is null)
                     throw new Exception("Implement is missing a name");
 
-                list.Add(CreateResolveable(implement.Name, null, currentNamespace));
+                list.Add(CreateResolveable(implement.Name, null));
             }
 
             return list;
-        }
-
-        private static NamespaceName GetNamespace(string? type, NamespaceName currentNamespace)
-        {
-            if (type is null)
-                return currentNamespace;
-
-            if (!type.Contains("."))
-                return currentNamespace;
-
-            return new NamespaceName(type.Split('.', 2)[0]);
         }
 
         private static SymbolName? GetName(string? name)

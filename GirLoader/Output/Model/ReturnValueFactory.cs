@@ -11,19 +11,19 @@
             _transferFactory = transferFactory;
         }
 
-        public ReturnValue Create(Input.Model.ReturnValue returnValue, NamespaceName namespaceName)
+        public ReturnValue Create(Input.Model.ReturnValue returnValue)
         {
             return new ReturnValue(
-                typeReference: _typeReferenceFactory.Create(returnValue, namespaceName),
+                typeReference: _typeReferenceFactory.Create(returnValue),
                 transfer: _transferFactory.FromText(returnValue.TransferOwnership),
                 nullable: returnValue.Nullable
             );
         }
 
-        public ReturnValue Create(string ctype, Transfer transfer, bool nullable, NamespaceName namespaceName)
+        public ReturnValue Create(string ctype, Transfer transfer, bool nullable)
         {
             return new ReturnValue(
-                typeReference: _typeReferenceFactory.CreateResolveable(ctype, ctype, namespaceName),
+                typeReference: _typeReferenceFactory.CreateResolveable(ctype, ctype),
                 transfer: transfer,
                 nullable: nullable
             );

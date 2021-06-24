@@ -13,7 +13,7 @@ namespace GirLoader.Output.Model
             _transferFactory = transferFactory;
         }
 
-        public SingleParameter Create(Input.Model.Parameter parameter, NamespaceName currentNamespace)
+        public SingleParameter Create(Input.Model.Parameter parameter)
         {
             if (parameter.VarArgs is { })
                 throw new VarArgsNotSupportedException("Arguments containing variadic paramters are not supported.");
@@ -31,7 +31,7 @@ namespace GirLoader.Output.Model
             return new SingleParameter(
                 originalName: new SymbolName(parameter.Name),
                 symbolName: new SymbolName(new Helper.String(parameter.Name).EscapeIdentifier().ToCamelCase()),
-                typeReference: _typeReferenceFactory.Create(parameter, currentNamespace),
+                typeReference: _typeReferenceFactory.Create(parameter),
                 direction: DirectionFactory.Create(parameter.Direction),
                 transfer: _transferFactory.FromText(parameter.TransferOwnership),
                 nullable: parameter.Nullable,

@@ -14,7 +14,7 @@ namespace GirLoader.Output.Model
             _parameterListFactory = parameterListFactory;
         }
 
-        public Method Create(Input.Model.Method method, NamespaceName namespaceName)
+        public Method Create(Input.Model.Method method)
         {
             if (method.Name is null)
                 throw new Exception("Methodinfo name is null");
@@ -30,8 +30,8 @@ namespace GirLoader.Output.Model
                 return new Method(
                     originalName: new SymbolName(method.Identifier),
                     symbolName: new SymbolName(new Helper.String(method.Name).EscapeIdentifier().ToPascalCase()),
-                    returnValue: _returnValueFactory.Create(method.ReturnValue, namespaceName),
-                    parameterList: _parameterListFactory.Create(method.Parameters, namespaceName, method.Throws)
+                    returnValue: _returnValueFactory.Create(method.ReturnValue),
+                    parameterList: _parameterListFactory.Create(method.Parameters, method.Throws)
                 );
             }
 
@@ -45,10 +45,9 @@ namespace GirLoader.Output.Model
         public Method CreateGetTypeMethod(string getTypeMethodName)
         {
             ReturnValue returnValue = _returnValueFactory.Create(
-                ctype: "GType",
+                ctype: "gsize",
                 transfer: Transfer.None,
-                nullable: false,
-                namespaceName: new NamespaceName("GLib")
+                nullable: false
             );
 
             return new Method(
@@ -59,7 +58,7 @@ namespace GirLoader.Output.Model
             );
         }
 
-        public IEnumerable<Method> Create(IEnumerable<Input.Model.Method> methods, NamespaceName namespaceName)
+        public IEnumerable<Method> Create(IEnumerable<Input.Model.Method> methods)
         {
             var list = new List<Method>();
 
@@ -67,7 +66,7 @@ namespace GirLoader.Output.Model
             {
                 try
                 {
-                    list.Add(Create(method, namespaceName));
+                    list.Add(Create(method));
                 }
                 catch (SingleParameterFactory.VarArgsNotSupportedException ex)
                 {

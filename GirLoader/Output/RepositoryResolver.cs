@@ -121,22 +121,22 @@ namespace GirLoader.Output
         private void ResolveTypeReferences(Model.Namespace ns)
         {
             foreach (var reference in ns.GetTypeReferences())
-                ResolveTypeReference(reference);
+                ResolveTypeReference(reference, ns.Name);
 
             Log.Debug($"Resolved type references for repository {ns.Name}");
         }
 
-        private void ResolveTypeReference(Model.TypeReference reference)
+        private void ResolveTypeReference(Model.TypeReference reference, Model.NamespaceName currentNamespaceName)
         {
             if (reference is Model.ArrayTypeReference arrayTypeReference)
             {
                 // Array type references are not resolved directly. Only their type get's resolved
                 // because arrays are no type themself. They only provide structure.
-                ResolveTypeReference(arrayTypeReference.TypeReference);
+                ResolveTypeReference(arrayTypeReference.TypeReference, currentNamespaceName);
             }
             else if(reference is Model.ResolveableTypeReference resolveableTypeReference)
             {
-                if (_typeDictionary.TryLookup(resolveableTypeReference, out var type))
+                if (_typeDictionary.TryLookup(resolveableTypeReference, currentNamespaceName,  out var type))
                     resolveableTypeReference.ResolveAs(type);
                 else
                     Log.Verbose($"Could not resolve type reference {reference}");   
