@@ -29,11 +29,13 @@ namespace GirLoader.Output
             _typeDictionary.AddType(new Model.Pointer("va_list"));
             _typeDictionary.AddType(new Model.Pointer("gpointer"));
             _typeDictionary.AddType(new Model.Pointer("tm"));
+            _typeDictionary.AddType(new Model.Pointer("FILE"));//TODO: Automatic convert to some stream?
 
             // TODO: Should we use UIntPtr here? Non-CLR compliant
             _typeDictionary.AddType(new Model.UnsignedPointer("guintptr"));
 
             _typeDictionary.AddType(new Model.UnsignedShort("guint16"));
+            _typeDictionary.AddType(new Model.UnsignedShort("gunichar2"));//TOOO: UTF16 char?
             _typeDictionary.AddType(new Model.UnsignedShort("gushort"));
 
             _typeDictionary.AddType(new Model.Short("gint16"));
@@ -48,6 +50,7 @@ namespace GirLoader.Output
             _typeDictionary.AddType(new Model.Integer("gatomicrefcount"));
             _typeDictionary.AddType(new Model.Integer("gint32"));
             _typeDictionary.AddType(new Model.Integer("pid_t"));
+            _typeDictionary.AddType(new Model.Integer("grefcount"));
 
             _typeDictionary.AddType(new Model.UnsignedInteger("unsigned int"));
             _typeDictionary.AddType(new Model.UnsignedInteger("unsigned"));

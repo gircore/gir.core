@@ -13,9 +13,9 @@ namespace GirLoader.Output.Model
         
         #endregion
 
-        public TypeReference(SymbolName? originalName, CTypeReference? ctype, NamespaceName? namespaceName)
+        public TypeReference(SymbolName? originalName, CTypeReference? ctypeReference, NamespaceName? namespaceName)
         {
-            CTypeReference = ctype;
+            CTypeReference = ctypeReference;
             OriginalName = originalName;
             NamespaceName = namespaceName;
         }

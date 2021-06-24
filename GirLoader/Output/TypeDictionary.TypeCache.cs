@@ -28,6 +28,11 @@ namespace GirLoader.Output
 
                 return type is not null;
             }
+
+            public override string ToString()
+            {
+                return $"Typecache for: " + Repository.Namespace.Name;
+            }
         }
     }
 }

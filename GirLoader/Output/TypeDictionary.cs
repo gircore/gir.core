@@ -19,13 +19,13 @@ namespace GirLoader.Output
             if (TryResolveAlias(typeReference, out type))
                 return true;
 
-            if (typeReference.NamespaceName is null)
-                return false; //If the reference has no namespace it must be a global symbol or can not be resolved
+            foreach (var cache in _data.Values)
+            {
+                if (cache.TryLookup(typeReference, out type))
+                    return true;
+            }
 
-            if (!_data.TryGetValue(typeReference.NamespaceName, out var cache))
-                return false;
-
-            return cache.TryLookup(typeReference, out type);
+            return false;
         }
 
         private bool TryResolveAlias(Model.TypeReference typeReference, [MaybeNullWhen(false)] out Model.Type type)

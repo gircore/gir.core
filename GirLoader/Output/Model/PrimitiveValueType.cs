@@ -9,9 +9,6 @@ namespace GirLoader.Output.Model
 
         internal override bool Matches(TypeReference typeReference)
         {
-            if (!SameNamespace(typeReference))
-                return false;
-
             if (typeReference.CTypeReference is not null)
                 return typeReference.CTypeReference.CType == CType;
 

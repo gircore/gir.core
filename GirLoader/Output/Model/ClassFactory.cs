@@ -36,7 +36,7 @@ namespace GirLoader.Output.Model
                 originalName: new SymbolName(cls.Name),
                 symbolName: new SymbolName(cls.Name),
                 cType: cTypeName,
-                parent: CreateParentTypeReference(cls.Parent, repository.Namespace.Name),
+                parent: CreateParentTypeReference(cls.Parent, repository.Namespace),
                 implements: _typeReferenceFactory.Create(cls.Implements, repository.Namespace.Name),
                 methods: _methodFactory.Create(cls.Methods, repository.Namespace.Name),
                 functions: _methodFactory.Create(cls.Functions, repository.Namespace.Name),
@@ -49,23 +49,19 @@ namespace GirLoader.Output.Model
             );
         }
 
-        private TypeReference? CreateParentTypeReference(string? parentName, NamespaceName currentNamespace)
+        private TypeReference? CreateParentTypeReference(string? parentName, Namespace @namespace)
         {
             if (parentName is { })
-                return CreateTypeReference(parentName, currentNamespace);
+                return CreateTypeReference(parentName, @namespace);
 
             return null;
         }
 
-        private TypeReference CreateTypeReference(string name, NamespaceName currentNamespace)
+        private TypeReference CreateTypeReference(string name, Namespace @namespace)
         {
-            string? ctype = null;
-            if (!name.Contains("."))
-            {
-                //Prefix type if it is not prefixed already
-                ctype = currentNamespace + name;
-            }
-            return _typeReferenceFactory.CreateResolveable(name, ctype, currentNamespace);
+            var ctype = !name.Contains(".") ? @namespace.IdentifierPrefixes + name : null;
+
+            return _typeReferenceFactory.CreateResolveable(name, ctype, @namespace.Name);
         }
     }
 }

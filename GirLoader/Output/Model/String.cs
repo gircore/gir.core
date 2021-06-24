@@ -26,9 +26,6 @@
         
         internal override bool Matches(TypeReference typeReference)
         {
-            if (!SameNamespace(typeReference))
-                return false;
-            
             return typeReference.OriginalName == OriginalName;
         }
     }
