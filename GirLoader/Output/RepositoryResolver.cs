@@ -63,7 +63,7 @@ namespace GirLoader.Output
             _typeDictionary.AddType(new Model.Byte("guint8"));
 
             _typeDictionary.AddType(new Model.UnpointedSignedByte("gchar"));
-            _typeDictionary.AddType(new Model.SignedByte("char"));
+            _typeDictionary.AddType(new Model.UnpointedSignedByte("char"));
             _typeDictionary.AddType(new Model.SignedByte("gint8"));
 
             _typeDictionary.AddType(new Model.Long("glong"));
