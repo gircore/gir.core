@@ -9,7 +9,7 @@
 
         public CTypeReference(string cTypeReference)
         {
-            IsPointer = cTypeReference.Contains("*");
+            IsPointer = cTypeReference.Contains("*") || cTypeReference == "gpointer";
             IsConst = cTypeReference.Contains("const ") || cTypeReference.Contains(" const");
             IsVolatile = cTypeReference.Contains("volatile ");
 
