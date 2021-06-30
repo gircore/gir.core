@@ -21,7 +21,7 @@ namespace GirLoader.Output.Model
 
             return new InstanceParameter(
                 originalName: new SymbolName(parameterInfo.Name),
-                symbolName: new SymbolName(new Helper.String(parameterInfo.Name).EscapeIdentifier().ToCamelCase()),
+                symbolName: new SymbolName(new Helper.String(parameterInfo.Name).ToCamelCase().EscapeIdentifier()),
                 typeReference: _typeReferenceFactory.Create(parameterInfo),
                 direction: DirectionFactory.Create(parameterInfo.Direction),
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),

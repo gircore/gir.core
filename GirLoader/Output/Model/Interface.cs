@@ -66,7 +66,7 @@ namespace GirLoader.Output.Model
         
         internal override bool Matches(TypeReference typeReference)
         {
-            if (typeReference.CTypeReference is not null)
+            if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
                 return typeReference.CTypeReference.CType == CType;
 
             if (typeReference.OriginalName is not null)

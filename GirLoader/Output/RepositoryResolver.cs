@@ -27,7 +27,7 @@ namespace GirLoader.Output
             _typeDictionary.AddType(new Model.Pointer("any"));
             _typeDictionary.AddType(new Model.Pointer("gconstpointer"));
             _typeDictionary.AddType(new Model.Pointer("va_list"));
-            _typeDictionary.AddType(new Model.Pointer("gpointer"));
+            _typeDictionary.AddType(new Model.GPointer());
             _typeDictionary.AddType(new Model.Pointer("tm"));
             _typeDictionary.AddType(new Model.Pointer("FILE"));//TODO: Automatic convert to some stream?
 

@@ -37,6 +37,7 @@ namespace Generator
 
                 //References to records which are not using a pointer
                 {TypeReference: ArrayTypeReference { ResolvedType: Record r, TypeReference: { CTypeReference: {IsPointer: false}}}} => GetStructName(r, currentNamespace) + "[]",
+                {TypeReference: ArrayTypeReference { ResolvedType: Record r, TypeReference: { CTypeReference: null}}} => GetStructName(r, currentNamespace) + "[]",
                 {TypeReference: { ResolvedType: Record r, CTypeReference: {IsPointer: false}}} => GetStructName(r, currentNamespace),
                 
                 

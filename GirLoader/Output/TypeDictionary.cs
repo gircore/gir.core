@@ -19,6 +19,11 @@ namespace GirLoader.Output
             if (TryResolveAlias(typeReference, currentNamespace, out type))
                 return true;
 
+            //Prefer current namespace to resolve types before trying other ones
+            if(_data.TryGetValue(currentNamespace, out var typeCache))
+                if (typeCache.TryLookup(typeReference, out type))
+                    return true;
+            
             foreach (var cache in _data.Values)
             {
                 if (cache.TryLookup(typeReference, out type))

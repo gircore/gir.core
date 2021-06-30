@@ -28,6 +28,7 @@ namespace Generator
                 //Record Array Conversions 
                 ArrayTypeReference { ResolvedType: Record, TypeReference: { CTypeReference: { IsPointer: true}}} => $"{fromParam}.Select(x => x.Handle.DangerousGetHandle()).ToArray()",
                 ArrayTypeReference { ResolvedType: Record r, TypeReference: { CTypeReference: { IsPointer: false}}} => $"({r.Repository.Namespace}.Native.{r.GetMetadataString("StructRefName")}[]) default!; //TODO: Fixme",
+                ArrayTypeReference { ResolvedType: Record r, TypeReference: { CTypeReference: null}} => $"({r.Repository.Namespace}.Native.{r.GetMetadataString("StructRefName")}[]) default!; //TODO: Fixme",
 
                 //Record Conversions
                 ResolveableTypeReference { ResolvedType: Record, CTypeReference: { IsPointer: true }} => $"{fromParam}.Handle",
