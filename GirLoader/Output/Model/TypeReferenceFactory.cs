@@ -9,7 +9,7 @@ namespace GirLoader.Output.Model
         public ResolveableTypeReference CreateResolveable(string? name, string? ctype)
         {
             return new ResolveableTypeReference(
-                originalName: GetName(name),
+                symbolNameReference: GetSymbolNameReference(name),
                 ctype: GetCType(ctype)
             );
         }
@@ -34,7 +34,7 @@ namespace GirLoader.Output.Model
             }
 
             typeReference = new ResolveableTypeReference(
-                originalName: GetName(anyType.Type.Name),
+                symbolNameReference: GetSymbolNameReference(anyType.Type.Name),
                 ctype: GetCType(anyType.Type.CType));
 
             return true;
@@ -55,7 +55,7 @@ namespace GirLoader.Output.Model
 
             arrayTypeReference = new ArrayTypeReference(
                 typeReference: typeReference,
-                originalName: null,
+                symbolNameReference: null,
                 ctype: GetCType(anyType.Array.CType))
             {
                 Length = length, 
@@ -81,15 +81,20 @@ namespace GirLoader.Output.Model
             return list;
         }
 
-        private static SymbolName? GetName(string? name)
+        private static SymbolNameReference? GetSymbolNameReference(string? name)
         {
             if (name is null)
                 return null;
 
             if (!name.Contains("."))
-                return new SymbolName(name);
+                return new SymbolNameReference(new SymbolName(name));
 
-            return new SymbolName(name.Split('.', 2)[1]);
+            var parts = name.Split('.', 2);
+
+            return new SymbolNameReference(
+                new SymbolName(parts[1]), 
+                new NamespaceName(parts[0])
+            );
         }
 
         private static CTypeReference? GetCType(string? ctype)

@@ -94,8 +94,15 @@ namespace GirLoader.Output.Model
             if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
                 return typeReference.CTypeReference.CType == CType;
 
-            if (typeReference.OriginalName is not null)
-                return typeReference.OriginalName == OriginalName;
+            if (typeReference.SymbolNameReference is not null)
+            {
+                var nameMatches = typeReference.SymbolNameReference.SymbolName == OriginalName;
+                var namespaceMatches = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name;
+                var namespaceMissing = typeReference.SymbolNameReference.NamespaceName == null;
+
+                return nameMatches && (namespaceMatches || namespaceMissing);
+            }
+                
 
             return false;
         }

@@ -26,8 +26,8 @@ namespace GirLoader.Output.Model
             if (typeReference.CTypeReference is not null)
                 return typeReference.CTypeReference.CType == CType;
 
-            if (typeReference.OriginalName is not null)
-                return typeReference.OriginalName == OriginalName;
+            if (typeReference.SymbolNameReference is not null)
+                return typeReference.SymbolNameReference.SymbolName == OriginalName;
 
             return false;
         }

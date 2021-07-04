@@ -9,7 +9,7 @@
             if (typeReference.CTypeReference is null)
                 return false;
 
-            return typeReference.CTypeReference.CType == CType && typeReference.OriginalName == "gpointer";
+            return typeReference.CTypeReference.CType == CType && typeReference.SymbolNameReference.SymbolName == "gpointer";
         }
     }
 }

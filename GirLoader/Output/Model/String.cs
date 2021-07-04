@@ -26,7 +26,7 @@
         
         internal override bool Matches(TypeReference typeReference)
         {
-            return typeReference.OriginalName == OriginalName;
+            return typeReference.SymbolNameReference.SymbolName == OriginalName;
         }
     }
 }

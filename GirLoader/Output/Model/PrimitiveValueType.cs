@@ -9,11 +9,11 @@ namespace GirLoader.Output.Model
 
         internal override bool Matches(TypeReference typeReference)
         {
-            if (typeReference.CTypeReference is not null)
+            if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
                 return typeReference.CTypeReference.CType == CType;
 
-            if (typeReference.OriginalName.Value is not null)
-                return typeReference.OriginalName.Value == CType.Value;
+            if (typeReference.SymbolNameReference.SymbolName.Value is not null)
+                return typeReference.SymbolNameReference.SymbolName.Value == CType.Value;
             
             return false;
         }

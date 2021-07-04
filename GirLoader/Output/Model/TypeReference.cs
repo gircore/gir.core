@@ -6,28 +6,28 @@ namespace GirLoader.Output.Model
     {
         #region Properties
         public CTypeReference? CTypeReference { get; }
-        public SymbolName? OriginalName { get; }
+        public SymbolNameReference? SymbolNameReference { get; }
         public abstract Type? ResolvedType { get; }
         
         #endregion
 
-        public TypeReference(SymbolName? originalName, CTypeReference? ctypeReference)
+        public TypeReference(SymbolNameReference? symbolNameReference, CTypeReference? ctypeReference)
         {
             CTypeReference = ctypeReference;
-            OriginalName = originalName;
+            SymbolNameReference = symbolNameReference;
         }
         
         public Type GetResolvedType()
         {
             if (ResolvedType is null)
-                throw new InvalidOperationException($"The {GetType().Namespace} for {OriginalName} has not been resolved.");
+                throw new InvalidOperationException($"The {GetType().Namespace} for {SymbolNameReference} has not been resolved.");
 
             return ResolvedType;
         }
 
         public override string ToString()
         {
-            return $"CType: {CTypeReference}, OriginalName: {OriginalName}";
+            return $"CType: {CTypeReference}, OriginalName: {SymbolNameReference}";
         }
 
         public bool GetIsResolved()

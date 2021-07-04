@@ -5,8 +5,8 @@
         private Type? _resolvedType;
         public override Type? ResolvedType => _resolvedType;
 
-        public ResolveableTypeReference(SymbolName? originalName, CTypeReference? ctype)
-            : base(originalName, ctype)
+        public ResolveableTypeReference(SymbolNameReference? symbolNameReference, CTypeReference? ctype)
+            : base(symbolNameReference, ctype)
         {
         }
 
