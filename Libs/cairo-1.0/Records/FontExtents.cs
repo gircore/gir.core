@@ -1,5 +1,8 @@
-﻿namespace cairo
+﻿using System.Runtime.InteropServices;
+
+namespace cairo
 {
+    [StructLayout(LayoutKind.Sequential)]
     public struct FontExtents
     {
         public double Ascent;
