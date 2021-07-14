@@ -31,6 +31,17 @@ namespace {{ namespace.name }}
                 Console.WriteLine($"Could not register record type '{{ $record.symbol_name }}': {e.Message}");
             }
             {{ end }}
+            
+            {{ for $union in unions }}
+            try
+            {
+                {{ $union | write_type_registration_union }}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not register union type '{{ $union.symbol_name }}': {e.Message}");
+            }
+            {{ end }}
             {{ end }}
         }
     }

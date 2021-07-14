@@ -96,8 +96,9 @@ namespace Generator.Services
         {
             union.Metadata["Name"] = union.SymbolName;
             union.Metadata["StructName"] = "Struct";
+            union.Metadata["StructRefName"] = $"{union.SymbolName}.Struct";
 
-            union.SymbolName = new SymbolName($"{union.SymbolName}.Struct");
+            union.SymbolName = new SymbolName($"{union.SymbolName}");
         }
 
         private void SetRecordMetadata(IEnumerable<Record> records)

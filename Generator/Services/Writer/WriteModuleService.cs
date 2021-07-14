@@ -40,6 +40,7 @@ namespace Generator.Services.Writer
         {
             IEnumerable<Type> classes = ns.Classes.Where(x => !x.IsFundamental);
             IEnumerable<Type> records = ns.Records.Where(x => x.GetTypeFunction is not null);
+            IEnumerable<Type> unions = ns.Unions.Where(x => x.GetTypeFunction is not null);
             
             IEnumerable<Type> types = classes.Concat(records);
 
@@ -51,9 +52,11 @@ namespace Generator.Services.Writer
                 { "namespace", ns },
                 { "classes", classes },
                 { "records", records },
+                { "unions", unions }
             };
-            scriptObject.Import("write_type_registration", new Func<Type, string>(s => s.WriteTypeRegistration()));
-            scriptObject.Import("write_type_registration_record", new Func<Type, string>(s => s.WriteTypeRegistrationRecord()));
+            scriptObject.Import("write_type_registration", new Func<Type, string>(s => s.WriteTypeRegistrationClass()));
+            scriptObject.Import("write_type_registration_record", new Func<Type, string>(s => s.WriteTypeRegistrationBoxed()));
+            scriptObject.Import("write_type_registration_union", new Func<Type, string>(s => s.WriteTypeRegistrationBoxed()));
 
             _writeHelperService.Write(
                 projectName: ns.ToCanonicalName(),
