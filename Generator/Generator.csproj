@@ -8,9 +8,9 @@
     <ItemGroup>
       <ProjectReference Include="..\GirLoader\GirLoader.csproj" />
       
-      <PackageReference Include="Scriban" Version="3.9.0" />
+      <PackageReference Include="Scriban" Version="4.0.1" />
       <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20574.7" />
-      <PackageReference Include="StrongInject" Version="1.1.0" />
+      <PackageReference Include="StrongInject" Version="1.2.0" />
       <PackageReference Include="Serilog" Version="2.10.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     </ItemGroup>
