@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Gdk
 {
-    public partial class EventKey
+    public partial class EventKey : Event
     {
         // TODO: Proof-of-concept for accessing record fields. We'll want to generate this eventually
         
