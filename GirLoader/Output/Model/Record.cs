@@ -88,7 +88,13 @@ namespace GirLoader.Output.Model
                 return typeReference.CTypeReference.CType == CType;
 
             if (typeReference.SymbolNameReference is not null)
-                return typeReference.SymbolNameReference.SymbolName == OriginalName;
+            {
+                var nameMatches = typeReference.SymbolNameReference.SymbolName == OriginalName;
+                var namespaceMatches = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name;
+                var namespaceMissing = typeReference.SymbolNameReference.NamespaceName == null;
+
+                return nameMatches && (namespaceMatches || namespaceMissing);
+            }
             
             return false;
         }
