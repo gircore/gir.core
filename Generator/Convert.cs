@@ -62,11 +62,6 @@ namespace Generator
 
             var qualifiedType = type.Write(Target.Managed, currentNamespace);
 
-            var bla = transferable.TypeReference switch
-            {
-                _ => ""
-            };
-            
             return transferable.TypeReference switch
             {
                 // String Array Handling
@@ -85,7 +80,7 @@ namespace Generator
                 
                 //Record Conversions without pointers are not working yet
                 ArrayTypeReference { ResolvedType: Record r, TypeReference: { CTypeReference: {IsPointer: false}}} => $"({r.Write(Target.Managed, currentNamespace)}[]) default!; //TODO: Fixme",
-                ResolveableTypeReference {ResolvedType: Record r, CTypeReference: {IsPointer: false}} when !useSafeHandle => $"({r.Write(Target.Managed, currentNamespace)}) default!; //TODO: Fixme",
+                ResolveableTypeReference {ResolvedType: Record r, CTypeReference: {IsPointer: false}} => $"({r.Write(Target.Managed, currentNamespace)}) default!; //TODO: Fixme",
                 
                 // Class Conversions
                 ArrayTypeReference {ResolvedType: Class, CTypeReference: {IsPointer: true}} => throw new NotImplementedException($"Can't create delegate for argument '{fromParam}'"),

@@ -18,6 +18,7 @@
                 Add(new Model.Pointer("gconstpointer"));
                 Add(new Model.Pointer("va_list"));
                 Add(new Model.GPointer());
+                Add(new Model.VoidPointer());
                 Add(new Model.Pointer("tm"));
                 Add(new Model.Pointer("FILE")); //TODO: Automatic convert to some stream?
 

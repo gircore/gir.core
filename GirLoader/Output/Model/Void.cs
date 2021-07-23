@@ -6,7 +6,11 @@
         
         internal override bool Matches(TypeReference typeReference)
         {
-            return typeReference.CTypeReference?.CType == CType;
+            if (typeReference.CTypeReference is null)
+                return false;
+
+            return typeReference.CTypeReference?.CType == CType
+                   && !typeReference.CTypeReference.IsPointer;
         }
     }
 }
