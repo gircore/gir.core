@@ -47,8 +47,7 @@ namespace Gst
 
         public static Element MakeFromUri(URIType type, string uri, string elementName)
         {
-            var error = new GLib.Native.Error.Handle(IntPtr.Zero);
-            IntPtr result = Native.Element.Instance.Methods.MakeFromUri(type, uri, elementName, error);
+            IntPtr result = Native.Element.Instance.Methods.MakeFromUri(type, uri, elementName, out var error);
 
             Error.ThrowOnError(error);
 

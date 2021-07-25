@@ -14,8 +14,7 @@ namespace GdkPixbuf
 
         public static Pixbuf NewFromFile(string fileName)
         {
-            var error = new GLib.Native.Error.Handle(IntPtr.Zero);
-            IntPtr handle = Native.Pixbuf.Instance.Methods.NewFromFile(fileName, error);
+            IntPtr handle = Native.Pixbuf.Instance.Methods.NewFromFile(fileName, out var error);
             Error.ThrowOnError(error);
 
             return new Pixbuf(handle, true);

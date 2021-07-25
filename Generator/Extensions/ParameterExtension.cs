@@ -21,27 +21,26 @@ namespace Generator
 
         private static string GetFullType(this Parameter parameter, Target target, Namespace currentNamespace, bool useSafeHandle)
         {
-            // FIXME: SafeHandles and ref *do not* work together when marshalling
-            // apparently. For any Record-type parameters, we do not generate a direction
-            // attribute for the native method. Find a more reliable way of doing this?
-            var useDirection = !(parameter.TypeReference.ResolvedType is Record && target == Target.Native);
-
-            var direction = useDirection ? GetDirection(parameter) : string.Empty;
+            var direction = GetDirection(parameter, target);
             var type = GetType(parameter, target, currentNamespace, useSafeHandle);
 
             return $"{direction}{type}";
         }
 
-        private static string GetDirection(Parameter parameter)
+        private static string GetDirection(Parameter parameter, Target target)
         {
-            return parameter switch
+            return (target, parameter) switch
             {
                 // Arrays are automatically marshalled correctly. They don't need any direction
-                { Direction: Direction.Ref, TypeReference: ArrayTypeReference } => "",
+                (_, { Direction: Direction.Ref, TypeReference: ArrayTypeReference }) => "",
 
-                { Direction: Direction.Ref } => "ref ",
-                { Direction: Direction.Out, CallerAllocates: true } => "ref ",
-                { Direction: Direction.Out } => "out ",
+                //Native records (SafeHandles) are not supporting ref
+                (Target.Native, {Direction: Direction.Ref, TypeReference: {ResolvedType: Record}}) => "",
+                (Target.Native, { Direction: Direction.Out, CallerAllocates: true, TypeReference: {ResolvedType: Record}}) => "",
+                
+                (_, { Direction: Direction.Ref }) => "ref ",
+                (_, { Direction: Direction.Out, CallerAllocates: true }) => "ref ",
+                (_, { Direction: Direction.Out }) => "out ",
                 _ => ""
             };
         }

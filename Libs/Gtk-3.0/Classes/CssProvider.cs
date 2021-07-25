@@ -20,8 +20,7 @@ namespace Gtk
             byte[] buf = Encoding.ASCII.GetBytes(data);
 
             // Unmanaged Call
-            var error = new GLib.Native.Error.Handle(IntPtr.Zero);
-            var result = Native.CssProvider.Instance.Methods.LoadFromData(Handle, buf, buf.Length, error);
+            var result = Native.CssProvider.Instance.Methods.LoadFromData(Handle, buf, buf.Length, out var error);
             GLib.Error.ThrowOnError(error);
 
             // Console.WriteLine(ToString()); <-- Testing
