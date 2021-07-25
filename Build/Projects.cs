@@ -28,7 +28,6 @@ namespace Build
 
         private const string SAMPLE = "../Samples/";
 
-        private const string GLIB_SAMPLE = SAMPLE + "GLib/";
         private const string DBUS_SAMPLE = SAMPLE + "DBus/";
         private const string GDK_PIXBUF_TEST_LOADING = SAMPLE + "GdkPixbuf/TestLoading";
         private const string GDK_PIXBUF_TEST_MEMORY_LEAKS = SAMPLE + "GdkPixbuf/TestMemoryLeaks";
@@ -58,7 +57,6 @@ namespace Build
 
         public static readonly string[] SampleProjects =
         {
-            GLIB_SAMPLE,
             DBUS_SAMPLE,
             GDK_PIXBUF_TEST_LOADING,
             GDK_PIXBUF_TEST_MEMORY_LEAKS,
