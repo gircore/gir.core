@@ -17,7 +17,7 @@ namespace GirLoader.Output.Model
 
             return new Member(
                 originalName: new SymbolName(member.Name),
-                symbolName: new SymbolName(new Helper.String(member.Name).EscapeIdentifier().ToPascalCase()),
+                symbolName: new SymbolName(new Helper.String(member.Name).ToPascalCase().EscapeIdentifier()),
                 value: member.Value
             );
         }

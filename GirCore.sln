@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickStart", "Samples\Gtk3\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gst-1.0", "Libs\Gst-1.0\Gst-1.0.csproj", "{1567FD28-14D5-4161-AB66-B099E78F6FFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gstreamer", "Samples\GStreamer\Gstreamer.csproj", "{6D2A7966-FED3-4FD5-94DF-BBD6C5D04886}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GStreamer", "Samples\GStreamer\GStreamer.csproj", "{6D2A7966-FED3-4FD5-94DF-BBD6C5D04886}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{CC6201B1-B625-4907-AA6B-4C3C56D11C7B}"
 EndProject
