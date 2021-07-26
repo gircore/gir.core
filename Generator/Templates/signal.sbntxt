@@ -2,9 +2,9 @@
 $signal_data = get_signal_data $1
 
 if $signal_data.needs_args
-    $signal_generic_args = this.symbol_name + ', ' + $signal_data.args_type
+    $signal_generic_args = this.name + ', ' + $signal_data.args_type
 else
-    $signal_generic_args = this.symbol_name
+    $signal_generic_args = this.name
 end
 ~}}
 #region Signal {{$signal_data.event_name}}
@@ -32,7 +32,7 @@ public sealed class {{$signal_data.args_type}} : SignalArgs
 /// <summary>
 /// Signal Descriptor for {{$signal_data.event_name}}.
 /// </summary>
-public static readonly Signal<{{ $signal_generic_args }}> {{ $signal_data.event_descriptor }} = Signal<{{ $signal_generic_args }}>.Wrap("{{ $1.name }}");
+public static readonly Signal<{{ $signal_generic_args }}> {{ $signal_data.event_descriptor }} = Signal<{{ $signal_generic_args }}>.Wrap("{{ $1.original_name }}");
 
 public event SignalHandler<{{ $signal_generic_args }}> {{ $signal_data.event_name }}
 {
