@@ -32,7 +32,7 @@ public sealed class {{$signal_data.args_type}} : SignalArgs
 /// <summary>
 /// Signal Descriptor for {{$signal_data.event_name}}.
 /// </summary>
-public static readonly Signal<{{ $signal_generic_args }}> {{ $signal_data.event_descriptor }} = Signal<{{ $signal_generic_args }}>.Wrap("{{ $1.name }}");
+public static readonly Signal<{{ $signal_generic_args }}> {{ $signal_data.event_descriptor }} = Signal<{{ $signal_generic_args }}>.Wrap("{{ $1.original_name }}");
 
 public event SignalHandler<{{ $signal_generic_args }}> {{ $signal_data.event_name }}
 {
