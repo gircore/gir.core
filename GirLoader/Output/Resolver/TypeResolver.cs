@@ -19,10 +19,10 @@ namespace GirLoader.Output.Resolver
                 return true;
 
             //Prefer current namespace to resolve types before trying other ones
-            if(_data.TryGetValue(repository, out var typeCache))
+            if (_data.TryGetValue(repository, out var typeCache))
                 if (typeCache.TryResolve(typeReference, out type))
                     return true;
-            
+
             foreach (var cache in _data.Values)
             {
                 if (cache.TryResolve(typeReference, out type))
@@ -62,7 +62,7 @@ namespace GirLoader.Output.Resolver
         {
             if (_data.ContainsKey(repository))
                 throw new Exception($"The repository contains an already known repository {repository}.");
-            
+
             _data.Add(repository, new RepositoryTypeCache(repository));
         }
     }

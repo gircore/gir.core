@@ -9,7 +9,7 @@ namespace GirLoader.Output.Model
 
         public string IdentifierPrefixes { get; }
         public string SymbolPrefixes { get; }
-        
+
         public NamespaceName NativeName => Name with { Value = Name.Value + ".Native" };
         public NamespaceName Name { get; }
         public string Version { get; }

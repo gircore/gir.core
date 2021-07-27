@@ -8,7 +8,7 @@ namespace GirLoader.Output.Model
         public CTypeReference? CTypeReference { get; }
         public SymbolNameReference? SymbolNameReference { get; }
         public abstract Type? ResolvedType { get; }
-        
+
         #endregion
 
         public TypeReference(SymbolNameReference? symbolNameReference, CTypeReference? ctypeReference)
@@ -16,7 +16,7 @@ namespace GirLoader.Output.Model
             CTypeReference = ctypeReference;
             SymbolNameReference = symbolNameReference;
         }
-        
+
         public Type GetResolvedType()
         {
             if (ResolvedType is null)

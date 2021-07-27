@@ -81,10 +81,10 @@ namespace GirLoader.Output.Model
 
             return !result;
         }
-        
+
         internal override bool Matches(TypeReference typeReference)
         {
-            if (typeReference.CTypeReference is not null  && typeReference.CTypeReference.CType != "gpointer")
+            if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
                 return typeReference.CTypeReference.CType == CType;
 
             if (typeReference.SymbolNameReference is not null)
@@ -95,7 +95,7 @@ namespace GirLoader.Output.Model
 
                 return nameMatches && (namespaceMatches || namespaceMissing);
             }
-            
+
             return false;
         }
     }

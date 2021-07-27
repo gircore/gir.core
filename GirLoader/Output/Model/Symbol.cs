@@ -27,7 +27,7 @@ namespace GirLoader.Output.Model
             OriginalName = name;
             Name = name;
         }
-        
+
         protected Symbol(SymbolName originalName, SymbolName name)
         {
             OriginalName = originalName;

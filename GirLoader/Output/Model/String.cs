@@ -23,7 +23,7 @@
         protected String(string originalName) : base(new CType("gchar*"), new SymbolName(originalName), new SymbolName("string"))
         {
         }
-        
+
         internal override bool Matches(TypeReference typeReference)
         {
             return typeReference.SymbolNameReference.SymbolName == OriginalName;

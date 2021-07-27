@@ -8,7 +8,7 @@
         {
             if (typeReference.CTypeReference?.IsPointer == true)
                 return false;
-            
+
             return base.Matches(typeReference);
         }
     }

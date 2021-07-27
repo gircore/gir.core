@@ -28,7 +28,7 @@ namespace GirLoader.Output.Model
             Private = @private;
         }
 
-        public Field(SymbolName orignalName, SymbolName symbolName, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false) 
+        public Field(SymbolName orignalName, SymbolName symbolName, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false)
             : this(orignalName, symbolName, resolveableTypeReference, readable, @private)
         {
             Callback = callback;

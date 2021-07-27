@@ -22,10 +22,10 @@ namespace GirLoader.Output.Resolver
 
             private void Add(IEnumerable<Model.Type> types)
             {
-                foreach(var type in types)
+                foreach (var type in types)
                     Add(type);
             }
-            
+
             public override string ToString()
             {
                 return $"{nameof(TypeCache)} for: {_repository.Namespace.Name}";
