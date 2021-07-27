@@ -105,7 +105,7 @@ namespace GirLoader.Helper
 
         private static string CapitaliseSecondChar(string identifier)
             => $"{identifier[0]}{char.ToUpper(identifier[1])}{identifier?[2..]}";
-        
+
         public string Get()
             => _text;
 

@@ -33,32 +33,32 @@ namespace Generator
                 { TypeReference: ArrayTypeReference { ResolvedType: String } } => "string[]",
 
                 // Arrays of byte can be marshalled automatically, no IntPtr needed
-                { TypeReference:  ArrayTypeReference { ResolvedType: { } s } } when s.Name == "byte" => "byte[]",
+                { TypeReference: ArrayTypeReference { ResolvedType: { } s } } when s.Name == "byte" => "byte[]",
 
                 //References to records which are not using a pointer
-                {TypeReference: ArrayTypeReference { ResolvedType: Record r, TypeReference: { CTypeReference: {IsPointer: false}}}} => GetStructName(r, currentNamespace) + "[]",
-                {TypeReference: ArrayTypeReference { ResolvedType: Record r, TypeReference: { CTypeReference: null}}} => GetStructName(r, currentNamespace) + "[]",
-                {TypeReference: { ResolvedType: Record r, CTypeReference: {IsPointer: false}}} => GetStructName(r, currentNamespace),
-                
-                
+                { TypeReference: ArrayTypeReference { ResolvedType: Record r, TypeReference: { CTypeReference: { IsPointer: false } } } } => GetStructName(r, currentNamespace) + "[]",
+                { TypeReference: ArrayTypeReference { ResolvedType: Record r, TypeReference: { CTypeReference: null } } } => GetStructName(r, currentNamespace) + "[]",
+                { TypeReference: { ResolvedType: Record r, CTypeReference: { IsPointer: false } } } => GetStructName(r, currentNamespace),
+
+
                 //References to records which are using a pointer
-                {TypeReference: ArrayTypeReference { ResolvedType: Record, TypeReference: { CTypeReference: {IsPointer: true}}}} => "IntPtr[]", //Array of SafeHandle not supported by runtime
-                {TypeReference: ResolveableTypeReference { ResolvedType: Record r, CTypeReference: {IsPointer: true}}} => GetSafeHandleName(r, currentNamespace, useSafeHandle),
-                
+                { TypeReference: ArrayTypeReference { ResolvedType: Record, TypeReference: { CTypeReference: { IsPointer: true } } } } => "IntPtr[]", //Array of SafeHandle not supported by runtime
+                { TypeReference: ResolveableTypeReference { ResolvedType: Record r, CTypeReference: { IsPointer: true } } } => GetSafeHandleName(r, currentNamespace, useSafeHandle),
+
                 // Primitives - Marshal directly
                 { TypeReference: ArrayTypeReference { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace) + "[]",
                 { TypeReference: { ResolvedType: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace),
 
                 // Enumerations - Marshal directly
-                { TypeReference: ArrayTypeReference { ResolvedType: Enumeration }} => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace) + "[]",
+                { TypeReference: ArrayTypeReference { ResolvedType: Enumeration } } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace) + "[]",
                 { TypeReference: { ResolvedType: Enumeration } } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace),
 
                 // Short path for strings as strings are pointers which should not be handled as pointers
-                { TypeReference: { ResolvedType: String r }} => r.Name,
-                
+                { TypeReference: { ResolvedType: String r } } => r.Name,
+
                 // Use IntPtr for all types where a pointer is expected
-                { TypeReference: ArrayTypeReference { Length: not null, TypeReference: { CTypeReference: {IsPointer: true}}}} => "IntPtr[]",
-                { TypeReference: ResolveableTypeReference { CTypeReference: { IsPointer: true } }} => "IntPtr",
+                { TypeReference: ArrayTypeReference { Length: not null, TypeReference: { CTypeReference: { IsPointer: true } } } } => "IntPtr[]",
+                { TypeReference: ResolveableTypeReference { CTypeReference: { IsPointer: true } } } => "IntPtr",
 
                 { TypeReference: ArrayTypeReference } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace) + "[]",
                 _ => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace)
@@ -69,12 +69,12 @@ namespace Generator
         {
             return AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("StructRefName"), Target.Native);
         }
-        
+
         private static string GetSafeHandleName(Record r, Namespace currentNamespace, bool useSafeHandle)
         {
             if (useSafeHandle)
                 return AddNamespace(currentNamespace, r.Repository.Namespace, r.GetMetadataString("SafeHandleRefName"), Target.Native);
-            
+
             return "IntPtr";
         }
 

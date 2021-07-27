@@ -3,7 +3,7 @@
     public class Void : PrimitiveType
     {
         public Void(string ctype) : base(new CType(ctype), new SymbolName("void")) { }
-        
+
         internal override bool Matches(TypeReference typeReference)
         {
             if (typeReference.CTypeReference is null)

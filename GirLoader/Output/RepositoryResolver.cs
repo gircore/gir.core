@@ -52,12 +52,12 @@ namespace GirLoader.Output
                 // because arrays are no type themself. They only provide structure.
                 ResolveTypeReference(arrayTypeReference.TypeReference, repository);
             }
-            else if(reference is Model.ResolveableTypeReference resolveableTypeReference)
+            else if (reference is Model.ResolveableTypeReference resolveableTypeReference)
             {
-                if (_typeResolver.Resolve(resolveableTypeReference, repository,  out var type))
+                if (_typeResolver.Resolve(resolveableTypeReference, repository, out var type))
                     resolveableTypeReference.ResolveAs(type);
                 else
-                    Log.Verbose($"Could not resolve type reference {reference}");   
+                    Log.Verbose($"Could not resolve type reference {reference}");
             }
             else
             {

@@ -58,11 +58,11 @@ namespace GirLoader.Output.Model
                 symbolNameReference: null,
                 ctype: GetCType(anyType.Array.CType))
             {
-                Length = length, 
-                FixedSize = fixedSize, 
+                Length = length,
+                FixedSize = fixedSize,
                 IsZeroTerminated = anyType.Array.ZeroTerminated
             };
-            
+
             return true;
         }
 
@@ -92,7 +92,7 @@ namespace GirLoader.Output.Model
             var parts = name.Split('.', 2);
 
             return new SymbolNameReference(
-                new SymbolName(parts[1]), 
+                new SymbolName(parts[1]),
                 new NamespaceName(parts[0])
             );
         }

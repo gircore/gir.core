@@ -24,12 +24,12 @@ namespace GirLoader.Output.Model
 
         public override bool GetIsResolved()
             => ReturnValue.GetIsResolved() && ParameterList.GetIsResolved();
-        
+
         internal override bool Matches(TypeReference typeReference)
         {
             if (typeReference.CTypeReference is null)
                 return false;
-            
+
             return typeReference.CTypeReference.CType == CType;
         }
     }

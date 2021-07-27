@@ -14,7 +14,7 @@ namespace GirLoader.Output.Model
 
             if (typeReference.SymbolNameReference.SymbolName.Value is not null)
                 return typeReference.SymbolNameReference.SymbolName.Value == CType.Value;
-            
+
             return false;
         }
     }

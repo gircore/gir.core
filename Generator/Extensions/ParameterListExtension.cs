@@ -58,7 +58,7 @@ namespace Generator
             return parameter switch
             {
                 // Simple array with fixed size length
-                { TypeReference: ArrayTypeReference { Length: { } l }  } => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={l + offset})]",
+                { TypeReference: ArrayTypeReference { Length: { } l } } => $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={l + offset})]",
 
                 // Array without length and no transfer of type string. We assume null terminated array, which should
                 // be marshaled as a SafeHandle: We do not need an attribute.

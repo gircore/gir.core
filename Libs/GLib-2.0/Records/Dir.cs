@@ -1,4 +1,4 @@
-namespace GLib
+﻿namespace GLib
 {
     public partial class Dir
     {

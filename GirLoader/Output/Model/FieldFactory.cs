@@ -24,7 +24,7 @@ namespace GirLoader.Output.Model
             {
                 if (info.Callback.Name is null)
                     throw new Exception($"Field {info.Name} has a callback without a name.");
-                
+
                 return new Field(
                     orignalName: new SymbolName(info.Name),
                     symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),

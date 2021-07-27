@@ -102,7 +102,7 @@ namespace GirLoader.Output.Model
 
                 return nameMatches && (namespaceMatches || namespaceMissing);
             }
-                
+
 
             return false;
         }
