@@ -149,7 +149,7 @@ namespace GirLoader.Output.Model
             var result = type.GetIsResolved();
 
             if (!result)
-                Log.Information($"{type.GetType().Name} {type.Repository?.Namespace.Name}.{type.OriginalName}: Removed because parts of it could not be completely resolvled");
+                Log.Information($"{type.GetType().Name} {type.Repository?.Namespace.Name}.{type.Name}: Removed because parts of it could not be completely resolvled");
 
             return !result;
         }

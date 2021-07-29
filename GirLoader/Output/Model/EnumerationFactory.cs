@@ -22,8 +22,8 @@ namespace GirLoader.Output.Model
 
             return new Enumeration(
                 repository: repository,
-                originalName: new SymbolName(@enum.Name),
-                symbolName: new SymbolName(@enum.Name),
+                originalName: new TypeName(@enum.Name),
+                name: new TypeName(@enum.Name),
                 hasFlags: hasFlags,
                 members: @enum.Members.Select(_memberFactory.Create).ToList(),
                 cType: new CType(@enum.Type)

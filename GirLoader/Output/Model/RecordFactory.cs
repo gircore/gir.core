@@ -15,33 +15,33 @@ namespace GirLoader.Output.Model
             _fieldFactory = fieldFactory;
         }
 
-        public Record Create(Input.Model.Record @record, Repository repository)
+        public Record Create(Input.Model.Record record, Repository repository)
         {
-            if (@record.Name is null)
+            if (record.Name is null)
                 throw new Exception("Record is missing a name");
 
-            Method? getTypeFunction = @record.GetTypeFunction switch
+            Method? getTypeFunction = record.GetTypeFunction switch
             {
                 { } f => _methodFactory.CreateGetTypeMethod(f),
                 _ => null
             };
 
             CType? cTypeName = null;
-            if (@record.CType is { })
-                cTypeName = new CType(@record.CType);
+            if (record.CType is { })
+                cTypeName = new CType(record.CType);
 
             return new Record(
                 repository: repository,
                 cType: cTypeName,
-                originalName: new SymbolName(@record.Name),
-                symbolName: new SymbolName(@record.Name),
-                gLibClassStructFor: GetGLibClassStructFor(@record.GLibIsGTypeStructFor, repository.Namespace),
-                methods: _methodFactory.Create(@record.Methods),
-                functions: _methodFactory.Create(@record.Functions),
+                originalName: new TypeName(record.Name),
+                name: new TypeName(record.Name),
+                gLibClassStructFor: GetGLibClassStructFor(record.GLibIsGTypeStructFor, repository.Namespace),
+                methods: _methodFactory.Create(record.Methods),
+                functions: _methodFactory.Create(record.Functions),
                 getTypeFunction: getTypeFunction,
-                fields: _fieldFactory.Create(@record.Fields, repository),
-                disguised: @record.Disguised,
-                constructors: _methodFactory.Create(@record.Constructors)
+                fields: _fieldFactory.Create(record.Fields, repository),
+                disguised: record.Disguised,
+                constructors: _methodFactory.Create(record.Constructors)
             );
         }
 

@@ -28,8 +28,8 @@ namespace GirLoader.Output.Model
             return new Callback(
                 repository: repository,
                 ctype: cTypeName,
-                originalName: new SymbolName(callback.Name),
-                symbolName: new SymbolName(new Helper.String(callback.Name).ToPascalCase()),
+                originalName: new TypeName(callback.Name),
+                name: new TypeName(new Helper.String(callback.Name).ToPascalCase()),
                 returnValue: _returnValueFactory.Create(callback.ReturnValue),
                 parameterList: _parameterListFactory.Create(callback.Parameters)
             );

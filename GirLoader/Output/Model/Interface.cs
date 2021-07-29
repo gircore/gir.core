@@ -4,7 +4,7 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output.Model
 {
-    public class Interface : Type
+    public class Interface : ComplexType
     {
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;
@@ -17,7 +17,7 @@ namespace GirLoader.Output.Model
         public IEnumerable<Method> Functions => _functions;
         public IEnumerable<Property> Properties => _properties;
 
-        public Interface(Repository repository, CType? cType, SymbolName originalName, SymbolName symbolName, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cType, originalName, symbolName)
+        public Interface(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cType, name, originalName)
         {
             Implements = implements;
             this._methods = methods.ToList();

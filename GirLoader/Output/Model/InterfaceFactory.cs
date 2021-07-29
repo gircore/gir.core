@@ -33,8 +33,8 @@ namespace GirLoader.Output.Model
             return new Interface(
                 repository: repository,
                 cType: ctypeName,
-                originalName: new SymbolName(@interface.Name),
-                symbolName: new SymbolName(@interface.Name),
+                originalName: new TypeName(@interface.Name),
+                name: new TypeName(@interface.Name),
                 implements: _typeReferenceFactory.Create(@interface.Implements),
                 methods: _methodFactory.Create(@interface.Methods),
                 functions: _methodFactory.Create(@interface.Functions),

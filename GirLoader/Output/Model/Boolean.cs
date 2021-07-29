@@ -2,6 +2,6 @@
 {
     public class Boolean : PrimitiveValueType
     {
-        public Boolean(string ctype) : base(new CType(ctype), new SymbolName("bool")) { }
+        public Boolean(string ctype) : base(new CType(ctype), new TypeName("bool")) { }
     }
 }
