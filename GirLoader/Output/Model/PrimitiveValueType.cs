@@ -12,7 +12,7 @@ namespace GirLoader.Output.Model
             if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
                 return typeReference.CTypeReference.CType == CType;
 
-            if (typeReference.SymbolNameReference.SymbolName.Value is not null)
+            if (typeReference.SymbolNameReference?.SymbolName.Value is not null)
                 return typeReference.SymbolNameReference.SymbolName.Value == CType.Value;
 
             return false;
