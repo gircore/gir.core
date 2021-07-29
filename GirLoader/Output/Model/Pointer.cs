@@ -2,7 +2,7 @@
 {
     public class Pointer : PrimitiveType
     {
-        public Pointer(string ctype) : base(new CType(ctype), new SymbolName("IntPtr")) { }
+        public Pointer(string ctype) : base(new CType(ctype), new TypeName("IntPtr")) { }
 
         internal override bool Matches(TypeReference typeReference)
         {

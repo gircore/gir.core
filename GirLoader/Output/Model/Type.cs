@@ -1,27 +1,22 @@
-﻿namespace GirLoader.Output.Model
+﻿using System.Collections.Generic;
+
+namespace GirLoader.Output.Model
 {
-    public abstract class Type : Symbol
+    public abstract class Type: TypeReferenceProvider, Resolveable
     {
-        public Repository? Repository { get; }
         public Metadata Metadata { get; } = new();
+        
+        public TypeName Name { get; set; }
 
         /// <summary>
         /// Name of the symbol in the c world
         /// </summary>
         public CType? CType { get; }
 
-        protected internal Type(CType ctype, SymbolName name) : this(ctype, name, name)
+        protected internal Type(CType? cType, TypeName name) 
         {
-        }
-
-        protected internal Type(CType? ctype, SymbolName originalName, SymbolName symbolName) : this(null, ctype, originalName, symbolName)
-        {
-        }
-
-        protected internal Type(Repository? repository, CType? cType, SymbolName orignalName, SymbolName symbolName) : base(orignalName, symbolName)
-        {
-            Repository = repository;
             CType = cType;
+            Name = name;
         }
 
         internal virtual void Strip() { }
@@ -30,5 +25,7 @@
             => Metadata[key]?.ToString() ?? "";
 
         internal abstract bool Matches(TypeReference typeReference);
+        public abstract IEnumerable<TypeReference> GetTypeReferences();
+        public abstract bool GetIsResolved();
     }
 }

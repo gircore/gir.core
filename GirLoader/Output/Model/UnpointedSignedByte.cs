@@ -2,7 +2,7 @@
 {
     public class UnpointedSignedByte : PrimitiveValueType
     {
-        public UnpointedSignedByte(string ctype) : base(new CType(ctype), new SymbolName("sbyte")) { }
+        public UnpointedSignedByte(string ctype) : base(new CType(ctype), new TypeName("sbyte")) { }
 
         internal override bool Matches(TypeReference typeReference)
         {

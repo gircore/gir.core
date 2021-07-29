@@ -3,12 +3,12 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output.Model
 {
-    public class Callback : Type
+    public class Callback : ComplexType
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
 
-        public Callback(Repository repository, CType? ctype, SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctype, originalName, symbolName)
+        public Callback(Repository repository, CType? ctype, TypeName originalName, TypeName name, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctype, name, originalName)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;

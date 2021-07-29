@@ -87,7 +87,7 @@ namespace GirLoader.Output.Model
                 return null;
 
             if (!name.Contains("."))
-                return new SymbolNameReference(new SymbolName(name));
+                return new SymbolNameReference(new SymbolName(name), null);
 
             var parts = name.Split('.', 2);
 

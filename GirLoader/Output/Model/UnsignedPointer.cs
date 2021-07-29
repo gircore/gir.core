@@ -2,7 +2,7 @@
 {
     public class UnsignedPointer : PrimitiveType
     {
-        public UnsignedPointer(string ctype) : base(new CType(ctype), new SymbolName("UIntPtr")) { }
+        public UnsignedPointer(string ctype) : base(new CType(ctype), new TypeName("UIntPtr")) { }
 
         internal override bool Matches(TypeReference typeReference)
         {

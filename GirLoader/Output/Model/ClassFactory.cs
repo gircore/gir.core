@@ -33,8 +33,8 @@ namespace GirLoader.Output.Model
 
             return new Class(
                 repository: repository,
-                originalName: new SymbolName(cls.Name),
-                symbolName: new SymbolName(cls.Name),
+                originalName: new TypeName(cls.Name),
+                name: new TypeName(cls.Name),
                 cType: cTypeName,
                 parent: CreateParentTypeReference(cls.Parent, repository.Namespace),
                 implements: _typeReferenceFactory.Create(cls.Implements),

@@ -83,7 +83,7 @@ namespace Generator.Services
         private void SetCallbackMetadata(Callback callback)
         {
             callback.Metadata["ManagedName"] = callback.Name;
-            callback.Name = new SymbolName(callback.Name + "Callback");
+            callback.Name = new TypeName(callback.Name + "Callback");
         }
 
         private void SetUnionMetadata(IEnumerable<Union> unions)
@@ -97,7 +97,7 @@ namespace Generator.Services
             union.Metadata["Name"] = union.Name;
             union.Metadata["StructName"] = "Struct";
 
-            union.Name = new SymbolName($"{union.Name}.Struct");
+            union.Name = new TypeName($"{union.Name}.Struct");
         }
 
         private void SetRecordMetadata(IEnumerable<Record> records)
@@ -122,7 +122,7 @@ namespace Generator.Services
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{className}.Handle";
 
-            record.Name = new SymbolName($"{className}.Class");
+            record.Name = new TypeName($"{className}.Class");
         }
 
         private void SetRecordMetadata(Record record)
@@ -133,7 +133,7 @@ namespace Generator.Services
             record.Metadata["SafeHandleName"] = "Handle";
             record.Metadata["SafeHandleRefName"] = $"{record.Name}.Handle";
 
-            record.Name = new SymbolName($"{record.Name}");
+            record.Name = new TypeName($"{record.Name}");
         }
     }
 }

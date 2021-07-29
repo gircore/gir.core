@@ -4,7 +4,7 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output.Model
 {
-    public class Record : Type
+    public class Record : ComplexType
     {
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;
@@ -21,7 +21,7 @@ namespace GirLoader.Output.Model
         public IEnumerable<Method> Functions => _functions;
         public TypeReference? GLibClassStructFor { get; }
 
-        public Record(Repository repository, CType? cType, SymbolName originalName, SymbolName symbolName, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(repository, cType, originalName, symbolName)
+        public Record(Repository repository, CType? cType, TypeName originalName, TypeName name, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(repository, cType, name, originalName)
         {
             GLibClassStructFor = gLibClassStructFor;
             GetTypeFunction = getTypeFunction;
