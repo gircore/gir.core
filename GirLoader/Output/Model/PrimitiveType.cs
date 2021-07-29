@@ -5,7 +5,7 @@ namespace GirLoader.Output.Model
 {
     public abstract class PrimitiveType : Type
     {
-        protected PrimitiveType(CType ctype, TypeName typeName) : base(null, ctype, typeName)
+        protected PrimitiveType(CType ctype, TypeName typeName) : base(ctype, typeName)
         {
         }
 

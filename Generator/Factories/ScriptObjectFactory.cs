@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Generator.Properties;
 using Generator.Services.Writer;
-using GirLoader;
 using GirLoader.Output.Model;
 using Scriban.Runtime;
 
@@ -44,7 +43,7 @@ namespace Generator.Factories
             return scriptObject;
         }
 
-        public ScriptObject CreateComplexForSymbol(Namespace currentNamespace, GirLoader.Output.Model.Type type)
+        public ScriptObject CreateComplexForSymbol(Namespace currentNamespace, ComplexType type)
         {
             var scriptObject = CreateComplex(currentNamespace);
             scriptObject.Import(type);

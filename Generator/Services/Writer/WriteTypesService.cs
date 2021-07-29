@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Generator.Factories;
 using GirLoader.Output.Model;
-using Type = GirLoader.Output.Model.Type;
 
 namespace Generator.Services.Writer
 {
@@ -17,9 +16,9 @@ namespace Generator.Services.Writer
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Type> types, Namespace @namespace)
+        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<ComplexType> types, Namespace @namespace)
         {
-            foreach (Type type in types)
+            foreach (var type in types)
             {
                 var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, type);
 

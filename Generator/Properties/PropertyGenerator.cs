@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using GirLoader.Output.Model;
 using String = GirLoader.Output.Model.String;
-using Type = GirLoader.Output.Model.Type;
 
 namespace Generator.Properties
 {
-    public class PropertyGenerator
+    public static class PropertyGenerator
     {
-        public static string WriteDescriptor(Property property, Type type, Namespace currentNamespace)
+        public static string WriteDescriptor(Property property, ComplexType type, Namespace currentNamespace)
         {
-            if (type.Repository is null)
-                throw new Exception("Can not write property for symbol with unknown namespace");
-
             var typeName = property.GetTypeName(currentNamespace);
             var descriptorName = property.GetDescriptorName();
             var parentType = type.Write(Target.Managed, currentNamespace);
