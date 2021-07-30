@@ -11,11 +11,11 @@ namespace Generator
             return type switch
             {
                 PrimitiveType => type.Name,
-                
+
                 // Enumerations do not have a native representation they
                 // always live in the managed namespace (see method GetName)
-                Enumeration e => $"{e.Repository.Namespace.Name}.{e.Name}", 
-                
+                Enumeration e => $"{e.Repository.Namespace.Name}.{e.Name}",
+
                 ComplexType c when !c.Repository.Namespace.IsForeignTo(currentNamespace) => c.Name,
                 ComplexType c => $"{c.Repository.Namespace.GetName(target)}.{c.Name}",
 
