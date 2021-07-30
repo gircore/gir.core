@@ -1,4 +1,5 @@
-﻿#nullable enable
+﻿using System;
+
 namespace GirLoader.Output.Model
 {
     public abstract class PrimitiveValueType : PrimitiveType
@@ -9,13 +10,12 @@ namespace GirLoader.Output.Model
 
         internal override bool Matches(TypeReference typeReference)
         {
-            if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
-                return typeReference.CTypeReference.CType == CType;
-
-            if (typeReference.SymbolNameReference?.SymbolName.Value is not null)
-                return typeReference.SymbolNameReference.SymbolName.Value == CType.Value;
-
-            return false;
+            return typeReference switch
+            {
+                {CTypeReference: { } cr} => cr.CType == CType,
+                {SymbolNameReference: {SymbolName: {} sn }} => sn.Value == CType?.Value,
+                _ => throw new Exception($"Can't match {GetType().Name} with {nameof(TypeReference)} {typeReference}")
+            };
         }
     }
 }

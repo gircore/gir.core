@@ -18,7 +18,7 @@ namespace GirLoader.Output
 
         public Model.Repository LoadRepository(GirFile girFile)
         {
-            if (_knownRepositories.TryGetValue(girFile, out Model.Repository repository))
+            if (_knownRepositories.TryGetValue(girFile, out Model.Repository? repository))
                 return repository;
 
             repository = Create(girFile);
