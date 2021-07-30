@@ -2,10 +2,10 @@
 
 namespace GirLoader.Output.Model
 {
-    public abstract class Type: TypeReferenceProvider, Resolveable
+    public abstract class Type : TypeReferenceProvider, Resolveable
     {
         public Metadata Metadata { get; } = new();
-        
+
         public TypeName Name { get; set; }
 
         /// <summary>
@@ -13,7 +13,7 @@ namespace GirLoader.Output.Model
         /// </summary>
         public CType? CType { get; }
 
-        protected internal Type(CType? cType, TypeName name) 
+        protected internal Type(CType? cType, TypeName name)
         {
             CType = cType;
             Name = name;
