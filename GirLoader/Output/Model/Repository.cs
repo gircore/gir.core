@@ -10,7 +10,7 @@ namespace GirLoader.Output.Model
         private Namespace? _namespace;
         public Namespace Namespace => _namespace ?? throw new Exception("Namespace not initialized.");
         public IEnumerable<Include> Includes { get; }
-        public IEnumerable<Repository> Dependencies => Includes.Select(x => x.ResolvedRepository);
+        public IEnumerable<Repository> Dependencies => Includes.Select(x => x.GetResolvedRepository());
 
         public Repository(IEnumerable<Include> includes)
         {

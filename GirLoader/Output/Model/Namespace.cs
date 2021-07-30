@@ -7,8 +7,8 @@ namespace GirLoader.Output.Model
     {
         #region Properties
 
-        public string IdentifierPrefixes { get; }
-        public string SymbolPrefixes { get; }
+        public string? IdentifierPrefixes { get; }
+        public string? SymbolPrefixes { get; }
 
         public NamespaceName NativeName => Name with { Value = Name.Value + ".Native" };
         public NamespaceName Name { get; }
@@ -47,7 +47,7 @@ namespace GirLoader.Output.Model
 
         #endregion
 
-        public Namespace(string name, string version, string? sharedLibrary, string identifierPrefixes, string symbolPrefixes)
+        public Namespace(string name, string version, string? sharedLibrary, string? identifierPrefixes, string? symbolPrefixes)
         {
             Name = new NamespaceName(name);
             Version = version;

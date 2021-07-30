@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GirLoader.Helper;
 
@@ -76,10 +77,12 @@ namespace GirLoader.Output.Model
 
         internal override bool Matches(TypeReference typeReference)
         {
-            if (typeReference.CTypeReference is not null)
-                return typeReference.CTypeReference.CType == CType;
-
-            return OriginalName == typeReference.SymbolNameReference.SymbolName;
+            return typeReference switch
+            {
+                { CTypeReference: { } cr } => cr.CType == CType,
+                { SymbolNameReference: { } sr } => sr.SymbolName == OriginalName,
+                _ => throw new Exception($"Can't match {nameof(Union)} with {nameof(TypeReference)} {typeReference}")
+            };
         }
     }
 }
