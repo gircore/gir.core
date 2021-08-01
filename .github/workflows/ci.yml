@@ -43,4 +43,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}-generated
-          path: ${{ github.workspace }}
+          path: |
+            ${{ github.workspace }}
+            !**/bin
+            !**/obj
