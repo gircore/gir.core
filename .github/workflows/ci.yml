@@ -38,9 +38,9 @@ jobs:
         run: dotnet run -- --release --xml-documentation --targets integrationTest samples
         working-directory: './Build'
 
-      - name: Upload Generated Files on Failure
+      - name: (Failure) Upload Generated Files
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}-generated
-          path: /home/runner/work/gir.core/gir.core/Libs/
+          path: ${{ github.workspace }}
