@@ -38,7 +38,8 @@ jobs:
         run: dotnet run -- --release --xml-documentation --targets integrationTest samples
         working-directory: './Build'
 
-      - name: Upload Generated Files
+      - name: Upload Generated Files on Failure
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}-generated
