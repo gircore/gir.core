@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using GLib;
 
@@ -30,6 +31,8 @@ namespace GObject.Native
             {
                 WrapperObjects[handle] = new ToggleRef(handle, obj, ownedRef);
             }
+            
+            Debug.WriteLine($"Mapped Object: Handle '{handle}' Object '{obj.GetType()}' OwnedRef '{ownedRef}'.");
         }
 
         public static void Unmap(IntPtr handle)
@@ -37,8 +40,16 @@ namespace GObject.Native
             lock (WrapperObjects)
             {
                 if (WrapperObjects.Remove(handle, out var toggleRef))
-                    toggleRef.Dispose();
+                {
+                    Debug.Assert(
+                        condition: toggleRef.Object != null,
+                        message: "The object must be alive when the toggle ref is triggered"
+                    );
+                    toggleRef.Dispose();   
+                }
             }
+            
+            Debug.WriteLine($"Unmapped Object: Handle '{handle}'.");
         }
     }
 }

@@ -9,9 +9,6 @@ namespace TextEditor.Document
 {
     internal class PieceTable : IEnumerable<Node>
     {
-        // TODO: Using Find() is O(n) -> We should store the information in the descriptor
-        // itself and avoid lookup entirely. Consider using a custom LinkedList implementation.
-
         // See: https://www.catch22.net/tuts/piece-chains
         // Also: https://code.visualstudio.com/blogs/2018/03/23/text-buffer-reimplementation
 

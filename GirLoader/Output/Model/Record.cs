@@ -4,7 +4,7 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output.Model
 {
-    public class Record : Type
+    public class Record : ComplexType
     {
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;
@@ -21,7 +21,7 @@ namespace GirLoader.Output.Model
         public IEnumerable<Method> Functions => _functions;
         public TypeReference? GLibClassStructFor { get; }
 
-        public Record(Repository repository, CTypeName? cTypeName, TypeName typeName, SymbolName symbolName, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(repository, cTypeName, typeName, symbolName)
+        public Record(Repository repository, CType? cType, TypeName originalName, TypeName name, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(repository, cType, name, originalName)
         {
             GLibClassStructFor = gLibClassStructFor;
             GetTypeFunction = getTypeFunction;
@@ -72,14 +72,31 @@ namespace GirLoader.Output.Model
             _constructors.RemoveAll(Remove);
         }
 
-        private bool Remove(Element symbol)
+        private bool Remove(Symbol symbol)
         {
             var result = symbol.GetIsResolved();
 
             if (!result)
-                Log.Information($"Record {Repository?.Namespace.Name}.{TypeName}: Stripping symbol {symbol.Name}");
+                Log.Information($"Record {Repository?.Namespace.Name}.{OriginalName}: Stripping symbol {symbol.OriginalName}");
 
             return !result;
+        }
+
+        internal override bool Matches(TypeReference typeReference)
+        {
+            if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
+                return typeReference.CTypeReference.CType == CType;
+
+            if (typeReference.SymbolNameReference is not null)
+            {
+                var nameMatches = typeReference.SymbolNameReference.SymbolName == OriginalName;
+                var namespaceMatches = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name;
+                var namespaceMissing = typeReference.SymbolNameReference.NamespaceName == null;
+
+                return nameMatches && (namespaceMatches || namespaceMissing);
+            }
+
+            return false;
         }
     }
 }

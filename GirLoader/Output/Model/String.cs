@@ -5,7 +5,10 @@
     /// </summary>
     public class Utf8String : String
     {
-        public Utf8String() : base("utf8") { }
+        internal override bool Matches(TypeReference typeReference)
+        {
+            return typeReference.SymbolNameReference?.SymbolName.Value == "utf8";
+        }
     }
 
     /// <summary>
@@ -15,13 +18,15 @@
     /// </summary>
     public class PlatformString : String
     {
-        public PlatformString() : base("filename") { }
+        internal override bool Matches(TypeReference typeReference)
+        {
+            return typeReference.SymbolNameReference?.SymbolName.Value == "filename";
+        }
     }
 
-    public abstract class String : Type
+    public abstract class String : PrimitiveType
     {
-        protected String(string nativeName)
-            : base(new CTypeName(nativeName), new TypeName(nativeName), new SymbolName("string"))
+        protected String() : base(new CType("gchar*"), new TypeName("string"))
         {
         }
     }

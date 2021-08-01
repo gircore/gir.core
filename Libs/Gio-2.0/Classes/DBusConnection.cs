@@ -16,8 +16,7 @@ namespace Gio
 
         public static DBusConnection Get(BusType busType)
         {
-            var error = new GLib.Native.Error.Handle(IntPtr.Zero);
-            var handle = Native.Functions.BusGetSync(busType, IntPtr.Zero, error);
+            var handle = Native.Functions.BusGetSync(busType, IntPtr.Zero, out var error);
             Error.ThrowOnError(error);
 
             return GObject.Native.ObjectWrapper.WrapHandle<DBusConnection>(handle, true);
@@ -35,8 +34,7 @@ namespace Gio
             void Callback(GObject.Object sourceObject, AsyncResult res)
             {
                 // TODO: Make sure this is correct (can we assume res is a GObject?)
-                var error = new GLib.Native.Error.Handle(IntPtr.Zero);
-                var ret = Native.DBusConnection.Instance.Methods.CallFinish(sourceObject.Handle, (res as GObject.Object).Handle, error);
+                var ret = Native.DBusConnection.Instance.Methods.CallFinish(sourceObject.Handle, (res as GObject.Object).Handle, out var error);
                 Error.ThrowOnError(error);
 
                 tcs.SetResult(Variant.__FactoryNew(ret));
@@ -53,8 +51,7 @@ namespace Gio
         public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
         {
             var parameterHandle = parameters?.Handle ?? GLib.Native.Variant.Handle.Null;
-            var error = new GLib.Native.Error.Handle(IntPtr.Zero);
-            var ret = Native.DBusConnection.Instance.Methods.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameterHandle, GLib.Native.VariantType.Handle.Null, DBusCallFlags.None, 9999, IntPtr.Zero, error);
+            var ret = Native.DBusConnection.Instance.Methods.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameterHandle, GLib.Native.VariantType.Handle.Null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
 
             Error.ThrowOnError(error);
 

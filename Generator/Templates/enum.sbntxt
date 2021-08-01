@@ -21,7 +21,7 @@ namespace {{ namespace.name }}
     {{~ if has_flags ~}}
     [Flags]
     {{~ end ~}}
-    public enum {{ symbol_name }} : {{ enum_type }}
+    public enum {{ name }} : {{ enum_type }}
     {
         {{~ for member in members }}
         {{ include 'enum.member.sbntxt' member ~}}

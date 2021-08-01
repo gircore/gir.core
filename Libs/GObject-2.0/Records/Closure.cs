@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace GObject
@@ -15,6 +16,8 @@ namespace GObject
         {
             _closureMarshalCallHandler = new ClosureMarshalCallHandler(action);
             _handle = Native.Closure.Methods.NewSimple((uint) Marshal.SizeOf(typeof(GObject.Native.Closure.Struct)), IntPtr.Zero);
+            
+            Debug.WriteLine($"Instantiating Closure: Address {_handle.DangerousGetHandle()}.");
 
             Native.Closure.Methods.Ref(_handle);
             Native.Closure.Methods.Sink(_handle);
@@ -23,6 +26,8 @@ namespace GObject
 
         public void Dispose()
         {
+            Debug.WriteLine($"Disposing Closure: Address {_handle.DangerousGetHandle()}.");
+            
             _closureMarshalCallHandler.Dispose();
             _handle.Dispose();
         }

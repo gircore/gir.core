@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace GObject.Native
 {
@@ -45,12 +46,14 @@ namespace GObject.Native
 
                 OwnReference(ownedRef);
                 RegisterToggleRef();
+                
+                Debug.WriteLine($"Created ToggleRef: {GetLogState()}.");
             }
 
             private void RegisterToggleRef()
             {
                 Native.Object.Instance.Methods.AddToggleRef(_handle, _callback, IntPtr.Zero);
-                Native.Object.Instance.Methods.Unref(_handle);
+                // Native.Object.Instance.Methods.Unref(_handle);
             }
 
             private void OwnReference(bool ownedRef)
@@ -80,17 +83,31 @@ namespace GObject.Native
                         _reference = weakObj;
                     else
                         throw new Exception("Could not toggle reference to strong. It is garbage collected.");
-
                 }
                 else if (isLastRef && _reference is not WeakReference)
                 {
                     _reference = new WeakReference(_reference);
                 }
+                
+                Debug.WriteLine($"Toggled ToggleRef: {GetLogState()}.");
             }
 
             public void Dispose()
             {
-                Native.Object.Instance.Methods.RemoveToggleRef(_handle, _callback, IntPtr.Zero);
+                Debug.WriteLine($"Disposing of ToggleRef: {GetLogState()} (note: pre-disposal state).");
+                
+                // Native.Object.Instance.Methods.RemoveToggleRef(_handle, _callback, IntPtr.Zero);
+            }
+
+            private string GetLogState()
+            {
+                // Logging
+                object? obj = (_reference is WeakReference weakRef)
+                    ? weakRef.Target
+                    : _reference;
+                
+                var refCount = Marshal.PtrToStructure<Native.Object.Instance.Struct>(_handle).RefCount;
+                return $"Address '{_handle}', Object '{obj?.GetType()}', RefCount '{refCount}', IsLastRef '{_reference is WeakReference}'";
             }
         }
     }

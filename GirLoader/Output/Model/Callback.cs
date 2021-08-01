@@ -3,12 +3,12 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output.Model
 {
-    public class Callback : Type
+    public class Callback : ComplexType
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
 
-        public Callback(Repository repository, CTypeName? ctypeName, TypeName typeName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctypeName, typeName, symbolName)
+        public Callback(Repository repository, CType? ctype, TypeName originalName, TypeName name, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctype, name, originalName)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;
@@ -24,5 +24,13 @@ namespace GirLoader.Output.Model
 
         public override bool GetIsResolved()
             => ReturnValue.GetIsResolved() && ParameterList.GetIsResolved();
+
+        internal override bool Matches(TypeReference typeReference)
+        {
+            if (typeReference.CTypeReference is null)
+                return false;
+
+            return typeReference.CTypeReference.CType == CType;
+        }
     }
 }

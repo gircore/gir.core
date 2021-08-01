@@ -9,9 +9,11 @@ namespace GirLoader
     [RegisterModule(typeof(Output.Module))]
     public partial class Loader : IContainer<Output.Loader>
     {
+        //TODO: Use this method
         public static void EnableDebugOutput()
             => Log.EnableDebugOutput();
 
+        //TODO: Use this method
         public static void EnableVerboseOutput()
             => Log.EnableVerboseOutput();
 

@@ -17,7 +17,7 @@ namespace {{ namespace.name }}
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Could not register class type '{{ $class.symbol_name }}': {e.Message}");
+                Console.WriteLine($"Could not register class type '{{ $class.name }}': {e.Message}");
             }
             {{ end }}
             
@@ -28,7 +28,7 @@ namespace {{ namespace.name }}
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Could not register record type '{{ $record.symbol_name }}': {e.Message}");
+                Console.WriteLine($"Could not register record type '{{ $record.name }}': {e.Message}");
             }
             {{ end }}
             
@@ -39,7 +39,7 @@ namespace {{ namespace.name }}
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Could not register union type '{{ $union.symbol_name }}': {e.Message}");
+                Console.WriteLine($"Could not register union type '{{ $union.name }}': {e.Message}");
             }
             {{ end }}
             {{ end }}

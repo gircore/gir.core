@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace GObject
 {
@@ -19,6 +20,8 @@ namespace GObject
 
             public ClosureRegistry(Object obj, string name)
             {
+                Debug.WriteLine($"Created ClosureRegistry: Object {obj.GetType()} Name {name}.");
+                
                 _name = name;
                 _object = obj;
             }
@@ -62,6 +65,8 @@ namespace GObject
 
             public void Dispose()
             {
+                Debug.WriteLine($"Disposing ClosureRegistry: Object {_object.GetType()} Name {_name}.");
+                
                 foreach (var (_, closureHelper) in _connectedHandlers.Values)
                     closureHelper.Dispose();
             }

@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using Generator.Factories;
 using GirLoader.Output.Model;
-using Type = GirLoader.Output.Model.Type;
 
 namespace Generator.Services.Writer
 {
-    internal class WriteSymbolsService
+    internal class WriteTypesService
     {
         private readonly WriteHelperService _writeHelperService;
         private readonly ScriptObjectFactory _scriptObjectFactory;
 
-        public WriteSymbolsService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
+        public WriteTypesService(WriteHelperService writeHelperService, ScriptObjectFactory scriptObjectFactory)
         {
             _writeHelperService = writeHelperService;
             _scriptObjectFactory = scriptObjectFactory;
         }
 
-        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<Type> objects, Namespace @namespace)
+        public void Write(string projectName, string outputDir, string templateName, string subfolder, IEnumerable<ComplexType> types, Namespace @namespace)
         {
-            foreach (Type obj in objects)
+            foreach (var type in types)
             {
-                var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, obj);
+                var scriptObject = _scriptObjectFactory.CreateComplexForSymbol(@namespace, type);
 
                 try
                 {
@@ -30,13 +29,13 @@ namespace Generator.Services.Writer
                         outputDir: outputDir,
                         templateName: templateName,
                         folder: subfolder,
-                        fileName: obj.SymbolName,
+                        fileName: type.Name,
                         scriptObject: scriptObject
                     );
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Could not create type {obj.SymbolName}: {ex.Message}");
+                    Log.Error($"Could not create type {type.Name}: {ex.Message}");
                 }
             }
         }

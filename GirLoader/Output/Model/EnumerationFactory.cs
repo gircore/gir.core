@@ -22,11 +22,11 @@ namespace GirLoader.Output.Model
 
             return new Enumeration(
                 repository: repository,
-                typeName: new TypeName(@enum.Name),
-                symbolName: new SymbolName(@enum.Name),
+                originalName: new TypeName(@enum.Name),
+                name: new TypeName(@enum.Name),
                 hasFlags: hasFlags,
-                members: @enum.Members.Select(x => _memberFactory.Create(x)).ToList(),
-                cTypeName: new CTypeName(@enum.Type)
+                members: @enum.Members.Select(_memberFactory.Create).ToList(),
+                cType: new CType(@enum.Type)
             );
         }
     }
