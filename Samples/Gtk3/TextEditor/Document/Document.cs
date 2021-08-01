@@ -128,7 +128,11 @@ namespace TextEditor.Document
 
         public void Delete(int index, int length)
         {
-            var (deleteStartDesc, deleteStartNodeBaseIndex) = FromIndex(index);
+            // NOTE: Deletion is disabled as it cannot delete across piece
+            // boundaries. This should be implemented so the text editor is
+            // fully functional.
+            
+            /*var (deleteStartDesc, deleteStartNodeBaseIndex) = FromIndex(index);
 
             // Cannot delete from the end of the sequence
             if (deleteStartDesc == null)
@@ -166,7 +170,7 @@ namespace TextEditor.Document
             }
 
             // Emit document-changed event
-            DocumentChanged(this, EventArgs.Empty);
+            DocumentChanged(this, EventArgs.Empty);*/
         }
 
         private Document(string data)

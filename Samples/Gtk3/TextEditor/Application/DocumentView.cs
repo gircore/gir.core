@@ -145,7 +145,7 @@ namespace TextEditor.Application
             cr.MoveTo(xDist, 30);
             cr.ShowText("This sample uses Cairo and a Gtk.DrawingArea to create a simple 'TextView' clone.");
             cr.MoveTo(xDist, 50);
-            cr.ShowText("Use the LEFT and RIGHT arrow keys to navigate. Press BACKSPACE to delete.");
+            cr.ShowText("Use the LEFT and RIGHT arrow keys to navigate."); //"Press BACKSPACE to delete.");
             
             // Draw Cursor
             cr.SetFontSize(16);
