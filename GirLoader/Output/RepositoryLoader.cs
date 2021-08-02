@@ -4,33 +4,30 @@ namespace GirLoader.Output
 {
     internal class RepositoryLoader
     {
-        private readonly Input.Loader _inputLoader;
-        private readonly GetGirFile _getGirFile;
+        private readonly ResolveInclude _resolveInclude;
         private readonly Model.RepositoryFactory _repositoryFactory;
-        private readonly Dictionary<GirFile, Model.Repository> _knownRepositories = new();
+        private readonly Dictionary<string, Model.Repository> _knownRepositories = new();
 
-        public RepositoryLoader(Input.Loader inputLoader, GetGirFile getGirFile, Model.RepositoryFactory repositoryFactory)
+        public RepositoryLoader(ResolveInclude resolveInclude, Model.RepositoryFactory repositoryFactory)
         {
-            _inputLoader = inputLoader;
-            _getGirFile = getGirFile;
+            _resolveInclude = resolveInclude;
             _repositoryFactory = repositoryFactory;
         }
 
-        public Model.Repository LoadRepository(GirFile girFile)
+        public Model.Repository LoadRepository(Input.Model.Repository inputRepository)
         {
-            if (_knownRepositories.TryGetValue(girFile, out Model.Repository? repository))
+            if (_knownRepositories.TryGetValue(inputRepository.ToString(), out Model.Repository? repository))
                 return repository;
 
-            repository = Create(girFile);
-            _knownRepositories[girFile] = repository;
+            repository = Create(inputRepository);
+            _knownRepositories[inputRepository.ToString()] = repository;
 
             return repository;
         }
 
-        private Model.Repository Create(GirFile girFile)
+        private Model.Repository Create(Input.Model.Repository inputRepository)
         {
-            Input.Model.Repository xmlRepository = _inputLoader.LoadRepository(girFile);
-            var repository = _repositoryFactory.Create(xmlRepository);
+            var repository = _repositoryFactory.Create(inputRepository);
             ResolveIncludes(repository.Includes);
             Log.Debug($"Created repository {repository.Namespace.Name}.");
             return repository;
@@ -44,7 +41,7 @@ namespace GirLoader.Output
 
         private Model.Repository LoadRepository(Model.Include include)
         {
-            var includeFileInfo = _getGirFile(include);
+            var includeFileInfo = _resolveInclude(include);
             return LoadRepository(includeFileInfo);
         }
     }
