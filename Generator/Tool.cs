@@ -27,7 +27,7 @@ namespace Generator
 
             try
             {
-                new Generator().Write(args.Select(x => new GirFile(x)));
+                new Generator().Write(args.Select(x => new FileInfo(x)));
                 return 0;
             }
             catch (Exception ex)

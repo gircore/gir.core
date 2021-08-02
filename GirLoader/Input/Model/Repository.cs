@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace GirLoader.Input.Model
@@ -13,6 +14,12 @@ namespace GirLoader.Input.Model
         public Namespace? Namespace { get; set; }
 
         [XmlElement("include")]
-        public List<Include> Includes { get; set; } = default!;
+        public List<Include> Includes { get; set; } = new ();
+
+        public override string ToString()
+        {
+            var namespaceName = Namespace?.Name ?? throw new Exception("A repository without a namespace name is not valid");
+            return "Repository: " + namespaceName;
+        }
     }
 }

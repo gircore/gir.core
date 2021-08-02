@@ -21,33 +21,33 @@ namespace GirLoader.Input.Model
         public string? SharedLibrary { get; set; }
 
         [XmlElement("class")]
-        public List<Class> Classes { get; set; } = default!;
+        public List<Class> Classes { get; set; } = new();
 
         [XmlElement("interface")]
-        public List<Interface> Interfaces { get; set; } = default!;
+        public List<Interface> Interfaces { get; set; } = new();
 
         [XmlElement("bitfield")]
-        public List<Enum> Bitfields { get; set; } = default!;
+        public List<Enum> Bitfields { get; set; } = new();
 
         [XmlElement("enumeration")]
-        public List<Enum> Enumerations { get; set; } = default!;
+        public List<Enum> Enumerations { get; set; } = new();
 
         [XmlElement("alias")]
-        public List<Alias> Aliases { get; set; } = default!;
+        public List<Alias> Aliases { get; set; } = new();
 
         [XmlElement("callback")]
-        public List<Callback> Callbacks { get; set; } = default!;
+        public List<Callback> Callbacks { get; set; } = new();
 
         [XmlElement("record")]
-        public List<Record> Records { get; set; } = default!;
+        public List<Record> Records { get; set; } = new();
 
         [XmlElement("function")]
-        public List<Method> Functions { get; set; } = default!;
+        public List<Method> Functions { get; set; } = new();
 
         [XmlElement("union")]
-        public List<Union> Unions { get; set; } = default!;
+        public List<Union> Unions { get; set; } = new();
 
         [XmlElement("constant")]
-        public List<Constant> Constants { get; set; } = default!;
+        public List<Constant> Constants { get; set; } = new();
     }
 }
