@@ -13,7 +13,7 @@ namespace GirLoader
                 defaultNamespace: "http://www.gtk.org/introspection/core/1.0");
 
             var repository = (Input.Model.Repository?) serializer.Deserialize(stream);
-            
+
             if (repository is null)
                 throw new Exception($"Could not deserialize from stream.");
 

@@ -23,7 +23,7 @@ namespace Generator
             Loader.IncludeResolver = IncludeResolver.Resolve;
             var repositories = Loader.Load(projects.Select(x => x.OpenRead().DeserializeGirInputModel())).ToList();
 
-            
+
             var typeRenamer = new TypeRenamer();
             typeRenamer.SetMetadata(repositories.Select(x => x.Namespace));
             typeRenamer.FixClassNameClashes(repositories.Select(x => x.Namespace));

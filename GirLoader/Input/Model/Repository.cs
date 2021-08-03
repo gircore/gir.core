@@ -14,7 +14,7 @@ namespace GirLoader.Input.Model
         public Namespace? Namespace { get; set; }
 
         [XmlElement("include")]
-        public List<Include> Includes { get; set; } = new ();
+        public List<Include> Includes { get; set; } = new();
 
         public override string ToString()
         {
