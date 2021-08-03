@@ -11,8 +11,8 @@ namespace GirLoader.Helper
             // where 'Gtk' is the namespace and '3.0' the version
             var filename = $"{include.Name}-{include.Version}.gir";
 
-            return File.Exists(filename) 
-                ? new FileInfo(filename).OpenRead().DeserializeGirInputModel() 
+            return File.Exists(filename)
+                ? new FileInfo(filename).OpenRead().DeserializeGirInputModel()
                 : null;
         }
     }
