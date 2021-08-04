@@ -17,12 +17,12 @@ namespace GirLoader.Output.Model
             Readable = readable;
         }
 
-        public override IEnumerable<TypeReference> GetTypeReferences()
+        internal override IEnumerable<TypeReference> GetTypeReferences()
         {
             yield return TypeReference;
         }
 
-        public override bool GetIsResolved()
+        internal override bool GetIsResolved()
             => TypeReference.GetIsResolved();
     }
 }

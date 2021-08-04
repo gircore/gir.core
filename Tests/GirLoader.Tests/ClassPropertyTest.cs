@@ -43,7 +43,7 @@ namespace GirLoader.Test
                 .Properties.First();
 
             property.Name.Value.Should().Be(propertyName);
-            property.TypeReference.ResolvedType.Should().BeOfType(resultType);
+            property.TypeReference.Type.Should().BeOfType(resultType);
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GirLoader.Helper;
 
 namespace GirLoader.Output.Model
 {
-    public class Namespace : TypeReferenceProvider
+    public class Namespace
     {
         #region Properties
 
@@ -92,16 +93,16 @@ namespace GirLoader.Output.Model
         public IEnumerable<TypeReference> GetTypeReferences()
         {
             return IEnumerables.Concat(
-                Aliases.GetTypeReferences(),
-                Callbacks.GetTypeReferences(),
-                Classes.GetTypeReferences(),
-                Enumerations.GetTypeReferences(),
-                Bitfields.GetTypeReferences(),
-                Interfaces.GetTypeReferences(),
-                Records.GetTypeReferences(),
-                Functions.GetTypeReferences(),
-                Unions.GetTypeReferences(),
-                Constants.GetTypeReferences()
+                Aliases.SelectMany(x => x.GetTypeReferences()),
+                Callbacks.SelectMany(x => x.GetTypeReferences()),
+                Classes.SelectMany(x => x.GetTypeReferences()),
+                Enumerations.SelectMany(x => x.GetTypeReferences()),
+                Bitfields.SelectMany(x => x.GetTypeReferences()),
+                Interfaces.SelectMany(x => x.GetTypeReferences()),
+                Records.SelectMany(x => x.GetTypeReferences()),
+                Functions.SelectMany(x => x.GetTypeReferences()),
+                Unions.SelectMany(x => x.GetTypeReferences()),
+                Constants.SelectMany(x => x.GetTypeReferences())
             );
         }
 

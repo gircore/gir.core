@@ -30,13 +30,13 @@ namespace GirLoader.Output.Model
             this._fields = fields.ToList();
         }
 
-        public override IEnumerable<TypeReference> GetTypeReferences()
+        internal override IEnumerable<TypeReference> GetTypeReferences()
         {
             var symbolReferences = IEnumerables.Concat(
-                Constructors.GetTypeReferences(),
-                Fields.GetTypeReferences(),
-                Methods.GetTypeReferences(),
-                Functions.GetTypeReferences()
+                Constructors.SelectMany(x => x.GetTypeReferences()),
+                Fields.SelectMany(x => x.GetTypeReferences()),
+                Methods.SelectMany(x => x.GetTypeReferences()),
+                Functions.SelectMany(x => x.GetTypeReferences())
             );
 
             if (GetTypeFunction is { })
@@ -44,15 +44,15 @@ namespace GirLoader.Output.Model
             return symbolReferences;
         }
 
-        public override bool GetIsResolved()
+        internal override bool GetIsResolved()
         {
             if (!(GetTypeFunction?.GetIsResolved() ?? true))
                 return false;
 
-            return Methods.AllResolved()
-                   && Functions.AllResolved()
-                   && Constructors.AllResolved()
-                   && Fields.AllResolved();
+            return Methods.All(x => x.GetIsResolved())
+                   && Functions.All(x => x.GetIsResolved())
+                   && Constructors.All(x => x.GetIsResolved())
+                   && Fields.All(x => x.GetIsResolved());
         }
 
         internal override void Strip()

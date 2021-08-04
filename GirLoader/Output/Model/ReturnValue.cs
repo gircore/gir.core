@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output.Model
 {
-    public class ReturnValue : TransferableAnyType, TypeReferenceProvider
+    public class ReturnValue : TransferableAnyType
     {
         public Transfer Transfer { get; }
         public bool Nullable { get; }

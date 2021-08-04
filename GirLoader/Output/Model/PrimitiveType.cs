@@ -9,10 +9,10 @@ namespace GirLoader.Output.Model
         {
         }
 
-        public override IEnumerable<TypeReference> GetTypeReferences()
+        internal override IEnumerable<TypeReference> GetTypeReferences()
             => Enumerable.Empty<TypeReference>();
 
-        public override bool GetIsResolved()
+        internal override bool GetIsResolved()
             => true;
     }
 }

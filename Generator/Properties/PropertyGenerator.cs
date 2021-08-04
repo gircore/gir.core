@@ -62,10 +62,10 @@ namespace Generator.Properties
             //TODO: Remove this method if all cases are supported
             return property switch
             {
-                { TypeReference: { ResolvedType: { } and String } } => str,
-                { TypeReference: { ResolvedType: { } and PrimitiveValueType } } => str,
-                { TypeReference: { ResolvedType: { } and Enumeration } } => str,
-                { TypeReference: { ResolvedType: { } and Class } } => str,
+                { TypeReference: { Type: { } and String } } => str,
+                { TypeReference: { Type: { } and PrimitiveValueType } } => str,
+                { TypeReference: { Type: { } and Enumeration } } => str,
+                { TypeReference: { Type: { } and Class } } => str,
                 _ => "/*" + str + "*/"
             };
         }

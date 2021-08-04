@@ -12,7 +12,7 @@ namespace GirLoader.Output.Model
 
         public IEnumerable<TypeReference> GetSymbolReferences()
         {
-            var ret = SingleParameters.GetTypeReferences();
+            var ret = SingleParameters.SelectMany(x => x.GetTypeReferences());
 
             if (InstanceParameter is { })
                 ret = ret.Append(InstanceParameter.TypeReference);
@@ -23,7 +23,7 @@ namespace GirLoader.Output.Model
         public bool GetIsResolved()
         {
             var instanceParameterResolved = InstanceParameter is null || InstanceParameter.GetIsResolved();
-            return SingleParameters.AllResolved() && instanceParameterResolved;
+            return SingleParameters.All(x => x.GetIsResolved()) && instanceParameterResolved;
         }
 
         public bool Any()

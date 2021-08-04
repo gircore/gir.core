@@ -2,16 +2,16 @@
 
 namespace GirLoader.Output.Model
 {
-    public abstract class TypeReference : Resolveable
+    public abstract class TypeReference
     {
         #region Properties
         public CTypeReference? CTypeReference { get; }
         public SymbolNameReference? SymbolNameReference { get; }
-        public abstract Type? ResolvedType { get; }
+        public abstract Type? Type { get; }
 
         #endregion
 
-        public TypeReference(SymbolNameReference? symbolNameReference, CTypeReference? ctypeReference)
+        protected TypeReference(SymbolNameReference? symbolNameReference, CTypeReference? ctypeReference)
         {
             CTypeReference = ctypeReference;
             SymbolNameReference = symbolNameReference;
@@ -19,18 +19,18 @@ namespace GirLoader.Output.Model
 
         public Type GetResolvedType()
         {
-            if (ResolvedType is null)
+            if (Type is null)
                 throw new InvalidOperationException($"The {GetType().Namespace} for {SymbolNameReference} has not been resolved.");
 
-            return ResolvedType;
+            return Type;
         }
 
         public override string ToString()
         {
-            return $"CType: {CTypeReference}, OriginalName: {SymbolNameReference}";
+            return $"{nameof(TypeReference)}: {nameof(CTypeReference)}: {CTypeReference}, {nameof(SymbolNameReference)}: {SymbolNameReference}";
         }
 
-        public bool GetIsResolved()
-            => ResolvedType is { };
+        internal bool GetIsResolved()
+            => Type is { };
     }
 }
