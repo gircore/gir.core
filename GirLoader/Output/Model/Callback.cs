@@ -14,7 +14,7 @@ namespace GirLoader.Output.Model
             ParameterList = parameterList;
         }
 
-        public override IEnumerable<TypeReference> GetTypeReferences()
+        internal override IEnumerable<TypeReference> GetTypeReferences()
         {
             return IEnumerables.Concat(
                 ReturnValue.GetTypeReferences(),
@@ -22,7 +22,7 @@ namespace GirLoader.Output.Model
             );
         }
 
-        public override bool GetIsResolved()
+        internal override bool GetIsResolved()
             => ReturnValue.GetIsResolved() && ParameterList.GetIsResolved();
 
         internal override bool Matches(TypeReference typeReference)

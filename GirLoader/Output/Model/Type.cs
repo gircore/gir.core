@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output.Model
 {
-    public abstract class Type : TypeReferenceProvider, Resolveable
+    public abstract class Type
     {
         public Metadata Metadata { get; } = new();
 
@@ -25,7 +25,7 @@ namespace GirLoader.Output.Model
             => Metadata[key]?.ToString() ?? "";
 
         internal abstract bool Matches(TypeReference typeReference);
-        public abstract IEnumerable<TypeReference> GetTypeReferences();
-        public abstract bool GetIsResolved();
+        internal abstract IEnumerable<TypeReference> GetTypeReferences();
+        internal abstract bool GetIsResolved();
     }
 }

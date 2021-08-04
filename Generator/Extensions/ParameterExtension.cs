@@ -35,8 +35,8 @@ namespace Generator
                 (_, { Direction: Direction.Ref, TypeReference: ArrayTypeReference }) => "",
 
                 //Native records (SafeHandles) are not supporting ref
-                (Target.Native, { Direction: Direction.Ref, TypeReference: { ResolvedType: Record } }) => "",
-                (Target.Native, { Direction: Direction.Out, CallerAllocates: true, TypeReference: { ResolvedType: Record } }) => "",
+                (Target.Native, { Direction: Direction.Ref, TypeReference: { Type: Record } }) => "",
+                (Target.Native, { Direction: Direction.Out, CallerAllocates: true, TypeReference: { Type: Record } }) => "",
 
                 (_, { Direction: Direction.Ref }) => "ref ",
                 (_, { Direction: Direction.Out, CallerAllocates: true }) => "ref ",

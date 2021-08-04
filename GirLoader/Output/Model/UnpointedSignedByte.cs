@@ -1,8 +1,8 @@
 ﻿namespace GirLoader.Output.Model
 {
-    public class UnpointedSignedByte : PrimitiveValueType
+    public class UnpointedSignedByte : SignedByte
     {
-        public UnpointedSignedByte(string ctype) : base(new CType(ctype), new TypeName("sbyte")) { }
+        public UnpointedSignedByte(string ctype) : base(ctype) { }
 
         internal override bool Matches(TypeReference typeReference)
         {

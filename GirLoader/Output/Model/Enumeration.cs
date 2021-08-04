@@ -15,11 +15,11 @@ namespace GirLoader.Output.Model
             Members = members;
         }
 
-        public override IEnumerable<TypeReference> GetTypeReferences()
+        internal override IEnumerable<TypeReference> GetTypeReferences()
             => Members.SelectMany(x => x.GetTypeReferences());
 
-        public override bool GetIsResolved()
-            => Members.AllResolved();
+        internal override bool GetIsResolved()
+            => Members.All(x => x.GetIsResolved());
 
         internal override bool Matches(TypeReference typeReference)
         {
