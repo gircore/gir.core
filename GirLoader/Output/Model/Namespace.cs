@@ -28,8 +28,8 @@ namespace GirLoader.Output.Model
         private readonly List<Enumeration> _enumerations = new();
         public IEnumerable<Enumeration> Enumerations => _enumerations;
 
-        private readonly List<Enumeration> _bitfields = new();
-        public IEnumerable<Enumeration> Bitfields => _bitfields;
+        private readonly List<Bitfield> _bitfields = new();
+        public IEnumerable<Bitfield> Bitfields => _bitfields;
 
         private readonly List<Interface> _interfaces = new();
         public IEnumerable<Interface> Interfaces => _interfaces;
@@ -69,7 +69,7 @@ namespace GirLoader.Output.Model
         internal void AddEnumeration(Enumeration enumeration)
             => _enumerations.Add(enumeration);
 
-        internal void AddBitfield(Enumeration enumeration)
+        internal void AddBitfield(Bitfield enumeration)
             => _bitfields.Add(enumeration);
 
         internal void AddInterface(Interface @interface)

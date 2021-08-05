@@ -171,7 +171,7 @@ namespace GObject
         public long GetLong() => Native.Value.Methods.GetLong(Handle);
         public double GetDouble() => Native.Value.Methods.GetDouble(Handle);
         public float GetFloat() => Native.Value.Methods.GetFloat(Handle);
-        public long GetFlags() => Native.Value.Methods.GetFlags(Handle);
+        public ulong GetFlags() => Native.Value.Methods.GetFlags(Handle);
         public long GetEnum() => Native.Value.Methods.GetEnum(Handle);
         public string? GetString() => StringHelper.ToNullableStringUtf8(Native.Value.Methods.GetString(Handle));
 

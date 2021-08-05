@@ -27,7 +27,7 @@ namespace GirLoader.Input.Model
         public List<Interface> Interfaces { get; set; } = new();
 
         [XmlElement("bitfield")]
-        public List<Enum> Bitfields { get; set; } = new();
+        public List<Bitfield> Bitfields { get; set; } = new();
 
         [XmlElement("enumeration")]
         public List<Enum> Enumerations { get; set; } = new();
