@@ -31,7 +31,7 @@ namespace GirLoader.Test
                     Name = name
                 }
             });
-            
+
             return Loader.Load(new[] { repository }).First()
                 .Namespace.Classes.First()
                 .Properties.First();
@@ -41,7 +41,7 @@ namespace GirLoader.Test
         public void PropertyNameShouldBeLoaded()
         {
             var propertyName = "MyPropName";
-            
+
             var repository = GetRepositoryWithStubClass();
             repository.Namespace.Classes.First().Properties.Add(new()
             {
@@ -51,7 +51,7 @@ namespace GirLoader.Test
                     CType = "int"
                 }
             });
-            
+
             var property = Loader.Load(new[] { repository }).First()
                 .Namespace.Classes.First()
                 .Properties.First();
@@ -137,7 +137,7 @@ namespace GirLoader.Test
             var property = GetLoadedProperty(ctype, null);
 
             property.TypeReference.CTypeReference!.IsPointer.Should().Be(isPointer);
-            
+
             var type = property.TypeReference.Type;
             type.Should().BeAssignableTo(resultType);
             type.Should().BeAssignableTo<Output.Model.PrimitiveValueType>();
