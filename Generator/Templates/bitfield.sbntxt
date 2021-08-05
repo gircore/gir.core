@@ -1,9 +1,10 @@
-{{~ #Enumerations are passed as long via the ffi ~}}
+{{~ #Bitfields are passed as ulong via the ffi ~}}
 using System;
 
 namespace {{ namespace.name }}
 {
-    public enum {{ name }} : long
+    [Flags]
+    public enum {{ name }} : ulong
     {
         {{~ for member in members }}
         {{ include 'member.sbntxt' member ~}}

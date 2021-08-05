@@ -16,6 +16,7 @@ namespace GirLoader.Output
     [Register(typeof(Model.ParameterListFactory))]
     [Register(typeof(Model.CallbackFactory))]
     [Register(typeof(Model.EnumerationFactory))]
+    [Register(typeof(Model.BitfieldFactory))]
     [Register(typeof(Model.InterfaceFactory))]
     [Register(typeof(Model.RecordFactory))]
     [Register(typeof(Model.MethodFactory))]

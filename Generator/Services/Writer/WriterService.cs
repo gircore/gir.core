@@ -76,7 +76,7 @@ namespace Generator.Services.Writer
             _writeTypesService.Write(
                 projectName: ns.ToCanonicalName(),
                 outputDir: outputDir,
-                templateName: "enum.sbntxt",
+                templateName: "bitfield.sbntxt",
                 subfolder: Folder.Managed.Enums,
                 types: ns.Bitfields,
                 @namespace: ns

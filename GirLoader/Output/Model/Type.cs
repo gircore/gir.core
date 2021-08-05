@@ -27,5 +27,8 @@ namespace GirLoader.Output.Model
         internal abstract bool Matches(TypeReference typeReference);
         internal abstract IEnumerable<TypeReference> GetTypeReferences();
         internal abstract bool GetIsResolved();
+
+        public override string ToString()
+            => Name;
     }
 }
