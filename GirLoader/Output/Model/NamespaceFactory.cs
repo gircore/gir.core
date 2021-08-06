@@ -16,7 +16,7 @@ namespace GirLoader.Output.Model
         private readonly ConstantFactory _constantFactory;
         private readonly UnionFactory _unionFactory;
 
-        public NamespaceFactory(ClassFactory classFactory, AliasFactory aliasFactory, CallbackFactory callbackFactory, EnumerationFactory enumerationFactory, BitfieldFactory bitfieldFactory,InterfaceFactory interfaceFactory, RecordFactory recordFactory, MethodFactory methodFactory, ConstantFactory constantFactory, UnionFactory unionFactory)
+        public NamespaceFactory(ClassFactory classFactory, AliasFactory aliasFactory, CallbackFactory callbackFactory, EnumerationFactory enumerationFactory, BitfieldFactory bitfieldFactory, InterfaceFactory interfaceFactory, RecordFactory recordFactory, MethodFactory methodFactory, ConstantFactory constantFactory, UnionFactory unionFactory)
         {
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;
