@@ -28,7 +28,7 @@ namespace GirLoader.Output.Model
 
                 return namespaceOk && typeReference.SymbolNameReference.SymbolName == OriginalName;
             }
-            
+
             if (typeReference.CTypeReference is not null)
                 return typeReference.CTypeReference.CType == CType;
 
