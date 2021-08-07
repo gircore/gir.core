@@ -37,7 +37,7 @@ namespace Gio
                 var ret = Native.DBusConnection.Instance.Methods.CallFinish(sourceObject.Handle, (res as GObject.Object).Handle, out var error);
                 Error.ThrowOnError(error);
 
-                tcs.SetResult(Variant.__FactoryNew(ret));
+                tcs.SetResult(new Variant(ret));
             }
 
             //TODO: Use on time CallbackHandler
@@ -55,7 +55,7 @@ namespace Gio
 
             Error.ThrowOnError(error);
 
-            return Variant.__FactoryNew(ret);
+            return new Variant(ret);
         }
 
         public override void Dispose()

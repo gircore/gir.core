@@ -11,7 +11,7 @@ namespace Gtk
             Native.TreeSelection.Instance.Methods.GetSelected(Handle, out var modelPtr, iterHandle);
 
             model = ObjectWrapper.WrapHandle<TreeModel>(modelPtr, false);
-            iter = TreeIter.__FactoryNew(iterHandle);
+            iter = new TreeIter(iterHandle);
         }
     }
 }

@@ -71,15 +71,15 @@ namespace Generator
                 { Type: String } when (transfer == Transfer.None) && (transferable is ReturnValue) => $"GLib.Native.StringHelper.ToStringUtf8({fromParam})",
 
                 // Record Conversions (safe handles)
-                ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: true } } } when useSafeHandle => $"{fromParam}.Select(x => {r.Write(Target.Managed, currentNamespace)}.__FactoryNew(x)).ToArray()",
-                ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: true } } when useSafeHandle => $"{r.Write(Target.Managed, currentNamespace)}.__FactoryNew({fromParam})",
+                ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: true } } } when useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
+                ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: true } } when useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
                
                 // Record Conversions (raw pointers)
-                ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: true } } } when !useSafeHandle => $"{fromParam}.Select(x => {r.Write(Target.Managed, currentNamespace)}.__FactoryNew(new {SafeHandleFromRecord(r)}(x))).ToArray()",
-                ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: true } } when !useSafeHandle => $"{r.Write(Target.Managed, currentNamespace)}.__FactoryNew(new {SafeHandleFromRecord(r)}({fromParam}))",
+                ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: true } } } when !useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
+                ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: true } } when !useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
 
                 //Record Conversions without pointers are not working yet
-                ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: false } } } => $"({qualifiedType}[]) {fromParam}.Select(x => {qualifiedType}.__FactoryNew({SafeHandleFromRecord(r, true)}(x))).ToArray();",
+                ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: false } } } => $"({qualifiedType}[]) {fromParam}.Select(x => new {qualifiedType}({SafeHandleFromRecord(r, true)}(x))).ToArray();",
                 ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: false } } => $"({r.Write(Target.Managed, currentNamespace)}) default!; //TODO: Fixme",
 
                 // Class Conversions

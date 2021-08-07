@@ -168,9 +168,7 @@ namespace GObject
             // method which plays nice with AOT compilation.
             
             // TODO: Should this be GetBoxed/TakeBoxed/DupBoxed? 
-            return RecordWrapper.WrapHandle(Native.Value.Methods.GetBoxed(Handle), new Type(type));
-
-            throw new NotSupportedException($"Can't get boxed value. Type '{new Type((nuint)type)}' is not supported.");
+            return BoxedWrapper.WrapHandle(Native.Value.Methods.GetBoxed(Handle), new Type(type));
         }
 
         public Object? GetObject()
