@@ -12,7 +12,7 @@ namespace Generator
                 { Callback: { } c } => c.Name,
 
                 // A native field which points to a record should never be a safehandle but always an IntPtr
-                { TypeReference: { ResolvedType: Record, CTypeReference: { IsPointer: true } } } => "IntPtr",
+                { TypeReference: { Type: Record, CTypeReference: { IsPointer: true } } } => "IntPtr",
 
                 _ => field.WriteType(Target.Native, currentNamespace)
             };

@@ -18,28 +18,28 @@ namespace GirLoader.Input.Model
         public string? TypeName { get; set; }
 
         [XmlElement("method")]
-        public List<Method> Methods { get; set; } = default!;
+        public List<Method> Methods { get; set; } = new();
 
         [XmlElement("constructor")]
-        public List<Method> Constructors { get; set; } = default!;
+        public List<Method> Constructors { get; set; } = new();
 
         [XmlElement("function")]
-        public List<Method> Functions { get; set; } = default!;
+        public List<Method> Functions { get; set; } = new();
 
         [XmlAttribute("get-type", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public string? GetTypeFunction { get; set; }
 
         [XmlElement("property")]
-        public List<Property> Properties { get; set; } = default!;
+        public List<Property> Properties { get; set; } = new();
 
         [XmlElement("implements")]
-        public List<Implement> Implements { get; set; } = default!;
+        public List<Implement> Implements { get; set; } = new();
 
         [XmlElement("signal", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
-        public List<Signal> Signals { get; set; } = default!;
+        public List<Signal> Signals { get; set; } = new();
 
         [XmlElement("field")]
-        public List<Field> Fields { get; set; } = default!;
+        public List<Field> Fields { get; set; } = new();
 
         [XmlAttribute("parent")]
         public string? Parent { get; set; }

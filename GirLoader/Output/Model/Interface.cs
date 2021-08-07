@@ -26,13 +26,13 @@ namespace GirLoader.Output.Model
             _properties = properties.ToList();
         }
 
-        public override IEnumerable<TypeReference> GetTypeReferences()
+        internal override IEnumerable<TypeReference> GetTypeReferences()
         {
             return IEnumerables.Concat(
                 Implements,
                 GetTypeFunction.GetTypeReferences(),
-                Methods.GetTypeReferences(),
-                Functions.GetTypeReferences()
+                Methods.SelectMany(x => x.GetTypeReferences()),
+                Functions.SelectMany(x => x.GetTypeReferences())
             );
         }
 
@@ -42,16 +42,16 @@ namespace GirLoader.Output.Model
             _functions.RemoveAll(SymbolIsNotResolved);
         }
 
-        public override bool GetIsResolved()
+        internal override bool GetIsResolved()
         {
-            if (!Implements.AllResolved())
+            if (!Implements.All(x => x.GetIsResolved()))
                 return false;
 
             if (!GetTypeFunction.GetIsResolved())
                 return false;
 
-            return Methods.AllResolved()
-                   && Functions.AllResolved();
+            return Methods.All(x => x.GetIsResolved())
+                   && Functions.All(x => x.GetIsResolved());
         }
 
         private bool SymbolIsNotResolved(Symbol symbol)

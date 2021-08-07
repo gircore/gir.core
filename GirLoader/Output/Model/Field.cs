@@ -35,7 +35,7 @@ namespace GirLoader.Output.Model
             resolveableTypeReference.ResolveAs(Callback);
         }
 
-        public override IEnumerable<TypeReference> GetTypeReferences()
+        internal override IEnumerable<TypeReference> GetTypeReferences()
         {
             // If the callback is not null this means the symbol reference
             // of this field was already resolved automatically. Meaning we
@@ -51,7 +51,7 @@ namespace GirLoader.Output.Model
                 return new List<TypeReference>() { TypeReference };
         }
 
-        public override bool GetIsResolved()
+        internal override bool GetIsResolved()
             => TypeReference.GetIsResolved() && (Callback?.GetIsResolved() ?? true);
     }
 }

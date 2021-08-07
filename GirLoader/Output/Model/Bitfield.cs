@@ -4,11 +4,11 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output.Model
 {
-    public class Enumeration : ComplexType
+    public class Bitfield : ComplexType
     {
         public IEnumerable<Member> Members { get; }
 
-        public Enumeration(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<Member> members) : base(repository, cType, name, originalName)
+        public Bitfield(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<Member> members) : base(repository, cType, name, originalName)
         {
             Members = members;
         }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Generator.Services;
 using Generator.Services.Writer;
 using GirLoader;
+using GirLoader.Input;
 using GirLoader.Output.Model;
 using StrongInject;
 
@@ -16,10 +17,12 @@ namespace Generator
         public bool UseAsync { get; init; } = true;
         public bool GenerateDocComments { get; init; } = false;
 
-        public void Write(IEnumerable<GirFile> projects)
+        public void Write(IEnumerable<FileInfo> projects)
         {
             //Loader.EnableVerboseOutput(); //TODO: Configure via settings
-            var repositories = Loader.Load(FileResolver.ResolveFile, projects).ToList();
+            Loader.IncludeResolver = IncludeResolver.Resolve;
+            var repositories = Loader.Load(projects.Select(x => x.OpenRead().DeserializeGirInputModel())).ToList();
+
 
             var typeRenamer = new TypeRenamer();
             typeRenamer.SetMetadata(repositories.Select(x => x.Namespace));

@@ -85,25 +85,25 @@ namespace Generator
                 return false;
 
             // No delegate return values
-            if (_method.ReturnValue.TypeReference.ResolvedType is Callback)
+            if (_method.ReturnValue.TypeReference.Type is Callback)
                 return false;
 
             // No union parameters
-            if (_managedParams.Any(param => param.TypeReference.ResolvedType is Union))
+            if (_managedParams.Any(param => param.TypeReference.Type is Union))
                 return false;
 
             // No union return values
-            if (_method.ReturnValue.TypeReference.ResolvedType is Union)
+            if (_method.ReturnValue.TypeReference.Type is Union)
                 return false;
 
             // No GObject array parameters
             if (_managedParams.Any(param =>
-                param.TypeReference.ResolvedType is Class &&
+                param.TypeReference.Type is Class &&
                 param.TypeReference is ArrayTypeReference))
                 return false;
 
             // No GObject array return values
-            if (_method.ReturnValue.TypeReference.ResolvedType is Class &&
+            if (_method.ReturnValue.TypeReference.Type is Class &&
                 _method.ReturnValue.TypeReference is ArrayTypeReference)
                 return false;
 

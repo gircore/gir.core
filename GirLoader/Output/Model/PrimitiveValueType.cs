@@ -12,8 +12,8 @@ namespace GirLoader.Output.Model
         {
             return typeReference switch
             {
-                { CTypeReference: { } cr } => cr.CType == CType,
                 { SymbolNameReference: { SymbolName: { } sn } } => sn.Value == CType?.Value,
+                { CTypeReference: { } cr } => cr.CType == CType,
                 _ => throw new Exception($"Can't match {GetType().Name} with {nameof(TypeReference)} {typeReference}")
             };
         }

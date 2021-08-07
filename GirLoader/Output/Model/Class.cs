@@ -39,17 +39,17 @@ namespace GirLoader.Output.Model
             IsFundamental = isFundamental;
         }
 
-        public override IEnumerable<TypeReference> GetTypeReferences()
+        internal override IEnumerable<TypeReference> GetTypeReferences()
         {
             var symbolReferences = IEnumerables.Concat(
                 Implements,
                 GetTypeFunction.GetTypeReferences(),
-                Constructors.GetTypeReferences(),
-                Methods.GetTypeReferences(),
-                Functions.GetTypeReferences(),
-                Properties.GetTypeReferences(),
-                Fields.GetTypeReferences(),
-                Signals.GetTypeReferences()
+                Constructors.SelectMany(x => x.GetTypeReferences()),
+                Methods.SelectMany(x => x.GetTypeReferences()),
+                Functions.SelectMany(x => x.GetTypeReferences()),
+                Properties.SelectMany(x => x.GetTypeReferences()),
+                Fields.SelectMany(x => x.GetTypeReferences()),
+                Signals.SelectMany(x => x.GetTypeReferences())
             );
 
             if (Parent is { })
@@ -58,23 +58,23 @@ namespace GirLoader.Output.Model
             return symbolReferences;
         }
 
-        public override bool GetIsResolved()
+        internal override bool GetIsResolved()
         {
             if (Parent is { } && !Parent.GetIsResolved())
                 return false;
 
-            if (!Implements.AllResolved())
+            if (!Implements.All(x => x.GetIsResolved()))
                 return false;
 
             if (!GetTypeFunction.GetIsResolved())
                 return false;
 
-            return Methods.AllResolved()
-                   && Functions.AllResolved()
-                   && Constructors.AllResolved()
-                   && Properties.AllResolved()
-                   && Fields.AllResolved()
-                   && Signals.AllResolved();
+            return Methods.All(x => x.GetIsResolved())
+                   && Functions.All(x => x.GetIsResolved())
+                   && Constructors.All(x => x.GetIsResolved())
+                   && Properties.All(x => x.GetIsResolved())
+                   && Fields.All(x => x.GetIsResolved())
+                   && Signals.All(x => x.GetIsResolved());
         }
 
         internal override void Strip()

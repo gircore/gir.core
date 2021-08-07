@@ -29,7 +29,7 @@ namespace Generator
 
             var implementString = string.Join(
                 separator: ",",
-                values: implements.Select(x => x.ResolvedType?.Write(Target.Managed, currentNamespace))
+                values: implements.Select(x => x.Type?.Write(Target.Managed, currentNamespace))
             );
 
             if (!string.IsNullOrWhiteSpace(implementString))

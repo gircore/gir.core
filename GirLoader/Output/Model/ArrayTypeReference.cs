@@ -8,7 +8,7 @@
         public int? FixedSize { get; init; }
         public TypeReference TypeReference { get; }
 
-        public override Type? ResolvedType => TypeReference.ResolvedType;
+        public override Type? Type => TypeReference.Type;
 
         public ArrayTypeReference(TypeReference typeReference, SymbolNameReference? symbolNameReference, CTypeReference? ctype) : base(symbolNameReference, ctype)
         {

@@ -12,7 +12,7 @@ namespace GirLoader.Output.Model
             _memberFactory = memberFactory;
         }
 
-        public Enumeration Create(Input.Model.Enum @enum, Repository repository, bool hasFlags)
+        public Enumeration Create(Input.Model.Enum @enum, Repository repository)
         {
             if (@enum.Name is null)
                 throw new Exception("Enum has no name");
@@ -24,7 +24,6 @@ namespace GirLoader.Output.Model
                 repository: repository,
                 originalName: new TypeName(@enum.Name),
                 name: new TypeName(@enum.Name),
-                hasFlags: hasFlags,
                 members: @enum.Members.Select(_memberFactory.Create).ToList(),
                 cType: new CType(@enum.Type)
             );

@@ -14,14 +14,14 @@ namespace GirLoader.Output
             _repositoryResolver = repositoryResolver;
         }
 
-        internal IEnumerable<Model.Repository> LoadRepositories(IEnumerable<GirFile> files)
+        internal IEnumerable<Model.Repository> LoadRepositories(IEnumerable<Input.Model.Repository> inputRepositories)
         {
-            Log.Information($"Initialising with {files.Count()} toplevel project(s)");
+            Log.Information($"Initialising with {inputRepositories.Count()} toplevel repositories");
 
-            var repositories = files.Select(_repositoryLoader.LoadRepository);
-            ResolveRepositories(repositories);
+            var outputRepositories = inputRepositories.Select(_repositoryLoader.LoadRepository);
+            ResolveRepositories(outputRepositories);
 
-            return repositories;
+            return outputRepositories;
         }
 
         private void ResolveRepositories(IEnumerable<Model.Repository> repositories)

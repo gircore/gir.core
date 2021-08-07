@@ -62,17 +62,17 @@ namespace Generator
 
                 // Array without length and no transfer of type string. We assume null terminated array, which should
                 // be marshaled as a SafeHandle: We do not need an attribute.
-                { TypeReference: ArrayTypeReference { Length: null }, Transfer: Transfer.None, TypeReference: { ResolvedType: String } } => string.Empty,
+                { TypeReference: ArrayTypeReference { Length: null }, Transfer: Transfer.None, TypeReference: { Type: String } } => string.Empty,
 
                 // Marshal as a UTF-8 encoded string
-                { TypeReference: { ResolvedType: Utf8String } } => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
+                { TypeReference: { Type: Utf8String } } => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
 
                 // Marshal as a null-terminated array of ANSI characters
                 // TODO: This is likely incorrect:
                 //  - GObject introspection specifies that Windows should use
                 //    UTF-8 and Unix should use ANSI. Does using ANSI for
                 //    everything cause problems here?
-                { TypeReference: { ResolvedType: PlatformString } } => "[MarshalAs(UnmanagedType.LPStr)] ",
+                { TypeReference: { Type: PlatformString } } => "[MarshalAs(UnmanagedType.LPStr)] ",
 
                 String => throw new NotSupportedException($"Unknown {nameof(String)} type - cannot create attribute"),
 
