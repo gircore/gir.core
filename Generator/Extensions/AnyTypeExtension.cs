@@ -37,7 +37,7 @@ namespace Generator
                 // References to records which are not using a pointer
                 { TypeReference: ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: false } } } } => GetStructName(r, currentNamespace) + "[]",
                 { TypeReference: ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: null } } } => GetStructName(r, currentNamespace) + "[]",
-                { TypeReference: { ResolvedType: Record r, CTypeReference: { IsPointer: false } } } => GetStructName(r, currentNamespace),
+                { TypeReference: { Type: Record r, CTypeReference: { IsPointer: false } } } => GetStructName(r, currentNamespace),
                 
                 // References to records which are using a pointer
                 { TypeReference: ArrayTypeReference { Type: Record, TypeReference: { CTypeReference: { IsPointer: true } } } } => "IntPtr[]", //Array of SafeHandle not supported by runtime
@@ -46,7 +46,7 @@ namespace Generator
                 // References to unions which are not using a pointer
                 { TypeReference: ArrayTypeReference { Type: Union u, TypeReference: { CTypeReference: { IsPointer: false } } } } => GetStructName(u, currentNamespace) + "[]",
                 { TypeReference: ArrayTypeReference { Type: Union u, TypeReference: { CTypeReference: null } } } => GetStructName(u, currentNamespace) + "[]",
-                { TypeReference: { ResolvedType: Union u, CTypeReference: { IsPointer: false } } } => GetStructName(u, currentNamespace),
+                { TypeReference: { Type: Union u, CTypeReference: { IsPointer: false } } } => GetStructName(u, currentNamespace),
                 
                 // References to unions which are using a pointer
                 { TypeReference: ArrayTypeReference { Type: Union, TypeReference: { CTypeReference: { IsPointer: true } } } } => "IntPtr[]", //Array of SafeHandle not supported by runtime
@@ -57,8 +57,8 @@ namespace Generator
                 { TypeReference: { Type: PrimitiveValueType s } } => s.Write(Target.Native, currentNamespace),
 
                 // Enumerations - Marshal directly
-                { TypeReference: ArrayTypeReference { ResolvedType: Enumeration } } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace) + "[]",
-                { TypeReference: { ResolvedType: Enumeration } } => anyType.TypeReference.ResolvedType.Write(Target.Native, currentNamespace),
+                { TypeReference: ArrayTypeReference { Type: Enumeration } } => anyType.TypeReference.Type.Write(Target.Native, currentNamespace) + "[]",
+                { TypeReference: { Type: Enumeration } } => anyType.TypeReference.Type.Write(Target.Native, currentNamespace),
                 
                 // Short path for strings as strings are pointers which should not be handled as pointers
                 { TypeReference: { Type: String r } } => r.Name,
