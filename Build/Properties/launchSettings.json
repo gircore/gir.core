@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "Build": {
-      "commandName": "Project",
-      "commandLineArgs": "-- --disable-async",
-      "workingDirectory": "C:\\Users\\mjake\\Documents\\Projects\\gir.core\\Build"
-    }
-  }
-}
