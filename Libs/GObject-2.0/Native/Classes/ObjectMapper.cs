@@ -10,6 +10,8 @@ namespace GObject.Native
     {
         private static readonly Dictionary<IntPtr, ToggleRef> WrapperObjects = new();
 
+        public static int ObjectCount => WrapperObjects.Count;
+        
         public static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : class, IHandle
         {
             if (WrapperObjects.TryGetValue(handle, out ToggleRef? weakRef))
@@ -40,13 +42,7 @@ namespace GObject.Native
             lock (WrapperObjects)
             {
                 if (WrapperObjects.Remove(handle, out var toggleRef))
-                {
-                    Debug.Assert(
-                        condition: toggleRef.Object != null,
-                        message: "The object must be alive when the toggle ref is triggered"
-                    );
-                    toggleRef.Dispose();   
-                }
+                    toggleRef.Dispose();
             }
             
             Debug.WriteLine($"Unmapped Object: Handle '{handle}'.");

@@ -103,7 +103,5 @@ namespace GObject
             _signalRegistry.Dispose();
             _handle.Dispose();
         }
-
-        ~Object() => Dispose();
     }
 }
