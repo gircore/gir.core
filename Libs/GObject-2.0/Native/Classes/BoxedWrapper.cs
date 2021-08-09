@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using GLib;
 
 namespace GObject.Native
 {
@@ -44,13 +42,11 @@ namespace GObject.Native
         
         private static MethodInfo? GetSecretFactoryMethod(System.Type type)
         {
-            // Create using 'IntPtr' constructor
-            MethodInfo? ctor = type.GetMethod("__FactoryNew",
-                System.Reflection.BindingFlags.NonPublic
-                | System.Reflection.BindingFlags.Static,
-                null, new[] { typeof(IntPtr) }, null
-            );
-            return ctor;
+            return type.GetMethods(
+                System.Reflection.BindingFlags.Static
+                | System.Reflection.BindingFlags.DeclaredOnly
+                | System.Reflection.BindingFlags.NonPublic
+            ).FirstOrDefault(x => x.GetCustomAttribute<ConstructAttribute>() is { });
         }
         
         private static ConstructorInfo? GetBoxedConstructor(System.Type type)

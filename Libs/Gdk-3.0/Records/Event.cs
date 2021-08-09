@@ -5,8 +5,9 @@ namespace Gdk
 {
     public partial class Event
     {
-        //TODO: This method is our "secret factory method". it gets called via reflection.
-        //See BoxedWrapper.cs
+        // TODO: Workaround as long as we need GDK3 or
+        // do not create instances from safe handles
+        [GObject.Construct]
         private static Event __FactoryNew(IntPtr ptr)
         {
             var ev = Marshal.PtrToStructure<Native.EventAny.Struct>(ptr);
