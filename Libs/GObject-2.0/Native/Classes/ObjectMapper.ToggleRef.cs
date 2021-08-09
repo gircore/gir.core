@@ -80,7 +80,6 @@ namespace GObject.Native
                         _reference = weakObj;
                     else
                         throw new Exception("Could not toggle reference to strong. It is garbage collected.");
-
                 }
                 else if (isLastRef && _reference is not WeakReference)
                 {

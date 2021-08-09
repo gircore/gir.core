@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -77,6 +78,7 @@ namespace GObject
         [MemberNotNull(nameof(_signalRegistry))]
         protected virtual void Initialize()
         {
+            Debug.WriteLine($"Initialising Object: Address {_handle.Handle}, Type {GetType()}.");
             _signalRegistry = new SignalRegistry(this);
         }
 
@@ -97,6 +99,7 @@ namespace GObject
 
         public virtual void Dispose()
         {
+            Debug.WriteLine($"Disposing Object: Address {_handle.Handle}, Type {GetType()}.");
             _signalRegistry.Dispose();
             _handle.Dispose();
         }

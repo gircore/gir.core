@@ -73,13 +73,13 @@ namespace Generator
                 // Record Conversions (safe handles)
                 ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: true } } } when useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
                 ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: true } } when useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
-
+               
                 // Record Conversions (raw pointers)
                 ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: true } } } when !useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
                 ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: true } } when !useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",
 
                 //Record Conversions without pointers are not working yet
-                ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: false } } } => $"({r.Write(Target.Managed, currentNamespace)}[]) default!; //TODO: Fixme",
+                ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: false } } } => $"({qualifiedType}[]) {fromParam}.Select(x => new {qualifiedType}({SafeHandleFromRecord(r, true)}(x))).ToArray();",
                 ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: false } } => $"({r.Write(Target.Managed, currentNamespace)}) default!; //TODO: Fixme",
 
                 // Class Conversions
@@ -97,9 +97,9 @@ namespace Generator
             };
         }
 
-        private static string SafeHandleFromRecord(Record r)
+        private static string SafeHandleFromRecord(Record r, bool managedHandle = false)
         {
-            var type = r.GetMetadataString("SafeHandleRefName");
+            var type = r.GetMetadataString(managedHandle ? "SafeHandleRefManagedFunc" : "SafeHandleRefName");
             var nspace = $"{r.Repository.Namespace}.Native";
             return nspace + "." + type;
         }

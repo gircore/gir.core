@@ -87,12 +87,19 @@ namespace Generator
             var index = 0;
             foreach (var argument in parameterList.GetParameters())
             {
-                index += 1;
-                var type = argument.WriteType(Target.Native, currentNamespace);
-                var name = new GirLoader.Helper.String(argument.Name).ToPascalCase();
+                try
+                {
+                    index += 1;
+                    var type = argument.WriteType(Target.Managed, currentNamespace);
+                    var name = new GirLoader.Helper.String(argument.Name).ToPascalCase();
 
-                builder.AppendLine($"//TODO: public {type} {name} => Args[{index}].Extract<{type}>();");
-                builder.AppendLine($"public string {name} => \"\";");
+                    builder.AppendLine($"public {type} {name} => Args[{index}].Extract<{type}>();");
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Could not write signal properties for {argument.Name}: {e.Message}");
+                    throw;
+                }
             }
 
             return builder.ToString();

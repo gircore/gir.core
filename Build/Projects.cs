@@ -35,16 +35,18 @@ namespace Build
         private const string GTK3_WINDOW = SAMPLE + "Gtk3/Window";
         private const string GTK3_DECLARATIVE_UI = SAMPLE + "Gtk3/DeclarativeUi";
         private const string GTK3_ABOUT_DIALOG = SAMPLE + "Gtk3/AboutDialog";
-
+        private const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
+        private const string GTK3_DRAWINGAREA = SAMPLE + "Gtk3/DrawingArea";
+        private const string GTK3_TEXTEDITOR = SAMPLE + "Gtk3/TextEditor";
+        
         // private const string DBUS_SAMPLE = SAMPLE + "DBus/";
         // private const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
         // private const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
         // private const string GTK3_BUILDER_SAMPLE = SAMPLE + "Gtk3/Builder";
-        // private const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
+
         // private const string GTK3_COMPOSITE_TEMPLATE_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/UsingSourceGenerator";
         // private const string GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/NoSourceGenerator";
         // private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
-        // private const string GDKPIXBUF_TEST_MEMORY_LEAKS = SAMPLE + "GdkPixbuf/TestMemoryLeaks";
 
         private const string INTEGRATION = "../Integration/";
 
@@ -65,7 +67,10 @@ namespace Build
             GDK_PIXBUF_TEST_MEMORY_LEAKS,
             GTK3_WINDOW,
             GTK3_DECLARATIVE_UI,
-            GTK3_ABOUT_DIALOG
+            GTK3_ABOUT_DIALOG,
+            GTK3_QUICKSTART,
+            GTK3_DRAWINGAREA,
+            GTK3_TEXTEDITOR
         };
 
         public static IEnumerable<Project> AllLibraries = new[]

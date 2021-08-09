@@ -21,6 +21,8 @@ namespace {{ namespace.name }}
         // Override this to perform additional steps in the constructor
         partial void Initialize();
         
+        public {{ $record_name }}(IntPtr ptr) : this(new {{$safe_handle}}(ptr)){ }
+        
         public {{ $record_name }}({{ $safe_handle }} handle)
         {
             _handle = handle;

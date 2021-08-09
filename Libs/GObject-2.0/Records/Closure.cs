@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace GObject
@@ -6,12 +7,17 @@ namespace GObject
     //TODO: This should be in the native namespace. It does not belong into the managed api. We have events to handle this.
     public partial class Closure : IDisposable
     {
-        private readonly ClosureMarshalCallHandlerWorkaround _closureMarshalCallHandler;
+        // A call handler keeps the delegate alive for the
+        // lifetime of the call handler. As we save it as a
+        // field here, the delegate will match this class' lifetime.
+        private readonly ClosureMarshalCallHandler _closureMarshalCallHandler;
 
-        internal Closure(Action action) //TODO: Restore: ClosureMarshal action)
+        internal Closure(ClosureMarshal action)
         {
-            _closureMarshalCallHandler = new ClosureMarshalCallHandlerWorkaround(action);
+            _closureMarshalCallHandler = new ClosureMarshalCallHandler(action);
             _handle = Native.Closure.Methods.NewSimple((uint) Marshal.SizeOf(typeof(GObject.Native.Closure.Struct)), IntPtr.Zero);
+            
+            Debug.WriteLine($"Instantiating Closure: Address {_handle.DangerousGetHandle()}.");
 
             Native.Closure.Methods.Ref(_handle);
             Native.Closure.Methods.Sink(_handle);
@@ -20,6 +26,8 @@ namespace GObject
 
         public void Dispose()
         {
+            Debug.WriteLine($"Disposing Closure: Address {_handle.DangerousGetHandle()}.");
+            
             _closureMarshalCallHandler.Dispose();
             _handle.Dispose();
         }

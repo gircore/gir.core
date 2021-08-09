@@ -20,13 +20,18 @@ namespace Generator
                 ComplexType c when !c.Repository.Namespace.IsForeignTo(currentNamespace) => c.Name,
                 ComplexType c => $"{c.Repository.Namespace.GetName(target)}.{c.Name}",
 
-                _ => throw new Exception($"Unknown type {type}.")
+                _ => throw new Exception($"Unknown type: {type}")
             };
         }
 
-        public static string WriteTypeRegistration(this Type type)
+        public static string WriteTypeRegistrationClass(this Type type)
         {
             return $"TypeDictionary.Add(typeof({type.Name}), new GObject.Type(Native.{type.Name}.Instance.Methods.GetGType()));\r\n";
+        }
+        
+        public static string WriteTypeRegistrationBoxed(this Type type)
+        {
+            return $"TypeDictionary.Add(typeof({type.Name}), new GObject.Type(Native.{type.Name}.Methods.GetGType()));\r\n";
         }
     }
 }

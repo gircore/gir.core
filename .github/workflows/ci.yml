@@ -37,3 +37,13 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: dotnet run -- --release --xml-documentation --targets integrationTest samples
         working-directory: './Build'
+
+      - name: (Failure) Upload Generated Files
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}-generated
+          path: |
+            ${{ github.workspace }}
+            !**/bin
+            !**/obj
