@@ -5,7 +5,7 @@ using Gtk;
 namespace TextEditor
 {
     using Application;
-    
+
     public class App : Gtk.Application
     {
         const string AppName = "org.gircore.TextEditor";

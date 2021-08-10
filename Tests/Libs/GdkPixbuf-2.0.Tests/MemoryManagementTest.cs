@@ -18,28 +18,28 @@ namespace GdkPixbuf.Tests
                 var obj = Pixbuf.NewFromFile("test.bmp");
 
                 GObject.Native.ObjectMapper.ObjectCount.Should().Be(1);
-                
-                if(keepInstance)
+
+                if (keepInstance)
                     strongReference = obj;
-                
+
                 weakReference.Target = obj;
             }
-            
+
             CreateInstance(keepInstance: false);
-            
+
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GObject.Native.ObjectMapper.ObjectCount.Should().Be(0);
             weakReference.IsAlive.Should().BeFalse();
             strongReference.Should().BeNull();
-            
+
             CreateInstance(keepInstance: true);
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GObject.Native.ObjectMapper.ObjectCount.Should().Be(1);
             weakReference.IsAlive.Should().BeTrue();
             strongReference.Should().NotBeNull();
-            
+
             // Cleanup: Dispose for other tests to work properly
             // It looks like the GC is not collecting the ObjectMapper data
             // if the GC.Collect() call is happening in the method which
@@ -50,7 +50,7 @@ namespace GdkPixbuf.Tests
             // This behaviour is verified on Linux.
             strongReference.Dispose();
         }
-        
+
         [TestMethod]
         public void TestManualGObjectDisposal()
         {

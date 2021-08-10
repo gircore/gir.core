@@ -1,7 +1,7 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
 
 namespace TextEditor.Document
 {
@@ -9,10 +9,10 @@ namespace TextEditor.Document
     {
         // For guard nodes
         None,
-        
+
         // Original file buffer
         File,
-        
+
         // Append-only add buffer
         Add
     };
@@ -21,9 +21,9 @@ namespace TextEditor.Document
     public class Node
     {
         internal Node? Next { get; set; }
-        
+
         internal Node? Prev { get; set; }
-        
+
         internal BufferType location { get; init; }
         internal int offset { get; init; }
         internal int length { get; init; }
