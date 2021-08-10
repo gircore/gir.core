@@ -1,7 +1,7 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
 
 namespace TextEditor.Document
 {
@@ -21,13 +21,13 @@ namespace TextEditor.Document
 
     public class AppendBuffer : Buffer
     {
-        public AppendBuffer() {}
-        
+        public AppendBuffer() { }
+
         public int Append(string text)
         {
             var index = _data.Length;
             _data += text;
-            
+
             return index;
         }
     }

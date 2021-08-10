@@ -41,7 +41,7 @@ namespace Generator.Services.Writer
             IEnumerable<Type> classes = ns.Classes.Where(x => !x.IsFundamental);
             IEnumerable<Type> records = ns.Records.Where(x => x.GetTypeFunction is not null);
             IEnumerable<Type> unions = ns.Unions.Where(x => x.GetTypeFunction is not null);
-            
+
             IEnumerable<Type> types = classes.Concat(records);
 
             if (!types.Any())

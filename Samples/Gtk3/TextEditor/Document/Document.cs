@@ -1,7 +1,7 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
 
 namespace TextEditor.Document
 {
@@ -17,7 +17,7 @@ namespace TextEditor.Document
         // document's text and subsequent modifications.
 
         public IEnumerable<Node> Contents => pieceTable;
-        
+
         public event EventHandler DocumentChanged = default!;
 
 
@@ -82,7 +82,7 @@ namespace TextEditor.Document
 
             // Find the piece which contains the cursor index
             var (currentSpan, baseIndex) = FromIndex(index);
-            
+
 
             // Case 1: If the current span is null, append to the end
             // of the document and return.
@@ -105,7 +105,7 @@ namespace TextEditor.Document
             // Case 3: We split the current span into three. The contents of the
             // span up to the insertion point, the insertion itself, and
             // the remainder of the span after the insertion.
-            
+
             // Find the index at which to split, relative to the
             // start of the current piece.
             var insertionOffset = index - baseIndex;
@@ -131,7 +131,7 @@ namespace TextEditor.Document
             // NOTE: Deletion is disabled as it cannot delete across piece
             // boundaries. This should be implemented so the text editor is
             // fully functional.
-            
+
             /*var (deleteStartDesc, deleteStartNodeBaseIndex) = FromIndex(index);
 
             // Cannot delete from the end of the sequence

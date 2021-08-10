@@ -2,6 +2,6 @@
 {
     public partial class EventOwnerChange : Event
     {
-        
+
     }
 }

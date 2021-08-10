@@ -38,7 +38,7 @@ namespace Build
         private const string GTK3_QUICKSTART = SAMPLE + "Gtk3/QuickStart";
         private const string GTK3_DRAWINGAREA = SAMPLE + "Gtk3/DrawingArea";
         private const string GTK3_TEXTEDITOR = SAMPLE + "Gtk3/TextEditor";
-        
+
         // private const string DBUS_SAMPLE = SAMPLE + "DBus/";
         // private const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
         // private const string GTK3_APP_SAMPLE = SAMPLE + "Gtk3/GtkApp/";
