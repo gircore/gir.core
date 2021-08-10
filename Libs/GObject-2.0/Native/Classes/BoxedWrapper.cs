@@ -9,7 +9,7 @@ namespace GObject.Native
         public static object WrapHandle(IntPtr handle, Type gtype)
         {
             System.Type trueType = TypeDictionary.GetSystemType(gtype);
-            
+
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException($"Failed to wrap handle as type <{trueType}>. Null handle passed to WrapHandle.");
 
@@ -17,21 +17,21 @@ namespace GObject.Native
             var ctr = GetBoxedConstructor(trueType);
 
             object? result;
-            
+
             if (ctr == null)
             {
                 //If we do not find an constructor we try to find our secret factory method.
                 //TODO: This is a workaround for Gdk.Event Should get obsolete with GTK4
                 var methodInfo = GetSecretFactoryMethod(trueType);
-                
-                if(methodInfo is null)
+
+                if (methodInfo is null)
                     throw new Exception($"Type {trueType} does not define an IntPtr constructor. This could mean improperly defined bindings");
-                
+
                 result = methodInfo.Invoke(null, new object[] { handle });
             }
             else
             {
-                result = ctr.Invoke(new object[] { handle });   
+                result = ctr.Invoke(new object[] { handle });
             }
 
             if (result == null)
@@ -39,7 +39,7 @@ namespace GObject.Native
 
             return result;
         }
-        
+
         private static MethodInfo? GetSecretFactoryMethod(System.Type type)
         {
             return type.GetMethods(
@@ -48,7 +48,7 @@ namespace GObject.Native
                 | System.Reflection.BindingFlags.NonPublic
             ).FirstOrDefault(x => x.GetCustomAttribute<ConstructAttribute>() is { });
         }
-        
+
         private static ConstructorInfo? GetBoxedConstructor(System.Type type)
         {
             // Create using 'IntPtr' constructor

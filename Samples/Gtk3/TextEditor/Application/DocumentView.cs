@@ -1,10 +1,9 @@
-using System;
-using System.Text;
+﻿using System;
 using System.Diagnostics;
-using Gtk;
-
+using System.Text;
 using cairo;
 using Gdk;
+using Gtk;
 using Pango;
 
 namespace TextEditor.Application
@@ -29,7 +28,7 @@ namespace TextEditor.Application
             // Setup IMContext
             context = IMContextSimple.New();
             context.OnCommit += OnEnterText;
-            
+
             // Add event box to catch keyboard input
             eventBox = EventBox.New();
             eventBox.OnKeyPressEvent += OnKeydown;
@@ -44,7 +43,7 @@ namespace TextEditor.Application
 
             // Load data
             SetDocument(document);
-            
+
             ShowAll();
         }
 
@@ -134,34 +133,34 @@ namespace TextEditor.Application
             int yDist = 100;
 
             cairo.Context cr = e.Cr;
-            
+
             // Fill background
-            cr.SetSourceRgba(1,1,1,1);
+            cr.SetSourceRgba(1, 1, 1, 1);
             cr.Rectangle(0, 0, GetAllocatedWidth(), GetAllocatedHeight());
             cr.Fill();
 
             // Write Info Text
-            cr.SetSourceRgba(0,0,0,1.0);
+            cr.SetSourceRgba(0, 0, 0, 1.0);
             cr.MoveTo(xDist, 30);
             cr.ShowText("This sample uses Cairo and a Gtk.DrawingArea to create a simple 'TextView' clone.");
             cr.MoveTo(xDist, 50);
             cr.ShowText("Use the LEFT and RIGHT arrow keys to navigate."); //"Press BACKSPACE to delete.");
-            
+
             // Draw Cursor
             cr.SetFontSize(16);
-            
+
             cr.TextExtents(cachedText, out TextExtents lineExtents);
             var height = lineExtents.height;
-            
+
             cr.TextExtents(cachedText.Substring(0, cursorIndex), out TextExtents cursorExtents);
             var xPos = cursorExtents.width;
 
             cr.FontExtents(out FontExtents fontExtents);
-            
+
             cr.SetSourceRgba(1.0, 0, 0, 1.0);
             cr.Rectangle(xDist + cursorExtents.xAdvance - 0.5, yDist + fontExtents.Descent, 1, -(fontExtents.Descent + fontExtents.Ascent));
             cr.Fill();
-            
+
             // Draw Text from Buffer
             cr.MoveTo(xDist, yDist);
             cr.SetSourceRgba(0, 0, 0, 1.0);

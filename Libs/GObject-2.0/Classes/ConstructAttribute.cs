@@ -11,6 +11,6 @@ namespace GObject
     [AttributeUsage(AttributeTargets.Method)]
     public class ConstructAttribute : Attribute
     {
-        
+
     }
 }

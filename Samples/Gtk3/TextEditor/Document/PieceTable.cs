@@ -1,9 +1,9 @@
-using System;
-using System.IO;
-using System.Text;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 
 namespace TextEditor.Document
 {
@@ -16,14 +16,14 @@ namespace TextEditor.Document
         // do not store or point to data
         private readonly Node head;
         private readonly Node tail;
-        
-        internal class BoundaryException : Exception {}
+
+        internal class BoundaryException : Exception { }
 
         public PieceTable()
         {
             head = Node.CreateGuardNode();
             tail = Node.CreateGuardNode();
-                
+
             head.Next = tail;
             tail.Prev = head;
         }
@@ -38,7 +38,7 @@ namespace TextEditor.Document
         {
             CheckGuardNode(current);
             CheckGuardNode(insert);
-            
+
             // [Current] [After] -> [Current] [Insert] [After]
 
             Node after = current.Next;
@@ -54,7 +54,7 @@ namespace TextEditor.Document
         {
             CheckGuardNode(current);
             CheckGuardNode(insert);
-            
+
             // [Before] [Current] -> [Before] [Insert] [Current]
 
             Node before = current.Prev;
@@ -73,10 +73,10 @@ namespace TextEditor.Document
             // [Head Sentinel] [After] -> [Head Sentinel] [Insert] [After] 
 
             Node after = head.Next;
-            
+
             insert.Next = after;
             insert.Prev = head;
-            
+
             head.Next = insert;
             after!.Prev = insert;
         }
@@ -88,10 +88,10 @@ namespace TextEditor.Document
             // [Before] [Tail Sentinel] -> [Before] [Insert] [Tail Sentinel] 
 
             Node before = tail.Prev;
-            
+
             insert.Next = tail;
             insert.Prev = before;
-            
+
             tail.Prev = insert;
             before!.Next = insert;
         }
@@ -116,9 +116,9 @@ namespace TextEditor.Document
         public void Remove(Node remove)
         {
             CheckGuardNode(remove);
-            
+
             // [Before] [Remove] [After] -> [Before] [After]
-            
+
             Node before = remove.Prev;
             Node after = remove.Next;
 
@@ -135,11 +135,11 @@ namespace TextEditor.Document
             {
                 nodes.Add(cur);
                 cur = cur.Next;
-                
+
                 // We have traversed the entire list
                 if (cur == null)
                     break;
-                
+
                 // Check for broken linked list -> Abort
                 Debug.Assert(
                     condition: cur.Prev != null,

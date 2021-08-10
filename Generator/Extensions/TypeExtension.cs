@@ -28,7 +28,7 @@ namespace Generator
         {
             return $"TypeDictionary.Add(typeof({type.Name}), new GObject.Type(Native.{type.Name}.Instance.Methods.GetGType()));\r\n";
         }
-        
+
         public static string WriteTypeRegistrationBoxed(this Type type)
         {
             return $"TypeDictionary.Add(typeof({type.Name}), new GObject.Type(Native.{type.Name}.Methods.GetGType()));\r\n";

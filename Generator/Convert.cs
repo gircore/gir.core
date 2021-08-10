@@ -73,7 +73,7 @@ namespace Generator
                 // Record Conversions (safe handles)
                 ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: true } } } when useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(x)).ToArray()",
                 ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: true } } when useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}({fromParam})",
-               
+
                 // Record Conversions (raw pointers)
                 ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: true } } } when !useSafeHandle => $"{fromParam}.Select(x => new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}(x))).ToArray()",
                 ResolveableTypeReference { Type: Record r, CTypeReference: { IsPointer: true } } when !useSafeHandle => $"new {r.Write(Target.Managed, currentNamespace)}(new {SafeHandleFromRecord(r)}({fromParam}))",

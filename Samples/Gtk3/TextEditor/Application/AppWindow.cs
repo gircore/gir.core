@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Gtk;
 
 namespace TextEditor.Application
@@ -27,7 +27,7 @@ namespace TextEditor.Application
             headerBar.Title = WindowTitle;
             this.SetTitlebar(headerBar);
             this.SetDecorated(true);
-            
+
             // About Dialog Button
             var aboutButton = new Button("About");
             aboutButton.Image = Image.NewFromIconName("dialog-information-symbolic", IconSize.Button);
@@ -37,7 +37,7 @@ namespace TextEditor.Application
                 // This is implemented in the 'AboutDialog' sample. You can
                 // safely substitute it for the built-in GTK AboutDialog.
                 var dlg = new AboutDialog.SampleDialog("Text Editor");
-                
+
                 dlg.SetTransientFor(this);
                 dlg.SetModal(true);
                 dlg.Present();
@@ -63,12 +63,12 @@ namespace TextEditor.Application
             documentView = new DocumentView(Document);
 
             var display = new PieceTableDisplay(Document);
-            
+
             // Paned
             contentPaned.Add1(documentView);
             contentPaned.Add2(display);
             contentPaned.Position = 400;
-            
+
             // Set visible
             headerBar.ShowAll();
             contentPaned.ShowAll();
@@ -76,7 +76,7 @@ namespace TextEditor.Application
 
         void UpdateCursor()
         {
-            var value = Math.Clamp((int)spinButton.GetValue(), 0, Int32.MaxValue-1);
+            var value = Math.Clamp((int) spinButton.GetValue(), 0, Int32.MaxValue - 1);
             documentView.SetCursorIndex(value);
         }
 
@@ -84,7 +84,7 @@ namespace TextEditor.Application
         {
             var index = spinButton.GetValue();
             var text = insertEntry.GetText();
-            Document.Insert((int)index, text);
+            Document.Insert((int) index, text);
 
             // Move cursor to end of insertion
             spinButton.Value += text.Length;
@@ -92,7 +92,7 @@ namespace TextEditor.Application
 
         void Delete(Button button, EventArgs args)
         {
-            var index = (int)spinButton.GetValue();
+            var index = (int) spinButton.GetValue();
             Document.Delete(index, 1);
         }
     }
