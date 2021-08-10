@@ -1,7 +1,7 @@
 ﻿using System;
-using GirLoader.Output.Model;
-using String = GirLoader.Output.Model.String;
-using Type = GirLoader.Output.Model.Type;
+using GirLoader.Output;
+using String = GirLoader.Output.String;
+using Type = GirLoader.Output.Type;
 
 namespace Generator
 {

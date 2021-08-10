@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GirLoader;
-using GirLoader.Output.Model;
+using GirLoader.Output;
 using Array = System.Array;
-using String = GirLoader.Output.Model.String;
+using String = GirLoader.Output.String;
 
 namespace Generator
 {

@@ -6,13 +6,13 @@ namespace GirLoader
 {
     public static class StreamExtension
     {
-        public static Input.Model.Repository DeserializeGirInputModel(this Stream stream)
+        public static Input.Repository DeserializeGirInputModel(this Stream stream)
         {
             var serializer = new XmlSerializer(
-                type: typeof(Input.Model.Repository),
+                type: typeof(Input.Repository),
                 defaultNamespace: "http://www.gtk.org/introspection/core/1.0");
 
-            var repository = (Input.Model.Repository?) serializer.Deserialize(stream);
+            var repository = (Input.Repository?) serializer.Deserialize(stream);
 
             if (repository is null)
                 throw new Exception($"Could not deserialize from stream.");

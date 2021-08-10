@@ -1,32 +1,49 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GirLoader.Helper;
 using StrongInject;
 
 namespace GirLoader
 {
-    public delegate Input.Model.Repository? ResolveInclude(Output.Model.Include include);
+    public delegate Input.Repository? ResolveInclude(Output.Include include);
 
-    [RegisterModule(typeof(Output.Module))]
-    public partial class Loader : IContainer<Output.Loader>
+    public class Loader
     {
+        private readonly RepositoryConverter _repositoryConverter;
+
+        public Loader() : this(FileIncludeResolver.Resolve) { }
+
+        public Loader(ResolveInclude includeResolver)
+        {
+            _repositoryConverter = new Container(includeResolver).Resolve().Value;
+        }
+
         //TODO: Use this method
-        public static void EnableDebugOutput()
+        public void EnableDebugOutput()
             => Log.EnableDebugOutput();
 
         //TODO: Use this method
-        public static void EnableVerboseOutput()
+        public void EnableVerboseOutput()
             => Log.EnableVerboseOutput();
 
-        public static ResolveInclude IncludeResolver { get; set; } = FileIncludeResolver.Resolve;
-
-        public static IEnumerable<Output.Model.Repository> Load(IEnumerable<Input.Model.Repository> repositories)
+        public IEnumerable<Output.Repository> Load(IEnumerable<Input.Repository> inputRepositories)
         {
-            return new Loader().Run(outputLoader => outputLoader.LoadRepositories(repositories));
+            Log.Information($"Initialising with {inputRepositories.Count()} toplevel repositories");
+
+            var outputRepositories = inputRepositories.Select(_repositoryConverter.LoadRepository);
+            Resolve(outputRepositories);
+
+            return outputRepositories;
         }
 
-        private Loader() { }
+        private static void Resolve(IEnumerable<Output.Repository> repositories)
+        {
+            var repositoryResolver = new RepositoryResolver();
 
-        [Factory]
-        internal ResolveInclude GetResolveInclude() => IncludeResolver;
+            foreach (var repository in repositories)
+                repositoryResolver.Add(repository);
+
+            repositoryResolver.Resolve();
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace Generator
     {
         private const string CacheDir = "../gir-files";
 
-        public static GirLoader.Input.Model.Repository? Resolve(GirLoader.Output.Model.Include include)
+        public static GirLoader.Input.Repository? Resolve(GirLoader.Output.Include include)
         {
             var fileName = $"{include.Name}-{include.Version}.gir";
 

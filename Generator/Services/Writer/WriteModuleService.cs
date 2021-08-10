@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Generator.Factories;
-using GirLoader.Output.Model;
+using GirLoader.Output;
 using Scriban.Runtime;
-using Type = GirLoader.Output.Model.Type;
+using Type = GirLoader.Output.Type;
 
 namespace Generator.Services.Writer
 {

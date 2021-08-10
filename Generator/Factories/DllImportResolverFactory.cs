@@ -1,4 +1,4 @@
-﻿using GirLoader.Output.Model;
+﻿using GirLoader.Output;
 
 namespace Generator.Factories
 {
