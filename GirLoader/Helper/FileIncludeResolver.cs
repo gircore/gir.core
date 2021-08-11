@@ -5,7 +5,7 @@ namespace GirLoader.Helper
 {
     public class FileIncludeResolver
     {
-        public static Input.Model.Repository? Resolve(Output.Model.Include include)
+        public static Input.Repository? Resolve(Output.Include include)
         {
             // We store GIR files in the format 'Gtk-3.0.gir'
             // where 'Gtk' is the namespace and '3.0' the version

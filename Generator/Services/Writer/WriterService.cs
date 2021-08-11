@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using GirLoader.Output.Model;
+using GirLoader.Output;
 
 namespace Generator.Services.Writer
 {

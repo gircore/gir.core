@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Generator.Services;
 using Generator.Services.Writer;
 using GirLoader;
-using GirLoader.Input;
-using GirLoader.Output.Model;
 using StrongInject;
 
 namespace Generator
@@ -19,9 +17,9 @@ namespace Generator
 
         public void Write(IEnumerable<FileInfo> projects)
         {
-            //Loader.EnableVerboseOutput(); //TODO: Configure via settings
-            Loader.IncludeResolver = IncludeResolver.Resolve;
-            var repositories = Loader.Load(projects.Select(x => x.OpenRead().DeserializeGirInputModel())).ToList();
+            var loader = new Loader(IncludeResolver.Resolve);
+            //loader.EnableVerboseOutput(); //TODO: Configure via settings
+            var repositories = loader.Load(projects.Select(x => x.OpenRead().DeserializeGirInputModel())).ToList();
 
 
             var typeRenamer = new TypeRenamer();
@@ -51,7 +49,7 @@ namespace Generator
                 Log.Warning("Async Generation is disabled. Generation may be slower than normal.");
 
                 // Disable asynchronous writing for an easier debugging experience
-                foreach (Namespace ns in repositories.Select(x => x.Namespace))
+                foreach (GirLoader.Output.Namespace ns in repositories.Select(x => x.Namespace))
                     writerService.Write(ns, OutputDir, options);
             }
 

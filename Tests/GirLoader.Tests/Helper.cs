@@ -2,11 +2,11 @@
 {
     internal static class Helper
     {
-        internal static Input.Model.Repository GetInputRepository(string namespaceName, string version)
+        internal static Input.Repository GetInputRepository(string namespaceName, string version)
         {
-            return new Input.Model.Repository()
+            return new Input.Repository()
             {
-                Namespace = new Input.Model.Namespace()
+                Namespace = new Input.Namespace()
                 {
                     Name = namespaceName,
                     Version = version

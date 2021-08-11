@@ -1,4 +1,4 @@
-﻿namespace GirLoader.Input.Model
+﻿namespace GirLoader.Input
 {
     internal class Project
     {
