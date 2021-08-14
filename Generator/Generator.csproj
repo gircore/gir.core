@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Include="..\GirLoader\Log.cs" Link="Log.cs" />
       <Compile Remove="output\**" />
       <EmbeddedResource Include="Templates\**" />
     </ItemGroup>
