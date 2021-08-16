@@ -21,7 +21,7 @@ jobs:
 
       - name: Run release build and pack
         run: dotnet run -- --release --xml-documentation --targets integrationTest pack --version ${{ github.event.release.tag_name }}
-        working-directory: './Build'
+        working-directory: './src/Generation/Build'
 
       - name: Publish to nuget org
         run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s nuget.org

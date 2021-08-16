@@ -97,6 +97,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 ProjectSection(SolutionItems) = preProject
 	GirCore.General.props = GirCore.General.props
 	GirCore.Nuget.props = GirCore.Nuget.props
+	..\.editorconfig = ..\.editorconfig
+	..\.gitignore = ..\.gitignore
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}"
@@ -109,6 +111,25 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{C48DB577-12BB-4AA8-8734-802A39C093BE}"
 ProjectSection(SolutionItems) = preProject
 	..\img\logo.svg = ..\img\logo.svg
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{A2ECECDD-9986-450D-A0AC-D2BE32A0B23E}"
+ProjectSection(SolutionItems) = preProject
+	..\.github\dependabot.yml = ..\.github\dependabot.yml
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "codeql", "codeql", "{E457B1F7-B32E-48DF-806E-7CE3A398722C}"
+ProjectSection(SolutionItems) = preProject
+	..\.github\codeql\codeql-config.yml = ..\.github\codeql\codeql-config.yml
+	..\.github\codeql\queries.qls = ..\.github\codeql\queries.qls
+EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{46445B9D-7FBC-46E5-B781-B743237627BE}"
+ProjectSection(SolutionItems) = preProject
+	..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
+	..\.github\workflows\codeql-analysis.yml = ..\.github\workflows\codeql-analysis.yml
+	..\.github\workflows\dotnet-format-daily.yml = ..\.github\workflows\dotnet-format-daily.yml
+	..\.github\workflows\release.yml = ..\.github\workflows\release.yml
 EndProjectSection
 EndProject
 Global
@@ -585,5 +606,8 @@ Global
 		{1EA4392E-960D-4327-9426-4C6220A7B60D} = {7A05C10C-8797-4D29-A97A-F399316BE893}
 		{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1} = {B670D679-3B2C-43E8-9F87-5E4E17628011}
 		{C48DB577-12BB-4AA8-8734-802A39C093BE} = {B670D679-3B2C-43E8-9F87-5E4E17628011}
+		{A2ECECDD-9986-450D-A0AC-D2BE32A0B23E} = {B670D679-3B2C-43E8-9F87-5E4E17628011}
+		{E457B1F7-B32E-48DF-806E-7CE3A398722C} = {A2ECECDD-9986-450D-A0AC-D2BE32A0B23E}
+		{46445B9D-7FBC-46E5-B781-B743237627BE} = {A2ECECDD-9986-450D-A0AC-D2BE32A0B23E}
 	EndGlobalSection
 EndGlobal

@@ -9,9 +9,9 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
-      directory: "/src/Generation/GirLoader"
-      schedule:
-        interval: "daily"
+    directory: "/src/Generation/GirLoader"
+    schedule:
+      interval: "daily"
   - package-ecosystem: "nuget"
     directory: "/src/Generation/Generator"
     schedule:
