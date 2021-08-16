@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../General.props" />
-  <Import Project="../Nuget.props" />
+  <Import Project="../GirCore.General.props" />
+  <Import Project="../GirCore.Nuget.props" />
   
   <PropertyGroup>
     <IncludeBuildOutput>false</IncludeBuildOutput>

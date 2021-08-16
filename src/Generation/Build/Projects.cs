@@ -21,12 +21,12 @@ namespace Build
     {
         #region Constants
 
-        public const string ProjectPath = "../Libs";
-        public const string GirPath = "../gir-files";
+        public const string ProjectPath = "../../Libs";
+        public const string GirPath = "../../../ext/gir-files";
 
-        public const string SolutionDirectory = "../";
+        public const string SolutionDirectory = "../../";
 
-        private const string SAMPLE = "../Samples/";
+        private const string SAMPLE = "../../Samples/";
 
         private const string DBUS_SAMPLE = SAMPLE + "DBus/";
         private const string GSTREAMER_SAMPLE = SAMPLE + "GStreamer/";
@@ -48,7 +48,7 @@ namespace Build
         // private const string GTK3_COMPOSITE_TEMPLATE_NO_SOURCEGENERATOR = SAMPLE + "Gtk3/CompositeTemplates/NoSourceGenerator";
         // private const string GTK4_SIMPLE_WINDOW_SAMPLE = SAMPLE + "Gtk4/SimpleWindow/";
 
-        private const string INTEGRATION = "../Integration/";
+        private const string INTEGRATION = "../../Integration/";
 
         #endregion
 

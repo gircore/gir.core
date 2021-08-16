@@ -1,6 +1,6 @@
 <Project>
-  <Import Project="../General.props" />
-  <Import Project="../Nuget.props" />
+  <Import Project="../GirCore.General.props" />
+  <Import Project="../GirCore.Nuget.props" />
   
   <PropertyGroup Condition="$(GirComments) == 'True'">
     <NoWarn>1591</NoWarn>
