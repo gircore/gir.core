@@ -47,9 +47,10 @@ To build the project locally in debug mode follow these steps. Make sure to init
 
 ```sh
 $ git clone --recursive https://github.com/gircore/gir.core.git
-$ cd gir.core/Build
+$ cd gir.core/src/Generation/Build
 $ dotnet run
 ```
+If you want to build using Windows please see the accompanying [documentation](docs/windows.md).
 
 ### Options
 
@@ -99,14 +100,14 @@ To use the newly build libraries in your project just add a reference to the csp
 
 ## Code structure
 The folder structure in this repository is organized as follows:
-* **Build:** The build tool determines which projects to build and generates the libraries. Everything works automatically.
-* **Generator:** Code generator generates C# code from GObject Introspection data.
-* **Integration:** Optional source generators to reduce boilerplate code in your projects.
-* **Libs:** Contains manually written code for libraries. The generator outputs code here.
-* **Repository:** A library for reading and resolving GObject Introspection repositories.
-* **Samples:** Example programs using GTK, GStreamer, and others.
-* **Tests:** Unit and Integration tests.
-* **gir-files:** Introspection data from [gircore/gir-files](https://github.com/gircore/gir-files).
+* **[src/Generation/Build](src/Generation/Build):** The build tool determines which projects to build and generates the libraries. Everything works automatically.
+* **[src/Generation/GirLoader](src/Generation/GirLoader):** A library for reading and resolving GObject Introspection repositories.
+* **[src/Generation/Generator](src/Generation/Generator):** Code generator generates C# code from GObject Introspection data.
+* **[src/Integration](src/Integration):** Optional source generators to reduce boilerplate code in your projects.
+* **[src/Libs](src/Libs):** Contains manually written code for libraries. The generator outputs code here.
+* **[src/Samples](src/Samples):** Example programs using GTK, GStreamer, and others.
+* **[src/Tests](src/Tests):** Unit and Integration tests.
+* **[ext/gir-files](https://github.com/gircore/gir-files):** Introspection data from [gircore/gir-files](https://github.com/gircore/gir-files).
 
 The code in the library folder is not complete because most of the code is generated when the build tool is run.
 
@@ -126,6 +127,6 @@ The code in the library folder is not complete because most of the code is gener
 [GtkBuilder]: https://developer.gnome.org/gtk3/stable/GtkBuilder.html
 
 ## Licensing terms
-Gir.Core is licensed under the terms of the MIT-License. Please see the [LICENSE](LICENSE) file for further information.
+Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.
 
-The [Gir.Core logo](logo.svg) is built upon the [original GTK logo](https://wiki.gnome.org/Projects/GTK/Logo) by Andreas Nilsson which is licensed under the [GNU Free Documentation License](https://www.gnu.org/licenses/fdl-1.3.txt) and was relicensed under CC BY-SA 3.0. Therefore the Gir.Core logo is licensed under the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.en), too.
+The [Gir.Core logo](img/logo.svg) is built upon the [original GTK logo](https://wiki.gnome.org/Projects/GTK/Logo) by Andreas Nilsson which is licensed under the [GNU Free Documentation License](https://www.gnu.org/licenses/fdl-1.3.txt) and was relicensed under CC BY-SA 3.0. Therefore the Gir.Core logo is licensed under the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.en), too.

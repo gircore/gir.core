@@ -5,7 +5,7 @@ namespace Generator
 {
     internal static class IncludeResolver
     {
-        private const string CacheDir = "../gir-files";
+        private const string CacheDir = "../../../ext/gir-files";
 
         public static GirLoader.Input.Repository? Resolve(GirLoader.Output.Include include)
         {

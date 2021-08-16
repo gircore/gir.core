@@ -5,15 +5,19 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
-    directory: "/Build"
+    directory: "/src/Generation/Build"
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
-    directory: "/Generator"
+      directory: "/src/Generation/GirLoader"
+      schedule:
+        interval: "daily"
+  - package-ecosystem: "nuget"
+    directory: "/src/Generation/Generator"
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
-    directory: "/Integration"
+    directory: "/src/Integration"
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"

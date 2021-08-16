@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <Import Project="../General.props" />
+    <Import Project="../../GirCore.General.props" />
   
     <PropertyGroup>
       <OutputType>Exe</OutputType>
@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="..\GirLoader\Log.cs" Link="Log.cs" />
+      <Compile Include="..\Shared\Log.cs" Link="Log.cs" />
       <Compile Remove="output\**" />
       <EmbeddedResource Include="Templates\**" />
     </ItemGroup>
