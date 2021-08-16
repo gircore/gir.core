@@ -22,7 +22,7 @@ namespace Build
                     project: project.Folder,
                     configuration: _settings.Configuration,
                     version: _settings.Version?.ToNormalizedString(),
-                    outputDir: "../Nuget"
+                    outputDir: "../../../Nuget"
                 );
             }
         }

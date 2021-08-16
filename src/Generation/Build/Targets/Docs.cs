@@ -42,7 +42,7 @@ namespace Build
 
             XmlDocMarkdownResult result = XmlDocMarkdownGenerator.Generate(
                 inputPath: GetAssemblyFile(project.Folder),
-                outputPath: "../Docs/Api",
+                outputPath: "../../../docs/Api",
                 settings: settings
             );
 

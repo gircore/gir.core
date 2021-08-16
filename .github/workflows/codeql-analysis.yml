@@ -53,7 +53,7 @@ jobs:
 
     - name: Run release build
       run: dotnet run -- --release
-      working-directory: './Build'
+      working-directory: './src/Generation/Build'
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
