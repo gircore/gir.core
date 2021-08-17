@@ -1,14 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../../GirCore.General.props" />
-  
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\Shared\Log.cs" Link="Log.cs" />
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Bullseye" Version="3.7.1" />
