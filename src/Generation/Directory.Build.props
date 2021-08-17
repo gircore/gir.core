@@ -1,0 +1,8 @@
+<Project>
+  <Import Project="../GirCore.General.props" />
+  <Import Project="../GirCore.Logging.props" />
+
+  <ItemGroup>
+    <Compile Include="../Shared/Log.cs" Link="Log.cs" />
+  </ItemGroup>
+</Project>

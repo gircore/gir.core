@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
+  </ItemGroup>
+</Project>

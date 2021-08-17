@@ -86,6 +86,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdkPixbuf-2.0.Tests", "Tests\Libs\GdkPixbuf-2.0.Tests\GdkPixbuf-2.0.Tests.csproj", "{61016ABA-608B-47FA-9FBD-CA17D24BAB89}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generation", "Generation", "{7A05C10C-8797-4D29-A97A-F399316BE893}"
+ProjectSection(SolutionItems) = preProject
+	Generation\Directory.Build.props = Generation\Directory.Build.props
+EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Generation\Build\Build.csproj", "{1AB1CABC-CE47-434D-952B-C064D2D5C03C}"
 EndProject
@@ -96,9 +99,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{B670D679-3B2C-43E8-9F87-5E4E17628011}"
 ProjectSection(SolutionItems) = preProject
 	GirCore.General.props = GirCore.General.props
-	GirCore.Nuget.props = GirCore.Nuget.props
+	GirCore.Publishing.props = GirCore.Publishing.props
 	..\.editorconfig = ..\.editorconfig
 	..\.gitignore = ..\.gitignore
+	GirCore.Logging.props = GirCore.Logging.props
+	GirCore.Testing.props = GirCore.Testing.props
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}"
