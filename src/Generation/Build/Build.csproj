@@ -5,7 +5,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Bullseye" Version="3.7.1" />
+    <PackageReference Include="Bullseye" Version="3.8.0" />
     <PackageReference Include="SimpleExec" Version="8.0.0" />
     <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
     <PackageReference Include="NuGet.Versioning" Version="5.11.0" />
