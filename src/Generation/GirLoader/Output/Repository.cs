@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public class Repository : Node<Repository>
+    public class Repository
     {
         private Namespace? _namespace;
         public Namespace Namespace => _namespace ?? throw new Exception("Namespace not initialized.");
-        public IEnumerable<Include> Includes { get; }
-        public IEnumerable<Repository> Dependencies => Includes.Select(x => x.GetResolvedRepository());
+        internal IEnumerable<Include> Includes { get; }
+        internal IEnumerable<Repository> Dependencies => Includes.Select(x => x.GetResolvedRepository());
 
-        public Repository(IEnumerable<Include> includes)
+        public Repository() : this(Enumerable.Empty<Include>()){ }
+        
+        internal Repository(IEnumerable<Include> includes)
         {
             Includes = includes;
         }

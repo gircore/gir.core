@@ -6,6 +6,19 @@ namespace GirLoader.Output
 {
     public class Namespace
     {
+        #region Fields
+        private IEnumerable<Alias>? _aliases;
+        private IEnumerable<Callback>? _callbacks;
+        private IEnumerable<Class>? _classes;
+        private IEnumerable<Enumeration>? _enumerations;
+        private IEnumerable<Bitfield>? _bitfields;
+        private IEnumerable<Interface>? _interfaces;
+        private IEnumerable<Record>? _records;
+        private IEnumerable<Method>? _functions;
+        private IEnumerable<Union>? _unions;
+        private IEnumerable<Constant>? _constants;
+        #endregion
+        
         #region Properties
 
         public string? IdentifierPrefixes { get; }
@@ -16,83 +29,86 @@ namespace GirLoader.Output
         public string Version { get; }
         public string? SharedLibrary { get; }
 
-        private readonly List<Alias> _aliases = new();
-        public IEnumerable<Alias> Aliases => _aliases;
+        public IEnumerable<Alias> Aliases
+        {
+            get => _aliases ??= Enumerable.Empty<Alias>(); 
+            init => _aliases = value;
+        }
 
-        private readonly List<Callback> _callbacks = new();
-        public IEnumerable<Callback> Callbacks => _callbacks;
+        public IEnumerable<Callback> Callbacks
+        {
+            get => _callbacks ??= Enumerable.Empty<Callback>();
+            init => _callbacks = value;
+        }
 
-        private readonly List<Class> _classes = new();
-        public IEnumerable<Class> Classes => _classes;
+        public IEnumerable<Class> Classes 
+        {
+            get => _classes ??= Enumerable.Empty<Class>();
+            init => _classes = value;
+        }
 
-        private readonly List<Enumeration> _enumerations = new();
-        public IEnumerable<Enumeration> Enumerations => _enumerations;
+        public IEnumerable<Enumeration> Enumerations 
+        {
+            get => _enumerations ??= Enumerable.Empty<Enumeration>();
+            init => _enumerations = value;
+        }
 
-        private readonly List<Bitfield> _bitfields = new();
-        public IEnumerable<Bitfield> Bitfields => _bitfields;
+        public IEnumerable<Bitfield> Bitfields 
+        {
+            get => _bitfields ??= Enumerable.Empty<Bitfield>();
+            init => _bitfields = value;
+        }
 
-        private readonly List<Interface> _interfaces = new();
-        public IEnumerable<Interface> Interfaces => _interfaces;
+        public IEnumerable<Interface> Interfaces
+        {
+            get => _interfaces ??= Enumerable.Empty<Interface>();
+            init => _interfaces = value;
+        }
 
-        private readonly List<Record> _records = new();
-        public IEnumerable<Record> Records => _records;
+        public IEnumerable<Record> Records
+        {
+            get => _records ??= Enumerable.Empty<Record>();
+            init => _records = value;
+        }
 
-        private readonly List<Method> _functions = new();
-        public IEnumerable<Method> Functions => _functions;
+        public IEnumerable<Method> Functions
+        {
+            get => _functions ??= Enumerable.Empty<Method>();
+            init => _functions = value;
+        }
 
-        private readonly List<Union> _unions = new();
-        public IEnumerable<Union> Unions => _unions;
+        public IEnumerable<Union> Unions
+        {
+            get => _unions ??= Enumerable.Empty<Union>();
+            init => _unions = value;
+        }
 
-        private readonly List<Constant> _constants = new();
-        public IEnumerable<Constant> Constants => _constants;
+        public IEnumerable<Constant> Constants
+        {
+            get => _constants ??= Enumerable.Empty<Constant>();
+            init => _constants = value;
+        }
 
         #endregion
 
-        public Namespace(string name, string version, string? sharedLibrary, string? identifierPrefixes, string? symbolPrefixes)
+        public Namespace(string name, string version, string? sharedLibrary, string? identifierPrefixes, string? symbolPrefixes, Repository repository)
         {
             Name = new NamespaceName(name);
             Version = version;
             SharedLibrary = sharedLibrary;
             IdentifierPrefixes = identifierPrefixes;
             SymbolPrefixes = symbolPrefixes;
+            
+            repository.SetNamespace(this);
         }
-
-        internal void AddAlias(Alias alias)
-            => _aliases.Add(alias);
-
-        internal void AddCallback(Callback callback)
-            => _callbacks.Add(callback);
-
-        internal void AddClass(Class @class)
-            => _classes.Add(@class);
-
-        internal void AddEnumeration(Enumeration enumeration)
-            => _enumerations.Add(enumeration);
-
-        internal void AddBitfield(Bitfield enumeration)
-            => _bitfields.Add(enumeration);
-
-        internal void AddInterface(Interface @interface)
-            => _interfaces.Add(@interface);
-
-        internal void AddRecord(Record @record)
-            => _records.Add(@record);
-
-        public void RemoveRecord(Record @record)
-            => _records.Remove(@record);
-
-        internal void AddFunction(Method method)
-            => _functions.Add(method);
-
-        internal void AddUnion(Union union)
-            => _unions.Add(union);
-
-        internal void AddConstant(Constant constant)
-            => _constants.Add(constant);
 
         public IEnumerable<TypeReference> GetTypeReferences()
         {
             return IEnumerables.Concat(
+                // It is important to keep aliases in the first position
+                // as they must be resolved before all other types
+                // as those can depend on the aliases and require
+                // them to be resolved.
                 Aliases.SelectMany(x => x.GetTypeReferences()),
                 Callbacks.SelectMany(x => x.GetTypeReferences()),
                 Classes.SelectMany(x => x.GetTypeReferences()),
@@ -113,46 +129,46 @@ namespace GirLoader.Output
             Classes.Strip();
             Interfaces.Strip();
 
-            _aliases.RemoveAll(Remove);
-            _callbacks.RemoveAll(Remove);
-            _classes.RemoveAll(Remove);
-            _enumerations.RemoveAll(Remove);
-            _bitfields.RemoveAll(Remove);
-            _interfaces.RemoveAll(Remove);
-            _records.RemoveAll(Remove);
-            _functions.RemoveAll(Remove);
-            _unions.RemoveAll(Remove);
-            _constants.RemoveAll(Remove);
+            _aliases = _aliases.ToList().Where(IsResolved);
+            _callbacks = _callbacks.ToList().Where(IsResolved);
+            _classes = _classes.ToList().Where(IsResolved);
+            _enumerations = _enumerations.ToList().Where(IsResolved);
+            _bitfields = _bitfields.ToList().Where(IsResolved);
+            _interfaces = _interfaces.ToList().Where(IsResolved);
+            _records = _records.ToList().Where(IsResolved);
+            _functions = _functions.ToList().Where(IsResolved);
+            _unions = _unions.ToList().Where(IsResolved);
+            _constants = _constants.ToList().Where(IsResolved);
         }
 
-        private bool Remove(Alias alias)
+        private bool IsResolved(Alias alias)
         {
-            var result = alias.GetIsResolved();
+            var isResolved = alias.GetIsResolved();
 
-            if (!result)
+            if (!isResolved)
                 Log.Information($"{nameof(Alias)} {alias.Name}: Removed because parts of it could not be completely resolvled");
 
-            return !result;
+            return isResolved;
         }
 
-        private bool Remove(Symbol symbol)
+        private bool IsResolved(Symbol symbol)
         {
-            var result = symbol.GetIsResolved();
+            var isResolved = symbol.GetIsResolved();
 
-            if (!result)
+            if (!isResolved)
                 Log.Information($"{symbol.GetType().Name} {symbol.OriginalName}: Removed because parts of it could not be completely resolvled");
 
-            return !result;
+            return isResolved;
         }
 
-        private bool Remove(ComplexType type)
+        private bool IsResolved(ComplexType type)
         {
-            var result = type.GetIsResolved();
+            var isResolved = type.GetIsResolved();
 
-            if (!result)
+            if (!isResolved)
                 Log.Information($"{type.GetType().Name} {type.Repository.Namespace.Name}.{type.Name}: Removed because parts of it could not be completely resolvled");
 
-            return !result;
+            return isResolved;
         }
 
         public override string ToString()
