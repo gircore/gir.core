@@ -3,24 +3,19 @@ using System.Collections.Generic;
 
 namespace GirLoader.Helper
 {
-    internal interface Node<out T> where T : Node<T>
-    {
-        public IEnumerable<T> Dependencies { get; }
-    }
-
     // Dependency Resolver Algorithm
     // https://www.electricmonk.nl/docs/dependency_resolving_algorithm/dependency_resolving_algorithm.html
-    internal class DependencyResolver<T> where T : Node<T>
+    internal class RepositoryDependencyResolver
     {
-        private List<Node<T>> _resolvedNodes = new();
-        private List<Node<T>> _unresolvedNodes = new();
+        private List<Output.Repository> _resolvedNodes = new();
+        private List<Output.Repository> _unresolvedNodes = new();
 
-        public IEnumerable<Node<T>> ResolveOrdered(IEnumerable<Node<T>> nodeList)
+        public IEnumerable<Output.Repository> ResolveOrdered(IEnumerable<Output.Repository> nodeList)
         {
-            _resolvedNodes = new List<Node<T>>();
-            _unresolvedNodes = new List<Node<T>>();
+            _resolvedNodes = new List<Output.Repository>();
+            _unresolvedNodes = new List<Output.Repository>();
 
-            foreach (Node<T> node in nodeList)
+            foreach (Output.Repository node in nodeList)
             {
                 if (!_resolvedNodes.Contains(node))
                     ResolveDependenciesRecursive(node);
@@ -29,11 +24,11 @@ namespace GirLoader.Helper
             return _resolvedNodes;
         }
 
-        private void ResolveDependenciesRecursive(Node<T> node)
+        private void ResolveDependenciesRecursive(Output.Repository node)
         {
             _unresolvedNodes.Add(node);
 
-            foreach (T dep in node.Dependencies)
+            foreach (Output.Repository dep in node.Dependencies)
             {
                 if (_resolvedNodes.Contains(dep))
                     continue;

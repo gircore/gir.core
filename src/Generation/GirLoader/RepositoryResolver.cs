@@ -28,7 +28,7 @@ namespace GirLoader
         /// </summary>
         public void Resolve()
         {
-            var dependencyResolver = new Helper.DependencyResolver<Output.Repository>();
+            var dependencyResolver = new Helper.RepositoryDependencyResolver();
             var orderedRepositories = dependencyResolver.ResolveOrdered(_knownRepositories).Cast<Output.Repository>();
 
             foreach (var repository in orderedRepositories)

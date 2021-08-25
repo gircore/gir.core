@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GirLoader.Output
 {
@@ -43,87 +44,47 @@ namespace GirLoader.Output
                 version: @namespace.Version,
                 sharedLibrary: @namespace.SharedLibrary,
                 identifierPrefixes: @namespace.IdentifierPrefixes,
-                symbolPrefixes: @namespace.SymbolPrefixes
-            );
-
-            repository.SetNamespace(nspace);
-
-            SetAliases(repository, @namespace.Aliases);
-            SetCallbacks(repository, @namespace.Callbacks);
-            SetEnumerations(repository, @namespace.Enumerations);
-            SetBitfields(repository, @namespace.Bitfields);
-            SetInterfaces(repository, @namespace.Interfaces);
-            SetRecords(repository, @namespace.Records);
-            SetClasses(repository, @namespace.Classes);
-            SetUnions(repository, @namespace.Unions);
-
-            SetFunctions(nspace, @namespace.Functions);
-            SetConstants(nspace, @namespace.Constants);
+                symbolPrefixes: @namespace.SymbolPrefixes,
+                repository: repository
+            )
+            {
+                //ToList is important: Without it the Enumerator would call the factories
+                //for each new iteration and creating new obejcts all the time
+                Aliases = @namespace.Aliases.Select(alias => _aliasFactory.Create(alias, repository)).ToList(),
+                Callbacks = @namespace.Callbacks.Select(callback => _callbackFactory.Create(callback, repository)).ToList(),
+                Enumerations = @namespace.Enumerations.Select(enumeration => _enumerationFactory.Create(enumeration, repository)).ToList(),
+                Bitfields = @namespace.Bitfields.Select(bitfield => _bitfieldFactory.Create(bitfield, repository)).ToList(),
+                Interfaces = @namespace.Interfaces.Select(@interface => _interfaceFactory.Create(@interface, repository)).ToList(),
+                Records = @namespace.Records.Select(record => _recordFactory.Create(record, repository)).ToList(),
+                Classes = @namespace.Classes.Select(cls => _classFactory.Create(cls, repository)).ToList(),
+                Unions = @namespace.Unions.Select(union => _unionFactory.Create(union, repository)).ToList(),
+                Functions = GetValidFunctions(@namespace.Functions),
+                Constants = @namespace.Constants.Select(constant => _constantFactory.Create(constant)).ToList()
+            };
 
             return nspace;
         }
 
-        private void SetAliases(Repository repository, IEnumerable<Input.Alias> aliases)
+        private IEnumerable<Method> GetValidFunctions(IEnumerable<Input.Method> functions)
         {
-            foreach (Input.Alias alias in aliases)
-                repository.Namespace.AddAlias(_aliasFactory.Create(alias, repository));
-        }
-
-        private void SetClasses(Repository repository, IEnumerable<Input.Class> classes)
-        {
-            foreach (Input.Class @class in classes)
+            var list = new List<Method>();
+            foreach (var function in functions)
             {
-                Class cls = _classFactory.Create(@class, repository);
-                repository.Namespace.AddClass(cls);
+                try
+                {
+                    list.Add(_methodFactory.Create(function));
+                }
+                catch (SingleParameterFactory.VarArgsNotSupportedException ex)
+                {
+                    Log.Verbose($"Function {function.Name} could not be created: {ex.Message}");
+                }
+                catch (MethodFactory.MethodMovedException ex)
+                {
+                    Log.Verbose($"Function ignored: {ex.Message}");
+                }
             }
-        }
 
-        private void SetCallbacks(Repository repository, IEnumerable<Input.Callback> callbacks)
-        {
-            foreach (Input.Callback callback in callbacks)
-                repository.Namespace.AddCallback(_callbackFactory.Create(callback, repository));
-        }
-
-        private void SetEnumerations(Repository repository, IEnumerable<Input.Enum> enumerations)
-        {
-            foreach (Input.Enum @enum in enumerations)
-                repository.Namespace.AddEnumeration(_enumerationFactory.Create(@enum, repository));
-        }
-
-        private void SetBitfields(Repository repository, IEnumerable<Input.Bitfield> bitfields)
-        {
-            foreach (Input.Bitfield bitfield in bitfields)
-                repository.Namespace.AddBitfield(_bitfieldFactory.Create(bitfield, repository));
-        }
-
-        private void SetInterfaces(Repository repository, IEnumerable<Input.Interface> interfaces)
-        {
-            foreach (Input.Interface @interface in interfaces)
-                repository.Namespace.AddInterface(_interfaceFactory.Create(@interface, repository));
-        }
-
-        private void SetRecords(Repository repository, IEnumerable<Input.Record> records)
-        {
-            foreach (Input.Record record in records)
-                repository.Namespace.AddRecord(_recordFactory.Create(record, repository));
-        }
-
-        private void SetUnions(Repository repository, IEnumerable<Input.Union> unions)
-        {
-            foreach (Input.Union union in unions)
-                repository.Namespace.AddUnion(_unionFactory.Create(union, repository));
-        }
-
-        private void SetFunctions(Namespace nspace, IEnumerable<Input.Method> functions)
-        {
-            foreach (Method method in _methodFactory.Create(functions))
-                nspace.AddFunction(method);
-        }
-
-        private void SetConstants(Namespace nspace, IEnumerable<Input.Constant> constants)
-        {
-            foreach (Input.Constant constant in constants)
-                nspace.AddConstant(_constantFactory.Create(constant));
+            return list;
         }
     }
 }

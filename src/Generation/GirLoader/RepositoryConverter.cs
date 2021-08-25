@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GirLoader
 {
@@ -41,7 +42,8 @@ namespace GirLoader
 
         private Output.Repository LoadRepository(Output.Include include)
         {
-            var includeFileInfo = _resolveInclude(include);
+            var includeFileInfo = _resolveInclude(include) ?? throw new Exception($"Could not resolve include {include.Name}");
+
             return LoadRepository(includeFileInfo);
         }
     }
