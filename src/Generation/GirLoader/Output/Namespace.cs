@@ -18,7 +18,7 @@ namespace GirLoader.Output
         private IEnumerable<Union>? _unions;
         private IEnumerable<Constant>? _constants;
         #endregion
-        
+
         #region Properties
 
         public string? IdentifierPrefixes { get; }
@@ -31,7 +31,7 @@ namespace GirLoader.Output
 
         public IEnumerable<Alias> Aliases
         {
-            get => _aliases ??= Enumerable.Empty<Alias>(); 
+            get => _aliases ??= Enumerable.Empty<Alias>();
             init => _aliases = value;
         }
 
@@ -41,19 +41,19 @@ namespace GirLoader.Output
             init => _callbacks = value;
         }
 
-        public IEnumerable<Class> Classes 
+        public IEnumerable<Class> Classes
         {
             get => _classes ??= Enumerable.Empty<Class>();
             init => _classes = value;
         }
 
-        public IEnumerable<Enumeration> Enumerations 
+        public IEnumerable<Enumeration> Enumerations
         {
             get => _enumerations ??= Enumerable.Empty<Enumeration>();
             init => _enumerations = value;
         }
 
-        public IEnumerable<Bitfield> Bitfields 
+        public IEnumerable<Bitfield> Bitfields
         {
             get => _bitfields ??= Enumerable.Empty<Bitfield>();
             init => _bitfields = value;
@@ -98,7 +98,7 @@ namespace GirLoader.Output
             SharedLibrary = sharedLibrary;
             IdentifierPrefixes = identifierPrefixes;
             SymbolPrefixes = symbolPrefixes;
-            
+
             repository.SetNamespace(this);
         }
 

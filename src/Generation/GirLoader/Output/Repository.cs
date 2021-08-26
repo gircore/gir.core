@@ -11,8 +11,8 @@ namespace GirLoader.Output
         internal IEnumerable<Include> Includes { get; }
         internal IEnumerable<Repository> Dependencies => Includes.Select(x => x.GetResolvedRepository());
 
-        public Repository() : this(Enumerable.Empty<Include>()){ }
-        
+        public Repository() : this(Enumerable.Empty<Include>()) { }
+
         internal Repository(IEnumerable<Include> includes)
         {
             Includes = includes;
