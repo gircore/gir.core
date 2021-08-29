@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace GirLoader.Output
 {
@@ -39,7 +40,7 @@ namespace GirLoader.Output
                 methods: _methodFactory.Create(@interface.Methods),
                 functions: _methodFactory.Create(@interface.Functions),
                 getTypeFunction: _methodFactory.CreateGetTypeMethod(@interface.GetTypeFunction),
-                properties: _propertyFactory.Create(@interface.Properties)
+                properties: @interface.Properties.Select(_propertyFactory.Create).ToList()
             );
         }
     }

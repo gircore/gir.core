@@ -6,37 +6,71 @@ namespace GirLoader.Output
 {
     public class Class : ComplexType
     {
-        private readonly List<Method> _methods;
-        private readonly List<Method> _functions;
-        private readonly List<Method> _constructors;
-        private readonly List<Property> _properties;
-        private readonly List<Field> _fields;
-        private readonly List<Signal> _signals;
-        public bool IsFundamental { get; }
+        #region Fields
+
+        private IEnumerable<Method>? _methods;
+        private IEnumerable<Method>? _functions;
+        private IEnumerable<Method>? _constructors;
+        private IEnumerable<Property>? _properties;
+        private IEnumerable<Field>? _fields;
+        private IEnumerable<Signal>? _signals;
+        private IEnumerable<TypeReference>? _implements;
+
+        #endregion
+
+        #region Properties
+
         public Method GetTypeFunction { get; }
-        public IEnumerable<TypeReference> Implements { get; }
-        public IEnumerable<Method> Methods => _methods;
-        public IEnumerable<Method> Functions => _functions;
-        public TypeReference? Parent { get; }
-        public IEnumerable<Property> Properties => _properties;
-        public IEnumerable<Field> Fields => _fields;
-        public IEnumerable<Signal> Signals => _signals;
-        public IEnumerable<Method> Constructors => _constructors;
+        public bool IsFundamental { get; init; }
+        public TypeReference? Parent { get; init; }
 
-        public Class(Repository repository, CType? cType, TypeName originalName, TypeName name, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(repository, cType, name, originalName)
+        public IEnumerable<TypeReference> Implements
         {
-            Parent = parent;
-            Implements = implements;
+            get => _implements ??= Enumerable.Empty<TypeReference>();
+            init => _implements = value;
+        }
+
+        public IEnumerable<Method> Methods
+        {
+            get => _methods ??= Enumerable.Empty<Method>();
+            init => _methods = value;
+        }
+
+        public IEnumerable<Method> Functions
+        {
+            get => _functions ??= Enumerable.Empty<Method>();
+            init => _functions = value;
+        }
+
+        public IEnumerable<Property> Properties
+        {
+            get => _properties ??= Enumerable.Empty<Property>();
+            init => _properties = value;
+        }
+
+        public IEnumerable<Field> Fields
+        {
+            get => _fields ??= Enumerable.Empty<Field>();
+            init => _fields = value;
+        }
+
+        public IEnumerable<Signal> Signals
+        {
+            get => _signals ??= Enumerable.Empty<Signal>();
+            init => _signals = value;
+        }
+
+        public IEnumerable<Method> Constructors
+        {
+            get => _constructors ??= Enumerable.Empty<Method>();
+            init => _constructors = value;
+        }
+
+        #endregion
+
+        public Class(Repository repository, CType? cType, TypeName originalName, TypeName name, Method getTypeFunction) : base(repository, cType, name, originalName)
+        {
             GetTypeFunction = getTypeFunction;
-
-            this._methods = methods.ToList();
-            this._functions = functions.ToList();
-            this._constructors = constructors.ToList();
-            this._properties = properties.ToList();
-            this._fields = fields.ToList();
-            this._signals = signals.ToList();
-
-            IsFundamental = isFundamental;
         }
 
         internal override IEnumerable<TypeReference> GetTypeReferences()
@@ -82,11 +116,11 @@ namespace GirLoader.Output
             //Fields are not cleaned as those are needed
             //to represent the native structure of the object / class
 
-            _methods.RemoveAll(Remove);
-            _functions.RemoveAll(Remove);
-            _constructors.RemoveAll(Remove);
-            _properties.RemoveAll(Remove);
-            _signals.RemoveAll(Remove);
+            _methods = Methods.ToList().Where(IsResolved);
+            _functions = Functions.ToList().Where(IsResolved);
+            _constructors = Constructors.ToList().Where(IsResolved);
+            _properties = Properties.ToList().Where(IsResolved);
+            _signals = Signals.ToList().Where(IsResolved);
         }
 
         internal override bool Matches(TypeReference typeReference)
@@ -107,14 +141,14 @@ namespace GirLoader.Output
             return false;
         }
 
-        private bool Remove(Symbol symbol)
+        private bool IsResolved(Symbol symbol)
         {
             var result = symbol.GetIsResolved();
 
             if (!result)
                 Log.Information($"Class {Repository?.Namespace.Name}.{OriginalName}: Stripping symbol {symbol.OriginalName}");
 
-            return !result;
+            return result;
         }
     }
 }

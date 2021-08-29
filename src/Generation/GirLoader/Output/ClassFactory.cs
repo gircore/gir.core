@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace GirLoader.Output
 {
@@ -36,17 +37,19 @@ namespace GirLoader.Output
                 originalName: new TypeName(cls.Name),
                 name: new TypeName(cls.Name),
                 cType: cTypeName,
-                parent: CreateParentTypeReference(cls.Parent, repository.Namespace),
-                implements: _typeReferenceFactory.Create(cls.Implements),
-                methods: _methodFactory.Create(cls.Methods),
-                functions: _methodFactory.Create(cls.Functions),
-                getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction),
-                properties: _propertyFactory.Create(cls.Properties),
-                fields: _fieldFactory.Create(cls.Fields, repository),
-                signals: _signalFactory.Create(cls.Signals),
-                constructors: _methodFactory.Create(cls.Constructors),
-                isFundamental: cls.Fundamental
-            );
+                getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction)
+            )
+            {
+                IsFundamental = cls.Fundamental,
+                Parent = CreateParentTypeReference(cls.Parent, repository.Namespace),
+                Implements =  _typeReferenceFactory.Create(cls.Implements),
+                Constructors = _methodFactory.Create(cls.Constructors),
+                Functions = _methodFactory.Create(cls.Functions),
+                Methods = _methodFactory.Create(cls.Methods),
+                Signals = cls.Signals.Select(_signalFactory.Create).ToList(),
+                Fields = cls.Fields.Select(x => _fieldFactory.Create(x, repository)).ToList(),
+                Properties = cls.Properties.Select(_propertyFactory.Create).ToList(),
+            };
         }
 
         private TypeReference? CreateParentTypeReference(string? parentName, Namespace @namespace)

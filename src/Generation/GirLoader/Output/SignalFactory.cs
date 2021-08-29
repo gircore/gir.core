@@ -30,8 +30,5 @@ namespace GirLoader.Output
                 parameterList: _parameterListFactory.Create(signal.Parameters)
             );
         }
-
-        public IEnumerable<Signal> Create(IEnumerable<Input.Signal> signals)
-            => signals.Select(Create).ToList();
     }
 }

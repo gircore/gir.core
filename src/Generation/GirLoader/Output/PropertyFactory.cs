@@ -15,7 +15,7 @@ namespace GirLoader.Output
             _typeReferenceFactory = typeReferenceFactory;
         }
 
-        private Property Create(Input.Property property)
+        public Property Create(Input.Property property)
         {
             if (property.Name is null)
                 throw new Exception("Property is missing a name");
@@ -29,8 +29,5 @@ namespace GirLoader.Output
                 transfer: _transferFactory.FromText(property.TransferOwnership)
             );
         }
-
-        public IEnumerable<Property> Create(IEnumerable<Input.Property> properties)
-            => properties.Select(Create).ToList();
     }
 }

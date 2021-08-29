@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace GirLoader.Output
 {
@@ -36,7 +37,7 @@ namespace GirLoader.Output
                 methods: _methodFactory.Create(union.Methods),
                 functions: _methodFactory.Create(union.Functions),
                 getTypeFunction: getTypeFunction,
-                fields: _fieldFactory.Create(union.Fields, repository),
+                fields: union.Fields.Select(x => _fieldFactory.Create(x, repository)).ToList(),
                 disguised: union.Disguised,
                 constructors: _methodFactory.Create(union.Constructors)
             );

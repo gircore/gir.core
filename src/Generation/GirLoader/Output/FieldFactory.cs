@@ -43,8 +43,5 @@ namespace GirLoader.Output
                 @private: info.Private
             );
         }
-
-        public IEnumerable<Field> Create(IEnumerable<Input.Field> infos, Repository repository)
-            => infos.Select(x => Create(x, repository)).ToList();
     }
 }
