@@ -1,0 +1,10 @@
+namespace {{ namespace.name }}
+{
+    internal partial class Module
+    {
+        static partial void InitializeDllImport()
+        {
+            Native.DllImport.Initialize();
+        }
+    }
+}

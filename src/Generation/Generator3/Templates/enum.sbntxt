@@ -1,0 +1,12 @@
+{{~ #Enumerations are passed as long via the ffi ~}}
+using System;
+
+namespace {{ namespace.name }}
+{
+    public enum {{ name }} : long
+    {
+        {{~ for member in members }}
+        {{ include 'member.sbntxt' member ~}}
+        {{ end }}
+    }
+}

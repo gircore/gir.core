@@ -1,0 +1,5 @@
+[StructLayout(LayoutKind.Explicit)]
+public partial struct {{ get_metadata "StructName" }}
+{
+    {{ include 'union.native.struct.fields.sbntxt' }}
+}

@@ -1,0 +1,48 @@
+{{ if namespace.name != "GLib" # TODO: Temporary until we merge GLib + GObject }}
+using GObject.Native;
+{{ end }}
+using System;
+
+namespace {{ namespace.name }}
+{
+    internal partial class Module
+    {
+        static partial void RegisterTypes()
+        {
+            {{ if namespace.name != "GLib" # TODO: Temporary until we merge GLib + GObject }}
+            {{ for $class in classes}}
+            try
+            {
+                {{ $class | write_type_registration }}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not register class type '{{ $class.name }}': {e.Message}");
+            }
+            {{ end }}
+            
+            {{ for $record in records }}
+            try
+            {
+                {{ $record | write_type_registration_record }}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not register record type '{{ $record.name }}': {e.Message}");
+            }
+            {{ end }}
+            
+            {{ for $union in unions }}
+            try
+            {
+                {{ $union | write_type_registration_union }}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not register union type '{{ $union.name }}': {e.Message}");
+            }
+            {{ end }}
+            {{ end }}
+        }
+    }
+}

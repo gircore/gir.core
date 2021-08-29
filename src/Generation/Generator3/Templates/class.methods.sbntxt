@@ -1,0 +1,5 @@
+{{~ 
+for $method in methods
+    $method | write_managed_method $1
+end
+~}}

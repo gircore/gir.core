@@ -1,0 +1,43 @@
+{{~
+$signal_data = get_signal_data $1
+
+if $signal_data.needs_args
+    $signal_generic_args = this.name + ', ' + $signal_data.args_type
+else
+    $signal_generic_args = this.name
+end
+~}}
+#region Signal {{$signal_data.event_name}}
+
+{{~ if $signal_data.needs_args ~}}
+/// <summary>
+/// Indexer to connect {{ $signal_data.event_descriptor }} with a SignalHandler&lt;{{$signal_generic_args}}&gt;
+/// </summary>
+public SignalHandler<{{ $signal_generic_args }}> this[Signal<{{ $signal_generic_args }}> signal]
+{
+    set => signal.Connect(this, value, true);
+}
+
+/// <summary>
+/// Signal (Event) Arguments for {{$signal_data.event_name}}
+/// </summary>
+public sealed class {{$signal_data.args_type}} : SignalArgs
+{
+    #region Properties
+    {{ $1.parameter_list | write_signal_args_properties }}
+    #endregion
+}
+{{~ end ~}}
+
+/// <summary>
+/// Signal Descriptor for {{$signal_data.event_name}}.
+/// </summary>
+public static readonly Signal<{{ $signal_generic_args }}> {{ $signal_data.event_descriptor }} = Signal<{{ $signal_generic_args }}>.Wrap("{{ $1.original_name }}");
+
+public event SignalHandler<{{ $signal_generic_args }}> {{ $signal_data.event_name }}
+{
+    add => {{ $signal_data.event_descriptor }}.Connect(this, value);
+    remove => {{ $signal_data.event_descriptor }}.Disconnect(this, value);
+}
+
+#endregion

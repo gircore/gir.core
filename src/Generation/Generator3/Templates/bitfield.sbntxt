@@ -1,0 +1,13 @@
+{{~ #Bitfields are passed as ulong via the ffi ~}}
+using System;
+
+namespace {{ namespace.name }}
+{
+    [Flags]
+    public enum {{ name }} : ulong
+    {
+        {{~ for member in members }}
+        {{ include 'member.sbntxt' member ~}}
+        {{ end }}
+    }
+}
