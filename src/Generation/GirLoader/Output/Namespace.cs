@@ -129,16 +129,16 @@ namespace GirLoader.Output
             Classes.Strip();
             Interfaces.Strip();
 
-            _aliases = _aliases.ToList().Where(IsResolved);
-            _callbacks = _callbacks.ToList().Where(IsResolved);
-            _classes = _classes.ToList().Where(IsResolved);
-            _enumerations = _enumerations.ToList().Where(IsResolved);
-            _bitfields = _bitfields.ToList().Where(IsResolved);
-            _interfaces = _interfaces.ToList().Where(IsResolved);
-            _records = _records.ToList().Where(IsResolved);
-            _functions = _functions.ToList().Where(IsResolved);
-            _unions = _unions.ToList().Where(IsResolved);
-            _constants = _constants.ToList().Where(IsResolved);
+            _aliases = Aliases.ToList().Where(IsResolved);
+            _callbacks = Callbacks.ToList().Where(IsResolved);
+            _classes = Classes.ToList().Where(IsResolved);
+            _enumerations = Enumerations.ToList().Where(IsResolved);
+            _bitfields = Bitfields.ToList().Where(IsResolved);
+            _interfaces = Interfaces.ToList().Where(IsResolved);
+            _records = Records.ToList().Where(IsResolved);
+            _functions = Functions.ToList().Where(IsResolved);
+            _unions = Unions.ToList().Where(IsResolved);
+            _constants = Constants.ToList().Where(IsResolved);
         }
 
         private bool IsResolved(Alias alias)
