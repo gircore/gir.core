@@ -7,7 +7,7 @@ namespace Generator
 {
     internal static class Convert
     {
-        internal static string ManagedToNative(TransferableAnyType transferable, string fromParam, Namespace currentNamespace)
+        internal static string ManagedToNative(Transferable transferable, string fromParam, Namespace currentNamespace)
         {
             Transfer transfer = transferable.Transfer;
             Type type = transferable.TypeReference.Type
@@ -54,7 +54,7 @@ namespace Generator
             };
         }
 
-        internal static string NativeToManaged(TransferableAnyType transferable, string fromParam, Namespace currentNamespace, bool useSafeHandle = true)
+        internal static string NativeToManaged(Transferable transferable, string fromParam, Namespace currentNamespace, bool useSafeHandle = true)
         {
             Transfer transfer = transferable.Transfer;
             Type type = transferable.TypeReference.Type

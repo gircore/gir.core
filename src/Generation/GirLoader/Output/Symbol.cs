@@ -2,8 +2,9 @@
 
 namespace GirLoader.Output
 {
-    public abstract class Symbol
+    public abstract class Symbol : Named
     {
+        //TODO: Remove property
         public SymbolName OriginalName { get; }
         public SymbolName Name { get; set; }
 
@@ -12,9 +13,6 @@ namespace GirLoader.Output
             OriginalName = originalName;
             Name = name;
         }
-
-        internal abstract IEnumerable<TypeReference> GetTypeReferences();
-        internal abstract bool GetIsResolved();
 
         public override string ToString()
             => Name;

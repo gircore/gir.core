@@ -20,14 +20,16 @@ namespace GirLoader.Output
             if (property.Name is null)
                 throw new Exception("Property is missing a name");
 
-            return new Property(
+            return new TypeReferencingProperty(
                 originalName: new SymbolName(property.Name),
                 symbolName: new SymbolName(new Helper.String(property.Name).ToPascalCase()),
-                typeReference: _typeReferenceFactory.Create(property),
-                writeable: property.Writeable,
-                readable: property.Readable,
-                transfer: _transferFactory.FromText(property.TransferOwnership)
-            );
+                typeReference: _typeReferenceFactory.Create(property)
+            )
+            {
+                Writeable = property.Writeable, 
+                Readable = property.Readable, 
+                Transfer = _transferFactory.FromText(property.TransferOwnership)
+            };
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Generator
                 ReturnValue { Transfer: Transfer.None, TypeReference: { Type: String } } => "IntPtr",
 
                 // Arrays of string which do not transfer ownership and have no length index can not be marshalled automatically
-                TransferableAnyType { TypeReference: ArrayTypeReference { Length: null }, TypeReference: { Type: String }, Transfer: Transfer.None } => "IntPtr",
+                { TypeReference: ArrayTypeReference { Length: null }, TypeReference: { Type: String }} and Transferable { Transfer: Transfer.None}  => "IntPtr",
 
                 // Arrays of string can be marshalled automatically, no IntPtr needed
                 { TypeReference: ArrayTypeReference { Type: String } } => "string[]",

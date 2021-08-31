@@ -2,27 +2,48 @@
 
 namespace GirLoader.Output
 {
-    public class Property : Symbol, TransferableAnyType
+    public interface Property : Transferable, Named
     {
-        public Transfer Transfer { get; }
-        public bool Writeable { get; }
-        public bool Readable { get; }
-        public TypeReference TypeReference { get; }
+        Transfer Transfer { get; init; }
+        bool Writeable { get; init; }
+        bool Readable { get; init; }
+        Type Type { get; }
+    }
+    
+    internal class TypeReferencingProperty : Symbol, Property, AnyType
+    {
+        private readonly TypeReference _typeReference;
 
-        public Property(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, bool writeable, bool readable, Transfer transfer) : base(originalName, symbolName)
+        TypeReference AnyType.TypeReference => _typeReference;
+        public Transfer Transfer { get; init; }
+        public bool Writeable { get; init; }
+        public bool Readable { get; init; }
+        public Type? Type => _typeReference.Type;
+        
+        public TypeReferencingProperty(SymbolName originalName, SymbolName symbolName, TypeReference typeReference) : base(originalName, symbolName)
         {
-            TypeReference = typeReference;
-            Writeable = writeable;
-            Transfer = transfer;
-            Readable = readable;
+            _typeReference = typeReference;
         }
 
-        internal override IEnumerable<TypeReference> GetTypeReferences()
+        internal IEnumerable<TypeReference> GetTypeReferences()
         {
-            yield return TypeReference;
+            yield return _typeReference;
         }
 
-        internal override bool GetIsResolved()
-            => TypeReference.GetIsResolved();
+        internal bool GetIsResolved()
+            => _typeReference.GetIsResolved();
+    }
+    
+    public class TypedProperty : Symbol, Property
+    {
+        public Transfer Transfer { get; init; }
+        public bool Writeable { get; init; }
+        public bool Readable { get; init; }
+        public Type Type { get; }
+
+        public TypedProperty(SymbolName originalName, SymbolName symbolName, Type type) : base(originalName, symbolName)
+        {
+            Type = type;
+        }
     }
 }
