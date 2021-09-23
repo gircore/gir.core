@@ -38,13 +38,13 @@ namespace GirLoader.Output
                 cType: cTypeName,
                 parent: CreateParentTypeReference(cls.Parent, repository.Namespace),
                 implements: _typeReferenceFactory.Create(cls.Implements),
-                methods: _methodFactory.Create(cls.Methods),
-                functions: _methodFactory.Create(cls.Functions),
-                getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction),
+                methods: _methodFactory.Create(cls.Methods, repository),
+                functions: _methodFactory.Create(cls.Functions, repository),
+                getTypeFunction: _methodFactory.CreateGetTypeMethod(cls.GetTypeFunction, repository),
                 properties: _propertyFactory.Create(cls.Properties),
                 fields: _fieldFactory.Create(cls.Fields, repository),
                 signals: _signalFactory.Create(cls.Signals),
-                constructors: _methodFactory.Create(cls.Constructors),
+                constructors: _methodFactory.Create(cls.Constructors, repository),
                 isFundamental: cls.Fundamental
             );
         }

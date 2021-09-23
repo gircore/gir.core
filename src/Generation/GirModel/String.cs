@@ -1,4 +1,4 @@
-﻿namespace GirModule
+﻿namespace GirModel
 {
     public interface String : PrimitiveType { }
 }

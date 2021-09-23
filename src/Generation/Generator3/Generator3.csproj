@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <ProjectReference Include="..\GirModel\GirModel.csproj" />
+      <PackageReference Include="Scriban" Version="4.0.1" />
+      <ProjectReference Include="..\GirModel\GirModel.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Rendering\Scriban\Templates\**" />
     </ItemGroup>
 </Project>

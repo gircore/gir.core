@@ -36,9 +36,9 @@ namespace GirLoader.Output
                 originalName: new TypeName(@interface.Name),
                 name: new TypeName(@interface.Name),
                 implements: _typeReferenceFactory.Create(@interface.Implements),
-                methods: _methodFactory.Create(@interface.Methods),
-                functions: _methodFactory.Create(@interface.Functions),
-                getTypeFunction: _methodFactory.CreateGetTypeMethod(@interface.GetTypeFunction),
+                methods: _methodFactory.Create(@interface.Methods, repository),
+                functions: _methodFactory.Create(@interface.Functions, repository),
+                getTypeFunction: _methodFactory.CreateGetTypeMethod(@interface.GetTypeFunction, repository),
                 properties: _propertyFactory.Create(@interface.Properties)
             );
         }

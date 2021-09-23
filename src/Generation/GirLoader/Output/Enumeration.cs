@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public class Enumeration : ComplexType
+    public partial class Enumeration : ComplexType
     {
         public IEnumerable<Member> Members { get; }
 

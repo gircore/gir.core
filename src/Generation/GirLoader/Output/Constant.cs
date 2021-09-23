@@ -2,13 +2,15 @@
 
 namespace GirLoader.Output
 {
-    public class Constant : Symbol
+    public partial class Constant : Symbol
     {
+        private readonly Repository _repository;
         public string Value { get; }
         public TypeReference TypeReference { get; }
 
-        public Constant(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, string value) : base(originalName, symbolName)
+        public Constant(Repository repository, SymbolName originalName, SymbolName symbolName, TypeReference typeReference, string value) : base(originalName, symbolName)
         {
+            _repository = repository;
             TypeReference = typeReference;
             Value = value;
         }

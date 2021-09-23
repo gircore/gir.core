@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output
 {
-    public class SingleParameter : Symbol, Parameter
+    public partial class SingleParameter : Symbol, Parameter
     {
         public TypeReference TypeReference { get; }
         public Direction Direction { get; }

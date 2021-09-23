@@ -1,4 +1,7 @@
-﻿namespace GirModule
+﻿namespace GirModel
 {
-    public interface Class : ComplexType { }
+    public interface Class : ComplexType
+    {
+        bool Fundamental { get; }
+    }
 }

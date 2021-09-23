@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GirLoader.Output
 {
-    public class Member : Symbol
+    public partial class Member : Symbol
     {
         public string Value { get; }
 

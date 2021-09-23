@@ -4,7 +4,7 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public class Bitfield : ComplexType
+    public partial class Bitfield : ComplexType
     {
         public IEnumerable<Member> Members { get; }
 

@@ -58,21 +58,21 @@ namespace GirLoader.Output
                 Records = @namespace.Records.Select(record => _recordFactory.Create(record, repository)).ToList(),
                 Classes = @namespace.Classes.Select(cls => _classFactory.Create(cls, repository)).ToList(),
                 Unions = @namespace.Unions.Select(union => _unionFactory.Create(union, repository)).ToList(),
-                Functions = GetValidFunctions(@namespace.Functions),
-                Constants = @namespace.Constants.Select(constant => _constantFactory.Create(constant)).ToList()
+                Functions = GetValidFunctions(@namespace.Functions, repository),
+                Constants = @namespace.Constants.Select(constant => _constantFactory.Create(constant, repository)).ToList()
             };
 
             return nspace;
         }
 
-        private IEnumerable<Method> GetValidFunctions(IEnumerable<Input.Method> functions)
+        private IEnumerable<Method> GetValidFunctions(IEnumerable<Input.Method> functions, Repository repository)
         {
             var list = new List<Method>();
             foreach (var function in functions)
             {
                 try
                 {
-                    list.Add(_methodFactory.Create(function));
+                    list.Add(_methodFactory.Create(function, repository));
                 }
                 catch (SingleParameterFactory.VarArgsNotSupportedException ex)
                 {

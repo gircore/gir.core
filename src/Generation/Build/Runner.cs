@@ -41,7 +41,11 @@ namespace Build
 
         public void Run(IEnumerable<string> targets, Options options)
         {
-            Targets.RunWithoutExiting(targets, options);
+            Targets.RunWithoutExiting(
+                targets: targets,
+                options: options, 
+                messageOnly: _ => true
+            );
         }
     }
 }

@@ -85,10 +85,9 @@ namespace Build
             {
                 runner.Run(targets, options);
             }
-            catch (Exception e)
+            catch
             {
-                Log.Exception(e);
-                Log.Error("An error occured in the build tool. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
+                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
                 return 1;
             }
 

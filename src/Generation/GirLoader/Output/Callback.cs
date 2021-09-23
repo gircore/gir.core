@@ -3,7 +3,7 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public class Callback : ComplexType
+    public partial class Callback : ComplexType
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }

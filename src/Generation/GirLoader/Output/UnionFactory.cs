@@ -20,7 +20,7 @@ namespace GirLoader.Output
 
             Method? getTypeFunction = union.GetTypeFunction switch
             {
-                { } f => _methodFactory.CreateGetTypeMethod(f),
+                { } f => _methodFactory.CreateGetTypeMethod(f, repository),
                 _ => null
             };
 
@@ -33,12 +33,12 @@ namespace GirLoader.Output
                 cType: cTypeName,
                 originalName: new TypeName(union.Name),
                 name: new TypeName(union.Name),
-                methods: _methodFactory.Create(union.Methods),
-                functions: _methodFactory.Create(union.Functions),
+                methods: _methodFactory.Create(union.Methods, repository),
+                functions: _methodFactory.Create(union.Functions, repository),
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(union.Fields, repository),
                 disguised: union.Disguised,
-                constructors: _methodFactory.Create(union.Constructors)
+                constructors: _methodFactory.Create(union.Constructors, repository)
             );
         }
     }

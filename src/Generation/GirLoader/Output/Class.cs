@@ -4,7 +4,7 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public class Class : ComplexType
+    public partial class Class : ComplexType
     {
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;

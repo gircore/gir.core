@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using GirLoader;
+using GirLoader.Output;
 
 namespace Build
 {
@@ -32,22 +34,27 @@ namespace Build
 
         private void RunGenerator()
         {
-            try
-            {
-                var generator = new Generator.Generator
-                {
-                    OutputDir = Projects.ProjectPath,
-                    UseAsync = _settings.GenerateAsynchronously,
-                    GenerateDocComments = _settings.GenerateComments
-                };
+            var project = "GLib-2.0";
+            var loader = new GirLoader.Loader();
+            var repository = loader.Load(new [] { LoadInputRepository(Project.FromName(project)) }).First();
 
-                generator.Write(Projects.AllLibraries.Select(x => new FileInfo(x.GirFile)));
-            }
-            catch (Exception e)
-            {
-                Log.Exception(e);
-                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
-            }
+            GenerateRepository(project, repository);
+        }
+
+        private void GenerateRepository(string project, Repository repository)
+        {
+            var generator = new Generator3.Generator3();
+            
+            foreach(var enumeration in repository.Namespace.Enumerations)
+                generator.GenerateEnumeration(project, enumeration);
+            
+            generator.GenerateConstants(project, repository.Namespace.Constants);
+            generator.GenerateFunctions(project, repository.Namespace.Functions);
+        }
+        
+        private GirLoader.Input.Repository LoadInputRepository(Project project)
+        {
+            return new FileInfo(project.GirFile).OpenRead().DeserializeGirInputModel();
         }
     }
 }

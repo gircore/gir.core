@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output
 {
-    public abstract class Type
+    public abstract class Type : GirModel.Type
     {
         public Metadata Metadata { get; } = new();
 

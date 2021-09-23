@@ -22,7 +22,7 @@ namespace GirLoader.Output
 
             Method? getTypeFunction = record.GetTypeFunction switch
             {
-                { } f => _methodFactory.CreateGetTypeMethod(f),
+                { } f => _methodFactory.CreateGetTypeMethod(f, repository),
                 _ => null
             };
 
@@ -36,12 +36,12 @@ namespace GirLoader.Output
                 originalName: new TypeName(record.Name),
                 name: new TypeName(record.Name),
                 gLibClassStructFor: GetGLibClassStructFor(record.GLibIsGTypeStructFor, repository.Namespace),
-                methods: _methodFactory.Create(record.Methods),
-                functions: _methodFactory.Create(record.Functions),
+                methods: _methodFactory.Create(record.Methods,repository),
+                functions: _methodFactory.Create(record.Functions, repository),
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(record.Fields, repository),
                 disguised: record.Disguised,
-                constructors: _methodFactory.Create(record.Constructors)
+                constructors: _methodFactory.Create(record.Constructors, repository)
             );
         }
 

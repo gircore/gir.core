@@ -24,7 +24,7 @@
         }
     }
 
-    public abstract class String : PrimitiveType
+    public abstract class String : PrimitiveType, GirModel.String
     {
         protected String() : base(new CType("gchar*"), new TypeName("string"))
         {
