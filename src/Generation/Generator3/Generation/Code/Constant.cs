@@ -1,4 +1,4 @@
-namespace Generator3.Generation
+namespace Generator3.Generation.Code
 {
     public class Constant
     {

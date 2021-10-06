@@ -17,7 +17,7 @@
             );
             
             foreach(var member in enumeration.Members)
-                data.Add(new Member(member));
+                data.Add(new Code.Member(member));
 
             return _renderer.Render(data);
         }

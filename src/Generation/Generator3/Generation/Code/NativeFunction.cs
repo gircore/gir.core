@@ -2,19 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Generator3.Generation
+namespace Generator3.Generation.Code
 {
     public class NativeFunction
     {
         private readonly GirModel.Method _function;
-        private IEnumerable<NativeParameter>? _parameters;
+        private IEnumerable<Parameter>? _parameters;
 
         public string Name => _function.Name;
         public string ReturnTypeName => _function.ReturnType.GetName();
         public string CIdentifier => _function.CIdentifier;
         public string NameSpaceName => _function.NamespaceName;
 
-        public IEnumerable<NativeParameter> Parameters => _parameters ??= _function.Parameters.Select(x => new NativeParameter(x));
+        public IEnumerable<Parameter> Parameters => _parameters ??= _function.Parameters.Select(ParameterFactory.CreateNative);
         
         public string Code => GetCode();
 

@@ -5,17 +5,17 @@ namespace Generator3.Generation.NativeFunctions
 {
     public class Data
     {
-        private readonly HashSet<NativeFunction> _functions = new();
+        private readonly HashSet<Code.NativeFunction> _functions = new();
         
         public string NamespaceName { get; }
-        public IEnumerable<NativeFunction> NativeFunctions => _functions;
+        public IEnumerable<Code.NativeFunction> NativeFunctions => _functions;
 
         public Data(string namespaceName)
         {
             NamespaceName = namespaceName;
         }
 
-        public void Add(NativeFunction nativeFunction)
+        public void Add(Code.NativeFunction nativeFunction)
             => _functions.Add(nativeFunction);
         
     }

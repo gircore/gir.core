@@ -19,7 +19,7 @@ namespace Generator3.Generation.Constants
             );
 
             foreach (var constant in constants)
-                data.Add(new Constant(constant));
+                data.Add(new Code.Constant(constant));
 
             return _renderer.Render(data);
         }

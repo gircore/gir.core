@@ -19,7 +19,7 @@ namespace Generator3.Generation.NativeFunctions
             );
             
             foreach(var function in functions)
-                data.Add(new NativeFunction(function));
+                data.Add(new Code.NativeFunction(function));
             
             return _renderer.Render(data);
         }
