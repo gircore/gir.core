@@ -12,6 +12,6 @@
             _ => ParameterDirection.In
         };
         
-        public ClassParameter(GirModel.Parameter parameter) : base(parameter) { }
+        protected internal ClassParameter(GirModel.Parameter parameter) : base(parameter) { }
     }
 }

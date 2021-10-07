@@ -7,6 +7,6 @@
 
         public override string Direction => ParameterDirection.In;
         
-        public CallbackParameter(GirModel.Parameter parameter) : base(parameter) { }
+        protected internal CallbackParameter(GirModel.Parameter parameter) : base(parameter) { }
     }
 }

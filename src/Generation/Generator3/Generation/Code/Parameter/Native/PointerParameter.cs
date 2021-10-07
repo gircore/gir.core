@@ -12,6 +12,6 @@
             _ => ParameterDirection.In
         };
         
-        public PointerParameter(GirModel.Parameter parameter) : base(parameter) { }
+        protected internal PointerParameter(GirModel.Parameter parameter) : base(parameter) { }
     }
 }

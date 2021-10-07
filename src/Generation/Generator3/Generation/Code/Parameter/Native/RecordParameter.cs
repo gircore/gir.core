@@ -13,6 +13,6 @@
             _ => ParameterDirection.In
         };
         
-        public RecordParameter(GirModel.Parameter parameter) : base(parameter) { }
+        protected internal RecordParameter(GirModel.Parameter parameter) : base(parameter) { }
     }
 }
