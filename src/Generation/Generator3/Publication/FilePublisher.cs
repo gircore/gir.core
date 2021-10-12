@@ -5,7 +5,8 @@ namespace Generator3.Publication
     internal class FilePublisher
         : EnumerationPublisher,
             ConstantsPublisher,
-            NativeFunctionsPublisher
+            NativeFunctionsPublisher,
+            NativeRecordFunctionsPublisher
     {
         public string TargetFolder { get; set; } = "../../Libs";
 
@@ -24,6 +25,12 @@ namespace Generator3.Publication
         void NativeFunctionsPublisher.Publish(CodeUnit codeUnit)
         {
             var path = Path.Combine(TargetFolder, codeUnit.Project, "Native", "Classes", GetFileName(codeUnit));
+            File.WriteAllText(path, codeUnit.Source);
+        }
+        
+        void NativeRecordFunctionsPublisher.Publish(CodeUnit codeUnit)
+        {
+            var path = Path.Combine(TargetFolder, codeUnit.Project, "Native", "Records", GetFileName(codeUnit));
             File.WriteAllText(path, codeUnit.Source);
         }
 

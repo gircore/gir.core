@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GirModel;
 
-namespace Generator3.Generation.Unit.NativeFunctions
+namespace Generator3.Generation.Unit.Native.Functions
 {
     public class Model
     {

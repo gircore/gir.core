@@ -5,7 +5,7 @@
         protected readonly GirModel.ReturnValue _returnValue;
 
         public abstract string NullableTypeName { get; }
-        public string Code => NullableTypeName;
+        public string Code => NullableTypeName; //TODO: Remove this property it belongs into the rendering part
 
         protected ReturnValue(GirModel.ReturnValue returnValue)
         {

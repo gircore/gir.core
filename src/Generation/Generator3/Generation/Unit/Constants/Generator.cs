@@ -5,9 +5,9 @@ namespace Generator3.Generation.Unit.Constants
 {
     public class Generator
     {
-        private readonly Renderer _renderer;
+        private readonly Renderer<Model> _renderer;
 
-        public Generator(Renderer renderer)
+        public Generator(Renderer<Model> renderer)
         {
             _renderer = renderer;
         }

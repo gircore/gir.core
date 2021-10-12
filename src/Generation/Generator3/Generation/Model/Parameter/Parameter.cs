@@ -9,7 +9,7 @@ namespace Generator3.Generation.Model
         public string Name => Model.Name;
         public abstract string NullableTypeName { get; }
         public abstract string Direction { get; }
-        public string Code => $@"{ Direction }{ NullableTypeName } { Name }";
+        public string Code => $@"{ Direction }{ NullableTypeName } { Name }"; //TODO: Remove this property it belongs into the rendering part
 
         protected internal Parameter(GirModel.Parameter parameter)
         {

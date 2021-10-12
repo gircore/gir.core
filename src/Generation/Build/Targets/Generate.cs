@@ -49,6 +49,9 @@ namespace Build
             foreach(var enumeration in repository.Namespace.Enumerations)
                 generator.GenerateEnumeration(project, enumeration);
             
+            foreach(var record in repository.Namespace.Records)
+                generator.GenerateRecord(project, record);
+            
             generator.GenerateConstants(project, repository.Namespace.Constants);
             generator.GenerateFunctions(project, repository.Namespace.Functions);
         }

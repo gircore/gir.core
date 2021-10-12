@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using Generator3.Generation.Unit.Enumeration;
 
 namespace Generator3.Rendering.Templates
 {
-    internal class Enumeration : Generation.Unit.Enumeration.Renderer
+    internal class Enumeration : Generation.Unit.Renderer<Model>
     {
-        public string Render(Generation.Unit.Enumeration.Model model)
+        public string Render(Model model)
         {
             return $@"
 using System;

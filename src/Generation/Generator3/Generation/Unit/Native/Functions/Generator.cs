@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Generator3.Generation.Unit.NativeFunctions
+namespace Generator3.Generation.Unit.Native.Functions
 {
     public class Generator
     {
-        private readonly Renderer _renderer;
+        private readonly Renderer<Model> _renderer;
 
-        public Generator(Renderer renderer)
+        public Generator(Renderer<Model> renderer)
         {
             _renderer = renderer;
         }
