@@ -1,8 +1,8 @@
 ﻿namespace GirLoader.Output
 {
-    public partial class ReturnValue : GirModel.ReturnValue
+    public partial class ReturnValue : GirModel.ReturnType
     {
-        GirModel.Type GirModel.ReturnValue.Type => TypeReference.GetResolvedType();
-        GirModel.Transfer GirModel.ReturnValue.Transfer => Transfer.ToGirModel();
+        GirModel.Type GirModel.ReturnType.Type => TypeReference.GetResolvedType();
+        GirModel.Transfer GirModel.ReturnType.Transfer => Transfer.ToGirModel();
     }
 }

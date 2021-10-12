@@ -2,7 +2,7 @@
 
 namespace Generator3.Generation.Model.Native
 {
-    public class StringReturnValue : ReturnValue
+    public class StringReturnType : ReturnType
     {
         public override string NullableTypeName => _returnValue switch
         {
@@ -12,6 +12,6 @@ namespace Generator3.Generation.Model.Native
             _ => _returnValue.Type.GetName() + GetDefaultNullable()
         };
 
-        protected internal StringReturnValue(GirModel.ReturnValue returnValue) : base(returnValue) { }
+        protected internal StringReturnType(GirModel.ReturnType returnValue) : base(returnValue) { }
     }
 }

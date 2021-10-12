@@ -1,6 +1,6 @@
 ﻿namespace GirModel
 {
-    public interface ReturnValue
+    public interface ReturnType
     {
         public Type Type { get; }
         Transfer Transfer { get; }

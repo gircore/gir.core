@@ -6,20 +6,12 @@ namespace Generator3.Generation.Model
     public class NativeFunction
     {
         private IEnumerable<Parameter>? _parameters;
-        private ReturnValue? _returnValue;
+        private ReturnType? _returnType;
 
         public GirModel.Method Model { get; }
 
         public string Name => Model.Name;
-
-        public string ReturnTypeName
-        {
-            get
-            {
-                _returnValue ??= ReturnValue.CreateNative(Model.ReturnValue);
-                return _returnValue.Code;
-            }
-        }
+        public ReturnType ReturnType => _returnType ??= ReturnType.CreateNative(Model.ReturnType);
         public string CIdentifier => Model.CIdentifier;
         public string NameSpaceName => Model.NamespaceName;
 
