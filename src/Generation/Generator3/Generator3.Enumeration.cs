@@ -2,10 +2,10 @@
 {
     public partial class Generator3
     {
-        private Generation.Enumeration.Generator? _enumerationGenerator;
+        private Generation.Unit.Enumeration.Generator? _enumerationGenerator;
 
-        private Generation.Enumeration.Generator EnumerationGenerator
-            => _enumerationGenerator ??= new Generation.Enumeration.Generator(new Rendering.Scriban.Renderers.Enumeration());
+        private Generation.Unit.Enumeration.Generator EnumerationGenerator
+            => _enumerationGenerator ??= new Generation.Unit.Enumeration.Generator(new Rendering.Templates.Enumeration());
 
         private Publication.EnumerationPublisher EnumerationPublisher => _publisher;
 

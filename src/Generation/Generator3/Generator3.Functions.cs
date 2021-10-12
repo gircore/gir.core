@@ -4,10 +4,10 @@ namespace Generator3
 {
     public partial class Generator3
     {
-        private Generation.NativeFunctions.Generator? _functionsGenerator;
+        private Generation.Unit.NativeFunctions.Generator? _functionsGenerator;
 
-        private Generation.NativeFunctions.Generator NativeFunctionsGenerator
-            => _functionsGenerator ??= new Generation.NativeFunctions.Generator(new Rendering.Scriban.Renderers.NativeFunctions());
+        private Generation.Unit.NativeFunctions.Generator NativeFunctionsGenerator
+            => _functionsGenerator ??= new Generation.Unit.NativeFunctions.Generator(new Rendering.Templates.NativeFunctions());
 
         private Publication.NativeFunctionsPublisher NativeFunctionsPublisher => _publisher;
 

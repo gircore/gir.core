@@ -22,6 +22,7 @@ namespace Build
         {
             SetEnvironmentVariableToGenerateXmlDocumentation();
             RunGenerator();
+            //FormatCode();
         }
 
         private void SetEnvironmentVariableToGenerateXmlDocumentation()
@@ -55,6 +56,13 @@ namespace Build
         private GirLoader.Input.Repository LoadInputRepository(Project project)
         {
             return new FileInfo(project.GirFile).OpenRead().DeserializeGirInputModel();
+        }
+
+        private void FormatCode()
+        {
+            var project = "GLib-2.0";
+            var p = Project.FromName(project);
+            DotNet.Format(p.Folder);
         }
     }
 }

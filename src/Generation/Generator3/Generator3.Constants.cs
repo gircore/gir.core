@@ -4,11 +4,11 @@ namespace Generator3
 {
     public partial class Generator3
     {
-        private Generation.Constants.Generator? _constantsGenerator;
+        private Generation.Unit.Constants.Generator? _constantsGenerator;
 
-        private Generation.Constants.Generator ConstantsGenerator
-            => _constantsGenerator ??= new Generation.Constants.Generator(new Rendering.Scriban.Renderers.Constants());
-        
+        private Generation.Unit.Constants.Generator ConstantsGenerator
+            => _constantsGenerator ??= new Generation.Unit.Constants.Generator(new Rendering.Templates.Constants());
+
         private Publication.ConstantsPublisher ConstantsPublisher => _publisher;
 
         public void GenerateConstants(string project, IEnumerable<GirModel.Constant> constants)

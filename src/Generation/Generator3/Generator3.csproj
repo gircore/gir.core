@@ -1,6 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-      <PackageReference Include="Scriban" Version="4.0.1" />
       <ProjectReference Include="..\GirModel\GirModel.csproj" />
     </ItemGroup>
     <ItemGroup>
