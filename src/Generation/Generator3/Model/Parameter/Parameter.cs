@@ -27,6 +27,9 @@ namespace Generator3.Model
             { Type: GirModel.Callback } => new Native.CallbackParameter(parameter),
             { Type: GirModel.Enumeration } => new Native.StandardParameter(parameter),
             { Type: GirModel.Bitfield } => new Native.StandardParameter(parameter),
+            
+            { Type: GirModel.ArrayType } => new Native.StandardParameter(parameter),
+            
             _ => throw new Exception($"Unknown parameter type {parameter.Type.GetType().FullName}")
         };
     }
