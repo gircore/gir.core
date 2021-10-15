@@ -9,10 +9,16 @@ namespace Generator3
             renderer: new Renderer.NativeRecordFunctionsUnit(),
             publisher: new NativeRecordFilePublisher()
         );
+        
+        private readonly NativeStructGenerator _recordNativeStructGenerator = new (
+            renderer: new Renderer.NativeRecordStuctUnit(),
+            publisher: new NativeRecordFilePublisher()
+        );
 
         public void GenerateRecord(string project, GirModel.Record record)
         {
             _recordNativeFunctionsGenerator.Generate(project, record);
+            _recordNativeStructGenerator.Generate(project, record);
         }
     }
 }

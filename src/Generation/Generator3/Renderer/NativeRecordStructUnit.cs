@@ -1,8 +1,8 @@
 ﻿namespace Generator3.Renderer
 {
-    internal class NativeRecordFunctionsUnit : Renderer<Model.NativeRecordFunctionsUnit>
+    internal class NativeRecordStuctUnit : Renderer<Model.NativeRecordStructUnit>
     {
-        public string Render(Model.NativeRecordFunctionsUnit model)
+        public string Render(Model.NativeRecordStructUnit model)
         {
             return $@"
 using System;
@@ -16,10 +16,9 @@ namespace { model.NamespaceName }
 
     public partial class { model.Name }
     {{
-        public partial class Methods
+        [StructLayout(LayoutKind.Sequential)]
+        public partial struct Struct
         {{
-            {model.TypeFunction.IfNotNullCall(NativeFunction.Get)}
-            {model.Functions.ForEachCall(NativeFunction.Get)}
         }}
     }}
 }}";
