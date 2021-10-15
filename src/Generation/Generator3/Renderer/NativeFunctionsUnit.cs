@@ -16,7 +16,7 @@ namespace { model.NamespaceName }
 
     public partial class Functions
     {{
-        {model.NativeFunctions.Write(NativeFunction.Get)}
+        {model.NativeFunctions.ForEachCall(NativeFunction.Get)}
     }}
 }}";
         }

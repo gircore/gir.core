@@ -16,7 +16,7 @@ public static extern { ReturnType.Get(nativeFunction.ReturnType) } { nativeFunct
 $@"/// <summary>
 /// Calls native method {nativeFunction.CIdentifier}.
 /// </summary>
-{nativeFunction.Parameters.Select(x => x.Model).Write(GetParameterSummary)}
+{nativeFunction.Parameters.Select(x => x.Model).ForEachCall(GetParameterSummary)}
 {GetReturnValueSaummary(nativeFunction.Model.ReturnType)}";
 
         private static string GetReturnValueSaummary(GirModel.ReturnType returnType) =>

@@ -16,7 +16,7 @@ namespace { model.NamespaceName }
 
     public partial class Constants
     {{
-        {model.Constants.Write(Constant.Get)}
+        {model.Constants.ForEachCall(Constant.Get)}
     }}
 }}";
         }

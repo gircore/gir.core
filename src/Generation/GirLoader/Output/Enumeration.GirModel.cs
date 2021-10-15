@@ -6,7 +6,7 @@ namespace GirLoader.Output
     {
         public string NamespaceName => Repository.Namespace.Name.Value; 
         public string Name => OriginalName.Value;
-
+        GirModel.Method GirModel.Enumeration.TypeFunction => null; //TODO: Should be implemented
         IEnumerable<GirModel.Member> GirModel.Enumeration.Members => Members;
     }
 }
