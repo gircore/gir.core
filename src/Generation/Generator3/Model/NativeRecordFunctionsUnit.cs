@@ -1,4 +1,7 @@
-﻿namespace Generator3.Model
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Generator3.Model
 {
     public class NativeRecordFunctionsUnit
     {
@@ -6,10 +9,14 @@
 
         public string Name => _record.Name;
         public string NamespaceName => _record.NamespaceName + ".Native";
+        public IEnumerable<NativeFunction> Functions { get; }
 
-        public NativeRecordFunctionsUnit(GirModel.Record @record)
+        public NativeRecordFunctionsUnit(GirModel.Record record)
         {
             _record = record;
+            Functions = record.Functions
+                .Select(function => new NativeFunction(function))
+                .ToList();
         }
     }
 }

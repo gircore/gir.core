@@ -1,4 +1,6 @@
-﻿namespace Generator3.Renderer
+﻿using System;
+
+namespace Generator3.Renderer
 {
     internal class NativeRecordFunctionsUnit : Renderer<Model.NativeRecordFunctionsUnit>
     {
@@ -18,7 +20,7 @@ namespace { model.NamespaceName }
     {{
         public partial class Methods
         {{
-
+            {string.Join(Environment.NewLine, model.Functions.Write(NativeFunction.Get))}
         }}
     }}
 }}";

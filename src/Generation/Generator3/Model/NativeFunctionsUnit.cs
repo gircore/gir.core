@@ -6,21 +6,17 @@ namespace Generator3.Model
     public class NativeFunctionsUnit
     {
         public IEnumerable<GirModel.Method> Functions { get; }
-        private readonly HashSet<NativeFunction> _functions = new();
 
         public string NamespaceName => Functions.First().NamespaceName + ".Native";
-        public IEnumerable<NativeFunction> NativeFunctions => _functions;
+        public IEnumerable<NativeFunction> NativeFunctions { get; }
 
         public NativeFunctionsUnit(IEnumerable<GirModel.Method> functions)
         {
             Functions = functions;
-            
-            foreach (var function in functions)
-                Add(new NativeFunction(function));
+
+            NativeFunctions = functions
+                .Select(function => new NativeFunction(function))
+                .ToList();
         }
-
-        private void Add(NativeFunction nativeFunction)
-            => _functions.Add(nativeFunction);
-
     }
 }

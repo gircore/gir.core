@@ -23,6 +23,9 @@ namespace Generator3.Model
                 GirModel.Void => "void",
                 GirModel.NativeUnsignedInteger => "nuint",
                 GirModel.Pointer => "IntPtr",
+
+                GirModel.ArrayType arrayType => GetName(arrayType.Type) + "[]",//Handle all arrays
+                
                 _ => throw new Exception($"Can't convert type {type} into a code representation.")
             };
         }

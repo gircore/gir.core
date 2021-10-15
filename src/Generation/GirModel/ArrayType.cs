@@ -2,9 +2,9 @@
 {
     public interface ArrayType : Type
     {
-        public int? Length { get; init; }
-        public bool IsZeroTerminated { get; init; }
-        public int? FixedSize { get; init; }
+        public int? Length { get; }
+        public bool IsZeroTerminated { get; }
+        public int? FixedSize { get; }
         Type Type { get; }
     }
 }

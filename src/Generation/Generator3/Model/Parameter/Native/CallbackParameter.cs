@@ -2,8 +2,8 @@
 {
     public class CallbackParameter : Parameter
     {
-        //Native callbacks are not nullable
-        public override string NullableTypeName => Model.Type.GetName();
+        //Native callbacks are not nullable and have a suffix "Callback"
+        public override string NullableTypeName => Model.Type.GetName() + "Callback";
 
         public override string Direction => ParameterDirection.In;
 

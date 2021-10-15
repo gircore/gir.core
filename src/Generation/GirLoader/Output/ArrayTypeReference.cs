@@ -1,7 +1,7 @@
 ﻿namespace GirLoader.Output
 {
 
-    public class ArrayTypeReference : TypeReference
+    public partial class ArrayTypeReference : TypeReference
     {
         public int? Length { get; init; }
         public bool IsZeroTerminated { get; init; }

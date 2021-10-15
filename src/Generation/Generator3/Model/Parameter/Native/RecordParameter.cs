@@ -3,7 +3,7 @@
     public class RecordParameter : Parameter
     {
         //Native records are represented as SafeHandles and are not nullable
-        public override string NullableTypeName => Model.Type.GetName();
+        public override string NullableTypeName => Model.Type.GetName() + ".Handle";
         public override string Direction => Model switch
         {
             //Native records (SafeHandles) are not supporting ref
