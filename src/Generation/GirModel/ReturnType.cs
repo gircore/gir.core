@@ -2,7 +2,7 @@
 {
     public interface ReturnType
     {
-        public Type Type { get; }
+        AnyType AnyType { get; }
         Transfer Transfer { get; }
         bool Nullable { get; }
     }

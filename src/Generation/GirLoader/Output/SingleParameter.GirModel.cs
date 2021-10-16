@@ -4,10 +4,10 @@
     {
         string GirModel.Parameter.Name => Name;
 
-        GirModel.Type GirModel.Parameter.Type => TypeReference switch
+        GirModel.AnyType GirModel.Parameter.AnyType => TypeReference switch
         {
-            ArrayTypeReference arrayTypeReference => arrayTypeReference,
-            _ => TypeReference.GetResolvedType()
+            ArrayTypeReference arrayTypeReference => GirModel.AnyType.From(arrayTypeReference),
+            _ => GirModel.AnyType.From(TypeReference.GetResolvedType())
         };
 
         GirModel.Direction GirModel.Parameter.Direction => Direction.ToGirModel();

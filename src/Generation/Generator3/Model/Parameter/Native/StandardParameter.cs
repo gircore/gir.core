@@ -2,7 +2,10 @@
 {
     public class StandardParameter : Parameter
     {
-        public override string NullableTypeName => Model.Type.GetName() + GetDefaultNullable();
+        public override string NullableTypeName => Model.AnyType.Match(
+            type => type.GetName() + GetDefaultNullable(),
+            arrayType => arrayType.GetName() //TODO: Consider if StandardParameter should support arrays?
+        );
 
         public override string Direction => Model switch
         {

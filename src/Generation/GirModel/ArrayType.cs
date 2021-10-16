@@ -1,6 +1,6 @@
 ﻿namespace GirModel
 {
-    public interface ArrayType : Type
+    public interface ArrayType
     {
         public int? Length { get; }
         public bool IsZeroTerminated { get; }

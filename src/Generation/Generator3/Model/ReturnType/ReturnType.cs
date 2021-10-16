@@ -1,4 +1,6 @@
-﻿namespace Generator3.Model
+﻿using System;
+
+namespace Generator3.Model
 {
     public abstract class ReturnType
     {
@@ -13,14 +15,19 @@
 
         protected string GetDefaultNullable() => _returnValue.Nullable ? "?" : "";
 
-        public static ReturnType CreateNative(GirModel.ReturnType returnValue) => returnValue switch
-        {
-            { Type: GirModel.String } => new Native.StringReturnType(returnValue),
-            { Type: GirModel.Record } => new Native.RecordReturnType(returnValue),
-            
-            { Type: GirModel.ArrayType { Type : GirModel.Record}} => new Native.ArrayRecordReturnType(returnValue),
+        public static ReturnType CreateNative(GirModel.ReturnType returnValue) => returnValue.AnyType.Match<ReturnType>(
+            type => type switch
+            {
+                GirModel.String => new Native.StringReturnType(returnValue),
+                GirModel.Record => new Native.RecordReturnType(returnValue),
 
-            _ => new Native.StandardReturnType(returnValue)
-        };
+                _ => new Native.StandardReturnType(returnValue)
+            },
+            arrayType => arrayType.Type switch 
+            {
+                GirModel.Record => new Native.ArrayRecordReturnType(returnValue),
+                _ => new Native.StandardReturnType(returnValue)
+            }
+        );
     }
 }

@@ -2,4 +2,7 @@
   <PropertyGroup>
     <RootNamespace>GirModule</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="OneOf" Version="3.0.201" />
+  </ItemGroup>
 </Project>

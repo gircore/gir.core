@@ -9,9 +9,16 @@ namespace Generator3.Model.Native
             // Return values which return a string without transferring ownership to us can not be marshalled automatically
             // as the marshaller want's to free the unmanaged memory which is not allowed if the ownership is not transferred
             { Transfer: Transfer.None } => "IntPtr",
-            _ => _returnValue.Type.GetName() + GetDefaultNullable()
+            
+            _ => _returnValue.AnyType.Match(
+                type => type.GetName() + GetDefaultNullable(),
+                _ => throw new System.Exception($"{nameof(StringReturnType)} does not support array type.")
+            )
         };
 
-        protected internal StringReturnType(GirModel.ReturnType returnValue) : base(returnValue) { }
+        protected internal StringReturnType(GirModel.ReturnType returnValue) : base(returnValue)
+        {
+            returnValue.AnyType.VerifyType<String>();
+        }
     }
 }

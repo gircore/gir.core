@@ -2,10 +2,10 @@
 {
     public partial class ReturnValue : GirModel.ReturnType
     {
-        GirModel.Type GirModel.ReturnType.Type => TypeReference switch
+        GirModel.AnyType GirModel.ReturnType.AnyType => TypeReference switch
         {
-            ArrayTypeReference arrayTypeReference => arrayTypeReference,
-            _ => TypeReference.GetResolvedType()
+            ArrayTypeReference arrayTypeReference => GirModel.AnyType.From(arrayTypeReference),
+            _ => GirModel.AnyType.From(TypeReference.GetResolvedType())
         };
 
         GirModel.Transfer GirModel.ReturnType.Transfer => Transfer.ToGirModel();

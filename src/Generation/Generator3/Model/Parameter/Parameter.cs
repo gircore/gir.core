@@ -17,20 +17,21 @@ namespace Generator3.Model
 
         protected string GetDefaultNullable() => Model.Nullable ? "?" : "";
 
-        public static Parameter CreateNative(GirModel.Parameter parameter) => parameter switch
-        {
-            { Type: GirModel.String } => new Native.StringParameter(parameter),
-            { Type: GirModel.Pointer } => new Native.PointerParameter(parameter),
-            { Type: GirModel.Class } => new Native.ClassParameter(parameter),
-            { Type: GirModel.Record } => new Native.RecordParameter(parameter),
-            { Type: GirModel.PrimitiveValueType } => new Native.StandardParameter(parameter),
-            { Type: GirModel.Callback } => new Native.CallbackParameter(parameter),
-            { Type: GirModel.Enumeration } => new Native.StandardParameter(parameter),
-            { Type: GirModel.Bitfield } => new Native.StandardParameter(parameter),
-            
-            { Type: GirModel.ArrayType } => new Native.StandardParameter(parameter),
-            
-            _ => throw new Exception($"Unknown parameter type {parameter.Type.GetType().FullName}")
-        };
+        public static Parameter CreateNative(GirModel.Parameter parameter) => parameter.AnyType.Match<Parameter>(
+            type => type switch
+            {
+                GirModel.String => new Native.StringParameter(parameter),
+                GirModel.Pointer => new Native.PointerParameter(parameter),
+                GirModel.Class => new Native.ClassParameter(parameter),
+                GirModel.Record => new Native.RecordParameter(parameter),
+                GirModel.PrimitiveValueType => new Native.StandardParameter(parameter),
+                GirModel.Callback => new Native.CallbackParameter(parameter),
+                GirModel.Enumeration => new Native.StandardParameter(parameter),
+                GirModel.Bitfield => new Native.StandardParameter(parameter),
+                
+                _ => throw new Exception($"Unknown parameter type {parameter.AnyType.GetType().FullName}")
+            },
+            arrayType => new Native.StandardParameter(parameter)
+        );
     }
 }
