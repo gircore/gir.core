@@ -5,10 +5,7 @@ namespace Generator3.Model.Native
     public class ClassParameter : Parameter
     {
         //Native classes are represented as IntPtr and should not be nullable
-        public override string NullableTypeName => Model.AnyType.Match(
-            type => type.GetName(),
-            _ => throw new Exception($"{nameof(ClassParameter)} does not support array type")
-        );
+        public override string NullableTypeName => Model.AnyType.AsT0.GetName();
 
         public override string Direction => Model switch
         {

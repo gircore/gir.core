@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Net.NetworkInformation;
 
 namespace GirLoader.Output
 {
-    public class Field : Symbol, AnyType
+    public partial class Field : Symbol, AnyType
     {
         public TypeReference TypeReference { get; }
 

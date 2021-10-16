@@ -19,6 +19,7 @@ namespace { model.NamespaceName }
         [StructLayout(LayoutKind.Sequential)]
         public partial struct Struct
         {{
+            {model.Fields.ForEachCall(NativeField.Get)}
         }}
     }}
 }}";

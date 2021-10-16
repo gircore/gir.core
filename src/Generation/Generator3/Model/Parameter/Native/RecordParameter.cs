@@ -5,10 +5,7 @@ namespace Generator3.Model.Native
     public class RecordParameter : Parameter
     {
         //Native records are represented as SafeHandles and are not nullable
-        public override string NullableTypeName => Model.AnyType.Match(
-            type => type.GetName() + ".Handle",
-            _ => throw new Exception($"{nameof(RecordParameter)} does not support array type")
-        );
+        public override string NullableTypeName => Model.AnyType.AsT0.GetName() + ".Handle";
 
         public override string Direction => Model switch
         {

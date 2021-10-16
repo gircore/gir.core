@@ -6,5 +6,6 @@ namespace GirModel
     {
         Method? TypeFunction { get; }
         IEnumerable<Method> Functions { get; }
+        IEnumerable<Field> Fields { get; }
     }
 }

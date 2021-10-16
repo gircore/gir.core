@@ -1,14 +1,9 @@
-﻿using System;
-
-namespace Generator3.Model.Native
+﻿namespace Generator3.Model.Native
 {
     public class CallbackParameter : Parameter
     {
         //Native callbacks are not nullable and have a suffix "Callback"
-        public override string NullableTypeName => Model.AnyType.Match(
-            type => type.GetName() + "Callback",
-            _ => throw new Exception($"{nameof(CallbackParameter)} does not support array types")
-        );
+        public override string NullableTypeName => Model.AnyType.AsT0.GetName() + "Callback";
 
         public override string Direction => ParameterDirection.In;
 

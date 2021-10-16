@@ -13,4 +13,12 @@ public static class Extensions
             ? "" 
             : func(obj);
     }
+
+    public static string? IfNotNullAppendNewline(this string? str)
+    {
+        if (string.IsNullOrEmpty(str))
+            return string.Empty;
+
+        return str + Environment.NewLine;
+    }
 }

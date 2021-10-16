@@ -5,7 +5,7 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public class Union : ComplexType
+    public partial class Union : ComplexType
     {
         private readonly List<Method> _methods;
         private readonly List<Method> _functions;
