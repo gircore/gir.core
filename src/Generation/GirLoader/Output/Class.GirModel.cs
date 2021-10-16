@@ -2,9 +2,9 @@
 {
     public partial class Class : GirModel.Class
     {
-        public string NamespaceName => Repository.Namespace.Name.Value; 
-        public string Name => OriginalName.Value;
+        string GirModel.ComplexType.NamespaceName => Repository.Namespace.Name; 
+        string GirModel.ComplexType.Name => OriginalName;
         GirModel.Method GirModel.Class.TypeFunction => GetTypeFunction;
-        public bool Fundamental => IsFundamental;
+        bool GirModel.Class.Fundamental => IsFundamental;
     }
 }

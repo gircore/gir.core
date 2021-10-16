@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GirLoader.Output
 {
     public partial class Enumeration : GirModel.Enumeration
     {
-        public string NamespaceName => Repository.Namespace.Name.Value; 
-        public string Name => OriginalName.Value;
-        GirModel.Method GirModel.Enumeration.TypeFunction => null; //TODO: Should be implemented
+        string GirModel.ComplexType.NamespaceName => Repository.Namespace.Name; 
+        string GirModel.ComplexType.Name => OriginalName;
+        GirModel.Method GirModel.Enumeration.TypeFunction => throw new NotImplementedException();
         IEnumerable<GirModel.Member> GirModel.Enumeration.Members => Members;
     }
 }
