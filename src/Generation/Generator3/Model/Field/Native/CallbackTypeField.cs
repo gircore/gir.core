@@ -4,7 +4,7 @@
     {
         public override string? Attribute => null;
 
-        public override string NullableTypeName => _field.AnyTypeOrCallback.AsT0.AsT0.GetName() + "Callback";
+        public override string NullableTypeName => _field.AnyTypeOrCallback.AsT0.AsT0.GetName();
 
         public CallbackTypeField(GirModel.Field field) : base(field)
         {

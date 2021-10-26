@@ -2,7 +2,7 @@
 {
     public static class Member
     {
-        public static string Get(Model.Member member)
+        public static string Render(this Model.Member member)
             => $"{ member.Name } = { member.Value },";
     }
 }

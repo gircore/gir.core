@@ -2,7 +2,7 @@
 {
     public static class NativeField
     {
-        public static string Get(Model.Field field)
+        public static string Render(this Model.Field field)
         {
             return @$"{field.Attribute.IfNotNullAppendNewline()}public {field.NullableTypeName} {field.Name};";
         }

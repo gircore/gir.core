@@ -16,7 +16,7 @@ namespace { model.NamespaceName }
 
     public enum { model.Name } : long
     {{
-        {model.Members.ForEachCall(Member.Get)}
+        {model.Members.ForEachCall(Member.Render)}
     }}
 }}";
         }

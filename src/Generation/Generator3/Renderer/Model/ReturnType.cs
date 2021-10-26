@@ -2,7 +2,7 @@
 {
     public static class ReturnType
     {
-        public static string Get(Model.ReturnType returnType)
+        public static string Render(this Model.ReturnType returnType)
             => $@"{ returnType.NullableTypeName }";
     }
 }

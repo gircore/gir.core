@@ -7,13 +7,12 @@
             arrayType => arrayType.GetName() //TODO: Consider if StandardParameter should support arrays?
         );
 
-        public override string Direction => Model switch
-        {
-            { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref,
-            { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.Ref,
-            { Direction: GirModel.Direction.Out } => ParameterDirection.Out,
-            _ => ParameterDirection.In
-        };
+        public override string Direction => Model.GetDirection(
+            @in: ParameterDirection.In,
+            @out: ParameterDirection.Out,
+            @outCallerAllocates: ParameterDirection.Ref,
+            @inout: ParameterDirection.Ref
+        );
 
         protected internal StandardParameter(GirModel.Parameter parameter) : base(parameter) { }
     }

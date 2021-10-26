@@ -1,9 +1,16 @@
 ﻿namespace Generator3.Model
 {
-    public static class ParameterDirection
+    internal record ParameterDirection
     {
-        public const string In = "";
-        public const string Out = "out ";
-        public const string Ref = "ref ";
+        public static ParameterDirection In = new("");
+        public static ParameterDirection Out = new("out ");
+        public static ParameterDirection Ref = new("ref ");
+        
+        public string Value { get; }
+
+        private ParameterDirection(string value)
+        {
+            Value = value;
+        }
     }
 }

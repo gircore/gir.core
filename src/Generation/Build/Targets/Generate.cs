@@ -46,12 +46,10 @@ namespace Build
         {
             var generator = new Generator3.Generator3();
             
-            foreach(var enumeration in repository.Namespace.Enumerations)
-                generator.GenerateEnumeration(project, enumeration);
-            
-            foreach(var record in repository.Namespace.Records)
-                generator.GenerateRecord(project, record);
-            
+            generator.GenerateEnumerations(project, repository.Namespace.Enumerations);
+            generator.GenerateRecords(project, repository.Namespace.Records);
+            generator.GenerateCallbacks(project, repository.Namespace.Callbacks);
+
             generator.GenerateConstants(project, repository.Namespace.Constants);
             generator.GenerateFunctions(project, repository.Namespace.Functions);
         }

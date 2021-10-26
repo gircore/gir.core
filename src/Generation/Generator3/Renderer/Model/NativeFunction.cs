@@ -4,11 +4,11 @@ namespace Generator3.Renderer
 {
     public static class NativeFunction
     {
-        public static string Get(Model.NativeFunction nativeFunction)
+        public static string Render(this Model.NativeFunction nativeFunction)
         {
             return @$"{GetComments(nativeFunction)}
 [DllImport(""{ nativeFunction.NameSpaceName }"", EntryPoint = ""{ nativeFunction.CIdentifier }"")]
-public static extern { ReturnType.Get(nativeFunction.ReturnType) } { nativeFunction.Name }({ string.Join(", ", nativeFunction.Parameters.Select(Parameter.Get)) });";
+public static extern { nativeFunction.ReturnType.Render() } { nativeFunction.Name }({ nativeFunction.Parameters.Select(Parameter.Render).Join(", ") });";
         }
 
 
