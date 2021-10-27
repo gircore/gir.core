@@ -44,15 +44,12 @@ namespace Build
 
         private void GenerateRepository(string project, Repository repository)
         {
-            var generator = new Generator3.Generator3();
-            
-            generator.GenerateEnumerations(project, repository.Namespace.Enumerations);
-            generator.GenerateBitfields(project, repository.Namespace.Bitfields);
-            generator.GenerateRecords(project, repository.Namespace.Records);
-            generator.GenerateCallbacks(project, repository.Namespace.Callbacks);
-
-            generator.GenerateConstants(project, repository.Namespace.Constants);
-            generator.GenerateFunctions(project, repository.Namespace.Functions);
+            repository.Namespace.Enumerations.Generate(project);
+            repository.Namespace.Bitfields.Generate(project);
+            repository.Namespace.Records.Generate(project);
+            repository.Namespace.Callbacks.Generate(project);
+            repository.Namespace.Constants.Generate(project);
+            repository.Namespace.Functions.Generate(project);
         }
         
         private GirLoader.Input.Repository LoadInputRepository(Project project)
