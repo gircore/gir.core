@@ -9,6 +9,12 @@ public static class Generation
             generator.GenerateEnumeration(project, enumeration);
     }
     
+    public static void GenerateBitfields(this Generator3.Generator3 generator, string project, IEnumerable<Bitfield> bitfields)
+    {
+        foreach(var bitfield in bitfields)
+            generator.GenerateBitfield(project, bitfield);
+    }
+    
     public static void GenerateRecords(this Generator3.Generator3 generator, string project, IEnumerable<Record> records)
     {
         foreach(var record in records)

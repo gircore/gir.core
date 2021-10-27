@@ -47,6 +47,7 @@ namespace Build
             var generator = new Generator3.Generator3();
             
             generator.GenerateEnumerations(project, repository.Namespace.Enumerations);
+            generator.GenerateBitfields(project, repository.Namespace.Bitfields);
             generator.GenerateRecords(project, repository.Namespace.Records);
             generator.GenerateCallbacks(project, repository.Namespace.Callbacks);
 
