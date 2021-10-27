@@ -1,24 +1,22 @@
 ﻿using System.Collections.Generic;
-using Generator3.Publication;
-using Generator3.Renderer;
 
 namespace Generator3.Generation.Functions
 {
     public class NativeGenerator
     {
-        private readonly Renderer<Model.NativeFunctionsUnit> _renderer;
+        private readonly Template<NativeModel> _template;
         private readonly Publisher _publisher;
 
-        public NativeGenerator(Renderer<Model.NativeFunctionsUnit> renderer, Publisher publisher)
+        public NativeGenerator(Template<NativeModel> template, Publisher publisher)
         {
-            _renderer = renderer;
+            _template = template;
             _publisher = publisher;
         }
 
         public void Generate(string project, IEnumerable<GirModel.Method> functions)
         {
-            var model = new Model.NativeFunctionsUnit(functions);
-            var source = _renderer.Render(model);
+            var model = new NativeModel(functions);
+            var source = _template.Render(model);
             var codeUnit = new CodeUnit(project, "Functions", source);
             _publisher.Publish(codeUnit);
         }

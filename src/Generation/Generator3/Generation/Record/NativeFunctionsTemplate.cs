@@ -1,8 +1,10 @@
-﻿namespace Generator3.Renderer
+﻿using Generator3.Renderer;
+
+namespace Generator3.Generation.Record
 {
-    internal class NativeRecordFunctionsUnit : Renderer<Model.NativeRecordFunctionsUnit>
+    public class NativeFunctionsTemplate : Template<NativeFunctionsModel>
     {
-        public string Render(Model.NativeRecordFunctionsUnit model)
+        public string Render(NativeFunctionsModel model)
         {
             return $@"
 using System;

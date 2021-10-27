@@ -1,23 +1,20 @@
-﻿using Generator3.Publication;
-using Generator3.Renderer;
-
-namespace Generator3.Generation.Enumeration
+﻿namespace Generator3.Generation.Enumeration
 {
     public class Generator
     {
-        private readonly Renderer<Model.EnumerationUnit> _renderer;
+        private readonly Template<Model> _template;
         private readonly Publisher _publisher;
 
-        public Generator(Renderer<Model.EnumerationUnit> renderer, Publisher publisher)
+        public Generator(Template<Model> template, Publisher publisher)
         {
-            _renderer = renderer;
+            _template = template;
             _publisher = publisher;
         }
 
         public void Generate(string project, GirModel.Enumeration enumeration)
         {
-            var model = new Model.EnumerationUnit(enumeration);
-            var source = _renderer.Render(model);
+            var model = new Model(enumeration);
+            var source = _template.Render(model);
             var codeUnit = new CodeUnit(project, enumeration.Name, source);
             _publisher.Publish(codeUnit);
         }

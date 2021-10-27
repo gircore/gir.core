@@ -1,6 +1,8 @@
-﻿namespace Generator3.Publication.Filesystem
+﻿using Generator3.Generation;
+
+namespace Generator3.Publication
 {
-    internal class NativeClassFilePublisher : FilePublisher, Publisher
+    public class NativeClassFilePublisher : FilePublisher, Publisher
     {
         public void Publish(CodeUnit codeUnit)
         {

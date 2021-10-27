@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Model;
 
-namespace Generator3.Model
+namespace Generator3.Generation.Functions
 {
-    public class NativeFunctionsUnit
+    public class NativeModel
     {
         public IEnumerable<GirModel.Method> Functions { get; }
 
         public string NamespaceName => Functions.First().NamespaceName + ".Native";
         public IEnumerable<NativeFunction> NativeFunctions { get; }
 
-        public NativeFunctionsUnit(IEnumerable<GirModel.Method> functions)
+        public NativeModel(IEnumerable<GirModel.Method> functions)
         {
             Functions = functions;
 

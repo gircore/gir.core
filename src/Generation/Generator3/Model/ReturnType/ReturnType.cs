@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Generator3.Model
+﻿namespace Generator3.Model
 {
     public abstract class ReturnType
     {

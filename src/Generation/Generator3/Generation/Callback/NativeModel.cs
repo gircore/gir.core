@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Model;
 
-namespace Generator3.Model
+namespace Generator3.Generation.Callback
 {
-    public class NativeCallbackUnit
+    public class NativeModel
     {
         private readonly GirModel.Callback _callback;
         private ReturnType? _returnType;
@@ -15,7 +16,7 @@ namespace Generator3.Model
         public ReturnType ReturnType => _returnType ??= ReturnType.CreateNative(_callback.ReturnType);
         public IEnumerable<Parameter> Parameters => _parameters ??= _callback.Parameters.Select(Parameter.CreateForNativeCallback);
         
-        public NativeCallbackUnit(GirModel.Callback callback)
+        public NativeModel(GirModel.Callback callback)
         {
             _callback = callback;
         }

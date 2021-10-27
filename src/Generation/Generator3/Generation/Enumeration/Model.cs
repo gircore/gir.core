@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Model;
 
-namespace Generator3.Model
+namespace Generator3.Generation.Enumeration
 {
-    public class EnumerationUnit
+    public class Model
     {
         private readonly GirModel.Enumeration _enumeration;
 
@@ -11,7 +12,7 @@ namespace Generator3.Model
         public string NamespaceName => _enumeration.NamespaceName;
         public IEnumerable<Member> Members { get; }
 
-        public EnumerationUnit(GirModel.Enumeration enumeration)
+        public Model(GirModel.Enumeration enumeration)
         {
             _enumeration = enumeration;
 

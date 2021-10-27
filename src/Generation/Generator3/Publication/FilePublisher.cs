@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Generator3.Generation;
 
-namespace Generator3.Publication.Filesystem
+namespace Generator3.Publication
 {
     public abstract class FilePublisher
     {

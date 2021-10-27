@@ -18,7 +18,7 @@ namespace Generator3.Model
             _field = field;
         }
         
-        public static Field CreateNative(GirModel.Field field) => field.AnyTypeOrCallback.Match<Field>(
+        public static Field CreateNative(GirModel.Field field) => field.AnyTypeOrCallback.Match(
             anyType => anyType.Match<Field>(
                 type => type switch
                 { 

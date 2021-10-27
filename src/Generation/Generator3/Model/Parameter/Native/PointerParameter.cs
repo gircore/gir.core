@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Generator3.Model.Native
+﻿namespace Generator3.Model.Native
 {
     public class PointerParameter : Parameter
     {

@@ -11,7 +11,6 @@ namespace Generator3.Renderer
 public static extern { nativeFunction.ReturnType.Render() } { nativeFunction.Name }({ nativeFunction.Parameters.Select(Parameter.Render).Join(", ") });";
         }
 
-
         private static string GetComments(Model.NativeFunction nativeFunction) =>
 $@"/// <summary>
 /// Calls native method {nativeFunction.CIdentifier}.

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using GirLoader;
 using GirLoader.Output;
+using Generator3;
 
 namespace Build
 {

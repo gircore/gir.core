@@ -1,10 +1,11 @@
 ﻿using System.Linq;
+using Generator3.Renderer;
 
-namespace Generator3.Renderer
+namespace Generator3.Generation.Callback
 {
-    internal class NativeCallbackUnit : Renderer<Model.NativeCallbackUnit>
+    public class NativeTemplate : Template<NativeModel>
     {
-        public string Render(Model.NativeCallbackUnit model)
+        public string Render(NativeModel model)
         {
             return $@"
 using System;

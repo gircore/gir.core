@@ -1,8 +1,10 @@
-﻿namespace Generator3.Renderer
+﻿using Generator3.Renderer;
+
+namespace Generator3.Generation.Constants
 {
-    public class ConstantsUnit : Renderer<Model.ConstantsUnit>
+    public class Template : Template<Model>
     {
-        public string Render(Model.ConstantsUnit model)
+        public string Render(Model model)
         {
             return $@"
 using System;

@@ -2,7 +2,4 @@
     <ItemGroup>
       <ProjectReference Include="..\GirModel\GirModel.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <EmbeddedResource Include="Rendering\Scriban\Templates\**" />
-    </ItemGroup>
 </Project>

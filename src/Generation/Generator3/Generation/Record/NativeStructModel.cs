@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Model;
 
-namespace Generator3.Model
+namespace Generator3.Generation.Record
 {
-    public class NativeRecordStructUnit
+    public class NativeStructModel
     {
         private readonly GirModel.Record _record;
 
@@ -11,7 +12,7 @@ namespace Generator3.Model
         public string NamespaceName => _record.NamespaceName + ".Native";
         public IEnumerable<Field> Fields { get; }
 
-        public NativeRecordStructUnit(GirModel.Record record)
+        public NativeStructModel(GirModel.Record record)
         {
             _record = record;
 

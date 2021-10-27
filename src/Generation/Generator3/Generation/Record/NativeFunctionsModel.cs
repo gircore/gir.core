@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Model;
 
-namespace Generator3.Model
+namespace Generator3.Generation.Record
 {
-    public class NativeRecordFunctionsUnit
+    public class NativeFunctionsModel
     {
         private readonly GirModel.Record _record;
 
@@ -12,7 +13,7 @@ namespace Generator3.Model
         public IEnumerable<NativeFunction> Functions { get; }
         public NativeFunction? TypeFunction { get; }
 
-        public NativeRecordFunctionsUnit(GirModel.Record record)
+        public NativeFunctionsModel(GirModel.Record record)
         {
             _record = record;
             Functions = record.Functions

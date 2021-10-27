@@ -1,4 +1,4 @@
-﻿namespace Generator3.Publication
+﻿namespace Generator3.Generation
 {
     public interface Publisher
     {
