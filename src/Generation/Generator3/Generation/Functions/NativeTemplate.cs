@@ -18,7 +18,7 @@ namespace { model.NamespaceName }
 
     public partial class Functions
     {{
-        {model.NativeFunctions.ForEachCall(NativeFunction.Render)}
+        {model.NativeFunctions.Render()}
     }}
 }}";
         }

@@ -20,8 +20,8 @@ namespace { model.NamespaceName }
     {{
         public partial class Methods
         {{
-            {model.TypeFunction.IfNotNullCall(NativeFunction.Render)}
-            {model.Functions.ForEachCall(NativeFunction.Render)}
+            {model.TypeFunction.Render()}
+            {model.Functions.Render()}
         }}
     }}
 }}";

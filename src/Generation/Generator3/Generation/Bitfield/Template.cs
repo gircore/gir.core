@@ -19,7 +19,7 @@ namespace { model.NamespaceName }
     [Flags]
     public enum { model.Name } : ulong
     {{
-        {model.Members.ForEachCall(Member.Render)}
+        {model.Members.Render()}
     }}
 }}";
         }
