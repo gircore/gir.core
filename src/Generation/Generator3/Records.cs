@@ -8,8 +8,8 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Record> records, string project)
         {
-            var nativeFunctionsGenerator = new NativeFunctionsGenerator(
-                template: new NativeFunctionsTemplate(),
+            var nativeMethodsGenerator = new NativeMethodsGenerator(
+                template: new NativeMethodsTemplate(),
                 publisher: new NativeRecordFilePublisher()
             );
 
@@ -20,7 +20,7 @@ namespace Generator3
             
             foreach (var record in records)
             {
-                nativeFunctionsGenerator.Generate(project, @record);
+                nativeMethodsGenerator.Generate(project, @record);
                 nativeStructGenerator.Generate(project, @record);
             }
         }

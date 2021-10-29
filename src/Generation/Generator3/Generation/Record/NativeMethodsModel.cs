@@ -4,7 +4,7 @@ using Generator3.Model;
 
 namespace Generator3.Generation.Record
 {
-    public class NativeFunctionsModel
+    public class NativeMethodsModel
     {
         private readonly GirModel.Record _record;
 
@@ -13,7 +13,7 @@ namespace Generator3.Generation.Record
         public IEnumerable<NativeFunction> Functions { get; }
         public NativeFunction? TypeFunction { get; }
 
-        public NativeFunctionsModel(GirModel.Record record)
+        public NativeMethodsModel(GirModel.Record record)
         {
             _record = record;
             Functions = record.Functions
