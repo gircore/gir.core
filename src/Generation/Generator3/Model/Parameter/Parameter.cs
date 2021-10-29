@@ -40,6 +40,7 @@ namespace Generator3.Model
                 GirModel.String => new Native.StringParameter(parameter),
                 GirModel.Pointer => new Native.PointerParameter(parameter),
                 GirModel.Class => new Native.ClassParameter(parameter),
+                GirModel.Union => new Native.UnionParameter(parameter),
                 GirModel.Record => new Native.SafeHandleRecordParameter(parameter),
                 GirModel.PrimitiveValueType => new Native.StandardParameter(parameter),
                 GirModel.Callback => new Native.CallbackParameter(parameter),

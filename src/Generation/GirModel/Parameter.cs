@@ -10,5 +10,8 @@
         Transfer Transfer { get; }
         bool Nullable { get; }
         bool CallerAllocates { get; }
+        bool IsPointer { get; }
+        bool IsConst { get; }
+        bool IsVolatile { get; }
     }
 }

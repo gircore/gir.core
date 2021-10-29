@@ -4,6 +4,10 @@
     {
         string GirModel.Parameter.Name => Name;
 
+        bool GirModel.Parameter.IsPointer => TypeReference.CTypeReference?.IsPointer ?? false;
+        bool GirModel.Parameter.IsConst => TypeReference.CTypeReference?.IsConst ?? false;
+        bool GirModel.Parameter.IsVolatile => TypeReference.CTypeReference?.IsVolatile ?? false;
+        
         GirModel.AnyType GirModel.Parameter.AnyType => TypeReference switch
         {
             ArrayTypeReference arrayTypeReference => GirModel.AnyType.From(arrayTypeReference),
