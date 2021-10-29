@@ -17,11 +17,17 @@ namespace Generator3
                 template: new NativeStructTemplate(),
                 publisher: new NativeRecordFilePublisher()
             );
+
+            var nativeSafeHandleGenerator = new NativeSafeHandleGenerator(
+                template: new NativeSafeHandleTemplate(),
+                publisher: new NativeRecordFilePublisher()
+            );
             
             foreach (var record in records)
             {
                 nativeMethodsGenerator.Generate(project, @record);
                 nativeStructGenerator.Generate(project, @record);
+                nativeSafeHandleGenerator.Generate(project, @record);
             }
         }
     }
