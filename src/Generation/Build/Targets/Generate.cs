@@ -48,6 +48,7 @@ namespace Build
             repository.Namespace.Enumerations.Generate(project);
             repository.Namespace.Bitfields.Generate(project);
             repository.Namespace.Records.Generate(project);
+            repository.Namespace.Unions.Generate(project);
             repository.Namespace.Callbacks.Generate(project);
             repository.Namespace.Constants.Generate(project);
             repository.Namespace.Functions.Generate(project);

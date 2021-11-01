@@ -18,6 +18,7 @@ namespace Generator3.Publication
             allFolders.Add(GetFileName(codeUnit));
 
             var path = Path.Combine(allFolders.ToArray());
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllText(path, codeUnit.Source);
         }
     }
