@@ -11,7 +11,7 @@ jobs:
         run: dotnet tool install -g dotnet-format
 
       - name: Checkout repo
-        uses: actions/checkout@v2.3.5
+        uses: actions/checkout@v2.4.0
 
       - name: Run dotnet format
         id: format
