@@ -11,7 +11,10 @@ namespace GLib.Native
         public partial class Methods
         {
             public static void Free(IntPtr str)
-                => Free(str, true);
+            {
+                //TODO: Free(str, true);
+                throw new NotImplementedException();
+            } 
         }
     }
 }

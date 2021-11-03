@@ -13,7 +13,10 @@ namespace GLib.Native
         public partial class Methods
         {
             public static void Free(IntPtr pool)
-                => Free(pool, true, true); //TODO clarify which parameters are usefull
+            {
+                throw new NotImplementedException();
+                //TODO Free(pool, true, true); //TODO clarify which parameters are usefull
+            }
         }
         #endregion
     }
