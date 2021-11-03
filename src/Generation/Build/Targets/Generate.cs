@@ -45,6 +45,8 @@ namespace Build
 
         private void GenerateRepository(string project, Repository repository)
         {
+            Framework.Generate(project, repository.Namespace.Name);
+
             repository.Namespace.Enumerations.Generate(project);
             repository.Namespace.Bitfields.Generate(project);
             repository.Namespace.Records.Generate(project);
