@@ -6,26 +6,32 @@ namespace Generator3.Model
 {
     public static class NativeParameterFactory
     {
-        public static IEnumerable<Parameter> CreateNativeModelsForCallbacks(this IEnumerable<GirModel.Parameter> parameters)
+        public static IEnumerable<Parameter> CreateNativeModelsForCallback(this IEnumerable<GirModel.Parameter> parameters)
             => parameters.Select(CreateNativeModelForCallback);
 
         private static Parameter CreateNativeModelForCallback(this GirModel.Parameter parameter) => parameter.AnyType.Match<Parameter>(
             type => type switch
             {
-                GirModel.String => new Native.StringParameter(parameter),
-                GirModel.Pointer => new Native.PointerParameter(parameter),
-                GirModel.Class => new Native.ClassParameter(parameter),
+                //Callbacks do not support record safe handles in parameters
                 GirModel.Record => new Native.PointerRecordParameter(parameter),
-                GirModel.PrimitiveValueType => new Native.StandardParameter(parameter),
-                GirModel.Callback => new Native.CallbackParameter(parameter),
-                GirModel.Enumeration => new Native.StandardParameter(parameter),
-                GirModel.Bitfield => new Native.StandardParameter(parameter),
-
-                _ => throw new Exception($"Unknown parameter type {parameter.AnyType.GetType().FullName}")
+                _ => CreateNativeModel(parameter)
             },
-            arrayType => new Native.StandardParameter(parameter)
+            arrayType => CreateNativeModel(parameter)
         );
 
+        public static IEnumerable<Parameter> CreateNativeModelsForMethod(this IEnumerable<GirModel.Parameter> parameters)
+            => parameters.Select(CreateNativeModelForMethod);
+        
+        private static Parameter CreateNativeModelForMethod(this GirModel.Parameter parameter) => parameter.AnyType.Match<Parameter>(
+            type => CreateNativeModel(parameter),
+            arrayType => arrayType.Type switch
+            {
+                //Methods need special handling because of their instance parameters
+                GirModel.Record => new Native.ArrayPointerRecordParameterForMethod(parameter),
+                _ => CreateNativeModel(parameter)  
+            }
+        );
+        
         public static IEnumerable<Parameter> CreateNativeModels(this IEnumerable<GirModel.Parameter> parameters)
             => parameters.Select(CreateNativeModel);
 
@@ -44,7 +50,11 @@ namespace Generator3.Model
                 
                 _ => throw new Exception($"Unknown parameter type {parameter.AnyType.GetType().FullName}")
             },
-            arrayType => new Native.StandardParameter(parameter)
+            arrayType => arrayType.Type switch
+            {
+                GirModel.Record => new Native.ArrayPointerRecordParameter(parameter),
+                _ => new Native.StandardParameter(parameter)   
+            }
         );
     }
 }

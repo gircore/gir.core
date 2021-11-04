@@ -14,7 +14,7 @@ namespace Generator3.Model
         public string CIdentifier => Model.CIdentifier;
         public string NameSpaceName => Model.NamespaceName;
 
-        public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateNativeModels();
+        public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateNativeModelsForMethod();
 
         public NativeMethod(GirModel.Method function)
         {
