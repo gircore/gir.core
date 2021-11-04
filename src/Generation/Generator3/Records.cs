@@ -28,12 +28,19 @@ namespace Generator3
                 publisher: new NativeRecordFilePublisher()
             );
 
+            var classGenerator = new ClassGenerator(
+                template: new ClassTemplate(),
+                publisher: new RecordFilePublisher()
+            );
+
             foreach (var record in records)
             {
                 nativeMethodsGenerator.Generate(project, @record);
                 nativeStructGenerator.Generate(project, @record);
                 nativeStructDelegatesGenerator.Generate(project, @record);
                 nativeSafeHandleGenerator.Generate(project, @record);
+
+                classGenerator.Generate(project, @record);
             }
         }
     }
