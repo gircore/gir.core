@@ -45,7 +45,10 @@ namespace Build
 
         private void GenerateRepository(string project, Repository repository)
         {
-            Framework.Generate(project, repository.Namespace.Name);
+            if (repository.Namespace.SharedLibrary is null)
+                throw new Exception($"Shared library is not set for project {project}");
+
+            Framework.Generate(project, repository.Namespace.SharedLibrary, repository.Namespace.Name);
 
             repository.Namespace.Enumerations.Generate(project);
             repository.Namespace.Bitfields.Generate(project);
