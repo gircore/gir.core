@@ -13,6 +13,7 @@ namespace Generator3.Generation.Record
         public string NamespaceName => _record.NamespaceName + ".Native";
         public IEnumerable<NativeFunction> Functions { get; }
         public IEnumerable<NativeMethod> Methods { get; }
+        public IEnumerable<NativeConstructor> Constructors { get; }
         public NativeFunction? TypeFunction { get; }
 
         public NativeMethodsModel(GirModel.Record record)
@@ -25,6 +26,10 @@ namespace Generator3.Generation.Record
 
             Methods = record.Methods
                 .Select(method => new NativeMethod(method))
+                .ToList();
+
+            Constructors = record.Constructors
+                .Select(method => new NativeConstructor(method))
                 .ToList();
 
             TypeFunction = record.TypeFunction is not null

@@ -23,6 +23,7 @@ namespace { model.NamespaceName }
             {model.TypeFunction.Render()}
             {model.Functions.Render()}
             {model.Methods.Render()}
+            {model.Constructors.Render()}
         }}
     }}
 }}";
