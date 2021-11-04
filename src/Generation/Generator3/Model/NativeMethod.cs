@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Generator3.Model
 {
@@ -11,11 +10,11 @@ namespace Generator3.Model
         public GirModel.Method Model { get; }
 
         public string Name => Model.Name;
-        public ReturnType ReturnType => _returnType ??= ReturnType.CreateNative(Model.ReturnType);
+        public ReturnType ReturnType => _returnType ??= Model.ReturnType.CreateNativeModel();
         public string CIdentifier => Model.CIdentifier;
         public string NameSpaceName => Model.NamespaceName;
 
-        public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.Select(Parameter.CreateForNative);
+        public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateNativeModels();
 
         public NativeMethod(GirModel.Method function)
         {

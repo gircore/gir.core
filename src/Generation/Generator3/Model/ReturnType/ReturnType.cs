@@ -12,20 +12,5 @@
         }
 
         protected string GetDefaultNullable() => _returnValue.Nullable ? "?" : "";
-
-        public static ReturnType CreateNative(GirModel.ReturnType returnValue) => returnValue.AnyType.Match<ReturnType>(
-            type => type switch
-            {
-                GirModel.String => new Native.StringReturnType(returnValue),
-                GirModel.Record => new Native.RecordReturnType(returnValue),
-
-                _ => new Native.StandardReturnType(returnValue)
-            },
-            arrayType => arrayType.Type switch 
-            {
-                GirModel.Record => new Native.ArrayRecordReturnType(returnValue),
-                _ => new Native.StandardReturnType(returnValue)
-            }
-        );
     }
 }

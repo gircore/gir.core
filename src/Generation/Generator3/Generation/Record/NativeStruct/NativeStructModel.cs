@@ -16,8 +16,9 @@ namespace Generator3.Generation.Record
         {
             _record = record;
 
-            Fields = record.Fields
-                .Select(Field.CreateNative)
+            Fields = record
+                .Fields
+                .CreateNativeModels()
                 .ToList();
         }
     }

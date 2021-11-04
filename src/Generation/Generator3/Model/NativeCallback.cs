@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace Generator3.Model
 {
@@ -11,8 +10,8 @@ namespace Generator3.Model
         public GirModel.Callback Model { get; }
 
         public string Name => Model.Name + "Callback";
-        public ReturnType ReturnType => _returnType ??= ReturnType.CreateNative(Model.ReturnType);
-        public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.Select(Parameter.CreateForNative);
+        public ReturnType ReturnType => _returnType ??= Model.ReturnType.CreateNativeModel();
+        public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateNativeModels();
         
         public NativeCallback(GirModel.Callback model)
         {
