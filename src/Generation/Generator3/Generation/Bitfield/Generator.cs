@@ -11,11 +11,11 @@
             _publisher = publisher;
         }
 
-        public void Generate(string project, GirModel.Bitfield bitfield)
+        public void Generate(GirModel.Bitfield bitfield)
         {
             var model = new Model(bitfield);
             var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, bitfield.Name, source);
+            var codeUnit = new CodeUnit(bitfield.Namespace.GetCanonicalName(), bitfield.Name, source);
             _publisher.Publish(codeUnit);
         }
     }

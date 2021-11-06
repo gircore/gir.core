@@ -11,11 +11,11 @@
             _publisher = publisher;
         }
 
-        public void Generate(string project, GirModel.Enumeration enumeration)
+        public void Generate(GirModel.Enumeration enumeration)
         {
             var model = new Model(enumeration);
             var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, enumeration.Name, source);
+            var codeUnit = new CodeUnit(enumeration.Namespace.GetCanonicalName(), enumeration.Name, source);
             _publisher.Publish(codeUnit);
         }
     }

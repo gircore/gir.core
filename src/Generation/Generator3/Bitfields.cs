@@ -6,7 +6,7 @@ namespace Generator3
 {
     public static class Bitfields
     {
-        public static void Generate(this IEnumerable<GirModel.Bitfield> bitfields, string project)
+        public static void Generate(this IEnumerable<GirModel.Bitfield> bitfields)
         {
             var generator = new Generator(
                 template: new Template(),
@@ -14,7 +14,7 @@ namespace Generator3
             );
         
             foreach(var bitfield in bitfields)
-                generator.Generate(project, bitfield);
+                generator.Generate(bitfield);
         }
     }
 }

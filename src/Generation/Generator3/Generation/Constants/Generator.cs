@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Generator3.Generation.Constants
 {
@@ -13,11 +14,11 @@ namespace Generator3.Generation.Constants
             _publisher = publisher;
         }
 
-        public void Generate(string project, IEnumerable<GirModel.Constant> constants)
+        public void Generate(IEnumerable<GirModel.Constant> constants)
         {
             var model = new Model(constants);
             var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, "Constants", source);
+            var codeUnit = new CodeUnit(constants.First().Namespace.GetCanonicalName(), "Constants", source);
             _publisher.Publish(codeUnit);
         }
     }

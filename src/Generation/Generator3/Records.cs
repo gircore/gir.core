@@ -6,7 +6,7 @@ namespace Generator3
 {
     public static class Records
     {
-        public static void Generate(this IEnumerable<GirModel.Record> records, string project)
+        public static void Generate(this IEnumerable<GirModel.Record> records)
         {
             var nativeMethodsGenerator = new NativeMethodsGenerator(
                 template: new NativeMethodsTemplate(),
@@ -35,12 +35,12 @@ namespace Generator3
 
             foreach (var record in records)
             {
-                nativeMethodsGenerator.Generate(project, @record);
-                nativeStructGenerator.Generate(project, @record);
-                nativeStructDelegatesGenerator.Generate(project, @record);
-                nativeSafeHandleGenerator.Generate(project, @record);
+                nativeMethodsGenerator.Generate(@record);
+                nativeStructGenerator.Generate(@record);
+                nativeStructDelegatesGenerator.Generate(@record);
+                nativeSafeHandleGenerator.Generate(@record);
 
-                classGenerator.Generate(project, @record);
+                classGenerator.Generate(@record);
             }
         }
     }

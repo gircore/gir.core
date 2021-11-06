@@ -11,4 +11,8 @@ internal static class GirModelExtension
             _ => @in.Value
         };
     }
+    
+    public static string GetCanonicalName(this GirModel.Namespace @namespace)
+        => $"{@namespace.Name}-{@namespace.Version}";
+
 }

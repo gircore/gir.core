@@ -2,7 +2,7 @@
 {
     public interface Constant
     {
-        public string NamespaceName { get; }
+        public Namespace Namespace { get; }
         string Name { get; }
         string Value { get; }
         Type Type { get; }

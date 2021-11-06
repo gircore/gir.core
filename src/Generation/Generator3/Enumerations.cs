@@ -6,7 +6,7 @@ namespace Generator3
 {
     public static class Enumerations
     {
-        public static void Generate(this IEnumerable<GirModel.Enumeration> enumerations, string project)
+        public static void Generate(this IEnumerable<GirModel.Enumeration> enumerations)
         {
             var generator = new Generator(
                 template: new Template(),
@@ -14,7 +14,7 @@ namespace Generator3
             );
         
             foreach(var enumeration in enumerations)
-                generator.Generate(project, enumeration);
+                generator.Generate(enumeration);
         }
     }
 }

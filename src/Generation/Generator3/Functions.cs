@@ -6,14 +6,14 @@ namespace Generator3
 {
     public static class Functions
     {
-        public static void Generate(this IEnumerable<GirModel.Method> functions, string project)
+        public static void Generate(this IEnumerable<GirModel.Method> functions)
         {
             var generator = new NativeGenerator(
                 template: new NativeTemplate(),
                 publisher: new NativeClassFilePublisher()
             );
         
-            generator.Generate(project, functions);
+            generator.Generate(functions);
         }
     }
 }

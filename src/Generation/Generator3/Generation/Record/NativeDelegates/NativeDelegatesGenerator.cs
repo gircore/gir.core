@@ -13,14 +13,14 @@ namespace Generator3.Generation.Record
             _publisher = publisher;
         }
 
-        public void Generate(string project, GirModel.Record record)
+        public void Generate(GirModel.Record record)
         {
             if (!HasCallbackField(record))
                 return;
 
             var model = new NativeDelegatesModel(record);
             var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, $"{record.Name}.Delegates", source);
+            var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Delegates", source);
             _publisher.Publish(codeUnit);
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Generator3.Generation.Functions
 {
@@ -13,11 +14,11 @@ namespace Generator3.Generation.Functions
             _publisher = publisher;
         }
 
-        public void Generate(string project, IEnumerable<GirModel.Method> functions)
+        public void Generate(IEnumerable<GirModel.Method> functions)
         {
             var model = new NativeModel(functions);
             var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, "Functions", source);
+            var codeUnit = new CodeUnit(functions.First().Namespace.GetCanonicalName(), "Functions", source);
             _publisher.Publish(codeUnit);
         }
     }

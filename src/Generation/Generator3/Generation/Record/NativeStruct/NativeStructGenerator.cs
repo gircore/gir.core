@@ -11,11 +11,11 @@
             _publisher = publisher;
         }
 
-        public void Generate(string project, GirModel.Record record)
+        public void Generate(GirModel.Record record)
         {
             var model = new NativeStructModel(record);
             var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, $"{record.Name}.Struct", source);
+            var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Struct", source);
             _publisher.Publish(codeUnit);
         }
     }

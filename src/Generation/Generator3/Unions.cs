@@ -6,7 +6,7 @@ namespace Generator3
 {
     public static class Unions
     {
-        public static void Generate(this IEnumerable<GirModel.Union> unions, string project)
+        public static void Generate(this IEnumerable<GirModel.Union> unions)
         {
             var nativeStructGenerator = new NativeStructGenerator (
                 template: new NativeStructTemplate(),
@@ -15,7 +15,7 @@ namespace Generator3
             
             foreach (var union in unions)
             {
-                nativeStructGenerator.Generate(project, union);
+                nativeStructGenerator.Generate(union);
             }
         }
     }

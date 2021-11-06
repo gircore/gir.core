@@ -73,7 +73,7 @@ namespace Build
             GTK3_TEXTEDITOR
         };
 
-        public static IEnumerable<Project> AllLibraries = new[]
+        public static readonly Project[] AllLibraries = new[]
         {
             // Runtime
             Project.FromName("GLib-2.0"),

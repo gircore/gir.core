@@ -9,7 +9,7 @@ namespace Generator3.Generation.Bitfield
         private readonly GirModel.Bitfield _bitfield;
 
         public string Name => _bitfield.Name;
-        public string NamespaceName => _bitfield.NamespaceName;
+        public string NamespaceName => _bitfield.Namespace.Name;
         public IEnumerable<Member> Members { get; }
 
         public Model(GirModel.Bitfield bitfield)

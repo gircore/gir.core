@@ -2,7 +2,7 @@
 {
     public partial class Union : GirModel.Union
     {
-        string GirModel.ComplexType.NamespaceName => Repository.Namespace.Name;
+        GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
         string GirModel.ComplexType.Name => Name;
         GirModel.Method? GirModel.Union.TypeFunction => GetTypeFunction;
     }

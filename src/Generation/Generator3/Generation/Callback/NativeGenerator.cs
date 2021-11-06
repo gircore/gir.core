@@ -11,11 +11,11 @@
             _publisher = publisher;
         }
 
-        public void Generate(string project, GirModel.Callback callback)
+        public void Generate(GirModel.Callback callback)
         {
             var model = new NativeModel(callback);
             var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, callback.Name, source);
+            var codeUnit = new CodeUnit(callback.Namespace.GetCanonicalName(), callback.Name, source);
             _publisher.Publish(codeUnit);
         }
     }

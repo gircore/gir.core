@@ -9,7 +9,7 @@ namespace Generator3.Generation.Enumeration
         private readonly GirModel.Enumeration _enumeration;
 
         public string Name => _enumeration.Name;
-        public string NamespaceName => _enumeration.NamespaceName;
+        public string NamespaceName => _enumeration.Namespace.Name;
         public IEnumerable<Member> Members { get; }
 
         public Model(GirModel.Enumeration enumeration)

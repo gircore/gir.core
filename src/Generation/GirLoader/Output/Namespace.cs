@@ -4,7 +4,7 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public class Namespace
+    public partial class Namespace
     {
         #region Fields
         private IEnumerable<Alias>? _aliases;

@@ -10,7 +10,7 @@ namespace Generator3.Generation.Record
         private readonly GirModel.Record _record;
 
         public string Name => _record.Name;
-        public string NamespaceName => _record.NamespaceName + ".Native";
+        public string NamespaceName => _record.Namespace.Name + ".Native";
         public IEnumerable<NativeFunction> Functions { get; }
         public IEnumerable<NativeMethod> Methods { get; }
         public IEnumerable<NativeConstructor> Constructors { get; }

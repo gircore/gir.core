@@ -10,7 +10,7 @@ namespace Generator3.Generation.Callback
         private IEnumerable<Parameter>? _parameters;
 
         public string Name => _callback.Name;
-        public string NamespaceName => _callback.NamespaceName + ".Native";
+        public string NamespaceName => _callback.Namespace.Name + ".Native";
 
         public ReturnType ReturnType => _returnType ??= _callback.ReturnType.CreateNativeModel();
         public IEnumerable<Parameter> Parameters => _parameters ??= _callback.Parameters.CreateNativeModelsForCallback();
