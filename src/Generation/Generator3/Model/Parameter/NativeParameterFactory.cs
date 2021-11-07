@@ -41,14 +41,16 @@ namespace Generator3.Model
                 GirModel.String => new Native.StringParameter(parameter),
                 GirModel.Pointer => new Native.PointerParameter(parameter),
                 GirModel.Class => new Native.ClassParameter(parameter),
+                GirModel.Interface => new Native.InterfaceParameter(parameter),
                 GirModel.Union => new Native.UnionParameter(parameter),
                 GirModel.Record => new Native.SafeHandleRecordParameter(parameter),
                 GirModel.PrimitiveValueType => new Native.StandardParameter(parameter),
                 GirModel.Callback => new Native.CallbackParameter(parameter),
                 GirModel.Enumeration => new Native.StandardParameter(parameter),
                 GirModel.Bitfield => new Native.StandardParameter(parameter),
+                GirModel.Void => new Native.VoidParameter(parameter),
                 
-                _ => throw new Exception($"Unknown parameter type {parameter.AnyType.GetType().FullName}")
+                _ => throw new Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyType} can not be converted into a model")
             },
             arrayType => arrayType.Type switch
             {

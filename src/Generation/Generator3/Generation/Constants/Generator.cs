@@ -18,6 +18,9 @@ namespace Generator3.Generation.Constants
         {
             try
             {
+                if (!constants.Any())
+                    return;
+
                 var model = new Model(constants);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(constants.First().Namespace.GetCanonicalName(), "Constants", source);

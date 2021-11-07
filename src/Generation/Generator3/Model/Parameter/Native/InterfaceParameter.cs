@@ -1,6 +1,6 @@
 ﻿namespace Generator3.Model.Native
 {
-    public class ClassParameter : Parameter
+    public class InterfaceParameter : Parameter
     {
         public override string NullableTypeName => "IntPtr";
 
@@ -11,9 +11,9 @@
             @inout: ParameterDirection.Ref
         );
 
-        protected internal ClassParameter(GirModel.Parameter parameter) : base(parameter)
+        protected internal InterfaceParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyType.VerifyType<GirModel.Class>();
+            parameter.AnyType.VerifyType<GirModel.Interface>();
         }
     }
 }

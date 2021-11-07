@@ -18,6 +18,9 @@ namespace Generator3.Generation.Functions
         {
             try
             {
+                if (!functions.Any())
+                    return;
+                
                 var model = new NativeModel(functions);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(functions.First().Namespace.GetCanonicalName(), "Functions", source);
