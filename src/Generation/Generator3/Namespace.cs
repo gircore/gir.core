@@ -20,6 +20,7 @@ namespace Generator3
                 @namespace.Callbacks.Generate();
                 @namespace.Constants.Generate();
                 @namespace.Functions.Generate();
+                @namespace.Interfaces.Generate();
             }
             catch
             {

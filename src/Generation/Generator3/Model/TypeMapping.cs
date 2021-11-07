@@ -12,6 +12,7 @@ namespace Generator3.Model
                 GirModel.String => "string",
                 GirModel.Integer => "int",
                 GirModel.Double => "double",
+                GirModel.Float => "float",
                 GirModel.SignedByte => "sbyte",
                 GirModel.Short => "short",
                 GirModel.Long => "long",
