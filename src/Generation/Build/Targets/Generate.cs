@@ -47,28 +47,12 @@ namespace Build
         private void GenerateRepositories(IEnumerable<Repository> repositories)
         {
             if (_settings.GenerateAsynchronously)
-                Parallel.ForEach(repositories, GenerateRepository);
+                Parallel.ForEach(repositories, repository => repository.Namespace.Generate());
             else
                 foreach (var repository in repositories)
-                    GenerateRepository(repository);
+                    repository.Namespace.Generate();
         }
 
-        private void GenerateRepository(Repository repository)
-        {
-            if (repository.Namespace.SharedLibrary is null)
-                throw new Exception($"Shared library is not set for project {repository.Namespace.ToCanonicalName()}");
-
-            Framework.Generate(repository.Namespace.ToCanonicalName(), repository.Namespace.SharedLibrary, repository.Namespace.Name);
-
-            repository.Namespace.Enumerations.Generate();
-            repository.Namespace.Bitfields.Generate();
-            repository.Namespace.Records.Generate();
-            repository.Namespace.Unions.Generate();
-            repository.Namespace.Callbacks.Generate();
-            repository.Namespace.Constants.Generate();
-            repository.Namespace.Functions.Generate();
-        }
-        
         private GirLoader.Input.Repository LoadXmlModel(Project project)
         {
             return new FileInfo(project.GirFile).OpenRead().DeserializeGirInputModel();
