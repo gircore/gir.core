@@ -16,10 +16,18 @@ namespace Generator3.Generation.Functions
 
         public void Generate(IEnumerable<GirModel.Method> functions)
         {
-            var model = new NativeModel(functions);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(functions.First().Namespace.GetCanonicalName(), "Functions", source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new NativeModel(functions);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(functions.First().Namespace.GetCanonicalName(), "Functions", source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning("Could not generate native functions.");
+                throw;
+            }
         }
     }
 }

@@ -13,10 +13,18 @@
 
         public void Generate(GirModel.Record record)
         {
-            var model = new NativeStructModel(record);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Struct", source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new NativeStructModel(record);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Struct", source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning($"Could not generate native struct for record \"{record.Name}\"");
+                throw;
+            }
         }
     }
 }

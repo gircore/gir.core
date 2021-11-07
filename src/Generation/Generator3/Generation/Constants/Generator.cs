@@ -16,10 +16,18 @@ namespace Generator3.Generation.Constants
 
         public void Generate(IEnumerable<GirModel.Constant> constants)
         {
-            var model = new Model(constants);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(constants.First().Namespace.GetCanonicalName(), "Constants", source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new Model(constants);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(constants.First().Namespace.GetCanonicalName(), "Constants", source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning("Could not generate constants");
+                throw;
+            }
         }
     }
 }

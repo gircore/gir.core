@@ -13,10 +13,18 @@
 
         public void Generate(string project, string @namespace)
         {
-            var model = new ModuleDllImportModel(@namespace);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, "Module.DllImport", source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new ModuleDllImportModel(@namespace);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(project, "Module.DllImport", source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning("Could not generate Module.DllImport");
+                throw;
+            }
         }
     }
 }

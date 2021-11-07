@@ -13,10 +13,17 @@
 
         public void Generate(GirModel.Interface @interface)
         {
-            var model = new NativeMethodsModel(@interface);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(@interface.Namespace.GetCanonicalName(), $"{@interface.Name}.Methods", source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new NativeMethodsModel(@interface);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(@interface.Namespace.GetCanonicalName(), $"{@interface.Name}.Methods", source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning($"Could not generate native interface \"{@interface.Name}\"");
+            }
         }
     }
 }

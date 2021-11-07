@@ -13,10 +13,18 @@
 
         public void Generate(GirModel.Bitfield bitfield)
         {
-            var model = new Model(bitfield);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(bitfield.Namespace.GetCanonicalName(), bitfield.Name, source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new Model(bitfield);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(bitfield.Namespace.GetCanonicalName(), bitfield.Name, source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning($"Couldnot generate bitfield \"{bitfield.Name}\"");
+                throw;
+            }
         }
     }
 }

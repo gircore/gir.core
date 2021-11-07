@@ -13,10 +13,18 @@
 
         public void Generate(GirModel.Enumeration enumeration)
         {
-            var model = new Model(enumeration);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(enumeration.Namespace.GetCanonicalName(), enumeration.Name, source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new Model(enumeration);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(enumeration.Namespace.GetCanonicalName(), enumeration.Name, source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning($"Could not generate enumeration \"{enumeration.Name}\"");
+            }
+
         }
     }
 }

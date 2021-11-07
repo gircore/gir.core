@@ -13,10 +13,18 @@
 
         public void Generate(GirModel.Record record)
         {
-            var model = new NativeMethodsModel(record);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Methods", source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new NativeMethodsModel(record);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Methods", source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning($"Could not generate native methods for record \"{record.Name}\"");
+                throw;
+            }
         }
     }
 }

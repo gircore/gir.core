@@ -13,10 +13,18 @@
 
         public void Generate(string project, string @namespace)
         {
-            var model = new NativeExtensionsModel(@namespace);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, "Extensions", source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new NativeExtensionsModel(@namespace);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(project, "Extensions", source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning("Could not generate native extensions");
+                throw;
+            }
         }
     }
 }

@@ -15,13 +15,22 @@ namespace Generator3.Generation.Record
 
         public void Generate(GirModel.Record record)
         {
-            if (!HasCallbackField(record))
-                return;
+            try
+            {
 
-            var model = new NativeDelegatesModel(record);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Delegates", source);
-            _publisher.Publish(codeUnit);
+                if (!HasCallbackField(record))
+                    return;
+
+                var model = new NativeDelegatesModel(record);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Delegates", source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning($"Could not generate native delegates for record \"{record.Name}\"");
+                throw;
+            }
         }
 
         private bool HasCallbackField(GirModel.Record record)

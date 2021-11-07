@@ -13,10 +13,18 @@
 
         public void Generate(string project, string sharedLibrary, string @namespace)
         {
-            var model = new NativeDllImportModel(sharedLibrary, @namespace);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(project, "DllImport", source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new NativeDllImportModel(sharedLibrary, @namespace);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(project, "DllImport", source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning("Could not generate DllImport");
+                throw;
+            }
         }
     }
 }

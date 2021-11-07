@@ -13,10 +13,18 @@
 
         public void Generate(GirModel.Callback callback)
         {
-            var model = new NativeModel(callback);
-            var source = _template.Render(model);
-            var codeUnit = new CodeUnit(callback.Namespace.GetCanonicalName(), callback.Name, source);
-            _publisher.Publish(codeUnit);
+            try
+            {
+                var model = new NativeModel(callback);
+                var source = _template.Render(model);
+                var codeUnit = new CodeUnit(callback.Namespace.GetCanonicalName(), callback.Name, source);
+                _publisher.Publish(codeUnit);
+            }
+            catch
+            {
+                Log.Warning($"Could not generate native callback \"{callback.Name}\"");
+                throw;
+            }
         }
     }
 }
