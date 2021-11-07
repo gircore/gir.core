@@ -2,7 +2,7 @@
 {
     public class ClassParameter : Parameter
     {
-        public override string NullableTypeName => "IntPtr";
+        public override string NullableTypeName => TypeMapping.Pointer;
 
         public override string Direction => Model.GetDirection(
             @in: ParameterDirection.In,

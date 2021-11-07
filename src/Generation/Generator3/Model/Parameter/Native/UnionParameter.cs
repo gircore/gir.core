@@ -4,7 +4,7 @@
     {
         public override string NullableTypeName => Model.IsPointer switch
         {
-            true => "IntPtr",
+            true => TypeMapping.Pointer,
             false => Model.AnyType.AsT0.GetName()
         };
 

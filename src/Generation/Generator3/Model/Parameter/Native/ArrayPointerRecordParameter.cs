@@ -2,7 +2,7 @@
 {
     public class ArrayPointerRecordParameter : Parameter
     {
-        public override string NullableTypeName => "IntPtr[]";
+        public override string NullableTypeName => TypeMapping.PointerArray;
 
         public override string Attribute => Model.AnyType.AsT1.Length is null
             ? string.Empty

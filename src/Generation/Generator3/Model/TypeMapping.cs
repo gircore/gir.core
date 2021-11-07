@@ -4,6 +4,9 @@ namespace Generator3.Model
 {
     internal static class TypeMapping
     {
+        public const string Pointer = "IntPtr";
+        public const string PointerArray = "IntPtr[]";
+
         public static string GetName(this GirModel.Type type)
         {
             return type switch
@@ -23,7 +26,7 @@ namespace Generator3.Model
                 GirModel.Bool => "bool",
                 GirModel.Void => "void",
                 GirModel.NativeUnsignedInteger => "nuint",
-                GirModel.Pointer => "IntPtr",
+                GirModel.Pointer => Pointer,
 
                 _ => throw new Exception($"Can't convert type {type} into a code representation.")
             };

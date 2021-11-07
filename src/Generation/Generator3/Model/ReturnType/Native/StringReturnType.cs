@@ -8,7 +8,7 @@ namespace Generator3.Model.Native
         {
             // Return values which return a string without transferring ownership to us can not be marshalled automatically
             // as the marshaller want's to free the unmanaged memory which is not allowed if the ownership is not transferred
-            { Transfer: Transfer.None } => "IntPtr",
+            { Transfer: Transfer.None } => TypeMapping.Pointer,
             
             _ => _returnValue.AnyType.Match(
                 type => type.GetName() + GetDefaultNullable(),
