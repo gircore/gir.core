@@ -23,6 +23,7 @@
             catch
             {
                 Log.Warning($"Could not generate class for record \"{record.Name}\"");
+                throw;
             }
         }
     }

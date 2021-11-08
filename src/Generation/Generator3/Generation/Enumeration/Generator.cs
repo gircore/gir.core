@@ -23,6 +23,7 @@
             catch
             {
                 Log.Warning($"Could not generate enumeration \"{enumeration.Name}\"");
+                throw;
             }
 
         }

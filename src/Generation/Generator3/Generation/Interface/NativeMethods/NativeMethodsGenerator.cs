@@ -23,6 +23,7 @@
             catch
             {
                 Log.Warning($"Could not generate native interface \"{@interface.Name}\"");
+                throw;
             }
         }
     }
