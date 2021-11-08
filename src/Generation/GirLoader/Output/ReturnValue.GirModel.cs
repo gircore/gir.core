@@ -9,5 +9,7 @@
         };
 
         GirModel.Transfer GirModel.ReturnType.Transfer => Transfer.ToGirModel();
+
+        bool GirModel.ReturnType.IsPointer => TypeReference.CTypeReference?.IsPointer ?? false;
     }
 }

@@ -7,7 +7,7 @@
             {
                 GirModel.String => new Native.StringReturnType(returnValue),
                 GirModel.Record => new Native.RecordReturnType(returnValue),
-
+                GirModel.Class => new Native.ClassReturnType(returnValue),
                 _ => new Native.StandardReturnType(returnValue)
             },
             arrayType => arrayType.Type switch 
