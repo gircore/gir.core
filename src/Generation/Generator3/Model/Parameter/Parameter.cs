@@ -8,7 +8,7 @@ namespace Generator3.Model
 
         public string Name => Model.Name;
         public abstract string NullableTypeName { get; }
-        public abstract string Direction { get; }
+        public virtual string Direction => string.Empty;
         public virtual string Attribute => string.Empty;
 
         protected internal Parameter(GirModel.Parameter parameter)
