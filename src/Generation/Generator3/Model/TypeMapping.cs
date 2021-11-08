@@ -27,6 +27,7 @@ namespace Generator3.Model
                 GirModel.Void => "void",
                 GirModel.NativeUnsignedInteger => "nuint",
                 GirModel.Pointer => Pointer,
+                GirModel.UnsignedPointer => "UIntPtr",
 
                 _ => throw new Exception($"Can't convert type {type} into a code representation.")
             };

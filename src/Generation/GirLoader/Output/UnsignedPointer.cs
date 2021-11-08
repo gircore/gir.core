@@ -1,6 +1,6 @@
 ﻿namespace GirLoader.Output
 {
-    public class UnsignedPointer : PrimitiveType
+    public class UnsignedPointer : PrimitiveType, GirModel.UnsignedPointer
     {
         public UnsignedPointer(string ctype) : base(new CType(ctype), new TypeName("UIntPtr")) { }
 

@@ -17,7 +17,6 @@ namespace Generator3.Generation.Record
         {
             try
             {
-
                 if (!HasCallbackField(record))
                     return;
 
