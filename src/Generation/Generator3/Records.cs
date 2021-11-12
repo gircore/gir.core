@@ -27,6 +27,11 @@ namespace Generator3
                 template: new NativeSafeHandleTemplate(),
                 publisher: new NativeRecordFilePublisher()
             );
+            
+            var nativeManagedHandleGenerator = new NativeManagedHandleGenerator(
+                template: new NativeManagedHandleTemplate(),
+                publisher: new NativeRecordFilePublisher()
+            );
 
             var classGenerator = new ClassGenerator(
                 template: new ClassTemplate(),
@@ -35,12 +40,13 @@ namespace Generator3
 
             foreach (var record in records)
             {
-                nativeMethodsGenerator.Generate(@record);
-                nativeStructGenerator.Generate(@record);
-                nativeStructDelegatesGenerator.Generate(@record);
-                nativeSafeHandleGenerator.Generate(@record);
+                nativeMethodsGenerator.Generate(record);
+                nativeStructGenerator.Generate(record);
+                nativeStructDelegatesGenerator.Generate(record);
+                nativeSafeHandleGenerator.Generate(record);
+                nativeManagedHandleGenerator.Generate(record);
 
-                classGenerator.Generate(@record);
+                classGenerator.Generate(record);
             }
         }
     }
