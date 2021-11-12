@@ -1,13 +1,10 @@
-﻿using System;
-
-namespace Generator3.Model.Native
+﻿namespace Generator3.Model.Native
 {
     public class RecordReturnType : ReturnType
     {
-        public override string NullableTypeName => _returnValue.AnyType.Match(
-            type => type.GetName() + ".Handle",
-            _ => throw new Exception($"{nameof(RecordReturnType)} does not support array type")
-        );
+        private GirModel.Record Type => (GirModel.Record) _returnValue.AnyType.AsT0;
+
+        public override string NullableTypeName => Type.Namespace.GetNativeName() + "." + Type.GetName() + ".Handle";
 
         protected internal RecordReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {

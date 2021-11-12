@@ -2,8 +2,10 @@
 {
     public class SafeHandleRecordParameter : Parameter
     {
+        private GirModel.Record Type => (GirModel.Record) Model.AnyType.AsT0;
+        
         //Native records are represented as SafeHandles and are not nullable
-        public override string NullableTypeName => Model.AnyType.AsT0.GetName() + ".Handle";
+        public override string NullableTypeName => Type.Namespace.GetNativeName() + "." + Type.GetName() + ".Handle";
 
         public override string Direction => Model.GetDirection(
             @in: ParameterDirection.In,
