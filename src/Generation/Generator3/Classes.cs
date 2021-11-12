@@ -13,11 +13,17 @@ namespace Generator3
                 publisher: new NativeClassFilePublisher()
             );
 
+            var fundamentalNativeInstanceMethodsGenerator = new NativeInstanceMethodsGenerator(
+                template: new NativeInstanceMethodsTemplate(),
+                publisher: new NativeClassFilePublisher()
+            );
+
             foreach (var @class in classes)
             {
                 if(@class.Fundamental)
                 {
                     fundamentalNativeInstanceStructGenerator.Generate(@class);
+                    fundamentalNativeInstanceMethodsGenerator.Generate(@class);
                 }
             }
         }

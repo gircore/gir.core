@@ -9,5 +9,8 @@ namespace GirLoader.Output
         GirModel.Method GirModel.Class.TypeFunction => GetTypeFunction;
         bool GirModel.Class.Fundamental => IsFundamental;
         IEnumerable<GirModel.Field> GirModel.Class.Fields => Fields;
+        IEnumerable<GirModel.Method> GirModel.Class.Functions => Functions;
+        IEnumerable<GirModel.Method> GirModel.Class.Methods => Methods;
+        IEnumerable<GirModel.Method> GirModel.Class.Constructors => Constructors;
     }
 }

@@ -7,5 +7,8 @@ namespace GirModel
         Method TypeFunction { get; }
         bool Fundamental { get; }
         IEnumerable<Field> Fields { get; }
+        IEnumerable<Method> Functions { get; }
+        IEnumerable<Method> Methods { get; }
+        IEnumerable<Method> Constructors { get; }
     }
 }
