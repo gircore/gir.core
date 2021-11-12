@@ -6,7 +6,7 @@
 
         public string Name => _record.Name;
         public string HandleClassName => "Handle";
-        public string NamespaceName => _record.Namespace.Name + ".Native";
+        public string NamespaceName => _record.Namespace.GetNativeName();
 
         public NativeSafeHandleModel(GirModel.Record record)
         {

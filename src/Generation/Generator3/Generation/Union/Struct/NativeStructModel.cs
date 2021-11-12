@@ -5,7 +5,7 @@
         private readonly GirModel.Union _union;
 
         public string Name => _union.Name;
-        public string NamespaceName => _union.Namespace.Name + ".Native";
+        public string NamespaceName => _union.Namespace.GetNativeName();
 
         public NativeStructModel(GirModel.Union union)
         {

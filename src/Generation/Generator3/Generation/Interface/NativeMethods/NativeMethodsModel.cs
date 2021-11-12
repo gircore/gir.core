@@ -9,7 +9,7 @@ namespace Generator3.Generation.Interface
         private readonly GirModel.Interface _interface;
 
         public string Name => _interface.Name;
-        public string NamespaceName => _interface.Namespace.Name + ".Native";
+        public string NamespaceName => _interface.Namespace.GetNativeName();
         public IEnumerable<NativeFunction> Functions { get; }
         public IEnumerable<NativeMethod> Methods { get; }
         public NativeFunction? TypeFunction { get; }
@@ -26,9 +26,7 @@ namespace Generator3.Generation.Interface
                 .Select(method => new NativeMethod(method))
                 .ToList();
 
-            TypeFunction = @interface.TypeFunction is not null
-                ? new NativeFunction(@interface.TypeFunction)
-                : null;
+            TypeFunction = new NativeFunction(@interface.TypeFunction);
         }
     }
 }
