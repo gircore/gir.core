@@ -5,8 +5,9 @@ namespace GirModel
     public interface Field 
     {
         string Name { get; }
-        bool Readable { get; }
-        bool Private { get; }
+        bool IsReadable { get; }
+        bool IsPrivate { get; }
+        bool IsPointer { get; }
         
         /// <summary>
         /// If a type is provided the field references this type (it could reference a callback, too).

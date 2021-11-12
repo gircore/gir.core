@@ -2,7 +2,7 @@
 {
     public class StandardReturnType : ReturnType
     {
-        public override string NullableTypeName => _returnValue.AnyType.Match(
+        public override string NullableTypeName => Model.AnyType.Match(
             type => type.GetName() + GetDefaultNullable(),
             arrayType => arrayType.GetName() //TODO: Consider if arrayType should be supported by this class
         );

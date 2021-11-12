@@ -2,15 +2,15 @@
 {
     public abstract class ReturnType
     {
-        protected readonly GirModel.ReturnType _returnValue;
+        protected readonly GirModel.ReturnType Model;
 
         public abstract string NullableTypeName { get; }
 
-        protected ReturnType(GirModel.ReturnType returnValue)
+        protected ReturnType(GirModel.ReturnType model)
         {
-            _returnValue = returnValue;
+            Model = model;
         }
 
-        protected string GetDefaultNullable() => _returnValue.Nullable ? "?" : "";
+        protected string GetDefaultNullable() => Model.Nullable ? "?" : "";
     }
 }

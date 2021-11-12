@@ -2,9 +2,9 @@
 {
     public class ClassReturnType : ReturnType
     {
-        public override string NullableTypeName => _returnValue.IsPointer
+        public override string NullableTypeName => Model.IsPointer
             ? TypeMapping.Pointer
-            : _returnValue.AnyType.AsT0.GetName();
+            : Model.AnyType.AsT0.GetName();
 
         protected internal ClassReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {

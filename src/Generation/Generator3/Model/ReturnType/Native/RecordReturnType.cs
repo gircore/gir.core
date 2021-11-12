@@ -2,7 +2,7 @@
 {
     public class RecordReturnType : ReturnType
     {
-        private GirModel.Record Type => (GirModel.Record) _returnValue.AnyType.AsT0;
+        private GirModel.Record Type => (GirModel.Record) Model.AnyType.AsT0;
 
         public override string NullableTypeName => Type.Namespace.GetNativeName() + "." + Type.GetName() + ".Handle";
 
