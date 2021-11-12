@@ -21,6 +21,7 @@ namespace Generator3
                 @namespace.Constants.Generate();
                 @namespace.Functions.Generate();
                 @namespace.Interfaces.Generate();
+                @namespace.Classes.Generate();
             }
             catch
             {

@@ -16,5 +16,6 @@ namespace GirLoader.Output
         IEnumerable<GirModel.Method> GirModel.Namespace.Functions => Functions;
         IEnumerable<GirModel.Constant> GirModel.Namespace.Constants => Constants;
         IEnumerable<GirModel.Interface> GirModel.Namespace.Interfaces => Interfaces;
+        IEnumerable<GirModel.Class> GirModel.Namespace.Classes => Classes;
     }
 }

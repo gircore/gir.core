@@ -16,5 +16,6 @@ namespace GirModel
         IEnumerable<Method> Functions { get; }
         IEnumerable<Constant> Constants { get; }
         IEnumerable<Interface> Interfaces { get; }
+        IEnumerable<Class> Classes { get; }
     }
 }
