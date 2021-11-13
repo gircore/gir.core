@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator3.Model;
+using Generator3.Model.Native;
 
 namespace Generator3.Generation.Record
 {

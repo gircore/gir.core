@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Generator3.Renderer;
+﻿using Generator3.Renderer.Public;
 
 namespace Generator3.Generation.Callback
 {

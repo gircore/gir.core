@@ -10,7 +10,7 @@ namespace Generator3
         {
             var generator = new Generator(
                 template: new Template(),
-                publisher: new ClassFilePublisher()
+                publisher: new PublicClassFilePublisher()
             );
         
             generator.Generate(constants);

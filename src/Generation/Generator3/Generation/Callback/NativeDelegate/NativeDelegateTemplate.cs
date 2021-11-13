@@ -1,4 +1,4 @@
-﻿using Generator3.Renderer;
+﻿using Generator3.Renderer.Native;
 
 namespace Generator3.Generation.Callback
 {

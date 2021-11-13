@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator3.Model;
+using Generator3.Model.Native;
 
 namespace Generator3.Generation.Record
 {
@@ -10,7 +10,7 @@ namespace Generator3.Generation.Record
 
         public string Name => _record.Name;
         public string NamespaceName => _record.Namespace.GetNativeName();
-        public IEnumerable<NativeCallback> Callbacks { get; }
+        public IEnumerable<Model.Native.Callback> Callbacks { get; }
         public NativeDelegatesModel(GirModel.Record record)
         {
             _record = record;
@@ -18,7 +18,7 @@ namespace Generator3.Generation.Record
             Callbacks = _record.Fields
                 .Select(x => x.AnyTypeOrCallback)
                 .Where(x => x.IsT1)
-                .Select(x => new NativeCallback(x.AsT1));
+                .Select(x => new Model.Native.Callback(x.AsT1));
         }
     }
 }

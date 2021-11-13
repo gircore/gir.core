@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Generator3.Model;
+using Generator3.Model.Native;
 
 namespace Generator3.Generation.Callback
 {

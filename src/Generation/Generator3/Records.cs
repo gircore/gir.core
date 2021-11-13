@@ -35,7 +35,7 @@ namespace Generator3
 
             var classGenerator = new ClassGenerator(
                 template: new ClassTemplate(),
-                publisher: new RecordFilePublisher()
+                publisher: new PublicRecordFilePublisher()
             );
 
             foreach (var record in records)

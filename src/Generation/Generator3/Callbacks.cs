@@ -15,17 +15,17 @@ namespace Generator3
 
             var delegateGenerator = new PublicDelegateGenerator(
                 template: new PublicDelegateTemplate(),
-                publisher: new DelegateFilePublisher()
+                publisher: new PublicDelegateFilePublisher()
             );
 
             var asyncHandlerGenerator = new PublicAsyncHandlerGenerator(
                 template: new PublicAsyncHandlerTemplate(),
-                publisher: new DelegateFilePublisher()
+                publisher: new PublicDelegateFilePublisher()
             );
             
             var notifiedHandlerGenerator = new PublicNotifiedHandlerGenerator(
                 template: new PublicNotifiedHandlerTemplate(),
-                publisher: new DelegateFilePublisher()
+                publisher: new PublicDelegateFilePublisher()
             );
 
             foreach (var callback in callbacks)

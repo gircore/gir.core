@@ -19,7 +19,7 @@ namespace Generator3
             
             var moduleDllImportGenerator = new ModuleDllImportGenerator(
                 template: new ModuleDllImportTemplate(),
-                publisher: new FrameworkFilePublisher()
+                publisher: new PublicFrameworkFilePublisher()
             );
 
             nativeExtensionsGenerator.Generate(project, @namespace);

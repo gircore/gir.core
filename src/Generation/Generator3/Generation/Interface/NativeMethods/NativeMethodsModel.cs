@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator3.Model;
+using Generator3.Model.Native;
 
 namespace Generator3.Generation.Interface
 {
@@ -10,23 +10,23 @@ namespace Generator3.Generation.Interface
 
         public string Name => _interface.Name;
         public string NamespaceName => _interface.Namespace.GetNativeName();
-        public IEnumerable<NativeFunction> Functions { get; }
-        public IEnumerable<NativeMethod> Methods { get; }
-        public NativeFunction? TypeFunction { get; }
+        public IEnumerable<Function> Functions { get; }
+        public IEnumerable<Method> Methods { get; }
+        public Function? TypeFunction { get; }
 
         public NativeMethodsModel(GirModel.Interface @interface)
         {
             _interface = @interface;
 
             Functions = @interface.Functions
-                .Select(function => new NativeFunction(function))
+                .Select(function => new Function(function))
                 .ToList();
 
             Methods = @interface.Methods
-                .Select(method => new NativeMethod(method))
+                .Select(method => new Method(method))
                 .ToList();
 
-            TypeFunction = new NativeFunction(@interface.TypeFunction);
+            TypeFunction = new Function(@interface.TypeFunction);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator3.Model;
+using Generator3.Model.Public;
 
 namespace Generator3.Generation.Bitfield
 {

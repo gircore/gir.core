@@ -10,7 +10,7 @@ namespace Generator3
         {
             var generator = new Generator(
                 template: new Template(),
-                publisher: new EnumFilePublisher()
+                publisher: new PublicEnumFilePublisher()
             );
         
             foreach(var bitfield in bitfields)

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator3.Model;
+using Generator3.Model.Native;
 
 namespace Generator3.Generation.Class.Fundamental
 {
@@ -11,28 +11,28 @@ namespace Generator3.Generation.Class.Fundamental
         public string Name => _class.Name;
         public string NamespaceName => _class.Namespace.GetNativeName();
         
-        public IEnumerable<NativeFunction> Functions { get; }
-        public IEnumerable<NativeMethod> Methods { get; }
-        public IEnumerable<NativeConstructor> Constructors { get; }
-        public NativeFunction? TypeFunction { get; }
+        public IEnumerable<Function> Functions { get; }
+        public IEnumerable<Method> Methods { get; }
+        public IEnumerable<Constructor> Constructors { get; }
+        public Function? TypeFunction { get; }
         
         public NativeInstanceMethodsModel(GirModel.Class @class)
         {
             _class = @class;
 
             Functions = @class.Functions
-                .Select(function => new NativeFunction(function))
+                .Select(function => new Function(function))
                 .ToList();
 
             Methods = @class.Methods
-                .Select(method => new NativeMethod(method))
+                .Select(method => new Method(method))
                 .ToList();
 
             Constructors = @class.Constructors
-                .Select(method => new NativeConstructor(method))
+                .Select(method => new Constructor(method))
                 .ToList();
 
-            TypeFunction = new NativeFunction(@class.TypeFunction);
+            TypeFunction = new Function(@class.TypeFunction);
         }
     }
 }

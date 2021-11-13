@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator3.Model;
-using GirModel;
+using Generator3.Model.Native;
 
 namespace Generator3.Generation.Record
 {
@@ -11,29 +10,29 @@ namespace Generator3.Generation.Record
 
         public string Name => _record.Name;
         public string NamespaceName => _record.Namespace.GetNativeName();
-        public IEnumerable<NativeFunction> Functions { get; }
-        public IEnumerable<NativeMethod> Methods { get; }
-        public IEnumerable<NativeConstructor> Constructors { get; }
-        public NativeFunction? TypeFunction { get; }
+        public IEnumerable<Function> Functions { get; }
+        public IEnumerable<Method> Methods { get; }
+        public IEnumerable<Constructor> Constructors { get; }
+        public Function? TypeFunction { get; }
 
         public NativeMethodsModel(GirModel.Record record)
         {
             _record = record;
 
             Functions = record.Functions
-                .Select(function => new NativeFunction(function))
+                .Select(function => new Function(function))
                 .ToList();
 
             Methods = record.Methods
-                .Select(method => new NativeMethod(method))
+                .Select(method => new Method(method))
                 .ToList();
 
             Constructors = record.Constructors
-                .Select(method => new NativeConstructor(method))
+                .Select(method => new Constructor(method))
                 .ToList();
 
             TypeFunction = record.TypeFunction is not null
-                ? new NativeFunction(record.TypeFunction)
+                ? new Function(record.TypeFunction)
                 : null;
         }
     }
