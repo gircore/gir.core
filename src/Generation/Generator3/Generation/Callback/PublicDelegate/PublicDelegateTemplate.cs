@@ -3,9 +3,9 @@ using Generator3.Renderer;
 
 namespace Generator3.Generation.Callback
 {
-    public class NativeTemplate : Template<NativeModel>
+    public class PublicDelegateTemplate : Template<PublicDelegateModel>
     {
-        public string Render(NativeModel model)
+        public string Render(PublicDelegateModel model)
         {
             return $@"
 using System;

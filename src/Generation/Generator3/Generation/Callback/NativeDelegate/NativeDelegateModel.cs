@@ -3,7 +3,7 @@ using Generator3.Model;
 
 namespace Generator3.Generation.Callback
 {
-    public class NativeModel
+    public class NativeDelegateModel
     {
         private readonly GirModel.Callback _callback;
         private ReturnType? _returnType;
@@ -15,7 +15,7 @@ namespace Generator3.Generation.Callback
         public ReturnType ReturnType => _returnType ??= _callback.ReturnType.CreateNativeModel();
         public IEnumerable<Parameter> Parameters => _parameters ??= _callback.Parameters.CreateNativeModelsForCallback();
         
-        public NativeModel(GirModel.Callback callback)
+        public NativeDelegateModel(GirModel.Callback callback)
         {
             _callback = callback;
         }

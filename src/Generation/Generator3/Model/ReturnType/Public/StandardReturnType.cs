@@ -1,7 +1,5 @@
-﻿namespace Generator3.Model.Native
+﻿namespace Generator3.Model.Public
 {
-    //TODO: Consider Removing all "Standard" model classes as it is not clear in which cases they are used explicitly and replace them with concrete implementations
-    
     public class StandardReturnType : ReturnType
     {
         public override string NullableTypeName => Model.AnyType.Match(
