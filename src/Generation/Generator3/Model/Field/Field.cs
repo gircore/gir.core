@@ -5,7 +5,7 @@
         protected readonly GirModel.Field _field;
 
         public string Name => _field.Name;
-        public abstract string? Attribute { get; }
+        public virtual string? Attribute { get; }
         
         public abstract string NullableTypeName { get; }
         

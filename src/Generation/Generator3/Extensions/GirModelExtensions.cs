@@ -17,4 +17,7 @@ internal static class GirModelExtension
 
     public static string GetNativeName(this GirModel.Namespace @namespace)
         => $"{@namespace.Name}.Native";
+    
+    public static string GetFullyQualifiedNativeRecordStruct(this GirModel.Record record)
+        => record.Namespace.GetNativeName() + "." + record.GetName() + ".Struct";
 }

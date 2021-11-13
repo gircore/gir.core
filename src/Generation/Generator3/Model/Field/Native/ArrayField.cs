@@ -2,7 +2,6 @@
 {
     public class ArrayField : Field
     {
-
         public override string? Attribute => _field.AnyTypeOrCallback.AsT0.AsT1.FixedSize is not null
             ? $"[MarshalAs(UnmanagedType.ByValArray, SizeConst = {_field.AnyTypeOrCallback.AsT0.AsT1.FixedSize})]"
             : null;

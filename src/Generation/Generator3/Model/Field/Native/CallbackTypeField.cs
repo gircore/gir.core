@@ -3,7 +3,6 @@
     public class CallbackTypeField : Field
     {
         private GirModel.Callback Type => (GirModel.Callback) _field.AnyTypeOrCallback.AsT0.AsT0;
-        public override string? Attribute => null;
 
         public override string NullableTypeName => Type.Namespace.GetNativeName() + "." + Type.GetName();
 

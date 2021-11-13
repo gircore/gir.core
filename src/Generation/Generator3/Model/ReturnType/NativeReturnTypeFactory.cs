@@ -14,6 +14,7 @@
             arrayType => arrayType.Type switch 
             {
                 GirModel.Record => new Native.ArrayRecordReturnType(returnValue),
+                GirModel.Class => new Native.ArrayClassReturnType(returnValue),
                 _ => new Native.StandardReturnType(returnValue)
             }
         );

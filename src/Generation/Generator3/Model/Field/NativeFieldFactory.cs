@@ -16,6 +16,7 @@ namespace Generator3.Model
                 { 
                     String => new StringField(field),
                     Callback => new CallbackTypeField(field),
+                    Record => new RecordField(field),
                     _ => new StandardField(field)
                 },
                 arrayType => new ArrayField(field)
