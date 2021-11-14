@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using Generator3.Generation.Class.Fundamental;
+using Fundamental = Generator3.Generation.Class.Fundamental;
+using Standard = Generator3.Generation.Class.Standard;
 using Generator3.Publication;
 
 namespace Generator3
@@ -8,22 +9,31 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Class> classes)
         {
-            var fundamentalNativeInstanceStructGenerator = new NativeInstanceStructGenerator(
-                template: new NativeInstanceStructTemplate(),
+            var fundamentalNativeInstanceStructGenerator = new Fundamental.NativeInstanceStructGenerator(
+                template: new Fundamental.NativeInstanceStructTemplate(),
                 publisher: new NativeClassFilePublisher()
             );
 
-            var fundamentalNativeInstanceMethodsGenerator = new NativeInstanceMethodsGenerator(
-                template: new NativeInstanceMethodsTemplate(),
+            var fundamentalNativeInstanceMethodsGenerator = new Fundamental.NativeInstanceMethodsGenerator(
+                template: new Fundamental.NativeInstanceMethodsTemplate(),
+                publisher: new NativeClassFilePublisher()
+            );
+            
+            var standardNativeInstanceMethodsGenerator = new Standard.NativeInstanceMethodsGenerator(
+                template: new Standard.NativeInstanceMethodsTemplate(),
                 publisher: new NativeClassFilePublisher()
             );
 
             foreach (var @class in classes)
             {
-                if(@class.Fundamental)
+                if(@class.IsFundamental)
                 {
                     fundamentalNativeInstanceStructGenerator.Generate(@class);
                     fundamentalNativeInstanceMethodsGenerator.Generate(@class);
+                }
+                else
+                {
+                    standardNativeInstanceMethodsGenerator.Generate(@class);
                 }
             }
         }

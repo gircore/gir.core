@@ -8,7 +8,7 @@ namespace GObject.Native
         private class ToggleRef : IDisposable
         {
             private object _reference;
-            private readonly ToggleNotifyCallback _callback;
+            private readonly ToggleNotify _callback;
             private readonly IntPtr _handle;
 
             public object? Object
