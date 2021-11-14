@@ -1,8 +1,8 @@
 ﻿namespace Generator3.Generation.Class.Standard
 {
-    public class PublicClassMethodsTemplate : Template<PublicClassMethodsModel>
+    public class PublicMethodsTemplate : Template<PublicMethodsModel>
     {
-        public string Render(PublicClassMethodsModel model)
+        public string Render(PublicMethodsModel model)
         {
             return $@"
 using System;

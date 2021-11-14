@@ -2,9 +2,9 @@
 
 namespace Generator3.Generation.Class.Standard
 {
-    public class NativeInstanceMethodsTemplate : Template<NativeInstanceMethodsModel>
+    public class NativeMethodsTemplate : Template<NativeMethodsModel>
     {
-        public string Render(NativeInstanceMethodsModel model)
+        public string Render(NativeMethodsModel model)
         {
             return $@"
 using System;

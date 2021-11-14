@@ -4,7 +4,7 @@ using Generator3.Model.Native;
 
 namespace Generator3.Generation.Class.Standard
 {
-    public class NativeInstanceMethodsModel
+    public class NativeMethodsModel
     {
         private readonly GirModel.Class _class;
 
@@ -16,7 +16,7 @@ namespace Generator3.Generation.Class.Standard
         public IEnumerable<Constructor> Constructors { get; }
         public Function? TypeFunction { get; }
         
-        public NativeInstanceMethodsModel(GirModel.Class @class)
+        public NativeMethodsModel(GirModel.Class @class)
         {
             _class = @class;
 

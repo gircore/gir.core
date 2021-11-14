@@ -1,11 +1,11 @@
 ﻿namespace Generator3.Generation.Class.Standard
 {
-    public class PublicClassMethodsGenerator
+    public class PublicMethodsGenerator
     {
-        private readonly Template<PublicClassMethodsModel> _template;
+        private readonly Template<PublicMethodsModel> _template;
         private readonly Publisher _publisher;
 
-        public PublicClassMethodsGenerator(Template<PublicClassMethodsModel> template, Publisher publisher)
+        public PublicMethodsGenerator(Template<PublicMethodsModel> template, Publisher publisher)
         {
             _template = template;
             _publisher = publisher;
@@ -15,7 +15,7 @@
         {
             try
             {
-                var model = new PublicClassMethodsModel(@class);
+                var model = new PublicMethodsModel(@class);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(@class.Namespace.GetCanonicalName(), $"{@class.Name}.Methods", source);
                 _publisher.Publish(codeUnit);
