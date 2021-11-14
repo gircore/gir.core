@@ -10,11 +10,11 @@ namespace GObject
         // A call handler keeps the delegate alive for the
         // lifetime of the call handler. As we save it as a
         // field here, the delegate will match this class' lifetime.
-        private readonly ClosureMarshalCallHandler _closureMarshalCallHandler;
+        private readonly ClosureMarshalHandler _closureMarshalCallHandler;
 
         internal Closure(ClosureMarshal action)
         {
-            _closureMarshalCallHandler = new ClosureMarshalCallHandler(action);
+            _closureMarshalCallHandler = new ClosureMarshalHandler(action);
             _handle = Native.Closure.Methods.NewSimple((uint) Marshal.SizeOf(typeof(GObject.Native.Closure.Struct)), IntPtr.Zero);
 
             Debug.WriteLine($"Instantiating Closure: Address {_handle.DangerousGetHandle()}.");

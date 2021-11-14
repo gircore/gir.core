@@ -18,6 +18,11 @@ namespace Generator3
                 publisher: new PublicDelegateFilePublisher()
             );
 
+            var handlerGenerator = new PublicHandlerGenerator(
+                template: new PublicHandlerTemplate(),
+                publisher: new PublicDelegateFilePublisher()
+            );
+
             var asyncHandlerGenerator = new PublicAsyncHandlerGenerator(
                 template: new PublicAsyncHandlerTemplate(),
                 publisher: new PublicDelegateFilePublisher()
@@ -32,6 +37,7 @@ namespace Generator3
             {
                 nativeDelegateGenerator.Generate(callback);
                 delegateGenerator.Generate(callback);
+                handlerGenerator.Generate(callback);
                 asyncHandlerGenerator.Generate(callback);
                 notifiedHandlerGenerator.Generate(callback);
             }
