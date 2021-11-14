@@ -42,12 +42,12 @@ namespace {{ namespace.native_name }}
                 
                 if (data.HasValue)
                 {
-                    Marshal.StructureToPtr(data.Value, ptr, false);
+                    Marshal.StructureToPtr<{{$struct_name}}>(data.Value, ptr, false);
                 }
                 else
                 {
                     var str = new {{$struct_name}}();
-                    Marshal.StructureToPtr(str, ptr, false);
+                    Marshal.StructureToPtr<{{$struct_name}}>(str, ptr, false);
                 }
                 
                 return new Managed{{$safehandle_name}}(ptr);
