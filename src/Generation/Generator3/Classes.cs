@@ -24,6 +24,11 @@ namespace Generator3
                 publisher: new NativeClassFilePublisher()
             );
 
+            var standardPublicCLassMethodsGenerator = new Standard.PublicClassMethodsGenerator(
+                template: new Standard.PublicClassMethodsTemplate(),
+                publisher: new PublicClassFilePublisher()
+            );
+
             foreach (var @class in classes)
             {
                 if(@class.IsFundamental)
@@ -34,6 +39,7 @@ namespace Generator3
                 else
                 {
                     standardNativeInstanceMethodsGenerator.Generate(@class);
+                    standardPublicCLassMethodsGenerator.Generate(@class);
                 }
             }
         }
