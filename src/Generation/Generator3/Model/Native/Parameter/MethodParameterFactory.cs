@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Generator3.Model.Native
 {
-    public static class ParameterFactory
+    public static class MethodParameterFactory
     {
-        public static IEnumerable<Parameter> CreateNativeModels(this IEnumerable<GirModel.Parameter> parameters)
-            => parameters.Select(CreateNativeModel);
-
-        private static Parameter CreateNativeModel(this GirModel.Parameter parameter) => parameter.AnyType.Match<Parameter>(
+        public static IEnumerable<Parameter> CreateNativeModelsForMethod(this IEnumerable<GirModel.Parameter> parameters)
+            => parameters.Select(CreateNativeModelForMethod);
+        
+        private static Parameter CreateNativeModelForMethod(this GirModel.Parameter parameter) => parameter.AnyType.Match<Parameter>(
             type => type switch
             {
                 GirModel.String => new StringParameter(parameter),
@@ -29,8 +29,8 @@ namespace Generator3.Model.Native
             },
             arrayType => arrayType.Type switch
             {
-                GirModel.Record => new ArrayPointerRecordParameter(parameter),
-                GirModel.String => new ArrayStringParameter(parameter),
+                GirModel.Record => new ArrayPointerRecordParameterForMethod(parameter),
+                GirModel.String => new ArrayStringParameterForMethod(parameter),
                 _ => new StandardParameter(parameter)
             }
         );

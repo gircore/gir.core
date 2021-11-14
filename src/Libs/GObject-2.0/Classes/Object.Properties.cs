@@ -31,17 +31,17 @@ namespace GObject
             SetProperty(property.Name, v);
         }
 
-        // TODO: Remove this soon - we generate it!
-        /*/// <summary>
+        /// <summary>
         /// Assigns the value of a GObject's property given its <paramref name="name"/>
         /// </summary>
         /// <param name="value">The property name.</param>
         /// <param name="name">The property value.</param>
         protected void SetProperty(string name, Value value)
         {
+            // TODO: Remove this once we generate the method
             Native.Object.Instance.Methods.SetProperty(Handle, name, value.Handle);
             value.Dispose();
-        }*/
+        }
 
         /// <summary>
         /// Gets the value of a GObject's property given its <paramref name="name"/>.

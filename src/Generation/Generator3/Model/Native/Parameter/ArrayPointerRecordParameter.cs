@@ -2,9 +2,13 @@
 {
     public class ArrayPointerRecordParameter : Parameter
     {
-        public override string NullableTypeName => TypeMapping.PointerArray;
+        private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
 
-        public override string Attribute => Model.AnyType.AsT1.Length is null
+        public override string NullableTypeName => ArrayType.Length is null
+            ? TypeMapping.PointerArray
+            : ((GirModel.Record) ArrayType.Type).GetFullyQualifiedNativeRecordStruct() + "[]";
+
+        public override string Attribute => ArrayType.Length is null
             ? string.Empty
             : $"[MarshalAs(UnmanagedType.LPArray, SizeParamIndex={Model.AnyType.AsT1.Length})]";
 

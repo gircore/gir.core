@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Generator3.Model.Native
 {
-    public static class ParameterFactory
+    public static class CallbackParameterFactory
     {
-        public static IEnumerable<Parameter> CreateNativeModels(this IEnumerable<GirModel.Parameter> parameters)
-            => parameters.Select(CreateNativeModel);
+        public static IEnumerable<Parameter> CreateNativeModelsForCallback(this IEnumerable<GirModel.Parameter> parameters)
+            => parameters.Select(CreateNativeModelForCallback);
 
-        private static Parameter CreateNativeModel(this GirModel.Parameter parameter) => parameter.AnyType.Match<Parameter>(
+        private static Parameter CreateNativeModelForCallback(this GirModel.Parameter parameter) => parameter.AnyType.Match<Parameter>(
             type => type switch
             {
                 GirModel.String => new StringParameter(parameter),
@@ -18,7 +18,10 @@ namespace Generator3.Model.Native
                 GirModel.Class => new ClassParameter(parameter),
                 GirModel.Interface => new InterfaceParameter(parameter),
                 GirModel.Union => new UnionParameter(parameter),
-                GirModel.Record => new SafeHandleRecordParameter(parameter),
+                
+                //Callbacks do not support record safe handles in parameters
+                GirModel.Record => new PointerRecordParameter(parameter),
+                
                 GirModel.PrimitiveValueType => new StandardParameter(parameter),
                 GirModel.Callback => new CallbackParameter(parameter),
                 GirModel.Enumeration => new StandardParameter(parameter),
@@ -31,7 +34,7 @@ namespace Generator3.Model.Native
             {
                 GirModel.Record => new ArrayPointerRecordParameter(parameter),
                 GirModel.String => new ArrayStringParameter(parameter),
-                _ => new StandardParameter(parameter)
+                _ => new StandardParameter(parameter)   
             }
         );
     }
