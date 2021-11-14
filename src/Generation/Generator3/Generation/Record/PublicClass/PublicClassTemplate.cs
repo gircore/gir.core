@@ -1,8 +1,8 @@
 ﻿namespace Generator3.Generation.Record
 {
-    public class ClassTemplate : Template<ClassModel>
+    public class PublicClassTemplate : Template<PublicClassModel>
     {
-        public string Render(ClassModel model)
+        public string Render(PublicClassModel model)
         {
             return $@"
 using System;

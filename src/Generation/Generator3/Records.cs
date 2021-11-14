@@ -33,8 +33,8 @@ namespace Generator3
                 publisher: new NativeRecordFilePublisher()
             );
 
-            var classGenerator = new ClassGenerator(
-                template: new ClassTemplate(),
+            var publicClassGenerator = new PublicClassGenerator(
+                template: new PublicClassTemplate(),
                 publisher: new PublicRecordFilePublisher()
             );
 
@@ -46,7 +46,7 @@ namespace Generator3
                 nativeSafeHandleGenerator.Generate(record);
                 nativeManagedHandleGenerator.Generate(record);
 
-                classGenerator.Generate(record);
+                publicClassGenerator.Generate(record);
             }
         }
     }

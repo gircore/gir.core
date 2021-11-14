@@ -1,13 +1,13 @@
 ﻿namespace Generator3.Generation.Record
 {
-    public class ClassModel
+    public class PublicClassModel
     {
         private readonly GirModel.Record _record;
 
         public string Name => _record.Name;
         public string NamespaceName => _record.Namespace.Name;
 
-        public ClassModel(GirModel.Record record)
+        public PublicClassModel(GirModel.Record record)
         {
             _record = record;
         }
