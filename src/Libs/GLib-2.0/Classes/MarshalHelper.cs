@@ -8,10 +8,10 @@ namespace GLib
         public static K ToPtrAndFree<T, K>(T structure, Func<IntPtr, K> action) where T : struct
         {
             K result;
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(structure));
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
             try
             {
-                Marshal.StructureToPtr(structure, ptr, false);
+                Marshal.StructureToPtr<T>(structure, ptr, false);
                 result = action(ptr);
             }
             finally
@@ -24,10 +24,10 @@ namespace GLib
 
         public static void ToPtrAndFree<T>(T structure, Action<IntPtr> action) where T : struct
         {
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(structure));
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
             try
             {
-                Marshal.StructureToPtr(structure, ptr, false);
+                Marshal.StructureToPtr<T>(structure, ptr, false);
                 action(ptr);
             }
             finally

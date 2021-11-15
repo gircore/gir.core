@@ -28,14 +28,14 @@ namespace Gst
         public Structure GetStructure()
         {
             // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
-            Marshal.StructureToPtr(this, thisPtr, false);
+            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+            Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
             IntPtr ptr = Native.get_structure(thisPtr);
 
             // Update this structure (is this necessary?)
             // TODO: Check for NULL
-            this = (Message) Marshal.PtrToStructure(thisPtr, GetType())!;
+            this = Marshal.PtrToStructure<Message>(thisPtr)!;
 
             Marshal.FreeHGlobal(thisPtr);
 
@@ -51,13 +51,13 @@ namespace Gst
             IntPtr oldStatePtr = default, newStatePtr = default, pendingStatePtr = default;
 
             // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
-            Marshal.StructureToPtr(this, thisPtr, false);
+            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+            Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
             Native.parse_state_changed(thisPtr, out oldStatePtr, out newStatePtr, out pendingStatePtr);
 
             // Update and free (TODO: Check for NULL)
-            this = (Message) Marshal.PtrToStructure(thisPtr, GetType())!;
+            this = Marshal.PtrToStructure<Message>(thisPtr)!;
             Marshal.FreeHGlobal(thisPtr);
 
             // Assign out variables
@@ -75,13 +75,13 @@ namespace Gst
             IntPtr tagListPtr = default;
 
             // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
-            Marshal.StructureToPtr(this, thisPtr, false);
+            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+            Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
             Native.parse_tag(thisPtr, out tagListPtr);
 
             // Update and free (TODO: Check for NULL)
-            this = (Message) Marshal.PtrToStructure(thisPtr, GetType())!;
+            this = Marshal.PtrToStructure<Message>(thisPtr)!;
             Marshal.FreeHGlobal(thisPtr);
 
             // Assign out variables
@@ -97,13 +97,13 @@ namespace Gst
             percent = 0;
 
             // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
-            Marshal.StructureToPtr(this, thisPtr, false);
+            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+            Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
             Native.parse_buffering(thisPtr, out percent);
 
             // Update and free (TODO: Check for NULL)
-            this = (Message) Marshal.PtrToStructure(thisPtr, GetType())!;
+            this = Marshal.PtrToStructure<Message>(thisPtr)!;
             Marshal.FreeHGlobal(thisPtr);
         }
 
@@ -115,13 +115,13 @@ namespace Gst
             // Empty pointers
 
             // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf(this));
-            Marshal.StructureToPtr(this, thisPtr, false);
+            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+            Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
             Native.parse_error(thisPtr, out IntPtr errPtr, out IntPtr strPtr);
 
             // Update and free (TODO: Check for NULL)
-            this = (Message) Marshal.PtrToStructure(thisPtr, GetType())!;
+            this = Marshal.PtrToStructure<Message>(thisPtr)!;
             debug = StringHelper.ToNullableAnsiStringAndFree(strPtr);
             error = Marshal.PtrToStructure<GLib.Error>(errPtr);
             Marshal.FreeHGlobal(thisPtr);

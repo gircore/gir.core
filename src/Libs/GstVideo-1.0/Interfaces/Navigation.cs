@@ -32,7 +32,7 @@ namespace GstVideo
             //
             //     // Update message structure
             //     // TODO: Not necessary?
-            //     Marshal.PtrToStructure(messagePtr, message);
+            //     Marshal.PtrToStructure<Message>(messagePtr, message);
             //
             //     return result;
             // });
