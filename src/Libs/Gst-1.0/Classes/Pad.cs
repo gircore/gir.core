@@ -42,8 +42,8 @@ namespace Gst
             IntPtr ptr = IntPtr.Zero;
             if (filter != null)
             {
-                ptr = Marshal.AllocHGlobal(Marshal.SizeOf(filter));
-                Marshal.StructureToPtr(filter, ptr, false);
+                ptr = Marshal.AllocHGlobal(Marshal.SizeOf<Caps>());
+                Marshal.StructureToPtr<Caps>(filter, ptr, false);
             }
 
             throw new NotImplementedException(); //TODO
@@ -52,7 +52,7 @@ namespace Gst
             //Marshal.FreeHGlobal(ptr);
 
             // TODO: Should/can this return null?
-            //return (Caps?) Marshal.PtrToStructure(ret, typeof(Caps));
+            //return Marshal.PtrToStructure<Caps>(ret);
         }*/
     }
 }

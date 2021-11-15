@@ -14,7 +14,7 @@ namespace GstPbutils
             //     var result = Native.is_missing_plugin_message(msgPtr);
             //
             //     // Update this structure
-            //     Marshal.PtrToStructure(msgPtr, msg);
+            //     Marshal.PtrToStructure<Gst.Message>(msgPtr, msg);
             //
             //     return result;
             // });
@@ -28,7 +28,7 @@ namespace GstPbutils
             //     IntPtr result = Native.missing_plugin_message_get_installer_detail(msgPtr);
             //
             //     // Update this structure
-            //     Marshal.PtrToStructure(msgPtr, msg);
+            //     Marshal.PtrToStructure<Gst.Message>(msgPtr, msg);
             //
             //     return StringHelper.ToAnsiStringAndFree(result);
             // });
@@ -42,7 +42,7 @@ namespace GstPbutils
             //     IntPtr result = Native.missing_plugin_message_get_description(msgPtr);
             //
             //     // Update this structure
-            //     Marshal.PtrToStructure(msgPtr, msg);
+            //     Marshal.PtrToStructure<Gst.Message>(msgPtr, msg);
             //
             //     return StringHelper.ToAnsiStringAndFree(result);
             // });

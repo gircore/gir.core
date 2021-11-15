@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/gircore/gir.core/develop/img/logo.svg" align="right" />
+
 # Welcome to Gir.Core
 
 [![Continuous integration status](https://github.com/GirCore/gir.core/workflows/Continuous%20integration/badge.svg?branch=develop)](https://github.com/gircore/gir.core/actions)

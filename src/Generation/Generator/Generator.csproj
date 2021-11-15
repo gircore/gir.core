@@ -6,9 +6,9 @@
     <ItemGroup>
       <ProjectReference Include="..\GirLoader\GirLoader.csproj" />
       
-      <PackageReference Include="Scriban" Version="4.0.2" />
+      <PackageReference Include="Scriban" Version="4.1.0" />
       <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20574.7" />
-      <PackageReference Include="StrongInject" Version="1.2.1" />
+      <PackageReference Include="StrongInject" Version="1.3.0" />
     </ItemGroup>
 
     <ItemGroup>
