@@ -8,7 +8,7 @@ namespace GLib
     {
         public static string ToUri(string filename, string hostname)
         {
-            var uri = Native.Functions.FilenameToUri(filename, hostname, out var error);
+            var uri = Internal.Functions.FilenameToUri(filename, hostname, out var error);
 
             Error.ThrowOnError(error);
 
@@ -17,7 +17,7 @@ namespace GLib
 
         public static string FromUri(string uri, out string? hostname)
         {
-            var fileName = Native.Functions.FilenameFromUri(uri, out hostname, out var error);
+            var fileName = Internal.Functions.FilenameFromUri(uri, out hostname, out var error);
             Error.ThrowOnError(error);
 
             return fileName;

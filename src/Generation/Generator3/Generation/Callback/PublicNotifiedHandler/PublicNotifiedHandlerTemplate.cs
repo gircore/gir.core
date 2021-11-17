@@ -23,8 +23,8 @@ namespace { model.NamespaceName }
     public class {model.Name} : IDisposable
     {{
         public event EventHandler<EventArgs>? OnDestroyNotify;
-        public {model.NativeDelegateType} NativeCallback;
-        public GLib.Native.DestroyNotify DestroyNotify;
+        public {model.InternalDelegateType} NativeCallback;
+        public GLib.Internal.DestroyNotify DestroyNotify;
 
         private {model.DelegateType} managedCallback;
         private GCHandle gch;

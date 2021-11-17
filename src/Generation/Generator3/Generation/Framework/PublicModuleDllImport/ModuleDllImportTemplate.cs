@@ -11,7 +11,7 @@ namespace {model.NamespaceName}
     {{
         static partial void InitializeDllImport()
         {{
-            Native.DllImport.Initialize();
+            Internal.DllImport.Initialize();
         }}
     }}
 }}";

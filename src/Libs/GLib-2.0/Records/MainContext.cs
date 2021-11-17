@@ -5,9 +5,9 @@ namespace GLib
     public partial class MainContext
     {
         public static MainContext New()
-            => new MainContext(Native.MainContext.Methods.New());
+            => new MainContext(Internal.MainContext.Methods.New());
 
         public static MainContext Default()
-            => new MainContext(Native.MainContext.Methods.Default());
+            => new MainContext(Internal.MainContext.Methods.Default());
     }
 }

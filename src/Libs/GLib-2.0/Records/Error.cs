@@ -2,7 +2,7 @@
 {
     public partial class Error
     {
-        public static void ThrowOnError(Native.Error.Handle error)
+        public static void ThrowOnError(Internal.Error.Handle error)
         {
             if (!error.IsInvalid)
                 throw new GException(error);

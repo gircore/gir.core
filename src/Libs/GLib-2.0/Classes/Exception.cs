@@ -7,14 +7,14 @@ namespace GLib
     {
         #region Fields
 
-        private readonly Native.Error.Handle _errorHandle;
+        private readonly Internal.Error.Handle _errorHandle;
 
         #endregion
 
         #region Constructors
 
-        internal GException(Native.Error.Handle errorHandle)
-            : base(Marshal.PtrToStructure<Native.Error.Struct>(errorHandle.DangerousGetHandle()).Message)
+        internal GException(Internal.Error.Handle errorHandle)
+            : base(Marshal.PtrToStructure<Internal.Error.Struct>(errorHandle.DangerousGetHandle()).Message)
         {
 
             _errorHandle = errorHandle;

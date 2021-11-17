@@ -12,7 +12,7 @@ namespace Generator3.Generation.Callback
 
         public string Name => _callback.Name + "Handler";
         public string DelegateType => _callback.Name;
-        public string NativeDelegateType => _callback.Namespace.GetNativeName() + "." + _callback.Name;
+        public string InternalDelegateType => _callback.Namespace.GetInternalName() + "." + _callback.Name;
         
         public string NamespaceName => _callback.Namespace.Name;
 

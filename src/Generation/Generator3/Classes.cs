@@ -20,41 +20,41 @@ namespace Generator3
 
         private static void GenerateFundamentalClass(GirModel.Class @class)
         {
-            var fundamentalNativeInstanceStructGenerator = new Fundamental.NativeInstanceStructGenerator(
-                template: new Fundamental.NativeInstanceStructTemplate(),
-                publisher: new NativeClassFilePublisher()
+            var fundamentalInternalInstanceStructGenerator = new Fundamental.InternalInstanceStructGenerator(
+                template: new Fundamental.InternalInstanceStructTemplate(),
+                publisher: new InternalClassFilePublisher()
             );
 
-            var fundamentalNativeInstanceMethodsGenerator = new Fundamental.NativeInstanceMethodsGenerator(
-                template: new Fundamental.NativeInstanceMethodsTemplate(),
-                publisher: new NativeClassFilePublisher()
+            var fundamentalInternalInstanceMethodsGenerator = new Fundamental.InternalInstanceMethodsGenerator(
+                template: new Fundamental.InternalInstanceMethodsTemplate(),
+                publisher: new InternalClassFilePublisher()
             );
 
 
-            fundamentalNativeInstanceStructGenerator.Generate(@class);
-            fundamentalNativeInstanceMethodsGenerator.Generate(@class);
+            fundamentalInternalInstanceStructGenerator.Generate(@class);
+            fundamentalInternalInstanceMethodsGenerator.Generate(@class);
         }
 
         private static void GenerateStandardClass(GirModel.Class @class)
         {
-            var standardNativeMethodsGenerator = new Standard.NativeMethodsGenerator(
-                template: new Standard.NativeMethodsTemplate(),
-                publisher: new NativeClassFilePublisher()
+            var standardInternalMethodsGenerator = new Standard.InternalMethodsGenerator(
+                template: new Standard.InternalMethodsTemplate(),
+                publisher: new InternalClassFilePublisher()
             );
             
-            var standardNativeStructGenerator = new Standard.NativeStructGenerator(
-                template: new Standard.NativeStructTemplate(),
-                publisher: new NativeClassFilePublisher()
+            var standardInternalStructGenerator = new Standard.InternalStructGenerator(
+                template: new Standard.InternalStructTemplate(),
+                publisher: new InternalClassFilePublisher()
             );
 
-            var standardPublicCLassMethodsGenerator = new Standard.PublicMethodsGenerator(
+            var standardPublicClassMethodsGenerator = new Standard.PublicMethodsGenerator(
                 template: new Standard.PublicMethodsTemplate(),
                 publisher: new PublicClassFilePublisher()
             );
             
-            standardNativeMethodsGenerator.Generate(@class);
-            standardNativeStructGenerator.Generate(@class);
-            standardPublicCLassMethodsGenerator.Generate(@class);
+            standardInternalMethodsGenerator.Generate(@class);
+            standardInternalStructGenerator.Generate(@class);
+            standardPublicClassMethodsGenerator.Generate(@class);
         }
     }
 }

@@ -8,29 +8,29 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Record> records)
         {
-            var nativeMethodsGenerator = new NativeMethodsGenerator(
-                template: new NativeMethodsTemplate(),
-                publisher: new NativeRecordFilePublisher()
+            var internalMethodsGenerator = new InternalMethodsGenerator(
+                template: new InternalMethodsTemplate(),
+                publisher: new InternalRecordFilePublisher()
             );
 
-            var nativeStructGenerator = new NativeStructGenerator (
-                template: new NativeStructTemplate(),
-                publisher: new NativeRecordFilePublisher()
+            var internalStructGenerator = new InternalStructGenerator (
+                template: new InternalStructTemplate(),
+                publisher: new InternalRecordFilePublisher()
             );
             
-            var nativeStructDelegatesGenerator = new NativeDelegatesGenerator(
-                template: new NativeDelegatesTemplate(),
-                publisher: new NativeRecordFilePublisher()
+            var internalStructDelegatesGenerator = new InternalDelegatesGenerator(
+                template: new InternalDelegatesTemplate(),
+                publisher: new InternalRecordFilePublisher()
             );
 
-            var nativeSafeHandleGenerator = new NativeSafeHandleGenerator(
-                template: new NativeSafeHandleTemplate(),
-                publisher: new NativeRecordFilePublisher()
+            var internalSafeHandleGenerator = new InternalSafeHandleGenerator(
+                template: new InternalSafeHandleTemplate(),
+                publisher: new InternalRecordFilePublisher()
             );
             
-            var nativeManagedHandleGenerator = new NativeManagedHandleGenerator(
-                template: new NativeManagedHandleTemplate(),
-                publisher: new NativeRecordFilePublisher()
+            var internalManagedHandleGenerator = new InternalManagedHandleGenerator(
+                template: new InternalManagedHandleTemplate(),
+                publisher: new InternalRecordFilePublisher()
             );
 
             var publicClassGenerator = new PublicClassGenerator(
@@ -40,11 +40,11 @@ namespace Generator3
 
             foreach (var record in records)
             {
-                nativeMethodsGenerator.Generate(record);
-                nativeStructGenerator.Generate(record);
-                nativeStructDelegatesGenerator.Generate(record);
-                nativeSafeHandleGenerator.Generate(record);
-                nativeManagedHandleGenerator.Generate(record);
+                internalMethodsGenerator.Generate(record);
+                internalStructGenerator.Generate(record);
+                internalStructDelegatesGenerator.Generate(record);
+                internalSafeHandleGenerator.Generate(record);
+                internalManagedHandleGenerator.Generate(record);
 
                 publicClassGenerator.Generate(record);
             }

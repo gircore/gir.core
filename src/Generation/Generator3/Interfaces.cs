@@ -8,14 +8,14 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Interface> interfaces)
         {
-            var nativeMethodsGenerator = new NativeMethodsGenerator(
-                template: new NativeMethodsTemplate(),
-                publisher: new NativeInterfaceFilePublisher()
+            var internalMethodsGenerator = new InternalMethodsGenerator(
+                template: new InternalMethodsTemplate(),
+                publisher: new InternalInterfaceFilePublisher()
             );
 
             foreach (var record in interfaces)
             {
-                nativeMethodsGenerator.Generate(@record);
+                internalMethodsGenerator.Generate(@record);
             }
         }
     }

@@ -23,7 +23,7 @@ namespace { model.NamespaceName }
     {{
         private {model.DelegateType}  managedCallback;
 
-        public {model.NativeDelegateType} NativeCallback;
+        public {model.InternalDelegateType} NativeCallback;
     
         public {model.Name}({model.DelegateType} managed)
         {{

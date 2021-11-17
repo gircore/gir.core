@@ -8,9 +8,9 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Callback> callbacks)
         {
-            var nativeDelegateGenerator = new NativeDelegateGenerator(
-                template: new NativeDelegateTemplate(),
-                publisher: new NativeDelegateFilePublisher()
+            var internalDelegateGenerator = new InternalDelegateGenerator(
+                template: new InternalDelegateTemplate(),
+                publisher: new InternalDelegateFilePublisher()
             );
 
             var delegateGenerator = new PublicDelegateGenerator(
@@ -35,7 +35,7 @@ namespace Generator3
 
             foreach (var callback in callbacks)
             {
-                nativeDelegateGenerator.Generate(callback);
+                internalDelegateGenerator.Generate(callback);
                 delegateGenerator.Generate(callback);
                 handlerGenerator.Generate(callback);
                 asyncHandlerGenerator.Generate(callback);

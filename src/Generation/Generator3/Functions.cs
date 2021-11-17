@@ -8,9 +8,9 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Method> functions)
         {
-            var generator = new NativeGenerator(
-                template: new NativeTemplate(),
-                publisher: new NativeClassFilePublisher()
+            var generator = new InternalGenerator(
+                template: new InternalTemplate(),
+                publisher: new InternalClassFilePublisher()
             );
         
             generator.Generate(functions);

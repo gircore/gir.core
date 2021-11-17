@@ -8,14 +8,14 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Union> unions)
         {
-            var nativeStructGenerator = new NativeStructGenerator (
-                template: new NativeStructTemplate(),
-                publisher: new NativeUnionFilePublisher()
+            var internalStructGenerator = new InternalStructGenerator (
+                template: new InternalStructTemplate(),
+                publisher: new InternalUnionFilePublisher()
             );
             
             foreach (var union in unions)
             {
-                nativeStructGenerator.Generate(union);
+                internalStructGenerator.Generate(union);
             }
         }
     }

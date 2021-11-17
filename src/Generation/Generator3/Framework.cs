@@ -7,14 +7,14 @@ namespace Generator3
     {
         public static void Generate(string project, string sharedLibrary, string @namespace)
         {
-            var nativeExtensionsGenerator = new NativeExtensionsGenerator (
-                template: new NativeExtensionsTemplate(),
-                publisher: new NativeFrameworkFilePublisher()
+            var internalExtensionsGenerator = new InternalExtensionsGenerator (
+                template: new InternalExtensionsTemplate(),
+                publisher: new InternalFrameworkFilePublisher()
             );
 
-            var nativeDllImportGenerator = new NativeDllImportGenerator(
-                template: new NativeDllImportTemplate(),
-                publisher: new NativeFrameworkFilePublisher()
+            var internalDllImportGenerator = new InternalDllImportGenerator(
+                template: new InternalDllImportTemplate(),
+                publisher: new InternalFrameworkFilePublisher()
             );
             
             var moduleDllImportGenerator = new ModuleDllImportGenerator(
@@ -22,8 +22,8 @@ namespace Generator3
                 publisher: new PublicFrameworkFilePublisher()
             );
 
-            nativeExtensionsGenerator.Generate(project, @namespace);
-            nativeDllImportGenerator.Generate(project, sharedLibrary, @namespace);
+            internalExtensionsGenerator.Generate(project, @namespace);
+            internalDllImportGenerator.Generate(project, sharedLibrary, @namespace);
             moduleDllImportGenerator.Generate(project, @namespace);
         }
     }
