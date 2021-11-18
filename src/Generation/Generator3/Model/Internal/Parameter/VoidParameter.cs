@@ -6,7 +6,7 @@
 
         protected internal VoidParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyType.VerifyType<GirModel.Void>();
+            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Void>();
         }
     }
 }

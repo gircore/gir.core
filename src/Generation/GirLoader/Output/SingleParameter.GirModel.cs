@@ -2,17 +2,11 @@
 {
     public partial class SingleParameter : GirModel.Parameter
     {
+        private GirModel.AnyTypeReference? _anyTypeReference;
+
         string GirModel.Parameter.Name => Name;
 
-        bool GirModel.Parameter.IsPointer => TypeReference.CTypeReference?.IsPointer ?? false;
-        bool GirModel.Parameter.IsConst => TypeReference.CTypeReference?.IsConst ?? false;
-        bool GirModel.Parameter.IsVolatile => TypeReference.CTypeReference?.IsVolatile ?? false;
-        
-        GirModel.AnyType GirModel.Parameter.AnyType => TypeReference switch
-        {
-            ArrayTypeReference arrayTypeReference => GirModel.AnyType.From(arrayTypeReference),
-            _ => GirModel.AnyType.From(TypeReference.GetResolvedType())
-        };
+        GirModel.AnyTypeReference GirModel.Parameter.AnyTypeReference => _anyTypeReference ??= new AnyTypeReference(TypeReference);
 
         GirModel.Direction GirModel.Parameter.Direction => Direction.ToGirModel();
         GirModel.Transfer GirModel.Parameter.Transfer => Transfer.ToGirModel();

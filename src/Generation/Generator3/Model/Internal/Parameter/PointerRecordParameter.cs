@@ -6,7 +6,7 @@
 
         protected internal PointerRecordParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyType.VerifyType<GirModel.Record>();
+            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Record>();
         }
     }
 }

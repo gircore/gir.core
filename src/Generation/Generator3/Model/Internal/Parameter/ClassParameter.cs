@@ -13,7 +13,7 @@
 
         protected internal ClassParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyType.VerifyType<GirModel.Class>();
+            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Class>();
         }
     }
 }

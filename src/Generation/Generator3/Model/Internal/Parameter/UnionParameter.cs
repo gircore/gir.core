@@ -2,10 +2,10 @@
 {
     public class UnionParameter : Parameter
     {
-        public override string NullableTypeName => Model.IsPointer switch
+        public override string NullableTypeName => Model.AnyTypeReference.IsPointer switch
         {
             true => TypeMapping.Pointer,
-            false => Model.AnyType.AsT0.GetName()
+            false => Model.AnyTypeReference.AnyType.AsT0.GetName()
         };
 
         public override string Direction => Model.GetDirection(
@@ -17,7 +17,7 @@
 
         protected internal UnionParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyType.VerifyType<GirModel.Union>();
+            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Union>();
         }
     }
 }

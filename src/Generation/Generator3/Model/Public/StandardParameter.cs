@@ -8,7 +8,7 @@ namespace Generator3.Model.Public
 
         public string Name => _parameter.Name;
         
-        public string NullableTypeName => _parameter.AnyType.Match(
+        public string NullableTypeName => _parameter.AnyTypeReference.AnyType.Match(
             type => type.GetName() + GetDefaultNullable(),
             arrayType => arrayType.GetName() //TODO: Consider if StandardParameter should support arrays?
         );

@@ -7,7 +7,7 @@ namespace Generator3.Model.Internal
     {
         public override string? Attribute => _field.AnyTypeOrCallback.AsT0.AsT0 switch
         {
-            PlatformString => "[MarshalAs(UnmanagedType.LPStr)]",
+            PlatformString => MarshalAs.UnmanagedLpString(),
             String => "//TODO: Verify which attribute must be set here",
             _ => null
         };

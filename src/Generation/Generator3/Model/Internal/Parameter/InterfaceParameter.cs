@@ -13,7 +13,7 @@
 
         protected internal InterfaceParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyType.VerifyType<GirModel.Interface>();
+            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Interface>();
         }
     }
 }

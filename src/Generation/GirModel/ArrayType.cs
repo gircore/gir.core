@@ -5,6 +5,6 @@
         public int? Length { get; }
         public bool IsZeroTerminated { get; }
         public int? FixedSize { get; }
-        Type Type { get; }
+        AnyTypeReference AnyTypeReference { get; }
     }
 }

@@ -1,12 +1,16 @@
-﻿namespace Generator3.Model.Internal
+﻿using GirModel;
+
+namespace Generator3.Model.Internal
 {
     public class ArrayField : Field
     {
-        public override string? Attribute => _field.AnyTypeOrCallback.AsT0.AsT1.FixedSize is not null
-            ? $"[MarshalAs(UnmanagedType.ByValArray, SizeConst = {_field.AnyTypeOrCallback.AsT0.AsT1.FixedSize})]"
+        private ArrayType ArrayType => _field.AnyTypeOrCallback.AsT0.AsT1;
+
+        public override string? Attribute => ArrayType.FixedSize is not null
+            ? MarshalAs.UnmanagedByValArray(sizeConst: ArrayType.FixedSize.Value)
             : null;
 
-        public override string NullableTypeName => _field.AnyTypeOrCallback.AsT0.AsT1.GetName();
+        public override string NullableTypeName => ArrayType.GetName();
 
         public ArrayField(GirModel.Field field) : base(field)
         {

@@ -11,7 +11,7 @@
                 GirModel.Pointer => new PointerReturnType(returnValue),
                 _ => new StandardReturnType(returnValue)
             },
-            arrayType => arrayType.Type switch 
+            arrayType => arrayType.AnyTypeReference switch 
             {
                 GirModel.Record => new ArrayRecordReturnType(returnValue),
                 GirModel.Class => new ArrayClassReturnType(returnValue),

@@ -2,19 +2,19 @@
 {
     public class StringParameter : Parameter
     {
-        public override string NullableTypeName => Model.AnyType.AsT0.GetName() + GetDefaultNullable();
+        public override string NullableTypeName => Model.AnyTypeReference.AnyType.AsT0.GetName() + GetDefaultNullable();
 
-        public override string Attribute => Model.AnyType.AsT0 switch
+        public override string Attribute => Model.AnyTypeReference.AnyType.AsT0 switch
         {
             // Marshal as a UTF-8 encoded string
-            GirModel.Utf8String => "[MarshalAs(UnmanagedType.LPUTF8Str)] ",
+            GirModel.Utf8String => MarshalAs.UnmanagedLpUtf8String(),
 
             // Marshal as a null-terminated array of ANSI characters
             // TODO: This is likely incorrect:
             //  - GObject introspection specifies that Windows should use
             //    UTF-8 and Unix should use ANSI. Does using ANSI for
             //    everything cause problems here?
-            GirModel.PlatformString => "[MarshalAs(UnmanagedType.LPStr)] ",
+            GirModel.PlatformString => MarshalAs.UnmanagedLpString(),
 
             _ => ""
         };
@@ -28,7 +28,7 @@
 
         protected internal StringParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyType.VerifyType<GirModel.String>();
+            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.String>();
         }
     }
 }

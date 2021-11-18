@@ -28,10 +28,18 @@ namespace GirModel
                 type => throw new Exception("Return type is not a array type but a type."),
                 arrayType =>
                 {
-                    if (arrayType.Type is not T)
-                        throw new Exception($"Return type must be of array type {typeof(T).FullName}");
+                    arrayType.AnyTypeReference.AnyType.Switch(
+                        ThrowIfNot<T>,
+                        _ => throw new NotSupportedException("Arrays of arrays not yet supported")
+                    );
                 }
             );
+        }
+
+        private static void ThrowIfNot<T>(Type type)
+        {
+            if(type is not T)
+                throw new Exception($"Return type must be of array type {typeof(T).FullName}");
         }
     }
 }
