@@ -6,7 +6,7 @@
 
         public override string NullableTypeName => ArrayType.Length is null
             ? TypeMapping.PointerArray
-            : ((GirModel.Record) ArrayType.AnyTypeReference.AnyType.AsT0).GetFullyQualifiedInternalRecordStruct() + "[]";
+            : ((GirModel.Record) ArrayType.AnyTypeReference.AnyType.AsT0).GetFullyQualifiedInternalStruct() + "[]";
 
         public override string Attribute => ArrayType.Length is null
             ? string.Empty

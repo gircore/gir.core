@@ -6,7 +6,7 @@
 
         public override string NullableTypeName => _field.IsPointer 
             ? TypeMapping.Pointer
-            : Type.GetFullyQualifiedInternalRecordStruct();
+            : Type.GetFullyQualifiedInternalStruct();
 
         public RecordField(GirModel.Field field) : base(field)
         {

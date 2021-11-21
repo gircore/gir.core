@@ -12,10 +12,16 @@ namespace Generator3
                 template: new InternalMethodsTemplate(),
                 publisher: new InternalInterfaceFilePublisher()
             );
+            
+            var publicMethodsGenerator = new PublicMethodsGenerator(
+                template: new PublicMethodsTemplate(),
+                publisher: new PublicInterfaceFilePublisher()
+            );
 
             foreach (var record in interfaces)
             {
-                internalMethodsGenerator.Generate(@record);
+                internalMethodsGenerator.Generate(record);
+                publicMethodsGenerator.Generate(record);
             }
         }
     }

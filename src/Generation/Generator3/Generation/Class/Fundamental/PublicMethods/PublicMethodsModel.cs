@@ -1,4 +1,8 @@
-﻿namespace Generator3.Generation.Class.Standard
+﻿using System.Collections.Generic;
+using System.Linq;
+using Generator3.Model.Internal;
+
+namespace Generator3.Generation.Class.Fundamental
 {
     public class PublicMethodsModel
     {

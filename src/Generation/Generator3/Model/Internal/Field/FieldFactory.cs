@@ -15,9 +15,17 @@ namespace Generator3.Model.Internal
                     GirModel.String => new StringField(field),
                     GirModel.Callback => new CallbackTypeField(field),
                     GirModel.Record => new RecordField(field),
+                    GirModel.Union => new UnionField(field),
                     _ => new StandardField(field)
                 },
-                arrayType => new ArrayField(field)
+                arrayType => arrayType.AnyTypeReference.AnyType.Match<Field>(
+                    type => type switch
+                    {
+                        GirModel.Union => new ArrayUnionField(field),
+                        _ => new ArrayField(field)
+                    },
+                    _ => new ArrayField(field)
+                )
             ),
             callback => new CallbackField(field)
         );

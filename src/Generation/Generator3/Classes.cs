@@ -29,10 +29,15 @@ namespace Generator3
                 template: new Fundamental.InternalInstanceMethodsTemplate(),
                 publisher: new InternalClassFilePublisher()
             );
-
+            
+            var fundamentalPublicMethodsGenerator = new Fundamental.PublicMethodsGenerator(
+                template: new Fundamental.PublicMethodsTemplate(),
+                publisher: new PublicClassFilePublisher()
+            );
 
             fundamentalInternalInstanceStructGenerator.Generate(@class);
             fundamentalInternalInstanceMethodsGenerator.Generate(@class);
+            fundamentalPublicMethodsGenerator.Generate(@class);
         }
 
         private static void GenerateStandardClass(GirModel.Class @class)

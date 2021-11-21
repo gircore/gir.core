@@ -18,6 +18,9 @@ internal static class GirModelExtension
     public static string GetInternalName(this GirModel.Namespace @namespace)
         => $"{@namespace.Name}.Internal";
     
-    public static string GetFullyQualifiedInternalRecordStruct(this GirModel.Record record)
+    public static string GetFullyQualifiedInternalStruct(this GirModel.Record record)
         => record.Namespace.GetInternalName() + "." + record.GetName() + ".Struct";
+    
+    public static string GetFullyQualifiedInternalStruct(this GirModel.Union union)
+        => union.Namespace.GetInternalName() + "." + union.GetName() + ".Struct";
 }
