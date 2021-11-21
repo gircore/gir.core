@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using GLib;
 
-namespace GObject.Native
+namespace GObject.Internal
 {
     public static class ObjectWrapper
     {

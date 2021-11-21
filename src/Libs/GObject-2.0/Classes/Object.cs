@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GLib;
-using GObject.Native;
+using GObject.Internal;
 
 namespace GObject
 {
@@ -44,14 +44,14 @@ namespace GObject
         {
             Type gtype = GetGTypeOrRegister(GetType());
 
-            IntPtr handle = Native.Object.Instance.Methods.NewWithProperties(
+            IntPtr handle = Internal.Object.Instance.Methods.NewWithProperties(
                 objectType: gtype.Value,
                 nProperties: (uint) constructArguments.Length,
                 names: GetNames(constructArguments),
                 values: GetValues(constructArguments)
             );
 
-            _handle = new ObjectHandle(handle, this, !Native.Object.Instance.Methods.IsFloating(handle));
+            _handle = new ObjectHandle(handle, this, !Internal.Object.Instance.Methods.IsFloating(handle));
 
             Initialize();
         }
@@ -59,9 +59,9 @@ namespace GObject
         private string[] GetNames(ConstructArgument[] constructParameters)
             => constructParameters.Select(x => x.Name).ToArray();
 
-        private Native.Value.Struct[] GetValues(ConstructArgument[] constructParameters)
+        private Internal.Value.Struct[] GetValues(ConstructArgument[] constructParameters)
         {
-            var values = new Native.Value.Struct[constructParameters.Length];
+            var values = new Internal.Value.Struct[constructParameters.Length];
 
             for (int i = 0; i < constructParameters.Length; i++)
             {

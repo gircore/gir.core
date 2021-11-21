@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using GLib;
 
-namespace GObject.Native
+namespace GObject.Internal
 {
     public static partial class ObjectMapper
     {

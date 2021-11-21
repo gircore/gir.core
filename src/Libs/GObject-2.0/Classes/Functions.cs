@@ -5,7 +5,7 @@ namespace GObject
     public partial class Functions
     {
         internal static bool TypeIsA(nuint type, nuint isAType)
-            => Native.Functions.TypeIsA(type, isAType);
+            => Internal.Functions.TypeIsA(type, isAType);
 
         // "g_strv_get_type" method is defined in GLib gir file but is
         // historically part of the GObject shared library. This is

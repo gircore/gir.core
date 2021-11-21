@@ -39,7 +39,7 @@ namespace GObject
         protected void SetProperty(string name, Value value)
         {
             // TODO: Remove this once we generate the method
-            Native.Object.Instance.Methods.SetProperty(Handle, name, value.Handle);
+            Internal.Object.Instance.Methods.SetProperty(Handle, name, value.Handle);
             value.Dispose();
         }
 
@@ -52,8 +52,8 @@ namespace GObject
         /// </returns>
         protected Value GetProperty(string name)
         {
-            var handle = Native.Value.ManagedHandle.Create();
-            Native.Object.Instance.Methods.GetProperty(Handle, name, handle);
+            var handle = Internal.Value.ManagedHandle.Create();
+            Internal.Object.Instance.Methods.GetProperty(Handle, name, handle);
 
             return new Value(handle);
         }
@@ -63,10 +63,10 @@ namespace GObject
         /// </summary>
         private Value CreateValue(string propertyName)
         {
-            var instance = Marshal.PtrToStructure<GObject.Native.Object.Instance.Struct>(Handle);
+            var instance = Marshal.PtrToStructure<GObject.Internal.Object.Instance.Struct>(Handle);
             var classPtr = instance.GTypeInstance.GClass;
             var paramSpecPtr = FindProperty(classPtr, propertyName);
-            var paramSpec = Marshal.PtrToStructure<GObject.Native.ParamSpec.Instance.Struct>(paramSpecPtr);
+            var paramSpec = Marshal.PtrToStructure<GObject.Internal.ParamSpec.Instance.Struct>(paramSpecPtr);
 
             var v = new Value(new Type(paramSpec.ValueType));
             return v;

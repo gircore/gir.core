@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GObject.Native;
+using GObject.Internal;
 
 namespace GObject
 {

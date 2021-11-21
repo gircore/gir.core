@@ -19,7 +19,7 @@ namespace Gio
             var handle = Native.Functions.BusGetSync(busType, IntPtr.Zero, out var error);
             Error.ThrowOnError(error);
 
-            return GObject.Native.ObjectWrapper.WrapHandle<DBusConnection>(handle, true);
+            return GObject.Internal.ObjectWrapper.WrapHandle<DBusConnection>(handle, true);
         }
 
         #endregion

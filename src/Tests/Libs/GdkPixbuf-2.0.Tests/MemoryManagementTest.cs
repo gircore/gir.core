@@ -17,7 +17,7 @@ namespace GdkPixbuf.Tests
             {
                 var obj = Pixbuf.NewFromFile("test.bmp");
 
-                GObject.Native.ObjectMapper.ObjectCount.Should().Be(1);
+                GObject.Internal.ObjectMapper.ObjectCount.Should().Be(1);
 
                 if (keepInstance)
                     strongReference = obj;
@@ -29,14 +29,14 @@ namespace GdkPixbuf.Tests
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
-            GObject.Native.ObjectMapper.ObjectCount.Should().Be(0);
+            GObject.Internal.ObjectMapper.ObjectCount.Should().Be(0);
             weakReference.IsAlive.Should().BeFalse();
             strongReference.Should().BeNull();
 
             CreateInstance(keepInstance: true);
             GC.Collect();
             GC.WaitForPendingFinalizers();
-            GObject.Native.ObjectMapper.ObjectCount.Should().Be(1);
+            GObject.Internal.ObjectMapper.ObjectCount.Should().Be(1);
             weakReference.IsAlive.Should().BeTrue();
             strongReference.Should().NotBeNull();
 
@@ -55,9 +55,9 @@ namespace GdkPixbuf.Tests
         public void TestManualGObjectDisposal()
         {
             var obj = Pixbuf.NewFromFile("test.bmp");
-            GObject.Native.ObjectMapper.ObjectCount.Should().Be(1);
+            GObject.Internal.ObjectMapper.ObjectCount.Should().Be(1);
             obj.Dispose();
-            GObject.Native.ObjectMapper.ObjectCount.Should().Be(0);
+            GObject.Internal.ObjectMapper.ObjectCount.Should().Be(0);
         }
     }
 }

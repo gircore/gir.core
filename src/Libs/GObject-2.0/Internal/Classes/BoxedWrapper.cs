@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace GObject.Native
+namespace GObject.Internal
 {
     public class BoxedWrapper
     {

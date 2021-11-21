@@ -7,7 +7,7 @@ namespace Gdk
         public static Screen? GetDefault()
         {
             IntPtr ptr = Native.Screen.Instance.Methods.GetDefault();
-            return GObject.Native.ObjectWrapper.WrapNullableHandle<Screen>(ptr, false);
+            return GObject.Internal.ObjectWrapper.WrapNullableHandle<Screen>(ptr, false);
         }
     }
 }

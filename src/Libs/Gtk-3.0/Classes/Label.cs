@@ -1,4 +1,4 @@
-﻿using GObject.Native;
+﻿using GObject.Internal;
 
 namespace Gtk
 {

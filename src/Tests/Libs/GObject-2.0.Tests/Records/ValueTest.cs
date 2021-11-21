@@ -23,13 +23,13 @@ namespace GObject.Tests
         {
             // Check that we have a value
             var v = Value.From("Hello");
-            Native.Functions.TypeCheckValue(v.Handle).Should().Be(true);
+            Internal.Functions.TypeCheckValue(v.Handle).Should().Be(true);
 
             // Check we can marshal as a struct
-            Native.Value.Struct str = Marshal.PtrToStructure<Native.Value.Struct>(v.Handle.DangerousGetHandle());
-            Native.Functions.TypeCheckValueHolds(v.Handle, str.GType);
-            Native.Functions.TypeCheckValueHolds(v.Handle, (nuint) Native.BasicType.String);
-            str.GType.Should().Be((nuint) Native.BasicType.String);
+            Internal.Value.Struct str = Marshal.PtrToStructure<Internal.Value.Struct>(v.Handle.DangerousGetHandle());
+            Internal.Functions.TypeCheckValueHolds(v.Handle, str.GType);
+            Internal.Functions.TypeCheckValueHolds(v.Handle, (nuint) Internal.BasicType.String);
+            str.GType.Should().Be((nuint) Internal.BasicType.String);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using GLib;
-using GObject.Native;
+using GObject.Internal;
 using Value = GObject.Value;
 
 namespace Gst

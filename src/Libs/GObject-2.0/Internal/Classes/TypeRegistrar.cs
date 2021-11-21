@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace GObject.Native
+namespace GObject.Internal
 {
     /// <summary>
     /// Thrown when type registration with GType fails

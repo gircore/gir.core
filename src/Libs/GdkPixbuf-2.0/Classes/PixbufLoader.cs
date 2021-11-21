@@ -23,7 +23,7 @@ namespace GdkPixbuf
             }
             finally
             {
-                GObject.Native.Object.Instance.Methods.Unref(handle);
+                GObject.Internal.Object.Instance.Methods.Unref(handle);
             }
         }
     }

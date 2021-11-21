@@ -4,7 +4,7 @@ using System.Text;
 using GLib;
 using GLib.Native;
 using GObject;
-using GObject.Native;
+using GObject.Internal;
 
 namespace Gtk
 {

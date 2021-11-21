@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace GObject.Native
+namespace GObject.Internal
 {
     /// <summary>
     /// This exception is thrown when a <see cref="System.Type"/> is not found in

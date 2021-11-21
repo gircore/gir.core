@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using GLib.Native;
-using GObject.Native;
+using GLib.Internal;
+using GObject.Internal;
 
 namespace GObject
 {
@@ -14,8 +14,8 @@ namespace GObject
 
         public Value(Type type)
         {
-            _handle = Native.Value.ManagedHandle.Create();
-            _handle = Native.Value.Methods.Init(_handle, type.Value);
+            _handle = Internal.Value.ManagedHandle.Create();
+            _handle = Internal.Value.Methods.Init(_handle, type.Value);
         }
 
         public Value(Object value) : this(Type.Object) => SetObject(value);
@@ -31,11 +31,11 @@ namespace GObject
 
         #region Methods
 
-        internal Native.Value.Struct GetData() => Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());
+        internal Internal.Value.Struct GetData() => Marshal.PtrToStructure<Internal.Value.Struct>(Handle.DangerousGetHandle());
 
         private nuint GetTypeValue()
         {
-            var structure = Marshal.PtrToStructure<Native.Value.Struct>(Handle.DangerousGetHandle());
+            var structure = Marshal.PtrToStructure<Internal.Value.Struct>(Handle.DangerousGetHandle());
             return structure.GType;
         }
 
@@ -145,18 +145,18 @@ namespace GObject
             if (Functions.TypeIsA(gtype, (nuint) BasicType.Flags))
                 return GetFlags();
 
-            var name = StringHelper.ToStringUtf8(Native.Functions.TypeName(gtype));
+            var name = StringHelper.ToStringUtf8(Internal.Functions.TypeName(gtype));
 
             throw new NotSupportedException($"Unable to extract the value for type '{name}'. The type (id: {gtype}) is unknown.");
         }
 
         public T Extract<T>() => (T) Extract()!;
 
-        public IntPtr GetPtr() => Native.Value.Methods.GetPointer(Handle);
+        public IntPtr GetPtr() => Internal.Value.Methods.GetPointer(Handle);
 
         public object? GetBoxed(nuint type)
         {
-            IntPtr ptr = Native.Value.Methods.GetBoxed(Handle);
+            IntPtr ptr = Internal.Value.Methods.GetBoxed(Handle);
 
             if (type == Functions.StrvGetType())
                 return StringHelper.ToStringArrayUtf8(ptr);
@@ -168,32 +168,32 @@ namespace GObject
             // method which plays nice with AOT compilation.
 
             // TODO: Should this be GetBoxed/TakeBoxed/DupBoxed? 
-            return BoxedWrapper.WrapHandle(Native.Value.Methods.GetBoxed(Handle), new Type(type));
+            return BoxedWrapper.WrapHandle(Internal.Value.Methods.GetBoxed(Handle), new Type(type));
         }
 
         public Object? GetObject()
-            => ObjectWrapper.WrapNullableHandle<Object>(Native.Value.Methods.GetObject(Handle), false);
+            => ObjectWrapper.WrapNullableHandle<Object>(Internal.Value.Methods.GetObject(Handle), false);
 
-        public bool GetBool() => Native.Value.Methods.GetBoolean(Handle);
-        public uint GetUint() => Native.Value.Methods.GetUint(Handle);
-        public int GetInt() => Native.Value.Methods.GetInt(Handle);
-        public long GetLong() => Native.Value.Methods.GetLong(Handle);
-        public double GetDouble() => Native.Value.Methods.GetDouble(Handle);
-        public float GetFloat() => Native.Value.Methods.GetFloat(Handle);
-        public ulong GetFlags() => Native.Value.Methods.GetFlags(Handle);
-        public long GetEnum() => Native.Value.Methods.GetEnum(Handle);
-        public string? GetString() => StringHelper.ToNullableStringUtf8(Native.Value.Methods.GetString(Handle));
+        public bool GetBool() => Internal.Value.Methods.GetBoolean(Handle);
+        public uint GetUint() => Internal.Value.Methods.GetUint(Handle);
+        public int GetInt() => Internal.Value.Methods.GetInt(Handle);
+        public long GetLong() => Internal.Value.Methods.GetLong(Handle);
+        public double GetDouble() => Internal.Value.Methods.GetDouble(Handle);
+        public float GetFloat() => Internal.Value.Methods.GetFloat(Handle);
+        public ulong GetFlags() => Internal.Value.Methods.GetFlags(Handle);
+        public long GetEnum() => Internal.Value.Methods.GetEnum(Handle);
+        public string? GetString() => StringHelper.ToNullableStringUtf8(Internal.Value.Methods.GetString(Handle));
 
-        private void SetBoxed(IntPtr ptr) => Native.Value.Methods.SetBoxed(Handle, ptr);
-        private void SetBoolean(bool b) => Native.Value.Methods.SetBoolean(Handle, b);
-        private void SetUint(uint u) => Native.Value.Methods.SetUint(Handle, u);
-        private void SetInt(int i) => Native.Value.Methods.SetInt(Handle, i);
-        private void SetDouble(double d) => Native.Value.Methods.SetDouble(Handle, d);
-        private void SetFloat(float f) => Native.Value.Methods.SetFloat(Handle, f);
-        private void SetLong(long l) => Native.Value.Methods.SetLong(Handle, l);
-        private void SetEnum(Enum e) => Native.Value.Methods.SetEnum(Handle, Convert.ToInt32(e));
-        private void SetString(string s) => Native.Value.Methods.SetString(Handle, s);
-        private void SetObject(Object o) => Native.Value.Methods.SetObject(Handle, o.Handle);
+        private void SetBoxed(IntPtr ptr) => Internal.Value.Methods.SetBoxed(Handle, ptr);
+        private void SetBoolean(bool b) => Internal.Value.Methods.SetBoolean(Handle, b);
+        private void SetUint(uint u) => Internal.Value.Methods.SetUint(Handle, u);
+        private void SetInt(int i) => Internal.Value.Methods.SetInt(Handle, i);
+        private void SetDouble(double d) => Internal.Value.Methods.SetDouble(Handle, d);
+        private void SetFloat(float f) => Internal.Value.Methods.SetFloat(Handle, f);
+        private void SetLong(long l) => Internal.Value.Methods.SetLong(Handle, l);
+        private void SetEnum(Enum e) => Internal.Value.Methods.SetEnum(Handle, Convert.ToInt32(e));
+        private void SetString(string s) => Internal.Value.Methods.SetString(Handle, s);
+        private void SetObject(Object o) => Internal.Value.Methods.SetObject(Handle, o.Handle);
 
         public void Dispose()
         {
