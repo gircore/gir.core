@@ -21,7 +21,7 @@
         private static string RenderFunction(this Model.Internal.Function function)
             => @$"{function.RenderComment()}
 [DllImport(""{ function.NameSpaceName }"", EntryPoint = ""{ function.CIdentifier }"")]
-public static extern { function.ReturnType.Render() } { function.Name }({ function.Parameters.Render()});";
+public static extern { function.ReturnType.Render() } { function.Name }({ function.Parameters.RenderWithAttributes()});";
 
         private static string RenderComment(this Model.Internal.Function function) =>
 $@"/// <summary>

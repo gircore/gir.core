@@ -12,5 +12,7 @@
         }
 
         protected string GetDefaultNullable() => Model.Nullable ? "?" : "";
+        
+        public bool IsVoid() => NullableTypeName == "void";
     }
 }

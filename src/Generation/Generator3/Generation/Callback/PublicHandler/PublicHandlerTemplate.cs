@@ -1,4 +1,7 @@
-﻿namespace Generator3.Generation.Callback
+﻿using System.Collections.Generic;
+using Generator3.Renderer.Internal;
+
+namespace Generator3.Generation.Callback
 {
     public class PublicHandlerTemplate : Template<PublicHandlerModel>
     {
@@ -28,7 +31,10 @@ namespace { model.NamespaceName }
         public {model.Name}({model.DelegateType} managed)
         {{
             managedCallback = managed;
-            //TODO: NativeCallback = ??
+            NativeCallback = ({model.NativeParameters.Render()}) => {{
+                // TODO: Delegate contents
+                {(!model.InternalReturnType.IsVoid() ? "return default!;" : string.Empty)}
+            }};
         }}
         
         public void Dispose()
