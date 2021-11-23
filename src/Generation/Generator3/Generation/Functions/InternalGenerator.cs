@@ -14,7 +14,7 @@ namespace Generator3.Generation.Functions
             _publisher = publisher;
         }
 
-        public void Generate(IEnumerable<GirModel.Method> functions)
+        public void Generate(IEnumerable<GirModel.Function> functions)
         {
             try
             {

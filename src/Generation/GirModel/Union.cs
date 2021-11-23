@@ -2,6 +2,6 @@
 {
     public interface Union : ComplexType
     {
-        Method? TypeFunction { get; }
+        Function? TypeFunction { get; }
     }
 }

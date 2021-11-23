@@ -7,12 +7,14 @@ namespace GirLoader.Output
         private readonly TypeReferenceFactory _typeReferenceFactory;
         private readonly MethodFactory _methodFactory;
         private readonly PropertyFactory _propertyFactory;
+        private readonly FunctionFactory _functionFactory;
 
-        public InterfaceFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory)
+        public InterfaceFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory, FunctionFactory functionFactory)
         {
             _typeReferenceFactory = typeReferenceFactory;
             _methodFactory = methodFactory;
             _propertyFactory = propertyFactory;
+            _functionFactory = functionFactory;
         }
 
         public Interface Create(Input.Interface @interface, Repository repository)
@@ -36,9 +38,9 @@ namespace GirLoader.Output
                 originalName: new TypeName(@interface.Name),
                 name: new TypeName(@interface.Name),
                 implements: _typeReferenceFactory.Create(@interface.Implements),
-                methods: _methodFactory.Create(@interface.Methods, repository),
-                functions: _methodFactory.Create(@interface.Functions, repository),
-                getTypeFunction: _methodFactory.CreateGetTypeMethod(@interface.GetTypeFunction, repository),
+                methods: _methodFactory.Create(@interface.Methods),
+                functions: _functionFactory.Create(@interface.Functions, repository),
+                getTypeFunction: _functionFactory.CreateGetTypeFunction(@interface.GetTypeFunction, repository),
                 properties: _propertyFactory.Create(@interface.Properties)
             );
         }

@@ -6,8 +6,8 @@ namespace GirLoader.Output
     {
         GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
         string GirModel.ComplexType.Name => Name;
-        GirModel.Method GirModel.Interface.TypeFunction => GetTypeFunction;
-        IEnumerable<GirModel.Method> GirModel.Interface.Functions => Functions;
+        GirModel.Function GirModel.Interface.TypeFunction => GetTypeFunction;
+        IEnumerable<GirModel.Function> GirModel.Interface.Functions => Functions;
         IEnumerable<GirModel.Method> GirModel.Interface.Methods => Methods;
     }
 }

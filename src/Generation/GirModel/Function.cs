@@ -2,12 +2,12 @@
 
 namespace GirModel
 {
-    public interface Method
+    public interface Function
     {
+        public Namespace Namespace { get; }
         public string Name { get; }
         public ReturnType ReturnType { get; }
         public string CIdentifier { get; }
-        public InstanceParameter InstanceParameter { get; }
         public IEnumerable<Parameter> Parameters { get; }
     }
 }

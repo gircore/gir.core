@@ -7,17 +7,17 @@ namespace GirLoader.Output
     public partial class Interface : ComplexType
     {
         private readonly List<Method> _methods;
-        private readonly List<Method> _functions;
+        private readonly List<Function> _functions;
         private readonly List<Property> _properties;
 
-        public Method GetTypeFunction { get; }
+        public Function GetTypeFunction { get; }
         public IEnumerable<TypeReference> Implements { get; }
 
         public IEnumerable<Method> Methods => _methods;
-        public IEnumerable<Method> Functions => _functions;
+        public IEnumerable<Function> Functions => _functions;
         public IEnumerable<Property> Properties => _properties;
 
-        public Interface(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties) : base(repository, cType, name, originalName)
+        public Interface(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties) : base(repository, cType, name, originalName)
         {
             Implements = implements;
             this._methods = methods.ToList();

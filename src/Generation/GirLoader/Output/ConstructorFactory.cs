@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace GirLoader.Output
 {
-    internal class MethodFactory
+    internal class ConstructorFactory
     {
         private readonly ReturnValueFactory _returnValueFactory;
         private readonly ParameterListFactory _parameterListFactory;
 
-        public MethodFactory(ReturnValueFactory returnValueFactory, ParameterListFactory parameterListFactory)
+        public ConstructorFactory(ReturnValueFactory returnValueFactory, ParameterListFactory parameterListFactory)
         {
             _returnValueFactory = returnValueFactory;
             _parameterListFactory = parameterListFactory;
         }
 
-        public Method Create(Input.Method method)
+        public Constructor Create(Input.Method method)
         {
             if (method.Name is null)
                 throw new Exception("Methodinfo name is null");
@@ -27,7 +27,7 @@ namespace GirLoader.Output
 
             if (method.Name != string.Empty)
             {
-                return new Method(
+                return new Constructor(
                     originalName: new SymbolName(method.Identifier),
                     symbolName: new SymbolName(new Helper.String(method.Name).ToPascalCase().EscapeIdentifier()),
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
@@ -36,15 +36,15 @@ namespace GirLoader.Output
             }
 
             if (!string.IsNullOrEmpty(method.MovedTo))
-                throw new MethodMovedException(method, $"Method {method.Identifier} moved to {method.MovedTo}.");
+                throw new ConstructorMovedException(method, $"Constructor {method.Identifier} moved to {method.MovedTo}.");
 
             throw new Exception($"{nameof(Input.Method)} {method.Identifier} has no {nameof(method.Name)} and did not move.");
 
         }
 
-        public IEnumerable<Method> Create(IEnumerable<Input.Method> methods)
+        public IEnumerable<Constructor> Create(IEnumerable<Input.Method> methods)
         {
-            var list = new List<Method>();
+            var list = new List<Constructor>();
 
             foreach (var method in methods)
             {
@@ -54,22 +54,22 @@ namespace GirLoader.Output
                 }
                 catch (SingleParameterFactory.VarArgsNotSupportedException ex)
                 {
-                    Log.Verbose($"Method {method.Name} could not be created: {ex.Message}");
+                    Log.Verbose($"Constructor {method.Name} could not be created: {ex.Message}");
                 }
-                catch (MethodMovedException ex)
+                catch (ConstructorMovedException ex)
                 {
-                    Log.Verbose($"Method ignored: {ex.Message}");
+                    Log.Verbose($"Constructor ignored: {ex.Message}");
                 }
             }
 
             return list;
         }
 
-        public class MethodMovedException : Exception
+        public class ConstructorMovedException : Exception
         {
             public Input.Method Method { get; }
 
-            public MethodMovedException(Input.Method method, string message) : base(message)
+            public ConstructorMovedException(Input.Method method, string message) : base(message)
             {
                 Method = method;
             }

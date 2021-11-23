@@ -13,11 +13,11 @@ namespace GirLoader.Output
         private readonly BitfieldFactory _bitfieldFactory;
         private readonly InterfaceFactory _interfaceFactory;
         private readonly RecordFactory _recordFactory;
-        private readonly MethodFactory _methodFactory;
+        private readonly FunctionFactory _functionFactory;
         private readonly ConstantFactory _constantFactory;
         private readonly UnionFactory _unionFactory;
 
-        public NamespaceFactory(ClassFactory classFactory, AliasFactory aliasFactory, CallbackFactory callbackFactory, EnumerationFactory enumerationFactory, BitfieldFactory bitfieldFactory, InterfaceFactory interfaceFactory, RecordFactory recordFactory, MethodFactory methodFactory, ConstantFactory constantFactory, UnionFactory unionFactory)
+        public NamespaceFactory(ClassFactory classFactory, AliasFactory aliasFactory, CallbackFactory callbackFactory, EnumerationFactory enumerationFactory, BitfieldFactory bitfieldFactory, InterfaceFactory interfaceFactory, RecordFactory recordFactory, FunctionFactory functionFactory, ConstantFactory constantFactory, UnionFactory unionFactory)
         {
             _classFactory = classFactory;
             _aliasFactory = aliasFactory;
@@ -26,7 +26,7 @@ namespace GirLoader.Output
             _bitfieldFactory = bitfieldFactory;
             _interfaceFactory = interfaceFactory;
             _recordFactory = recordFactory;
-            _methodFactory = methodFactory;
+            _functionFactory = functionFactory;
             _constantFactory = constantFactory;
             _unionFactory = unionFactory;
         }
@@ -65,20 +65,20 @@ namespace GirLoader.Output
             return nspace;
         }
 
-        private IEnumerable<Method> GetValidFunctions(IEnumerable<Input.Method> functions, Repository repository)
+        private IEnumerable<Function> GetValidFunctions(IEnumerable<Input.Method> functions, Repository repository)
         {
-            var list = new List<Method>();
+            var list = new List<Function>();
             foreach (var function in functions)
             {
                 try
                 {
-                    list.Add(_methodFactory.Create(function, repository));
+                    list.Add(_functionFactory.Create(function, repository));
                 }
                 catch (SingleParameterFactory.VarArgsNotSupportedException ex)
                 {
                     Log.Verbose($"Function {function.Name} could not be created: {ex.Message}");
                 }
-                catch (MethodFactory.MethodMovedException ex)
+                catch (FunctionFactory.FunctionMovedException ex)
                 {
                     Log.Verbose($"Function ignored: {ex.Message}");
                 }

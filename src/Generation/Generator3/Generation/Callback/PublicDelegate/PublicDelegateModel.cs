@@ -14,7 +14,8 @@ namespace Generator3.Generation.Callback
         public string NamespaceName => _callback.Namespace.Name;
 
         public ReturnType ReturnType => _returnType ??= _callback.ReturnType.CreatePublicModel();
-        public IEnumerable<Parameter> Parameters => _parameters ??= _callback.Parameters.CreatePublicModels();
+        public IEnumerable<Parameter> Parameters 
+            => _parameters ??= _callback.Parameters.ExceptClosures().CreatePublicModels();
         
         public PublicDelegateModel(GirModel.Callback callback)
         {

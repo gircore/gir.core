@@ -3,12 +3,12 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public partial class Method : Symbol
+    public partial class Constructor : Symbol
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
 
-        public Method(SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(originalName, symbolName)
+        public Constructor(SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(originalName, symbolName)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;

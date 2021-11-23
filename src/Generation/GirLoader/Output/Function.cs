@@ -3,13 +3,15 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public partial class Method : Symbol
+    public partial class Function : Symbol
     {
+        private readonly Repository _repository;
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
 
-        public Method(SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(originalName, symbolName)
+        public Function(Repository repository, SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(originalName, symbolName)
         {
+            _repository = repository;
             ReturnValue = returnValue;
             ParameterList = parameterList;
         }

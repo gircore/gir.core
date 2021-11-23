@@ -6,7 +6,7 @@ namespace Generator3
 {
     public static class Functions
     {
-        public static void Generate(this IEnumerable<GirModel.Method> functions)
+        public static void Generate(this IEnumerable<GirModel.Function> functions)
         {
             var generator = new InternalGenerator(
                 template: new InternalTemplate(),

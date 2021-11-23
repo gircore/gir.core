@@ -18,6 +18,8 @@ namespace GirLoader.Helper
     [Register(typeof(Output.InterfaceFactory))]
     [Register(typeof(Output.RecordFactory))]
     [Register(typeof(Output.MethodFactory))]
+    [Register(typeof(Output.ConstructorFactory))]
+    [Register(typeof(Output.FunctionFactory))]
     [Register(typeof(Output.TransferFactory))]
     [Register(typeof(Output.MemberFactory))]
     [Register(typeof(Output.PropertyFactory))]

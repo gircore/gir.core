@@ -7,7 +7,7 @@
             return constructor is null 
                 ? "" 
                 : @$"{constructor.RenderComment()}
-[DllImport(""{ constructor.NameSpaceName }"", EntryPoint = ""{ constructor.CIdentifier }"")]
+[DllImport(""{ constructor.NamespaceName }"", EntryPoint = ""{ constructor.CIdentifier }"")]
 public static extern { constructor.ReturnType.Render() } { constructor.Name }({ constructor.Parameters.Render()});";
         }
 

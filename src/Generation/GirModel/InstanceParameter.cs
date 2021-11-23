@@ -1,13 +1,12 @@
 ﻿namespace GirModel
 {
-    public interface Parameter
+    public interface InstanceParameter
     {
         string Name { get; }
         Direction Direction { get; }
         Transfer Transfer { get; }
         bool Nullable { get; }
         bool CallerAllocates { get; }
-        int? Closure { get; }
-        AnyTypeReference AnyTypeReference { get; }
+        Type Type { get; }
     }
 }

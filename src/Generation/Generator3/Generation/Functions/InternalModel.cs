@@ -6,12 +6,12 @@ namespace Generator3.Generation.Functions
 {
     public class InternalModel
     {
-        public IEnumerable<GirModel.Method> Functions { get; }
+        public IEnumerable<GirModel.Function> Functions { get; }
 
         public string NamespaceName => Functions.First().Namespace.GetInternalName();
         public IEnumerable<Function> InternalFunctions { get; }
 
-        public InternalModel(IEnumerable<GirModel.Method> functions)
+        public InternalModel(IEnumerable<GirModel.Function> functions)
         {
             Functions = functions;
 
