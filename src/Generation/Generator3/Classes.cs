@@ -56,10 +56,16 @@ namespace Generator3
                 template: new Standard.PublicMethodsTemplate(),
                 publisher: new PublicClassFilePublisher()
             );
+
+            var standardPublicFrameworkGenerator = new Standard.PublicFrameworkGenerator(
+                template: new Standard.PublicFrameworkTemplate(),
+                publisher: new PublicClassFilePublisher()
+            );
             
             standardInternalMethodsGenerator.Generate(@class);
             standardInternalStructGenerator.Generate(@class);
             standardPublicClassMethodsGenerator.Generate(@class);
+            standardPublicFrameworkGenerator.Generate(@class);
         }
     }
 }
