@@ -24,8 +24,8 @@ namespace Generator3.Model.Internal
 
                 GirModel.PrimitiveValueType => new StandardParameter(parameter),
                 GirModel.Callback => new CallbackParameter(parameter),
-                GirModel.Enumeration => new StandardParameter(parameter),
-                GirModel.Bitfield => new StandardParameter(parameter),
+                GirModel.Enumeration => new EnumerationParameter(parameter),
+                GirModel.Bitfield => new BitfieldParameter(parameter),
                 GirModel.Void => new VoidParameter(parameter),
 
                 _ => throw new Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyTypeReference.AnyType} can not be converted into a model")
@@ -33,6 +33,7 @@ namespace Generator3.Model.Internal
             arrayType => arrayType.AnyTypeReference.AnyType.Match<Parameter>(
                 type => type switch
                 {
+                    GirModel.Class => new ArrayClassParameter(parameter),
                     GirModel.Record when arrayType.AnyTypeReference.IsPointer => new ArrayPointerRecordParameter(parameter),
                     GirModel.Record => new ArrayRecordParameter(parameter),
                     GirModel.String => new ArrayStringParameter(parameter),

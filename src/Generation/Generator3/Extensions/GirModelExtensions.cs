@@ -20,7 +20,7 @@ internal static class GirModelExtension
     
     public static string GetFullyQualifiedInternalStruct(this GirModel.Record record)
         => record.Namespace.GetInternalName() + "." + record.GetName() + ".Struct";
-    
+
     public static string GetFullyQualifiedInternalStruct(this GirModel.Union union)
         => union.Namespace.GetInternalName() + "." + union.GetName() + ".Struct";
 }
