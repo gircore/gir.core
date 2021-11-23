@@ -16,7 +16,7 @@ namespace Gio
 
         public static DBusConnection Get(BusType busType)
         {
-            var handle = Native.Functions.BusGetSync(busType, IntPtr.Zero, out var error);
+            var handle = Internal.Functions.BusGetSync(busType, IntPtr.Zero, out var error);
             Error.ThrowOnError(error);
 
             return GObject.Internal.ObjectWrapper.WrapHandle<DBusConnection>(handle, true);
@@ -34,7 +34,7 @@ namespace Gio
             void Callback(GObject.Object sourceObject, AsyncResult res)
             {
                 // TODO: Make sure this is correct (can we assume res is a GObject?)
-                var ret = Native.DBusConnection.Instance.Methods.CallFinish(sourceObject.Handle, (res as GObject.Object).Handle, out var error);
+                var ret = Internal.DBusConnection.Instance.Methods.CallFinish(sourceObject.Handle, (res as GObject.Object).Handle, out var error);
                 Error.ThrowOnError(error);
 
                 tcs.SetResult(new Variant(ret));
@@ -43,15 +43,15 @@ namespace Gio
             //TODO: Use on time CallbackHandler
             _callAsyncCallbackHandler = new AsyncReadyCallbackAsyncHandler(Callback);
 
-            Native.DBusConnection.Instance.Methods.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Native.VariantType.Handle.Null, DBusCallFlags.None, -1, IntPtr.Zero, _callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
+            Internal.DBusConnection.Instance.Methods.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Internal.VariantType.Handle.Null, DBusCallFlags.None, -1, IntPtr.Zero, _callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
 
             return tcs.Task;
         }
 
         public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
         {
-            var parameterHandle = parameters?.Handle ?? GLib.Native.Variant.Handle.Null;
-            var ret = Native.DBusConnection.Instance.Methods.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameterHandle, GLib.Native.VariantType.Handle.Null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
+            var parameterHandle = parameters?.Handle ?? GLib.Internal.Variant.Handle.Null;
+            var ret = Internal.DBusConnection.Instance.Methods.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameterHandle, GLib.Internal.VariantType.Handle.Null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
 
             Error.ThrowOnError(error);
 
