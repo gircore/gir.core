@@ -6,12 +6,9 @@ namespace Generator3
     {
         public static void Generate(this GirModel.Namespace @namespace)
         {
-            if (@namespace.SharedLibrary is null)
-                throw new Exception($"Shared library is not set for project {@namespace.GetCanonicalName()}");
-            
             try
             {
-                Framework.Generate(@namespace.GetCanonicalName(), @namespace.SharedLibrary, @namespace.Name);
+                @namespace.GenerateFramework();
 
                 @namespace.Enumerations.Generate();
                 @namespace.Bitfields.Generate();
