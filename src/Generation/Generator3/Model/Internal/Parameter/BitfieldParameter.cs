@@ -7,7 +7,7 @@
         {
             true => TypeMapping.Pointer,
             //Internal does not define any bitfields. They are part of the Public API to avoid converting between them.
-            false => Type.Namespace.Name + "." + Type.GetName()
+            false => Type.GetFullyQualified()
         };
 
         public override string Direction => Model.GetDirection(

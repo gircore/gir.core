@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Generator3.Model.Internal;
 
 namespace Generator3.Model.Public
 {
@@ -17,7 +19,14 @@ namespace Generator3.Model.Public
                 GirModel.Void => new VoidParameter(parameter),
                 _ => new StandardParameter(parameter) //TODO: Remove Standard Parameter
             },
-            _ => new StandardParameter(parameter) //TODO: Remove Standard Parameter
+            arraytype => arraytype.AnyTypeReference.AnyType.Match<Parameter>(
+                type => type switch
+                {
+                    GirModel.Record => new ArrayRecordParameter(parameter),
+                    _ => new StandardParameter(parameter)
+                },
+                _ => throw new NotSupportedException("Arrays of arrays not yet supported")
+            )
         );
     }
 }
