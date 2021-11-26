@@ -25,6 +25,15 @@ internal static class GirModelExtension
 
     public static string GetFullyQualifiedInternalHandle(this GirModel.Record record)
         => record.Namespace.GetInternalName() + "." + record.GetName() + ".Handle";
+
+    public static bool IsUnref(this GirModel.Method method) => method.Name == "Unref";
+    public static bool IsFree(this GirModel.Method method) => method.Name == "Free";
+    
+    
+    public static GirModel.Method? GetFreeOrUnrefMethod(this IEnumerable<GirModel.Method> functions)
+        //Unref functions takes precedense over free function
+        => functions.FirstOrDefault(function => function.IsUnref()) 
+           ?? functions.FirstOrDefault(function => function.IsFree());
     
     public static string GetFullyQualifiedInternalStruct(this GirModel.Union union)
         => union.Namespace.GetInternalName() + "." + union.GetName() + ".Struct";
