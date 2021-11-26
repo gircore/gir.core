@@ -14,6 +14,7 @@ namespace Generator3.Model.Public
                 GirModel.Class => new ClassParameter(parameter),
                 GirModel.Bitfield => new BitfieldParameter(parameter),
                 GirModel.Record => new RecordParameter(parameter),
+                GirModel.Void => new VoidParameter(parameter),
                 _ => new StandardParameter(parameter) //TODO: Remove Standard Parameter
             },
             _ => new StandardParameter(parameter) //TODO: Remove Standard Parameter
