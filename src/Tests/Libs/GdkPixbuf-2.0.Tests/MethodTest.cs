@@ -4,10 +4,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GdkPixbuf.Tests
 {
     [TestClass, TestCategory("IntegrationTest")]
-    public class PropertyTests
+    public class MethodTest
     {
         [TestMethod]
-        public void ReadPropertyTest()
+        public void GetMethodTest()
         {
             var pixbuf = Pixbuf.NewFromFile("test.bmp");
             pixbuf.GetWidth().Should().Be(500);
