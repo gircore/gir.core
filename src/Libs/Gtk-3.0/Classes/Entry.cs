@@ -3,6 +3,6 @@
     public partial class Entry
     {
         public static Entry New()
-            => new Entry(Native.Entry.Instance.Methods.New(), false);
+            => new Entry(Internal.Entry.Instance.Methods.New(), false);
     }
 }

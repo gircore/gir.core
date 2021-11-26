@@ -9,6 +9,8 @@
         public virtual string Direction => string.Empty;
         public virtual string Attribute => string.Empty;
 
+        public bool IsCallback => Model.AnyTypeReference.AnyType.TryPickT0(out var type, out _) && type is GirModel.Callback;
+        
         protected internal Parameter(GirModel.Parameter parameter)
         {
             Model = parameter;

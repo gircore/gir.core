@@ -12,7 +12,7 @@ namespace cairo
             // We override the normal DllImporter generated for us
             // as we need to take into account cairo being spread
             // across multiple shared libraries.
-            Native.DllImportOverride.Initialize();
+            Internal.DllImportOverride.Initialize();
             RegisterTypes();
         }
 

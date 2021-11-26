@@ -34,6 +34,7 @@ namespace Generator3.Model.Internal
                     GirModel.Record when arrayType.AnyTypeReference.IsPointer => new ArrayPointerRecordParameter(parameter),
                     GirModel.Record => new ArrayRecordParameter(parameter),
                     GirModel.String => new ArrayStringParameter(parameter),
+                    GirModel.Enumeration => new ArrayEnumerationParameter(parameter),
                     _ => new StandardParameter(parameter)
                 },
                 _ => throw new NotSupportedException("Arrays of arrays not yet supported")

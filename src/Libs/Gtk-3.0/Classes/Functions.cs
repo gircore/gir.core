@@ -5,11 +5,11 @@
         public static void Init()
         {
             var argc = 0;
-            Native.Functions.Init(ref argc, new string[0]);
+            Internal.Functions.Init(ref argc, new string[0]);
         }
 
-        public static void Main() => Native.Functions.Main();
+        public static void Main() => Internal.Functions.Main();
 
-        public static void MainQuit() => Native.Functions.MainQuit();
+        public static void MainQuit() => Internal.Functions.MainQuit();
     }
 }

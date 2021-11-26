@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 #nullable enable
 
-namespace cairo.Native
+namespace cairo.Internal
 {
     // Manual override of the DllImport class so we can handle
     // cairo being in multiple shared libraries/dlls. See the

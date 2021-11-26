@@ -9,5 +9,6 @@
         bool CallerAllocates { get; }
         int? Closure { get; }
         AnyTypeReference AnyTypeReference { get; }
+        Scope Scope { get; }
     }
 }

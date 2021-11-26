@@ -18,10 +18,16 @@ namespace Generator3
                 publisher: new PublicInterfaceFilePublisher()
             );
 
+            var publicFrameworkGenerator = new PublicFrameworkGenerator(
+                template: new PublicFrameworkTemplate(),
+                publisher: new PublicInterfaceFilePublisher()
+            );
+            
             foreach (var record in interfaces)
             {
                 internalMethodsGenerator.Generate(record);
                 publicMethodsGenerator.Generate(record);
+                publicFrameworkGenerator.Generate(record);
             }
         }
     }

@@ -4,8 +4,7 @@
     {
         private GirModel.Bitfield Type => (GirModel.Bitfield) Model.AnyType.AsT0;
 
-        //Internal does not define any bitfields. They are part of the Public API to avoid converting between them.
-        public override string NullableTypeName => Type.Namespace.Name + "." + Type.GetName();
+        public override string NullableTypeName => Type.GetFullyQualified();
 
         protected internal BitfieldReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {

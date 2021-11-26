@@ -2,7 +2,7 @@
 
 namespace Generator3.Model.Internal
 {
-    public class ArrayField : Field
+    public class ArrayStandardField : Field
     {
         private ArrayType ArrayType => _field.AnyTypeOrCallback.AsT0.AsT1;
 
@@ -12,7 +12,7 @@ namespace Generator3.Model.Internal
 
         public override string NullableTypeName => ArrayType.GetName();
 
-        public ArrayField(GirModel.Field field) : base(field)
+        public ArrayStandardField(GirModel.Field field) : base(field)
         {
         }
     }

@@ -9,7 +9,9 @@
                 GirModel.Enumeration => new EnumerationReturnType(returnValue),
                 GirModel.String => new StringReturnType(returnValue),
                 GirModel.Record => new RecordReturnType(returnValue),
+                GirModel.Union => new UnionReturnType(returnValue),
                 GirModel.Class => new ClassReturnType(returnValue),
+                GirModel.Interface => new InterfaceReturnType(returnValue),
                 GirModel.Pointer => new PointerReturnType(returnValue),
                 _ => new StandardReturnType(returnValue)
             },
