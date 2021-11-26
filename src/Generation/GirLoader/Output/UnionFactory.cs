@@ -6,11 +6,15 @@ namespace GirLoader.Output
     {
         private readonly MethodFactory _methodFactory;
         private readonly FieldFactory _fieldFactory;
+        private readonly ConstructorFactory _constructorFactory;
+        private readonly FunctionFactory _functionFactory;
 
-        public UnionFactory(MethodFactory methodFactory, FieldFactory fieldFactory)
+        public UnionFactory(MethodFactory methodFactory, FieldFactory fieldFactory, ConstructorFactory constructorFactory, FunctionFactory functionFactory)
         {
             _methodFactory = methodFactory;
             _fieldFactory = fieldFactory;
+            _constructorFactory = constructorFactory;
+            _functionFactory = functionFactory;
         }
 
         public Union Create(Input.Union union, Repository repository)
@@ -18,9 +22,9 @@ namespace GirLoader.Output
             if (union.Name is null)
                 throw new Exception("Union is missing a name");
 
-            Method? getTypeFunction = union.GetTypeFunction switch
+            Function? getTypeFunction = union.GetTypeFunction switch
             {
-                { } f => _methodFactory.CreateGetTypeMethod(f, repository),
+                { } f => _functionFactory.CreateGetTypeFunction(f, repository),
                 _ => null
             };
 
@@ -33,12 +37,12 @@ namespace GirLoader.Output
                 cType: cTypeName,
                 originalName: new TypeName(union.Name),
                 name: new TypeName(union.Name),
-                methods: _methodFactory.Create(union.Methods, repository),
-                functions: _methodFactory.Create(union.Functions, repository),
+                methods: _methodFactory.Create(union.Methods),
+                functions: _functionFactory.Create(union.Functions, repository),
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(union.Fields, repository),
                 disguised: union.Disguised,
-                constructors: _methodFactory.Create(union.Constructors, repository)
+                constructors: _constructorFactory.Create(union.Constructors)
             );
         }
     }

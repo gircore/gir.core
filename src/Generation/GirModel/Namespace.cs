@@ -13,7 +13,7 @@ namespace GirModel
         IEnumerable<Record> Records { get; }
         IEnumerable<Union> Unions { get; }
         IEnumerable<Callback> Callbacks { get; }
-        IEnumerable<Method> Functions { get; }
+        IEnumerable<Function> Functions { get; }
         IEnumerable<Constant> Constants { get; }
         IEnumerable<Interface> Interfaces { get; }
         IEnumerable<Class> Classes { get; }

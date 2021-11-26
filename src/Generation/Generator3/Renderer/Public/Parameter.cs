@@ -2,7 +2,7 @@
 {
     public static class Parameter
     {
-        public static string Render(this Model.Public.StandardParameter parameter)
+        public static string Render(this Model.Public.Parameter parameter)
             => $@"{parameter.Direction}{parameter.NullableTypeName} {parameter.Name}";
     }
 }

@@ -5,7 +5,7 @@ namespace Generator3.Renderer.Public
 {
     public static class Parameters
     {
-        public static string Render(this IEnumerable<Model.Public.StandardParameter> parameters)
+        public static string Render(this IEnumerable<Model.Public.Parameter> parameters)
         {
             return parameters
                 .Select(parameter => parameter.Render())

@@ -14,7 +14,7 @@ namespace GirLoader.Output
         private IEnumerable<Bitfield>? _bitfields;
         private IEnumerable<Interface>? _interfaces;
         private IEnumerable<Record>? _records;
-        private IEnumerable<Method>? _functions;
+        private IEnumerable<Function>? _functions;
         private IEnumerable<Union>? _unions;
         private IEnumerable<Constant>? _constants;
         #endregion
@@ -71,9 +71,9 @@ namespace GirLoader.Output
             init => _records = value;
         }
 
-        public IEnumerable<Method> Functions
+        public IEnumerable<Function> Functions
         {
-            get => _functions ??= Enumerable.Empty<Method>();
+            get => _functions ??= Enumerable.Empty<Function>();
             init => _functions = value;
         }
 
@@ -123,53 +123,6 @@ namespace GirLoader.Output
         }
 
         public string ToCanonicalName() => $"{Name}-{Version}";
-
-        internal void Strip()
-        {
-            Classes.Strip();
-            Interfaces.Strip();
-
-            _aliases = _aliases.ToList().Where(IsResolved);
-            _callbacks = _callbacks.ToList().Where(IsResolved);
-            _classes = _classes.ToList().Where(IsResolved);
-            _enumerations = _enumerations.ToList().Where(IsResolved);
-            _bitfields = _bitfields.ToList().Where(IsResolved);
-            _interfaces = _interfaces.ToList().Where(IsResolved);
-            _records = _records.ToList().Where(IsResolved);
-            _functions = _functions.ToList().Where(IsResolved);
-            _unions = _unions.ToList().Where(IsResolved);
-            _constants = _constants.ToList().Where(IsResolved);
-        }
-
-        private bool IsResolved(Alias alias)
-        {
-            var isResolved = alias.GetIsResolved();
-
-            if (!isResolved)
-                Log.Information($"{nameof(Alias)} {alias.Name}: Removed because parts of it could not be completely resolvled");
-
-            return isResolved;
-        }
-
-        private bool IsResolved(Symbol symbol)
-        {
-            var isResolved = symbol.GetIsResolved();
-
-            if (!isResolved)
-                Log.Information($"{symbol.GetType().Name} {symbol.OriginalName}: Removed because parts of it could not be completely resolvled");
-
-            return isResolved;
-        }
-
-        private bool IsResolved(ComplexType type)
-        {
-            var isResolved = type.GetIsResolved();
-
-            if (!isResolved)
-                Log.Information($"{type.GetType().Name} {type.Repository.Namespace.Name}.{type.Name}: Removed because parts of it could not be completely resolvled");
-
-            return isResolved;
-        }
 
         public override string ToString()
             => Name;

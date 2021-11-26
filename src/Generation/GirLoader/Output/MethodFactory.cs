@@ -14,7 +14,7 @@ namespace GirLoader.Output
             _parameterListFactory = parameterListFactory;
         }
 
-        public Method Create(Input.Method method, Repository repository)
+        public Method Create(Input.Method method)
         {
             if (method.Name is null)
                 throw new Exception("Methodinfo name is null");
@@ -28,7 +28,6 @@ namespace GirLoader.Output
             if (method.Name != string.Empty)
             {
                 return new Method(
-                    repository: repository,
                     originalName: new SymbolName(method.Identifier),
                     symbolName: new SymbolName(new Helper.String(method.Name).ToPascalCase().EscapeIdentifier()),
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
@@ -43,24 +42,7 @@ namespace GirLoader.Output
 
         }
 
-        public Method CreateGetTypeMethod(string getTypeMethodName, Repository repository)
-        {
-            ReturnValue returnValue = _returnValueFactory.Create(
-                ctype: "gsize",
-                transfer: Transfer.None,
-                nullable: false
-            );
-
-            return new Method(
-                repository: repository,
-                originalName: new SymbolName(getTypeMethodName),
-                symbolName: new SymbolName("GetGType"),
-                returnValue: returnValue,
-                parameterList: new ParameterList()
-            );
-        }
-
-        public IEnumerable<Method> Create(IEnumerable<Input.Method> methods, Repository repository)
+        public IEnumerable<Method> Create(IEnumerable<Input.Method> methods)
         {
             var list = new List<Method>();
 
@@ -68,7 +50,7 @@ namespace GirLoader.Output
             {
                 try
                 {
-                    list.Add(Create(method, repository));
+                    list.Add(Create(method));
                 }
                 catch (SingleParameterFactory.VarArgsNotSupportedException ex)
                 {

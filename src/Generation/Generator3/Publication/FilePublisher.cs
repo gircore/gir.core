@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Generator3.Generation;
 
@@ -18,7 +19,12 @@ namespace Generator3.Publication
             allFolders.Add(GetFileName(codeUnit));
 
             var path = Path.Combine(allFolders.ToArray());
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            var directoryName = Path.GetDirectoryName(path);
+
+            if (directoryName is null)
+                throw new Exception("Can not get directory for path: " + path);
+            
+            Directory.CreateDirectory(directoryName);
             File.WriteAllText(path, codeUnit.Source);
         }
     }

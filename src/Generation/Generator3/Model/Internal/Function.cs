@@ -7,7 +7,7 @@ namespace Generator3.Model.Internal
         private IEnumerable<Parameter>? _parameters;
         private ReturnType? _returnType;
 
-        public GirModel.Method Model { get; }
+        public GirModel.Function Model { get; }
 
         public string Name => Model.Name;
         public ReturnType ReturnType => _returnType ??= Model.ReturnType.CreateInternalModel();
@@ -16,7 +16,7 @@ namespace Generator3.Model.Internal
 
         public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateInternalModels();
 
-        public Function(GirModel.Method function)
+        public Function(GirModel.Function function)
         {
             Model = function;
         }

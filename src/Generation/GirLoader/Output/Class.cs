@@ -7,23 +7,23 @@ namespace GirLoader.Output
     public partial class Class : ComplexType
     {
         private readonly List<Method> _methods;
-        private readonly List<Method> _functions;
-        private readonly List<Method> _constructors;
+        private readonly List<Function> _functions;
+        private readonly List<Constructor> _constructors;
         private readonly List<Property> _properties;
         private readonly List<Field> _fields;
         private readonly List<Signal> _signals;
         public bool IsFundamental { get; }
-        public Method GetTypeFunction { get; }
+        public Function GetTypeFunction { get; }
         public IEnumerable<TypeReference> Implements { get; }
         public IEnumerable<Method> Methods => _methods;
-        public IEnumerable<Method> Functions => _functions;
+        public IEnumerable<Function> Functions => _functions;
         public TypeReference? Parent { get; }
         public IEnumerable<Property> Properties => _properties;
         public IEnumerable<Field> Fields => _fields;
         public IEnumerable<Signal> Signals => _signals;
-        public IEnumerable<Method> Constructors => _constructors;
+        public IEnumerable<Constructor> Constructors => _constructors;
 
-        public Class(Repository repository, CType? cType, TypeName originalName, TypeName name, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Method> functions, Method getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Method> constructors, bool isFundamental) : base(repository, cType, name, originalName)
+        public Class(Repository repository, CType? cType, TypeName originalName, TypeName name, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental) : base(repository, cType, name, originalName)
         {
             Parent = parent;
             Implements = implements;

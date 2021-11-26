@@ -6,10 +6,10 @@ namespace GirLoader.Output
     {
         GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
         string GirModel.ComplexType.Name => Name;
-        GirModel.Method? GirModel.Record.TypeFunction => GetTypeFunction;
-        IEnumerable<GirModel.Method> GirModel.Record.Functions => Functions;
+        GirModel.Function? GirModel.Record.TypeFunction => GetTypeFunction;
+        IEnumerable<GirModel.Function> GirModel.Record.Functions => Functions;
         IEnumerable<GirModel.Method> GirModel.Record.Methods => Methods;
-        IEnumerable<GirModel.Method> GirModel.Record.Constructors => Constructors;
+        IEnumerable<GirModel.Constructor> GirModel.Record.Constructors => Constructors;
         IEnumerable<GirModel.Field> GirModel.Record.Fields => Fields;
     }
 }

@@ -4,7 +4,7 @@
     {
         public static string Render(this Model.Internal.Field field)
         {
-            return @$"{field.Attribute.Render()}public {field.NullableTypeName} {field.Name};";
+            return @$"{field.Attribute} public {field.NullableTypeName} {field.Name};";
         }
     }
 }

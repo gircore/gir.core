@@ -31,8 +31,14 @@ namespace { model.NamespaceName }
         public {model.Name}({model.DelegateType} managed)
         {{
             managedCallback = managed;
-            NativeCallback = ({model.NativeParameters.Render()}) => {{
-                // TODO: Delegate contents
+            NativeCallback = ({model.InternalParameters.Render()}) => {{
+                // Convert from native to managed
+                
+
+                // Call managedCallback
+
+                // Return convert managed to native
+                // TODO: Return Value
                 {(!model.InternalReturnType.IsVoid() ? "return default!;" : string.Empty)}
             }};
         }}

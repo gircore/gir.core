@@ -1,4 +1,6 @@
-﻿using Generator3.Model;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Generator3.Model;
 
 internal static class GirModelExtension
 {
@@ -20,7 +22,17 @@ internal static class GirModelExtension
     
     public static string GetFullyQualifiedInternalStruct(this GirModel.Record record)
         => record.Namespace.GetInternalName() + "." + record.GetName() + ".Struct";
+
+    public static string GetFullyQualifiedInternalHandle(this GirModel.Record record)
+        => record.Namespace.GetInternalName() + "." + record.GetName() + ".Handle";
     
     public static string GetFullyQualifiedInternalStruct(this GirModel.Union union)
         => union.Namespace.GetInternalName() + "." + union.GetName() + ".Struct";
+
+    public static IEnumerable<GirModel.Parameter> ExceptClosures(this IEnumerable<GirModel.Parameter> parameters)
+    {
+        return parameters
+            .Where(p => p.Closure is null or 0)
+            .ToList();
+    }
 }

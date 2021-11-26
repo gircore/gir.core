@@ -13,7 +13,7 @@ namespace GirLoader.Output
         IEnumerable<GirModel.Record> GirModel.Namespace.Records => Records;
         IEnumerable<GirModel.Union> GirModel.Namespace.Unions => Unions;
         IEnumerable<GirModel.Callback> GirModel.Namespace.Callbacks => Callbacks;
-        IEnumerable<GirModel.Method> GirModel.Namespace.Functions => Functions;
+        IEnumerable<GirModel.Function> GirModel.Namespace.Functions => Functions;
         IEnumerable<GirModel.Constant> GirModel.Namespace.Constants => Constants;
         IEnumerable<GirModel.Interface> GirModel.Namespace.Interfaces => Interfaces;
         IEnumerable<GirModel.Class> GirModel.Namespace.Classes => Classes;

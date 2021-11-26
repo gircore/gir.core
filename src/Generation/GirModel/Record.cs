@@ -4,10 +4,10 @@ namespace GirModel
 {
     public interface Record : ComplexType
     {
-        Method? TypeFunction { get; }
-        IEnumerable<Method> Functions { get; }
+        Function? TypeFunction { get; }
+        IEnumerable<Function> Functions { get; }
         IEnumerable<Method> Methods { get; }
-        IEnumerable<Method> Constructors { get; }
+        IEnumerable<Constructor> Constructors { get; }
         IEnumerable<Field> Fields { get; }
     }
 }

@@ -4,6 +4,7 @@ namespace Generator3.Model.Internal
 {
     public class Method
     {
+        private InstanceParameter? _instanceParameter;
         private IEnumerable<Parameter>? _parameters;
         private ReturnType? _returnType;
 
@@ -12,13 +13,16 @@ namespace Generator3.Model.Internal
         public string Name => Model.Name;
         public ReturnType ReturnType => _returnType ??= Model.ReturnType.CreateInternalModel();
         public string CIdentifier => Model.CIdentifier;
-        public string NameSpaceName => Model.Namespace.Name;
 
+        public InstanceParameter InstanceParameter => _instanceParameter ??= Model.InstanceParameter.CreateInternalModel();
         public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateInternalModelsForMethod();
 
-        public Method(GirModel.Method function)
+        public string NamespaceName { get; }
+
+        public Method(GirModel.Method method, string namespaceName)
         {
-            Model = function;
+            Model = method;
+            NamespaceName = namespaceName;
         }
     }
 }

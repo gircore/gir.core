@@ -4,11 +4,18 @@
     {
         public static string Render(this Model.Internal.Method? method)
         {
-            return method is null 
-                ? "" 
-                : @$"{method.RenderComment()}
-[DllImport(""{ method.NameSpaceName }"", EntryPoint = ""{ method.CIdentifier }"")]
-public static extern { method.ReturnType.Render() } { method.Name }({ method.Parameters.Render()});";
+            if (method is null)
+                return "";
+            
+            var renderedParameters = method.Parameters.Render();
+            
+            if(renderedParameters.Length > 0)
+                renderedParameters = ", " + renderedParameters;
+            
+            
+            return @$"{method.RenderComment()}
+[DllImport(""{ method.NamespaceName }"", EntryPoint = ""{ method.CIdentifier }"")]
+public static extern { method.ReturnType.Render() } { method.Name }({method.InstanceParameter.Render()}{ renderedParameters });";
         }
 
         private static string RenderComment(this Model.Internal.Method function) =>

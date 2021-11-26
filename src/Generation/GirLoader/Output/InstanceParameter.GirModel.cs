@@ -1,12 +1,12 @@
-﻿namespace GirLoader.Output
-{
-    public partial class InstanceParameter : GirModel.Parameter
-    {
-        private GirModel.AnyTypeReference? _anyTypeReference;
-        string GirModel.Parameter.Name => Name;
+﻿using System;
 
-        GirModel.AnyTypeReference GirModel.Parameter.AnyTypeReference => _anyTypeReference ??= new AnyTypeReference(TypeReference);
-        GirModel.Direction GirModel.Parameter.Direction => Direction.ToGirModel();
-        GirModel.Transfer GirModel.Parameter.Transfer => Transfer.ToGirModel();
+namespace GirLoader.Output
+{
+    public partial class InstanceParameter : GirModel.InstanceParameter
+    {
+        string GirModel.InstanceParameter.Name => Name;
+        GirModel.Type GirModel.InstanceParameter.Type => TypeReference.Type ?? throw new Exception("Instance parameter must be set");
+        GirModel.Direction GirModel.InstanceParameter.Direction => Direction.ToGirModel();
+        GirModel.Transfer GirModel.InstanceParameter.Transfer => Transfer.ToGirModel();
     }
 }

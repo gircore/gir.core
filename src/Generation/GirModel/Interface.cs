@@ -4,8 +4,8 @@ namespace GirModel
 {
     public interface Interface : ComplexType
     {
-        Method TypeFunction { get; }
-        IEnumerable<Method> Functions { get; }
+        Function TypeFunction { get; }
+        IEnumerable<Function> Functions { get; }
         IEnumerable<Method> Methods { get; }
     }
 }

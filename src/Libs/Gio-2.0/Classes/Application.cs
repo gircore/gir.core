@@ -9,7 +9,7 @@ namespace Gio
 
         public int Run()
         {
-            return Native.Application.Instance.Methods.Run(Handle, 0, new string[0]);
+            return Internal.Application.Instance.Methods.Run(Handle, 0, new string[0]);
         }
 
         #endregion

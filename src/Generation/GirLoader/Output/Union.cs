@@ -8,18 +8,18 @@ namespace GirLoader.Output
     public partial class Union : ComplexType
     {
         private readonly List<Method> _methods;
-        private readonly List<Method> _functions;
-        private readonly List<Method> _constructors;
+        private readonly List<Function> _functions;
+        private readonly List<Constructor> _constructors;
         private readonly List<Field> _fields;
 
-        public Method? GetTypeFunction { get; }
+        public Function? GetTypeFunction { get; }
         public IEnumerable<Field> Fields => _fields;
         public bool Disguised { get; }
         public IEnumerable<Method> Methods => _methods;
-        public IEnumerable<Method> Constructors => _constructors;
-        public IEnumerable<Method> Functions => _functions;
+        public IEnumerable<Constructor> Constructors => _constructors;
+        public IEnumerable<Function> Functions => _functions;
 
-        public Union(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<Method> methods, IEnumerable<Method> functions, Method? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Method> constructors) : base(repository, cType, name, originalName)
+        public Union(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors) : base(repository, cType, name, originalName)
         {
             GetTypeFunction = getTypeFunction;
             Disguised = disguised;
