@@ -13,9 +13,15 @@ namespace Generator3
                 publisher: new InternalUnionFilePublisher()
             );
             
+            var internalMethodsGenerator = new InternalMethodsGenerator (
+                template: new InternalMethodsTemplate(),
+                publisher: new InternalUnionFilePublisher()
+            );
+            
             foreach (var union in unions)
             {
                 internalStructGenerator.Generate(union);
+                internalMethodsGenerator.Generate(union);
             }
         }
     }

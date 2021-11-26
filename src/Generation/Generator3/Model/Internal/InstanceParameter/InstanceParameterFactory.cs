@@ -10,7 +10,8 @@ namespace Generator3.Model.Internal
             GirModel.Class => new ClassInstanceParameter(parameter),
             GirModel.Interface => new InterfaceInstanceParameter(parameter),
             GirModel.Record => new RecordInstanceParameter(parameter),
-
+            GirModel.Union => new UnionInstanceParameter(parameter),
+            
             _ => throw new Exception($"Instance parameter \"{parameter.Name}\" of type {parameter.Type} can not be converted into a model")
         };
     }
