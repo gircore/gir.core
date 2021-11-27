@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Generator3.Model.Internal;
 
 namespace Generator3.Model.Public
 {
@@ -7,19 +8,25 @@ namespace Generator3.Model.Public
     {
         private readonly GirModel.Method _method;
 
+        public string ClassName { get; }
         public string Name => _method.Name;
-        public ReturnType ReturnType { get; }
+        
+        public ReturnType PublicReturnType { get; }
+        public Internal.ReturnType InternalReturnType { get; }
         
         public InstanceParameter InstanceParameter { get; }
         public IEnumerable<Parameter> Parameters { get; }
 
-        public Method(GirModel.Method method)
+        public Method(GirModel.Method method, string className)
         {
+            ClassName = className;
             _method = method;
 
-            ReturnType = method.ReturnType.CreatePublicModel();
+            PublicReturnType = method.ReturnType.CreatePublicModel();
             InstanceParameter = method.InstanceParameter.CreatePublicModel();
             Parameters = method.Parameters.CreatePublicModels();
+            
+            InternalReturnType = method.ReturnType.CreateInternalModel();
         }
 
         public bool IsFree() => _method.IsFree() || _method.IsUnref();

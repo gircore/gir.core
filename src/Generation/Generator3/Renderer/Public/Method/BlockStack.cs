@@ -1,5 +1,11 @@
 namespace Generator3.Renderer.Public
 {
+    // We use a system of 'Blocks' to make sure resources are allocated and
+    // deallocated in the correct order. Blocks are nested inside each other,
+    // wrapping the inner blocks with a given 'start' and 'end' statement. This
+    // enforces a system of FILO (first in, last out), which makes sure that
+    // resources are not accidentally deleted while in-use.
+    
     internal class BlockStack
     {
         private Block? _root;
