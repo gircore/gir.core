@@ -1,10 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Generator3.Renderer.Internal;
 
 namespace Generator3.Generation.Callback
 {
     public class PublicHandlerTemplate : Template<PublicHandlerModel>
     {
+        public IEnumerable<string> GetConversions(PublicHandlerModel model)
+        {
+            IEnumerable<Model.Public.Parameter> pParam = model.PublicParameters;
+            IEnumerable<Model.Internal.Parameter> iParam = model.InternalParameters;
+
+            return iParam.Zip(pParam, Model.Convert.GetConversion);
+        }
+        
         public string Render(PublicHandlerModel model)
         {
             return $@"
@@ -33,7 +42,7 @@ namespace { model.NamespaceName }
             managedCallback = managed;
             NativeCallback = ({model.InternalParameters.Render()}) => {{
                 // Convert from native to managed
-                
+                {GetConversions(model).Join("\n")}
 
                 // Call managedCallback
 
