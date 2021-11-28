@@ -10,6 +10,23 @@ namespace Generator3.Model
             
             var builder = new StringBuilder();
             builder.AppendLine(comment);
+
+            return (from, to) switch
+            {
+                {from: Internal.StandardParameter, to: Public.StandardParameter} =>
+                    builder.AppendLine($"{to.NullableTypeName} {to.Name}Conv = {from.Name};").ToString(),
+                {from: Internal.ClassParameter, to: Public.ClassParameter} =>
+                    builder.AppendLine($"// TODO").ToString(),
+                {from: Internal.VoidParameter, to: Public.VoidParameter} =>
+                    builder.AppendLine($"// TODO").ToString(),
+                {to: Public.RecordParameter} =>
+                    builder.AppendLine($"// TODO").ToString(),
+                {from: Internal.BitfieldParameter, to: Public.BitfieldParameter} =>
+                    builder.AppendLine($"{to.NullableTypeName} {to.Name}Conv = {from.Name};").ToString(),
+                
+                // Everything else
+                _ => builder.AppendLine("// TODO (Unsupported)").ToString()
+            };
             
             if (from.GetType() == typeof(Internal.StandardParameter) &&
                 to.GetType() == typeof(Public.StandardParameter))
