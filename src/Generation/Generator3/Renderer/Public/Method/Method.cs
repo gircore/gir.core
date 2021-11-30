@@ -177,7 +177,7 @@ namespace Generator3.Renderer.Public
 
             blockStack.Nest(new()
             {
-                Start = $"throw new System.Exception(); //return {method.InternalReturnType.RenderTo(method.PublicReturnType)};"
+                Start = $"return {method.InternalReturnType.ToPublicFromVariable("result")};"
             });
         }
     }

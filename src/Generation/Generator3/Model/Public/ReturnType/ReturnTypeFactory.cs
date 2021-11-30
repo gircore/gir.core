@@ -5,6 +5,7 @@
         public static ReturnType CreatePublicModel(this GirModel.ReturnType returnValue) => returnValue.AnyType.Match<ReturnType>(
             type => type switch
             {
+                GirModel.PrimitiveValueType => new PrimitiveValueReturnType(returnValue),
                 GirModel.Class => new ClassReturnType(returnValue),
                 GirModel.Record => new RecordReturnType(returnValue),
                 _ => new StandardReturnType(returnValue)

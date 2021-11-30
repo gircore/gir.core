@@ -1,12 +1,16 @@
-﻿namespace Generator3.Renderer.Public
+﻿using System;
+
+namespace Generator3.Renderer.Public
 {
     public static class ConvertReturnType
     {
-        public static string RenderTo(this Model.Internal.ReturnType internalReturnType, Model.Public.ReturnType publicReturnType)
+        public static string ToPublicFromVariable(this Model.Internal.ReturnType from, string variableName)
         {
-            return (internalReturnType, publicReturnType) switch
+            return from switch
             {
-                _ => $"//TODO {internalReturnType.NullableTypeName} -> {publicReturnType.NullableTypeName}"
+                 Model.Internal.PrimitiveValueReturnType { IsPointer: false } => variableName,
+
+                _ => throw new NotImplementedException($"Convert from internal return type {from.NullableTypeName} to public")
             };
         }
     }

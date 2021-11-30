@@ -5,6 +5,7 @@
         public static ReturnType CreateInternalModel(this GirModel.ReturnType returnValue) => returnValue.AnyType.Match<ReturnType>(
             type => type switch
             {
+                GirModel.PrimitiveValueType => new PrimitiveValueReturnType(returnValue),
                 GirModel.Bitfield => new BitfieldReturnType(returnValue),
                 GirModel.Enumeration => new EnumerationReturnType(returnValue),
                 GirModel.String => new StringReturnType(returnValue),
