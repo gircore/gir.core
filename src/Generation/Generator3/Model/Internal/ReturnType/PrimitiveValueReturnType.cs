@@ -2,8 +2,6 @@
 {
     public class PrimitiveValueReturnType : ReturnType
     {
-        public bool IsPointer => Model.IsPointer;
-        
         public override string NullableTypeName => IsPointer
             ? TypeMapping.Pointer
             : Model.AnyType.AsT0.GetName();

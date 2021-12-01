@@ -2,7 +2,7 @@
 
 namespace Generator3.Model.Internal
 {
-    public class StringReturnType : ReturnType
+    public class Utf8StringReturnType : ReturnType
     {
         public override string NullableTypeName => Model switch
         {
@@ -12,9 +12,9 @@ namespace Generator3.Model.Internal
             _ => Model.AnyType.AsT0.GetName() + GetDefaultNullable()
         };
 
-        protected internal StringReturnType(GirModel.ReturnType returnValue) : base(returnValue)
+        protected internal Utf8StringReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {
-            returnValue.AnyType.VerifyType<String>();
+            returnValue.AnyType.VerifyType<Utf8String>();
         }
     }
 }
