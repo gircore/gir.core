@@ -31,6 +31,9 @@ namespace Generator3.Renderer.Public
                 Model.Internal.ClassReturnType { IsPointer: true } 
                     => $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({variableName}, {from.IsOwnedRef.ToString().ToLower()})",
 
+                //** Records **
+                Model.Internal.RecordReturnType { IsPointer: true } => $"new {to.NullableTypeName}({variableName})",
+
                 _ => throw new NotImplementedException($"Convert from internal return type {from.NullableTypeName} to public")
             };
         }
