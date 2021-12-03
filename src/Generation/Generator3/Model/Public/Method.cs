@@ -22,10 +22,10 @@ namespace Generator3.Model.Public
             ClassName = className;
             _method = method;
 
-            PublicReturnType = method.ReturnType.CreatePublicModel();
             InstanceParameter = method.InstanceParameter.CreatePublicModel();
             Parameters = method.Parameters.CreatePublicModels();
-            
+
+            PublicReturnType = method.ReturnType.CreatePublicModel();
             InternalReturnType = method.ReturnType.CreateInternalModel();
         }
 

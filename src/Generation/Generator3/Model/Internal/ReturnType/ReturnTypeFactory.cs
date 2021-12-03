@@ -20,8 +20,10 @@
             arrayType => arrayType.AnyTypeReference.AnyType.Match<ReturnType>(
                 type => type switch 
                 {
+                    GirModel.String => new ArrayStringReturnType(returnValue),
                     GirModel.Record => new ArrayRecordReturnType(returnValue),
                     GirModel.Class => new ArrayClassReturnType(returnValue),
+                    GirModel.PrimitiveValueType => new ArrayPrimitiveValueReturnType(returnValue),
                     _ => new StandardReturnType(returnValue)
                 },
                 _ => new StandardReturnType(returnValue)
