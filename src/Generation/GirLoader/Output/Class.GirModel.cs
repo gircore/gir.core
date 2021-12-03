@@ -13,5 +13,6 @@ namespace GirLoader.Output
         IEnumerable<GirModel.Function> GirModel.Class.Functions => Functions;
         IEnumerable<GirModel.Method> GirModel.Class.Methods => Methods;
         IEnumerable<GirModel.Constructor> GirModel.Class.Constructors => Constructors;
+        IEnumerable<GirModel.Property> GirModel.Class.Properties => Properties;
     }
 }

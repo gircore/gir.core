@@ -62,10 +62,16 @@ namespace Generator3
                 publisher: new PublicClassFilePublisher()
             );
             
+            var standardPublicPropertiesGenerator = new Standard.PublicPropertiesGenerator(
+                template: new Standard.PublicPropertiesTemplate(),
+                publisher: new PublicClassFilePublisher()
+            );
+            
             standardInternalMethodsGenerator.Generate(@class);
             standardInternalStructGenerator.Generate(@class);
             standardPublicClassMethodsGenerator.Generate(@class);
             standardPublicFrameworkGenerator.Generate(@class);
+            standardPublicPropertiesGenerator.Generate(@class);
         }
     }
 }
