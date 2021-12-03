@@ -8,6 +8,7 @@
                 GirModel.Pointer => new PointerReturnType(returnValue),
                 GirModel.PrimitiveValueType => new PrimitiveValueReturnType(returnValue),
                 GirModel.Class => new ClassReturnType(returnValue),
+                GirModel.Interface => new InterfaceReturnType(returnValue),
                 GirModel.Record => new RecordReturnType(returnValue),
                 GirModel.Bitfield => new BitfieldReturnType(returnValue),
                 GirModel.Enumeration => new EnumerationReturnType(returnValue),
