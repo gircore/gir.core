@@ -10,9 +10,10 @@ namespace Gtk
     {
         public Notebook() { }
 
+        /* TODO Enable
         public Widget this[string label]
         {
             set => AppendPage(value, Label.New(label));
-        }
+        }*/
     }
 }
