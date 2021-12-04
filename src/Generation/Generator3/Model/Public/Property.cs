@@ -9,16 +9,13 @@ namespace Generator3.Model.Public
         public string ClassName { get; }
         public string NativeName => _property.NativeName;
         public string ManagedName => GetManagedName();
-        public string DescriptorName => ManagedName + "Property";
-        public string NullableTypeName => _property.AnyType.Match(
-            type => type.GetName() + GetDefaultNullable(),
-            arrayType => arrayType.GetName()
-        );
+        public string DescriptorName => ManagedName + "PropertyDefinition";
+        public string NullableTypeName => GetNullableTypeName();
 
         public bool Readable => _property.Readable;
         public bool Writeable => _property.Writeable;
 
-        public bool IsPrimitiveType => _property.AnyType.TryPickT0(out var type, out _) && type is GirModel.PrimitiveType;
+        public GirModel.AnyType AnyType => _property.AnyType;
 
         public Property(GirModel.Property property, string className)
         {
@@ -50,9 +47,21 @@ namespace Generator3.Model.Public
             var name = _property.ManagedName;
 
             if (name == ClassName)
-                throw new NotImplementedException($"Property {name} is identical to it's class which is not yet supported. Property should be created with a suffix and in a separate build step be rewritten to it's original name");
+                throw new Exception($"Property {name} is identical to it's class which is not yet supported. Property should be created with a suffix and in a separate build step be rewritten to it's original name");
             
             return name;
+        }
+
+        private string GetNullableTypeName()
+        {
+            return _property.AnyType.Match(
+                type => type switch
+                {
+                    GirModel.ComplexType c => c.GetFullyQualified() + GetDefaultNullable(), 
+                    _ => type.GetName() + GetDefaultNullable()
+                },
+                arrayType => arrayType.GetName()
+            );
         }
     }
 }

@@ -19,16 +19,42 @@ namespace Generator3.Renderer.Public
             }
             catch (Exception ex)
             {
-                Log.Warning($"Did not generate property '{property.ClassName}.{property.NativeName}': {ex.Message}");
+                var message = $"Did not generate property '{property.ClassName}.{property.NativeName}': {ex.Message}";
+                
+                if(ex is NotImplementedException)
+                    Log.Information(message);
+                else
+                    Log.Warning(message);
+
                 return string.Empty;
             }
         }
 
-        //TODO: Remove this method if all cases are supported
         private static void ThrowIfNotSupported(Model.Public.Property property)
         {
-            if (property.IsPrimitiveType)
+            if (property.AnyType.Is<GirModel.PrimitiveType>())
                 return;
+
+            if (property.AnyType.IsArray<GirModel.String>())
+                return;
+
+            if (property.AnyType.IsArray<GirModel.Byte>())
+                return;
+            
+            if(property.AnyType.Is<GirModel.Enumeration>())
+                return;
+            
+            if(property.AnyType.Is<GirModel.Bitfield>())
+                return;
+            
+            if(property.AnyType.Is<GirModel.Class>())
+                return;
+            
+            if(property.AnyType.Is<GirModel.Interface>())
+                return;
+
+            if (property.AnyType.Is<GirModel.Record>())
+                throw new NotImplementedException("There is currently no concept for transfering native records (structs) into the managed world.");
 
             throw new Exception($"Property {property.ClassName}.{property.ManagedName} is not supported");
         }
