@@ -8,5 +8,6 @@ namespace GirModel
         IEnumerable<Function> Functions { get; }
         IEnumerable<Method> Methods { get; }
         IEnumerable<Constructor> Constructors { get; }
+        IEnumerable<Field> Fields { get; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Union
+﻿using Generator3.Renderer.Internal;
+
+namespace Generator3.Generation.Union
 {
     public class InternalStructTemplate : Template<InternalStructModel>
     {
@@ -16,10 +18,10 @@ namespace { model.NamespaceName }
 
     public partial class { model.Name }
     {{
-        [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Explicit)]
         public partial struct Struct
         {{
-            //TODO Fields
+            {model.Fields.Render()}
         }}
     }}
 }}";
