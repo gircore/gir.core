@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Generator3.Model.Internal;
 
 namespace Generator3.Model.Public
 {
@@ -9,11 +8,11 @@ namespace Generator3.Model.Public
         private readonly GirModel.Method _method;
 
         public string ClassName { get; }
-        public string Name => _method.Name;
+        public string ManagedName => GetManagedName();
+        public string NativeName => _method.Name;
         
-        public ReturnType PublicReturnType { get; }
-        public Internal.ReturnType InternalReturnType { get; }
-        
+        public GirModel.ReturnType ReturnType => _method.ReturnType;
+
         public InstanceParameter InstanceParameter { get; }
         public IEnumerable<Parameter> Parameters { get; }
 
@@ -24,9 +23,6 @@ namespace Generator3.Model.Public
 
             InstanceParameter = method.InstanceParameter.CreatePublicModel();
             Parameters = method.Parameters.CreatePublicModels();
-
-            PublicReturnType = method.ReturnType.CreatePublicModel();
-            InternalReturnType = method.ReturnType.CreateInternalModel();
         }
 
         public bool IsFree() => _method.IsFree() || _method.IsUnref();
@@ -42,5 +38,17 @@ namespace Generator3.Model.Public
         public bool HasArrayClassReturnType() => _method.ReturnType.AnyType.TryPickT1(out var arrayType, out _)
                                                  && arrayType.AnyTypeReference.AnyType.TryPickT0(out var type, out _)
                                                  && type is GirModel.Class;
+
+        private string GetManagedName()
+        {
+            if (!ReturnType.AnyType.Is<GirModel.Void>() && !Parameters.Any() && !_method.Name.ToLower().StartsWith("get"))
+            {
+                //This is a "getter" method. We prefix all getter methods with "Get" to avoid naming conflicts
+                //with properties of the same name.
+                return "Get" + _method.Name;
+            }
+
+            return _method.Name;
+        }
     }
 }
