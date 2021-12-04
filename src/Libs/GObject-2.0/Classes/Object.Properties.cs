@@ -26,7 +26,7 @@ namespace GObject
         /// <typeparam name="T">The tye of the value to define.</typeparam>
         protected void SetProperty<T>(Property<T> property, T value)
         {
-            Value v = CreateValue(property.Name);
+            using Value v = CreateValue(property.Name);
             v.Set(value);
             SetProperty(property.Name, v);
         }
@@ -40,7 +40,6 @@ namespace GObject
         {
             // TODO: Remove this once we generate the method
             Internal.Object.Instance.Methods.SetProperty(Handle, name, value.Handle);
-            value.Dispose();
         }
 
         /// <summary>
