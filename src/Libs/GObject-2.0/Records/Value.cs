@@ -15,7 +15,12 @@ namespace GObject
         public Value(Type type)
         {
             _handle = Internal.Value.ManagedHandle.Create();
-            _handle = Internal.Value.Methods.Init(_handle, type.Value);
+
+            //We ignore the return type as it would convert the
+            //managed handle into a regular handle. If the memory
+            //is allocated by the managed handle it should get
+            //freed by the managed handle.
+            _ = Internal.Value.Methods.Init(_handle, type.Value);
         }
 
         public Value(Object value) : this(Type.Object) => SetObject(value);
