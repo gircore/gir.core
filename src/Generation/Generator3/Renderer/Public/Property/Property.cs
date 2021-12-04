@@ -19,7 +19,7 @@ namespace Generator3.Renderer.Public
             }
             catch (Exception ex)
             {
-                Log.Warning($"Did not generate property '{property.ClassName}.{property.ManagedName}': {ex.Message}");
+                Log.Warning($"Did not generate property '{property.ClassName}.{property.NativeName}': {ex.Message}");
                 return string.Empty;
             }
         }
@@ -27,9 +27,8 @@ namespace Generator3.Renderer.Public
         //TODO: Remove this method if all cases are supported
         private static void ThrowIfNotSupported(Model.Public.Property property)
         {
-            //TODO: Completely disabled because of naming conflicts.
-            //if (property.IsPrimitiveType)
-            //    return;
+            if (property.IsPrimitiveType)
+                return;
 
             throw new Exception($"Property {property.ClassName}.{property.ManagedName} is not supported");
         }

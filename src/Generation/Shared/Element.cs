@@ -6,7 +6,6 @@
  * linked. The code is kept clean as it does not require an
  * object instance. 
  */
-using System.Collections.Generic;
 using System.Linq;
 
 internal static class Element
