@@ -20,6 +20,8 @@ namespace GObject
             //managed handle into a regular handle. If the memory
             //is allocated by the managed handle it should get
             //freed by the managed handle.
+            //This is especially important as a value has no
+            //native method available to allow freeing.
             _ = Internal.Value.Methods.Init(_handle, type.Value);
         }
 
