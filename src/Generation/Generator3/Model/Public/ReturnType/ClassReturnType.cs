@@ -4,7 +4,7 @@
     {
         private GirModel.Class Type => (GirModel.Class) Model.AnyType.AsT0;
 
-        public override string NullableTypeName => Type.Namespace.Name + "." + Type.GetName();
+        public override string NullableTypeName => Type.GetFullyQualified();
 
         protected internal ClassReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {

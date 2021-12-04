@@ -6,7 +6,7 @@
         
         public override string NullableTypeName => ArrayType.Length is null
             ? TypeMapping.PointerArray
-            : ((GirModel.Record) ArrayType.AnyTypeReference.AnyType.AsT0).GetFullyQualifiedPublicName() + "[]";
+            : ((GirModel.Record) ArrayType.AnyTypeReference.AnyType.AsT0).GetFullyQualified() + "[]";
 
         public override string Direction => Model.GetDirection(
             @in: ParameterDirection.In,

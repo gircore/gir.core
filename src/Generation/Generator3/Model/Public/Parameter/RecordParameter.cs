@@ -4,7 +4,7 @@
     {
         private GirModel.Record Type => (GirModel.Record) Model.AnyTypeReference.AnyType.AsT0;
         
-        public override string NullableTypeName => Type.Namespace.Name + "." + Type.GetName() + GetDefaultNullable();
+        public override string NullableTypeName => Type.GetFullyQualified() + GetDefaultNullable();
 
         public override string Direction => Model.GetDirection(
             @in: ParameterDirection.In,

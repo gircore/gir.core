@@ -6,7 +6,7 @@
         {
             return model.ParentClass is null
                 ? string.Empty
-                : $": {model.ParentClass.Namespace.Name + "." + model.ParentClass.Name}";
+                : $": {model.ParentClass.GetFullyQualified()}";
         }
     }
 }
