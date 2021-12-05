@@ -12,5 +12,6 @@ namespace GirModel
         IEnumerable<Method> Methods { get; }
         IEnumerable<Constructor> Constructors { get; }
         IEnumerable<Property> Properties { get; }
+        IEnumerable<Signal> Signals { get; }
     }
 }

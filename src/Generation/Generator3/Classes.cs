@@ -67,11 +67,17 @@ namespace Generator3
                 publisher: new PublicClassFilePublisher()
             );
             
+            var standardPublicSignalsGenerator = new Standard.PublicSignalsGenerator(
+                template: new Standard.PublicSignalsTemplate(),
+                publisher: new PublicClassFilePublisher()
+            );
+            
             standardInternalMethodsGenerator.Generate(@class);
             standardInternalStructGenerator.Generate(@class);
             standardPublicClassMethodsGenerator.Generate(@class);
             standardPublicFrameworkGenerator.Generate(@class);
             standardPublicPropertiesGenerator.Generate(@class);
+            standardPublicSignalsGenerator.Generate(@class);
         }
     }
 }
