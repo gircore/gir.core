@@ -19,6 +19,7 @@ namespace { model.NamespaceName }
 
     public partial class { model.Name }
     {{
+        {model.RenderObjectIndexer()}
         {model.Signals.Render()}
     }}
 }}";

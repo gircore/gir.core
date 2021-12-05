@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Class.Standard
+﻿using System.Linq;
+
+namespace Generator3.Generation.Class.Standard
 {
     public class PublicSignalsGenerator
     {
@@ -15,6 +17,9 @@
         {
             try
             {
+                if (!@class.Signals.Any())
+                    return;
+                
                 var model = new PublicSignalsModel(@class);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(@class.Namespace.GetCanonicalName(), $"{@class.Name}.Signals", source);

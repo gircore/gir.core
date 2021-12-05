@@ -12,7 +12,7 @@
 /// </summary>
 public sealed class {signal.ArgsName} : SignalArgs
 {{
-    //TODO: Render Arguments
+    {signal.Parameters.RenderAsSignalParammeters()}
 }}";
         }
     }

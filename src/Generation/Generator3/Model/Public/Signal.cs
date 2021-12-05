@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Generator3.Model.Public
 {
@@ -12,11 +13,16 @@ namespace Generator3.Model.Public
         public string? ArgsName => _signal.ManagedName + "SignalArgs";
         public string ClassName { get; }
         public bool HasArgs => _signal.Parameters.Any();
-
+        public string GenericArgs =>  HasArgs 
+            ? $"{ClassName}, {ArgsName}"
+            : ClassName;
+        public IEnumerable<Parameter> Parameters { get; }
+        
         public Signal(GirModel.Signal signal, string className)
         {
             _signal = signal;
             ClassName = className;
+            Parameters = _signal.Parameters.CreatePublicModels();
         }
     }
 }

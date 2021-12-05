@@ -14,7 +14,10 @@ namespace Generator3.Model.Public
             type => type switch
             {
                 GirModel.Class => new ClassParameter(parameter),
+                GirModel.Interface => new InterfaceParameter(parameter),
                 GirModel.Bitfield => new BitfieldParameter(parameter),
+                GirModel.Enumeration => new EnumerationParameter(parameter),
+                GirModel.Union => new UnionParameter(parameter),
                 GirModel.Record => new RecordParameter(parameter),
                 GirModel.Void => new VoidParameter(parameter),
                 _ => new StandardParameter(parameter) //TODO: Remove Standard Parameter
