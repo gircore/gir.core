@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Class.Standard
+﻿using System.Linq;
+
+namespace Generator3.Generation.Class.Standard
 {
     public class PublicPropertiesGenerator
     {
@@ -15,6 +17,9 @@
         {
             try
             {
+                if (!@class.Properties.Any())
+                    return;
+                
                 var model = new PublicPropertiesModel(@class);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(@class.Namespace.GetCanonicalName(), $"{@class.Name}.Properties", source);
