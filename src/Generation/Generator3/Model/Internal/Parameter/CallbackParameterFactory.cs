@@ -22,7 +22,7 @@ namespace Generator3.Model.Internal
                 //Callbacks do not support record safe handles in parameters
                 GirModel.Record => new PointerRecordParameter(parameter),
 
-                GirModel.PrimitiveValueType => new StandardParameter(parameter),
+                GirModel.PrimitiveValueType => new PrimitiveValueTypeParameter(parameter),
                 GirModel.Callback => new CallbackParameter(parameter),
                 GirModel.Enumeration => new EnumerationParameter(parameter),
                 GirModel.Bitfield => new BitfieldParameter(parameter),

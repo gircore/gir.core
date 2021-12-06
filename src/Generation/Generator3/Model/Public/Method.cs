@@ -7,17 +7,20 @@ namespace Generator3.Model.Public
     {
         private readonly GirModel.Method _method;
 
-        public string Name => _method.Name;
-        public ReturnType ReturnType { get; }
+        public string ClassName { get; }
+        public string ManagedName => GetManagedName();
+        public string NativeName => _method.Name;
         
+        public GirModel.ReturnType ReturnType => _method.ReturnType;
+
         public InstanceParameter InstanceParameter { get; }
         public IEnumerable<Parameter> Parameters { get; }
 
-        public Method(GirModel.Method method)
+        public Method(GirModel.Method method, string className)
         {
+            ClassName = className;
             _method = method;
 
-            ReturnType = method.ReturnType.CreatePublicModel();
             InstanceParameter = method.InstanceParameter.CreatePublicModel();
             Parameters = method.Parameters.CreatePublicModels();
         }
@@ -35,5 +38,17 @@ namespace Generator3.Model.Public
         public bool HasArrayClassReturnType() => _method.ReturnType.AnyType.TryPickT1(out var arrayType, out _)
                                                  && arrayType.AnyTypeReference.AnyType.TryPickT0(out var type, out _)
                                                  && type is GirModel.Class;
+
+        private string GetManagedName()
+        {
+            if (!ReturnType.AnyType.Is<GirModel.Void>() && !Parameters.Any() && !_method.Name.ToLower().StartsWith("get"))
+            {
+                //This is a "getter" method. We prefix all getter methods with "Get" to avoid naming conflicts
+                //with properties of the same name.
+                return "Get" + _method.Name;
+            }
+
+            return _method.Name;
+        }
     }
 }

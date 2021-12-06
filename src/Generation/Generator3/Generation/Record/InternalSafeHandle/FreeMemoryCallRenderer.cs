@@ -4,10 +4,9 @@ namespace Generator3.Generation.Record
     {
         public static string RenderFreeCall(this InternalSafeHandleModel model)
         {
-            if(model.FreeMethod is null)
-                return "/* TODO */ throw new System.NotImplementedException();";
-
-            return @$"{model.FreeMethod.Name}(handle);
+            return model.FreeMethod is null 
+                ? $"throw new System.Exception(\"Can't free native handle of type \\\"{model.InternalNamespaceName}.{model.Name}\\\".\");" 
+                : @$"{model.FreeMethod.Name}(handle);
 return true;";
         }
     }

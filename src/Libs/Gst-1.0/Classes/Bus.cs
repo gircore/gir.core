@@ -1,7 +1,4 @@
-﻿using System;
-using GLib;
-
-namespace Gst
+﻿namespace Gst
 {
     public partial class Bus
     {
@@ -12,11 +9,12 @@ namespace Gst
         //TODO: This method is a shortcut for the user and should probably be part of the toolkit layer
         public void TimedPopFiltered(ulong timeout)
         {
-            Native.Bus.Instance.Methods.TimedPopFiltered(Handle, timeout, (MessageType.Eos | MessageType.Error));
+            Internal.Bus.Instance.Methods.TimedPopFiltered(Handle, timeout, (MessageType.Eos | MessageType.Error));
         }
 
+        /*TODO Enable
         public uint AddWatchFull(int priority, BusFunc func)
-            => AddWatchFull(priority, func, null);
+            => AddWatchFull(priority, func, null);*/
 
         // public uint AddWatchFull(int priority, BusFunc func, DestroyNotify? notify)
         //     => throw new NotImplementedException(); //TODO Native.add_watch_full(Handle, priority, func, IntPtr.Zero, notify!);

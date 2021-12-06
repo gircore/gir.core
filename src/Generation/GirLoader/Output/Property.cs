@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output
 {
-    public class Property : Symbol, TransferableAnyType
+    public partial class Property : Symbol, TransferableAnyType
     {
         public Transfer Transfer { get; }
         public bool Writeable { get; }

@@ -25,18 +25,7 @@ internal static class GirModelExtension
 
     public static string GetFullyQualifiedInternalStruct(this GirModel.Class @class)
         => @class.Namespace.GetInternalName() + "." + @class.GetName() + ".Instance.Struct";
-    
-    //Internal does not define any enumerations. They are part of the Public API to avoid converting between them.
-    public static string GetFullyQualified(this GirModel.Bitfield bitfield)
-        => bitfield.Namespace.Name + "." + bitfield.GetName();
-    
-    //Internal does not define any enumerations. They are part of the Public API to avoid converting between them.
-    public static string GetFullyQualified(this GirModel.Enumeration enumeration)
-        => enumeration.Namespace.Name + "." + enumeration.GetName();
 
-    public static string GetFullyQualifiedPublicName(this GirModel.Record record)
-        => record.Namespace.Name + "." + record.GetName();
-    
     public static string GetFullyQualifiedInternalHandle(this GirModel.Record record)
         => record.Namespace.GetInternalName() + "." + record.GetName() + ".Handle";
 

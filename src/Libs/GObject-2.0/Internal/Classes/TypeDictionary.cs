@@ -14,7 +14,7 @@ namespace GObject.Internal
             : base($"Type {managedType.FullName} not registered in type dictionary") { }
     }
 
-    internal enum BasicType
+    public enum BasicType
     {
         Invalid = 0 << 2,
         None = 1 << 2,

@@ -1,10 +1,13 @@
-﻿namespace Generator3.Model.Internal
+﻿using System;
+
+namespace Generator3.Model.Internal
 {
     public abstract class ReturnType
     {
-        protected readonly GirModel.ReturnType Model;
+        public GirModel.ReturnType Model { get; }
 
         public abstract string NullableTypeName { get; }
+        public bool IsPointer => Model.IsPointer;
 
         protected ReturnType(GirModel.ReturnType model)
         {

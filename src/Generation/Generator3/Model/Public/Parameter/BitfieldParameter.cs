@@ -4,7 +4,7 @@
     {
         private GirModel.Bitfield Type => (GirModel.Bitfield) Model.AnyTypeReference.AnyType.AsT0;
 
-        public override string NullableTypeName => Type.Namespace.Name + "." + Type.GetName();
+        public override string NullableTypeName => Type.GetFullyQualified();
 
         public override string Direction => Model.GetDirection(
             @in: ParameterDirection.In,

@@ -15,7 +15,7 @@
             
             return @$"{method.RenderComment()}
 [DllImport(""{ method.NamespaceName }"", EntryPoint = ""{ method.CIdentifier }"")]
-public static extern { method.ReturnType.Render() } { method.Name }({method.InstanceParameter.Render()}{ renderedParameters });";
+public static extern { method.ReturnType.NullableTypeName } { method.Name }({method.InstanceParameter.Render()}{ renderedParameters });";
         }
 
         private static string RenderComment(this Model.Internal.Method function) =>

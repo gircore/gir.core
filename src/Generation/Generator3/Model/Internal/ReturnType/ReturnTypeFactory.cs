@@ -5,9 +5,11 @@
         public static ReturnType CreateInternalModel(this GirModel.ReturnType returnValue) => returnValue.AnyType.Match<ReturnType>(
             type => type switch
             {
+                GirModel.PrimitiveValueType => new PrimitiveValueReturnType(returnValue),
                 GirModel.Bitfield => new BitfieldReturnType(returnValue),
                 GirModel.Enumeration => new EnumerationReturnType(returnValue),
-                GirModel.String => new StringReturnType(returnValue),
+                GirModel.Utf8String => new Utf8StringReturnType(returnValue),
+                GirModel.PlatformString => new PlatformStringReturnType(returnValue),
                 GirModel.Record => new RecordReturnType(returnValue),
                 GirModel.Union => new UnionReturnType(returnValue),
                 GirModel.Class => new ClassReturnType(returnValue),
@@ -18,8 +20,10 @@
             arrayType => arrayType.AnyTypeReference.AnyType.Match<ReturnType>(
                 type => type switch 
                 {
+                    GirModel.String => new ArrayStringReturnType(returnValue),
                     GirModel.Record => new ArrayRecordReturnType(returnValue),
                     GirModel.Class => new ArrayClassReturnType(returnValue),
+                    GirModel.PrimitiveValueType => new ArrayPrimitiveValueReturnType(returnValue),
                     _ => new StandardReturnType(returnValue)
                 },
                 _ => new StandardReturnType(returnValue)

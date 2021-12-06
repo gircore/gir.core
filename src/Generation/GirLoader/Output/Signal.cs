@@ -3,7 +3,7 @@ using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public class Signal : Symbol
+    public partial class Signal : Symbol
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
