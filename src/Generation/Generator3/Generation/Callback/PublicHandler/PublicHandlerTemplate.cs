@@ -13,6 +13,29 @@ namespace Generator3.Generation.Callback
 
             return iParam.Zip(pParam, Model.Convert.GetConversion);
         }
+
+        private string WriteCall(PublicHandlerModel model)
+        {
+            IEnumerable<string> paramNames = model.PublicParameters
+                .Select(x => x.Name + "Conv");
+            
+            var call = $"managedCallback({paramNames.Join(", ")});";
+            
+            // TODO: public return type?
+            if (model.InternalReturnType.IsVoid())
+                return call;
+
+            return "var result = " + call;
+        }
+
+        private string WriteReturn(PublicHandlerModel model)
+        {
+            // TODO: Return convert managed to native
+            if (!model.InternalReturnType.IsVoid())
+                return "return result;";
+
+            return string.Empty;
+        }
         
         public string Render(PublicHandlerModel model)
         {
@@ -44,11 +67,8 @@ namespace { model.NamespaceName }
                 // Convert from native to managed
                 {GetConversions(model).Join("\n")}
 
-                // Call managedCallback
-
-                // Return convert managed to native
-                // TODO: Return Value
-                {(!model.InternalReturnType.IsVoid() ? "return default!;" : string.Empty)}
+                {WriteCall(model)}
+                {WriteReturn(model)}
             }};
         }}
         
