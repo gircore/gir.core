@@ -8,9 +8,9 @@
                 ? string.Empty 
                 : @$"
 /// <summary>
-/// Signal (Event) Arguments for {signal.ManagedName}
+/// Signal (Event) Arguments for {signal.PublicName}
 /// </summary>
-public sealed class {signal.ArgsName} : SignalArgs
+public sealed class {signal.ArgsClassName} : SignalArgs
 {{
     {signal.Parameters.RenderAsSignalParammeters()}
 }}";

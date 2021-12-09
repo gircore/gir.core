@@ -13,7 +13,7 @@ internal static class PascalString
         };
     }
 
-    internal static string ToPascal(this string str)
+    private static string ToPascal(this string str)
     {
         var words = str.Replace("_", "-").Split("-");
         var builder = new StringBuilder();

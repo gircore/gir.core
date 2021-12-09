@@ -4,8 +4,7 @@ namespace GirLoader.Output
 {
     public partial class Signal : GirModel.Signal
     {
-        string GirModel.Signal.ManagedName => Name;
-        string GirModel.Signal.NativeName => OriginalName;
+        string GirModel.Signal.Name => OriginalName;
         IEnumerable<GirModel.Parameter> GirModel.Signal.Parameters => ParameterList.SingleParameters;
     }
 }

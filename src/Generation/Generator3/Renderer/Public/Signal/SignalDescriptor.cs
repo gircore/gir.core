@@ -6,7 +6,7 @@
         {
             return @$"
 /// <summary>
-/// Signal Descriptor for {signal.ManagedName}.
+/// Signal Descriptor for {signal.PublicName}.
 /// </summary>
 public static readonly Signal<{signal.GenericArgs}> {signal.DescriptorName} = Signal<{signal.GenericArgs}>.Wrap(""{signal.NativeName}"");";
         }
