@@ -29,7 +29,7 @@ namespace GirLoader.Output
             {
                 return new Constructor(
                     originalName: new SymbolName(method.Identifier),
-                    symbolName: new SymbolName(new Helper.String(method.Name).ToPascalCase().EscapeIdentifier()),
+                    symbolName: new SymbolName(method.Name),
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
                     parameterList: _parameterListFactory.Create(method.Parameters, method.Throws)
                 );
