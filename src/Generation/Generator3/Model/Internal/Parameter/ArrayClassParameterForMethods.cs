@@ -1,4 +1,6 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class ArrayClassParameterForMethods : Parameter
     {
@@ -6,8 +8,8 @@
 
         //Classes are always passed as a pointer. 
         public override string NullableTypeName => ArrayType.Length is null
-            ? TypeMapping.Pointer
-            : TypeMapping.PointerArray;
+            ? TypeNameConverter.Pointer
+            : TypeNameConverter.PointerArray;
 
         public override string Attribute => ArrayType.Length is null
             ? string.Empty

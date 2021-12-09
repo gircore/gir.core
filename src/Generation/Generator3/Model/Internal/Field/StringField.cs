@@ -1,4 +1,5 @@
-﻿using String = GirModel.String;
+﻿using Generator3.Converter;
+using String = GirModel.String;
 
 namespace Generator3.Model.Internal
 {

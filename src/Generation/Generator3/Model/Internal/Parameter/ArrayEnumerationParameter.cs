@@ -1,4 +1,6 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class ArrayEnumerationParameter : Parameter
     {
@@ -7,7 +9,7 @@
         private GirModel.Enumeration Type => (GirModel.Enumeration) ArrayType.AnyTypeReference.AnyType.AsT0;
 
         public override string NullableTypeName => ArrayType.Length is null
-            ? TypeMapping.Pointer
+            ? TypeNameConverter.Pointer
             : Type.GetFullyQualified() + "[]";
 
         public override string Direction => Model.GetDirection(

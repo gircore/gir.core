@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Converter;
 using Generator3.Model;
 
+//TODO: This class should be split up and moved into better locations (e.g. Converter folder?)
 internal static class GirModelExtension
 {
     public static string GetDirection(this GirModel.Parameter parameter, ParameterDirection @in, ParameterDirection @out, ParameterDirection outCallerAllocates, ParameterDirection inout)

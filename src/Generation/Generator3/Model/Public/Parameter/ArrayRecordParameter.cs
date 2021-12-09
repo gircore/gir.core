@@ -1,11 +1,13 @@
-﻿namespace Generator3.Model.Public
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Public
 {
     public class ArrayRecordParameter : Parameter
     {
         private GirModel.ArrayType ArrayType => Model.AnyTypeReference.AnyType.AsT1;
         
         public override string NullableTypeName => ArrayType.Length is null
-            ? TypeMapping.PointerArray
+            ? TypeNameConverter.PointerArray
             : ((GirModel.Record) ArrayType.AnyTypeReference.AnyType.AsT0).GetFullyQualified() + "[]";
 
         public override string Direction => Model.GetDirection(

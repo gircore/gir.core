@@ -1,10 +1,12 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class UnionParameter : Parameter
     {
         public override string NullableTypeName => Model.AnyTypeReference.IsPointer switch
         {
-            true => TypeMapping.Pointer,
+            true => TypeNameConverter.Pointer,
             false => Model.AnyTypeReference.AnyType.AsT0.GetName()
         };
 

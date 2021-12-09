@@ -1,4 +1,6 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     //TODO: Consider Removing all "Standard" model classes as it is not clear in which cases they are used explicitly and replace them with concrete implementations
     

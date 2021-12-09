@@ -1,4 +1,5 @@
 ﻿using System;
+using Generator3.Converter;
 
 namespace Generator3.Model.Internal
 {
@@ -6,7 +7,7 @@ namespace Generator3.Model.Internal
     {
         private GirModel.ArrayType ArrayType => Model.AnyTypeReference.AnyType.AsT1;
 
-        public override string NullableTypeName => TypeMapping.PointerArray;
+        public override string NullableTypeName => TypeNameConverter.PointerArray;
 
         public override string Attribute => ArrayType.Length is null
             ? string.Empty

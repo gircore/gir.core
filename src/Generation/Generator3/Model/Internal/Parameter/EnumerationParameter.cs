@@ -1,11 +1,13 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class EnumerationParameter : Parameter
     {
         private GirModel.Enumeration Type => (GirModel.Enumeration) Model.AnyTypeReference.AnyType.AsT0;
         public override string NullableTypeName => Model.AnyTypeReference.IsPointer switch
         {
-            true => TypeMapping.Pointer,
+            true => TypeNameConverter.Pointer,
             false => Type.GetFullyQualified()
         };
 

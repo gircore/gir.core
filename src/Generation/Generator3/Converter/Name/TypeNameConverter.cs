@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Generator3.Model
+namespace Generator3.Converter
 {
-    internal static class TypeMapping
+    internal static class TypeNameConverter
     {
         public const string Pointer = "IntPtr";
         public const string PointerArray = "IntPtr[]";
