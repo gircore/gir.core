@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 
-public static class PascalString
+internal static class PascalString
 {
     public static string ToPascalCase(this string str)
     {

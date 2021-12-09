@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 
-public static class CamelString
+internal static class CamelString
 {
     public static string ToCamelCase(this string str)
     {

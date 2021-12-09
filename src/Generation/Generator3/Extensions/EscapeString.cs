@@ -4,7 +4,7 @@ using Sf = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Sk = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 using St = Microsoft.CodeAnalysis.SyntaxToken;
 
-public static class EscapeString
+internal static class EscapeString
 {
     public static string EscapeIdentifier(this string _text)
     {
