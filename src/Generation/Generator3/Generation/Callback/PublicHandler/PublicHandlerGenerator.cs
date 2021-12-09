@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Callback
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Callback
 {
     public class PublicHandlerGenerator
     {

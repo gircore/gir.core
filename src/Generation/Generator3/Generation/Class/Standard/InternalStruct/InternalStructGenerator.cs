@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Class.Standard
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Class.Standard
 {
     public class InternalStructGenerator
     {

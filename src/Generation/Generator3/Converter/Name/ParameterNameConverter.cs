@@ -6,7 +6,7 @@
         {
             return parameter.Name.ToCamelCase().EscapeIdentifier();
         }
-        
+
         public static string GetPublicName(this GirModel.Parameter parameter)
         {
             return parameter.Name.ToCamelCase().EscapeIdentifier();
