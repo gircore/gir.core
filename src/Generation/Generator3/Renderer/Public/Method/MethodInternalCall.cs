@@ -18,7 +18,7 @@ namespace Generator3.Renderer.Public
                 ? $"{arg.Name}Handler.NativeCallback"
                 : $"{arg.Name}Native");
 
-            call.Append($"Internal.{method.ClassName}.Instance.Methods.{method.NativeName}(");
+            call.Append($"Internal.{method.ClassName}.Instance.Methods.{method.InternalName}(");
             call.Append("this.Handle" + (parameters.Any() ? "," : string.Empty));
             call.Append(string.Join(", ", parameters));
             call.Append(");\n");

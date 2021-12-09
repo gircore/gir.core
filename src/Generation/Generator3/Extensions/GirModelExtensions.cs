@@ -29,8 +29,8 @@ internal static class GirModelExtension
     public static string GetFullyQualifiedInternalHandle(this GirModel.Record record)
         => record.Namespace.GetInternalName() + "." + record.GetName() + ".Handle";
 
-    public static bool IsUnref(this GirModel.Method method) => method.Name == "Unref";
-    public static bool IsFree(this GirModel.Method method) => method.Name == "Free";
+    public static bool IsUnref(this GirModel.Method method) => method.Name == "unref";
+    public static bool IsFree(this GirModel.Method method) => method.Name == "free";
     
     
     public static GirModel.Method? GetFreeOrUnrefMethod(this IEnumerable<GirModel.Method> functions)

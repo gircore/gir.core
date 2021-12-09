@@ -5,7 +5,7 @@ namespace GirLoader.Output
     public abstract class Symbol
     {
         public SymbolName OriginalName { get; }
-        public SymbolName Name { get; set; }
+        public SymbolName Name { get; set; } //TODO: Remove as all names should be defined by the generator
 
         protected Symbol(SymbolName originalName, SymbolName name)
         {

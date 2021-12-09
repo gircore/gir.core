@@ -3,7 +3,7 @@ using GirModel;
 
 namespace Generator3.Renderer.Converter
 {
-    public static class ConvertInternalReturnType
+    public static class InternalReturnTypeConverter
     {
         public static string ToPublicFromVariable(this ReturnType from, string variableName)
         {

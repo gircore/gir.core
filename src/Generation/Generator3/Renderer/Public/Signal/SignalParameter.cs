@@ -1,6 +1,4 @@
-﻿using Generator3.Extensions;
-
-namespace Generator3.Renderer.Public
+﻿namespace Generator3.Renderer.Public
 {
     public static class SignalParameter
     {
