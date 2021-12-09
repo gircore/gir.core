@@ -17,7 +17,7 @@ namespace GirLoader.Output
 
             return new Member(
                 originalName: new SymbolName(member.Name),
-                symbolName: new SymbolName(new Helper.String(member.Name).ToPascalCase().EscapeIdentifier()),
+                symbolName: null!, //TODO Obsolete
                 value: member.Value
             );
         }
