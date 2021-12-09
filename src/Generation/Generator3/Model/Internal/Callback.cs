@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Generator3.Renderer.Converter;
 
 namespace Generator3.Model.Internal
 {
@@ -9,7 +10,7 @@ namespace Generator3.Model.Internal
         
         public GirModel.Callback Model { get; }
 
-        public string Name => Model.Name + "Callback";
+        public string Name => Model.GetInternalName();
         public ReturnType ReturnType => _returnType ??= Model.ReturnType.CreateInternalModel();
         public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateInternalModels();
         
