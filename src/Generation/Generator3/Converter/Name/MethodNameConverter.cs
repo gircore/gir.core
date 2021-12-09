@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Generator3.Renderer.Converter
+namespace Generator3.Converter
 {
     public static class MethodNameConverter
     {

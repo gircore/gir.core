@@ -1,7 +1,7 @@
 ﻿using ReturnTypeFactory = Generator3.Model.Public.ReturnTypeFactory;
 using GirModel;
 
-namespace Generator3.Renderer.Converter
+namespace Generator3.Converter
 {
     public static class InternalReturnTypeConverter
     {

@@ -1,4 +1,4 @@
-﻿using Generator3.Renderer.Converter;
+﻿using Generator3.Converter;
 using GirModel;
 
 namespace Generator3.Model.Public

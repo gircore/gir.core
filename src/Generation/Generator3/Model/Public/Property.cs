@@ -1,6 +1,5 @@
 using System;
 using Generator3.Converter;
-using Generator3.Renderer.Converter;
 
 namespace Generator3.Model.Public
 {

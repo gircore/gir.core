@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Generator3.Renderer.Converter;
+using Generator3.Converter;
 
 namespace Generator3.Model.Internal
 {
