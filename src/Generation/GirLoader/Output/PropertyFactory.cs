@@ -22,7 +22,7 @@ namespace GirLoader.Output
 
             return new Property(
                 originalName: new SymbolName(property.Name),
-                symbolName: new SymbolName(new Helper.String(property.Name).ToPascalCase()),
+                symbolName: null!, //TODO Obsolete
                 typeReference: _typeReferenceFactory.Create(property),
                 writeable: property.Writeable,
                 readable: property.Readable,

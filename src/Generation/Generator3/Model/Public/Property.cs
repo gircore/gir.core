@@ -1,4 +1,5 @@
 using System;
+using Generator3.Renderer.Converter;
 
 namespace Generator3.Model.Public
 {
@@ -7,9 +8,9 @@ namespace Generator3.Model.Public
         private readonly GirModel.Property _property;
 
         public string ClassName { get; }
-        public string NativeName => _property.NativeName;
-        public string ManagedName => GetManagedName();
-        public string DescriptorName => ManagedName + "PropertyDefinition";
+        public string NativeName => _property.Name;
+        public string PublicName => GetPublicName();
+        public string DescriptorName => PublicName + "PropertyDefinition";
         public string NullableTypeName => GetNullableTypeName();
 
         public bool Readable => _property.Readable;
@@ -42,9 +43,9 @@ namespace Generator3.Model.Public
             }
         }
 
-        private string GetManagedName()
+        private string GetPublicName()
         {
-            var name = _property.ManagedName;
+            var name = _property.GetPublicName();
 
             if (name == ClassName)
                 throw new Exception($"Property {name} is identical to it's class which is not yet supported. Property should be created with a suffix and in a separate build step be rewritten to it's original name");
