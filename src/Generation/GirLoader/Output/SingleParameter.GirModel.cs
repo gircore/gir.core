@@ -4,7 +4,7 @@
     {
         private GirModel.AnyTypeReference? _anyTypeReference;
 
-        string GirModel.Parameter.Name => Name;
+        string GirModel.Parameter.Name => OriginalName;
         int? GirModel.Parameter.Closure => ClosureIndex;
         GirModel.AnyTypeReference GirModel.Parameter.AnyTypeReference => _anyTypeReference ??= new AnyTypeReference(TypeReference);
         GirModel.Direction GirModel.Parameter.Direction => Direction.ToGirModel();

@@ -1,12 +1,15 @@
-﻿using GirModel;
+﻿using Generator3.Renderer.Converter;
+using GirModel;
 
 namespace Generator3.Model.Public
 {
     public abstract class Parameter
     {
+        private string? _name;
+        
         public GirModel.Parameter Model { get; }
 
-        public string Name => Model.Name;
+        public string Name => _name ??= Model.GetPublicName();
         public abstract string NullableTypeName { get; }
         public virtual string Direction => string.Empty;
         public virtual string Attribute => string.Empty;
