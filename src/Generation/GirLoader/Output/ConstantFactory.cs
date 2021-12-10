@@ -21,7 +21,7 @@ namespace GirLoader.Output
 
             return new Constant(
                 repository: repository,
-                originalName: new SymbolName(constant.Name),
+                originalName: constant.Name,
                 typeReference: _typeReferenceFactory.Create(constant),
                 value: constant.Value
             );

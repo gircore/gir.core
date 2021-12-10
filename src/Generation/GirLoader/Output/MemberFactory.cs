@@ -16,7 +16,7 @@ namespace GirLoader.Output
                 throw new Exception($"Member {member.Name} is missing a value");
 
             return new Member(
-                originalName: new SymbolName(member.Name),
+                originalName: member.Name,
                 value: member.Value
             );
         }

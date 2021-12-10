@@ -7,7 +7,7 @@ namespace GirLoader.Output
     {
         public string Value { get; }
 
-        public Member(SymbolName originalName, string value) : base(originalName)
+        public Member(string originalName, string value) : base(originalName)
         {
             Value = value;
         }

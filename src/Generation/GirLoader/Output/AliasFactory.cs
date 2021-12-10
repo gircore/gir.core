@@ -24,7 +24,7 @@ namespace GirLoader.Output
 
             return new Alias(
                 cType: alias.Type,
-                name: new SymbolName(alias.Name),
+                name: alias.Name,
                 typeReference: _typeReferenceFactory.CreateResolveable(alias.For.Name, alias.For.CType),
                 repository: repository
             );

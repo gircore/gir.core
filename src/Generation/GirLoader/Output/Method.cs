@@ -9,7 +9,7 @@ namespace GirLoader.Output
         public ParameterList ParameterList { get; }
         public string Name { get; }
 
-        public Method(SymbolName originalName, string name, ReturnValue returnValue, ParameterList parameterList) : base(originalName)
+        public Method(string originalName, string name, ReturnValue returnValue, ParameterList parameterList) : base(originalName)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;

@@ -4,12 +4,12 @@ namespace GirLoader.Output
 {
     public class Alias
     {
-        public SymbolName Name { get; }
+        public string Name { get; }
         public string CType { get; }
         public Repository Repository { get; }
         public TypeReference TypeReference { get; }
 
-        public Alias(Repository repository, SymbolName name, string cType, TypeReference typeReference)
+        public Alias(Repository repository, string name, string cType, TypeReference typeReference)
         {
             TypeReference = typeReference;
             Repository = repository;

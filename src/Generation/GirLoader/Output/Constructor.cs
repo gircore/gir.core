@@ -8,7 +8,7 @@ namespace GirLoader.Output
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
         public string Name { get; }
-        public Constructor(string name, SymbolName originalName, ReturnValue returnValue, ParameterList parameterList) : base(originalName)
+        public Constructor(string name, string originalName, ReturnValue returnValue, ParameterList parameterList) : base(originalName)
         {
             Name = name;
             ReturnValue = returnValue;

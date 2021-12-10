@@ -29,7 +29,7 @@ namespace GirLoader.Output
             {
                 return new Function(
                     repository: repository,
-                    originalName: new SymbolName(method.Identifier),
+                    originalName: method.Identifier,
                     name: method.Name,
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
                     parameterList: _parameterListFactory.Create(method.Parameters, method.Throws)
@@ -53,7 +53,7 @@ namespace GirLoader.Output
 
             return new Function(
                 repository: repository,
-                originalName: new SymbolName(getTypeMethodName),
+                originalName: getTypeMethodName,
                 name: "GetGType",
                 returnValue: returnValue,
                 parameterList: new ParameterList()

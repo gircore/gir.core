@@ -4,9 +4,9 @@ namespace GirLoader.Output
 {
     public abstract class Symbol
     {
-        public SymbolName OriginalName { get; }
+        public string OriginalName { get; }
 
-        protected Symbol(SymbolName originalName)
+        protected Symbol(string originalName)
         {
             OriginalName = originalName;
         }

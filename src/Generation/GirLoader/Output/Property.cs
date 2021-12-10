@@ -9,7 +9,7 @@ namespace GirLoader.Output
         public bool Readable { get; }
         public TypeReference TypeReference { get; }
 
-        public Property(SymbolName originalName, TypeReference typeReference, bool writeable, bool readable, Transfer transfer) : base(originalName)
+        public Property(string originalName, TypeReference typeReference, bool writeable, bool readable, Transfer transfer) : base(originalName)
         {
             TypeReference = typeReference;
             Writeable = writeable;

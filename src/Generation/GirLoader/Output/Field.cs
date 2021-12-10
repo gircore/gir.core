@@ -19,14 +19,14 @@ namespace GirLoader.Output
         /// <param name="readable"></param>
         /// <param name="private"></param>
         /// <param name="orignalName"></param>
-        public Field(SymbolName orignalName, TypeReference typeReference, bool readable = true, bool @private = false) : base(orignalName)
+        public Field(string orignalName, TypeReference typeReference, bool readable = true, bool @private = false) : base(orignalName)
         {
             TypeReference = typeReference;
             Readable = readable;
             Private = @private;
         }
 
-        public Field(SymbolName orignalName, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false)
+        public Field(string orignalName, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false)
             : this(orignalName, resolveableTypeReference, readable, @private)
         {
             Callback = callback;

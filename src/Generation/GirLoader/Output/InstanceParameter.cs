@@ -9,9 +9,9 @@ namespace GirLoader.Output
         public Transfer Transfer { get; }
         public bool Nullable { get; }
         public bool CallerAllocates { get; }
-        SymbolName Parameter.Name => OriginalName;
+        string Parameter.Name => OriginalName;
 
-        public InstanceParameter(SymbolName originalName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates) : base(originalName)
+        public InstanceParameter(string originalName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates) : base(originalName)
         {
             TypeReference = typeReference;
             Direction = direction;
