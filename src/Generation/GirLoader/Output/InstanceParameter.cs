@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
     public partial class InstanceParameter : Symbol, Parameter
     {
@@ -19,13 +17,5 @@ namespace GirLoader.Output
             Nullable = nullable;
             CallerAllocates = callerAllocates;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            yield return TypeReference;
-        }
-
-        internal override bool GetIsResolved()
-            => TypeReference.GetIsResolved();
     }
 }

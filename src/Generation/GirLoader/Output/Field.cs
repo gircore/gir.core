@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
     public partial class Field : Symbol, AnyType
     {
@@ -32,23 +30,5 @@ namespace GirLoader.Output
             Callback = callback;
             resolveableTypeReference.ResolveAs(Callback);
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            // If the callback is not null this means the symbol reference
-            // of this field was already resolved automatically. Meaning we
-            // do not return the symbol reference to the caller but the
-            // symbol references of the callback instead.
-            //
-            // If the callback is null the symbol reference is still unresolved
-            // and must be returned to get resolved.
-
-            return Callback is not null 
-                ? Callback.GetTypeReferences() 
-                : new List<TypeReference>() { TypeReference };
-        }
-
-        internal override bool GetIsResolved()
-            => TypeReference.GetIsResolved() && (Callback?.GetIsResolved() ?? true);
     }
 }

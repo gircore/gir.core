@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
     public abstract class Symbol
     {
@@ -10,8 +8,5 @@ namespace GirLoader.Output
         {
             OriginalName = originalName;
         }
-
-        internal abstract IEnumerable<TypeReference> GetTypeReferences();
-        internal abstract bool GetIsResolved();
     }
 }

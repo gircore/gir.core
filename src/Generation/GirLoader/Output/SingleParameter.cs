@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
     public partial class SingleParameter : Symbol, Parameter
     {
@@ -25,13 +23,5 @@ namespace GirLoader.Output
             DestroyIndex = destroyIndex;
             CallbackScope = scope;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            yield return TypeReference;
-        }
-
-        internal override bool GetIsResolved()
-            => TypeReference.GetIsResolved();
     }
 }

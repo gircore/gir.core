@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
@@ -39,56 +38,6 @@ namespace GirLoader.Output
             IsFundamental = isFundamental;
         }
 
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            var symbolReferences = IEnumerables.Concat(
-                Implements,
-                GetTypeFunction.GetTypeReferences(),
-                Constructors.SelectMany(x => x.GetTypeReferences()),
-                Methods.SelectMany(x => x.GetTypeReferences()),
-                Functions.SelectMany(x => x.GetTypeReferences()),
-                Properties.SelectMany(x => x.GetTypeReferences()),
-                Fields.SelectMany(x => x.GetTypeReferences()),
-                Signals.SelectMany(x => x.GetTypeReferences())
-            );
-
-            if (Parent is { })
-                symbolReferences = symbolReferences.Append(Parent);
-
-            return symbolReferences;
-        }
-
-        internal override bool GetIsResolved()
-        {
-            if (Parent is { } && !Parent.GetIsResolved())
-                return false;
-
-            if (!Implements.All(x => x.GetIsResolved()))
-                return false;
-
-            if (!GetTypeFunction.GetIsResolved())
-                return false;
-
-            return Methods.All(x => x.GetIsResolved())
-                   && Functions.All(x => x.GetIsResolved())
-                   && Constructors.All(x => x.GetIsResolved())
-                   && Properties.All(x => x.GetIsResolved())
-                   && Fields.All(x => x.GetIsResolved())
-                   && Signals.All(x => x.GetIsResolved());
-        }
-
-        internal override void Strip()
-        {
-            //Fields are not cleaned as those are needed
-            //to represent the native structure of the object / class
-
-            _methods.RemoveAll(Remove);
-            _functions.RemoveAll(Remove);
-            _constructors.RemoveAll(Remove);
-            _properties.RemoveAll(Remove);
-            _signals.RemoveAll(Remove);
-        }
-
         internal override bool Matches(TypeReference typeReference)
         {
             if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
@@ -105,16 +54,6 @@ namespace GirLoader.Output
 
 
             return false;
-        }
-
-        private bool Remove(Symbol symbol)
-        {
-            var result = symbol.GetIsResolved();
-
-            if (!result)
-                Log.Information($"Class {Repository?.Namespace.Name}.{OriginalName}: Stripping symbol {symbol.OriginalName}");
-
-            return !result;
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
     public partial class Constant : Symbol
     {
@@ -14,13 +12,5 @@ namespace GirLoader.Output
             TypeReference = typeReference;
             Value = value;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            yield return TypeReference;
-        }
-
-        internal override bool GetIsResolved()
-            => TypeReference.GetIsResolved();
     }
 }

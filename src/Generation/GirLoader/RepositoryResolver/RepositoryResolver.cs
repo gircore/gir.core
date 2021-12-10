@@ -23,27 +23,13 @@ namespace GirLoader
                 Add(dependentRepository);
         }
 
-        /// <summary>
-        /// Resolves all loaded repositories
-        /// </summary>
-        public void Resolve()
+        public void ResolveTypeReferences(IEnumerable<Output.TypeReference> references, Output.Repository repository)
         {
-            var dependencyResolver = new Helper.RepositoryDependencyResolver();
-            var orderedRepositories = dependencyResolver.ResolveOrdered(_knownRepositories).Cast<Output.Repository>();
-
-            foreach (var repository in orderedRepositories)
-                ResolveTypeReferences(repository);
-        }
-
-        private void ResolveTypeReferences(Output.Repository repository)
-        {
-            foreach (var reference in repository.Namespace.GetTypeReferences())
+            foreach(var reference in references)
                 ResolveTypeReference(reference, repository);
-
-            Log.Debug($"Resolved type references for repository {repository.Namespace.Name}");
         }
-
-        private void ResolveTypeReference(Output.TypeReference reference, Output.Repository repository)
+        
+        public void ResolveTypeReference(Output.TypeReference reference, Output.Repository repository)
         {
             if (reference is Output.ArrayTypeReference arrayTypeReference)
             {

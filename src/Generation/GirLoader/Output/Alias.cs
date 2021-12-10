@@ -17,14 +17,6 @@ namespace GirLoader.Output
             CType = cType;
         }
 
-        internal IEnumerable<TypeReference> GetTypeReferences()
-        {
-            yield return TypeReference;
-        }
-
-        internal bool GetIsResolved()
-            => TypeReference.GetIsResolved();
-
         public override string ToString()
             => CType;
 

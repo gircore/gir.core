@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
@@ -12,12 +10,6 @@ namespace GirLoader.Output
         {
             Members = members;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-            => Members.SelectMany(x => x.GetTypeReferences());
-
-        internal override bool GetIsResolved()
-            => Members.All(x => x.GetIsResolved());
 
         internal override bool Matches(TypeReference typeReference)
         {

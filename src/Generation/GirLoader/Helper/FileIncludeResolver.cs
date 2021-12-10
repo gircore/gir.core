@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using GirLoader.Input;
 
 namespace GirLoader.Helper
 {

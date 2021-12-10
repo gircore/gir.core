@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
     public enum Transfer
     {

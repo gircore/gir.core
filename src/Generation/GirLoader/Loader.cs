@@ -38,12 +38,36 @@ namespace GirLoader
 
         private static void Resolve(IEnumerable<Output.Repository> repositories)
         {
+            var repositoryList = OrderRepositories(repositories);
+            var repositoryResolver = InitializeRepositoryResolver(repositoryList);
+
+            foreach (var repository in repositoryList)
+            {
+                repositoryResolver.ResolveAliases(repository);
+                repositoryResolver.ResolveCallbacks(repository);
+                repositoryResolver.ResolveClasses(repository);
+                repositoryResolver.ResolveInterfaces(repository);
+                repositoryResolver.ResolveRecords(repository);
+                repositoryResolver.ResolveFunctions(repository);
+                repositoryResolver.ResolveConstants(repository);
+                repositoryResolver.ResolveUnions(repository);
+            }
+        }
+        
+        private static List<Output.Repository> OrderRepositories(IEnumerable<Output.Repository> repositories)
+        {
+            var dependencyResolver = new RepositoryDependencyResolver();
+            return dependencyResolver.ResolveOrdered(repositories).ToList();
+        }
+
+        private static RepositoryResolver InitializeRepositoryResolver(IEnumerable<Output.Repository> repositories)
+        {
             var repositoryResolver = new RepositoryResolver();
 
             foreach (var repository in repositories)
                 repositoryResolver.Add(repository);
 
-            repositoryResolver.Resolve();
+            return repositoryResolver;
         }
     }
 }

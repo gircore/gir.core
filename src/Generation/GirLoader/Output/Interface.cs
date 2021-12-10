@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
@@ -24,44 +23,6 @@ namespace GirLoader.Output
             this._functions = functions.ToList();
             GetTypeFunction = getTypeFunction;
             _properties = properties.ToList();
-        }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            return IEnumerables.Concat(
-                Implements,
-                GetTypeFunction.GetTypeReferences(),
-                Methods.SelectMany(x => x.GetTypeReferences()),
-                Functions.SelectMany(x => x.GetTypeReferences())
-            );
-        }
-
-        internal override void Strip()
-        {
-            _methods.RemoveAll(SymbolIsNotResolved);
-            _functions.RemoveAll(SymbolIsNotResolved);
-        }
-
-        internal override bool GetIsResolved()
-        {
-            if (!Implements.All(x => x.GetIsResolved()))
-                return false;
-
-            if (!GetTypeFunction.GetIsResolved())
-                return false;
-
-            return Methods.All(x => x.GetIsResolved())
-                   && Functions.All(x => x.GetIsResolved());
-        }
-
-        private bool SymbolIsNotResolved(Symbol symbol)
-        {
-            var result = symbol.GetIsResolved();
-
-            if (!result)
-                Log.Information($"Interface {Repository?.Namespace.Name}.{OriginalName}: Stripping symbol {symbol.OriginalName}");
-
-            return !result;
         }
 
         internal override bool Matches(TypeReference typeReference)

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
     public partial class Member : Symbol
     {
@@ -11,11 +8,5 @@ namespace GirLoader.Output
         {
             Value = value;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-            => Enumerable.Empty<TypeReference>();
-
-        internal override bool GetIsResolved()
-            => true;
     }
 }

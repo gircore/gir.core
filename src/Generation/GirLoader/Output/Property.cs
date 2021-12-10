@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
     public partial class Property : Symbol, TransferableAnyType
     {
@@ -16,13 +14,5 @@ namespace GirLoader.Output
             Transfer = transfer;
             Readable = readable;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            yield return TypeReference;
-        }
-
-        internal override bool GetIsResolved()
-            => TypeReference.GetIsResolved();
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
     public abstract class Type : GirModel.Type
     {
@@ -14,10 +12,6 @@ namespace GirLoader.Output
             CType = cType;
         }
 
-        internal virtual void Strip() { }
-
         internal abstract bool Matches(TypeReference typeReference);
-        internal abstract IEnumerable<TypeReference> GetTypeReferences();
-        internal abstract bool GetIsResolved();
     }
 }
