@@ -6,17 +6,14 @@ namespace GirLoader.Output
     {
         public Metadata Metadata { get; } = new();
 
-        public TypeName Name { get; set; }
-
         /// <summary>
         /// Name of the symbol in the c world
         /// </summary>
         public CType? CType { get; }
 
-        protected internal Type(CType? cType, TypeName name)
+        protected internal Type(CType? cType)
         {
             CType = cType;
-            Name = name;
         }
 
         internal virtual void Strip() { }
@@ -27,8 +24,5 @@ namespace GirLoader.Output
         internal abstract bool Matches(TypeReference typeReference);
         internal abstract IEnumerable<TypeReference> GetTypeReferences();
         internal abstract bool GetIsResolved();
-
-        public override string ToString()
-            => Name;
     }
 }

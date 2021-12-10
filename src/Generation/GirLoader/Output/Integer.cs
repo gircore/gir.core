@@ -2,6 +2,6 @@
 {
     public class Integer : PrimitiveValueType, GirModel.Integer
     {
-        public Integer(string ctype) : base(new CType(ctype), new TypeName("int")) { }
+        public Integer(string ctype) : base(new CType(ctype)) { }
     }
 }

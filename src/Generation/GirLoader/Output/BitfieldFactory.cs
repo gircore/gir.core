@@ -28,7 +28,7 @@ namespace GirLoader.Output
                 // Negative values can occur as C convenience members as a "mask".
                 // Those can safely be should be ignored.
 
-                if (ulong.TryParse(member.Value, out var _))
+                if (ulong.TryParse(member.Value, out _))
                     return true;
 
                 Log.Verbose($"{nameof(Bitfield)} - {member.OriginalName} ignored because value is no ulong: {member.Value}");
@@ -38,7 +38,6 @@ namespace GirLoader.Output
             return new Bitfield(
                 repository: repository,
                 originalName: new TypeName(bitfield.Name),
-                name: new TypeName(bitfield.Name),
                 members: members.Where(ValueIsULong),
                 cType: new CType(bitfield.Type)
             );

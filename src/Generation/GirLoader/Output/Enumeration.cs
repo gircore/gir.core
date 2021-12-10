@@ -7,7 +7,7 @@ namespace GirLoader.Output
     {
         public IEnumerable<Member> Members { get; }
 
-        public Enumeration(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<Member> members) : base(repository, cType, name, originalName)
+        public Enumeration(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<Member> members) : base(repository, cType, originalName)
         {
             Members = members;
         }

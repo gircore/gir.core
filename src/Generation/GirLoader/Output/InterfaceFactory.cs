@@ -36,7 +36,6 @@ namespace GirLoader.Output
                 repository: repository,
                 cType: ctypeName,
                 originalName: new TypeName(@interface.Name),
-                name: new TypeName(@interface.Name),
                 implements: _typeReferenceFactory.Create(@interface.Implements),
                 methods: _methodFactory.Create(@interface.Methods),
                 functions: _functionFactory.Create(@interface.Functions, repository),

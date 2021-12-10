@@ -38,7 +38,6 @@ namespace GirLoader.Output
                 repository: repository,
                 cType: cTypeName,
                 originalName: new TypeName(record.Name),
-                name: new TypeName(record.Name),
                 gLibClassStructFor: GetGLibClassStructFor(record.GLibIsGTypeStructFor, repository.Namespace),
                 methods: _methodFactory.Create(record.Methods),
                 functions: _functionFactory.Create(record.Functions, repository),

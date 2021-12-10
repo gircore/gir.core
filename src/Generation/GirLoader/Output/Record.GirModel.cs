@@ -5,7 +5,7 @@ namespace GirLoader.Output
     public partial class Record : GirModel.Record
     {
         GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
-        string GirModel.ComplexType.Name => Name;
+        string GirModel.ComplexType.Name => OriginalName;
         GirModel.Function? GirModel.Record.TypeFunction => GetTypeFunction;
         IEnumerable<GirModel.Function> GirModel.Record.Functions => Functions;
         IEnumerable<GirModel.Method> GirModel.Record.Methods => Methods;

@@ -36,7 +36,6 @@ namespace GirLoader.Output
                 repository: repository,
                 cType: cTypeName,
                 originalName: new TypeName(union.Name),
-                name: new TypeName(union.Name),
                 methods: _methodFactory.Create(union.Methods),
                 functions: _functionFactory.Create(union.Functions, repository),
                 getTypeFunction: getTypeFunction,

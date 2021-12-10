@@ -26,7 +26,7 @@
 
     public abstract class String : PrimitiveType
     {
-        protected String() : base(new CType("gchar*"), new TypeName("string"))
+        protected String() : base(new CType("gchar*"))
         {
         }
     }
