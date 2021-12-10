@@ -2,7 +2,7 @@
 {
     public class UnsignedPointer : PrimitiveType, GirModel.UnsignedPointer
     {
-        public UnsignedPointer(string ctype) : base(new CType(ctype)) { }
+        public UnsignedPointer(string ctype) : base(ctype) { }
 
         internal override bool Matches(TypeReference typeReference)
         {

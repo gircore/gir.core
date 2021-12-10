@@ -2,7 +2,7 @@
 {
     public class Pointer : PrimitiveType, GirModel.Pointer
     {
-        public Pointer(string ctype) : base(new CType(ctype)) { }
+        public Pointer(string ctype) : base(ctype) { }
 
         internal override bool Matches(TypeReference typeReference)
         {

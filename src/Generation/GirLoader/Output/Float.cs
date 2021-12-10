@@ -2,6 +2,6 @@
 {
     public class Float : PrimitiveValueType, GirModel.Float
     {
-        public Float(string ctype) : base(new CType(ctype)) { }
+        public Float(string ctype) : base(ctype) { }
     }
 }

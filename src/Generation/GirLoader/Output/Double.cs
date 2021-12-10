@@ -2,6 +2,6 @@
 {
     public class Double : PrimitiveValueType, GirModel.Double
     {
-        public Double(string ctype) : base(new CType(ctype)) { }
+        public Double(string ctype) : base(ctype) { }
     }
 }

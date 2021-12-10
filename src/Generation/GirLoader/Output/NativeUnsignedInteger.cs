@@ -2,6 +2,6 @@
 {
     public class NativeUnsignedInteger : PrimitiveValueType, GirModel.NativeUnsignedInteger
     {
-        public NativeUnsignedInteger(string ctype) : base(new CType(ctype)) { }
+        public NativeUnsignedInteger(string ctype) : base(ctype) { }
     }
 }

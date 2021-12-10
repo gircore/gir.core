@@ -5,7 +5,7 @@
         public Repository Repository { get; }
         public TypeName OriginalName { get; }
 
-        protected ComplexType(Repository repository, CType? cType, TypeName originalName) : base(cType)
+        protected ComplexType(Repository repository, string? cType, TypeName originalName) : base(cType)
         {
             Repository = repository;
             OriginalName = originalName;

@@ -39,7 +39,7 @@ namespace GirLoader.Output
                 repository: repository,
                 originalName: new TypeName(bitfield.Name),
                 members: members.Where(ValueIsULong),
-                cType: new CType(bitfield.Type)
+                cType: bitfield.Type
             );
         }
     }

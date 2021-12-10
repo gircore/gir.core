@@ -9,9 +9,9 @@ namespace GirLoader.Output
         /// <summary>
         /// Name of the symbol in the c world
         /// </summary>
-        public CType? CType { get; }
+        public string? CType { get; }
 
-        protected internal Type(CType? cType)
+        protected internal Type(string? cType)
         {
             CType = cType;
         }

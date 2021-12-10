@@ -25,7 +25,7 @@ namespace GirLoader.Output
                 originalName: new TypeName(@enum.Name),
                 name: new TypeName(@enum.Name),
                 members: @enum.Members.Select(_memberFactory.Create).ToList(),
-                cType: new CType(@enum.Type)
+                cType:@enum.Type
             );
         }
     }

@@ -2,7 +2,7 @@
 {
     public class Void : PrimitiveType, GirModel.Void
     {
-        public Void(string ctype) : base(new CType(ctype)) { }
+        public Void(string ctype) : base(ctype) { }
 
         internal override bool Matches(TypeReference typeReference)
         {
