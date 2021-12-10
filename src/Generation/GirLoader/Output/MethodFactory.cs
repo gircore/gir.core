@@ -29,7 +29,7 @@ namespace GirLoader.Output
             {
                 return new Method(
                     originalName: new SymbolName(method.Identifier),
-                    symbolName: new SymbolName(method.Name),
+                    name: method.Name,
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
                     parameterList: _parameterListFactory.Create(method.Parameters, method.Throws)
                 );

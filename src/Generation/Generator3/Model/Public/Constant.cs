@@ -6,7 +6,7 @@ namespace Generator3.Model.Public
     {
         private readonly GirModel.Constant _constant;
 
-        public string Name => _constant.Name;
+        public string Name => _constant.GetPublicName();
         public string TypeName => _constant.Type.GetName();
         public string Value => GetValue();
 

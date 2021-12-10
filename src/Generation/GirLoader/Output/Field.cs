@@ -13,22 +13,21 @@ namespace GirLoader.Output
         /// <summary>
         /// Creates a new field.
         /// </summary>
-        /// <param name="symbolName"></param>
         /// <param name="typeReference"></param>
         /// <param name="typeInformation"></param>
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
         /// <param name="readable"></param>
         /// <param name="private"></param>
         /// <param name="orignalName"></param>
-        public Field(SymbolName orignalName, SymbolName symbolName, TypeReference typeReference, bool readable = true, bool @private = false) : base(orignalName, symbolName)
+        public Field(SymbolName orignalName, TypeReference typeReference, bool readable = true, bool @private = false) : base(orignalName)
         {
             TypeReference = typeReference;
             Readable = readable;
             Private = @private;
         }
 
-        public Field(SymbolName orignalName, SymbolName symbolName, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false)
-            : this(orignalName, symbolName, resolveableTypeReference, readable, @private)
+        public Field(SymbolName orignalName, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false)
+            : this(orignalName, resolveableTypeReference, readable, @private)
         {
             Callback = callback;
             resolveableTypeReference.ResolveAs(Callback);
@@ -44,10 +43,9 @@ namespace GirLoader.Output
             // If the callback is null the symbol reference is still unresolved
             // and must be returned to get resolved.
 
-            if (Callback is not null)
-                return Callback.GetTypeReferences();
-            else
-                return new List<TypeReference>() { TypeReference };
+            return Callback is not null 
+                ? Callback.GetTypeReferences() 
+                : new List<TypeReference>() { TypeReference };
         }
 
         internal override bool GetIsResolved()

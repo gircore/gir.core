@@ -7,11 +7,13 @@ namespace GirLoader.Output
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
+        public string Name { get; }
 
-        public Method(SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(originalName, symbolName)
+        public Method(SymbolName originalName, string name, ReturnValue returnValue, ParameterList parameterList) : base(originalName)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;
+            Name = name;
         }
 
         internal override IEnumerable<TypeReference> GetTypeReferences()

@@ -8,7 +8,7 @@ namespace GirLoader.Output
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
 
-        public Signal(SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(originalName, symbolName)
+        public Signal(SymbolName originalName, ReturnValue returnValue, ParameterList parameterList) : base(originalName)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;

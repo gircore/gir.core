@@ -22,7 +22,6 @@ namespace GirLoader.Output
 
             return new Property(
                 originalName: new SymbolName(property.Name),
-                symbolName: null!, //TODO Obsolete
                 typeReference: _typeReferenceFactory.Create(property),
                 writeable: property.Writeable,
                 readable: property.Readable,

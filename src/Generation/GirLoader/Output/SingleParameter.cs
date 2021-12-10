@@ -12,8 +12,9 @@ namespace GirLoader.Output
         public int? ClosureIndex { get; }
         public int? DestroyIndex { get; }
         public Scope CallbackScope { get; }
+        SymbolName Parameter.Name => OriginalName;
 
-        public SingleParameter(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope) : base(originalName, symbolName)
+        public SingleParameter(SymbolName originalName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope) : base(originalName)
         {
             TypeReference = typeReference;
             Direction = direction;

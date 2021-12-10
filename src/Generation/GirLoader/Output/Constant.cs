@@ -8,7 +8,7 @@ namespace GirLoader.Output
         public string Value { get; }
         public TypeReference TypeReference { get; }
 
-        public Constant(Repository repository, SymbolName originalName, SymbolName symbolName, TypeReference typeReference, string value) : base(originalName, symbolName)
+        public Constant(Repository repository, SymbolName originalName, TypeReference typeReference, string value) : base(originalName)
         {
             _repository = repository;
             TypeReference = typeReference;

@@ -30,7 +30,6 @@ namespace GirLoader.Output
 
             return new SingleParameter(
                 originalName: new SymbolName(parameter.Name),
-                symbolName: null!, //TODO obsolete
                 typeReference: _typeReferenceFactory.Create(parameter),
                 direction: DirectionFactory.Create(parameter.Direction),
                 transfer: _transferFactory.FromText(parameter.TransferOwnership),

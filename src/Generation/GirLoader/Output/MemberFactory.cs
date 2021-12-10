@@ -17,7 +17,6 @@ namespace GirLoader.Output
 
             return new Member(
                 originalName: new SymbolName(member.Name),
-                symbolName: null!, //TODO Obsolete
                 value: member.Value
             );
         }

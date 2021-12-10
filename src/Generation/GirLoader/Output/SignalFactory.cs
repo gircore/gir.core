@@ -25,7 +25,6 @@ namespace GirLoader.Output
 
             return new Signal(
                 originalName: new SymbolName(signal.Name),
-                symbolName: null!, //TODO Obsolete
                 returnValue: _returnValueFactory.Create(signal.ReturnValue),
                 parameterList: _parameterListFactory.Create(signal.Parameters)
             );
