@@ -1,6 +1,6 @@
 ﻿namespace GirLoader.Output
 {
-    public partial class Property : TransferableAnyType
+    public partial class Property
     {
         public string Name { get; }
         public Transfer Transfer { get; }

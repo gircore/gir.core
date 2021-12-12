@@ -1,6 +1,6 @@
 ﻿namespace GirLoader.Output
 {
-    public partial class Field : AnyType
+    public partial class Field
     {
         public string Name { get; }
         public TypeReference TypeReference { get; }
