@@ -5,7 +5,7 @@
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
 
-        public Callback(Repository repository, string? ctype, TypeName originalName, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctype, originalName)
+        public Callback(Repository repository, string? ctype, string originalName, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctype, originalName)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;

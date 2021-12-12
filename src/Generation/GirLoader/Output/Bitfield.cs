@@ -6,7 +6,7 @@ namespace GirLoader.Output
     {
         public IEnumerable<Member> Members { get; }
 
-        public Bitfield(Repository repository, string? cType, TypeName originalName, IEnumerable<Member> members) : base(repository, cType, originalName)
+        public Bitfield(Repository repository, string? cType, string originalName, IEnumerable<Member> members) : base(repository, cType, originalName)
         {
             Members = members;
         }

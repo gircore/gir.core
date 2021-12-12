@@ -24,7 +24,7 @@ namespace GirLoader.Output
             return new Callback(
                 repository: repository,
                 ctype: callback.Type,
-                originalName: new TypeName(callback.Name),
+                originalName: callback.Name,
                 returnValue: _returnValueFactory.Create(callback.ReturnValue),
                 parameterList: _parameterListFactory.Create(callback.Parameters)
             );

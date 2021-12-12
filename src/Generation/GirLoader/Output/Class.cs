@@ -22,7 +22,7 @@ namespace GirLoader.Output
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Constructor> Constructors => _constructors;
 
-        public Class(Repository repository, string? cType, TypeName originalName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental) : base(repository, cType, originalName)
+        public Class(Repository repository, string? cType, string originalName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental) : base(repository, cType, originalName)
         {
             Parent = parent;
             Implements = implements;

@@ -22,8 +22,7 @@ namespace GirLoader.Output
 
             return new Enumeration(
                 repository: repository,
-                originalName: new TypeName(@enum.Name),
-                name: new TypeName(@enum.Name),
+                originalName: @enum.Name,
                 members: @enum.Members.Select(_memberFactory.Create).ToList(),
                 cType:@enum.Type
             );

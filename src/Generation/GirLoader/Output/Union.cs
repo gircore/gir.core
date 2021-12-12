@@ -18,7 +18,7 @@ namespace GirLoader.Output
         public IEnumerable<Constructor> Constructors => _constructors;
         public IEnumerable<Function> Functions => _functions;
 
-        public Union(Repository repository, string? cType, TypeName originalName, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors) : base(repository, cType, originalName)
+        public Union(Repository repository, string? cType, string originalName, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors) : base(repository, cType, originalName)
         {
             GetTypeFunction = getTypeFunction;
             Disguised = disguised;
