@@ -52,7 +52,6 @@ namespace GirLoader.Output
                 return nameMatches && (namespaceMatches || namespaceMissing);
             }
 
-
             return false;
         }
     }
