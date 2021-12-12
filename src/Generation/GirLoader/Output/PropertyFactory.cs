@@ -21,7 +21,7 @@ namespace GirLoader.Output
                 throw new Exception("Property is missing a name");
 
             return new Property(
-                originalName: property.Name,
+                name: property.Name,
                 typeReference: _typeReferenceFactory.Create(property),
                 writeable: property.Writeable,
                 readable: property.Readable,

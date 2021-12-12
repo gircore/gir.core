@@ -1,7 +1,8 @@
 ﻿namespace GirLoader.Output
 {
-    public partial class Field : Symbol, AnyType
+    public partial class Field : AnyType
     {
+        public string Name { get; }
         public TypeReference TypeReference { get; }
 
         public Callback? Callback { get; }
@@ -16,16 +17,17 @@
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
         /// <param name="readable"></param>
         /// <param name="private"></param>
-        /// <param name="orignalName"></param>
-        public Field(string orignalName, TypeReference typeReference, bool readable = true, bool @private = false) : base(orignalName)
+        /// <param name="name"></param>
+        public Field(string name, TypeReference typeReference, bool readable = true, bool @private = false)
         {
+            Name = name;
             TypeReference = typeReference;
             Readable = readable;
             Private = @private;
         }
 
-        public Field(string orignalName, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false)
-            : this(orignalName, resolveableTypeReference, readable, @private)
+        public Field(string name, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false)
+            : this(name, resolveableTypeReference, readable, @private)
         {
             Callback = callback;
             resolveableTypeReference.ResolveAs(Callback);

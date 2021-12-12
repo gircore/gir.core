@@ -31,7 +31,7 @@ namespace GirLoader.Output
                 if (ulong.TryParse(member.Value, out _))
                     return true;
 
-                Log.Verbose($"{nameof(Bitfield)} - {member.OriginalName} ignored because value is no ulong: {member.Value}");
+                Log.Verbose($"{nameof(Bitfield)} - {member.Name} ignored because value is no ulong: {member.Value}");
                 return false;
             }
 

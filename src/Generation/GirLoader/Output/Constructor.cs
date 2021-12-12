@@ -1,18 +1,21 @@
 ﻿namespace GirLoader.Output
 {
-    public partial class Constructor : Symbol
+    public partial class Constructor
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
         public string Name { get; }
-        public Constructor(string name, string originalName, ReturnValue returnValue, ParameterList parameterList) : base(originalName)
+        public string Identifier { get; }
+
+        public Constructor(string name, string identifier, ReturnValue returnValue, ParameterList parameterList)
         {
             Name = name;
+            Identifier = identifier;
             ReturnValue = returnValue;
             ParameterList = parameterList;
         }
 
         public override string ToString()
-            => OriginalName;
+            => Identifier;
     }
 }

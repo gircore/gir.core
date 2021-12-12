@@ -4,7 +4,7 @@ namespace GirLoader.Output
 {
     public partial class Field : GirModel.Field
     {
-        string GirModel.Field.Name => OriginalName;
+        string GirModel.Field.Name => Name;
         bool GirModel.Field.IsReadable => Readable;
         bool GirModel.Field.IsPrivate => Private;
         bool GirModel.Field.IsPointer => TypeReference.CTypeReference?.IsPointer ?? false;

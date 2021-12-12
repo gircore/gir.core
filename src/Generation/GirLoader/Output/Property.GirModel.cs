@@ -2,7 +2,7 @@
 {
     public partial class Property : GirModel.Property
     {
-        string GirModel.Property.Name => OriginalName;
+        string GirModel.Property.Name => Name;
         GirModel.AnyType GirModel.Property.AnyType => TypeReference switch
         {
             ArrayTypeReference arrayTypeReference => GirModel.AnyType.From(arrayTypeReference),

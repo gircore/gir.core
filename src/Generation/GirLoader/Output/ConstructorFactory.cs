@@ -28,7 +28,7 @@ namespace GirLoader.Output
             if (method.Name != string.Empty)
             {
                 return new Constructor(
-                    originalName: method.Identifier,
+                    identifier: method.Identifier,
                     name: method.Name,
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
                     parameterList: _parameterListFactory.Create(method.Parameters, method.Throws)

@@ -2,7 +2,7 @@
 {
     public partial class Member : GirModel.Member
     {
-        string GirModel.Member.Name => OriginalName;
+        string GirModel.Member.Name => Name;
         long GirModel.Member.Value => long.Parse(Value);
     }
 }
