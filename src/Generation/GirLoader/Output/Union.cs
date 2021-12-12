@@ -18,7 +18,7 @@ namespace GirLoader.Output
         public IEnumerable<Constructor> Constructors => _constructors;
         public IEnumerable<Function> Functions => _functions;
 
-        public Union(Repository repository, string? cType, string originalName, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors) : base(repository, cType, originalName)
+        public Union(Repository repository, string? cType, string name, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors) : base(repository, cType, name)
         {
             GetTypeFunction = getTypeFunction;
             Disguised = disguised;
@@ -34,7 +34,7 @@ namespace GirLoader.Output
             return typeReference switch
             {
                 { CTypeReference: { } cr } => cr.CType == CType,
-                { SymbolNameReference: { } sr } => sr.SymbolName == OriginalName,
+                { SymbolNameReference: { } sr } => sr.SymbolName == Name,
                 _ => throw new Exception($"Can't match {nameof(Union)} with {nameof(TypeReference)} {typeReference}")
             };
         }

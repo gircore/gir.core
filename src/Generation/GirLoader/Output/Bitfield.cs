@@ -6,7 +6,7 @@ namespace GirLoader.Output
     {
         public IEnumerable<Member> Members { get; }
 
-        public Bitfield(Repository repository, string? cType, string originalName, IEnumerable<Member> members) : base(repository, cType, originalName)
+        public Bitfield(Repository repository, string? cType, string name, IEnumerable<Member> members) : base(repository, cType, name)
         {
             Members = members;
         }
@@ -18,7 +18,7 @@ namespace GirLoader.Output
                 var namespaceOk = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name
                                   || typeReference.SymbolNameReference.NamespaceName == null;
 
-                return namespaceOk && typeReference.SymbolNameReference.SymbolName == OriginalName;
+                return namespaceOk && typeReference.SymbolNameReference.SymbolName == Name;
             }
 
             if (typeReference.CTypeReference is not null)

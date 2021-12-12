@@ -22,7 +22,7 @@ namespace GirLoader.Output
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Constructor> Constructors => _constructors;
 
-        public Class(Repository repository, string? cType, string originalName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental) : base(repository, cType, originalName)
+        public Class(Repository repository, string? cType, string name, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental) : base(repository, cType, name)
         {
             Parent = parent;
             Implements = implements;
@@ -45,7 +45,7 @@ namespace GirLoader.Output
 
             if (typeReference.SymbolNameReference is not null)
             {
-                var nameMatches = typeReference.SymbolNameReference.SymbolName == OriginalName;
+                var nameMatches = typeReference.SymbolNameReference.SymbolName == Name;
                 var namespaceMatches = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name;
                 var namespaceMissing = typeReference.SymbolNameReference.NamespaceName == null;
 

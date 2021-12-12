@@ -20,7 +20,7 @@ namespace GirLoader.Output
         public IEnumerable<Function> Functions => _functions;
         public TypeReference? GLibClassStructFor { get; }
 
-        public Record(Repository repository, string? cType, string originalName, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors) : base(repository, cType, originalName)
+        public Record(Repository repository, string? cType, string name, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors) : base(repository, cType, name)
         {
             GLibClassStructFor = gLibClassStructFor;
             GetTypeFunction = getTypeFunction;
@@ -39,7 +39,7 @@ namespace GirLoader.Output
 
             if (typeReference.SymbolNameReference is not null)
             {
-                var nameMatches = typeReference.SymbolNameReference.SymbolName == OriginalName;
+                var nameMatches = typeReference.SymbolNameReference.SymbolName == Name;
                 var namespaceMatches = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name;
                 var namespaceMissing = typeReference.SymbolNameReference.NamespaceName == null;
 

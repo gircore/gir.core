@@ -37,7 +37,7 @@ namespace GirLoader.Output
 
             return new Bitfield(
                 repository: repository,
-                originalName: bitfield.Name,
+                name: bitfield.Name,
                 members: members.Where(ValueIsULong),
                 cType: bitfield.Type
             );
