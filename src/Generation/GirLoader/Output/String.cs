@@ -24,7 +24,7 @@
         }
     }
 
-    public abstract class String : PrimitiveType
+    public abstract class String : Type
     {
         protected String() : base("gchar*")
         {

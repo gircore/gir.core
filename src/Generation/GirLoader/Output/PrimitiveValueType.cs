@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output
 {
-    public abstract class PrimitiveValueType : PrimitiveType
+    public abstract class PrimitiveValueType : Type
     {
         protected PrimitiveValueType(string ctype) : base(ctype)
         {

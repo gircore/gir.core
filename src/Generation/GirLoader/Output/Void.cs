@@ -1,6 +1,6 @@
 ﻿namespace GirLoader.Output
 {
-    public class Void : PrimitiveType, GirModel.Void
+    public class Void : Type, GirModel.Void
     {
         public Void(string ctype) : base(ctype) { }
 
