@@ -14,7 +14,7 @@ namespace Generator3.Model.Public
         public virtual string Direction => string.Empty;
         public virtual string Attribute => string.Empty;
 
-        public bool IsCallback => Model.AnyTypeReference.AnyType.Is<Callback>();
+        public bool IsCallback => Model.AnyType.Is<Callback>();
         
         public Scope Scope => Model.Scope;
         

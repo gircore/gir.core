@@ -4,10 +4,10 @@ namespace Generator3.Model.Internal
 {
     public class UnionParameter : Parameter
     {
-        public override string NullableTypeName => Model.AnyTypeReference.IsPointer switch
+        public override string NullableTypeName => Model.IsPointer switch
         {
             true => TypeNameConverter.Pointer,
-            false => Model.AnyTypeReference.AnyType.AsT0.GetName()
+            false => Model.AnyType.AsT0.GetName()
         };
 
         public override string Direction => Model.GetDirection(
@@ -19,7 +19,7 @@ namespace Generator3.Model.Internal
 
         protected internal UnionParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Union>();
+            parameter.AnyType.VerifyType<GirModel.Union>();
         }
     }
 }

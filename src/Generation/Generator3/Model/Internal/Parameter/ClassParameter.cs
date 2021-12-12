@@ -15,7 +15,7 @@ namespace Generator3.Model.Internal
 
         protected internal ClassParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Class>();
+            parameter.AnyType.VerifyType<GirModel.Class>();
         }
     }
 }

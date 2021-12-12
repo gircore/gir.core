@@ -8,7 +8,7 @@ namespace Generator3.Model.Internal
 
         protected internal PointerRecordParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Record>();
+            parameter.AnyType.VerifyType<GirModel.Record>();
         }
     }
 }

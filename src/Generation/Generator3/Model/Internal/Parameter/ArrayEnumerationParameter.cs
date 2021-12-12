@@ -4,9 +4,9 @@ namespace Generator3.Model.Internal
 {
     public class ArrayEnumerationParameter : Parameter
     {
-        private GirModel.ArrayType ArrayType => Model.AnyTypeReference.AnyType.AsT1;
+        private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
 
-        private GirModel.Enumeration Type => (GirModel.Enumeration) ArrayType.AnyTypeReference.AnyType.AsT0;
+        private GirModel.Enumeration Type => (GirModel.Enumeration) ArrayType.AnyType.AsT0;
 
         public override string NullableTypeName => ArrayType.Length is null
             ? TypeNameConverter.Pointer
@@ -21,7 +21,7 @@ namespace Generator3.Model.Internal
 
         protected internal ArrayEnumerationParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyArrayType<GirModel.Enumeration>();
+            parameter.AnyType.VerifyArrayType<GirModel.Enumeration>();
         }
     }
 }

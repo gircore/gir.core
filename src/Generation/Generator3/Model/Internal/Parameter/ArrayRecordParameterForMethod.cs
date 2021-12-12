@@ -4,11 +4,11 @@ namespace Generator3.Model.Internal
 {
     public class ArrayRecordParameterForMethod : Parameter
     {
-        private GirModel.ArrayType ArrayType => Model.AnyTypeReference.AnyType.AsT1;
+        private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
 
         public override string NullableTypeName => ArrayType.Length is null
             ? TypeNameConverter.PointerArray
-            : ((GirModel.Record) ArrayType.AnyTypeReference.AnyType.AsT0).GetFullyQualifiedInternalStruct() + "[]";
+            : ((GirModel.Record) ArrayType.AnyType.AsT0).GetFullyQualifiedInternalStruct() + "[]";
 
         public override string Attribute => ArrayType.Length is null
             ? string.Empty
@@ -17,7 +17,7 @@ namespace Generator3.Model.Internal
 
         protected internal ArrayRecordParameterForMethod(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyArrayType<GirModel.Record>();
+            parameter.AnyType.VerifyArrayType<GirModel.Record>();
         }
     }
 }

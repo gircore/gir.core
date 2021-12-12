@@ -4,7 +4,7 @@ namespace Generator3.Model.Public
 {
     public class RecordParameter : Parameter
     {
-        private GirModel.Record Type => (GirModel.Record) Model.AnyTypeReference.AnyType.AsT0;
+        private GirModel.Record Type => (GirModel.Record) Model.AnyType.AsT0;
         
         public override string NullableTypeName => Type.GetFullyQualified() + GetDefaultNullable();
 
@@ -17,7 +17,7 @@ namespace Generator3.Model.Public
 
         protected internal RecordParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Record>();
+            parameter.AnyType.VerifyType<GirModel.Record>();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Generator3.Model.Internal
                     GirModel.Class => new ClassField(field),
                     _ => new StandardField(field)
                 },
-                arrayType => arrayType.AnyTypeReference.AnyType.Match<Field>(
+                arrayType => arrayType.AnyType.Match<Field>(
                     type => type switch
                     {
                         GirModel.Union => new ArrayUnionField(field),

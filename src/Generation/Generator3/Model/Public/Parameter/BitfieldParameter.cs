@@ -4,7 +4,7 @@ namespace Generator3.Model.Public
 {
     public class BitfieldParameter : Parameter
     {
-        private GirModel.Bitfield Type => (GirModel.Bitfield) Model.AnyTypeReference.AnyType.AsT0;
+        private GirModel.Bitfield Type => (GirModel.Bitfield) Model.AnyType.AsT0;
 
         public override string NullableTypeName => Type.GetFullyQualified();
 
@@ -17,7 +17,7 @@ namespace Generator3.Model.Public
 
         protected internal BitfieldParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Bitfield>();
+            parameter.AnyType.VerifyType<GirModel.Bitfield>();
         }
     }
 }

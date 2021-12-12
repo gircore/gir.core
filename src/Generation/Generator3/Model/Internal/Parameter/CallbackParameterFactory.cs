@@ -9,7 +9,7 @@ namespace Generator3.Model.Internal
         public static IEnumerable<Parameter> CreateInternalModelsForCallback(this IEnumerable<GirModel.Parameter> parameters)
             => parameters.Select(CreateInternalModelForCallback);
 
-        private static Parameter CreateInternalModelForCallback(this GirModel.Parameter parameter) => parameter.AnyTypeReference.AnyType.Match(
+        private static Parameter CreateInternalModelForCallback(this GirModel.Parameter parameter) => parameter.AnyType.Match(
             type => type switch
             {
                 GirModel.String => new StringParameter(parameter),
@@ -28,13 +28,13 @@ namespace Generator3.Model.Internal
                 GirModel.Bitfield => new BitfieldParameter(parameter),
                 GirModel.Void => new VoidParameter(parameter),
 
-                _ => throw new Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyTypeReference.AnyType} can not be converted into a model")
+                _ => throw new Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyType} can not be converted into a model")
             },
-            arrayType => arrayType.AnyTypeReference.AnyType.Match<Parameter>(
+            arrayType => arrayType.AnyType.Match<Parameter>(
                 type => type switch
                 {
                     GirModel.Class => new ArrayClassParameter(parameter),
-                    GirModel.Record when arrayType.AnyTypeReference.IsPointer => new ArrayPointerRecordParameter(parameter),
+                    GirModel.Record when arrayType.IsPointer => new ArrayPointerRecordParameter(parameter),
                     GirModel.Record => new ArrayRecordParameter(parameter),
                     GirModel.String => new ArrayStringParameter(parameter),
                     GirModel.Enumeration => new ArrayEnumerationParameter(parameter),

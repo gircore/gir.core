@@ -15,7 +15,7 @@ namespace Generator3.Model.Internal
 
         protected internal InterfaceParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Interface>();
+            parameter.AnyType.VerifyType<GirModel.Interface>();
         }
     }
 }

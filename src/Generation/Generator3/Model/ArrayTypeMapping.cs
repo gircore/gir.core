@@ -25,7 +25,7 @@ namespace Generator3.Model
         {
             while (true)
             {
-                if (arrayType.AnyTypeReference.AnyType.TryPickT0(out var type, out var array))
+                if (arrayType.AnyType.TryPickT0(out var type, out var array))
                 {
                     nameParts.Add(type.GetName());
                 }

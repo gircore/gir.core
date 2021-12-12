@@ -4,11 +4,11 @@ namespace Generator3.Model.Public
 {
     public class ArrayRecordParameter : Parameter
     {
-        private GirModel.ArrayType ArrayType => Model.AnyTypeReference.AnyType.AsT1;
+        private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
         
         public override string NullableTypeName => ArrayType.Length is null
             ? TypeNameConverter.PointerArray
-            : ((GirModel.Record) ArrayType.AnyTypeReference.AnyType.AsT0).GetFullyQualified() + "[]";
+            : ((GirModel.Record) ArrayType.AnyType.AsT0).GetFullyQualified() + "[]";
 
         public override string Direction => Model.GetDirection(
             @in: ParameterDirection.In,
@@ -19,7 +19,7 @@ namespace Generator3.Model.Public
 
         protected internal ArrayRecordParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyArrayType<GirModel.Record>();
+            parameter.AnyType.VerifyArrayType<GirModel.Record>();
         }
     }
 }

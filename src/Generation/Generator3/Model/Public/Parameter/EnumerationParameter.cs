@@ -4,7 +4,7 @@ namespace Generator3.Model.Public
 {
     public class EnumerationParameter : Parameter
     {
-        private GirModel.Enumeration Type => (GirModel.Enumeration) Model.AnyTypeReference.AnyType.AsT0;
+        private GirModel.Enumeration Type => (GirModel.Enumeration) Model.AnyType.AsT0;
 
         public override string NullableTypeName => Type.GetFullyQualified();
 
@@ -17,7 +17,7 @@ namespace Generator3.Model.Public
 
         protected internal EnumerationParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Enumeration>();
+            parameter.AnyType.VerifyType<GirModel.Enumeration>();
         }
     }
 }

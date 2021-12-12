@@ -4,7 +4,7 @@ namespace Generator3.Model.Internal
 {
     public class StandardParameter : Parameter
     {
-        public override string NullableTypeName => Model.AnyTypeReference.AnyType.Match(
+        public override string NullableTypeName => Model.AnyType.Match(
             type => type.GetName() + GetDefaultNullable(),
             arrayType => arrayType.GetName() //TODO: Consider if StandardParameter should support arrays?
         );

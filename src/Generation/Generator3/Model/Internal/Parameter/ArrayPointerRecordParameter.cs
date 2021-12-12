@@ -4,7 +4,7 @@ namespace Generator3.Model.Internal
 {
     public class ArrayPointerRecordParameter : Parameter
     {
-        private GirModel.ArrayType ArrayType => Model.AnyTypeReference.AnyType.AsT1;
+        private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
 
         public override string NullableTypeName => TypeNameConverter.PointerArray;
 
@@ -14,7 +14,7 @@ namespace Generator3.Model.Internal
 
         protected internal ArrayPointerRecordParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyArrayType<GirModel.Record>();
+            parameter.AnyType.VerifyArrayType<GirModel.Record>();
         }
     }
 }

@@ -4,9 +4,9 @@ namespace Generator3.Model.Internal
 {
     public class StringParameter : Parameter
     {
-        public override string NullableTypeName => Model.AnyTypeReference.AnyType.AsT0.GetName() + GetDefaultNullable();
+        public override string NullableTypeName => Model.AnyType.AsT0.GetName() + GetDefaultNullable();
 
-        public override string Attribute => Model.AnyTypeReference.AnyType.AsT0 switch
+        public override string Attribute => Model.AnyType.AsT0 switch
         {
             // Marshal as a UTF-8 encoded string
             GirModel.Utf8String => MarshalAs.UnmanagedLpUtf8String(),
@@ -30,7 +30,7 @@ namespace Generator3.Model.Internal
 
         protected internal StringParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.String>();
+            parameter.AnyType.VerifyType<GirModel.String>();
         }
     }
 }

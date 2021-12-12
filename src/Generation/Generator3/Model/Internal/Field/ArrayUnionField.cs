@@ -5,7 +5,7 @@ namespace Generator3.Model.Internal
     public class ArrayUnionField : Field
     {
         private GirModel.ArrayType ArrayType => _field.AnyTypeOrCallback.AsT0.AsT1;
-        private GirModel.Union Type => (GirModel.Union) ArrayType.AnyTypeReference.AnyType.AsT0;
+        private GirModel.Union Type => (GirModel.Union) ArrayType.AnyType.AsT0;
 
         public override string? Attribute => ArrayType.FixedSize is not null
             ? MarshalAs.UnmanagedByValArray(sizeConst: ArrayType.FixedSize.Value)

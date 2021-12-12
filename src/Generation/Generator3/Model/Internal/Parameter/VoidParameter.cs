@@ -8,7 +8,7 @@ namespace Generator3.Model.Internal
 
         protected internal VoidParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Void>();
+            parameter.AnyType.VerifyType<GirModel.Void>();
         }
     }
 }
