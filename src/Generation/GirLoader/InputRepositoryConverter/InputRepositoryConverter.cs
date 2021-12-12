@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace GirLoader
 {
-    internal class RepositoryConverter
+    internal class InputRepositoryConverter
     {
         private readonly ResolveInclude _resolveInclude;
         private readonly Output.RepositoryFactory _repositoryFactory;
         private readonly Dictionary<string, Output.Repository> _knownRepositories = new();
 
-        public RepositoryConverter(ResolveInclude resolveInclude, Output.RepositoryFactory repositoryFactory)
+        public InputRepositoryConverter(ResolveInclude resolveInclude, Output.RepositoryFactory repositoryFactory)
         {
             _resolveInclude = resolveInclude;
             _repositoryFactory = repositoryFactory;
         }
 
-        public Output.Repository LoadRepository(Input.Repository inputRepository)
+        public Output.Repository CreateOutputRepository(Input.Repository inputRepository)
         {
             if (_knownRepositories.TryGetValue(inputRepository.ToString(), out Output.Repository? repository))
                 return repository;
@@ -37,14 +37,14 @@ namespace GirLoader
         private void ResolveIncludes(IEnumerable<Output.Include> includes)
         {
             foreach (var include in includes)
-                include.Resolve(LoadRepository(include));
+                include.Resolve(CreateOutputRepository(include));
         }
 
-        private Output.Repository LoadRepository(Output.Include include)
+        private Output.Repository CreateOutputRepository(Output.Include include)
         {
             var includeFileInfo = _resolveInclude(include) ?? throw new Exception($"Could not resolve include {include.Name}");
 
-            return LoadRepository(includeFileInfo);
+            return CreateOutputRepository(includeFileInfo);
         }
     }
 }

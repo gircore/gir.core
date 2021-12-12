@@ -7,20 +7,29 @@ namespace GirLoader.Helper
     // https://www.electricmonk.nl/docs/dependency_resolving_algorithm/dependency_resolving_algorithm.html
     internal class RepositoryDependencyResolver
     {
-        private List<Output.Repository> _resolvedNodes = new();
-        private List<Output.Repository> _unresolvedNodes = new();
+        private readonly IEnumerable<Output.Repository> _nodeList;
+        private readonly List<Output.Repository> _resolvedNodes = new();
+        private readonly List<Output.Repository> _unresolvedNodes = new();
+        private bool _isResolved;
 
-        public IEnumerable<Output.Repository> ResolveOrdered(IEnumerable<Output.Repository> nodeList)
+        public RepositoryDependencyResolver(IEnumerable<Output.Repository> nodeList)
         {
-            _resolvedNodes = new List<Output.Repository>();
-            _unresolvedNodes = new List<Output.Repository>();
+            _nodeList = nodeList;
+        }
 
-            foreach (Output.Repository node in nodeList)
+        public List<Output.Repository> ResolveOrdered()
+        {
+            if (_isResolved)
+                return _resolvedNodes;
+
+            foreach (Output.Repository node in _nodeList)
             {
                 if (!_resolvedNodes.Contains(node))
                     ResolveDependenciesRecursive(node);
             }
 
+            _isResolved = true;
+            
             return _resolvedNodes;
         }
 

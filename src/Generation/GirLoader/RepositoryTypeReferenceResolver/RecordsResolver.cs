@@ -3,9 +3,9 @@ using GirLoader.Output;
 
 namespace GirLoader
 {
-    internal static class RepositoryRecordsResolver
+    internal static class RecordsResolver
     {
-        public static void ResolveRecords(this RepositoryResolver resolver, Repository repository)
+        public static void ResolveRecords(this RepositoryTypeReferenceResolver resolver, Repository repository)
         {
             foreach (var record in repository.Namespace.Records)
             {

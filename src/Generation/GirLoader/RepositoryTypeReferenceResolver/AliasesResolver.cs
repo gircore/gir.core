@@ -2,9 +2,9 @@
 
 namespace GirLoader
 {
-    internal static class RepositoryAliasesResolver
+    internal static class AliasesResolver
     {
-        public static void ResolveAliases(this RepositoryResolver resolver, Repository repository)
+        public static void ResolveAliases(this RepositoryTypeReferenceResolver resolver, Repository repository)
         {
             foreach (var alias in repository.Namespace.Aliases)
                 resolver.ResolveTypeReference(alias.TypeReference, repository);

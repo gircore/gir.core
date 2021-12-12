@@ -3,9 +3,9 @@ using GirLoader.Output;
 
 namespace GirLoader
 {
-    internal static class RepositoryUnionsResolver
+    internal static class UnionsResolver
     {
-        public static void ResolveUnions(this RepositoryResolver resolver, Repository repository)
+        public static void ResolveUnions(this RepositoryTypeReferenceResolver resolver, Repository repository)
         {
             foreach (var union in repository.Namespace.Unions)
             {

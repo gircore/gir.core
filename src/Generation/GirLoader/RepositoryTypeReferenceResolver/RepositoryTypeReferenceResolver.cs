@@ -4,15 +4,23 @@ using System.Linq;
 
 namespace GirLoader
 {
-    internal class RepositoryResolver
+    internal class RepositoryTypeReferenceResolver
     {
         private readonly TypeReferenceResolver _typeReferenceResolver = new();
         private readonly HashSet<Output.Repository> _knownRepositories = new();
 
+        public RepositoryTypeReferenceResolver(IEnumerable<Output.Repository> repositories)
+        {
+            foreach(var repository in repositories)
+            {
+                Add(repository);
+            }
+        }
+        
         /// <summary>
         /// Loads the given repository and all its dependencies
         /// </summary>
-        public void Add(Output.Repository repository)
+        private void Add(Output.Repository repository)
         {
             if (!_knownRepositories.Add(repository))
                 return; //Ignore known repositories
@@ -23,12 +31,6 @@ namespace GirLoader
                 Add(dependentRepository);
         }
 
-        public void ResolveTypeReferences(IEnumerable<Output.TypeReference> references, Output.Repository repository)
-        {
-            foreach(var reference in references)
-                ResolveTypeReference(reference, repository);
-        }
-        
         public void ResolveTypeReference(Output.TypeReference reference, Output.Repository repository)
         {
             if (reference is Output.ArrayTypeReference arrayTypeReference)
