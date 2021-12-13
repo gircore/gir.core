@@ -27,6 +27,7 @@ namespace Generator3.Renderer.Public
             return @$"
 public {publicReturnType.NullableTypeName} {data.PublicName}({data.Parameters.Render()})
 {{
+    {data.Parameters.RenderPublicParameterExpressions()}
     {data.RenderInternalMethodCall()}
     {data.ReturnType.RenderPublicMethodReturnExpression()}
 }}";
@@ -37,9 +38,6 @@ public {publicReturnType.NullableTypeName} {data.PublicName}({data.Parameters.Re
             // We only support a subset of methods at the
             // moment. Determine if we can generate based on
             // the following criteria:
-
-            if (method.Parameters.Any())
-                return false;
 
             if (method.IsFree())
                 return false;

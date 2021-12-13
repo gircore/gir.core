@@ -1,14 +1,16 @@
-﻿using ReturnTypeFactory = Generator3.Model.Public.ReturnTypeFactory;
+﻿using Generator3.Renderer.Public;
+using ReturnTypeFactory = Generator3.Model.Public.ReturnTypeFactory;
 using GirModel;
 
 namespace Generator3.Converter
 {
     public static class InternalReturnTypeConverter
     {
-        public static string ToPublicFromVariable(this ReturnType from, string variableName)
+        public static string ToPublicFromVariable(this ReturnType from)
         {
             var to = ReturnTypeFactory.CreatePublicModel(from);
-            
+            var variableName = from.GetMethodReturnVariable();
+                
             if (from.AnyType.Is<Pointer>())
                 return variableName;
 
