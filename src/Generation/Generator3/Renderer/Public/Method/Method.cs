@@ -15,7 +15,7 @@ namespace Generator3.Renderer.Public
             }
             catch (System.Exception e)
             {
-                Log.Warning($"Did not generate method '{data.ClassName}.{data.ManagedName}': {e.Message}");
+                Log.Warning($"Did not generate method '{data.ClassName}.{data.PublicName}': {e.Message}");
                 return string.Empty;
             }
         }
@@ -25,8 +25,9 @@ namespace Generator3.Renderer.Public
             var publicReturnType = data.ReturnType.CreatePublicModel();
 
             return @$"
-public {publicReturnType.NullableTypeName} {data.ManagedName}({data.Parameters.Render()})
+public {publicReturnType.NullableTypeName} {data.PublicName}({data.Parameters.Render()})
 {{
+    {data.Parameters.RenderPublicParameterExpressions()}
     {data.RenderInternalMethodCall()}
     {data.ReturnType.RenderPublicMethodReturnExpression()}
 }}";
@@ -37,9 +38,6 @@ public {publicReturnType.NullableTypeName} {data.ManagedName}({data.Parameters.R
             // We only support a subset of methods at the
             // moment. Determine if we can generate based on
             // the following criteria:
-
-            if (method.Parameters.Any())
-                return false;
 
             if (method.IsFree())
                 return false;

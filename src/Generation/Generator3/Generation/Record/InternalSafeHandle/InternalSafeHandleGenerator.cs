@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Record
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Record
 {
     public class InternalSafeHandleGenerator
     {

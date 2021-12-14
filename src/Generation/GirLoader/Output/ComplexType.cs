@@ -3,12 +3,12 @@
     public abstract class ComplexType : Type
     {
         public Repository Repository { get; }
-        public TypeName OriginalName { get; }
+        public string Name { get; }
 
-        protected ComplexType(Repository repository, CType? cType, TypeName name, TypeName originalName) : base(cType, name)
+        protected ComplexType(Repository repository, string? cType, string name) : base(cType)
         {
             Repository = repository;
-            OriginalName = originalName;
+            Name = name;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class CallbackTypeField : Field
     {

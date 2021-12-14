@@ -2,7 +2,7 @@
 {
     public class ArrayStringParameterForMethod : Parameter
     {
-        private GirModel.ArrayType ArrayType => Model.AnyTypeReference.AnyType.AsT1;
+        private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
 
         public override string NullableTypeName => ArrayType.GetName();
 
@@ -13,7 +13,7 @@
 
         protected internal ArrayStringParameterForMethod(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyArrayType<GirModel.String>();
+            parameter.AnyType.VerifyArrayType<GirModel.String>();
         }
     }
 }

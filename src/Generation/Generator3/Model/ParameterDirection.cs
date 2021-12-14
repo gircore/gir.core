@@ -1,6 +1,6 @@
 ﻿namespace Generator3.Model
 {
-    internal record ParameterDirection
+    public record ParameterDirection
     {
         public static readonly ParameterDirection In = new("");
         public static readonly ParameterDirection Out = new("out ");

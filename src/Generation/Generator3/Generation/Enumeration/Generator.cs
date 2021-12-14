@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Enumeration
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Enumeration
 {
     public class Generator
     {

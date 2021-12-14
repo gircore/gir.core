@@ -28,15 +28,10 @@ namespace GirLoader.Output
             if (@interface.GetTypeFunction is null)
                 throw new Exception($"Interface {@interface.Name} is missing a {nameof(@interface.GetTypeFunction)}");
 
-            CType? ctypeName = null;
-            if (@interface.Type is { })
-                ctypeName = new CType(@interface.Type);
-
             return new Interface(
                 repository: repository,
-                cType: ctypeName,
-                originalName: new TypeName(@interface.Name),
-                name: new TypeName(@interface.Name),
+                cType: @interface.Type,
+                name: @interface.Name,
                 implements: _typeReferenceFactory.Create(@interface.Implements),
                 methods: _methodFactory.Create(@interface.Methods),
                 functions: _functionFactory.Create(@interface.Functions, repository),

@@ -1,8 +1,10 @@
-﻿namespace Generator3.Model.Public
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Public
 {
     public class UnionParameter : Parameter
     {
-        private GirModel.Union Type => (GirModel.Union) Model.AnyTypeReference.AnyType.AsT0;
+        private GirModel.Union Type => (GirModel.Union) Model.AnyType.AsT0;
 
         public override string NullableTypeName => Type.GetFullyQualified();
 
@@ -15,7 +17,7 @@
 
         protected internal UnionParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Union>();
+            parameter.AnyType.VerifyType<GirModel.Union>();
         }
     }
 }

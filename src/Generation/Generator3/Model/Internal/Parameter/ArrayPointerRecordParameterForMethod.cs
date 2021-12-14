@@ -1,12 +1,13 @@
 ﻿using System;
+using Generator3.Converter;
 
 namespace Generator3.Model.Internal
 {
     public class ArrayPointerRecordParameterForMethod : Parameter
     {
-        private GirModel.ArrayType ArrayType => Model.AnyTypeReference.AnyType.AsT1;
+        private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
 
-        public override string NullableTypeName => TypeMapping.PointerArray;
+        public override string NullableTypeName => TypeNameConverter.PointerArray;
 
         public override string Attribute => ArrayType.Length is null
             ? string.Empty
@@ -15,7 +16,7 @@ namespace Generator3.Model.Internal
 
         protected internal ArrayPointerRecordParameterForMethod(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyArrayType<GirModel.Record>();
+            parameter.AnyType.VerifyArrayType<GirModel.Record>();
         }
     }
 }

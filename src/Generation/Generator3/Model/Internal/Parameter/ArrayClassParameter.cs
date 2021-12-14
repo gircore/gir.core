@@ -1,13 +1,15 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class ArrayClassParameter : Parameter
     {
-        private GirModel.ArrayType ArrayType => Model.AnyTypeReference.AnyType.AsT1;
+        private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
 
         //Classes are always passed as a pointer. 
         public override string NullableTypeName => ArrayType.Length is null
-            ? TypeMapping.Pointer
-            : TypeMapping.PointerArray;
+            ? TypeNameConverter.Pointer
+            : TypeNameConverter.PointerArray;
 
         public override string Attribute => ArrayType.Length is null
             ? string.Empty
@@ -15,7 +17,7 @@
 
         protected internal ArrayClassParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyArrayType<GirModel.Class>();
+            parameter.AnyType.VerifyArrayType<GirModel.Class>();
         }
     }
 }

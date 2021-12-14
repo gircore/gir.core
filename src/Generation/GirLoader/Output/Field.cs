@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
-    public partial class Field : Symbol, AnyType
+    public partial class Field
     {
+        public string Name { get; }
         public TypeReference TypeReference { get; }
 
         public Callback? Callback { get; }
@@ -13,44 +12,25 @@ namespace GirLoader.Output
         /// <summary>
         /// Creates a new field.
         /// </summary>
-        /// <param name="symbolName"></param>
         /// <param name="typeReference"></param>
         /// <param name="typeInformation"></param>
         /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
         /// <param name="readable"></param>
         /// <param name="private"></param>
-        /// <param name="orignalName"></param>
-        public Field(SymbolName orignalName, SymbolName symbolName, TypeReference typeReference, bool readable = true, bool @private = false) : base(orignalName, symbolName)
+        /// <param name="name"></param>
+        public Field(string name, TypeReference typeReference, bool readable = true, bool @private = false)
         {
+            Name = name;
             TypeReference = typeReference;
             Readable = readable;
             Private = @private;
         }
 
-        public Field(SymbolName orignalName, SymbolName symbolName, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false)
-            : this(orignalName, symbolName, resolveableTypeReference, readable, @private)
+        public Field(string name, ResolveableTypeReference resolveableTypeReference, Callback callback, bool readable = true, bool @private = false)
+            : this(name, resolveableTypeReference, readable, @private)
         {
             Callback = callback;
             resolveableTypeReference.ResolveAs(Callback);
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            // If the callback is not null this means the symbol reference
-            // of this field was already resolved automatically. Meaning we
-            // do not return the symbol reference to the caller but the
-            // symbol references of the callback instead.
-            //
-            // If the callback is null the symbol reference is still unresolved
-            // and must be returned to get resolved.
-
-            if (Callback is not null)
-                return Callback.GetTypeReferences();
-            else
-                return new List<TypeReference>() { TypeReference };
-        }
-
-        internal override bool GetIsResolved()
-            => TypeReference.GetIsResolved() && (Callback?.GetIsResolved() ?? true);
     }
 }

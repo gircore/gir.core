@@ -2,10 +2,10 @@
 {
     public class SymbolNameReference
     {
-        public SymbolName SymbolName { get; }
+        public string SymbolName { get; }
         public NamespaceName? NamespaceName { get; }
 
-        public SymbolNameReference(SymbolName symbolName, NamespaceName? namespaceName)
+        public SymbolNameReference(string symbolName, NamespaceName? namespaceName)
         {
             SymbolName = symbolName;
             NamespaceName = namespaceName;

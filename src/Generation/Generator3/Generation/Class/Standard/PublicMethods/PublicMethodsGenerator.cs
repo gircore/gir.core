@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Generator3.Converter;
 
 namespace Generator3.Generation.Class.Standard
 {

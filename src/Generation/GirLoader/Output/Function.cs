@@ -1,33 +1,23 @@
-﻿using System.Collections.Generic;
-using GirLoader.Helper;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
-    public partial class Function : Symbol
+    public partial class Function
     {
         private readonly Repository _repository;
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
+        public string Name { get; }
+        public string Identifier { get; }
 
-        public Function(Repository repository, SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(originalName, symbolName)
+        public Function(Repository repository, string name, string identifier, ReturnValue returnValue, ParameterList parameterList)
         {
             _repository = repository;
             ReturnValue = returnValue;
             ParameterList = parameterList;
+            Name = name;
+            Identifier = identifier;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            return IEnumerables.Concat(
-                ReturnValue.GetTypeReferences(),
-                ParameterList.GetSymbolReferences()
-            );
-        }
-
-        internal override bool GetIsResolved()
-            => ReturnValue.GetIsResolved() && ParameterList.GetIsResolved();
 
         public override string ToString()
-            => OriginalName;
+            => Identifier;
     }
 }

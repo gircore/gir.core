@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Converter;
 
 namespace Generator3.Model.Public
 {
@@ -7,14 +8,14 @@ namespace Generator3.Model.Public
     {
         private readonly GirModel.Signal _signal;
 
-        public string ManagedName => "On" + _signal.ManagedName;
-        public string NativeName => _signal.NativeName;
-        public string DescriptorName => _signal.ManagedName + "Signal";
-        public string? ArgsName => _signal.ManagedName + "SignalArgs";
+        public string PublicName => _signal.GetPublicName();
+        public string NativeName => _signal.Name;
+        public string DescriptorName => _signal.GetDescriptorName();
+        public string ArgsClassName => _signal.GetArgsClassName();
         public string ClassName { get; }
         public bool HasArgs => _signal.Parameters.Any();
-        public string GenericArgs =>  HasArgs 
-            ? $"{ClassName}, {ArgsName}"
+        public string GenericArgs => HasArgs 
+            ? $"{ClassName}, {ArgsClassName}"
             : ClassName;
         public IEnumerable<Parameter> Parameters { get; }
         

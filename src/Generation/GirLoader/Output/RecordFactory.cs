@@ -30,15 +30,10 @@ namespace GirLoader.Output
                 _ => null
             };
 
-            CType? cTypeName = null;
-            if (record.CType is { })
-                cTypeName = new CType(record.CType);
-
             return new Record(
                 repository: repository,
-                cType: cTypeName,
-                originalName: new TypeName(record.Name),
-                name: new TypeName(record.Name),
+                cType: record.CType,
+                name: record.Name,
                 gLibClassStructFor: GetGLibClassStructFor(record.GLibIsGTypeStructFor, repository.Namespace),
                 methods: _methodFactory.Create(record.Methods),
                 functions: _functionFactory.Create(record.Functions, repository),

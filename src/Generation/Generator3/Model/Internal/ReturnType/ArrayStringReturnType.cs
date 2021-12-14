@@ -1,4 +1,6 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class ArrayStringReturnType : ReturnType
     {
@@ -9,7 +11,7 @@
         public override string NullableTypeName
             => IsMarshalAble
                 ? ArrayType.GetName()
-                : TypeMapping.Pointer;
+                : TypeNameConverter.Pointer;
 
         protected internal ArrayStringReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {

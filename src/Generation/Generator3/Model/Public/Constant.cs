@@ -1,10 +1,12 @@
-﻿namespace Generator3.Model.Public
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Public
 {
     public class Constant
     {
         private readonly GirModel.Constant _constant;
 
-        public string Name => _constant.Name;
+        public string Name => _constant.GetPublicName();
         public string TypeName => _constant.Type.GetName();
         public string Value => GetValue();
 

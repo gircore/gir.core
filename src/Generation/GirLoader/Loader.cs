@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GirLoader.Helper;
-using StrongInject;
 
 namespace GirLoader
 {
@@ -9,13 +8,13 @@ namespace GirLoader
 
     public class Loader
     {
-        private readonly RepositoryConverter _repositoryConverter;
+        private readonly ResolveInclude _includeResolver;
 
         public Loader() : this(FileIncludeResolver.Resolve) { }
 
         public Loader(ResolveInclude includeResolver)
         {
-            _repositoryConverter = new Container(includeResolver).Resolve().Value;
+            _includeResolver = includeResolver;
         }
 
         //TODO: Use this method
@@ -30,20 +29,10 @@ namespace GirLoader
         {
             Log.Information($"Initialising with {inputRepositories.Count()} toplevel repositories");
 
-            var outputRepositories = inputRepositories.Select(_repositoryConverter.LoadRepository);
-            Resolve(outputRepositories);
-
-            return outputRepositories;
-        }
-
-        private static void Resolve(IEnumerable<Output.Repository> repositories)
-        {
-            var repositoryResolver = new RepositoryResolver();
-
-            foreach (var repository in repositories)
-                repositoryResolver.Add(repository);
-
-            repositoryResolver.Resolve();
+            var outputRepositories = inputRepositories.CreateOutputRepositories(_includeResolver);
+            var orderedOutputRepositories = outputRepositories.OrderByDependencies();
+            orderedOutputRepositories.ResolveTypeReferences();
+            return orderedOutputRepositories;
         }
     }
 }

@@ -87,12 +87,12 @@ namespace GirLoader.Output
                 return null;
 
             if (!name.Contains("."))
-                return new SymbolNameReference(new SymbolName(name), null);
+                return new SymbolNameReference(name, null);
 
             var parts = name.Split('.', 2);
 
             return new SymbolNameReference(
-                new SymbolName(parts[1]),
+                parts[1],
                 new NamespaceName(parts[0])
             );
         }

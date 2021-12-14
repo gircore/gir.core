@@ -56,7 +56,7 @@ namespace Generator3.Renderer.Public
             if (property.AnyType.Is<GirModel.Record>())
                 throw new NotImplementedException("There is currently no concept for transfering native records (structs) into the managed world.");
 
-            throw new Exception($"Property {property.ClassName}.{property.ManagedName} is not supported");
+            throw new Exception($"Property {property.ClassName}.{property.PublicName} is not supported");
         }
     }
 }

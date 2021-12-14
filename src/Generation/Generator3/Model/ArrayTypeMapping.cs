@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Generator3.Converter;
 
 namespace Generator3.Model
 {
@@ -24,7 +25,7 @@ namespace Generator3.Model
         {
             while (true)
             {
-                if (arrayType.AnyTypeReference.AnyType.TryPickT0(out var type, out var array))
+                if (arrayType.AnyType.TryPickT0(out var type, out var array))
                 {
                     nameParts.Add(type.GetName());
                 }

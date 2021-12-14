@@ -7,7 +7,7 @@ namespace Generator3.Renderer.Public
         public static string RenderAccessor(this Model.Public.Property property)
         {
             var builder = new StringBuilder();
-            builder.AppendLine($"public {property.NullableTypeName} {property.ManagedName}");
+            builder.AppendLine($"public {property.NullableTypeName} {property.PublicName}");
             builder.AppendLine("{");
 
             if (property.Readable)

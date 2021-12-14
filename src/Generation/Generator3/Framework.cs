@@ -1,4 +1,5 @@
 ﻿using System;
+using Generator3.Converter;
 using Generator3.Publication;
 using Generator3.Generation.Framework;
 
@@ -27,14 +28,16 @@ namespace Generator3
                 template: new PublicModuleTypeRegistrationTemplate(),
                 publisher: new PublicFrameworkFilePublisher()
             );
-            
-            if (ns.SharedLibrary is null)
-                throw new Exception($"Shared library is not set for project {ns.GetCanonicalName()}");
-            
+
             var project = ns.GetCanonicalName();
 
+            
+            if (ns.SharedLibrary is null)
+                Log.Warning($"Shared library name is not set for project {ns.GetCanonicalName()}. {ns.GetCanonicalName()} method calls will fail as the shared library won't be found.");
+            else
+                internalDllImportGenerator.Generate(project, ns.SharedLibrary, ns.Name);
+            
             internalExtensionsGenerator.Generate(project, ns.Name);
-            internalDllImportGenerator.Generate(project, ns.SharedLibrary, ns.Name);
             moduleDllImportGenerator.Generate(project, ns.Name);
             moduleTypeRegistration.Generate(project, ns);
         }

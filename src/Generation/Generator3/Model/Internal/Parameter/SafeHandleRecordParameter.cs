@@ -1,8 +1,10 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class SafeHandleRecordParameter : Parameter
     {
-        private GirModel.Record Type => (GirModel.Record) Model.AnyTypeReference.AnyType.AsT0;
+        private GirModel.Record Type => (GirModel.Record) Model.AnyType.AsT0;
         
         //Native records are represented as SafeHandles and are not nullable
         public override string NullableTypeName => Type.Namespace.GetInternalName() + "." + Type.GetName() + ".Handle";
@@ -16,7 +18,7 @@
 
         protected internal SafeHandleRecordParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Record>();
+            parameter.AnyType.VerifyType<GirModel.Record>();
         }
     }
 }

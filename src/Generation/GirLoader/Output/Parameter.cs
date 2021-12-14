@@ -1,8 +1,8 @@
 ﻿namespace GirLoader.Output
 {
-    public interface Parameter : TransferableAnyType
+    public interface Parameter
     {
-        SymbolName Name { get; }
+        string Name { get; }
         Direction Direction { get; }
         bool Nullable { get; }
         bool CallerAllocates { get; }

@@ -10,7 +10,7 @@ namespace Generator3.Renderer.Public
             try
             {
                 var builder = new StringBuilder();
-                builder.AppendLine($"#region {signal.ManagedName}");
+                builder.AppendLine($"#region {signal.PublicName}");
                 builder.AppendLine(signal.RenderArgs());
                 builder.AppendLine(signal.RenderArgsIndexer());
                 builder.AppendLine(signal.RenderDescriptor());
@@ -21,7 +21,7 @@ namespace Generator3.Renderer.Public
             }
             catch (Exception ex)
             {
-                var message = $"Did not generate signal '{signal.ClassName}.{signal.ManagedName}': {ex.Message}";
+                var message = $"Did not generate signal '{signal.ClassName}.{signal.PublicName}': {ex.Message}";
 
                 if (ex is NotImplementedException)
                     Log.Information(message);

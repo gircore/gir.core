@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Union
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Union
 {
     public class InternalStructGenerator
     {

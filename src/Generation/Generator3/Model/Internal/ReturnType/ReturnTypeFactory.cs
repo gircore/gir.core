@@ -17,7 +17,7 @@
                 GirModel.Pointer => new PointerReturnType(returnValue),
                 _ => new StandardReturnType(returnValue)
             },
-            arrayType => arrayType.AnyTypeReference.AnyType.Match<ReturnType>(
+            arrayType => arrayType.AnyType.Match<ReturnType>(
                 type => type switch 
                 {
                     GirModel.String => new ArrayStringReturnType(returnValue),

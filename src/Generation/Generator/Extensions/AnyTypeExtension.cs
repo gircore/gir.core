@@ -32,7 +32,7 @@ namespace Generator
                 { TypeReference: ArrayTypeReference { Type: String } } => "string[]",
 
                 // Arrays of byte can be marshalled automatically, no IntPtr needed
-                { TypeReference: ArrayTypeReference { Type: { } s } } when s.Name == "byte" => "byte[]",
+                { TypeReference: ArrayTypeReference { Type: GirLoader.Output.Byte } } => "byte[]",
 
                 // References to records which are not using a pointer
                 { TypeReference: ArrayTypeReference { Type: Record r, TypeReference: { CTypeReference: { IsPointer: false } } } } => GetStructName(r, currentNamespace) + "[]",
@@ -61,7 +61,7 @@ namespace Generator
                 { TypeReference: { Type: Enumeration } } => anyType.TypeReference.Type.Write(Target.Native, currentNamespace),
 
                 // Short path for strings as strings are pointers which should not be handled as pointers
-                { TypeReference: { Type: String r } } => r.Name,
+                { TypeReference: { Type: String r } } => "string",
 
                 // Use IntPtr for all types where a pointer is expected
                 { TypeReference: ArrayTypeReference { Length: not null, TypeReference: { CTypeReference: { IsPointer: true } } } } => "IntPtr[]",

@@ -7,7 +7,7 @@ namespace GirLoader.Output
     {
         string GirModel.Constructor.Name => Name;
         GirModel.ReturnType GirModel.Constructor.ReturnType => ReturnValue;
-        string GirModel.Constructor.CIdentifier => OriginalName;
+        string GirModel.Constructor.CIdentifier => Identifier;
         IEnumerable<GirModel.Parameter> GirModel.Constructor.Parameters => ParameterList.GetParameters().Cast<GirModel.Parameter>();
     }
 }

@@ -6,7 +6,7 @@ public static class AnyTypeExtension
     public static bool Is<T>(this GirModel.AnyType anyType) where T : GirModel.Type 
         => anyType.TryPickT0(out var type, out _) && type is T;
     public static bool IsArray<T>(this GirModel.AnyType anyType) where T : GirModel.Type 
-        => anyType.TryPickT1(out var arrayType, out _) && arrayType.AnyTypeReference.AnyType.Is<T>();
+        => anyType.TryPickT1(out var arrayType, out _) && arrayType.AnyType.Is<T>();
 }
 
 namespace GirModel
@@ -36,7 +36,7 @@ namespace GirModel
                 type => throw new Exception("Return type is not a array type but a type."),
                 arrayType =>
                 {
-                    arrayType.AnyTypeReference.AnyType.Switch(
+                    arrayType.AnyType.Switch(
                         ThrowIfNot<T>,
                         _ => throw new NotSupportedException("Arrays of arrays not yet supported")
                     );

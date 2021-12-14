@@ -2,8 +2,7 @@
 {
     public interface Property
     {
-        public string ManagedName { get; } //TODO Remove as nameing conversion should be part of the generator
-        public string NativeName { get; }
+        public string Name { get; }
         AnyType AnyType { get; }
         Transfer Transfer { get; }
         bool Readable { get; }

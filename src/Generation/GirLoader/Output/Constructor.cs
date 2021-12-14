@@ -1,31 +1,21 @@
-﻿using System.Collections.Generic;
-using GirLoader.Helper;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
-    public partial class Constructor : Symbol
+    public partial class Constructor
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
+        public string Name { get; }
+        public string Identifier { get; }
 
-        public Constructor(SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(originalName, symbolName)
+        public Constructor(string name, string identifier, ReturnValue returnValue, ParameterList parameterList)
         {
+            Name = name;
+            Identifier = identifier;
             ReturnValue = returnValue;
             ParameterList = parameterList;
         }
 
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            return IEnumerables.Concat(
-                ReturnValue.GetTypeReferences(),
-                ParameterList.GetSymbolReferences()
-            );
-        }
-
-        internal override bool GetIsResolved()
-            => ReturnValue.GetIsResolved() && ParameterList.GetIsResolved();
-
         public override string ToString()
-            => OriginalName;
+            => Identifier;
     }
 }

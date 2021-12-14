@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Generator3.Converter;
 
 namespace Generator3.Model.Internal
 {
@@ -9,7 +10,7 @@ namespace Generator3.Model.Internal
 
         public GirModel.Function Model { get; }
 
-        public string Name => Model.Name;
+        public string Name => Model.GetInternalName();
         public ReturnType ReturnType => _returnType ??= Model.ReturnType.CreateInternalModel();
         public string CIdentifier => Model.CIdentifier;
         public string NameSpaceName => Model.Namespace.Name;

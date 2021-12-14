@@ -22,14 +22,14 @@ namespace Generator3.Renderer.Public
             var arguments = new List<string>()
             {
                 $"nativeName: \"{property.NativeName}\"",
-                $"managedName: nameof({property.ManagedName})"
+                $"managedName: nameof({property.PublicName})"
             };
 
             if (property.Readable)
-                arguments.Add($"get: o => o.{property.ManagedName}");
+                arguments.Add($"get: o => o.{property.PublicName}");
 
             if (property.Writeable)
-                arguments.Add($"set: (o, v) => o.{property.ManagedName} = v");
+                arguments.Add($"set: (o, v) => o.{property.PublicName} = v");
 
             return string.Join($",{Environment.NewLine}    ", arguments);
         }

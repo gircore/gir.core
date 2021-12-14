@@ -1,8 +1,10 @@
-﻿namespace Generator3.Model.Public
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Public
 {
     public class ClassParameter : Parameter
     {
-        private GirModel.Class Type => (GirModel.Class) Model.AnyTypeReference.AnyType.AsT0;
+        private GirModel.Class Type => (GirModel.Class) Model.AnyType.AsT0;
         
         public override string NullableTypeName => Type.GetFullyQualified() + GetDefaultNullable();
 
@@ -15,7 +17,7 @@
 
         protected internal ClassParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Class>();
+            parameter.AnyType.VerifyType<GirModel.Class>();
         }
     }
 }

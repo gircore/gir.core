@@ -1,11 +1,13 @@
-﻿namespace Generator3.Model.Public
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Public
 {
     public class PrimitiveValueReturnType : ReturnType
     {
         private GirModel.PrimitiveValueType Type => (GirModel.PrimitiveValueType) Model.AnyType.AsT0;
 
         public override string NullableTypeName => Model.IsPointer
-            ? TypeMapping.Pointer
+            ? TypeNameConverter.Pointer
             : Type.GetName();
             
 

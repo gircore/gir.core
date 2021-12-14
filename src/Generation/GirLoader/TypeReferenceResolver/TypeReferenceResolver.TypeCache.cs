@@ -17,7 +17,7 @@ namespace GirLoader
 
             public bool TryResolve(Output.TypeReference typeReference, [MaybeNullWhen(false)] out Output.Type type)
             {
-                type = _types.FirstOrDefault(type => type.Matches(typeReference));
+                type = _types.FirstOrDefault(t => t.Matches(typeReference));
                 return type is not null;
             }
         }

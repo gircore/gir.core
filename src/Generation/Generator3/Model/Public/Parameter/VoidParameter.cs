@@ -1,12 +1,14 @@
-﻿namespace Generator3.Model.Public
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Public
 {
     public class VoidParameter : Parameter
     {
-        public override string NullableTypeName => TypeMapping.Pointer;
+        public override string NullableTypeName => TypeNameConverter.Pointer;
 
         protected internal VoidParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Void>();
+            parameter.AnyType.VerifyType<GirModel.Void>();
         }
     }
 }

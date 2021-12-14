@@ -11,14 +11,14 @@ namespace Generator3.Renderer.Public
             var call = new StringBuilder();
 
             if (!method.ReturnType.AnyType.Is<GirModel.Void>())
-                call.Append("var result = ");
+                call.Append($"var {method.ReturnType.GetMethodReturnVariable()} = ");
 
             // TODO: Handle excluded items
-            IEnumerable<string> parameters = method.Parameters.Select(arg => arg.IsCallback
-                ? $"{arg.Name}Handler.NativeCallback"
-                : $"{arg.Name}Native");
+            IEnumerable<string> parameters = method
+                .Parameters
+                .Select(x => x.GetMethodParameterVariable());
 
-            call.Append($"Internal.{method.ClassName}.Instance.Methods.{method.NativeName}(");
+            call.Append($"Internal.{method.ClassName}.Instance.Methods.{method.InternalName}(");
             call.Append("this.Handle" + (parameters.Any() ? "," : string.Empty));
             call.Append(string.Join(", ", parameters));
             call.Append(");\n");

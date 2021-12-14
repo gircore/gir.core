@@ -1,8 +1,10 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class InterfaceParameter : Parameter
     {
-        public override string NullableTypeName => TypeMapping.Pointer;
+        public override string NullableTypeName => TypeNameConverter.Pointer;
 
         public override string Direction => Model.GetDirection(
             @in: ParameterDirection.In,
@@ -13,7 +15,7 @@
 
         protected internal InterfaceParameter(GirModel.Parameter parameter) : base(parameter)
         {
-            parameter.AnyTypeReference.AnyType.VerifyType<GirModel.Interface>();
+            parameter.AnyType.VerifyType<GirModel.Interface>();
         }
     }
 }

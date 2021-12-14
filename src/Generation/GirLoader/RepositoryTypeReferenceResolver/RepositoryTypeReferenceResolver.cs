@@ -4,15 +4,23 @@ using System.Linq;
 
 namespace GirLoader
 {
-    internal class RepositoryResolver
+    internal class RepositoryTypeReferenceResolver
     {
         private readonly TypeReferenceResolver _typeReferenceResolver = new();
         private readonly HashSet<Output.Repository> _knownRepositories = new();
 
+        public RepositoryTypeReferenceResolver(IEnumerable<Output.Repository> repositories)
+        {
+            foreach(var repository in repositories)
+            {
+                Add(repository);
+            }
+        }
+        
         /// <summary>
         /// Loads the given repository and all its dependencies
         /// </summary>
-        public void Add(Output.Repository repository)
+        private void Add(Output.Repository repository)
         {
             if (!_knownRepositories.Add(repository))
                 return; //Ignore known repositories
@@ -23,27 +31,7 @@ namespace GirLoader
                 Add(dependentRepository);
         }
 
-        /// <summary>
-        /// Resolves all loaded repositories
-        /// </summary>
-        public void Resolve()
-        {
-            var dependencyResolver = new Helper.RepositoryDependencyResolver();
-            var orderedRepositories = dependencyResolver.ResolveOrdered(_knownRepositories).Cast<Output.Repository>();
-
-            foreach (var repository in orderedRepositories)
-                ResolveTypeReferences(repository);
-        }
-
-        private void ResolveTypeReferences(Output.Repository repository)
-        {
-            foreach (var reference in repository.Namespace.GetTypeReferences())
-                ResolveTypeReference(reference, repository);
-
-            Log.Debug($"Resolved type references for repository {repository.Namespace.Name}");
-        }
-
-        private void ResolveTypeReference(Output.TypeReference reference, Output.Repository repository)
+        public void ResolveTypeReference(Output.TypeReference reference, Output.Repository repository)
         {
             if (reference is Output.ArrayTypeReference arrayTypeReference)
             {

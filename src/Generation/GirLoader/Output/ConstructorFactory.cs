@@ -28,8 +28,8 @@ namespace GirLoader.Output
             if (method.Name != string.Empty)
             {
                 return new Constructor(
-                    originalName: new SymbolName(method.Identifier),
-                    symbolName: new SymbolName(new Helper.String(method.Name).ToPascalCase().EscapeIdentifier()),
+                    identifier: method.Identifier,
+                    name: method.Name,
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
                     parameterList: _parameterListFactory.Create(method.Parameters, method.Throws)
                 );

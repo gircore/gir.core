@@ -7,7 +7,7 @@
     {
         internal override bool Matches(TypeReference typeReference)
         {
-            return typeReference.SymbolNameReference?.SymbolName.Value == "utf8";
+            return typeReference.SymbolNameReference?.SymbolName == "utf8";
         }
     }
 
@@ -20,13 +20,13 @@
     {
         internal override bool Matches(TypeReference typeReference)
         {
-            return typeReference.SymbolNameReference?.SymbolName.Value == "filename";
+            return typeReference.SymbolNameReference?.SymbolName == "filename";
         }
     }
 
-    public abstract class String : PrimitiveType
+    public abstract class String : Type
     {
-        protected String() : base(new CType("gchar*"), new TypeName("string"))
+        protected String() : base("gchar*")
         {
         }
     }

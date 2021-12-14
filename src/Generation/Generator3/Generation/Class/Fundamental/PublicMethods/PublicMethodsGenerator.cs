@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Class.Fundamental
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Class.Fundamental
 {
     public class PublicMethodsGenerator
     {

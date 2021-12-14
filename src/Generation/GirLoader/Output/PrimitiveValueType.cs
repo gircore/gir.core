@@ -2,9 +2,9 @@
 
 namespace GirLoader.Output
 {
-    public abstract class PrimitiveValueType : PrimitiveType
+    public abstract class PrimitiveValueType : Type
     {
-        protected PrimitiveValueType(CType ctype, TypeName name) : base(ctype, name)
+        protected PrimitiveValueType(string ctype) : base(ctype)
         {
         }
 
@@ -12,7 +12,7 @@ namespace GirLoader.Output
         {
             return typeReference switch
             {
-                { SymbolNameReference: { SymbolName: { } sn } } => sn.Value == CType?.Value,
+                { SymbolNameReference: { SymbolName: { } sn } } => sn == CType,
                 { CTypeReference: { } cr } => cr.CType == CType,
                 _ => throw new Exception($"Can't match {GetType().Name} with {nameof(TypeReference)} {typeReference}")
             };

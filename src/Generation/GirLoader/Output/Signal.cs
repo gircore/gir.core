@@ -1,28 +1,16 @@
-﻿using System.Collections.Generic;
-using GirLoader.Helper;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
-    public partial class Signal : Symbol
+    public partial class Signal
     {
+        public string Name { get; }
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
 
-        public Signal(SymbolName originalName, SymbolName symbolName, ReturnValue returnValue, ParameterList parameterList) : base(originalName, symbolName)
+        public Signal(string name, ReturnValue returnValue, ParameterList parameterList)
         {
+            Name = name;
             ReturnValue = returnValue;
             ParameterList = parameterList;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            return IEnumerables.Concat(
-                ReturnValue.GetTypeReferences(),
-                ParameterList.GetSymbolReferences()
-            );
-        }
-
-        internal override bool GetIsResolved()
-            => ReturnValue.GetIsResolved() && ParameterList.GetIsResolved();
     }
 }

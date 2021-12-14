@@ -8,7 +8,7 @@ namespace GirLoader.Output
         GirModel.Namespace GirModel.Function.Namespace => _repository.Namespace;
         string GirModel.Function.Name => Name;
         GirModel.ReturnType GirModel.Function.ReturnType => ReturnValue;
-        string GirModel.Function.CIdentifier => OriginalName;
+        string GirModel.Function.CIdentifier => Identifier;
         IEnumerable<GirModel.Parameter> GirModel.Function.Parameters => ParameterList.GetParameters().Cast<GirModel.Parameter>();
     }
 }

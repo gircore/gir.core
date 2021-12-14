@@ -1,26 +1,19 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
-    public partial class Constant : Symbol
+    public partial class Constant
     {
         private readonly Repository _repository;
+        
+        public string Name { get; }
         public string Value { get; }
         public TypeReference TypeReference { get; }
 
-        public Constant(Repository repository, SymbolName originalName, SymbolName symbolName, TypeReference typeReference, string value) : base(originalName, symbolName)
+        public Constant(Repository repository, string name, TypeReference typeReference, string value)
         {
             _repository = repository;
+            Name = name;
             TypeReference = typeReference;
             Value = value;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            yield return TypeReference;
-        }
-
-        internal override bool GetIsResolved()
-            => TypeReference.GetIsResolved();
     }
 }

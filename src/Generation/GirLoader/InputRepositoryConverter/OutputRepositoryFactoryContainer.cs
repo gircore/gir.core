@@ -1,8 +1,7 @@
 ﻿using StrongInject;
 
-namespace GirLoader.Helper
+namespace GirLoader
 {
-    [Register(typeof(RepositoryConverter))]
     [Register(typeof(Output.NamespaceFactory))]
     [Register(typeof(Output.TypeReferenceFactory))]
     [Register(typeof(Output.IncludeFactory))]
@@ -28,15 +27,7 @@ namespace GirLoader.Helper
     [Register(typeof(Output.ConstantFactory))]
     [Register(typeof(Output.UnionFactory))]
     [Register(typeof(Output.RepositoryFactory))]
-    internal partial class Container : IContainer<RepositoryConverter>
+    internal partial class OutputRepositoryFactoryContainer : IContainer<Output.RepositoryFactory>
     {
-        private readonly ResolveInclude _includeResolver;
-
-        public Container(ResolveInclude includeResolver)
-        {
-            _includeResolver = includeResolver;
-        }
-        [Factory]
-        internal ResolveInclude GetResolveInclude() => _includeResolver;
     }
 }

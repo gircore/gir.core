@@ -1,8 +1,12 @@
-﻿namespace Generator3.Model.Internal
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Internal
 {
     public class CallbackField : Field
     {
-        public override string NullableTypeName => _field.AnyTypeOrCallback.AsT1.GetName() + "Callback";
+        private GirModel.Callback _callback => _field.AnyTypeOrCallback.AsT1;
+
+        public override string NullableTypeName => _callback.GetInternalName();
         
         public CallbackField(GirModel.Field field) : base(field)
         {

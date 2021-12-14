@@ -10,7 +10,7 @@ namespace Generator3.Model.Public
         public static IEnumerable<Parameter> CreatePublicModels(this IEnumerable<GirModel.Parameter> parameters)
             => parameters.Select(CreatePublicModel);
 
-        private static Parameter CreatePublicModel(this GirModel.Parameter parameter) => parameter.AnyTypeReference.AnyType.Match<Parameter>(
+        private static Parameter CreatePublicModel(this GirModel.Parameter parameter) => parameter.AnyType.Match<Parameter>(
             type => type switch
             {
                 GirModel.Class => new ClassParameter(parameter),
@@ -22,7 +22,7 @@ namespace Generator3.Model.Public
                 GirModel.Void => new VoidParameter(parameter),
                 _ => new StandardParameter(parameter) //TODO: Remove Standard Parameter
             },
-            arraytype => arraytype.AnyTypeReference.AnyType.Match<Parameter>(
+            arraytype => arraytype.AnyType.Match<Parameter>(
                 type => type switch
                 {
                     GirModel.Record => new ArrayRecordParameter(parameter),

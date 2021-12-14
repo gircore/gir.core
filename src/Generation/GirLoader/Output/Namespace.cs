@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
@@ -100,26 +99,6 @@ namespace GirLoader.Output
             SymbolPrefixes = symbolPrefixes;
 
             repository.SetNamespace(this);
-        }
-
-        public IEnumerable<TypeReference> GetTypeReferences()
-        {
-            return IEnumerables.Concat(
-                // It is important to keep aliases in the first position
-                // as they must be resolved before all other types
-                // as those can depend on the aliases and require
-                // them to be resolved.
-                Aliases.SelectMany(x => x.GetTypeReferences()),
-                Callbacks.SelectMany(x => x.GetTypeReferences()),
-                Classes.SelectMany(x => x.GetTypeReferences()),
-                Enumerations.SelectMany(x => x.GetTypeReferences()),
-                Bitfields.SelectMany(x => x.GetTypeReferences()),
-                Interfaces.SelectMany(x => x.GetTypeReferences()),
-                Records.SelectMany(x => x.GetTypeReferences()),
-                Functions.SelectMany(x => x.GetTypeReferences()),
-                Unions.SelectMany(x => x.GetTypeReferences()),
-                Constants.SelectMany(x => x.GetTypeReferences())
-            );
         }
 
         public string ToCanonicalName() => $"{Name}-{Version}";

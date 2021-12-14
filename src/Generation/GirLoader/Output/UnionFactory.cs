@@ -28,15 +28,10 @@ namespace GirLoader.Output
                 _ => null
             };
 
-            CType? cTypeName = null;
-            if (union.CType is { })
-                cTypeName = new CType(union.CType);
-
             return new Union(
                 repository: repository,
-                cType: cTypeName,
-                originalName: new TypeName(union.Name),
-                name: new TypeName(union.Name),
+                cType: union.CType,
+                name: union.Name,
                 methods: _methodFactory.Create(union.Methods),
                 functions: _functionFactory.Create(union.Functions, repository),
                 getTypeFunction: getTypeFunction,
