@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Generator3.Model.Internal
+﻿namespace Generator3.Model.Internal
 {
     public abstract class ReturnType
     {
@@ -15,7 +13,5 @@ namespace Generator3.Model.Internal
         }
 
         protected string GetDefaultNullable() => Model.Nullable ? "?" : "";
-        
-        public bool IsVoid() => NullableTypeName == "void";
     }
 }

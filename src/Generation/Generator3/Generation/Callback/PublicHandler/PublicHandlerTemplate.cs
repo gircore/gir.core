@@ -1,42 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using Generator3.Renderer.Internal;
 
 namespace Generator3.Generation.Callback
 {
     public class PublicHandlerTemplate : Template<PublicHandlerModel>
     {
-        public IEnumerable<string> GetConversions(PublicHandlerModel model)
-        {
-            IEnumerable<Model.Public.Parameter> pParam = model.PublicParameters;
-            IEnumerable<Model.Internal.Parameter> iParam = model.InternalParameters;
-
-            return iParam.Zip(pParam, Model.Convert.GetConversion);
-        }
-
-        private string WriteCall(PublicHandlerModel model)
-        {
-            IEnumerable<string> paramNames = model.PublicParameters
-                .Select(x => x.Name + "Conv");
-            
-            var call = $"managedCallback({paramNames.Join(", ")});";
-            
-            // TODO: public return type?
-            if (model.InternalReturnType.IsVoid())
-                return call;
-
-            return "var result = " + call;
-        }
-
-        private string WriteReturn(PublicHandlerModel model)
-        {
-            // TODO: Return convert managed to native
-            if (!model.InternalReturnType.IsVoid())
-                return "return result;";
-
-            return string.Empty;
-        }
-        
         public string Render(PublicHandlerModel model)
         {
             return $@"
@@ -63,13 +31,7 @@ namespace { model.NamespaceName }
         public {model.Name}({model.DelegateType} managed)
         {{
             managedCallback = managed;
-            NativeCallback = ({model.InternalParameters.Render()}) => {{
-                // Convert from native to managed
-                {GetConversions(model).Join("\n")}
-
-                {WriteCall(model)}
-                {WriteReturn(model)}
-            }};
+            {RenderNativeCallback(model)}
         }}
         
         public void Dispose()
@@ -81,6 +43,28 @@ namespace { model.NamespaceName }
         }}
     }}
 }}";
+        }
+
+        private static string RenderNativeCallback(PublicHandlerModel model)
+        {
+            string? nativeCallback;
+            //Helper as long as there are errors
+            try
+            {
+                nativeCallback = $@"
+NativeCallback = ({model.InternalParameters.Render()}) => {{
+    {PublicHandlerConvertParameterStatements.Render(model, out var parameters)}
+    {PublicHandlerCallStatement.Render(model, parameters, out var resultVariableName)}
+    {PublicHandlerReturnStatement.Render(model, resultVariableName)}
+}};";
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"Can not generate callback for {model.Name}: {ex.Message}");
+                nativeCallback = string.Empty;
+            }
+
+            return nativeCallback;
         }
     }
 }
