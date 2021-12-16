@@ -11,10 +11,10 @@ namespace Generator3.Converter
             if (from.AnyType.Is<PrimitiveValueType>())
             {
                 if (from.IsPointer)
-                    throw new NotImplementedException("Pointed primitive value types can not yet be converted to managed");
+                    throw new NotImplementedException($"{from.AnyType}: Pointed primitive value types can not yet be converted to managed");
 
                 if (from.Direction != Direction.In)
-                    throw new NotImplementedException("Primitive value type with direction != in not yet supported");
+                    throw new NotImplementedException($"{from.AnyType}: Primitive value type with direction != in not yet supported");
                 
                 //We don't need any conversion for native parameters
                 variableName = from.GetPublicName();
@@ -22,6 +22,30 @@ namespace Generator3.Converter
             }
             #endregion
 
+            #region Enumeration
+            if (from.AnyType.Is<Enumeration>())
+            {
+                if (from.Direction != Direction.In)
+                    throw new NotImplementedException($"{from.AnyType}: Enumeration with direction != in not yet supported");
+
+                //We don't need any conversion for enumerations
+                variableName = from.GetPublicName();
+                return null;
+            }
+            #endregion
+            
+            #region Bitfield
+            if (from.AnyType.Is<Bitfield>())
+            {
+                if (from.Direction != Direction.In)
+                    throw new NotImplementedException($"{from.AnyType}: Bitfield with direction != in not yet supported");
+
+                //We don't need any conversion for bitfields
+                variableName = from.GetPublicName();
+                return null;
+            }
+            #endregion
+            
             #region String array
             if(from.AnyType.TryPickT1(out var arrayType, out _) && arrayType.AnyType.Is<GirModel.String>())
             {
