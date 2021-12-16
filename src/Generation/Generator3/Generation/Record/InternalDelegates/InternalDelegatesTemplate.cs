@@ -18,7 +18,7 @@ namespace { model.NamespaceName }
 
     public partial class { model.Name }
     {{
-        {model.Callbacks.Render()}
+        {model.Callbacks.RenderWithAttributes()}
     }}
 }}";
         }

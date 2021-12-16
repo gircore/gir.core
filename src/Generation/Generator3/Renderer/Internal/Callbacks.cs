@@ -6,10 +6,10 @@ namespace Generator3.Renderer.Internal
 {
     public static class Callbacks
     {
-        public static string Render(this IEnumerable<Model.Internal.Callback> callbacks)
+        public static string RenderWithAttributes(this IEnumerable<Model.Internal.Callback> callbacks)
         {
             return callbacks
-                .Select(callback => callback.Render())
+                .Select(callback => callback.RenderWithAttributes())
                 .Join(Environment.NewLine);
         }
     }

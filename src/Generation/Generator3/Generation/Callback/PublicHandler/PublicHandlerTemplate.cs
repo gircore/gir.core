@@ -1,7 +1,42 @@
-﻿namespace Generator3.Generation.Callback
+﻿using System.Collections.Generic;
+using System.Linq;
+using Generator3.Renderer.Internal;
+
+namespace Generator3.Generation.Callback
 {
     public class PublicHandlerTemplate : Template<PublicHandlerModel>
     {
+        public IEnumerable<string> GetConversions(PublicHandlerModel model)
+        {
+            IEnumerable<Model.Public.Parameter> pParam = model.PublicParameters;
+            IEnumerable<Model.Internal.Parameter> iParam = model.InternalParameters;
+
+            return iParam.Zip(pParam, Model.Convert.GetConversion);
+        }
+
+        private string WriteCall(PublicHandlerModel model)
+        {
+            IEnumerable<string> paramNames = model.PublicParameters
+                .Select(x => x.Name + "Conv");
+            
+            var call = $"managedCallback({paramNames.Join(", ")});";
+            
+            // TODO: public return type?
+            if (model.InternalReturnType.IsVoid())
+                return call;
+
+            return "var result = " + call;
+        }
+
+        private string WriteReturn(PublicHandlerModel model)
+        {
+            // TODO: Return convert managed to native
+            if (!model.InternalReturnType.IsVoid())
+                return "return result;";
+
+            return string.Empty;
+        }
+        
         public string Render(PublicHandlerModel model)
         {
             return $@"
@@ -28,7 +63,13 @@ namespace { model.NamespaceName }
         public {model.Name}({model.DelegateType} managed)
         {{
             managedCallback = managed;
-            //TODO: NativeCallback = ??
+            NativeCallback = ({model.InternalParameters.Render()}) => {{
+                // Convert from native to managed
+                {GetConversions(model).Join("\n")}
+
+                {WriteCall(model)}
+                {WriteReturn(model)}
+            }};
         }}
         
         public void Dispose()

@@ -15,5 +15,7 @@ namespace Generator3.Model.Internal
         }
 
         protected string GetDefaultNullable() => Model.Nullable ? "?" : "";
+        
+        public bool IsVoid() => NullableTypeName == "void";
     }
 }

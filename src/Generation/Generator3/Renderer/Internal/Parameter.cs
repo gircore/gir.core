@@ -3,6 +3,9 @@
     public static class Parameter
     {
         public static string Render(this Model.Internal.Parameter parameter)
+            => $@"{parameter.Direction}{parameter.NullableTypeName} {parameter.Name}";
+        
+        public static string RenderWithAttributes(this Model.Internal.Parameter parameter)
             => $@"{parameter.Attribute}{parameter.Direction}{parameter.NullableTypeName} {parameter.Name}";
     }
 }
