@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Generator3.Model.Public;
+﻿using Generator3.Model.Public;
 
 namespace Generator3.Renderer.Public
 {
@@ -9,7 +8,9 @@ namespace Generator3.Renderer.Public
         {
             try
             {
-                return !CanRender(data) 
+                //We do not need to create a method for free methods. Freeing is handled by
+                //the framework via a IDisposable implementation.
+                return data.IsFree()
                     ? string.Empty 
                     : RenderInternal(data);
             }
@@ -20,47 +21,17 @@ namespace Generator3.Renderer.Public
             }
         }
 
-        private static string RenderInternal(Model.Public.Method data)
+        private static string RenderInternal(Model.Public.Method method)
         {
-            var publicReturnType = data.ReturnType.CreatePublicModel();
+            var publicReturnType = method.ReturnType.CreatePublicModel();
 
             return @$"
-public {publicReturnType.NullableTypeName} {data.PublicName}({data.Parameters.Render()})
+public {publicReturnType.NullableTypeName} {method.PublicName}({method.Parameters.Render()})
 {{
-    {data.Parameters.RenderPublicParameterExpressions()}
-    {data.RenderInternalMethodCall()}
-    {data.ReturnType.RenderPublicMethodReturnExpression()}
+    {MethodConvertParameterStatements.Render(method, out var parameterNames)}
+    {MethodCallStatement.Render(method, parameterNames, out var resultVariableName)}
+    {MethodReturnStatement.Render(method, resultVariableName)}
 }}";
-        }
-
-        private static bool CanRender(Model.Public.Method method)
-        {
-            // We only support a subset of methods at the
-            // moment. Determine if we can generate based on
-            // the following criteria:
-
-            if (method.IsFree())
-                return false;
-
-            if (method.HasInOutRefParameter())
-                return false;
-
-            if (method.HasCallbackReturnType())
-                return false;
-
-            if (method.HasUnionParameter())
-                return false;
-
-            if (method.HasUnionReturnType())
-                return false;
-
-            if (method.HasArrayClassParameter())
-                return false;
-
-            if (method.HasArrayClassReturnType())
-                return false;
-
-            return true;
         }
     }
 }

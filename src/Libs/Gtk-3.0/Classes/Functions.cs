@@ -1,10 +1,12 @@
-﻿namespace Gtk
+﻿using System;
+
+namespace Gtk
 {
     public class Functions
     {
         public static void Init()
         {
-            var argc = 0;
+            var argc = IntPtr.Zero;
             Internal.Functions.Init(ref argc, new string[0]);
         }
 

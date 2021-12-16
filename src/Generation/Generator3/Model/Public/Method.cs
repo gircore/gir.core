@@ -30,17 +30,5 @@ namespace Generator3.Model.Public
         }
 
         public bool IsFree() => _method.IsFree() || _method.IsUnref();
-        public bool HasInOutRefParameter() => _method.Parameters.Any(param => param.Direction != GirModel.Direction.In);
-        public bool HasCallbackReturnType() => _method.ReturnType.AnyType.TryPickT0(out var type, out _) && type is GirModel.Callback;
-        public bool HasUnionParameter() => _method.Parameters.Any(param => param.AnyType.TryPickT0(out var type, out _) && type is GirModel.Union);
-        public bool HasUnionReturnType() => _method.ReturnType.AnyType.TryPickT0(out var type, out _) && type is GirModel.Union;
-
-        public bool HasArrayClassParameter() => _method.Parameters.Any(param => param.AnyType.TryPickT1(out var arrayType, out _)
-                                                                                && arrayType.AnyType.TryPickT0(out var type, out _)
-                                                                                && type is GirModel.Class);
-
-        public bool HasArrayClassReturnType() => _method.ReturnType.AnyType.TryPickT1(out var arrayType, out _)
-                                                 && arrayType.AnyType.TryPickT0(out var type, out _)
-                                                 && type is GirModel.Class;
     }
 }

@@ -6,7 +6,7 @@ namespace Gst
     {
         public static void Init()
         {
-            int argc = 0;
+            var argc = IntPtr.Zero;
             Internal.Functions.Init(ref argc, new string[0]);
         }
     }
