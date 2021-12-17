@@ -15,6 +15,8 @@ namespace Generator3.Converter
 
             if (!method.ReturnType.AnyType.Is<GirModel.Void>() && !method.Parameters.Any() && !method.Name.ToLower().StartsWith("get"))
             {
+                //TODO: Not every method with this signature is a getter. E.g. Dialog.Run() vs. Dialog.GetRun()
+
                 //This is a "getter" method. We prefix all getter methods with "Get" to avoid naming conflicts
                 //with properties of the same name.
                 return "Get" + name;

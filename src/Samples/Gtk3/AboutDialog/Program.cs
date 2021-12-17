@@ -23,7 +23,7 @@ namespace AboutDialog
             dialog.OnClose += (dlg, args) => Functions.MainQuit();
 
             // And run!
-            dialog.Run();
+            dialog.GetRun();
         }
     }
 }
