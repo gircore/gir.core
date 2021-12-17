@@ -5,7 +5,7 @@ namespace Generator3.Converter
 {
     public static class ParameterConverter
     {
-        public static string? ToManaged(this Parameter from, out string variableName)
+        public static string? ToNative(this Parameter from, out string variableName)
         {
             #region Primitivevaluetype
             if (from.AnyType.Is<PrimitiveValueType>())
@@ -64,6 +64,21 @@ namespace Generator3.Converter
             }
             #endregion
 
+            #region Class
+            if (from.AnyType.Is<GirModel.Class>())
+            {
+                if (from.Direction != Direction.In)
+                    throw new NotImplementedException($"{from.AnyType}: class parameter with direction != in not yet supported");
+                
+                if (from.AnyType.AsT0 is Class { IsFundamental: true } )
+                    throw new NotImplementedException($"Can't convert fundamental class parameter {{from.Name}} ({from.AnyType} to managed");
+
+                //We use the classes "Handle" property
+                variableName = from.GetPublicName() + ".Handle";
+                return null;   
+            }
+            #endregion
+            
             throw new NotImplementedException($"Can't convert from parameter {from.Name} ({from.AnyType}) to managed");
         }
     }

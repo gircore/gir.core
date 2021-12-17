@@ -14,7 +14,7 @@ namespace Generator3.Renderer.Public
 
             foreach (var p in method.Parameters.Select(x => x.Model))
             {
-                call.AppendLine(p.ToManaged(out var variableName));
+                call.AppendLine(p.ToNative(out var variableName));
                 names.Add(variableName);
             }
 
