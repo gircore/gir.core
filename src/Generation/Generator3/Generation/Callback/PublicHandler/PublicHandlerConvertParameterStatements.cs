@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
-using Generator3.Converter;
 
 namespace Generator3.Generation.Callback
 {
@@ -12,9 +10,9 @@ namespace Generator3.Generation.Callback
             var call = new StringBuilder();
             var names = new List<string>();
             
-            foreach (var p in model.InternalParameters)
+            foreach (var p in model.PublicParameters)
             {
-                call.AppendLine(p.Model.ToManaged(out var variableName));
+                call.AppendLine(p.ToManaged(out var variableName));
                 names.Add(variableName);
             }
 

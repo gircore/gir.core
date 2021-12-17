@@ -47,8 +47,9 @@ namespace Generator3.Converter
             #endregion
             
             #region String array
-            if(from.AnyType.TryPickT1(out var arrayType, out _) && arrayType.AnyType.Is<GirModel.String>())
+            if(from.AnyType.IsArray<GirModel.String>())
             {
+                var arrayType = from.AnyType.AsT1;
                 if (from.Transfer == Transfer.None && arrayType.Length == null)
                 {
                     variableName = from.GetConvertedName();
@@ -63,7 +64,7 @@ namespace Generator3.Converter
             }
             #endregion
 
-            throw new System.NotImplementedException($"Can't convert from parameter {from.Name} ({from.AnyType}) to managed");
+            throw new NotImplementedException($"Can't convert from parameter {from.Name} ({from.AnyType}) to managed");
         }
     }
 }

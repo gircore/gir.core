@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Generator3.Converter;
 using Generator3.Renderer.Internal;
 
 namespace Generator3.Generation.Callback
@@ -9,6 +11,7 @@ namespace Generator3.Generation.Callback
         {
             return $@"
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 #nullable enable
@@ -52,7 +55,7 @@ namespace { model.NamespaceName }
             try
             {
                 nativeCallback = $@"
-NativeCallback = ({model.InternalParameters.Render()}) => {{
+NativeCallback = ({model.InternalParameters.Select(p => p.GetPublicName()).Join(", ")}) => {{
     {PublicHandlerConvertParameterStatements.Render(model, out var parameters)}
     {PublicHandlerCallStatement.Render(model, parameters, out var resultVariableName)}
     {PublicHandlerReturnStatement.Render(model, resultVariableName)}
