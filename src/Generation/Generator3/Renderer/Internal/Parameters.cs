@@ -11,12 +11,5 @@ namespace Generator3.Renderer.Internal
                 .Select(parameter => parameter.Render())
                 .Join(", ");
         }
-        
-        public static string RenderWithAttributes(this IEnumerable<Model.Internal.Parameter> parameters)
-        {
-            return parameters
-                .Select(parameter => parameter.RenderWithAttributes())
-                .Join(", ");
-        }
     }
 }
