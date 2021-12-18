@@ -12,7 +12,7 @@ namespace Generator3.Converter
             if (from.AnyType.Is<PrimitiveValueType>())
             {
                 if (from.IsPointer)
-                    throw new NotImplementedException($"{from.AnyType}: Pointed primitive value types can not yet be converted to managed");
+                    throw new NotImplementedException($"{from.AnyType}: Pointed primitive value types can not yet be converted to native");
 
                 if (from.Direction != Direction.In)
                     throw new NotImplementedException($"{from.AnyType}: Primitive value type with direction != in not yet supported");
@@ -80,13 +80,28 @@ namespace Generator3.Converter
                     throw new NotImplementedException($"{from.AnyType}: class parameter with direction != in not yet supported");
 
                 if (from.AnyType.AsT0 is Class { IsFundamental: true } )
-                    throw new NotImplementedException($"Can't convert fundamental class parameter {{from.Name}} ({from.AnyType} to managed");
+                    throw new NotImplementedException($"Can't convert fundamental class parameter {{from.Name}} ({from.AnyType} to native");
 
                 //We use the classes "Handle" property
                 variableName = from.GetPublicName() + ".Handle";
                 return null;
             }
 
+            #endregion
+            
+            #region Record
+            if (from.AnyType.Is<GirModel.Record>())
+            {
+                if (from.Direction != Direction.In)
+                    throw new NotImplementedException($"{from.AnyType}: record parameter with direction != in not yet supported");
+                
+                if (!from.IsPointer)
+                    throw new NotImplementedException($"{from.AnyType}: Not pointed record types can not yet be converted to native");
+
+                //We use the records "Handle" property
+                variableName = from.GetPublicName() + ".Handle";
+                return null;
+            }
             #endregion
 
             throw new NotImplementedException($"Can't convert from parameter {from.Name} ({from.AnyType}) to managed");
