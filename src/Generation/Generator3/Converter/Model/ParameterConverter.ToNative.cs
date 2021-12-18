@@ -52,6 +52,14 @@ namespace Generator3.Converter
 
             #endregion
 
+            #region String
+            if (from.AnyType.Is<GirModel.String>())
+            {
+                variableName = from.GetPublicName();
+                return null;
+            }
+            #endregion
+            
             #region String array
 
             if (from.AnyType.IsArray<GirModel.String>())

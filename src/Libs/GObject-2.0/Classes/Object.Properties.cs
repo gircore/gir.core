@@ -32,17 +32,6 @@ namespace GObject
         }
 
         /// <summary>
-        /// Assigns the value of a GObject's property given its <paramref name="name"/>
-        /// </summary>
-        /// <param name="value">The property name.</param>
-        /// <param name="name">The property value.</param>
-        protected void SetProperty(string name, Value value)
-        {
-            // TODO: Remove this once we generate the method
-            Internal.Object.Instance.Methods.SetProperty(Handle, name, value.Handle);
-        }
-
-        /// <summary>
         /// Gets the value of a GObject's property given its <paramref name="name"/>.
         /// </summary>
         /// <param name="name">The property name.</param>

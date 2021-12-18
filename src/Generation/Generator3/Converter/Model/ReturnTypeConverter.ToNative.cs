@@ -1,5 +1,4 @@
-﻿using ReturnTypeFactory = Generator3.Model.Public.ReturnTypeFactory;
-using GirModel;
+﻿using GirModel;
 
 namespace Generator3.Converter
 {
@@ -18,7 +17,14 @@ namespace Generator3.Converter
 
             if (from.AnyType.Is<PrimitiveValueType>())
                 return fromVariableName;
-            
+
+            if (from.AnyType.Is<String>())
+            {
+                return from.Transfer == Transfer.None 
+                    ? $"GLib.Native.StringHelper.StringToHGlobalUTF8({fromVariableName})" 
+                    : fromVariableName;
+            }
+
             if(from.AnyType.Is<Record>())
                 return fromVariableName + ".Handle";
             
