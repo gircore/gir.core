@@ -80,6 +80,18 @@ namespace Generator3.Converter
 
             #endregion
 
+            #region Interface
+
+            if (from.AnyType.Is<GirModel.Interface>())
+            {
+                if (from.Direction != Direction.In)
+                    throw new NotImplementedException($"{from.AnyType}: interface parameter with direction != in not yet supported");
+                
+                variableName = from.GetConvertedName();
+                return $"var {variableName} = ({from.GetPublicName()} as GObject.Object).Handle;";
+            }
+            #endregion
+
             #region Interface array
             // Interface Array Conversions
             //ArrayTypeReference { Type: Interface } => $"{fromParam}.Select(iface => (iface as GObject.Object).Handle).ToArray()",
