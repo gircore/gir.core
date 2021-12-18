@@ -1,9 +1,9 @@
 ﻿using System;
-using Generator3.Converter;
+using GirModel;
 
-namespace Generator3.Generation.Callback
+namespace Generator3.Converter
 {
-    public static class DelegateParameterConverter
+    public static partial class ParameterConverter
     {
         public static string? ToManaged(this GirModel.Parameter from, out string variableName)
         {
@@ -63,8 +63,9 @@ namespace Generator3.Generation.Callback
                 variableName = from.GetPublicName();
                 return null;
             }
+
             #endregion
-            
+
             #region String array
 
             if (from.AnyType.IsArray<GirModel.String>())
@@ -91,7 +92,7 @@ namespace Generator3.Generation.Callback
             {
                 if (from.Direction != GirModel.Direction.In)
                     throw new NotImplementedException($"{from.AnyType}: record with direction != in not yet supported");
-                
+
                 if (!from.IsPointer)
                     throw new NotImplementedException($"Unpointed record parameter {from.Name} ({from.AnyType}) can not yet be converted to managed");
 
