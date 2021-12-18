@@ -25,7 +25,7 @@ namespace Generator3.Converter
             {
                 //If ownership is transfered the internal return type is encoded as a string as the
                 //marshaller will handle the ownership transfer automatically
-                return from.IsOwnedRef
+                return from.Transfer.IsOwnedRef()
                     ? fromVariableName
                     : $"GLib.Internal.StringHelper.ToStringUtf8({fromVariableName})";
             }
@@ -34,16 +34,16 @@ namespace Generator3.Converter
             {
                 //If ownership is transfered the internal return type is encoded as a string as the
                 //marshaller will handle the ownership transfer automatically
-                return from.IsOwnedRef 
+                return from.Transfer.IsOwnedRef() 
                     ? fromVariableName 
                     : $"GLib.Internal.StringHelper.ToStringUtf8({fromVariableName})";
             }
 
             if (from.AnyType.Is<Class>() && from.IsPointer)
-                return $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({fromVariableName}, {from.IsOwnedRef.ToString().ToLower()})";
+                return $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({fromVariableName}, {from.Transfer.IsOwnedRef().ToString().ToLower()})";
             
             if (from.AnyType.Is<Interface>() && from.IsPointer)
-                return $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({fromVariableName}, {from.IsOwnedRef.ToString().ToLower()})";
+                return $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({fromVariableName}, {from.Transfer.IsOwnedRef().ToString().ToLower()})";
 
             if (from.AnyType.Is<Record>())
             {

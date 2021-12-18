@@ -66,6 +66,16 @@ namespace Generator3.Converter
 
             #endregion
 
+            #region String
+
+            if (from.AnyType.Is<GirModel.String>())
+            {
+                variableName = from.GetPublicName();
+                return null;
+            }
+            
+            #endregion
+            
             #region String array
 
             if (from.AnyType.IsArray<GirModel.String>())
@@ -74,7 +84,7 @@ namespace Generator3.Converter
                 if (from.Transfer == GirModel.Transfer.None && arrayType.Length == null)
                 {
                     variableName = from.GetConvertedName();
-                    return $"var {variableName} = new GLib.Internal.StringArrayNullTerminatedSafeHandle({from.GetPublicName()}).DangerousGetHandle();";
+                    return $"var {variableName} = GLib.Internal.StringHelper.ToStringArrayUtf8({from.GetPublicName()});";
                 }
                 else
                 {
@@ -122,6 +132,45 @@ namespace Generator3.Converter
                 }
             }
 
+            #endregion
+            
+            #region Class
+
+            if (from.AnyType.Is<GirModel.Class>())
+            {
+                if (!from.IsPointer)
+                    throw new NotImplementedException($"{from.AnyType}: Unpointed class parameter not yet supported");
+                
+                var cls = (Class) from.AnyType.AsT0;
+
+                if (cls.IsFundamental)
+                {
+                    throw new NotImplementedException($"{from.AnyType}: Fundamental classes not yet supporte as long as the class is not generated");
+                    //TODO: Activate is fundamental class is generated
+                    //variableName = $"{cls.GetFullyQualified()}.From({from.GetPublicName()})";
+                    //return null;
+                }
+                else
+                {
+                    variableName = from.GetConvertedName();
+                    return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapHandle<{cls.GetFullyQualified()}>({from.GetPublicName()}, {from.Transfer.IsOwnedRef().ToString().ToLower()});";
+                }
+            }
+            
+            #endregion
+            
+            #region Interface
+
+            if (from.AnyType.Is<GirModel.Interface>())
+            {
+                if (!from.IsPointer)
+                    throw new NotImplementedException($"{from.AnyType}: Unpointed interface parameter not yet supported");
+                
+                var iface = (Interface) from.AnyType.AsT0;
+                
+                variableName = from.GetConvertedName();
+                return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapHandle<{iface.GetFullyQualified()}>({from.GetPublicName()}, {from.Transfer.IsOwnedRef().ToString().ToLower()});";
+            }
             #endregion
 
             throw new NotImplementedException($"Can't convert from parameter {from.Name} ({from.AnyType}) to managed");

@@ -21,7 +21,7 @@ namespace Generator3.Converter
             if (from.AnyType.Is<String>())
             {
                 return from.Transfer == Transfer.None 
-                    ? $"GLib.Native.StringHelper.StringToHGlobalUTF8({fromVariableName})" 
+                    ? $"GLib.Internal.StringHelper.StringToHGlobalUTF8({fromVariableName})" 
                     : fromVariableName;
             }
 
