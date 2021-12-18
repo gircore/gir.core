@@ -8,6 +8,7 @@ namespace Generator3.Generation.Class.Standard
         {
             return $@"
 using System;
+using System.Linq;
 using GObject;
 using System.Runtime.InteropServices;
 

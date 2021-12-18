@@ -26,6 +26,7 @@ namespace Generator3.Model.Public
                 type => type switch
                 {
                     GirModel.Record => new ArrayRecordParameter(parameter),
+                    GirModel.Class => new ArrayClassParameter(parameter),
                     _ => new StandardParameter(parameter)
                 },
                 _ => throw new NotSupportedException("Arrays of arrays not yet supported")

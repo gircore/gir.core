@@ -7,7 +7,7 @@
             if (method is null)
                 return "";
             
-            var renderedParameters = method.Parameters.Render();
+            var renderedParameters = method.Parameters.RenderWithAttributes();
             
             if(renderedParameters.Length > 0)
                 renderedParameters = ", " + renderedParameters;

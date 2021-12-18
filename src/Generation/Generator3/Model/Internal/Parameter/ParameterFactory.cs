@@ -31,6 +31,7 @@ namespace Generator3.Model.Internal
                 type => type switch
                 {
                     GirModel.Class => new ArrayClassParameter(parameter),
+                    GirModel.Interface => new ArrayInterfaceParameter(parameter),
                     GirModel.Record when arrayType.IsPointer => new ArrayPointerRecordParameter(parameter),
                     GirModel.Record => new ArrayRecordParameter(parameter),
                     GirModel.String => new ArrayStringParameter(parameter),
