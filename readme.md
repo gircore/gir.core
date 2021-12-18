@@ -63,6 +63,7 @@ There are some options which can be used to influence the code generation:
 * `--generate-comments`: Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.
 * `--targets <targets>`: A list of targets to run or list.
 * `--version <version>`: Specify the version number of the `build`.
+* `--log-level <logLevel>`: Specify the detail level of the log output (`debug` or `verbose`).
 * `--disable-async`: Runs the generator synchronously (useful for debugging if something goes wrong)
 
 To get a full list of available options use `--help`.

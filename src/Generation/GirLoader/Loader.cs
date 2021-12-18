@@ -17,11 +17,9 @@ namespace GirLoader
             _includeResolver = includeResolver;
         }
 
-        //TODO: Use this method
         public void EnableDebugOutput()
             => Log.EnableDebugOutput();
 
-        //TODO: Use this method
         public void EnableVerboseOutput()
             => Log.EnableVerboseOutput();
 

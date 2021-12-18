@@ -1,5 +1,4 @@
-﻿using System;
-using Generator3.Converter;
+﻿using Generator3.Converter;
 
 namespace Generator3
 {

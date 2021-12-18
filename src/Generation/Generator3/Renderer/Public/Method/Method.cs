@@ -1,4 +1,5 @@
-﻿using Generator3.Model.Public;
+﻿using System;
+using Generator3.Model.Public;
 
 namespace Generator3.Renderer.Public
 {
@@ -14,9 +15,15 @@ namespace Generator3.Renderer.Public
                     ? string.Empty 
                     : RenderInternal(data);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
-                Log.Warning($"Did not generate method '{data.ClassName}.{data.PublicName}': {e.Message}");
+                var message = $"Did not generate method '{data.ClassName}.{data.PublicName}': {e.Message}";
+                
+                if(e is NotImplementedException)
+                    Log.Debug(message);
+                else
+                    Log.Warning(message);
+                
                 return string.Empty;
             }
         }

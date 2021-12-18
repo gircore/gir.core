@@ -24,7 +24,7 @@ namespace Generator3.Renderer.Public
                 var message = $"Did not generate signal '{signal.ClassName}.{signal.PublicName}': {ex.Message}";
 
                 if (ex is NotImplementedException)
-                    Log.Information(message);
+                    Log.Debug(message);
                 else
                     Log.Warning(message);
 

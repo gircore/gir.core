@@ -22,7 +22,7 @@ namespace Generator3.Renderer.Public
                 var message = $"Did not generate property '{property.ClassName}.{property.NativeName}': {ex.Message}";
                 
                 if(ex is NotImplementedException)
-                    Log.Information(message);
+                    Log.Debug(message);
                 else
                     Log.Warning(message);
 

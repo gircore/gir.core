@@ -11,6 +11,8 @@ namespace Build
         public bool GenerateXmlDocumentation { get; init; }
         public bool GenerateAsynchronously { get; init; } = true;
         public SemanticVersion? Version { get; init; }
+        public bool EnableVerboseOutput { get; init; }
+        public bool EnableDebugOutput { get; init; }
 
         #endregion
 

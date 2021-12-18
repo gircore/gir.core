@@ -40,12 +40,25 @@ namespace Build
         {
             var repositoriesXmlModel = Projects.AllLibraries.Select(LoadXmlModel);
             var loader = new GirLoader.Loader(ResolveInclude);
+            
+            if(_settings.EnableDebugOutput)
+                loader.EnableDebugOutput();
+            
+            if(_settings.EnableVerboseOutput)
+                loader.EnableVerboseOutput();
+            
             var outputRepositories = loader.Load(repositoriesXmlModel);
             GenerateRepositories(outputRepositories);
         }
 
         private void GenerateRepositories(IEnumerable<Repository> repositories)
         {
+            if(_settings.EnableDebugOutput)
+                Generator3.Configuration.EnableDebugOutput();
+            
+            if(_settings.EnableVerboseOutput)
+                Generator3.Configuration.EnableVerboseOutput();
+
             if (_settings.GenerateAsynchronously)
                 Parallel.ForEach(repositories, repository => repository.Namespace.Generate());
             else
