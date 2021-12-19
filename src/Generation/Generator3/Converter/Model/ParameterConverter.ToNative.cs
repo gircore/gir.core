@@ -117,10 +117,8 @@ namespace Generator3.Converter
 
                 if (cls.IsFundamental)
                 {
-                    throw new NotImplementedException($"{from.AnyType}: Code disabled as fundamental classes are not yet being generated");
-                    //TODO Enable
-                    //variableName = from.GetConvertedName();
-                    //return $"var {variableName} = {cls.GetFullyQualified()}.To({from.GetPublicName()});";
+                    variableName = from.GetPublicName() + ".Handle";
+                    return null;
                 }
                 else
                 {

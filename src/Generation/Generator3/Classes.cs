@@ -29,6 +29,11 @@ namespace Generator3
                 template: new Fundamental.InternalInstanceMethodsTemplate(),
                 publisher: new InternalClassFilePublisher()
             );
+
+            var fundamentalPublicFrameworkGenerator = new Fundamental.PublicFrameworkGenerator(
+                template: new Fundamental.PublicFrameworkTemplate(),
+                publisher: new PublicClassFilePublisher()
+            );
             
             var fundamentalPublicMethodsGenerator = new Fundamental.PublicMethodsGenerator(
                 template: new Fundamental.PublicMethodsTemplate(),
@@ -37,6 +42,7 @@ namespace Generator3
 
             fundamentalInternalInstanceStructGenerator.Generate(@class);
             fundamentalInternalInstanceMethodsGenerator.Generate(@class);
+            fundamentalPublicFrameworkGenerator.Generate(@class);
             fundamentalPublicMethodsGenerator.Generate(@class);
         }
 
