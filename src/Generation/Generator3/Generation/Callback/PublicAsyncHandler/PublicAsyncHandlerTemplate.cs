@@ -6,6 +6,7 @@
         {
             return $@"
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 #nullable enable
@@ -29,7 +30,7 @@ namespace { model.NamespaceName }
         {{
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
-            //TODO NativeCallback = ??
+            {CommonHandlerRenderUtils.RenderNativeCallback(model)}
         }}
         
         public void Dispose()
