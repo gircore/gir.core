@@ -11,12 +11,12 @@ namespace Generator3.Generation.Class.Standard
 
         public string Name => _class.Name;
         public string NamespaceName => _class.Namespace.GetInternalName();
-        
+
         public IEnumerable<Function> Functions { get; }
         public IEnumerable<Method> Methods { get; }
         public IEnumerable<Constructor> Constructors { get; }
         public Function? TypeFunction { get; }
-        
+
         public InternalMethodsModel(GirModel.Class @class)
         {
             _class = @class;

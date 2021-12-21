@@ -27,7 +27,7 @@ namespace Generator3
                 template: new PublicAsyncHandlerTemplate(),
                 publisher: new PublicDelegateFilePublisher()
             );
-            
+
             var notifiedHandlerGenerator = new PublicNotifiedHandlerGenerator(
                 template: new PublicNotifiedHandlerTemplate(),
                 publisher: new PublicDelegateFilePublisher()

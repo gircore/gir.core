@@ -9,11 +9,11 @@ namespace Generator3.Model.Public
         public override string NullableTypeName => Model.IsPointer
             ? TypeNameConverter.Pointer
             : Type.GetName();
-            
+
 
         protected internal PrimitiveValueReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {
-            returnValue.AnyType.VerifyType<GirModel.PrimitiveValueType>();   
+            returnValue.AnyType.VerifyType<GirModel.PrimitiveValueType>();
         }
     }
 }

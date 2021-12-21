@@ -8,7 +8,7 @@ namespace Generator3.Model.Internal
 
         protected internal PointerReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {
-            returnValue.AnyType.VerifyType<GirModel.Pointer>();   
+            returnValue.AnyType.VerifyType<GirModel.Pointer>();
         }
     }
 }

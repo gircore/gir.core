@@ -6,7 +6,7 @@ namespace Generator3.Model.Internal
     {
         private GirModel.Union Type => (GirModel.Union) _field.AnyTypeOrCallback.AsT0.AsT0;
 
-        public override string NullableTypeName => _field.IsPointer 
+        public override string NullableTypeName => _field.IsPointer
             ? TypeNameConverter.Pointer
             : Type.GetFullyQualifiedInternalStruct();
 

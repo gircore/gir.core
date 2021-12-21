@@ -12,8 +12,8 @@ namespace Generator3
                 template: new Template(),
                 publisher: new PublicEnumFilePublisher()
             );
-        
-            foreach(var bitfield in bitfields)
+
+            foreach (var bitfield in bitfields)
                 generator.Generate(bitfield);
         }
     }

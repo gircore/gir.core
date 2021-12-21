@@ -8,7 +8,7 @@
 
         protected internal EnumerationReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {
-            returnValue.AnyType.VerifyType<GirModel.Enumeration>();   
+            returnValue.AnyType.VerifyType<GirModel.Enumeration>();
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Generator3.Model.Internal
     public abstract class Parameter
     {
         private string? _name;
-        
+
         public GirModel.Parameter Model { get; }
 
         public string Name => _name ??= Model.GetInternalName();

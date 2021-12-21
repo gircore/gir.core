@@ -18,7 +18,7 @@
                 _ => new StandardReturnType(returnValue)
             },
             arrayType => arrayType.AnyType.Match<ReturnType>(
-                type => type switch 
+                type => type switch
                 {
                     GirModel.String => new ArrayStringReturnType(returnValue),
                     GirModel.Record => new ArrayRecordReturnType(returnValue),
@@ -27,7 +27,7 @@
                     _ => new StandardReturnType(returnValue)
                 },
                 _ => new StandardReturnType(returnValue)
-            ) 
+            )
         );
     }
 }

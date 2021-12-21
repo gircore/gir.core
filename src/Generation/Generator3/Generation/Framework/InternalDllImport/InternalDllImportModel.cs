@@ -15,7 +15,7 @@
             this.NamespaceName = @namespace + ".Internal";
 
             var dllImportResolver = new DllImportResolver(sharedLibrary, @namespace);
-            
+
             WindowsDll = dllImportResolver.GetWindowsDllImport();
             LinuxDll = dllImportResolver.GetLinuxDllImport();
             OsxDll = dllImportResolver.GetOsxDllImport();

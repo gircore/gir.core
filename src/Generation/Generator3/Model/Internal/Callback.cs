@@ -7,13 +7,13 @@ namespace Generator3.Model.Internal
     {
         private IEnumerable<Parameter>? _parameters;
         private ReturnType? _returnType;
-        
+
         public GirModel.Callback Model { get; }
 
         public string Name => Model.GetInternalName();
         public ReturnType ReturnType => _returnType ??= Model.ReturnType.CreateInternalModel();
         public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateInternalModels();
-        
+
         public Callback(GirModel.Callback model)
         {
             Model = model;

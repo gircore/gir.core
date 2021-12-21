@@ -12,8 +12,8 @@ namespace Generator3
                 template: new Template(),
                 publisher: new PublicEnumFilePublisher()
             );
-        
-            foreach(var enumeration in enumerations)
+
+            foreach (var enumeration in enumerations)
                 generator.Generate(enumeration);
         }
     }

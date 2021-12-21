@@ -1,5 +1,5 @@
-﻿using ReturnTypeFactory = Generator3.Model.Public.ReturnTypeFactory;
-using GirModel;
+﻿using GirModel;
+using ReturnTypeFactory = Generator3.Model.Public.ReturnTypeFactory;
 
 namespace Generator3.Converter
 {
@@ -8,7 +8,7 @@ namespace Generator3.Converter
         public static string ToManaged(this ReturnType from, string fromVariableName)
         {
             var to = ReturnTypeFactory.CreatePublicModel(from);
-            
+
             if (from.AnyType.Is<Pointer>())
                 return fromVariableName;
 
@@ -20,7 +20,7 @@ namespace Generator3.Converter
 
             if (from.AnyType.Is<PrimitiveValueType>())
                 return fromVariableName; //Valid for IsPointer = true && IsPointer = false
-            
+
             if (from.AnyType.Is<Utf8String>())
             {
                 //If ownership is transfered the internal return type is encoded as a string as the
@@ -34,22 +34,22 @@ namespace Generator3.Converter
             {
                 //If ownership is transfered the internal return type is encoded as a string as the
                 //marshaller will handle the ownership transfer automatically
-                return from.Transfer.IsOwnedRef() 
-                    ? fromVariableName 
+                return from.Transfer.IsOwnedRef()
+                    ? fromVariableName
                     : $"GLib.Internal.StringHelper.ToStringUtf8({fromVariableName})";
             }
 
             if (from.AnyType.Is<Class>() && from.IsPointer)
                 return $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({fromVariableName}, {from.Transfer.IsOwnedRef().ToString().ToLower()})";
-            
+
             if (from.AnyType.Is<Interface>() && from.IsPointer)
                 return $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({fromVariableName}, {from.Transfer.IsOwnedRef().ToString().ToLower()})";
 
             if (from.AnyType.Is<Record>())
             {
-                if(from.IsPointer)
+                if (from.IsPointer)
                     return $"new {to.NullableTypeName}({fromVariableName})";
-                
+
                 throw new System.NotImplementedException("Can't convert from internal records which are returnd by value to public available. This is not supported in current development branch, too.");
             }
 
@@ -62,7 +62,7 @@ namespace Generator3.Converter
                     ? $"GLib.Internal.StringHelper.ToStringArrayUtf8({fromVariableName})" //variableName is a pointer to a string array 
                     : fromVariableName; //variableName is a string[]
             }
-            
+
             throw new System.NotImplementedException($"Can't convert from internal return type {from} to public");
         }
     }

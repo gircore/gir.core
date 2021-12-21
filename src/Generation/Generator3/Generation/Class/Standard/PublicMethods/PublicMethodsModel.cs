@@ -10,7 +10,7 @@ namespace Generator3.Generation.Class.Standard
 
         public string Name => _class.Name;
         public string NamespaceName => _class.Namespace.Name;
-        
+
         public IEnumerable<Method> Methods { get; }
 
         public PublicMethodsModel(GirModel.Class @class)

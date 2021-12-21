@@ -5,7 +5,7 @@ namespace Generator3.Model.Public
     public class ArrayRecordParameter : Parameter
     {
         private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
-        
+
         public override string NullableTypeName => ArrayType.Length is null
             ? TypeNameConverter.PointerArray
             : ((GirModel.Record) ArrayType.AnyType.AsT0).GetFullyQualified() + "[]";

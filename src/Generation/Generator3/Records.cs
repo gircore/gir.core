@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Generator3.Publication;
 using Generator3.Generation.Record;
+using Generator3.Publication;
 
 namespace Generator3
 {
@@ -13,11 +13,11 @@ namespace Generator3
                 publisher: new InternalRecordFilePublisher()
             );
 
-            var internalStructGenerator = new InternalStructGenerator (
+            var internalStructGenerator = new InternalStructGenerator(
                 template: new InternalStructTemplate(),
                 publisher: new InternalRecordFilePublisher()
             );
-            
+
             var internalStructDelegatesGenerator = new InternalDelegatesGenerator(
                 template: new InternalDelegatesTemplate(),
                 publisher: new InternalRecordFilePublisher()
@@ -27,7 +27,7 @@ namespace Generator3
                 template: new InternalSafeHandleTemplate(),
                 publisher: new InternalRecordFilePublisher()
             );
-            
+
             var internalManagedHandleGenerator = new InternalManagedHandleGenerator(
                 template: new InternalManagedHandleTemplate(),
                 publisher: new InternalRecordFilePublisher()

@@ -8,7 +8,7 @@
 
         protected internal InterfaceReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {
-            returnValue.AnyType.VerifyType<GirModel.Interface>();   
+            returnValue.AnyType.VerifyType<GirModel.Interface>();
         }
     }
 }

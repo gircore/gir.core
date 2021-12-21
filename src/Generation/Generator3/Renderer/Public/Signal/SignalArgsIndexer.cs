@@ -4,8 +4,8 @@
     {
         public static string RenderArgsIndexer(this Model.Public.Signal signal)
         {
-            return !signal.HasArgs 
-                ? string.Empty 
+            return !signal.HasArgs
+                ? string.Empty
                 : @$"
 /// <summary>
 /// Indexer to connect {signal.DescriptorName} with a SignalHandler&lt;{signal.GenericArgs}&gt;

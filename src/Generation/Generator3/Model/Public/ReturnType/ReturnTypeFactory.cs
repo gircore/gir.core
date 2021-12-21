@@ -14,7 +14,7 @@
                 GirModel.Enumeration => new EnumerationReturnType(returnValue),
                 _ => new StandardReturnType(returnValue)
             },
-            arrayType => arrayType switch 
+            arrayType => arrayType switch
             {
                 _ => new StandardReturnType(returnValue)
             }

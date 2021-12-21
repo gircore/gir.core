@@ -29,7 +29,7 @@ namespace GirLoader.Helper
             }
 
             _isResolved = true;
-            
+
             return _resolvedNodes;
         }
 

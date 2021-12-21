@@ -6,7 +6,7 @@
         {
             return instanceParameter.Name.ToCamelCase().EscapeIdentifier();
         }
-        
+
         public static string GetPublicName(this GirModel.InstanceParameter instanceParameter)
         {
             return instanceParameter.Name.ToCamelCase().EscapeIdentifier();

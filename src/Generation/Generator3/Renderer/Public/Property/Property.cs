@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 namespace Generator3.Renderer.Public
@@ -10,7 +10,7 @@ namespace Generator3.Renderer.Public
             try
             {
                 ThrowIfNotSupported(property);
-                
+
                 var builder = new StringBuilder();
                 builder.AppendLine(property.RenderDescriptor());
                 builder.AppendLine(property.RenderAccessor());
@@ -20,8 +20,8 @@ namespace Generator3.Renderer.Public
             catch (Exception ex)
             {
                 var message = $"Did not generate property '{property.ClassName}.{property.NativeName}': {ex.Message}";
-                
-                if(ex is NotImplementedException)
+
+                if (ex is NotImplementedException)
                     Log.Debug(message);
                 else
                     Log.Warning(message);
@@ -40,17 +40,17 @@ namespace Generator3.Renderer.Public
 
             if (property.AnyType.IsArray<GirModel.Byte>())
                 return;
-            
-            if(property.AnyType.Is<GirModel.Enumeration>())
+
+            if (property.AnyType.Is<GirModel.Enumeration>())
                 return;
-            
-            if(property.AnyType.Is<GirModel.Bitfield>())
+
+            if (property.AnyType.Is<GirModel.Bitfield>())
                 return;
-            
-            if(property.AnyType.Is<GirModel.Class>())
+
+            if (property.AnyType.Is<GirModel.Class>())
                 return;
-            
-            if(property.AnyType.Is<GirModel.Interface>())
+
+            if (property.AnyType.Is<GirModel.Interface>())
                 return;
 
             if (property.AnyType.Is<GirModel.Record>())

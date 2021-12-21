@@ -4,8 +4,8 @@
     {
         public static string RenderArgs(this Model.Public.Signal signal)
         {
-            return !signal.HasArgs 
-                ? string.Empty 
+            return !signal.HasArgs
+                ? string.Empty
                 : @$"
 /// <summary>
 /// Signal (Event) Arguments for {signal.PublicName}

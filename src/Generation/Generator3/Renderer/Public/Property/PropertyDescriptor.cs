@@ -16,7 +16,7 @@ namespace Generator3.Renderer.Public
             builder.AppendLine(");");
             return builder.ToString();
         }
-        
+
         private static string GetArguments(Model.Public.Property property)
         {
             var arguments = new List<string>()

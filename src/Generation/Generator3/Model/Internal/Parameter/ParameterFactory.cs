@@ -24,7 +24,7 @@ namespace Generator3.Model.Internal
                 GirModel.Enumeration => new EnumerationParameter(parameter),
                 GirModel.Bitfield => new BitfieldParameter(parameter),
                 GirModel.Void => new VoidParameter(parameter),
-                
+
                 _ => throw new Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyType} can not be converted into a model")
             },
             arrayType => arrayType.AnyType.Match<Parameter>(

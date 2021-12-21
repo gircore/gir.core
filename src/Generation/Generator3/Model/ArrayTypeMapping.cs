@@ -12,7 +12,7 @@ namespace Generator3.Model
             arrayType.FillArrayNameParts(nameParts);
 
             var sb = new StringBuilder(nameParts.Count + 1);
-            
+
             for (var i = nameParts.Count - 1; i >= 0; i--)
                 sb.Append(nameParts[i]);
 

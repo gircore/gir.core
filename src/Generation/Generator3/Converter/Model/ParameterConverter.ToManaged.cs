@@ -73,9 +73,9 @@ namespace Generator3.Converter
                 variableName = from.GetPublicName();
                 return null;
             }
-            
+
             #endregion
-            
+
             #region String array
 
             if (from.AnyType.IsArray<GirModel.String>())
@@ -133,14 +133,14 @@ namespace Generator3.Converter
             }
 
             #endregion
-            
+
             #region Class
 
             if (from.AnyType.Is<GirModel.Class>())
             {
                 if (!from.IsPointer)
                     throw new NotImplementedException($"{from.AnyType}: Unpointed class parameter not yet supported");
-                
+
                 var cls = (Class) from.AnyType.AsT0;
 
                 if (cls.IsFundamental)
@@ -154,18 +154,18 @@ namespace Generator3.Converter
                     return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapHandle<{cls.GetFullyQualified()}>({from.GetPublicName()}, {from.Transfer.IsOwnedRef().ToString().ToLower()});";
                 }
             }
-            
+
             #endregion
-            
+
             #region Interface
 
             if (from.AnyType.Is<GirModel.Interface>())
             {
                 if (!from.IsPointer)
                     throw new NotImplementedException($"{from.AnyType}: Unpointed interface parameter not yet supported");
-                
+
                 var iface = (Interface) from.AnyType.AsT0;
-                
+
                 variableName = from.GetConvertedName();
                 return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapHandle<{iface.GetFullyQualified()}>({from.GetPublicName()}, {from.Transfer.IsOwnedRef().ToString().ToLower()});";
             }

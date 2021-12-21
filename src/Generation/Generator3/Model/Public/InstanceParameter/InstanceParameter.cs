@@ -8,7 +8,7 @@ namespace Generator3.Model.Public
         public abstract string NullableTypeName { get; }
 
         public string Name => Model.GetPublicName();
-        
+
         protected InstanceParameter(GirModel.InstanceParameter model)
         {
             Model = model;

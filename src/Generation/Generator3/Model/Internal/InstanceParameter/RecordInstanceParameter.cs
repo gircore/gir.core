@@ -6,7 +6,7 @@ namespace Generator3.Model.Internal
     {
         private GirModel.Record Type => (GirModel.Record) Model.Type;
         public override string NullableTypeName => Type.GetFullyQualifiedInternalHandle();
-        
+
         public RecordInstanceParameter(GirModel.InstanceParameter instanceParameter) : base(instanceParameter)
         {
         }

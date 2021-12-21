@@ -15,7 +15,7 @@
         {
             if (ns.Name == "GLib")
                 return;//We can not register any type of GLib as GLib is not using the GObject type system
-            
+
             try
             {
                 var model = new PublicModuleTypeRegistrationModel(ns);

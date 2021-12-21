@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Generator3.Converter;
 
@@ -10,11 +10,11 @@ namespace Generator3.Model.Public
 
         private string? _publicName;
         private string? _internalName;
-        
+
         public string ClassName { get; }
         public string PublicName => _publicName ??= _method.GetPublicName();
         public string InternalName => _internalName ??= _method.GetInternalName();
-        
+
         public GirModel.ReturnType ReturnType => _method.ReturnType;
 
         public InstanceParameter InstanceParameter { get; }

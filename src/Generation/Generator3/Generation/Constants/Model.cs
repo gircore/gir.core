@@ -19,6 +19,6 @@ namespace Generator3.Generation.Constants
                 .Select(constant => new Constant(constant))
                 .ToList();
         }
-    
+
     }
 }

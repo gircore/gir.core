@@ -17,10 +17,10 @@ namespace Generator3.Generation.Record
         {
             Record = record;
         }
-        
+
         private static GirModel.Method? GetFreeOrUnrefMethod(IEnumerable<GirModel.Method> methods)
             //Unref functions takes precedense over free function
-            => methods.FirstOrDefault(function => function.IsUnref()) 
+            => methods.FirstOrDefault(function => function.IsUnref())
                ?? methods.FirstOrDefault(function => function.IsFree());
     }
 }

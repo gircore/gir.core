@@ -8,16 +8,16 @@ namespace GirLoader
     {
         public static void ResolveParameterList(this RepositoryTypeReferenceResolver resolver, ParameterList parameterList, Repository repository)
         {
-            if(parameterList.InstanceParameter is not null)
+            if (parameterList.InstanceParameter is not null)
                 resolver.ResolveTypeReference(parameterList.InstanceParameter.TypeReference, repository);
-            
+
             resolver.ResolveTypeReferences(parameterList.SingleParameters.Select(x => x.TypeReference), repository);
         }
-        
+
         public static void ResolveParameterLists(this RepositoryTypeReferenceResolver resolver, IEnumerable<ParameterList> parameterLists, Repository repository)
         {
-           foreach(var parameterList in parameterLists)
-               ResolveParameterList(resolver, parameterList, repository);
+            foreach (var parameterList in parameterLists)
+                ResolveParameterList(resolver, parameterList, repository);
         }
     }
 }

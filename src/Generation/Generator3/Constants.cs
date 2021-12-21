@@ -12,7 +12,7 @@ namespace Generator3
                 template: new Template(),
                 publisher: new PublicClassFilePublisher()
             );
-        
+
             generator.Generate(constants);
         }
     }

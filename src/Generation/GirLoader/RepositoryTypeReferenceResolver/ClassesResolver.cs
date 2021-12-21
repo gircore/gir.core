@@ -9,12 +9,12 @@ namespace GirLoader
         {
             foreach (var cls in repository.Namespace.Classes)
             {
-                if(cls.Parent is not null)
+                if (cls.Parent is not null)
                     resolver.ResolveTypeReference(cls.Parent, repository);
-                
+
                 resolver.ResolveTypeReferences(cls.Implements, repository);
                 resolver.ResolveTypeReferences(cls.Properties.Select(x => x.TypeReference), repository);
-                
+
                 resolver.ResolveTypeReferences(cls.Fields.Select(x => x.TypeReference), repository);
                 resolver.ResolveParameterLists(cls.Fields.Select(x => x.Callback?.ParameterList).OfType<ParameterList>(), repository);
                 resolver.ResolveTypeReferences(cls.Fields.Select(x => x.Callback?.ReturnValue.TypeReference).OfType<TypeReference>(), repository);

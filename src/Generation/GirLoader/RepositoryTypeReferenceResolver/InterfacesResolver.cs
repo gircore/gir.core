@@ -17,7 +17,7 @@ namespace GirLoader
 
                 resolver.ResolveTypeReferences(iface.Methods.Select(x => x.ReturnValue.TypeReference), repository);
                 resolver.ResolveParameterLists(iface.Methods.Select(x => x.ParameterList), repository);
-                
+
                 resolver.ResolveTypeReferences(iface.Functions.Select(x => x.ReturnValue.TypeReference), repository);
                 resolver.ResolveParameterLists(iface.Functions.Select(x => x.ParameterList), repository);
             }

@@ -14,12 +14,12 @@ namespace Generator3.Generation.Callback
         public string NamespaceName => _callback.Namespace.Name;
 
         public ReturnType ReturnType => _returnType ??= _callback.ReturnType.CreatePublicModel();
-        public IEnumerable<Parameter> Parameters 
+        public IEnumerable<Parameter> Parameters
             => _parameters ??= _callback.Parameters
                 .Where(p => p.Closure is null or 0)
                 .CreatePublicModels()
                 .ToList();
-        
+
         public PublicDelegateModel(GirModel.Callback callback)
         {
             _callback = callback;

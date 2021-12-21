@@ -7,7 +7,7 @@ namespace Generator3.Renderer.Public
         public static string Render(Model.Public.Method data, string returnVariable)
         {
             return data.ReturnType.AnyType.Is<GirModel.Void>()
-                ? string.Empty 
+                ? string.Empty
                 : $"return {data.ReturnType.ToManaged(returnVariable)};";
         }
     }

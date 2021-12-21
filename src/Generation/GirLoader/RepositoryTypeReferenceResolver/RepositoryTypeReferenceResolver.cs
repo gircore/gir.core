@@ -11,12 +11,12 @@ namespace GirLoader
 
         public RepositoryTypeReferenceResolver(IEnumerable<Output.Repository> repositories)
         {
-            foreach(var repository in repositories)
+            foreach (var repository in repositories)
             {
                 Add(repository);
             }
         }
-        
+
         /// <summary>
         /// Loads the given repository and all its dependencies
         /// </summary>

@@ -59,7 +59,7 @@ namespace Generator3.Converter
                 return null;
             }
             #endregion
-            
+
             #region String array
 
             if (from.AnyType.IsArray<GirModel.String>())
@@ -86,7 +86,7 @@ namespace Generator3.Converter
             {
                 if (from.Direction != Direction.In)
                     throw new NotImplementedException($"{from.AnyType}: interface parameter with direction != in not yet supported");
-                
+
                 variableName = from.GetConvertedName();
                 return $"var {variableName} = ({from.GetPublicName()} as GObject.Object).Handle;";
             }
@@ -95,16 +95,16 @@ namespace Generator3.Converter
             #region Interface array
             // Interface Array Conversions
             //ArrayTypeReference { Type: Interface } => $"{fromParam}.Select(iface => (iface as GObject.Object).Handle).ToArray()",
-            
+
             if (from.AnyType.IsArray<GirModel.Interface>())
             {
                 variableName = from.GetConvertedName();
                 return $"var {variableName} = {from.GetPublicName()}.Select(iface => (iface as GObject.Object).Handle).ToArray();";
             }
             #endregion
-            
+
             #region Class
-            
+
             if (from.AnyType.Is<GirModel.Class>())
             {
                 if (from.Direction != Direction.In)
@@ -129,28 +129,28 @@ namespace Generator3.Converter
             }
 
             #endregion
-            
+
             #region Class array
-            
+
             if (from.AnyType.IsArray<GirModel.Class>())
             {
                 var arrayType = from.AnyType.AsT1;
 
                 if (arrayType.IsPointer)
                     throw new NotImplementedException($"{from.AnyType}: Pointed class array can not yet be converted to native.");
-                
+
                 variableName = from.GetConvertedName();
                 return $"var {variableName} = {from.GetPublicName()}.Select(cls => cls.Handle).ToArray();";
             }
-            
+
             #endregion
-            
+
             #region Record
             if (from.AnyType.Is<GirModel.Record>())
             {
                 if (from.Direction != Direction.In)
                     throw new NotImplementedException($"{from.AnyType}: record parameter with direction != in not yet supported");
-                
+
                 if (!from.IsPointer)
                     throw new NotImplementedException($"{from.AnyType}: Not pointed record types can not yet be converted to native");
 
@@ -167,13 +167,13 @@ namespace Generator3.Converter
 
                 if (!arrayType.IsPointer)
                     throw new NotImplementedException($"{from.AnyType}: Not pointed array record types can not yet be converted to native.");
-                
+
                 variableName = from.GetConvertedName();
                 return $"var {variableName} = {from.GetPublicName()}.Select(record => record.Handle.DangerousGethandle()).ToArray();";
             }
-            
+
             #endregion
-            
+
             throw new NotImplementedException($"Can't convert from parameter {from.Name} ({from.AnyType}) to managed");
         }
     }

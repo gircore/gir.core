@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Generator3;
 using GirLoader;
 using GirLoader.Output;
-using Generator3;
 
 namespace Build
 {
@@ -40,23 +40,23 @@ namespace Build
         {
             var repositoriesXmlModel = Projects.AllLibraries.Select(LoadXmlModel);
             var loader = new GirLoader.Loader(ResolveInclude);
-            
-            if(_settings.EnableDebugOutput)
+
+            if (_settings.EnableDebugOutput)
                 loader.EnableDebugOutput();
-            
-            if(_settings.EnableVerboseOutput)
+
+            if (_settings.EnableVerboseOutput)
                 loader.EnableVerboseOutput();
-            
+
             var outputRepositories = loader.Load(repositoriesXmlModel);
             GenerateRepositories(outputRepositories);
         }
 
         private void GenerateRepositories(IEnumerable<Repository> repositories)
         {
-            if(_settings.EnableDebugOutput)
+            if (_settings.EnableDebugOutput)
                 Generator3.Configuration.EnableDebugOutput();
-            
-            if(_settings.EnableVerboseOutput)
+
+            if (_settings.EnableVerboseOutput)
                 Generator3.Configuration.EnableVerboseOutput();
 
             if (_settings.GenerateAsynchronously)
@@ -77,7 +77,7 @@ namespace Build
             var p = Project.FromName(project);
             DotNet.Format(p.Folder);
         }
-        
+
         private const string CacheDir = "../../../ext/gir-files";
 
         public static GirLoader.Input.Repository? ResolveInclude(GirLoader.Output.Include include)

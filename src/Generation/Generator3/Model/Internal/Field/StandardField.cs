@@ -4,7 +4,7 @@ namespace Generator3.Model.Internal
 {
     public class StandardField : Field
     {
-        public override string NullableTypeName => _field.IsPointer 
+        public override string NullableTypeName => _field.IsPointer
             ? TypeNameConverter.Pointer
             : _field.AnyTypeOrCallback.AsT0.AsT0.GetName();
 

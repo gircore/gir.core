@@ -23,7 +23,7 @@ namespace Generator3.Publication
 
             if (directoryName is null)
                 throw new Exception("Can not get directory for path: " + path);
-            
+
             Directory.CreateDirectory(directoryName);
             File.WriteAllText(path, codeUnit.Source);
         }

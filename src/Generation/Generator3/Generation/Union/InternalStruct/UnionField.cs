@@ -9,7 +9,7 @@ namespace Generator3.Generation.Union
         public string Name => _field.Name;
         public string NullableTypeName => _field.NullableTypeName;
         public string? Attribute => "[FieldOffset(0)]" + _field.Attribute;
-        
+
         public UnionField(GirModel.Field field)
         {
             _field = field.CreateInternalModel();

@@ -11,7 +11,7 @@ namespace Generator3.Model.Internal
         public static Field CreateInternalModel(this GirModel.Field field) => field.AnyTypeOrCallback.Match(
             anyType => anyType.Match(
                 type => type switch
-                { 
+                {
                     GirModel.String => new StringField(field),
                     GirModel.Callback => new CallbackTypeField(field),
                     GirModel.Record => new RecordField(field),

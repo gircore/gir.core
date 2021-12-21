@@ -6,7 +6,8 @@ namespace Generator3.Converter
     {
         public static string GetDirection(this GirModel.Parameter parameter, ParameterDirection @in, ParameterDirection @out, ParameterDirection outCallerAllocates, ParameterDirection inout)
         {
-            return parameter switch {
+            return parameter switch
+            {
                 { Direction: GirModel.Direction.InOut } => inout.Value,
                 { Direction: GirModel.Direction.Out, CallerAllocates: true } => outCallerAllocates.Value,
                 { Direction: GirModel.Direction.Out } => @out.Value,

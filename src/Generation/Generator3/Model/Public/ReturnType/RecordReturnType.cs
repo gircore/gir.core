@@ -8,7 +8,7 @@
 
         protected internal RecordReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {
-            returnValue.AnyType.VerifyType<GirModel.Record>();   
+            returnValue.AnyType.VerifyType<GirModel.Record>();
         }
     }
 }

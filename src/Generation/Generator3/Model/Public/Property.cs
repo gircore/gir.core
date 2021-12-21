@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Generator3.Converter;
 
 namespace Generator3.Model.Public
@@ -49,7 +49,7 @@ namespace Generator3.Model.Public
 
             if (name == ClassName)
                 throw new Exception($"Property {name} is identical to it's class which is not yet supported. Property should be created with a suffix and in a separate build step be rewritten to it's original name");
-            
+
             return name;
         }
 
@@ -58,7 +58,7 @@ namespace Generator3.Model.Public
             return _property.AnyType.Match(
                 type => type switch
                 {
-                    GirModel.ComplexType c => c.GetFullyQualified() + GetDefaultNullable(), 
+                    GirModel.ComplexType c => c.GetFullyQualified() + GetDefaultNullable(),
                     _ => type.GetName() + GetDefaultNullable()
                 },
                 arrayType => arrayType.GetName()

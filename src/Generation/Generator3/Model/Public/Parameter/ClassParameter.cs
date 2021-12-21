@@ -5,7 +5,7 @@ namespace Generator3.Model.Public
     public class ClassParameter : Parameter
     {
         private GirModel.Class Type => (GirModel.Class) Model.AnyType.AsT0;
-        
+
         public override string NullableTypeName => Type.GetFullyQualified() + GetDefaultNullable();
 
         public override string Direction => Model.GetDirection(

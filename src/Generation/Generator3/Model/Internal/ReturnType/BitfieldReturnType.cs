@@ -8,7 +8,7 @@
 
         protected internal BitfieldReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {
-            returnValue.AnyType.VerifyType<GirModel.Bitfield>();   
+            returnValue.AnyType.VerifyType<GirModel.Bitfield>();
         }
     }
 }

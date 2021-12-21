@@ -1,4 +1,4 @@
-namespace Generator3.Generation.Record
+﻿namespace Generator3.Generation.Record
 {
     public static class FreeFunctionRenderer
     {

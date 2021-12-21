@@ -10,9 +10,9 @@ namespace GObject.Tests.Classes
         public void CanCreateBooleanParamSpec()
         {
             var pspec = new ParamSpecBoolean(
-                name: "test", 
-                nick: "test", 
-                blurb: "test", 
+                name: "test",
+                nick: "test",
+                blurb: "test",
                 defaultValue: false,
                 flags: ParamFlags.Writable
             );

@@ -6,13 +6,13 @@
         {
             if (method is null)
                 return "";
-            
+
             var renderedParameters = method.Parameters.Render();
-            
-            if(renderedParameters.Length > 0)
+
+            if (renderedParameters.Length > 0)
                 renderedParameters = ", " + renderedParameters;
-            
-            
+
+
             return @$"{method.RenderComment()}
 [DllImport(""{ method.NamespaceName }"", EntryPoint = ""{ method.CIdentifier }"")]
 public static extern { method.ReturnType.NullableTypeName } { method.Name }({method.InstanceParameter.Render()}{ renderedParameters });";

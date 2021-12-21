@@ -7,7 +7,7 @@ namespace GirModel
         string Name { get; }
         string Version { get; }
         string? SharedLibrary { get; }
-        
+
         IEnumerable<Enumeration> Enumerations { get; }
         IEnumerable<Bitfield> Bitfields { get; }
         IEnumerable<Record> Records { get; }

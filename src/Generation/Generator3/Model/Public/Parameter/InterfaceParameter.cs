@@ -5,7 +5,7 @@ namespace Generator3.Model.Public
     public class InterfaceParameter : Parameter
     {
         private GirModel.Interface Type => (GirModel.Interface) Model.AnyType.AsT0;
-        
+
         public override string NullableTypeName => Type.GetFullyQualified() + GetDefaultNullable();
 
         public override string Direction => Model.GetDirection(

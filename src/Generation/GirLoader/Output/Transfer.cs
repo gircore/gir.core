@@ -7,7 +7,7 @@
         Container,
         Full
     }
-    
+
     internal static class TransferConverter
     {
         public static GirModel.Transfer ToGirModel(this Transfer transfer) => transfer switch

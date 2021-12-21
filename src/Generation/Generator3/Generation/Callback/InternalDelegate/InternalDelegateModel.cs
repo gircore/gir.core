@@ -15,7 +15,7 @@ namespace Generator3.Generation.Callback
 
         public ReturnType ReturnType => _returnType ??= _callback.ReturnType.CreateInternalModel();
         public IEnumerable<Parameter> Parameters => _parameters ??= _callback.Parameters.CreateInternalModelsForCallback();
-        
+
         public InternalDelegateModel(GirModel.Callback callback)
         {
             _callback = callback;

@@ -8,9 +8,9 @@ namespace Generator3.Model.Internal
 
         public string Name => _field.GetInternalName();
         public virtual string? Attribute { get; }
-        
+
         public abstract string NullableTypeName { get; }
-        
+
         protected Field(GirModel.Field field)
         {
             _field = field;

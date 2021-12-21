@@ -5,7 +5,7 @@ namespace GirLoader.Output
     public partial class Class : GirModel.Class
     {
         GirModel.Class? GirModel.Class.Parent => (GirModel.Class?) Parent?.Type;
-        GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace; 
+        GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
         string GirModel.ComplexType.Name => Name;
         GirModel.Function GirModel.Class.TypeFunction => GetTypeFunction;
         bool GirModel.Class.IsFundamental => IsFundamental;

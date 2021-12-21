@@ -47,9 +47,9 @@ namespace GObject.Tests
 
             var d1 = Marshal.PtrToStructure<Internal.Value.Struct>(ptr);
             d1.Data[0].VInt.Should().Be(value);
-            
+
             v.Dispose();
-            
+
             //Try to read the data again despite the fact that the value is already disposed
             //If the value changed we can assume that the memory got freed.
             var d2 = Marshal.PtrToStructure<Internal.Value.Struct>(ptr);

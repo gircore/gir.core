@@ -50,8 +50,8 @@ namespace GirLoader.Output
 
         private TypeReference? CreateParentTypeReference(string? parentName, Namespace @namespace)
         {
-            return parentName is not null 
-                ? CreateTypeReference(parentName, @namespace) 
+            return parentName is not null
+                ? CreateTypeReference(parentName, @namespace)
                 : null;
         }
 

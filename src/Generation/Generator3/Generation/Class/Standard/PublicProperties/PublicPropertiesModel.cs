@@ -10,7 +10,7 @@ namespace Generator3.Generation.Class.Standard
 
         public string Name => _class.Name;
         public string NamespaceName => _class.Namespace.Name;
-        
+
         public IEnumerable<Property> Properties { get; }
 
         public PublicPropertiesModel(GirModel.Class @class)

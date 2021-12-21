@@ -3,7 +3,7 @@
     public partial class Constant
     {
         private readonly Repository _repository;
-        
+
         public string Name { get; }
         public string Value { get; }
         public TypeReference TypeReference { get; }

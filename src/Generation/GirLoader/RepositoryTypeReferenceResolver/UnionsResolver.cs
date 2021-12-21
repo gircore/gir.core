@@ -12,13 +12,13 @@ namespace GirLoader
                 resolver.ResolveTypeReferences(union.Fields.Select(x => x.TypeReference), repository);
                 resolver.ResolveParameterLists(union.Fields.Select(x => x.Callback?.ParameterList).OfType<ParameterList>(), repository);
                 resolver.ResolveTypeReferences(union.Fields.Select(x => x.Callback?.ReturnValue.TypeReference).OfType<TypeReference>(), repository);
-                
+
                 resolver.ResolveTypeReferences(union.Constructors.Select(x => x.ReturnValue.TypeReference), repository);
                 resolver.ResolveParameterLists(union.Constructors.Select(x => x.ParameterList), repository);
-                
+
                 resolver.ResolveTypeReferences(union.Methods.Select(x => x.ReturnValue.TypeReference), repository);
                 resolver.ResolveParameterLists(union.Methods.Select(x => x.ParameterList), repository);
-                
+
                 resolver.ResolveTypeReferences(union.Functions.Select(x => x.ReturnValue.TypeReference), repository);
                 resolver.ResolveParameterLists(union.Functions.Select(x => x.ParameterList), repository);
 

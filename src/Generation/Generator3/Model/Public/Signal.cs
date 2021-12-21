@@ -14,11 +14,11 @@ namespace Generator3.Model.Public
         public string ArgsClassName => _signal.GetArgsClassName();
         public string ClassName { get; }
         public bool HasArgs => _signal.Parameters.Any();
-        public string GenericArgs => HasArgs 
+        public string GenericArgs => HasArgs
             ? $"{ClassName}, {ArgsClassName}"
             : ClassName;
         public IEnumerable<Parameter> Parameters { get; }
-        
+
         public Signal(GirModel.Signal signal, string className)
         {
             _signal = signal;

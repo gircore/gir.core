@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Generator3.Publication;
 using Generator3.Generation.Interface;
+using Generator3.Publication;
 
 namespace Generator3
 {
@@ -12,7 +12,7 @@ namespace Generator3
                 template: new InternalMethodsTemplate(),
                 publisher: new InternalInterfaceFilePublisher()
             );
-            
+
             var publicMethodsGenerator = new PublicMethodsGenerator(
                 template: new PublicMethodsTemplate(),
                 publisher: new PublicInterfaceFilePublisher()
@@ -22,7 +22,7 @@ namespace Generator3
                 template: new PublicFrameworkTemplate(),
                 publisher: new PublicInterfaceFilePublisher()
             );
-            
+
             foreach (var record in interfaces)
             {
                 internalMethodsGenerator.Generate(record);

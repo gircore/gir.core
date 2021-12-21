@@ -6,7 +6,7 @@ namespace Generator3.Model.Public
     {
         private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
         private GirModel.Class Class => (GirModel.Class) ArrayType.AnyType.AsT0;
-        
+
         public override string NullableTypeName => Class.GetFullyQualified() + "[]";
 
         public override string Direction => Model.GetDirection(

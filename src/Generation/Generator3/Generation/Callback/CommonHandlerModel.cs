@@ -28,7 +28,7 @@ namespace Generator3.Generation.Callback
         {
             _callback = callback;
             _internalCallback = new Model.Internal.Callback(callback);
-            
+
             // Let derived classes add a suffix (e.g. 'AsyncHandler')
             Name = callback.Name + suffix;
         }

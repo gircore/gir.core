@@ -20,7 +20,7 @@ namespace Generator3.Generation.Class.Standard
             {
                 if (!@class.Methods.Any())
                     return;
-                
+
                 var model = new PublicMethodsModel(@class);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(@class.Namespace.GetCanonicalName(), $"{@class.Name}.Methods", source);

@@ -20,14 +20,14 @@ namespace Generator3.Converter
 
             if (from.AnyType.Is<String>())
             {
-                return from.Transfer == Transfer.None 
-                    ? $"GLib.Internal.StringHelper.StringToHGlobalUTF8({fromVariableName})" 
+                return from.Transfer == Transfer.None
+                    ? $"GLib.Internal.StringHelper.StringToHGlobalUTF8({fromVariableName})"
                     : fromVariableName;
             }
 
-            if(from.AnyType.Is<Record>())
+            if (from.AnyType.Is<Record>())
                 return fromVariableName + ".Handle";
-            
+
             throw new System.NotImplementedException($"Can't convert from return type {from} to native");
         }
     }

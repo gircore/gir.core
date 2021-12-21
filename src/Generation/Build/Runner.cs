@@ -43,7 +43,7 @@ namespace Build
         {
             Targets.RunWithoutExiting(
                 targets: targets,
-                options: options, 
+                options: options,
                 messageOnly: _ => true
             );
         }

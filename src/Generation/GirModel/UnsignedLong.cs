@@ -2,6 +2,6 @@
 {
     public interface UnsignedLong : PrimitiveValueType
     {
-        
+
     }
 }

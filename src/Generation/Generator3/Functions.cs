@@ -12,7 +12,7 @@ namespace Generator3
                 template: new InternalTemplate(),
                 publisher: new InternalClassFilePublisher()
             );
-        
+
             generator.Generate(functions);
         }
     }

@@ -14,7 +14,7 @@ namespace GLib.Internal
             {
                 //TODO: Free(str, true);
                 throw new NotImplementedException();
-            } 
+            }
         }
     }
 }

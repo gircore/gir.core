@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,23 +30,23 @@ NativeCallback = ({model.InternalParameters.Select(p => p.GetPublicName()).Join(
 
             return nativeCallback;
         }
-        
+
         private static string RenderCallStatement(CommonHandlerModel model, IEnumerable<string> parameterNames, out string resultVariableName)
         {
             resultVariableName = "managedCallbackResult";
             var call = $"managedCallback({parameterNames.Join(", ")});";
-            
+
             if (model.InternalReturnType.Model.AnyType.Is<GirModel.Void>())
                 return call;
 
             return $"var {resultVariableName} = " + call;
         }
-        
+
         private static string RenderConvertParameterStatements(CommonHandlerModel model, out IEnumerable<string> parameters)
         {
             var call = new StringBuilder();
             var names = new List<string>();
-            
+
             foreach (Parameter p in model.PublicParameters)
             {
                 call.AppendLine(p.ToManaged(out var variableName));
@@ -54,7 +54,7 @@ NativeCallback = ({model.InternalParameters.Select(p => p.GetPublicName()).Join(
             }
 
             parameters = names;
-            
+
             return call.ToString();
         }
 

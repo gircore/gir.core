@@ -5,7 +5,7 @@ namespace Generator3.Model.Public
     public class RecordParameter : Parameter
     {
         private GirModel.Record Type => (GirModel.Record) Model.AnyType.AsT0;
-        
+
         public override string NullableTypeName => Type.GetFullyQualified() + GetDefaultNullable();
 
         public override string Direction => Model.GetDirection(

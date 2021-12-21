@@ -7,10 +7,10 @@ namespace Generator3.Model.Internal
         private GirModel.Callback _callback => _field.AnyTypeOrCallback.AsT1;
 
         public override string NullableTypeName => _callback.GetInternalName();
-        
+
         public CallbackField(GirModel.Field field) : base(field)
         {
-            
+
         }
     }
 }

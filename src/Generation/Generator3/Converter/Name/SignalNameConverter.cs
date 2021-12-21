@@ -6,12 +6,12 @@
         {
             return "On" + signal.Name.ToPascalCase();
         }
-        
+
         public static string GetDescriptorName(this GirModel.Signal signal)
         {
             return signal.Name.ToPascalCase() + "Signal";
         }
-        
+
         public static string GetArgsClassName(this GirModel.Signal signal)
         {
             return signal.Name.ToPascalCase() + "SignalArgs";

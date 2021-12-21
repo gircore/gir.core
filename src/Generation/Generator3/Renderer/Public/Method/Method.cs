@@ -12,18 +12,18 @@ namespace Generator3.Renderer.Public
                 //We do not need to create a method for free methods. Freeing is handled by
                 //the framework via a IDisposable implementation.
                 return data.IsFree()
-                    ? string.Empty 
+                    ? string.Empty
                     : RenderInternal(data);
             }
             catch (Exception e)
             {
                 var message = $"Did not generate method '{data.ClassName}.{data.PublicName}': {e.Message}";
-                
-                if(e is NotImplementedException)
+
+                if (e is NotImplementedException)
                     Log.Debug(message);
                 else
                     Log.Warning(message);
-                
+
                 return string.Empty;
             }
         }

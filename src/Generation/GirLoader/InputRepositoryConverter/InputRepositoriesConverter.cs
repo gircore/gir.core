@@ -10,7 +10,7 @@ namespace GirLoader
         {
             var repositoryFactory = new OutputRepositoryFactoryContainer().Resolve().Value;
             var repositoryConverter = new InputRepositoryConverter(resolveInclude, repositoryFactory);
-            
+
             return inputRepositories.Select(repositoryConverter.CreateOutputRepository);
         }
     }

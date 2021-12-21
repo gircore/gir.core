@@ -21,7 +21,7 @@ namespace Generator3.Generation.Functions
             {
                 if (!functions.Any())
                     return;
-                
+
                 var model = new InternalModel(functions);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(functions.First().Namespace.GetCanonicalName(), "Functions", source);

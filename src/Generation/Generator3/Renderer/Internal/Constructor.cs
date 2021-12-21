@@ -4,8 +4,8 @@
     {
         public static string Render(this Model.Internal.Constructor? constructor)
         {
-            return constructor is null 
-                ? "" 
+            return constructor is null
+                ? ""
                 : @$"{constructor.RenderComment()}
 [DllImport(""{ constructor.NamespaceName }"", EntryPoint = ""{ constructor.CIdentifier }"")]
 public static extern { constructor.ReturnType.NullableTypeName } { constructor.Name }({ constructor.Parameters.Render()});";
