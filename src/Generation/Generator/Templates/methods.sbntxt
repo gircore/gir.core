@@ -1,3 +1,0 @@
-{{~ for $method in $1
-$method | write_native_method
-end ~}}
