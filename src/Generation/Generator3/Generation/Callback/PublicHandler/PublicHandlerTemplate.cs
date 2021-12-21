@@ -34,7 +34,7 @@ namespace { model.NamespaceName }
         public {model.Name}({model.DelegateType} managed)
         {{
             managedCallback = managed;
-            {RenderNativeCallback(model)}
+            {CommonHandlerRenderUtils.RenderNativeCallback(model)}
         }}
         
         public void Dispose()
@@ -46,28 +46,6 @@ namespace { model.NamespaceName }
         }}
     }}
 }}";
-        }
-
-        private static string RenderNativeCallback(PublicHandlerModel model)
-        {
-            string? nativeCallback;
-            //Helper as long as there are errors
-            try
-            {
-                nativeCallback = $@"
-NativeCallback = ({model.InternalParameters.Select(p => p.GetPublicName()).Join(", ")}) => {{
-    {PublicHandlerConvertParameterStatements.Render(model, out var parameters)}
-    {PublicHandlerCallStatement.Render(model, parameters, out var resultVariableName)}
-    {PublicHandlerReturnStatement.Render(model, resultVariableName)}
-}};";
-            }
-            catch (Exception ex)
-            {
-                Log.Warning($"Can not generate callback for {model.Name}: {ex.Message}");
-                nativeCallback = string.Empty;
-            }
-
-            return nativeCallback;
         }
     }
 }
