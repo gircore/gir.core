@@ -16,7 +16,10 @@ namespace cairo
             RegisterTypes();
         }
 
+#pragma warning disable IDE0051 // IDE0051: Remove unused member
         static partial void InitializeDllImport();
+#pragma warning restore IDE0051
+
         static partial void RegisterTypes();
     }
 }

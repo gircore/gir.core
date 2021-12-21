@@ -26,7 +26,9 @@ jobs:
       - name: Prepare .NET
         uses: actions/setup-dotnet@v1.9.0
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: |
+            5.0.x
+            6.0.x
 
       - name: Run release build (unit tests)
         if: ${{ matrix.os == 'windows-latest' || matrix.os == 'macos-latest' }}
@@ -37,6 +39,10 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: dotnet run -- --release --xml-documentation --targets integrationTest samples
         working-directory: './src/Generation/Build'
+
+      - name: Verify code format
+        run: dotnet format --no-restore --verify-no-changes --exclude *.Generated.cs
+        working-directory: './src'
 
       # - name: (Failure) Upload Generated Files
       #  if: ${{ failure() }}

@@ -9,7 +9,7 @@ namespace Gir.Integration.CSharp
     {
         #region Fields
 
-        private List<ISourceGenerator> _generators;
+        private readonly List<ISourceGenerator> _generators;
 
         #endregion
 

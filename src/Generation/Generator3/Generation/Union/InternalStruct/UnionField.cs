@@ -4,7 +4,7 @@ namespace Generator3.Generation.Union
 {
     public class UnionField
     {
-        private Field _field;
+        private readonly Field _field;
 
         public string Name => _field.Name;
         public string NullableTypeName => _field.NullableTypeName;

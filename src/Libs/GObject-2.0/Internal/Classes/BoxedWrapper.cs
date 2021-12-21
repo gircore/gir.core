@@ -40,11 +40,13 @@ namespace GObject.Internal
             return result;
         }
 
+        //TODO: Get rid of this method (needed for TextEditor sample)
         private static MethodInfo? GetSecretFactoryMethod(System.Type type)
         {
             return type.GetMethods(
                 System.Reflection.BindingFlags.Static
                 | System.Reflection.BindingFlags.DeclaredOnly
+                | System.Reflection.BindingFlags.Public
                 | System.Reflection.BindingFlags.NonPublic
             ).FirstOrDefault(x => x.GetCustomAttribute<ConstructAttribute>() is { });
         }

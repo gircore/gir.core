@@ -71,12 +71,13 @@ namespace Build
             return new FileInfo(project.GirFile).OpenRead().DeserializeGirInputModel();
         }
 
-        private void FormatCode()
+        //TODO: Only format generated code as other code is checked during compilation by CI
+        /*private void FormatCode()
         {
             var project = "GLib-2.0";
             var p = Project.FromName(project);
             DotNet.Format(p.Folder);
-        }
+        }*/
 
         private const string CacheDir = "../../../ext/gir-files";
 

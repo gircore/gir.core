@@ -8,7 +8,7 @@ namespace TextEditor
 
     public class App : Gtk.Application
     {
-        const string AppName = "org.gircore.TextEditor";
+        private const string AppName = "org.gircore.TextEditor";
 
         public App()
         {
@@ -23,7 +23,7 @@ namespace TextEditor
             window.Present();
         }
 
-        static int Main(string[] args)
+        public static int Main(string[] args)
             => new App().Run();
     }
 }

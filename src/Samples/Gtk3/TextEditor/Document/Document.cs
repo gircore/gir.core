@@ -20,10 +20,9 @@ namespace TextEditor.Document
 
         public event EventHandler DocumentChanged = default!;
 
-
-        private PieceTable pieceTable;
-        private ReadOnlyBuffer fileBuffer;
-        private AppendBuffer addBuffer;
+        private readonly PieceTable pieceTable;
+        private readonly ReadOnlyBuffer fileBuffer;
+        private readonly AppendBuffer addBuffer;
 
         private (Node desc, int baseIndex) FromIndex(int index)
         {
