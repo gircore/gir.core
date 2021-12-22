@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Class.Fundamental
+﻿using Generator3.Renderer.Public;
+
+namespace Generator3.Generation.Class.Fundamental
 {
     public class PublicMethodsTemplate : Template<PublicMethodsModel>
     {
@@ -17,7 +19,7 @@ namespace { model.NamespaceName }
 
     public partial class { model.Name }
     {{
-        //TODO Implement fundamental methods
+        {model.Methods.Render()}
     }}
 }}";
         }

@@ -148,6 +148,9 @@ namespace GObject
             if (Functions.TypeIsA(gtype, (nuint) BasicType.Flags))
                 return GetFlags();
 
+            if (Functions.TypeIsA(gtype, (nuint) BasicType.Param))
+                return GetParam();
+
             var name = StringHelper.ToStringUtf8(Internal.Functions.TypeName(gtype));
 
             throw new NotSupportedException($"Unable to extract the value for type '{name}'. The type (id: {gtype}) is unknown.");
@@ -156,6 +159,12 @@ namespace GObject
         public T Extract<T>() => (T) Extract()!;
 
         public IntPtr GetPtr() => Internal.Value.Methods.GetPointer(Handle);
+
+        public ParamSpec GetParam()
+        {
+            var paramHandle = Internal.Value.Methods.GetParam(Handle);
+            return new ParamSpec(paramHandle);
+        }
 
         public object? GetBoxed(nuint type)
         {
