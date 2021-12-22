@@ -13,7 +13,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
-    directory: "/src/Generation/Generator"
+    directory: "/src/Generation/Generator3"
     schedule:
       interval: "daily"
   - package-ecosystem: "nuget"
