@@ -1,8 +1,8 @@
 ﻿namespace GirLoader.Output
 {
-    public class Pointer : PrimitiveType
+    public class Pointer : Type, GirModel.Pointer
     {
-        public Pointer(string ctype) : base(new CType(ctype), new TypeName("IntPtr")) { }
+        public Pointer(string ctype) : base(ctype) { }
 
         internal override bool Matches(TypeReference typeReference)
         {

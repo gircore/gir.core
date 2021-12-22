@@ -2,7 +2,7 @@
 {
     public class CTypeReference
     {
-        public CType CType { get; }
+        public string CType { get; }
         public bool IsPointer { get; }
         public bool IsConst { get; }
         public bool IsVolatile { get; }
@@ -19,7 +19,7 @@
                 .Replace(" const", "")
                 .Replace("volatile ", "");
 
-            CType = new CType(cTypeReference);
+            CType = cTypeReference;
         }
 
         public override string ToString()

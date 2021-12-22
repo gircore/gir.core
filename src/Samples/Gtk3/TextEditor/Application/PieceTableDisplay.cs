@@ -7,8 +7,8 @@ namespace TextEditor.Application
 
     public class PieceTableDisplay : Bin
     {
-        private Document doc;
-        private DrawingArea drawingArea;
+        private readonly Document doc;
+        private readonly DrawingArea drawingArea;
         public PieceTableDisplay(Document document)
         {
             doc = document;

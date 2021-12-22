@@ -1,8 +1,8 @@
 ﻿namespace GirLoader.Output
 {
-    public class UnsignedPointer : PrimitiveType
+    public class UnsignedPointer : Type, GirModel.UnsignedPointer
     {
-        public UnsignedPointer(string ctype) : base(new CType(ctype), new TypeName("UIntPtr")) { }
+        public UnsignedPointer(string ctype) : base(ctype) { }
 
         internal override bool Matches(TypeReference typeReference)
         {

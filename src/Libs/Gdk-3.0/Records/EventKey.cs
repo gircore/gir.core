@@ -9,17 +9,17 @@ namespace Gdk
 
         public Gdk.EventType Type
         {
-            get => Marshal.PtrToStructure<Native.EventKey.Struct>(Handle.DangerousGetHandle()).Type;
+            get => Marshal.PtrToStructure<Internal.EventKey.Struct>(Handle.DangerousGetHandle()).Type;
         }
 
         public uint Keyval
         {
-            get => Marshal.PtrToStructure<Native.EventKey.Struct>(Handle.DangerousGetHandle()).Keyval;
+            get => Marshal.PtrToStructure<Internal.EventKey.Struct>(Handle.DangerousGetHandle()).Keyval;
         }
 
         public ushort HardwareKeycode
         {
-            get => Marshal.PtrToStructure<Native.EventKey.Struct>(Handle.DangerousGetHandle()).HardwareKeycode;
+            get => Marshal.PtrToStructure<Internal.EventKey.Struct>(Handle.DangerousGetHandle()).HardwareKeycode;
         }
     }
 }

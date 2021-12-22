@@ -35,7 +35,7 @@ internal static class Log
         => Switch.MinimumLevel = LogEventLevel.Verbose;
 
     public static void Exception(Exception exception)
-        => Logger.Error("Exception occured: {$exception}", exception);
+        => Logger.Error("Exception occured: {$exception}", exception.Message);
 
     public static void Error(string message)
         => Logger.Error(message);

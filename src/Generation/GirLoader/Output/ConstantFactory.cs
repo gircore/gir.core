@@ -11,7 +11,7 @@ namespace GirLoader.Output
             _typeReferenceFactory = typeReferenceFactory;
         }
 
-        public Constant Create(Input.Constant constant)
+        public Constant Create(Input.Constant constant, Repository repository)
         {
             if (constant.Name is null)
                 throw new Exception($"{nameof(Input.Constant)} misses a {nameof(constant.Name)}");
@@ -20,8 +20,8 @@ namespace GirLoader.Output
                 throw new Exception($"{nameof(Input.Constant)} {constant.Name} misses a {nameof(constant.Value)}");
 
             return new Constant(
-                originalName: new SymbolName(constant.Name),
-                symbolName: new SymbolName(new Helper.String(constant.Name).EscapeIdentifier()),
+                repository: repository,
+                name: constant.Name,
                 typeReference: _typeReferenceFactory.Create(constant),
                 value: constant.Value
             );

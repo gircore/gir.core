@@ -26,8 +26,7 @@ namespace GirLoader.Output
                     throw new Exception($"Field {info.Name} has a callback without a name.");
 
                 return new Field(
-                    orignalName: new SymbolName(info.Name),
-                    symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),
+                    name: info.Name,
                     resolveableTypeReference: _typeReferenceFactory.CreateResolveable(info.Callback.Name, info.Callback.Type),
                     callback: _callbackFactory.Create(info.Callback, repository),
                     readable: info.Readable,
@@ -36,8 +35,7 @@ namespace GirLoader.Output
             }
 
             return new Field(
-                orignalName: new SymbolName(info.Name),
-                symbolName: new SymbolName(new Helper.String(info.Name).ToPascalCase()),
+                name: info.Name,
                 typeReference: _typeReferenceFactory.Create(info),
                 readable: info.Readable,
                 @private: info.Private

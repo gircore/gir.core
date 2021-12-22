@@ -14,14 +14,14 @@ namespace GLib
 
         #region Constructors
 
-        public VariantType(string type) : this(Native.VariantType.Methods.New(type)) { }
+        public VariantType(string type) : this(Internal.VariantType.Methods.New(type)) { }
 
         #endregion
 
         #region Methods
 
         public override string? ToString()
-            => Marshal.PtrToStringAnsi(Native.VariantType.Methods.PeekString(Handle));
+            => Marshal.PtrToStringAnsi(Internal.VariantType.Methods.PeekString(Handle));
 
         #endregion
 

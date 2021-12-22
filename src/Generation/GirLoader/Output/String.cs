@@ -3,11 +3,11 @@
     /// <summary>
     /// Unicode string using UTF-8 encoding
     /// </summary>
-    public class Utf8String : String
+    public class Utf8String : String, GirModel.Utf8String
     {
         internal override bool Matches(TypeReference typeReference)
         {
-            return typeReference.SymbolNameReference?.SymbolName.Value == "utf8";
+            return typeReference.SymbolNameReference?.SymbolName == "utf8";
         }
     }
 
@@ -16,17 +16,17 @@
     /// a zero terminated guint8 array on Unix.
     /// TODO: We currently use null terminated ASCII on both platforms, which may be problematic.
     /// </summary>
-    public class PlatformString : String
+    public class PlatformString : String, GirModel.PlatformString
     {
         internal override bool Matches(TypeReference typeReference)
         {
-            return typeReference.SymbolNameReference?.SymbolName.Value == "filename";
+            return typeReference.SymbolNameReference?.SymbolName == "filename";
         }
     }
 
-    public abstract class String : PrimitiveType
+    public abstract class String : Type
     {
-        protected String() : base(new CType("gchar*"), new TypeName("string"))
+        protected String() : base("gchar*")
         {
         }
     }

@@ -11,6 +11,7 @@ namespace Build
         /// <param name="xmlDocumentation">Generate the xml documentation.</param>
         /// <param name="targets">A list of targets to run or list. To list the available targets use option --list-targets.</param>
         /// <param name="version">The version number to use during build.</param>
+        /// <param name="logLevel">The log level to use (verbose / debug)</param>
         /// <param name="clear">Clear the console before execution.</param>
         /// <param name="dryRun">Do a dry run without executing actions.</param>
         /// <param name="listDependencies">List all (or specified) targets and dependencies, then exit.</param>
@@ -28,6 +29,7 @@ namespace Build
             bool xmlDocumentation,
             string[] targets,
             string? version,
+            string? logLevel,
             bool clear,
             bool dryRun,
             bool listDependencies,
@@ -50,7 +52,9 @@ namespace Build
                 GenerateXmlDocumentation = xmlDocumentation,
                 GenerateAsynchronously = !disableAsync,
                 Configuration = release ? Configuration.Release : Configuration.Debug,
-                Version = GetSemanticVersion(version)
+                Version = GetSemanticVersion(version),
+                EnableDebugOutput = logLevel?.ToLower() == "debug",
+                EnableVerboseOutput = logLevel?.ToLower() == "verbose"
             };
 
             var options = new Options
@@ -85,10 +89,9 @@ namespace Build
             {
                 runner.Run(targets, options);
             }
-            catch (Exception e)
+            catch
             {
-                Log.Exception(e);
-                Log.Error("An error occured in the build tool. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
+                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
                 return 1;
             }
 

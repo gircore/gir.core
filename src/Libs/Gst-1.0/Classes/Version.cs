@@ -1,6 +1,4 @@
-﻿using GLib;
-
-namespace Gst
+﻿namespace Gst
 {
     public static class Version
     {
@@ -10,6 +8,6 @@ namespace Gst
         public static int Nano => Constants.VERSION_NANO;
 
         public static string VersionString
-            => Native.Functions.VersionString();
+            => Internal.Functions.VersionString();
     }
 }

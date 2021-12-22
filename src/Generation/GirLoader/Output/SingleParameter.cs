@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
-    public class SingleParameter : Symbol, Parameter
+    public partial class SingleParameter : Parameter
     {
         public TypeReference TypeReference { get; }
         public Direction Direction { get; }
@@ -12,9 +10,11 @@ namespace GirLoader.Output
         public int? ClosureIndex { get; }
         public int? DestroyIndex { get; }
         public Scope CallbackScope { get; }
+        public string Name { get; }
 
-        public SingleParameter(SymbolName originalName, SymbolName symbolName, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope) : base(originalName, symbolName)
+        public SingleParameter(string name, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope)
         {
+            Name = name;
             TypeReference = typeReference;
             Direction = direction;
             Transfer = transfer;
@@ -24,13 +24,5 @@ namespace GirLoader.Output
             DestroyIndex = destroyIndex;
             CallbackScope = scope;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-        {
-            yield return TypeReference;
-        }
-
-        internal override bool GetIsResolved()
-            => TypeReference.GetIsResolved();
     }
 }

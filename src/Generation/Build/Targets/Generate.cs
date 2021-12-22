@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Generator3;
+using GirLoader;
+using GirLoader.Output;
 
 namespace Build
 {
@@ -20,6 +25,7 @@ namespace Build
         {
             SetEnvironmentVariableToGenerateXmlDocumentation();
             RunGenerator();
+            //FormatCode();
         }
 
         private void SetEnvironmentVariableToGenerateXmlDocumentation()
@@ -32,22 +38,57 @@ namespace Build
 
         private void RunGenerator()
         {
-            try
-            {
-                var generator = new Generator.Generator
-                {
-                    OutputDir = Projects.ProjectPath,
-                    UseAsync = _settings.GenerateAsynchronously,
-                    GenerateDocComments = _settings.GenerateComments
-                };
+            var repositoriesXmlModel = Projects.AllLibraries.Select(LoadXmlModel);
+            var loader = new GirLoader.Loader(ResolveInclude);
 
-                generator.Write(Projects.AllLibraries.Select(x => new FileInfo(x.GirFile)));
-            }
-            catch (Exception e)
-            {
-                Log.Exception(e);
-                Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
-            }
+            if (_settings.EnableDebugOutput)
+                loader.EnableDebugOutput();
+
+            if (_settings.EnableVerboseOutput)
+                loader.EnableVerboseOutput();
+
+            var outputRepositories = loader.Load(repositoriesXmlModel);
+            GenerateRepositories(outputRepositories);
+        }
+
+        private void GenerateRepositories(IEnumerable<Repository> repositories)
+        {
+            if (_settings.EnableDebugOutput)
+                Generator3.Configuration.EnableDebugOutput();
+
+            if (_settings.EnableVerboseOutput)
+                Generator3.Configuration.EnableVerboseOutput();
+
+            if (_settings.GenerateAsynchronously)
+                Parallel.ForEach(repositories, repository => repository.Namespace.Generate());
+            else
+                foreach (var repository in repositories)
+                    repository.Namespace.Generate();
+        }
+
+        private GirLoader.Input.Repository LoadXmlModel(Project project)
+        {
+            return new FileInfo(project.GirFile).OpenRead().DeserializeGirInputModel();
+        }
+
+        //TODO: Only format generated code as other code is checked during compilation by CI
+        /*private void FormatCode()
+        {
+            var project = "GLib-2.0";
+            var p = Project.FromName(project);
+            DotNet.Format(p.Folder);
+        }*/
+
+        private const string CacheDir = "../../../ext/gir-files";
+
+        public static GirLoader.Input.Repository? ResolveInclude(GirLoader.Output.Include include)
+        {
+            var fileName = $"{include.Name}-{include.Version}.gir";
+
+            var path = Path.Combine(CacheDir, fileName);
+            return File.Exists(path)
+                ? new FileInfo(path).OpenRead().DeserializeGirInputModel()
+                : null;
         }
     }
 }

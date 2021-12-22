@@ -14,7 +14,7 @@ namespace GLib
 
         partial void Initialize()
         {
-            _size = (long) Native.Bytes.Methods.GetSize(_handle);
+            _size = (long) Internal.Bytes.Methods.GetSize(_handle);
             GC.AddMemoryPressure(_size);
         }
 
@@ -24,7 +24,7 @@ namespace GLib
 
         public static Bytes From(byte[] data)
         {
-            var obj = new Bytes(Native.Bytes.Methods.New(data, (nuint) data.Length));
+            var obj = new Bytes(Internal.Bytes.Methods.New(data, (nuint) data.Length));
             return obj;
         }
 

@@ -26,22 +26,10 @@ namespace GObject
         /// <typeparam name="T">The tye of the value to define.</typeparam>
         protected void SetProperty<T>(Property<T> property, T value)
         {
-            Value v = CreateValue(property.Name);
+            using Value v = CreateValue(property.Name);
             v.Set(value);
             SetProperty(property.Name, v);
         }
-
-        // TODO: Remove this soon - we generate it!
-        /*/// <summary>
-        /// Assigns the value of a GObject's property given its <paramref name="name"/>
-        /// </summary>
-        /// <param name="value">The property name.</param>
-        /// <param name="name">The property value.</param>
-        protected void SetProperty(string name, Value value)
-        {
-            Native.Object.Instance.Methods.SetProperty(Handle, name, value.Handle);
-            value.Dispose();
-        }*/
 
         /// <summary>
         /// Gets the value of a GObject's property given its <paramref name="name"/>.
@@ -52,8 +40,8 @@ namespace GObject
         /// </returns>
         protected Value GetProperty(string name)
         {
-            var handle = Native.Value.ManagedHandle.Create();
-            Native.Object.Instance.Methods.GetProperty(Handle, name, handle);
+            var handle = Internal.Value.ManagedHandle.Create();
+            Internal.Object.Instance.Methods.GetProperty(Handle, name, handle);
 
             return new Value(handle);
         }
@@ -63,10 +51,10 @@ namespace GObject
         /// </summary>
         private Value CreateValue(string propertyName)
         {
-            var instance = Marshal.PtrToStructure<GObject.Native.Object.Instance.Struct>(Handle);
+            var instance = Marshal.PtrToStructure<GObject.Internal.Object.Instance.Struct>(Handle);
             var classPtr = instance.GTypeInstance.GClass;
             var paramSpecPtr = FindProperty(classPtr, propertyName);
-            var paramSpec = Marshal.PtrToStructure<GObject.Native.ParamSpec.Instance.Struct>(paramSpecPtr);
+            var paramSpec = Marshal.PtrToStructure<GObject.Internal.ParamSpec.Instance.Struct>(paramSpecPtr);
 
             var v = new Value(new Type(paramSpec.ValueType));
             return v;

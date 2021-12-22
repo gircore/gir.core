@@ -2,22 +2,13 @@
 
 namespace GObject
 {
-    public abstract class Fundamental<T> where T : Fundamental<T>, new()
+    public abstract class Fundamental
     {
-        internal protected IntPtr Handle { get; init; }
+        public IntPtr Handle { get; }
 
-        public static T From(IntPtr ptr)
+        protected Fundamental(IntPtr ptr)
         {
-            //TODO: Fundamental types must be properly refed / disposed
-            //They define separate ref / unref functions in the gir
-            return new T() { Handle = ptr };
-        }
-
-        public static IntPtr To(T fundamental)
-        {
-            //TODO: Fundamental types must be properly refed / disposed
-            //They define separate ref / unref functions in the gir
-            return fundamental.Handle;
+            Handle = ptr;
         }
     }
 }

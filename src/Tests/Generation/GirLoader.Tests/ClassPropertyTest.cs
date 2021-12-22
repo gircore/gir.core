@@ -56,7 +56,7 @@ namespace GirLoader.Test
                 .Namespace.Classes.First()
                 .Properties.First();
 
-            property.Name.Value.Should().Be(propertyName);
+            property.Name.Should().Be(propertyName);
         }
 
         [DataTestMethod]

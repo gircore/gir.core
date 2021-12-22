@@ -28,8 +28,8 @@ namespace GirLoader.Output
             if (method.Name != string.Empty)
             {
                 return new Method(
-                    originalName: new SymbolName(method.Identifier),
-                    symbolName: new SymbolName(new Helper.String(method.Name).ToPascalCase().EscapeIdentifier()),
+                    identifier: method.Identifier,
+                    name: method.Name,
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
                     parameterList: _parameterListFactory.Create(method.Parameters, method.Throws)
                 );
@@ -40,22 +40,6 @@ namespace GirLoader.Output
 
             throw new Exception($"{nameof(Input.Method)} {method.Identifier} has no {nameof(method.Name)} and did not move.");
 
-        }
-
-        public Method CreateGetTypeMethod(string getTypeMethodName)
-        {
-            ReturnValue returnValue = _returnValueFactory.Create(
-                ctype: "gsize",
-                transfer: Transfer.None,
-                nullable: false
-            );
-
-            return new Method(
-                originalName: new SymbolName(getTypeMethodName),
-                symbolName: new SymbolName("GetGType"),
-                returnValue: returnValue,
-                parameterList: new ParameterList()
-            );
         }
 
         public IEnumerable<Method> Create(IEnumerable<Input.Method> methods)

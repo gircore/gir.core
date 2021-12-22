@@ -1,7 +1,7 @@
 ﻿namespace GirLoader.Output
 {
-    public class UnsignedInteger : PrimitiveValueType
+    public class UnsignedInteger : PrimitiveValueType, GirModel.UnsignedInteger
     {
-        public UnsignedInteger(string ctype) : base(new CType(ctype), new TypeName("uint")) { }
+        public UnsignedInteger(string ctype) : base(ctype) { }
     }
 }

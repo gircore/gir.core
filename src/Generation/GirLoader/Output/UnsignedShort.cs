@@ -1,7 +1,7 @@
 ﻿namespace GirLoader.Output
 {
-    public class UnsignedShort : PrimitiveValueType
+    public class UnsignedShort : PrimitiveValueType, GirModel.UnsignedShort
     {
-        public UnsignedShort(string ctype) : base(new CType(ctype), new TypeName("ushort")) { }
+        public UnsignedShort(string ctype) : base(ctype) { }
     }
 }

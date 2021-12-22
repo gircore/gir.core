@@ -1,8 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using GLib;
-
-namespace Gst
+﻿namespace Gst
 {
     public partial class Pad
     {
@@ -11,10 +7,10 @@ namespace Gst
         #endregion
 
         public static PadLinkReturn Link(Pad sourcePad, Pad sinkPad)
-            => Native.Pad.Instance.Methods.Link(sourcePad.Handle, sinkPad.Handle);
+            => Internal.Pad.Instance.Methods.Link(sourcePad.Handle, sinkPad.Handle);
 
         public static bool Unlink(Pad sourcePad, Pad sinkPad)
-            => Native.Pad.Instance.Methods.Unlink(sourcePad.Handle, sinkPad.Handle);
+            => Internal.Pad.Instance.Methods.Unlink(sourcePad.Handle, sinkPad.Handle);
 
         /*public PadLinkReturn Link(Pad sinkPad) => Link(this, sinkPad);
         public bool Unlink(Pad sinkPad) => Unlink(this, sinkPad);

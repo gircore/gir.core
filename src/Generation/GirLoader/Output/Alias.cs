@@ -4,26 +4,18 @@ namespace GirLoader.Output
 {
     public class Alias
     {
-        public SymbolName Name { get; }
-        public CType CType { get; }
+        public string Name { get; }
+        public string CType { get; }
         public Repository Repository { get; }
         public TypeReference TypeReference { get; }
 
-        public Alias(Repository repository, SymbolName name, CType cType, TypeReference typeReference)
+        public Alias(Repository repository, string name, string cType, TypeReference typeReference)
         {
             TypeReference = typeReference;
             Repository = repository;
             Name = name;
             CType = cType;
         }
-
-        internal IEnumerable<TypeReference> GetTypeReferences()
-        {
-            yield return TypeReference;
-        }
-
-        internal bool GetIsResolved()
-            => TypeReference.GetIsResolved();
 
         public override string ToString()
             => CType;

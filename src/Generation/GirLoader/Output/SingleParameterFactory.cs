@@ -29,8 +29,7 @@ namespace GirLoader.Output
                 throw new Exception("Argument name is null");
 
             return new SingleParameter(
-                originalName: new SymbolName(parameter.Name),
-                symbolName: new SymbolName(new Helper.String(parameter.Name).ToCamelCase().EscapeIdentifier()),
+                name: parameter.Name,
                 typeReference: _typeReferenceFactory.Create(parameter),
                 direction: DirectionFactory.Create(parameter.Direction),
                 transfer: _transferFactory.FromText(parameter.TransferOwnership),

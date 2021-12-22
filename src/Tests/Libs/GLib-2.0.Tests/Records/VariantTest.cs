@@ -23,5 +23,14 @@ namespace GLib.Tests
 
             variant.GetString().Should().Be(value);
         }
+
+        [TestMethod]
+        public void DisposeClosesHandle()
+        {
+            var variant = Variant.Create("Test");
+            variant.Handle.IsClosed.Should().BeFalse();
+            variant.Dispose();
+            variant.Handle.IsClosed.Should().BeTrue();
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace GirLoader.Output
 {
-    public class Short : PrimitiveValueType
+    public class Short : PrimitiveValueType, GirModel.Short
     {
-        public Short(string ctype) : base(new CType(ctype), new TypeName("short")) { }
+        public Short(string ctype) : base(ctype) { }
     }
 }

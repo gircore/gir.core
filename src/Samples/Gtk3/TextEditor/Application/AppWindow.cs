@@ -7,12 +7,12 @@ namespace TextEditor.Application
 
     public class AppWindow : Gtk.ApplicationWindow
     {
-        const string WindowTitle = "Editor";
+        private const string WindowTitle = "Editor";
 
-        private Paned contentPaned;
-        private Entry insertEntry;
-        private SpinButton spinButton;
-        private DocumentView documentView;
+        private readonly Paned contentPaned;
+        //private readonly Entry insertEntry;
+        //private readonly SpinButton spinButton;
+        private readonly DocumentView documentView;
 
         public Document Document { get; set; }
 
@@ -74,13 +74,13 @@ namespace TextEditor.Application
             contentPaned.ShowAll();
         }
 
-        void UpdateCursor()
+        /*private void UpdateCursor()
         {
             var value = Math.Clamp((int) spinButton.GetValue(), 0, Int32.MaxValue - 1);
             documentView.SetCursorIndex(value);
         }
 
-        void Insert(Button button, EventArgs args)
+        private void Insert(Button button, EventArgs args)
         {
             var index = spinButton.GetValue();
             var text = insertEntry.GetText();
@@ -90,10 +90,10 @@ namespace TextEditor.Application
             spinButton.Value += text.Length;
         }
 
-        void Delete(Button button, EventArgs args)
+        private void Delete(Button button, EventArgs args)
         {
             var index = (int) spinButton.GetValue();
             Document.Delete(index, 1);
-        }
+        }*/
     }
 }

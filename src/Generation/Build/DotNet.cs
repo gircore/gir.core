@@ -13,6 +13,11 @@ namespace Build
     {
         #region Methods
 
+        public static void Format(string project)
+        {
+            //TODO: Workaround until dotnet 6, which includes the format command 
+            Command.Run("dotnet-format", "--include-generated --verbosity=q", $"./{project}");
+        }
         public static void Build(string project, Configuration configuration, string? version = null)
         {
             if (!TryGetVersionParameter(version, out var versionParameter))

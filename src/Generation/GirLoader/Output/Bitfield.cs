@@ -1,23 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using GirLoader.Helper;
 
 namespace GirLoader.Output
 {
-    public class Bitfield : ComplexType
+    public partial class Bitfield : ComplexType
     {
         public IEnumerable<Member> Members { get; }
 
-        public Bitfield(Repository repository, CType? cType, TypeName originalName, TypeName name, IEnumerable<Member> members) : base(repository, cType, name, originalName)
+        public Bitfield(Repository repository, string? cType, string name, IEnumerable<Member> members) : base(repository, cType, name)
         {
             Members = members;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-            => Members.SelectMany(x => x.GetTypeReferences());
-
-        internal override bool GetIsResolved()
-            => Members.All(x => x.GetIsResolved());
 
         internal override bool Matches(TypeReference typeReference)
         {
@@ -26,7 +18,7 @@ namespace GirLoader.Output
                 var namespaceOk = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name
                                   || typeReference.SymbolNameReference.NamespaceName == null;
 
-                return namespaceOk && typeReference.SymbolNameReference.SymbolName == OriginalName;
+                return namespaceOk && typeReference.SymbolNameReference.SymbolName == Name;
             }
 
             if (typeReference.CTypeReference is not null)

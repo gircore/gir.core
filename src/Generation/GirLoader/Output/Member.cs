@@ -1,21 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
-    public class Member : Symbol
+    public partial class Member
     {
+        public string Name { get; }
         public string Value { get; }
 
-        public Member(SymbolName originalName, SymbolName symbolName, string value) : base(originalName, symbolName)
+        public Member(string name, string value)
         {
+            Name = name;
             Value = value;
         }
-
-        internal override IEnumerable<TypeReference> GetTypeReferences()
-            => Enumerable.Empty<TypeReference>();
-
-        internal override bool GetIsResolved()
-            => true;
     }
 }

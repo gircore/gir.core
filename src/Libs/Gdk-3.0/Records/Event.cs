@@ -7,10 +7,11 @@ namespace Gdk
     {
         // TODO: Workaround as long as we need GDK3 or
         // do not create instances from safe handles
+        // see usage of Attribute GObject.Construct
         [GObject.Construct]
-        private static Event __FactoryNew(IntPtr ptr)
+        public static Event FromPointer(IntPtr ptr)
         {
-            var ev = Marshal.PtrToStructure<Native.EventAny.Struct>(ptr);
+            var ev = Marshal.PtrToStructure<Internal.EventAny.Struct>(ptr);
             switch (ev.Type)
             {
                 case EventType.Expose:

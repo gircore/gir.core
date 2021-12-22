@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace GirLoader.Output
+﻿namespace GirLoader.Output
 {
-    public class ReturnValue : TransferableAnyType
+    public partial class ReturnValue
     {
         public Transfer Transfer { get; }
         public bool Nullable { get; }
@@ -14,13 +12,5 @@ namespace GirLoader.Output
             Transfer = transfer;
             Nullable = nullable;
         }
-
-        public IEnumerable<TypeReference> GetTypeReferences()
-        {
-            yield return TypeReference;
-        }
-
-        public bool GetIsResolved()
-            => TypeReference.GetIsResolved();
     }
 }

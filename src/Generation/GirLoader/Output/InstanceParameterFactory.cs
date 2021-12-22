@@ -20,8 +20,7 @@ namespace GirLoader.Output
                 throw new Exception("Argument name is null");
 
             return new InstanceParameter(
-                originalName: new SymbolName(parameterInfo.Name),
-                symbolName: new SymbolName(new Helper.String(parameterInfo.Name).ToCamelCase().EscapeIdentifier()),
+                name: parameterInfo.Name,
                 typeReference: _typeReferenceFactory.Create(parameterInfo),
                 direction: DirectionFactory.Create(parameterInfo.Direction),
                 transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),

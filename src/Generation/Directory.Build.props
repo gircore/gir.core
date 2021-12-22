@@ -3,6 +3,7 @@
   <Import Project="../GirCore.Logging.props" />
 
   <ItemGroup>
-    <Compile Include="../Shared/Log.cs" Link="Log.cs" />
+    <Compile Include="../Shared/Log.cs" Link="Shared/Log.cs" />
+    <Compile Include="../Shared/Element.cs" Link="Shared/Element.cs" />
   </ItemGroup>
 </Project>

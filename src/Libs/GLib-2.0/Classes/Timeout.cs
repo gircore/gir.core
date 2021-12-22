@@ -14,7 +14,7 @@ namespace GLib
             //var handler = new SourceFuncNotifiedHandler(function);
             //handler.OnDestroyNotify += destroyNotify;
 
-            return Native.Functions.TimeoutAddFull(
+            return Internal.Functions.TimeoutAddFull(
                 priority: priority,
                 interval: interval,
                 function: default!, //TODO

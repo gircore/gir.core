@@ -17,11 +17,9 @@ namespace TextEditor.Application
 
         private string cachedText;
 
-        private EventBox eventBox;
-
-        private DrawingArea area;
-
-        private IMContext context;
+        private readonly EventBox eventBox;
+        private readonly DrawingArea area;
+        private readonly IMContext context;
 
         public DocumentView(Document document)
         {
