@@ -14,9 +14,11 @@ namespace Gtk.Tests
             var aboutDialog = new AboutDialog();
             aboutDialog.SetAuthors(new[] { value1, value2 });
 
-            //TODO USE GET METHOD
             aboutDialog.Authors[0].Should().Be(value1);
             aboutDialog.Authors[1].Should().Be(value2);
+
+            aboutDialog.GetAuthors()[0].Should().Be(value1);
+            aboutDialog.GetAuthors()[1].Should().Be(value2);
         }
     }
 }
