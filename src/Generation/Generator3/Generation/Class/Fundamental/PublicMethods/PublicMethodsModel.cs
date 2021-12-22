@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator3.Model.Internal;
+using Method = Generator3.Model.Public.Method;
 
 namespace Generator3.Generation.Class.Fundamental
 {
@@ -10,10 +10,12 @@ namespace Generator3.Generation.Class.Fundamental
 
         public string Name => _class.Name;
         public string NamespaceName => _class.Namespace.Name;
+        public IEnumerable<Method> Methods { get; }
 
         public PublicMethodsModel(GirModel.Class @class)
         {
             _class = @class;
+            Methods = _class.Methods.Select(x => new Method(x, Name));
         }
     }
 }
