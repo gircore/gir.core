@@ -17,7 +17,7 @@ jobs:
       - name: Prepare .NET
         uses: actions/setup-dotnet@v1.9.0
         with:
-          dotnet-version: '5.0.x'
+          dotnet-version: '6.0.x'
 
       - name: Run release build and pack
         run: dotnet run -- --release --xml-documentation --targets integrationTest pack --version ${{ github.event.release.tag_name }}
