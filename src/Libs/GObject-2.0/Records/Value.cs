@@ -16,13 +16,9 @@ namespace GObject
         {
             _handle = Internal.Value.ManagedHandle.Create();
 
-            //We ignore the return type as it would convert the
-            //managed handle into a regular handle. If the memory
-            //is allocated by the managed handle it should get
-            //freed by the managed handle.
-            //This is especially important as a value has no
-            //native method available to allow freeing.
-            _ = Internal.Value.Methods.Init(_handle, type.Value);
+            // We ignore the return parameter as it is a pointer
+            // to the same location like the instance parameter.
+            _ = Init(_handle, type.Value);
         }
 
         public Value(Object value) : this(Type.Object) => SetObject(value);
@@ -209,5 +205,19 @@ namespace GObject
 
         #endregion
 
+        #region Internal
+
+        // This redeclares the "g_value_init" method. The internal method
+        // returns a GObject.Internal.Value.Handle which can not be freed
+        // via a free function. The Marshaller would create an instance
+        // of GObject.Internal.Value.Handle and the GC would try to
+        // dispose it which is not possible and throws an Exception. To
+        // avoid the GObject.Internal.Value.Handle creation this method
+        // returns just an IntPtr. It is okay to return an IntPtr as the
+        // returned IntPtr points to the location of the "value" parameter.
+        [DllImport("GObject", EntryPoint = "g_value_init")]
+        private static extern IntPtr Init(GObject.Internal.Value.Handle value, nuint gType);
+
+        #endregion
     }
 }
