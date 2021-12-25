@@ -9,7 +9,7 @@
     <PackageReference Include="SimpleExec" Version="8.0.0" />
     <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
     <PackageReference Include="NuGet.Versioning" Version="6.0.0" />
-    <PackageReference Include="XmlDocMarkdown.Core" Version="2.5.2" />
+    <PackageReference Include="XmlDocMarkdown.Core" Version="2.7.0" />
     <ProjectReference Include="..\Generator3\Generator3.csproj" />
     <ProjectReference Include="..\GirLoader\GirLoader.csproj" />
   </ItemGroup>
