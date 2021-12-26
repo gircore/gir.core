@@ -20,7 +20,11 @@ namespace GirLoader.Output
         public Type GetResolvedType()
         {
             if (Type is null)
-                throw new InvalidOperationException($"The {GetType().Namespace} for {SymbolNameReference} has not been resolved.");
+            {
+                var ctypeName = CTypeReference?.ToString() ?? "??";
+                var symbolName = SymbolNameReference?.ToString() ?? "??";
+                throw new InvalidOperationException($"The type {ctypeName} / {symbolName} has not been resolved.");
+            }
 
             return Type;
         }
