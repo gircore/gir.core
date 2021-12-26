@@ -40,7 +40,12 @@ namespace Generator3.Converter
             }
 
             if (from.AnyType.Is<Class>() && from.IsPointer)
-                return $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({fromVariableName}, {from.Transfer.IsOwnedRef().ToString().ToLower()})";
+            {
+                var cls = (Class) from.AnyType.AsT0;
+                return cls.IsFundamental
+                    ? $"new {cls.GetFullyQualified()}({fromVariableName})"
+                    : $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({fromVariableName}, {@from.Transfer.IsOwnedRef().ToString().ToLower()})";
+            }
 
             if (from.AnyType.Is<Interface>() && from.IsPointer)
                 return $"GObject.Internal.ObjectWrapper.WrapHandle<{to.NullableTypeName}>({fromVariableName}, {from.Transfer.IsOwnedRef().ToString().ToLower()})";
