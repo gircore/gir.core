@@ -10,5 +10,6 @@ namespace GirLoader.Output
         string GirModel.Method.CIdentifier => Identifier;
         GirModel.InstanceParameter GirModel.Method.InstanceParameter => ParameterList.InstanceParameter ?? throw new Exception("Instance parameter mis missing");
         IEnumerable<GirModel.Parameter> GirModel.Method.Parameters => ParameterList.SingleParameters;
+        bool GirModel.Method.Introspectable => Introspectable;
     }
 }

@@ -11,5 +11,6 @@ namespace GirLoader.Output
         IEnumerable<GirModel.Method> GirModel.Record.Methods => Methods;
         IEnumerable<GirModel.Constructor> GirModel.Record.Constructors => Constructors;
         IEnumerable<GirModel.Field> GirModel.Record.Fields => Fields;
+        bool GirModel.Record.Introspectable => Introspectable;
     }
 }

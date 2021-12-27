@@ -6,5 +6,6 @@
         string GirModel.Constant.Name => Name;
         string GirModel.Constant.Value => Value;
         GirModel.Type GirModel.Constant.Type => TypeReference.GetResolvedType();
+        bool GirModel.Constant.Introspectable => Introspectable;
     }
 }

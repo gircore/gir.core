@@ -10,5 +10,6 @@ namespace GirLoader.Output
         GirModel.ReturnType GirModel.Function.ReturnType => ReturnValue;
         string GirModel.Function.CIdentifier => Identifier;
         IEnumerable<GirModel.Parameter> GirModel.Function.Parameters => ParameterList.GetParameters().Cast<GirModel.Parameter>();
+        bool GirModel.Function.Introspectable => Introspectable;
     }
 }

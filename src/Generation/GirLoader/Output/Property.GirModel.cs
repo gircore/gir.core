@@ -9,5 +9,6 @@
             _ => GirModel.AnyType.From(TypeReference.GetResolvedType())
         };
         GirModel.Transfer GirModel.Property.Transfer => Transfer.ToGirModel();
+        bool GirModel.Property.Introspectable => Introspectable;
     }
 }

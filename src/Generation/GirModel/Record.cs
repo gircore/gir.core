@@ -9,5 +9,6 @@ namespace GirModel
         IEnumerable<Method> Methods { get; }
         IEnumerable<Constructor> Constructors { get; }
         IEnumerable<Field> Fields { get; }
+        bool Introspectable { get; }
     }
 }

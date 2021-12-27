@@ -30,7 +30,8 @@ namespace GirLoader.Output
                     resolveableTypeReference: _typeReferenceFactory.CreateResolveable(info.Callback.Name, info.Callback.Type),
                     callback: _callbackFactory.Create(info.Callback, repository),
                     readable: info.Readable,
-                    @private: info.Private
+                    @private: info.Private,
+                    introspectable: info.Introspectable
                 );
             }
 
@@ -38,7 +39,8 @@ namespace GirLoader.Output
                 name: info.Name,
                 typeReference: _typeReferenceFactory.Create(info),
                 readable: info.Readable,
-                @private: info.Private
+                @private: info.Private,
+                introspectable: info.Introspectable
             );
         }
 

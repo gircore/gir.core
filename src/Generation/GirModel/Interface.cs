@@ -7,5 +7,6 @@ namespace GirModel
         Function TypeFunction { get; }
         IEnumerable<Function> Functions { get; }
         IEnumerable<Method> Methods { get; }
+        bool Introspectable { get; }
     }
 }

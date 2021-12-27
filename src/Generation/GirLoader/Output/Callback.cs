@@ -4,11 +4,13 @@
     {
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
+        public bool Introspectable { get; }
 
-        public Callback(Repository repository, string? ctype, string name, ReturnValue returnValue, ParameterList parameterList) : base(repository, ctype, name)
+        public Callback(Repository repository, string? ctype, string name, ReturnValue returnValue, ParameterList parameterList, bool introspectable) : base(repository, ctype, name)
         {
             ReturnValue = returnValue;
             ParameterList = parameterList;
+            Introspectable = introspectable;
         }
 
         internal override bool Matches(TypeReference typeReference)

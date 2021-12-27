@@ -6,5 +6,6 @@ namespace GirModel
     {
         Method? TypeFunction { get; }
         public IEnumerable<Member> Members { get; }
+        bool Introspectable { get; }
     }
 }

@@ -6,5 +6,6 @@
         string Name { get; }
         string Value { get; }
         Type Type { get; }
+        bool Introspectable { get; }
     }
 }

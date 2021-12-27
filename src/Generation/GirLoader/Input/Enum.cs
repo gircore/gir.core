@@ -19,5 +19,8 @@ namespace GirLoader.Input
 
         [XmlElement("member")]
         public List<Member> Members { get; set; } = default!;
+        
+        [XmlAttribute("introspectable")]
+        public bool Introspectable = true;
     }
 }

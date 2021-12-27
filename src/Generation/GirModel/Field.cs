@@ -8,6 +8,7 @@ namespace GirModel
         bool IsReadable { get; }
         bool IsPrivate { get; }
         bool IsPointer { get; }
+        bool Introspectable { get; }
 
         /// <summary>
         /// If a type is provided the field references this type (it could reference a callback, too).

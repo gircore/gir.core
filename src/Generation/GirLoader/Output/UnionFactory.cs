@@ -37,7 +37,8 @@ namespace GirLoader.Output
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(union.Fields, repository),
                 disguised: union.Disguised,
-                constructors: _constructorFactory.Create(union.Constructors)
+                constructors: _constructorFactory.Create(union.Constructors),
+                introspectable: union.Introspectable
             );
         }
     }

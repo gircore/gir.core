@@ -23,7 +23,8 @@ namespace GirLoader.Output
                 repository: repository,
                 name: constant.Name,
                 typeReference: _typeReferenceFactory.Create(constant),
-                value: constant.Value
+                value: constant.Value,
+                introspectable: constant.Introspectable
             );
         }
     }
