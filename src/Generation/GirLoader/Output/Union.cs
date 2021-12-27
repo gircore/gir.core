@@ -35,7 +35,7 @@ namespace GirLoader.Output
             {
                 { CTypeReference: { } cr } => cr.CType == CType,
                 { SymbolNameReference: { } sr } => sr.SymbolName == Name,
-                _ => throw new Exception($"Can't match {nameof(Union)} with {nameof(TypeReference)} {typeReference}")
+                _ => false
             };
         }
     }
