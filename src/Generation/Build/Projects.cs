@@ -82,11 +82,14 @@ namespace Build
             
             // GTK Stack
             Project.FromName("cairo-1.0"),
+            Project.FromName("HarfBuzz-0.0"),
             Project.FromName("Pango-1.0"),
-            Project.FromName("Gdk-3.0"),
-            Project.FromName("GdkPixbuf-2.0"),
-            Project.FromName("Atk-1.0"),
-            Project.FromName("Gtk-3.0"),
+            Project.FromName("PangoCairo-1.0"),
+            Project.FromName("Graphene-1.0"),
+            Project.FromName("Gdk-4.0"),
+            Project.FromName("Gsk-4.0"),
+            Project.FromName("Gtk-4.0"),
+            Project.FromName("Adw-1"),
             
             // GStreamer Stack
             Project.FromName("Gst-1.0"),
