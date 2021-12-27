@@ -14,7 +14,7 @@ namespace GirLoader.Output
             {
                 { SymbolNameReference: { SymbolName: { } sn } } => sn == CType,
                 { CTypeReference: { } cr } => cr.CType == CType,
-                _ => throw new Exception($"Can't match {GetType().Name} with {nameof(TypeReference)} {typeReference}")
+                _ => false
             };
         }
     }
