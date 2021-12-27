@@ -13,5 +13,6 @@ namespace GirModel
         IEnumerable<Constructor> Constructors { get; }
         IEnumerable<Property> Properties { get; }
         IEnumerable<Signal> Signals { get; }
+        bool Introspectable { get; }
     }
 }

@@ -25,7 +25,8 @@ namespace GirLoader.Output
                 typeReference: _typeReferenceFactory.Create(property),
                 writeable: property.Writeable,
                 readable: property.Readable,
-                transfer: _transferFactory.FromText(property.TransferOwnership)
+                transfer: _transferFactory.FromText(property.TransferOwnership),
+                introspectable: property.Introspectable
             );
         }
 

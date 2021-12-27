@@ -6,5 +6,6 @@ namespace GirModel
     {
         public ReturnType ReturnType { get; }
         public IEnumerable<Parameter> Parameters { get; }
+        bool Introspectable { get; }
     }
 }

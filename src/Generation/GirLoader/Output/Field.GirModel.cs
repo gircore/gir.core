@@ -8,6 +8,7 @@ namespace GirLoader.Output
         bool GirModel.Field.IsReadable => Readable;
         bool GirModel.Field.IsPrivate => Private;
         bool GirModel.Field.IsPointer => TypeReference.CTypeReference?.IsPointer ?? false;
+        bool GirModel.Field.Introspectable => Introspectable;
 
         OneOf<GirModel.AnyType, GirModel.Callback> GirModel.Field.AnyTypeOrCallback
         {

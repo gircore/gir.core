@@ -8,5 +8,6 @@ namespace GirLoader.Output
         string GirModel.ComplexType.Name => Name;
         GirModel.Method? GirModel.Bitfield.TypeFunction => null; //TODO: Should be implemented
         IEnumerable<GirModel.Member> GirModel.Bitfield.Members => Members;
+        bool GirModel.Bitfield.Introspectable => Introspectable;
     }
 }

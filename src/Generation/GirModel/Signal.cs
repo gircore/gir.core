@@ -6,5 +6,6 @@ namespace GirModel
     {
         string Name { get; }
         public IEnumerable<Parameter> Parameters { get; }
+        bool Introspectable { get; }
     }
 }

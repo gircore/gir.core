@@ -9,5 +9,6 @@ namespace GirModel
         public ReturnType ReturnType { get; }
         public string CIdentifier { get; }
         public IEnumerable<Parameter> Parameters { get; }
+        public bool Introspectable { get; }
     }
 }

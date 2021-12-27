@@ -39,7 +39,8 @@ namespace GirLoader.Output
                 repository: repository,
                 name: bitfield.Name,
                 members: members.Where(ValueIsULong),
-                cType: bitfield.Type
+                cType: bitfield.Type,
+                introspectable: bitfield.Introspectable
             );
         }
     }

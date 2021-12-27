@@ -34,6 +34,9 @@ namespace GirLoader.Input
         [XmlAttribute("moved-to")]
         public string? MovedTo { get; set; }
 
+        [XmlAttribute("introspectable")]
+        public bool Introspectable = true;
+
         public override string? ToString()
             => Name ?? Identifier ?? base.ToString();
     }

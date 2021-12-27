@@ -6,5 +6,6 @@ namespace GirLoader.Output
     {
         string GirModel.Signal.Name => Name;
         IEnumerable<GirModel.Parameter> GirModel.Signal.Parameters => ParameterList.SingleParameters;
+        bool GirModel.Signal.Introspectable => Introspectable;
     }
 }

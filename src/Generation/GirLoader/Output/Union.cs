@@ -17,11 +17,13 @@ namespace GirLoader.Output
         public IEnumerable<Method> Methods => _methods;
         public IEnumerable<Constructor> Constructors => _constructors;
         public IEnumerable<Function> Functions => _functions;
+        public bool Introspectable { get; }
 
-        public Union(Repository repository, string? cType, string name, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors) : base(repository, cType, name)
+        public Union(Repository repository, string? cType, string name, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors, bool introspectable) : base(repository, cType, name)
         {
             GetTypeFunction = getTypeFunction;
             Disguised = disguised;
+            Introspectable = introspectable;
 
             this._constructors = constructors.ToList();
             this._methods = methods.ToList();
