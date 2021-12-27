@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Generator3.Generation.Record;
 using Generator3.Publication;
 
@@ -8,6 +9,7 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Record> records)
         {
+            records = records.Where(x => x.Introspectable);
             var internalMethodsGenerator = new InternalMethodsGenerator(
                 template: new InternalMethodsTemplate(),
                 publisher: new InternalRecordFilePublisher()

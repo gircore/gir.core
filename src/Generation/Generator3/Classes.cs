@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Generator3.Publication;
 using Fundamental = Generator3.Generation.Class.Fundamental;
 using Standard = Generator3.Generation.Class.Standard;
@@ -9,6 +10,7 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Class> classes)
         {
+            classes = classes.Where(x => x.Introspectable);
             foreach (var @class in classes)
             {
                 if (@class.IsFundamental)
