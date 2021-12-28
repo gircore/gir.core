@@ -34,7 +34,7 @@ namespace GirLoader.Input
 
         [XmlAttribute("disguised")]
         public bool Disguised;
-        
+
         [XmlAttribute("introspectable")]
         public bool Introspectable = true;
     }
