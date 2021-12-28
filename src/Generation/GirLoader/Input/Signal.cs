@@ -18,7 +18,7 @@ namespace GirLoader.Input
 
         [XmlAttribute("deprecated")]
         public bool Deprecated { get; set; }
-        
+
         [XmlAttribute("introspectable")]
         public bool Introspectable = true;
     }

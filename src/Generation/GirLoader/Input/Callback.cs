@@ -18,7 +18,7 @@ namespace GirLoader.Input
 
         [XmlElement("parameters")]
         public Parameters? Parameters { get; set; }
-        
+
         [XmlAttribute("introspectable")]
         public bool Introspectable = true;
     }

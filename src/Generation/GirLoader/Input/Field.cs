@@ -30,7 +30,7 @@ namespace GirLoader.Input
 
         [XmlElement("doc")]
         public Doc? Doc { get; set; }
-        
+
         [XmlAttribute("introspectable")]
         public bool Introspectable = true;
     }
