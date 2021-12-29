@@ -49,5 +49,8 @@ namespace GirLoader.Input
 
         [XmlAttribute("fundamental", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public bool Fundamental { get; set; }
+
+        [XmlAttribute("introspectable")]
+        public bool Introspectable = true;
     }
 }

@@ -24,7 +24,8 @@ namespace GirLoader.Output
                 repository: repository,
                 name: @enum.Name,
                 members: @enum.Members.Select(_memberFactory.Create).ToList(),
-                cType: @enum.Type
+                cType: @enum.Type,
+                introspectable: @enum.Introspectable
             );
         }
     }

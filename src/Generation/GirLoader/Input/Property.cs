@@ -39,5 +39,8 @@ namespace GirLoader.Input
 
         [XmlElement("array")]
         public ArrayType? Array { get; set; }
+
+        [XmlAttribute("introspectable")]
+        public bool Introspectable = true;
     }
 }

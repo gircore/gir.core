@@ -40,7 +40,8 @@ namespace GirLoader.Output
                 getTypeFunction: getTypeFunction,
                 fields: _fieldFactory.Create(record.Fields, repository),
                 disguised: record.Disguised,
-                constructors: _constructorFactory.Create(record.Constructors)
+                constructors: _constructorFactory.Create(record.Constructors),
+                introspectable: record.Introspectable
             );
         }
 

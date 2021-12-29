@@ -26,7 +26,8 @@ namespace GirLoader.Output
             return new Signal(
                 name: signal.Name,
                 returnValue: _returnValueFactory.Create(signal.ReturnValue),
-                parameterList: _parameterListFactory.Create(signal.Parameters)
+                parameterList: _parameterListFactory.Create(signal.Parameters),
+                introspectable: signal.Introspectable
             );
         }
 

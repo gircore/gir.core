@@ -26,7 +26,8 @@ namespace GirLoader.Output
                 ctype: callback.Type,
                 name: callback.Name,
                 returnValue: _returnValueFactory.Create(callback.ReturnValue),
-                parameterList: _parameterListFactory.Create(callback.Parameters)
+                parameterList: _parameterListFactory.Create(callback.Parameters),
+                introspectable: callback.Introspectable
             );
         }
     }

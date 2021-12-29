@@ -15,5 +15,8 @@ namespace GirLoader.Input
 
         [XmlElement("type")]
         public Type? For { get; set; }
+
+        [XmlAttribute("introspectable")]
+        public bool Introspectable = true;
     }
 }

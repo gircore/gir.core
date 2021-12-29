@@ -36,7 +36,8 @@ namespace GirLoader.Output
                 methods: _methodFactory.Create(@interface.Methods),
                 functions: _functionFactory.Create(@interface.Functions, repository),
                 getTypeFunction: _functionFactory.CreateGetTypeFunction(@interface.GetTypeFunction, repository),
-                properties: _propertyFactory.Create(@interface.Properties)
+                properties: _propertyFactory.Create(@interface.Properties),
+                introspectable: @interface.Introspectable
             );
         }
     }

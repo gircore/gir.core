@@ -34,5 +34,8 @@ namespace GirLoader.Input
 
         [XmlElement("implements")]
         public List<Implement> Implements { get; set; } = default!;
+
+        [XmlAttribute("introspectable")]
+        public bool Introspectable = true;
     }
 }

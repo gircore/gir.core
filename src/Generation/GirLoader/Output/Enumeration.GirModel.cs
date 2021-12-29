@@ -9,5 +9,6 @@ namespace GirLoader.Output
         string GirModel.ComplexType.Name => Name;
         GirModel.Method GirModel.Enumeration.TypeFunction => throw new NotImplementedException();
         IEnumerable<GirModel.Member> GirModel.Enumeration.Members => Members;
+        bool GirModel.Enumeration.Introspectable => Introspectable;
     }
 }

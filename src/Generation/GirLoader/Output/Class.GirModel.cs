@@ -15,5 +15,6 @@ namespace GirLoader.Output
         IEnumerable<GirModel.Constructor> GirModel.Class.Constructors => Constructors;
         IEnumerable<GirModel.Property> GirModel.Class.Properties => Properties;
         IEnumerable<GirModel.Signal> GirModel.Class.Signals => Signals;
+        bool GirModel.Class.Introspectable => Introspectable;
     }
 }

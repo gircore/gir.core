@@ -9,5 +9,6 @@ namespace GirLoader.Output
         GirModel.Function GirModel.Interface.TypeFunction => GetTypeFunction;
         IEnumerable<GirModel.Function> GirModel.Interface.Functions => Functions;
         IEnumerable<GirModel.Method> GirModel.Interface.Methods => Methods;
+        bool GirModel.Interface.Introspectable => Introspectable;
     }
 }

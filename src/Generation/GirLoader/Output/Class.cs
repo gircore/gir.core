@@ -21,12 +21,14 @@ namespace GirLoader.Output
         public IEnumerable<Field> Fields => _fields;
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Constructor> Constructors => _constructors;
+        public bool Introspectable { get; }
 
-        public Class(Repository repository, string? cType, string name, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental) : base(repository, cType, name)
+        public Class(Repository repository, string? cType, string name, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental, bool introspectable) : base(repository, cType, name)
         {
             Parent = parent;
             Implements = implements;
             GetTypeFunction = getTypeFunction;
+            Introspectable = introspectable;
 
             this._methods = methods.ToList();
             this._functions = functions.ToList();
