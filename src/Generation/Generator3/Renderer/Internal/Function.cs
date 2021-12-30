@@ -1,20 +1,22 @@
-﻿namespace Generator3.Renderer.Internal
+﻿using System;
+
+namespace Generator3.Renderer.Internal
 {
     public static class Function
     {
         public static string Render(this Model.Internal.Function? function)
         {
             if (function is null)
-                return "";
+                return string.Empty;
 
             try
             {
                 return function.RenderFunction();
             }
-            catch
+            catch (Exception ex)
             {
-                Log.Warning($"Could not render internal function \"{function.CIdentifier}\".");
-                throw;
+                Log.Warning($"Could not render internal function \"{function.CIdentifier}\": {ex.Message}");
+                return string.Empty;
             }
         }
 
