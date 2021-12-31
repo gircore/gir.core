@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace GirLoader.Output
@@ -45,9 +44,8 @@ namespace GirLoader.Output
 
         internal override bool Matches(TypeReference typeReference)
         {
-            if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
-                return typeReference.CTypeReference.CType == CType ||
-                       typeReference.CTypeReference.CType == GlibTypeName;
+            if (CType is not null && typeReference.CTypeReference is { } ctr && ctr.CType != "gpointer")
+                return typeReference.CTypeReference.CType == CType;
 
             if (typeReference.SymbolNameReference is not null)
             {
@@ -57,6 +55,9 @@ namespace GirLoader.Output
 
                 return nameMatches && (namespaceMatches || namespaceMissing);
             }
+
+            if (typeReference.CTypeReference is not null)
+                return typeReference.CTypeReference.CType == GlibTypeName;
 
             return false;
         }
