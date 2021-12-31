@@ -15,7 +15,7 @@ namespace Generator3.Renderer.Public
                 call.Append($"var {resultVariableName} = ");
 
             call.Append($"Internal.{method.ClassName}.Instance.Methods.{method.InternalName}(");
-            call.Append("this.Handle" + (parameterNames.Any() ? "," : string.Empty));
+            call.Append("this.Handle" + (parameterNames.Any() ? ", " : string.Empty));
             call.Append(string.Join(", ", parameterNames));
             call.Append(");\n");
 
