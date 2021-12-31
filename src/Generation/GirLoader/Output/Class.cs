@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GirLoader.Output
@@ -22,12 +23,14 @@ namespace GirLoader.Output
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Constructor> Constructors => _constructors;
         public bool Introspectable { get; }
+        public string? GlibTypeName { get; }
 
-        public Class(Repository repository, string? cType, string name, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental, bool introspectable) : base(repository, cType, name)
+        public Class(Repository repository, string? cType, string name, string? typeName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental, bool introspectable) : base(repository, cType, name)
         {
             Parent = parent;
             Implements = implements;
             GetTypeFunction = getTypeFunction;
+            GlibTypeName = typeName;
             Introspectable = introspectable;
 
             this._methods = methods.ToList();
@@ -43,7 +46,8 @@ namespace GirLoader.Output
         internal override bool Matches(TypeReference typeReference)
         {
             if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
-                return typeReference.CTypeReference.CType == CType;
+                return typeReference.CTypeReference.CType == CType ||
+                       typeReference.CTypeReference.CType == GlibTypeName;
 
             if (typeReference.SymbolNameReference is not null)
             {
