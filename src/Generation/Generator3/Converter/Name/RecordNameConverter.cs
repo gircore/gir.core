@@ -8,6 +8,9 @@
         public static string GetFullyQualifiedInternalHandle(this GirModel.Record record)
             => record.Namespace.GetInternalName() + "." + record.GetName() + ".Handle";
 
+        public static string GetFullyQualifiedInternalNullHandle(this GirModel.Record record)
+            => GetFullyQualifiedInternalHandle(record) + ".Null";
+
         public static string GetFullyQualifiedInternalManagedHandleCreateMethod(this GirModel.Record record)
             => record.Namespace.GetInternalName() + "." + record.GetName() + ".ManagedHandle.Create";
 
