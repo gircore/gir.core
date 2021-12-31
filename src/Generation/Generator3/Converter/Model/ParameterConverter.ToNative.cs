@@ -147,8 +147,16 @@ namespace Generator3.Converter
                 if (!from.IsPointer)
                     throw new NotImplementedException($"{from.AnyType}: Not pointed record types can not yet be converted to native");
 
-                //We use the records "Handle" property
-                variableName = from.GetPublicName() + ".Handle";
+                if (from.Nullable)
+                {
+                    var record = (GirModel.Record) from.AnyType.AsT0;
+                    variableName = from.GetPublicName() + "?.Handle ?? " + record.GetFullyQualifiedInternalNullHandle();
+                }
+                else
+                {
+                    variableName = from.GetPublicName() + ".Handle";
+                }
+
                 return null;
             }
             #endregion
