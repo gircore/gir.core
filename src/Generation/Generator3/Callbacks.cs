@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Generator3.Generation.Callback;
 using Generator3.Publication;
 
@@ -9,7 +8,6 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Callback> callbacks)
         {
-            callbacks = callbacks.Where(x => x.Introspectable);
             var internalDelegateGenerator = new InternalDelegateGenerator(
                 template: new InternalDelegateTemplate(),
                 publisher: new InternalDelegateFilePublisher()

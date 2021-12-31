@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Generator3.Generation.Union;
 using Generator3.Publication;
 
@@ -9,7 +8,6 @@ namespace Generator3
     {
         public static void Generate(this IEnumerable<GirModel.Union> unions)
         {
-            unions = unions.Where(x => x.Introspectable);
             var internalStructGenerator = new InternalStructGenerator(
                 template: new InternalStructTemplate(),
                 publisher: new InternalUnionFilePublisher()
