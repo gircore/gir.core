@@ -17,7 +17,7 @@ namespace Generator3.Model.Public
 
         public GirModel.ReturnType ReturnType => _method.ReturnType;
 
-        public InstanceParameter InstanceParameter { get; }
+        // public InstanceParameter InstanceParameter { get; }
         public IEnumerable<Parameter> Parameters { get; }
 
         public Method(GirModel.Method method, string className)
@@ -25,7 +25,7 @@ namespace Generator3.Model.Public
             ClassName = className;
             _method = method;
 
-            InstanceParameter = method.InstanceParameter.CreatePublicModel();
+            // InstanceParameter = method.InstanceParameter.CreatePublicModel();
             Parameters = method.Parameters.CreatePublicModels();
         }
 
