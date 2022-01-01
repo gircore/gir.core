@@ -1,5 +1,4 @@
-﻿using System;
-using Gtk;
+﻿using Gtk;
 
 Functions.Init();
 

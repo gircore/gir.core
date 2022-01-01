@@ -36,7 +36,7 @@ namespace { model.NamespaceName }
                 return new {model.HandleClassName}(ptr);
             }}
                 
-            private {model.HandleClassName}(IntPtr handle) : base(handle) {{ }}
+            private {model.HandleClassName}(IntPtr handle) : base(handle, true) {{ }}
         
             protected override bool ReleaseHandle()
             {{

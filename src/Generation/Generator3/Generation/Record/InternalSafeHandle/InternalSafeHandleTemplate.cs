@@ -21,7 +21,7 @@ namespace { model.InternalNamespaceName }
             public static {model.HandleClassName} Null = new {model.HandleClassName}();
     
             protected {model.HandleClassName}() : base(IntPtr.Zero, true) {{}}
-            public {model.HandleClassName}(IntPtr handle) : base(IntPtr.Zero, true)
+            public {model.HandleClassName}(IntPtr handle, bool ownsHandle) : base(IntPtr.Zero, ownsHandle)
             {{
                 SetHandle(handle);
             }}
