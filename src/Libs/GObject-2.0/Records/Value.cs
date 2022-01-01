@@ -180,7 +180,11 @@ namespace GObject
             // method which plays nice with AOT compilation.
 
             // TODO: Should this be GetBoxed/TakeBoxed/DupBoxed? 
-            return BoxedWrapper.WrapHandle(Internal.Value.Methods.GetBoxed(Handle), new Type(type));
+            return BoxedWrapper.WrapHandle(
+                handle: Internal.Value.Methods.GetBoxed(Handle),
+                ownsHandle: false,
+                gtype: new Type(type)
+            );
         }
 
         public Object? GetObject()

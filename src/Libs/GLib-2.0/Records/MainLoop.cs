@@ -7,7 +7,7 @@ namespace GLib
         public MainLoop(MainContext context, bool isRunning = false)
             : this(context.Handle, isRunning) { }
 
-        public MainLoop() : this(new Internal.MainContext.Handle(IntPtr.Zero), false) { }
+        public MainLoop() : this(Internal.MainContext.Handle.Null, false) { }
 
         private MainLoop(Internal.MainContext.Handle context, bool isRunning)
         {
