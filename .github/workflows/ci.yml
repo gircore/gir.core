@@ -3,11 +3,14 @@ name: 'Continuous integration'
 on:
   workflow_dispatch:
   push:
-    branches: 
+    branches:
       - develop
     paths-ignore:
       - '**.md'
   pull_request:
+
+env:
+  configuration: Release
 
 jobs:
   build:
@@ -20,7 +23,7 @@ jobs:
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@v2.4.0
-        with: 
+        with:
           submodules: 'true'
 
       - name: Prepare .NET
@@ -28,26 +31,23 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Run release build (unit tests)
-        if: ${{ matrix.os == 'windows-latest' || matrix.os == 'macos-latest' }}
-        run: dotnet run -- --release --xml-documentation --targets unitTest samples
-        working-directory: './src/Generation/Build'
-
-      - name: Run release build (integration tests)
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: dotnet run -- --release --xml-documentation --targets integrationTest samples
+      - name: Call generator
+        run: dotnet run -- --targets generate
         working-directory: './src/Generation/Build'
 
       - name: Verify code format
-        run: dotnet format --no-restore --verify-no-changes --exclude *.Generated.cs
+        run: dotnet format --verify-no-changes --exclude *.Generated.cs
         working-directory: './src'
 
-      # - name: (Failure) Upload Generated Files
-      #  if: ${{ failure() }}
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    name: ${{ matrix.os }}-generated
-      #    path: |
-      #      ${{ github.workspace }}
-      #      !**/bin
-      #      !**/obj
+      - name: Build solution
+        run: dotnet build --no-restore --nologo -c ${{ env.configuration }} /p:Version=0.0.1
+        working-directory: './src'
+
+      - name: Run unit tests
+        run: dotnet test --no-restore -c ${{ env.configuration }} --filter TestCategory=UnitTest
+        working-directory: './src'
+
+      - name: Run integration tests
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: dotnet test --no-restore -c ${{ env.configuration }} --filter TestCategory=IntegrationTest
+        working-directory: './src'

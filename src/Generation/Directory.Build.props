@@ -2,6 +2,10 @@
   <Import Project="../GirCore.General.props" />
   <Import Project="../GirCore.Logging.props" />
 
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Compile Include="../Shared/Log.cs" Link="Shared/Log.cs" />
     <Compile Include="../Shared/Element.cs" Link="Shared/Element.cs" />

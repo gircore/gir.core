@@ -1,4 +1,8 @@
 <Project>
   <Import Project="../GirCore.General.props" />
   <Import Project="../GirCore.Testing.props" />
+  
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
 </Project>
