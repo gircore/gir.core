@@ -10,17 +10,15 @@ namespace GirLoader
     {
         private readonly ResolveInclude _includeResolver;
 
-        public Loader() : this(FileIncludeResolver.Resolve) { }
-
         public Loader(ResolveInclude includeResolver)
         {
             _includeResolver = includeResolver;
         }
 
-        public void EnableDebugOutput()
+        public static void EnableDebugOutput()
             => Log.EnableDebugOutput();
 
-        public void EnableVerboseOutput()
+        public static void EnableVerboseOutput()
             => Log.EnableVerboseOutput();
 
         public IEnumerable<Output.Repository> Load(IEnumerable<Input.Repository> inputRepositories)
