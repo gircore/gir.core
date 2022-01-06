@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
+    <ProjectReference Include="..\Gsk-4.0\Gsk-4.0.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.Gtk4</PackageId>
+  </PropertyGroup>
+
+</Project>

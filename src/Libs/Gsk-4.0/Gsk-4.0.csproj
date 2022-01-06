@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
+    <ProjectReference Include="..\Graphene-1.0\Graphene-1.0.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>Gir.Gsk4</PackageId>
+  </PropertyGroup>
+
+</Project>

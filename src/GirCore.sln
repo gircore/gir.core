@@ -4,9 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{386AE10F-B7AC-4C97-AC5C-202D3662A868}"
-ProjectSection(SolutionItems) = preProject
-	Libs\Directory.Build.props = Libs\Directory.Build.props
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		Libs\Directory.Build.props = Libs\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLib-2.0", "Libs\GLib-2.0\GLib-2.0.csproj", "{BF7F9B0B-CB43-4161-BFAD-C6EE479FC86B}"
 EndProject
@@ -45,9 +45,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration", "Integration\Integration.csproj", "{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8BC11A63-D52B-40CB-9DDD-CD7C6DC21059}"
-ProjectSection(SolutionItems) = preProject
-	Tests\Directory.Build.props = Tests\Directory.Build.props
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		Tests\Directory.Build.props = Tests\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{46D66262-FC61-43B9-8E76-A361FA3D6C81}"
 EndProject
@@ -82,53 +82,53 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdkPixbuf-2.0.Tests", "Tests\Libs\GdkPixbuf-2.0.Tests\GdkPixbuf-2.0.Tests.csproj", "{61016ABA-608B-47FA-9FBD-CA17D24BAB89}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generation", "Generation", "{7A05C10C-8797-4D29-A97A-F399316BE893}"
-ProjectSection(SolutionItems) = preProject
-	Generation\Directory.Build.props = Generation\Directory.Build.props
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		Generation\Directory.Build.props = Generation\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Generation\Build\Build.csproj", "{1AB1CABC-CE47-434D-952B-C064D2D5C03C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirLoader", "Generation\GirLoader\GirLoader.csproj", "{1EA4392E-960D-4327-9426-4C6220A7B60D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{B670D679-3B2C-43E8-9F87-5E4E17628011}"
-ProjectSection(SolutionItems) = preProject
-	GirCore.General.props = GirCore.General.props
-	GirCore.Publishing.props = GirCore.Publishing.props
-	..\.editorconfig = ..\.editorconfig
-	..\.gitignore = ..\.gitignore
-	GirCore.Logging.props = GirCore.Logging.props
-	GirCore.Testing.props = GirCore.Testing.props
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		GirCore.General.props = GirCore.General.props
+		GirCore.Publishing.props = GirCore.Publishing.props
+		..\.editorconfig = ..\.editorconfig
+		..\.gitignore = ..\.gitignore
+		GirCore.Logging.props = GirCore.Logging.props
+		GirCore.Testing.props = GirCore.Testing.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}"
-ProjectSection(SolutionItems) = preProject
-	..\docs\contributing.md = ..\docs\contributing.md
-	..\docs\windows.md = ..\docs\windows.md
-	..\readme.md = ..\readme.md
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\docs\contributing.md = ..\docs\contributing.md
+		..\docs\windows.md = ..\docs\windows.md
+		..\readme.md = ..\readme.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{C48DB577-12BB-4AA8-8734-802A39C093BE}"
-ProjectSection(SolutionItems) = preProject
-	..\img\logo.svg = ..\img\logo.svg
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\img\logo.svg = ..\img\logo.svg
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{A2ECECDD-9986-450D-A0AC-D2BE32A0B23E}"
-ProjectSection(SolutionItems) = preProject
-	..\.github\dependabot.yml = ..\.github\dependabot.yml
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\.github\dependabot.yml = ..\.github\dependabot.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "codeql", "codeql", "{E457B1F7-B32E-48DF-806E-7CE3A398722C}"
-ProjectSection(SolutionItems) = preProject
-	..\.github\codeql\codeql-config.yml = ..\.github\codeql\codeql-config.yml
-	..\.github\codeql\queries.qls = ..\.github\codeql\queries.qls
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\.github\codeql\codeql-config.yml = ..\.github\codeql\codeql-config.yml
+		..\.github\codeql\queries.qls = ..\.github\codeql\queries.qls
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{46445B9D-7FBC-46E5-B781-B743237627BE}"
-ProjectSection(SolutionItems) = preProject
-	..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
-	..\.github\workflows\codeql-analysis.yml = ..\.github\workflows\codeql-analysis.yml
-	..\.github\workflows\release.yml = ..\.github\workflows\release.yml
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
+		..\.github\workflows\codeql-analysis.yml = ..\.github\workflows\codeql-analysis.yml
+		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generation", "Generation", "{5D5D80C1-4D21-4619-8B59-7B7750016E9D}"
 EndProject
@@ -139,6 +139,20 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirModel", "Generation\GirModel\GirModel.csproj", "{C73005BB-D2DB-41B8-9DAA-1ADD81123A03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator3", "Generation\Generator3\Generator3.csproj", "{6222D769-0F81-490C-B8BD-B0E2D295D97A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adw-1", "Libs\Adw-1\Adw-1.csproj", "{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gdk-4.0", "Libs\Gdk-4.0\Gdk-4.0.csproj", "{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphene-1.0", "Libs\Graphene-1.0\Graphene-1.0.csproj", "{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gsk-4.0", "Libs\Gsk-4.0\Gsk-4.0.csproj", "{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-4.0", "Libs\Gtk-4.0\Gtk-4.0.csproj", "{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarfBuzz-0.0", "Libs\HarfBuzz-0.0\HarfBuzz-0.0.csproj", "{CFB82E78-B196-4D33-B5A5-5FD3541C7736}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PangoCairo-1.0", "Libs\PangoCairo-1.0\PangoCairo-1.0.csproj", "{EB5611A7-7E26-4D17-8BD3-79393FB16806}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -585,6 +599,90 @@ Global
 		{6222D769-0F81-490C-B8BD-B0E2D295D97A}.Release|x64.Build.0 = Release|Any CPU
 		{6222D769-0F81-490C-B8BD-B0E2D295D97A}.Release|x86.ActiveCfg = Release|Any CPU
 		{6222D769-0F81-490C-B8BD-B0E2D295D97A}.Release|x86.Build.0 = Release|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Debug|x64.Build.0 = Debug|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Debug|x86.Build.0 = Debug|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Release|x64.Build.0 = Release|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8}.Release|x86.Build.0 = Release|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Debug|x64.Build.0 = Debug|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Debug|x86.Build.0 = Debug|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Release|x64.ActiveCfg = Release|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Release|x64.Build.0 = Release|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Release|x86.ActiveCfg = Release|Any CPU
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03}.Release|x86.Build.0 = Release|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Debug|x64.Build.0 = Debug|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Debug|x86.Build.0 = Debug|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Release|x64.ActiveCfg = Release|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Release|x64.Build.0 = Release|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Release|x86.ActiveCfg = Release|Any CPU
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2}.Release|x86.Build.0 = Release|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Debug|x64.Build.0 = Debug|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Debug|x86.Build.0 = Debug|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Release|x64.ActiveCfg = Release|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Release|x64.Build.0 = Release|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Release|x86.ActiveCfg = Release|Any CPU
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD}.Release|x86.Build.0 = Release|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Debug|x64.Build.0 = Debug|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Debug|x86.Build.0 = Debug|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Release|x64.ActiveCfg = Release|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Release|x64.Build.0 = Release|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE}.Release|x86.Build.0 = Release|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Debug|x64.Build.0 = Debug|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Debug|x86.Build.0 = Debug|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Release|x64.ActiveCfg = Release|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Release|x64.Build.0 = Release|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Release|x86.ActiveCfg = Release|Any CPU
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736}.Release|x86.Build.0 = Release|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Debug|x64.Build.0 = Debug|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Release|x64.Build.0 = Release|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BF7F9B0B-CB43-4161-BFAD-C6EE479FC86B} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
@@ -631,5 +729,12 @@ Global
 		{B296273E-1932-4B43-88E5-1F3E9D9D773A} = {5D5D80C1-4D21-4619-8B59-7B7750016E9D}
 		{C73005BB-D2DB-41B8-9DAA-1ADD81123A03} = {7A05C10C-8797-4D29-A97A-F399316BE893}
 		{6222D769-0F81-490C-B8BD-B0E2D295D97A} = {7A05C10C-8797-4D29-A97A-F399316BE893}
+		{ED58D166-A91F-44B3-8FDF-54B2A3AE93F8} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
+		{36933AC1-8386-4B0B-9FAD-574B8C2B6B03} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
+		{1CF7E10E-4584-4ECA-AB38-CF9D3ECD80B2} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
+		{73300240-5EB6-4615-9E0F-49B5FC9B5CAD} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
+		{1B1FAA36-C6C0-4EE8-A158-D77412D19DDE} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
+		{CFB82E78-B196-4D33-B5A5-5FD3541C7736} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
+		{EB5611A7-7E26-4D17-8BD3-79393FB16806} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
 	EndGlobalSection
 EndGlobal
