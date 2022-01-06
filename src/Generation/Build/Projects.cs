@@ -82,7 +82,6 @@ namespace Build
             
             // GTK Stack
             Project.FromName("cairo-1.0"),
-            Project.FromName("HarfBuzz-0.0"),
             Project.FromName("Pango-1.0"),
             Project.FromName("PangoCairo-1.0"),
             Project.FromName("Graphene-1.0"),
