@@ -32,14 +32,8 @@ jobs:
           dotnet-version: '6.0.x'
 
       - name: Call generator
-        run: >
-          dotnet run --project ../../src/GirTool/GirTool.csproj -- generate
-          GLib-2.0.gir GObject-2.0.gir Gio-2.0.gir cairo-1.0.gir Pango-1.0.gir
-          Atk-1.0.gir Gdk-3.0.gir GdkPixbuf-2.0.gir Gtk-3.0.gir
-          Gst-1.0.gir GstBase-1.0.gir GstVideo-1.0.gir GstAudio-1.0.gir GstPbutils-1.0.gir
-          --output ../../src/Libs
-          --search-path .
-        working-directory: './ext/gir-files'
+        run: dotnet fsi GenerateLibs.fsx
+        working-directory: './src'
 
       - name: Verify code format
         run: dotnet format --verify-no-changes --exclude *.Generated.cs
