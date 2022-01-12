@@ -1,28 +1,20 @@
+#TODO: Rethink this: https://github.com/gircore/gir.core/issues/39
 name: 'Publish release'
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+#  release:
+#    types: [ published ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  publish:
+    name: Publish
+    needs: generate
     steps:
-      - name: Checkout with submodules
-        uses: actions/checkout@v2.4.0
-        with: 
-          submodules: 'true'
-
-      - name: Prepare .NET
-        uses: actions/setup-dotnet@v1.9.0
-        with:
-          dotnet-version: '6.0.x'
-
-      - name: Run release build and pack
-        run: dotnet run -- --release --xml-documentation --targets integrationTest pack --version ${{ github.event.release.tag_name }}
-        working-directory: './src/Generation/Build'
-
+      - name: Pack nuget
+        run: dotnet pack --no-build --nologo -c Release /p:Version=${{ github.event.release.tag_name }} -o ../Nuget
+        working-directory: './src'
+  
       - name: Publish to nuget org
         run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s nuget.org
         working-directory: './Nuget'

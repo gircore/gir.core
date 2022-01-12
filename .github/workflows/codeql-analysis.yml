@@ -51,9 +51,13 @@ jobs:
       with:
         dotnet-version: '6.0.x'
 
-    - name: Run release build
-      run: dotnet run -- --release
-      working-directory: './src/Generation/Build'
+    - name: Call generator
+      run: dotnet fsi GenerateLibs.fsx
+      working-directory: './src'
+
+    - name: Build solution
+      run: dotnet build --nologo -c Release
+      working-directory: './src'
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1

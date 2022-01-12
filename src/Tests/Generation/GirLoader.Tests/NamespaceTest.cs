@@ -14,7 +14,7 @@ namespace GirLoader.Test
             var version = "1.0";
             var inputRepository = Helper.GetInputRepository(namespaceName, version);
 
-            var repository = new Loader().Load(new[] { inputRepository }).First();
+            var repository = new Loader(DummyResolver.Resolve).Load(new[] { inputRepository }).First();
             repository.Namespace.Name.Value.Should().Be(namespaceName);
             repository.Namespace.Version.Should().Be(version);
         }

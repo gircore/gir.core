@@ -7,7 +7,7 @@ namespace Generator3.Publication
 {
     public abstract class FilePublisher
     {
-        private string TargetFolder { get; set; } = "../../Libs";
+        public static string TargetFolder { get; set; } = ".";
         private string GetFileName(CodeUnit codeUnit) => codeUnit.Name + ".Generated.cs";
 
         protected void Publish(CodeUnit codeUnit, params string[] folders)

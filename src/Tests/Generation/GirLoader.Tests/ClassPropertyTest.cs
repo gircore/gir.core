@@ -32,7 +32,7 @@ namespace GirLoader.Test
                 }
             });
 
-            return new Loader().Load(new[] { repository }).First()
+            return new Loader(DummyResolver.Resolve).Load(new[] { repository }).First()
                 .Namespace.Classes.First()
                 .Properties.First();
         }
@@ -52,7 +52,7 @@ namespace GirLoader.Test
                 }
             });
 
-            var property = new Loader().Load(new[] { repository }).First()
+            var property = new Loader(DummyResolver.Resolve).Load(new[] { repository }).First()
                 .Namespace.Classes.First()
                 .Properties.First();
 
