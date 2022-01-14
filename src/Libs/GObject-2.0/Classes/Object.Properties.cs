@@ -41,7 +41,7 @@ namespace GObject
         protected Value GetProperty(string name)
         {
             var handle = Internal.Value.ManagedHandle.Create();
-            Internal.Object.Instance.Methods.GetProperty(Handle, name, handle);
+            Internal.Object.GetProperty(Handle, name, handle);
 
             return new Value(handle);
         }
@@ -51,10 +51,10 @@ namespace GObject
         /// </summary>
         private Value CreateValue(string propertyName)
         {
-            var instance = Marshal.PtrToStructure<GObject.Internal.Object.Instance.Struct>(Handle);
+            var instance = Marshal.PtrToStructure<GObject.Internal.ObjectData>(Handle);
             var classPtr = instance.GTypeInstance.GClass;
             var paramSpecPtr = FindProperty(classPtr, propertyName);
-            var paramSpec = Marshal.PtrToStructure<GObject.Internal.ParamSpec.Instance.Struct>(paramSpecPtr);
+            var paramSpec = Marshal.PtrToStructure<GObject.Internal.ParamSpecData>(paramSpecPtr);
 
             var v = new Value(new Type(paramSpec.ValueType));
             return v;

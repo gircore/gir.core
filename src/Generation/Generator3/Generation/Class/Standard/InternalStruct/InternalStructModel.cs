@@ -9,7 +9,7 @@ namespace Generator3.Generation.Class.Standard
     {
         private readonly GirModel.Class _class;
 
-        public string Name => _class.Name;
+        public string Name => _class.GetInternalStructName();
         public string NamespaceName => _class.Namespace.GetInternalName();
         public IEnumerable<Field> Fields { get; }
 

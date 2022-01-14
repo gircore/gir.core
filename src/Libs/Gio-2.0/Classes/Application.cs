@@ -1,7 +1,4 @@
-﻿using System;
-using GObject;
-
-namespace Gio
+﻿namespace Gio
 {
     public partial class Application
     {
@@ -9,7 +6,7 @@ namespace Gio
 
         public int Run()
         {
-            return Internal.Application.Instance.Methods.Run(Handle, 0, new string[0]);
+            return Internal.Application.Run(Handle, 0, new string[0]);
         }
 
         #endregion

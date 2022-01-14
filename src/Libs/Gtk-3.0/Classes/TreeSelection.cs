@@ -1,5 +1,4 @@
-﻿using System;
-using GObject.Internal;
+﻿using GObject.Internal;
 
 namespace Gtk
 {
@@ -8,7 +7,7 @@ namespace Gtk
         public void GetSelected(out TreeModel model, out TreeIter iter)
         {
             var iterHandle = Internal.TreeIter.Handle.Null;
-            Internal.TreeSelection.Instance.Methods.GetSelected(Handle, out var modelPtr, iterHandle);
+            Internal.TreeSelection.GetSelected(Handle, out var modelPtr, iterHandle);
 
             model = ObjectWrapper.WrapHandle<TreeModel>(modelPtr, false);
             iter = new TreeIter(iterHandle);

@@ -18,7 +18,7 @@ namespace Generator3.Generation.Framework
             return $@"
 try
 {{
-    GObject.Internal.TypeDictionary.Add(typeof({cls.Name}), new GObject.Type(Internal.{cls.Name}.Instance.Methods.GetGType()));
+    GObject.Internal.TypeDictionary.Add(typeof({cls.Name}), new GObject.Type(Internal.{cls.Name}.GetGType()));
 }}
 catch(Exception e)
 {{

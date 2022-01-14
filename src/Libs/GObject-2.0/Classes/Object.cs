@@ -44,14 +44,14 @@ namespace GObject
         {
             Type gtype = GetGTypeOrRegister(GetType());
 
-            IntPtr handle = Internal.Object.Instance.Methods.NewWithProperties(
+            IntPtr handle = Internal.Object.NewWithProperties(
                 objectType: gtype.Value,
                 nProperties: (uint) constructArguments.Length,
                 names: GetNames(constructArguments),
                 values: GetValues(constructArguments)
             );
 
-            _handle = new ObjectHandle(handle, this, !Internal.Object.Instance.Methods.IsFloating(handle));
+            _handle = new ObjectHandle(handle, this, !Internal.Object.IsFloating(handle));
 
             Initialize();
         }

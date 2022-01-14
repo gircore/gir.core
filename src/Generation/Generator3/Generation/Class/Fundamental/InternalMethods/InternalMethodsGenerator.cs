@@ -2,12 +2,12 @@
 
 namespace Generator3.Generation.Class.Fundamental
 {
-    public class InternalInstanceMethodsGenerator
+    public class InternalMethodsGenerator
     {
-        private readonly Template<InternalInstanceMethodsModel> _template;
+        private readonly Template<InternalMethodsModel> _template;
         private readonly Publisher _publisher;
 
-        public InternalInstanceMethodsGenerator(Template<InternalInstanceMethodsModel> template, Publisher publisher)
+        public InternalMethodsGenerator(Template<InternalMethodsModel> template, Publisher publisher)
         {
             _template = template;
             _publisher = publisher;
@@ -17,7 +17,7 @@ namespace Generator3.Generation.Class.Fundamental
         {
             try
             {
-                var model = new InternalInstanceMethodsModel(@class);
+                var model = new InternalMethodsModel(@class);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(@class.Namespace.GetCanonicalName(), $"{@class.Name}.Instance.Methods", source);
                 _publisher.Publish(codeUnit);

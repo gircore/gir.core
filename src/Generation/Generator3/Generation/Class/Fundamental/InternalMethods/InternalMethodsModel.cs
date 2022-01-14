@@ -5,7 +5,7 @@ using Generator3.Model.Internal;
 
 namespace Generator3.Generation.Class.Fundamental
 {
-    public class InternalInstanceMethodsModel
+    public class InternalMethodsModel
     {
         private readonly GirModel.Class _class;
 
@@ -17,7 +17,7 @@ namespace Generator3.Generation.Class.Fundamental
         public IEnumerable<Constructor> Constructors { get; }
         public Function? TypeFunction { get; }
 
-        public InternalInstanceMethodsModel(GirModel.Class @class)
+        public InternalMethodsModel(GirModel.Class @class)
         {
             _class = @class;
 

@@ -15,7 +15,7 @@ namespace Gtk
 
         public void SetInteractiveDebugging(bool enable)
         {
-            Internal.Window.Instance.Methods.SetInteractiveDebugging(enable);
+            Internal.Window.SetInteractiveDebugging(enable);
         }
     }
 }
