@@ -26,7 +26,7 @@ namespace Generator3.Generation.Union
 
                 var model = new InternalMethodsModel(union);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(union.Namespace.GetCanonicalName(), $"{union.Name}.Methods", source);
+                var codeUnit = new CodeUnit(union.Namespace.GetCanonicalName(), model.Name, source);
                 _publisher.Publish(codeUnit);
             }
             catch

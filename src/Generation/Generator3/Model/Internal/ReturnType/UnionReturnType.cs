@@ -8,7 +8,7 @@ namespace Generator3.Model.Internal
 
         public override string NullableTypeName => Model.IsPointer
             ? TypeNameConverter.Pointer
-            : Type.GetFullyQualifiedInternalStruct();
+            : Type.GetFullyQualifiedInternalStructName();
 
         protected internal UnionReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {
