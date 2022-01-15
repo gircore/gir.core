@@ -1,4 +1,5 @@
-﻿using Generator3.Converter;
+﻿using System.Linq;
+using Generator3.Converter;
 
 namespace Generator3.Generation.Record
 {
@@ -17,6 +18,12 @@ namespace Generator3.Generation.Record
         {
             try
             {
+                if (!record.Constructors.Any()
+                    && !record.Methods.Any()
+                    && !record.Functions.Any()
+                    && record.TypeFunction is null)
+                    return;
+
                 var model = new InternalMethodsModel(record);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Methods", source);
