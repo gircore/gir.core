@@ -8,7 +8,7 @@ namespace Generator3.Model.Internal
 
         public override string NullableTypeName => _field.IsPointer
             ? TypeNameConverter.Pointer
-            : Type.GetFullyQualifiedInternalStruct();
+            : Type.GetFullyQualifiedInternalStructName();
 
         public RecordField(GirModel.Field field) : base(field)
         {

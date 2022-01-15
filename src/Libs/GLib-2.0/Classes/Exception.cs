@@ -14,7 +14,7 @@ namespace GLib
         #region Constructors
 
         internal GException(Internal.Error.Handle errorHandle)
-            : base(Marshal.PtrToStructure<Internal.Error.Struct>(errorHandle.DangerousGetHandle()).Message)
+            : base(Marshal.PtrToStructure<Internal.ErrorData>(errorHandle.DangerousGetHandle()).Message)
         {
 
             _errorHandle = errorHandle;

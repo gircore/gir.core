@@ -54,8 +54,8 @@ namespace GObject.Internal
 
         private static Type GetTypeFromInstance(IntPtr handle)
         {
-            TypeInstance.Struct instance = Marshal.PtrToStructure<TypeInstance.Struct>(handle);
-            TypeClass.Struct klass = Marshal.PtrToStructure<TypeClass.Struct>(instance.GClass);
+            TypeInstanceData instance = Marshal.PtrToStructure<TypeInstanceData>(handle);
+            TypeClassData klass = Marshal.PtrToStructure<TypeClassData>(instance.GClass);
             var typeid = klass.GType;
 
             if (typeid == 0)

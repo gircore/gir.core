@@ -11,7 +11,7 @@ namespace Gdk
         [GObject.Construct]
         public static Event FromPointer(IntPtr ptr, bool ownsHandle)
         {
-            var ev = Marshal.PtrToStructure<Internal.EventAny.Struct>(ptr);
+            var ev = Marshal.PtrToStructure<Internal.EventAnyData>(ptr);
             switch (ev.Type)
             {
                 case EventType.Expose:

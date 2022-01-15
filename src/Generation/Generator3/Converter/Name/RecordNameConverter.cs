@@ -2,8 +2,8 @@
 {
     public static class RecordNameConverter
     {
-        public static string GetFullyQualifiedInternalStruct(this GirModel.Record record)
-            => record.Namespace.GetInternalName() + "." + record.GetName() + ".Struct";
+        public static string GetFullyQualifiedInternalStructName(this GirModel.Record record)
+            => record.Namespace.GetInternalName() + "." + GetInternalStructName(record);
 
         public static string GetFullyQualifiedInternalHandle(this GirModel.Record record)
             => record.Namespace.GetInternalName() + "." + record.GetName() + ".Handle";
@@ -19,5 +19,8 @@
 
         public static string GetPublicClassName(this GirModel.Record record)
             => record.Name;
+
+        public static string GetInternalStructName(this GirModel.Record record)
+            => record.Name + "Data";
     }
 }

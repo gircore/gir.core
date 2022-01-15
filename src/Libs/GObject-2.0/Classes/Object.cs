@@ -59,9 +59,9 @@ namespace GObject
         private string[] GetNames(ConstructArgument[] constructParameters)
             => constructParameters.Select(x => x.Name).ToArray();
 
-        private Internal.Value.Struct[] GetValues(ConstructArgument[] constructParameters)
+        private Internal.ValueData[] GetValues(ConstructArgument[] constructParameters)
         {
-            var values = new Internal.Value.Struct[constructParameters.Length];
+            var values = new Internal.ValueData[constructParameters.Length];
 
             for (int i = 0; i < constructParameters.Length; i++)
             {

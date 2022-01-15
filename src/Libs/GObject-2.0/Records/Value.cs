@@ -34,11 +34,11 @@ namespace GObject
 
         #region Methods
 
-        internal Internal.Value.Struct GetData() => Marshal.PtrToStructure<Internal.Value.Struct>(Handle.DangerousGetHandle());
+        internal ValueData GetData() => Marshal.PtrToStructure<ValueData>(Handle.DangerousGetHandle());
 
         private nuint GetTypeValue()
         {
-            var structure = Marshal.PtrToStructure<Internal.Value.Struct>(Handle.DangerousGetHandle());
+            var structure = Marshal.PtrToStructure<ValueData>(Handle.DangerousGetHandle());
             return structure.GType;
         }
 

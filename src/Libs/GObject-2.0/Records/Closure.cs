@@ -15,7 +15,7 @@ namespace GObject
         internal Closure(ClosureMarshal action)
         {
             _closureMarshalCallHandler = new ClosureMarshalHandler(action);
-            _handle = Internal.Closure.Methods.NewSimple((uint) Marshal.SizeOf<GObject.Internal.Closure.Struct>(), IntPtr.Zero);
+            _handle = Internal.Closure.Methods.NewSimple((uint) Marshal.SizeOf<Internal.ClosureData>(), IntPtr.Zero);
 
             Debug.WriteLine($"Instantiating Closure: Address {_handle.DangerousGetHandle()}.");
 
