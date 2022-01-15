@@ -4,16 +4,15 @@ using Generator3.Converter;
 
 namespace Generator3.Generation.Record
 {
-    public class InternalSafeHandleModel
+    public class InternalHandleModel
     {
-        public string Name => Record.Name;
-        public string HandleClassName => "Handle";
+        public string Name => Record.GetInternalHandleName();
         public string InternalNamespaceName => Record.Namespace.GetInternalName();
         public string NamespaceName => Record.Namespace.Name;
         public GirModel.Record Record { get; }
         public GirModel.Method? FreeMethod => GetFreeOrUnrefMethod(Record.Methods);
 
-        public InternalSafeHandleModel(GirModel.Record record)
+        public InternalHandleModel(GirModel.Record record)
         {
             Record = record;
         }

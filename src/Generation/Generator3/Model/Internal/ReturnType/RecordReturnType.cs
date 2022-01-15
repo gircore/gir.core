@@ -7,8 +7,8 @@ namespace Generator3.Model.Internal
         private GirModel.Record Type => (GirModel.Record) Model.AnyType.AsT0;
 
         public override string NullableTypeName => IsPointer
-            ? Type.Namespace.GetInternalName() + "." + Type.GetName() + ".Handle"
-            : Type.Namespace.GetInternalName() + "." + Type.GetName() + ".Struct";
+            ? Type.GetFullyQualifiedInternalHandle()
+            : Type.GetFullyQualifiedInternalStructName();
 
         protected internal RecordReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {

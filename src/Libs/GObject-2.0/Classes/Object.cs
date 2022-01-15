@@ -44,14 +44,14 @@ namespace GObject
         {
             Type gtype = GetGTypeOrRegister(GetType());
 
-            IntPtr handle = Internal.Object.Instance.Methods.NewWithProperties(
+            IntPtr handle = Internal.Object.NewWithProperties(
                 objectType: gtype.Value,
                 nProperties: (uint) constructArguments.Length,
                 names: GetNames(constructArguments),
                 values: GetValues(constructArguments)
             );
 
-            _handle = new ObjectHandle(handle, this, !Internal.Object.Instance.Methods.IsFloating(handle));
+            _handle = new ObjectHandle(handle, this, !Internal.Object.IsFloating(handle));
 
             Initialize();
         }
@@ -59,9 +59,9 @@ namespace GObject
         private string[] GetNames(ConstructArgument[] constructParameters)
             => constructParameters.Select(x => x.Name).ToArray();
 
-        private Internal.Value.Struct[] GetValues(ConstructArgument[] constructParameters)
+        private Internal.ValueData[] GetValues(ConstructArgument[] constructParameters)
         {
-            var values = new Internal.Value.Struct[constructParameters.Length];
+            var values = new Internal.ValueData[constructParameters.Length];
 
             for (int i = 0; i < constructParameters.Length; i++)
             {

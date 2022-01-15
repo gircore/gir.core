@@ -37,7 +37,7 @@ namespace GObject.Internal
             Type gtype = GetTypeFromInstance(handle);
 
             Debug.Assert(
-                condition: Marshal.PtrToStringUTF8(Functions.TypeName(gtype.Value)) == Marshal.PtrToStringUTF8(Functions.TypeNameFromInstance(new TypeInstance.Handle(handle, false))),
+                condition: Marshal.PtrToStringUTF8(Functions.TypeName(gtype.Value)) == Marshal.PtrToStringUTF8(Functions.TypeNameFromInstance(new TypeInstanceHandle(handle, false))),
                 message: "GType name of instance and class do not match"
             );
 
@@ -54,8 +54,8 @@ namespace GObject.Internal
 
         private static Type GetTypeFromInstance(IntPtr handle)
         {
-            TypeInstance.Struct instance = Marshal.PtrToStructure<TypeInstance.Struct>(handle);
-            TypeClass.Struct klass = Marshal.PtrToStructure<TypeClass.Struct>(instance.GClass);
+            TypeInstanceData instance = Marshal.PtrToStructure<TypeInstanceData>(handle);
+            TypeClassData klass = Marshal.PtrToStructure<TypeClassData>(instance.GClass);
             var typeid = klass.GType;
 
             if (typeid == 0)

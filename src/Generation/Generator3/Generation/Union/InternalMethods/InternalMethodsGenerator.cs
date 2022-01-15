@@ -1,4 +1,5 @@
-﻿using Generator3.Converter;
+﻿using System.Linq;
+using Generator3.Converter;
 
 namespace Generator3.Generation.Union
 {
@@ -17,9 +18,15 @@ namespace Generator3.Generation.Union
         {
             try
             {
+                if (!union.Constructors.Any()
+                    && !union.Functions.Any()
+                    && !union.Methods.Any()
+                    && union.TypeFunction is null)
+                    return;
+
                 var model = new InternalMethodsModel(union);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(union.Namespace.GetCanonicalName(), $"{union.Name}.Methods", source);
+                var codeUnit = new CodeUnit(union.Namespace.GetCanonicalName(), model.Name, source);
                 _publisher.Publish(codeUnit);
             }
             catch

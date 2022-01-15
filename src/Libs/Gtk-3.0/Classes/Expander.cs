@@ -1,10 +1,8 @@
-﻿using GObject.Internal;
-
-namespace Gtk
+﻿namespace Gtk
 {
     public partial class Expander
     {
         public static Expander New(string text)
-            => new(Internal.Expander.Instance.Methods.New(text), false);
+            => new(Internal.Expander.New(text), false);
     }
 }

@@ -14,7 +14,7 @@ namespace GObject
 
         public Value(Type type)
         {
-            _handle = Internal.Value.ManagedHandle.Create();
+            _handle = ValueManagedHandle.Create();
 
             // We ignore the return parameter as it is a pointer
             // to the same location like the instance parameter.
@@ -34,11 +34,11 @@ namespace GObject
 
         #region Methods
 
-        internal Internal.Value.Struct GetData() => Marshal.PtrToStructure<Internal.Value.Struct>(Handle.DangerousGetHandle());
+        internal ValueData GetData() => Marshal.PtrToStructure<ValueData>(Handle.DangerousGetHandle());
 
         private nuint GetTypeValue()
         {
-            var structure = Marshal.PtrToStructure<Internal.Value.Struct>(Handle.DangerousGetHandle());
+            var structure = Marshal.PtrToStructure<ValueData>(Handle.DangerousGetHandle());
             return structure.GType;
         }
 
@@ -158,17 +158,17 @@ namespace GObject
 
         public T Extract<T>() => (T) Extract()!;
 
-        public IntPtr GetPtr() => Internal.Value.Methods.GetPointer(Handle);
+        public IntPtr GetPtr() => Internal.Value.GetPointer(Handle);
 
         public ParamSpec GetParam()
         {
-            var paramHandle = Internal.Value.Methods.GetParam(Handle);
+            var paramHandle = Internal.Value.GetParam(Handle);
             return new ParamSpec(paramHandle);
         }
 
         public object? GetBoxed(nuint type)
         {
-            IntPtr ptr = Internal.Value.Methods.GetBoxed(Handle);
+            IntPtr ptr = Internal.Value.GetBoxed(Handle);
 
             if (type == Functions.StrvGetType())
                 return StringHelper.ToStringArrayUtf8(ptr);
@@ -181,35 +181,35 @@ namespace GObject
 
             // TODO: Should this be GetBoxed/TakeBoxed/DupBoxed? 
             return BoxedWrapper.WrapHandle(
-                handle: Internal.Value.Methods.GetBoxed(Handle),
+                handle: Internal.Value.GetBoxed(Handle),
                 ownsHandle: false,
                 gtype: new Type(type)
             );
         }
 
         public Object? GetObject()
-            => ObjectWrapper.WrapNullableHandle<Object>(Internal.Value.Methods.GetObject(Handle), false);
+            => ObjectWrapper.WrapNullableHandle<Object>(Internal.Value.GetObject(Handle), false);
 
-        public bool GetBool() => Internal.Value.Methods.GetBoolean(Handle);
-        public uint GetUint() => Internal.Value.Methods.GetUint(Handle);
-        public int GetInt() => Internal.Value.Methods.GetInt(Handle);
-        public long GetLong() => Internal.Value.Methods.GetLong(Handle);
-        public double GetDouble() => Internal.Value.Methods.GetDouble(Handle);
-        public float GetFloat() => Internal.Value.Methods.GetFloat(Handle);
-        public ulong GetFlags() => Internal.Value.Methods.GetFlags(Handle);
-        public long GetEnum() => Internal.Value.Methods.GetEnum(Handle);
-        public string? GetString() => StringHelper.ToNullableStringUtf8(Internal.Value.Methods.GetString(Handle));
+        public bool GetBool() => Internal.Value.GetBoolean(Handle);
+        public uint GetUint() => Internal.Value.GetUint(Handle);
+        public int GetInt() => Internal.Value.GetInt(Handle);
+        public long GetLong() => Internal.Value.GetLong(Handle);
+        public double GetDouble() => Internal.Value.GetDouble(Handle);
+        public float GetFloat() => Internal.Value.GetFloat(Handle);
+        public ulong GetFlags() => Internal.Value.GetFlags(Handle);
+        public long GetEnum() => Internal.Value.GetEnum(Handle);
+        public string? GetString() => StringHelper.ToNullableStringUtf8(Internal.Value.GetString(Handle));
 
-        private void SetBoxed(IntPtr ptr) => Internal.Value.Methods.SetBoxed(Handle, ptr);
-        private void SetBoolean(bool b) => Internal.Value.Methods.SetBoolean(Handle, b);
-        private void SetUint(uint u) => Internal.Value.Methods.SetUint(Handle, u);
-        private void SetInt(int i) => Internal.Value.Methods.SetInt(Handle, i);
-        private void SetDouble(double d) => Internal.Value.Methods.SetDouble(Handle, d);
-        private void SetFloat(float f) => Internal.Value.Methods.SetFloat(Handle, f);
-        private void SetLong(long l) => Internal.Value.Methods.SetLong(Handle, l);
-        private void SetEnum(Enum e) => Internal.Value.Methods.SetEnum(Handle, Convert.ToInt32(e));
-        private void SetString(string s) => Internal.Value.Methods.SetString(Handle, s);
-        private void SetObject(Object o) => Internal.Value.Methods.SetObject(Handle, o.Handle);
+        private void SetBoxed(IntPtr ptr) => Internal.Value.SetBoxed(Handle, ptr);
+        private void SetBoolean(bool b) => Internal.Value.SetBoolean(Handle, b);
+        private void SetUint(uint u) => Internal.Value.SetUint(Handle, u);
+        private void SetInt(int i) => Internal.Value.SetInt(Handle, i);
+        private void SetDouble(double d) => Internal.Value.SetDouble(Handle, d);
+        private void SetFloat(float f) => Internal.Value.SetFloat(Handle, f);
+        private void SetLong(long l) => Internal.Value.SetLong(Handle, l);
+        private void SetEnum(Enum e) => Internal.Value.SetEnum(Handle, Convert.ToInt32(e));
+        private void SetString(string s) => Internal.Value.SetString(Handle, s);
+        private void SetObject(Object o) => Internal.Value.SetObject(Handle, o.Handle);
 
         public void Dispose()
         {
@@ -229,7 +229,7 @@ namespace GObject
         // returns just an IntPtr. It is okay to return an IntPtr as the
         // returned IntPtr points to the location of the "value" parameter.
         [DllImport("GObject", EntryPoint = "g_value_init")]
-        private static extern IntPtr Init(GObject.Internal.Value.Handle value, nuint gType);
+        private static extern IntPtr Init(GObject.Internal.ValueHandle value, nuint gType);
 
         #endregion
     }

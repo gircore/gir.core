@@ -1,5 +1,4 @@
 ﻿using System;
-using GObject.Internal;
 
 namespace Gtk
 {
@@ -7,7 +6,7 @@ namespace Gtk
     {
         public static ScrolledWindow New(Adjustment? hAdjustment = null, Adjustment? vAdjustment = null)
         {
-            IntPtr ptr = Internal.ScrolledWindow.Instance.Methods.New(
+            IntPtr ptr = Internal.ScrolledWindow.New(
                 hAdjustment?.Handle ?? IntPtr.Zero,
                 vAdjustment?.Handle ?? IntPtr.Zero
             );

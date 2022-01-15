@@ -7,23 +7,23 @@ namespace GdkPixbuf
     {
         public static Pixbuf FromBytes(byte[] data)
         {
-            IntPtr handle = Internal.PixbufLoader.Instance.Methods.New();
+            IntPtr handle = Internal.PixbufLoader.New();
 
             try
             {
                 using var bytes = Bytes.From(data);
 
-                Internal.PixbufLoader.Instance.Methods.WriteBytes(handle, bytes.Handle, out var error);
+                Internal.PixbufLoader.WriteBytes(handle, bytes.Handle, out var error);
                 Error.ThrowOnError(error);
 
-                Internal.PixbufLoader.Instance.Methods.Close(handle, out error);
+                Internal.PixbufLoader.Close(handle, out error);
                 Error.ThrowOnError(error);
 
-                return new Pixbuf(Internal.PixbufLoader.Instance.Methods.GetPixbuf(handle), false);
+                return new Pixbuf(Internal.PixbufLoader.GetPixbuf(handle), false);
             }
             finally
             {
-                GObject.Internal.Object.Instance.Methods.Unref(handle);
+                GObject.Internal.Object.Unref(handle);
             }
         }
     }

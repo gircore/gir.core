@@ -19,7 +19,7 @@ namespace Generator3.Generation.Record
             {
                 var model = new InternalStructModel(record);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Struct", source);
+                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), model.Name, source);
                 _publisher.Publish(codeUnit);
             }
             catch

@@ -30,8 +30,8 @@ We are currently in a period of heavy iteration over the core internals of the p
 | DBus           | Library for inter-process communication | Partial (via GIO) |
 | GdkPixbuf      | Image loading in various formats        | Partial           |
 | GTK 4          | UI-Toolkit                              | Planned           |
-| libhandy       | Convergent UI for GTK on Mobile         | Planned           |
-| libchamplain   | Library to display maps                 | Planned           |
+| libadwaita     | Convergent UI for GTK4 on Mobile        | Planned           |
+| libshumate     | Library to display maps                 | Planned           |
 | WebKitGTK      | Browser Engine                          | Planned           |
 | JavaScriptCore | JavaScript engine for WebKit            | Planned           |
 

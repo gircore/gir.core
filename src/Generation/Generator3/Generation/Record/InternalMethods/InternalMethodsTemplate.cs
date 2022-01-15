@@ -18,13 +18,10 @@ namespace { model.NamespaceName }
 
     public partial class { model.Name }
     {{
-        public partial class Methods
-        {{
-            {model.TypeFunction.Render()}
-            {model.Functions.Render()}
-            {model.Methods.Render()}
-            {model.Constructors.Render()}
-        }}
+        {model.TypeFunction.Render()}
+        {model.Functions.Render()}
+        {model.Methods.Render()}
+        {model.Constructors.Render()}
     }}
 }}";
         }

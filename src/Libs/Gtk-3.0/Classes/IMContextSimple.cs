@@ -3,6 +3,6 @@
     public partial class IMContextSimple
     {
         public static IMContextSimple New()
-            => new IMContextSimple(Internal.IMContextSimple.Instance.Methods.New(), true);
+            => new IMContextSimple(Internal.IMContextSimple.New(), true);
     }
 }

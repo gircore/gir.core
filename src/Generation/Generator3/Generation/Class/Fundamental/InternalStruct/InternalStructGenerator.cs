@@ -2,12 +2,12 @@
 
 namespace Generator3.Generation.Class.Fundamental
 {
-    public class InternalInstanceStructGenerator
+    public class InternalStructGenerator
     {
-        private readonly Template<InternalInstanceStructModel> _template;
+        private readonly Template<InternalStructModel> _template;
         private readonly Publisher _publisher;
 
-        public InternalInstanceStructGenerator(Template<InternalInstanceStructModel> template, Publisher publisher)
+        public InternalStructGenerator(Template<InternalStructModel> template, Publisher publisher)
         {
             _template = template;
             _publisher = publisher;
@@ -17,7 +17,7 @@ namespace Generator3.Generation.Class.Fundamental
         {
             try
             {
-                var model = new InternalInstanceStructModel(@class);
+                var model = new InternalStructModel(@class);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(@class.Namespace.GetCanonicalName(), $"{@class.Name}.Instance.Struct", source);
                 _publisher.Publish(codeUnit);

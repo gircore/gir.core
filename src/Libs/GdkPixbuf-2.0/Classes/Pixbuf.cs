@@ -1,6 +1,5 @@
 ﻿using System;
 using GLib;
-using GObject;
 
 namespace GdkPixbuf
 {
@@ -14,7 +13,7 @@ namespace GdkPixbuf
 
         public static Pixbuf NewFromFile(string fileName)
         {
-            IntPtr handle = Internal.Pixbuf.Instance.Methods.NewFromFile(fileName, out var error);
+            IntPtr handle = Internal.Pixbuf.NewFromFile(fileName, out var error);
             Error.ThrowOnError(error);
 
             return new Pixbuf(handle, true);
@@ -23,7 +22,7 @@ namespace GdkPixbuf
         protected override void Initialize()
         {
             base.Initialize();
-            _size = (long) Internal.Pixbuf.Instance.Methods.GetByteLength(Handle);
+            _size = (long) Internal.Pixbuf.GetByteLength(Handle);
             GC.AddMemoryPressure(_size);
         }
 
