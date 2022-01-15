@@ -1,15 +1,13 @@
-﻿using System;
-
-namespace GLib
+﻿namespace GLib
 {
     public sealed partial class MainLoop
     {
         public MainLoop(MainContext context, bool isRunning = false)
             : this(context.Handle, isRunning) { }
 
-        public MainLoop() : this(Internal.MainContext.Handle.Null, false) { }
+        public MainLoop() : this(Internal.MainContextHandle.Null, false) { }
 
-        private MainLoop(Internal.MainContext.Handle context, bool isRunning)
+        private MainLoop(Internal.MainContextHandle context, bool isRunning)
         {
             _handle = Internal.MainLoop.Methods.New(context, isRunning);
         }

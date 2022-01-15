@@ -54,7 +54,7 @@ namespace GLib
             return new Variant(Internal.Variant.Methods.NewArray(childType, new IntPtr[0], 0));
         }
 
-        private void Init(out Internal.Variant.Handle handle, params Variant[] children)
+        private void Init(out VariantHandle handle, params Variant[] children)
         {
             _children = children;
 
@@ -93,7 +93,7 @@ namespace GLib
 
     public static class VariantExtension
     {
-        public static Internal.Variant.Handle GetSafeHandle(this Variant? variant)
-            => variant is null ? Internal.Variant.Handle.Null : variant.Handle;
+        public static VariantHandle GetSafeHandle(this Variant? variant)
+            => variant is null ? VariantHandle.Null : variant.Handle;
     }
 }

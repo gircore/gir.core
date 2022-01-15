@@ -14,7 +14,7 @@ namespace GObject
 
         public Value(Type type)
         {
-            _handle = Internal.Value.ManagedHandle.Create();
+            _handle = ValueManagedHandle.Create();
 
             // We ignore the return parameter as it is a pointer
             // to the same location like the instance parameter.
@@ -229,7 +229,7 @@ namespace GObject
         // returns just an IntPtr. It is okay to return an IntPtr as the
         // returned IntPtr points to the location of the "value" parameter.
         [DllImport("GObject", EntryPoint = "g_value_init")]
-        private static extern IntPtr Init(GObject.Internal.Value.Handle value, nuint gType);
+        private static extern IntPtr Init(GObject.Internal.ValueHandle value, nuint gType);
 
         #endregion
     }

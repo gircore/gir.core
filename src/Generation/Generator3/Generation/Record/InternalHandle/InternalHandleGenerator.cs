@@ -2,12 +2,12 @@
 
 namespace Generator3.Generation.Record
 {
-    public class InternalSafeHandleGenerator
+    public class InternalHandleGenerator
     {
-        private readonly Template<InternalSafeHandleModel> _template;
+        private readonly Template<InternalHandleModel> _template;
         private readonly Publisher _publisher;
 
-        public InternalSafeHandleGenerator(Template<InternalSafeHandleModel> template, Publisher publisher)
+        public InternalHandleGenerator(Template<InternalHandleModel> template, Publisher publisher)
         {
             _template = template;
             _publisher = publisher;
@@ -17,9 +17,9 @@ namespace Generator3.Generation.Record
         {
             try
             {
-                var model = new InternalSafeHandleModel(record);
+                var model = new InternalHandleModel(record);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.SafeHandle", source);
+                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), model.Name, source);
                 _publisher.Publish(codeUnit);
             }
             catch

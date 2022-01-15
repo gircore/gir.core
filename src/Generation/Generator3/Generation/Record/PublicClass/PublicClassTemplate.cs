@@ -17,17 +17,17 @@ namespace {model.NamespaceName}
 
     public partial class {model.Name} : GLib.IHandle
     {{
-        private readonly Internal.{model.Name}.Handle _handle;
+        private readonly Internal.{model.InternalHandleName} _handle;
 
-        public Internal.{model.Name}.Handle Handle => !_handle.IsInvalid ? _handle : throw new Exception(""Invalid Handle"");
+        public Internal.{model.InternalHandleName} Handle => !_handle.IsInvalid ? _handle : throw new Exception(""Invalid Handle"");
         IntPtr GLib.IHandle.Handle => _handle.DangerousGetHandle();
 
         // Override this to perform additional steps in the constructor
         partial void Initialize();
 
-        public {model.Name}(IntPtr ptr, bool ownsHandle) : this(new Internal.{model.Name}.Handle(ptr, ownsHandle)){{ }}
+        public {model.Name}(IntPtr ptr, bool ownsHandle) : this(new Internal.{model.InternalHandleName}(ptr, ownsHandle)){{ }}
         
-        public {model.Name}(Internal.{model.Name}.Handle handle)
+        public {model.Name}(Internal.{model.InternalHandleName} handle)
         {{
             _handle = handle;
             Initialize();

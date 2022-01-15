@@ -43,15 +43,15 @@ namespace Gio
             //TODO: Use on time CallbackHandler
             _callAsyncCallbackHandler = new AsyncReadyCallbackAsyncHandler(Callback);
 
-            Internal.DBusConnection.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Internal.VariantType.Handle.Null, DBusCallFlags.None, -1, IntPtr.Zero, _callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
+            Internal.DBusConnection.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Internal.VariantTypeHandle.Null, DBusCallFlags.None, -1, IntPtr.Zero, _callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
 
             return tcs.Task;
         }
 
         public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
         {
-            var parameterHandle = parameters?.Handle ?? GLib.Internal.Variant.Handle.Null;
-            var ret = Internal.DBusConnection.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameterHandle, GLib.Internal.VariantType.Handle.Null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
+            var parameterHandle = parameters?.Handle ?? GLib.Internal.VariantHandle.Null;
+            var ret = Internal.DBusConnection.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameterHandle, GLib.Internal.VariantTypeHandle.Null, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
 
             Error.ThrowOnError(error);
 

@@ -40,7 +40,7 @@ namespace GObject
         /// </returns>
         protected Value GetProperty(string name)
         {
-            var handle = Internal.Value.ManagedHandle.Create();
+            var handle = Internal.ValueManagedHandle.Create();
             Internal.Object.GetProperty(Handle, name, handle);
 
             return new Value(handle);

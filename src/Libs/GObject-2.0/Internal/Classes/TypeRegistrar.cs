@@ -19,7 +19,7 @@ namespace GObject.Internal
     {
         private static TypeQueryData GetTypeMetrics(Type parentType)
         {
-            TypeQuery.Handle handle = TypeQuery.ManagedHandle.Create();
+            TypeQueryHandle handle = TypeQueryManagedHandle.Create();
             Functions.TypeQuery(parentType.Value, handle);
 
             return Marshal.PtrToStructure<TypeQueryData>(handle.DangerousGetHandle());
@@ -52,7 +52,7 @@ namespace GObject.Internal
             // Perform Registration
             Console.WriteLine($"Registering new type {qualifiedName} with parent {parentType.ToString()}");
 
-            TypeInfo.Handle handle = TypeInfo.ManagedHandle.Create(typeInfo);
+            TypeInfoHandle handle = TypeInfoManagedHandle.Create(typeInfo);
             var typeid = Functions.TypeRegisterStatic(parentType.Value, qualifiedName, handle, 0);
 
             if (typeid == 0)
