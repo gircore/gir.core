@@ -24,17 +24,13 @@ namespace {model.NamespaceName}
 
         // Override this to perform additional steps in the constructor
         partial void Initialize();
-
-        public {model.Name}(IntPtr ptr, bool ownsHandle) : this(ownsHandle
-            ? new Internal.{model.InternalOwnedHandleName}(ptr)
-            : new Internal.{model.InternalUnownedHandleName}(ptr)){{ }}
         
         public {model.Name}(Internal.{model.InternalHandleName} handle)
         {{
             _handle = handle;
             Initialize();
         }}
-        
+
         // TODO: Default Constructor (allocate in managed memory and free on Dispose?)
         // We need to be able to create instances of records with full access to
         // fields, e.g. Gdk.Rectangle, Gtk.TreeIter, etc. 
