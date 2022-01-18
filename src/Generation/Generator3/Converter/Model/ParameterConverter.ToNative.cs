@@ -150,7 +150,7 @@ namespace Generator3.Converter
                 if (from.Nullable)
                 {
                     var record = (GirModel.Record) from.AnyType.AsT0;
-                    variableName = from.GetPublicName() + "?.Handle ?? " + record.GetFullyQualifiedInternalNullHandle();
+                    variableName = from.GetPublicName() + "?.Handle ?? " + record.GetFullyQualifiedInternalNullHandleInstance();
                 }
                 else
                 {

@@ -37,7 +37,7 @@ namespace GObject.Internal
             Type gtype = GetTypeFromInstance(handle);
 
             Debug.Assert(
-                condition: Marshal.PtrToStringUTF8(Functions.TypeName(gtype.Value)) == Marshal.PtrToStringUTF8(Functions.TypeNameFromInstance(new TypeInstanceHandle(handle, false))),
+                condition: Marshal.PtrToStringUTF8(Functions.TypeName(gtype.Value)) == Marshal.PtrToStringUTF8(Functions.TypeNameFromInstance(new TypeInstanceUnownedHandle(handle))),
                 message: "GType name of instance and class do not match"
             );
 

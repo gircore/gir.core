@@ -25,7 +25,9 @@ namespace {model.NamespaceName}
         // Override this to perform additional steps in the constructor
         partial void Initialize();
 
-        public {model.Name}(IntPtr ptr, bool ownsHandle) : this(new Internal.{model.InternalHandleName}(ptr, ownsHandle)){{ }}
+        public {model.Name}(IntPtr ptr, bool ownsHandle) : this(ownsHandle
+            ? new Internal.{model.InternalOwnedHandleName}(ptr)
+            : new Internal.{model.InternalUnownedHandleName}(ptr)){{ }}
         
         public {model.Name}(Internal.{model.InternalHandleName} handle)
         {{

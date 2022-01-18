@@ -94,6 +94,6 @@ namespace GLib
     public static class VariantExtension
     {
         public static VariantHandle GetSafeHandle(this Variant? variant)
-            => variant is null ? VariantHandle.Null : variant.Handle;
+            => variant is null ? VariantNullHandle.Instance : variant.Handle;
     }
 }

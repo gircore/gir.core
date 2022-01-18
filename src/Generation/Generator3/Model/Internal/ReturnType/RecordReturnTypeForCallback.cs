@@ -3,17 +3,15 @@ using GirModel;
 
 namespace Generator3.Model.Internal
 {
-    public class RecordReturnType : ReturnType
+    public class RecordReturnTypeForCallback : ReturnType
     {
         private GirModel.Record Type => (GirModel.Record) Model.AnyType.AsT0;
 
         public override string NullableTypeName => !IsPointer
             ? Type.GetFullyQualifiedInternalStructName()
-            : Model.Transfer == Transfer.None
-                ? Type.GetFullyQualifiedInternalUnownedHandle()
-                : Type.GetFullyQualifiedInternalOwnedHandle();
+            : Type.GetFullyQualifiedInternalHandle();
 
-        protected internal RecordReturnType(GirModel.ReturnType returnValue) : base(returnValue)
+        protected internal RecordReturnTypeForCallback(GirModel.ReturnType returnValue) : base(returnValue)
         {
             returnValue.AnyType.VerifyType<GirModel.Record>();
         }

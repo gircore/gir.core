@@ -5,7 +5,7 @@
         public MainLoop(MainContext context, bool isRunning = false)
             : this(context.Handle, isRunning) { }
 
-        public MainLoop() : this(Internal.MainContextHandle.Null, false) { }
+        public MainLoop() : this(Internal.MainContextNullHandle.Instance, false) { }
 
         private MainLoop(Internal.MainContextHandle context, bool isRunning)
         {
