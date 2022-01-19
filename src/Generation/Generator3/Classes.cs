@@ -58,7 +58,12 @@ namespace Generator3
                 publisher: new InternalClassFilePublisher()
             );
 
-            var standardPublicClassMethodsGenerator = new Standard.PublicMethodsGenerator(
+            var standardPublicConstructorsGenerator = new Standard.PublicConstructorGenerator(
+                template: new Standard.PublicConstructorsTemplate(),
+                publisher: new PublicClassFilePublisher()
+            );
+
+            var standardPublicMethodsGenerator = new Standard.PublicMethodsGenerator(
                 template: new Standard.PublicMethodsTemplate(),
                 publisher: new PublicClassFilePublisher()
             );
@@ -80,7 +85,8 @@ namespace Generator3
 
             standardInternalMethodsGenerator.Generate(@class);
             standardInternalStructGenerator.Generate(@class);
-            standardPublicClassMethodsGenerator.Generate(@class);
+            standardPublicConstructorsGenerator.Generate(@class);
+            standardPublicMethodsGenerator.Generate(@class);
             standardPublicFrameworkGenerator.Generate(@class);
             standardPublicPropertiesGenerator.Generate(@class);
             standardPublicSignalsGenerator.Generate(@class);

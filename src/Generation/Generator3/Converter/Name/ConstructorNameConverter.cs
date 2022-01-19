@@ -6,5 +6,10 @@
         {
             return constructor.Name.ToPascalCase().EscapeIdentifier();
         }
+
+        public static string GetPublicName(this GirModel.Constructor constructor)
+        {
+            return constructor.Name.ToPascalCase().EscapeIdentifier();
+        }
     }
 }

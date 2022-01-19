@@ -4,9 +4,6 @@ namespace Gtk
 {
     public partial class CssProvider
     {
-        public static CssProvider New()
-            => new(Internal.CssProvider.New(), false);
-
         public bool LoadFromData(string data)
         {
             // Get as ANSI characters

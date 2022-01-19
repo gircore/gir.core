@@ -1,4 +1,5 @@
 ﻿using System;
+using Generator3.Converter;
 using Generator3.Model.Public;
 
 namespace Generator3.Renderer.Public
@@ -35,7 +36,7 @@ namespace Generator3.Renderer.Public
             return @$"
 public {publicReturnType.NullableTypeName} {method.PublicName}({method.Parameters.Render()})
 {{
-    {MethodConvertParameterStatements.Render(method, out var parameterNames)}
+    {ParametersConverter.Render(method.Parameters, out var parameterNames)}
     {MethodCallStatement.Render(method, parameterNames, out var resultVariableName)}
     {MethodReturnStatement.Render(method, resultVariableName)}
 }}";
