@@ -110,7 +110,12 @@ namespace Generator3.Converter
                 var ownedHandle = from.Transfer == Transfer.Full;
 
                 variableName = from.GetConvertedName();
-                return $"var {variableName} = new {record.GetFullyQualifiedPublicClassName()}(new {record.GetFullyQualifiedInternalHandle()}({from.GetPublicName()}, {ownedHandle.ToString().ToLower()}));";
+
+                var handleClass = ownedHandle
+                    ? record.GetFullyQualifiedInternalOwnedHandle()
+                    : record.GetFullyQualifiedInternalUnownedHandle();
+
+                return $"var {variableName} = new {record.GetFullyQualifiedPublicClassName()}(new {handleClass}({from.GetPublicName()}));";
             }
 
             #endregion
