@@ -35,12 +35,13 @@ namespace GObject
         /// <summary>
         /// Constructs a new object
         /// </summary>
+        /// <param name="owned">True if the ownership of the resulting resulting handle will be transfered. Otherwise false.</param>
         /// <param name="constructArguments"></param>
         /// <remarks>This constructor is protected to be sure that there is no caller (enduser) keeping a reference to
         /// the construct parameters as the contained values are freed at the end of this constructor.
         /// If certain constructors are needed they need to be implemented with concrete constructor arguments in
         /// a higher layer.</remarks>
-        protected Object(ConstructArgument[] constructArguments)
+        protected Object(bool owned, ConstructArgument[] constructArguments)
         {
             Type gtype = GetGTypeOrRegister(GetType());
 
@@ -51,7 +52,13 @@ namespace GObject
                 values: GetValues(constructArguments)
             );
 
-            _handle = new ObjectHandle(handle, this, !Internal.Object.IsFloating(handle));
+            // We can't check if a reference is floating via "g_object_is_floating" here
+            // as the function could be "lying" depending on the intent of framework writers.
+            // E.g. A Gtk.Window created via "g_object_new_with_properties" returns an unowned
+            // reference which is not marked as floating as the gtk toolkit "owns" it.
+            // For this reason we just delegate the problem to the caller and require a
+            // definition wether the ownership of the new object will be transered to us or not.
+            _handle = new ObjectHandle(handle, this, owned);
 
             Initialize();
         }
