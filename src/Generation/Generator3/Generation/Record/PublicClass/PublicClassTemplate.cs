@@ -31,6 +31,12 @@ namespace {model.NamespaceName}
             Initialize();
         }}
 
+        //TODO: This is a workaround constructor as long as we are
+        //not having https://github.com/gircore/gir.core/issues/397
+        private {model.Name}(IntPtr ptr, bool ownsHandle) : this(ownsHandle
+            ? new Internal.{model.InternalOwnedHandleName}(ptr)
+            : new Internal.{model.InternalUnownedHandleName}(ptr)){{ }}
+
         // TODO: Default Constructor (allocate in managed memory and free on Dispose?)
         // We need to be able to create instances of records with full access to
         // fields, e.g. Gdk.Rectangle, Gtk.TreeIter, etc. 
