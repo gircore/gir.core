@@ -19,7 +19,7 @@ namespace Generator3.Generation.Class.Standard
             {
                 var model = new InternalMethodsModel(@class);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(@class.Namespace.GetCanonicalName(), $"{@class.Name}.Methods", source);
+                var codeUnit = new CodeUnit(@class.Namespace.GetCanonicalName(), model.Name, source);
                 _publisher.Publish(codeUnit);
             }
             catch

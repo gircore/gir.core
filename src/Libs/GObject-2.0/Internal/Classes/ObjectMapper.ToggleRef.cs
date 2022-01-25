@@ -49,8 +49,8 @@ namespace GObject.Internal
 
             private void RegisterToggleRef()
             {
-                Internal.Object.Instance.Methods.AddToggleRef(_handle, _callback, IntPtr.Zero);
-                Internal.Object.Instance.Methods.Unref(_handle);
+                Internal.Object.AddToggleRef(_handle, _callback, IntPtr.Zero);
+                Internal.Object.Unref(_handle);
             }
 
             private void OwnReference(bool ownedRef)
@@ -61,14 +61,14 @@ namespace GObject.Internal
                     // - Unowned InitiallyUnowned floating objects need to be ref_sinked
                     // - Unowned InitiallyUnowned non-floating objects need to be refed
                     // As ref_sink behaves like ref in case of non floating instances we use it for all 3 cases
-                    Internal.Object.Instance.Methods.RefSink(_handle);
+                    Internal.Object.RefSink(_handle);
                 }
                 else
                 {
                     //In case we own the ref because the ownership was fully transfered to us we
                     //do not need to ref the object at all.
 
-                    Debug.Assert(!Internal.Object.Instance.Methods.IsFloating(_handle), "Owned floating references are not possible.");
+                    Debug.Assert(!Internal.Object.IsFloating(_handle), "Owned floating references are not possible.");
                 }
             }
 
@@ -89,7 +89,7 @@ namespace GObject.Internal
 
             public void Dispose()
             {
-                Internal.Object.Instance.Methods.RemoveToggleRef(_handle, _callback, IntPtr.Zero);
+                Internal.Object.RemoveToggleRef(_handle, _callback, IntPtr.Zero);
             }
         }
     }

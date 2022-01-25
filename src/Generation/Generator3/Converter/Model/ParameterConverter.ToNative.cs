@@ -113,19 +113,12 @@ namespace Generator3.Converter
                 if (!from.IsPointer)
                     throw new NotImplementedException($"{from.AnyType}: class parameter which is no pointer can not be converted to native");
 
-                var cls = (Class) from.AnyType.AsT0;
-
-                if (cls.IsFundamental)
-                {
-                    variableName = from.GetPublicName() + ".Handle";
-                    return null;
-                }
+                if (from.Nullable)
+                    variableName = from.GetPublicName() + "?.Handle ?? IntPtr.Zero";
                 else
-                {
-                    //We use the classes "Handle" property
                     variableName = from.GetPublicName() + ".Handle";
-                    return null;
-                }
+
+                return null;
             }
 
             #endregion
@@ -154,8 +147,16 @@ namespace Generator3.Converter
                 if (!from.IsPointer)
                     throw new NotImplementedException($"{from.AnyType}: Not pointed record types can not yet be converted to native");
 
-                //We use the records "Handle" property
-                variableName = from.GetPublicName() + ".Handle";
+                if (from.Nullable)
+                {
+                    var record = (GirModel.Record) from.AnyType.AsT0;
+                    variableName = from.GetPublicName() + "?.Handle ?? " + record.GetFullyQualifiedInternalNullHandleInstance();
+                }
+                else
+                {
+                    variableName = from.GetPublicName() + ".Handle";
+                }
+
                 return null;
             }
             #endregion

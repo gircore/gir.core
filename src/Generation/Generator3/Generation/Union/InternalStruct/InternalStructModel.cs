@@ -8,7 +8,7 @@ namespace Generator3.Generation.Union
     {
         private readonly GirModel.Union _union;
 
-        public string Name => _union.Name;
+        public string Name => _union.GetInternalStructName();
         public string NamespaceName => _union.Namespace.GetInternalName();
         public IEnumerable<UnionField> Fields => _union.Fields.Select(field => new UnionField(field));
 

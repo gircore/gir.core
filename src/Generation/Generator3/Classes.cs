@@ -20,13 +20,13 @@ namespace Generator3
 
         private static void GenerateFundamentalClass(GirModel.Class @class)
         {
-            var fundamentalInternalInstanceStructGenerator = new Fundamental.InternalInstanceStructGenerator(
-                template: new Fundamental.InternalInstanceStructTemplate(),
+            var fundamentalInternalInstanceStructGenerator = new Fundamental.InternalStructGenerator(
+                template: new Fundamental.InternalStructTemplate(),
                 publisher: new InternalClassFilePublisher()
             );
 
-            var fundamentalInternalInstanceMethodsGenerator = new Fundamental.InternalInstanceMethodsGenerator(
-                template: new Fundamental.InternalInstanceMethodsTemplate(),
+            var fundamentalInternalInstanceMethodsGenerator = new Fundamental.InternalMethodsGenerator(
+                template: new Fundamental.InternalMethodsTemplate(),
                 publisher: new InternalClassFilePublisher()
             );
 

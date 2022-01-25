@@ -1,4 +1,5 @@
 ﻿using Generator3.Converter;
+using GirModel;
 
 namespace Generator3.Model.Internal
 {
@@ -6,9 +7,11 @@ namespace Generator3.Model.Internal
     {
         private GirModel.Record Type => (GirModel.Record) Model.AnyType.AsT0;
 
-        public override string NullableTypeName => IsPointer
-            ? Type.Namespace.GetInternalName() + "." + Type.GetName() + ".Handle"
-            : Type.Namespace.GetInternalName() + "." + Type.GetName() + ".Struct";
+        public override string NullableTypeName => !IsPointer
+            ? Type.GetFullyQualifiedInternalStructName()
+            : Model.Transfer == Transfer.None
+                ? Type.GetFullyQualifiedInternalUnownedHandle()
+                : Type.GetFullyQualifiedInternalOwnedHandle();
 
         protected internal RecordReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {

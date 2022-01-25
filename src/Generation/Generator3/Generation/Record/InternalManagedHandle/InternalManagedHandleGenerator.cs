@@ -19,7 +19,7 @@ namespace Generator3.Generation.Record
             {
                 var model = new InternalManagedHandleModel(record);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.ManagedHandle", source);
+                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), model.Name, source);
                 _publisher.Publish(codeUnit);
             }
             catch

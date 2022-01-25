@@ -30,8 +30,8 @@ We are currently in a period of heavy iteration over the core internals of the p
 | DBus           | Library for inter-process communication | Partial (via GIO) |
 | GdkPixbuf      | Image loading in various formats        | Partial           |
 | GTK 4          | UI-Toolkit                              | Planned           |
-| libhandy       | Convergent UI for GTK on Mobile         | Planned           |
-| libchamplain   | Library to display maps                 | Planned           |
+| libadwaita     | Convergent UI for GTK4 on Mobile        | Planned           |
+| libshumate     | Library to display maps                 | Planned           |
 | WebKitGTK      | Browser Engine                          | Planned           |
 | JavaScriptCore | JavaScript engine for WebKit            | Planned           |
 
@@ -44,66 +44,29 @@ We have a matrix room for discussing gir.core. Please join if you'd like to help
 
 https://matrix.to/#/#gircore:matrix.org?via=matrix.org
 
-## Build & Use
-To build the project locally in debug mode follow these steps. Make sure to initialise submodules with `--recursive` otherwise the `gir-files` directory will not be loaded properly.
+## Generate & Use
+To generate the bindings locally follow these steps. Make sure to initialise submodules with `--recursive` otherwise the `gir-files` directory will not be loaded properly.
 
 ```sh
 $ git clone --recursive https://github.com/gircore/gir.core.git
-$ cd gir.core/src/Generation/Build
-$ dotnet run
+$ cd gir.core/src
+$ dotnet fsi GenerateLibs.fsx
 ```
 If you want to build using Windows please see the accompanying [documentation](docs/windows.md).
 
-### Options
-
-There are some options which can be used to influence the code generation:
-
-* `--release`: Execute the targets with the Release configuration. If not specified the Debug configuration is used.
-* `--xml-documentation`: Generate the xml documentation.
-* `--generate-comments`: Take over comments from gir file into the wrapper code. Be aware of the LGPL license of the comments.
-* `--targets <targets>`: A list of targets to run or list.
-* `--version <version>`: Specify the version number of the `build`.
-* `--log-level <logLevel>`: Specify the detail level of the log output (`debug` or `verbose`).
-* `--disable-async`: Runs the generator synchronously (useful for debugging if something goes wrong)
-
-To get a full list of available options use `--help`.
-
-### Targets
-
-Supported targets are:
-* `generate`: Generates the source code files. Recognizes `comments` option.
-* `build`: Builds the project with `Debug` or `Release` configuration. Recognizes `xml-documentation` and `version` option. Depends on `generate` target.
-* `integration`: Builds the integration library.
-* `unittest`: Execute unit tests with `Debug` or `Release` configuration. Depends on `build`.
-* `integrationtest`: Execute integrations tests with `Debug` or `Release` configuration. Depends on `unittest`.
-* `systemtest`: Execute integration tests that require system services like the DBus System Bus or Wayland Display Server. Depends on `integrationtest`.
-* `pack`: Packs the libraries into the `Nuget` folder in the project root. Recognizes `version` option. Depends on `build`.
-* `clean`:  Cleans `samples` and `build` output including generated source code files.
-* `samples`: Builds the sample applications with `Debug` or `Release` configuration. Depends on `build` and `integration`.
-
-If no target is specified the `build` target is executed.
-
 ### Examples
 
-If you want to clean your debug build just run:
+If you want to clean the [Libs folder](src/Libs) of all generated files run:
 
-    $ dotnet run -- --targets clean
+    $ dotnet fsi CleanLibs.fsx
 
-If you want to generate the xml documentation, build the samples and run the test cases in debug mode just run:
-
-    $ dotnet run -- --xml-documentation --targets test samples
-
-If you want to build the wrappers in release mode just run
-
-    $ dotnet run -- --release
-
-To use the newly build libraries in your project just add a reference to the csproj file of the project you want to use, e.g:
+To use the newly generated libraries in your project just add a reference to the csproj file of the project you want to use, e.g:
 
     $ dotnet add reference [RepoPath]/Libs/Gtk/Gtk.csproj
 
 ## Code structure
 The folder structure in this repository is organized as follows:
-* **[src/Generation/Build](src/Generation/Build):** The build tool determines which projects to build and generates the libraries. Everything works automatically.
+* **[src/GirTool](src/GirTool):** The tool to generate the bindings.
 * **[src/Generation/GirLoader](src/Generation/GirLoader):** A library for reading and resolving GObject Introspection repositories.
 * **[src/Generation/Generator3](src/Generation/Generator3):** Code generator generates C# code from GObject Introspection data.
 * **[src/Integration](src/Integration):** Optional source generators to reduce boilerplate code in your projects.
@@ -112,7 +75,7 @@ The folder structure in this repository is organized as follows:
 * **[src/Tests](src/Tests):** Unit and Integration tests.
 * **[ext/gir-files](https://github.com/gircore/gir-files):** Introspection data from [gircore/gir-files](https://github.com/gircore/gir-files).
 
-The code in the library folder is not complete because most of the code is generated when the build tool is run.
+The code in the library folder is not complete because most of the code is generated when the [GirTool](src/GirTool) is run.
 
 [gi]: https://gi.readthedocs.io/
 [gstreamer]: https://gstreamer.freedesktop.org/

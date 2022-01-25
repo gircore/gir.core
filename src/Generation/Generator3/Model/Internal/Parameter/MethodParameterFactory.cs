@@ -18,7 +18,7 @@ namespace Generator3.Model.Internal
                 GirModel.Class => new ClassParameter(parameter),
                 GirModel.Interface => new InterfaceParameter(parameter),
                 GirModel.Union => new UnionParameter(parameter),
-                GirModel.Record => new SafeHandleRecordParameter(parameter),
+                GirModel.Record => new RecordParameter(parameter),
                 GirModel.PrimitiveValueType => new PrimitiveValueTypeParameter(parameter),
                 GirModel.Callback => new CallbackParameter(parameter),
                 GirModel.Enumeration => new EnumerationParameter(parameter),

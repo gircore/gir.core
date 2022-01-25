@@ -10,8 +10,8 @@ updates:
       interval: "daily"
       
   # This traces the dependencies through the dependency chain:
-  # Build, Generator3, GirModel, GirLoader
+  # Generator3, GirModel, GirLoader
   - package-ecosystem: "nuget"
-    directory: "/src/Tests/Generation/Build.Tests"
+    directory: "/src/GirTool"
     schedule:
       interval: "daily"

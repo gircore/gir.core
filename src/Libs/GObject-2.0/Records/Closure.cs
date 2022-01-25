@@ -15,13 +15,13 @@ namespace GObject
         internal Closure(ClosureMarshal action)
         {
             _closureMarshalCallHandler = new ClosureMarshalHandler(action);
-            _handle = Internal.Closure.Methods.NewSimple((uint) Marshal.SizeOf<GObject.Internal.Closure.Struct>(), IntPtr.Zero);
+            _handle = Internal.Closure.NewSimple((uint) Marshal.SizeOf<Internal.ClosureData>(), IntPtr.Zero);
 
             Debug.WriteLine($"Instantiating Closure: Address {_handle.DangerousGetHandle()}.");
 
-            Internal.Closure.Methods.Ref(_handle);
-            Internal.Closure.Methods.Sink(_handle);
-            Internal.Closure.Methods.SetMarshal(_handle, _closureMarshalCallHandler.NativeCallback);
+            Internal.Closure.Ref(_handle);
+            Internal.Closure.Sink(_handle);
+            Internal.Closure.SetMarshal(_handle, _closureMarshalCallHandler.NativeCallback);
         }
 
         public void Dispose()

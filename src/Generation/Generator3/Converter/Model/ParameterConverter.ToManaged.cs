@@ -107,9 +107,15 @@ namespace Generator3.Converter
                     throw new NotImplementedException($"Unpointed record parameter {from.Name} ({from.AnyType}) can not yet be converted to managed");
 
                 var record = (GirModel.Record) from.AnyType.AsT0;
+                var ownedHandle = from.Transfer == Transfer.Full;
 
                 variableName = from.GetConvertedName();
-                return $"var {variableName} = new {record.GetFullyQualifiedPublicClassName()}(new {record.GetFullyQualifiedInternalHandle()}({from.GetPublicName()}));";
+
+                var handleClass = ownedHandle
+                    ? record.GetFullyQualifiedInternalOwnedHandle()
+                    : record.GetFullyQualifiedInternalUnownedHandle();
+
+                return $"var {variableName} = new {record.GetFullyQualifiedPublicClassName()}(new {handleClass}({from.GetPublicName()}));";
             }
 
             #endregion

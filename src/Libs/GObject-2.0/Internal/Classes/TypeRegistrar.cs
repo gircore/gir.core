@@ -17,12 +17,12 @@ namespace GObject.Internal
     /// </summary>
     public static class TypeRegistrar
     {
-        private static TypeQuery.Struct GetTypeMetrics(Type parentType)
+        private static TypeQueryData GetTypeMetrics(Type parentType)
         {
-            TypeQuery.Handle handle = TypeQuery.ManagedHandle.Create();
+            TypeQueryHandle handle = TypeQueryManagedHandle.Create();
             Functions.TypeQuery(parentType.Value, handle);
 
-            return Marshal.PtrToStructure<TypeQuery.Struct>(handle.DangerousGetHandle());
+            return Marshal.PtrToStructure<TypeQueryData>(handle.DangerousGetHandle());
         }
 
         /// <summary>
@@ -35,13 +35,13 @@ namespace GObject.Internal
         internal static Type RegisterGType(string qualifiedName, Type parentType)
         {
             // Get metrics about parent type
-            TypeQuery.Struct query = GetTypeMetrics(parentType);
+            TypeQueryData query = GetTypeMetrics(parentType);
 
             if (query.Type == 0)
                 throw new TypeRegistrationException("Could not query parent type");
 
             // Create TypeInfo
-            var typeInfo = new TypeInfo.Struct()
+            var typeInfo = new TypeInfoData()
             {
                 ClassSize = (ushort) query.ClassSize,
                 InstanceSize = (ushort) query.InstanceSize,
@@ -52,7 +52,7 @@ namespace GObject.Internal
             // Perform Registration
             Console.WriteLine($"Registering new type {qualifiedName} with parent {parentType.ToString()}");
 
-            TypeInfo.Handle handle = TypeInfo.ManagedHandle.Create(typeInfo);
+            TypeInfoHandle handle = TypeInfoManagedHandle.Create(typeInfo);
             var typeid = Functions.TypeRegisterStatic(parentType.Value, qualifiedName, handle, 0);
 
             if (typeid == 0)

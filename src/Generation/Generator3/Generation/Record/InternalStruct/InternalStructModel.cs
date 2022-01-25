@@ -9,7 +9,7 @@ namespace Generator3.Generation.Record
     {
         private readonly GirModel.Record _record;
 
-        public string Name => _record.Name;
+        public string Name => _record.GetInternalStructName();
         public string NamespaceName => _record.Namespace.GetInternalName();
         public IEnumerable<Field> Fields { get; }
 

@@ -11,7 +11,7 @@ namespace Generator3.Model.Internal
             ? MarshalAs.UnmanagedByValArray(sizeConst: ArrayType.FixedSize.Value)
             : null;
 
-        public override string NullableTypeName => Type.GetFullyQualifiedInternalStruct() + "[]";
+        public override string NullableTypeName => Type.GetFullyQualifiedInternalStructName() + "[]";
 
         public ArrayRecordField(GirModel.Field field) : base(field)
         {

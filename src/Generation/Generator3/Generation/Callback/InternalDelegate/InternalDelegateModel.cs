@@ -13,7 +13,7 @@ namespace Generator3.Generation.Callback
         public string Name => _callback.Name;
         public string NamespaceName => _callback.Namespace.GetInternalName();
 
-        public ReturnType ReturnType => _returnType ??= _callback.ReturnType.CreateInternalModel();
+        public ReturnType ReturnType => _returnType ??= _callback.ReturnType.CreateInternalModelForCallback();
         public IEnumerable<Parameter> Parameters => _parameters ??= _callback.Parameters.CreateInternalModelsForCallback();
 
         public InternalDelegateModel(GirModel.Callback callback)

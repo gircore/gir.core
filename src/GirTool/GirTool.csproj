@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../GirCore.General.props" />
+  <Import Project="../GirCore.Logging.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta2.21617.1" />
+    <ProjectReference Include="../Generation/Generator3/Generator3.csproj" />
+    <ProjectReference Include="../Generation/GirLoader/GirLoader.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="../Generation/Shared/Log.cs" Link="Shared/Log.cs" />
+  </ItemGroup>
+</Project>

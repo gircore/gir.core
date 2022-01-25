@@ -2,7 +2,10 @@
 {
     public static class ClassNameConverter
     {
-        public static string GetFullyQualifiedInternalStruct(this GirModel.Class @class)
-            => @class.Namespace.GetInternalName() + "." + @class.GetName() + ".Instance.Struct";
+        public static string GetFullyQualifiedInternalStructName(this GirModel.Class @class)
+            => @class.Namespace.GetInternalName() + "." + GetInternalStructName(@class);
+
+        public static string GetInternalStructName(this GirModel.Class @class)
+            => @class.Name + "Data";
     }
 }

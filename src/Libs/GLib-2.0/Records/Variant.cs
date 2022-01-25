@@ -36,25 +36,25 @@ namespace GLib
         partial void Initialize()
         {
             _children = new Variant[0];
-            Internal.Variant.Methods.RefSink(_handle);
+            Internal.Variant.RefSink(_handle);
         }
 
         #endregion
 
         #region Methods
 
-        public static Variant Create(int i) => new Variant(Internal.Variant.Methods.NewInt32(i));
-        public static Variant Create(uint ui) => new Variant(Internal.Variant.Methods.NewUint32(ui));
-        public static Variant Create(string str) => new Variant(Internal.Variant.Methods.NewString(str));
-        public static Variant Create(params string[] strs) => new Variant(Internal.Variant.Methods.NewStrv(strs, strs.Length));
+        public static Variant Create(int i) => new(Internal.Variant.NewInt32(i));
+        public static Variant Create(uint ui) => new(Internal.Variant.NewUint32(ui));
+        public static Variant Create(string str) => new(Internal.Variant.NewString(str));
+        public static Variant Create(params string[] strs) => new(Internal.Variant.NewStrv(strs, strs.Length));
 
         public static Variant CreateEmptyDictionary(VariantType key, VariantType value)
         {
-            var childType = Internal.VariantType.Methods.NewDictEntry(key.Handle, value.Handle);
-            return new Variant(Internal.Variant.Methods.NewArray(childType, new IntPtr[0], 0));
+            var childType = Internal.VariantType.NewDictEntry(key.Handle, value.Handle);
+            return new Variant(Internal.Variant.NewArray(childType, new IntPtr[0], 0));
         }
 
-        private void Init(out Internal.Variant.Handle handle, params Variant[] children)
+        private void Init(out VariantHandle handle, params Variant[] children)
         {
             _children = children;
 
@@ -64,21 +64,21 @@ namespace GLib
             for (nuint i = 0; i < count; i++)
                 ptrs[i] = children[i].Handle.DangerousGetHandle();
 
-            handle = Internal.Variant.Methods.NewTuple(ptrs, count);
-            Internal.Variant.Methods.RefSink(handle);
+            handle = Internal.Variant.NewTuple(ptrs, count);
+            Internal.Variant.RefSink(handle);
         }
 
         public string GetString()
-            => StringHelper.ToStringUtf8(Internal.Variant.Methods.GetString(_handle, out _));
+            => StringHelper.ToStringUtf8(Internal.Variant.GetString(_handle, out _));
 
         public int GetInt()
-            => Internal.Variant.Methods.GetInt32(_handle);
+            => Internal.Variant.GetInt32(_handle);
 
         public uint GetUInt()
-            => Internal.Variant.Methods.GetUint32(_handle);
+            => Internal.Variant.GetUint32(_handle);
 
         public string Print(bool typeAnnotate)
-            => Internal.Variant.Methods.Print(_handle, typeAnnotate);
+            => Internal.Variant.Print(_handle, typeAnnotate);
 
         #endregion
 
@@ -93,7 +93,7 @@ namespace GLib
 
     public static class VariantExtension
     {
-        public static Internal.Variant.Handle GetSafeHandle(this Variant? variant)
-            => variant is null ? Internal.Variant.Handle.Null : variant.Handle;
+        public static VariantHandle GetSafeHandle(this Variant? variant)
+            => variant is null ? VariantNullHandle.Instance : variant.Handle;
     }
 }

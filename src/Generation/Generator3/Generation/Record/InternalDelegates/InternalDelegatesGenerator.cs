@@ -23,7 +23,7 @@ namespace Generator3.Generation.Record
 
                 var model = new InternalDelegatesModel(record);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{record.Name}.Delegates", source);
+                var codeUnit = new CodeUnit(record.Namespace.GetCanonicalName(), $"{model.Name}.Delegates", source);
                 _publisher.Publish(codeUnit);
             }
             catch

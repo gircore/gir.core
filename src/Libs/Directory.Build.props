@@ -2,7 +2,7 @@
   <Import Project="../GirCore.General.props" />
   <Import Project="../GirCore.Publishing.props" />
   
-  <PropertyGroup Condition="$(GirComments) == 'True'">
+  <PropertyGroup Condition="$(GenerateDocumentationFile) == 'True'">
     <NoWarn>1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>

@@ -9,7 +9,7 @@
         //TODO: This method is a shortcut for the user and should probably be part of the toolkit layer
         public void TimedPopFiltered(ulong timeout)
         {
-            Internal.Bus.Instance.Methods.TimedPopFiltered(Handle, timeout, (MessageType.Eos | MessageType.Error));
+            Internal.Bus.TimedPopFiltered(Handle, timeout, (MessageType.Eos | MessageType.Error));
         }
 
         /*TODO Enable

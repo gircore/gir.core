@@ -19,7 +19,7 @@ namespace Generator3.Generation.Interface
             {
                 var model = new InternalMethodsModel(@interface);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(@interface.Namespace.GetCanonicalName(), $"{@interface.Name}.Methods", source);
+                var codeUnit = new CodeUnit(@interface.Namespace.GetCanonicalName(), model.Name, source);
                 _publisher.Publish(codeUnit);
             }
             catch

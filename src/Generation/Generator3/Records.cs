@@ -23,8 +23,8 @@ namespace Generator3
                 publisher: new InternalRecordFilePublisher()
             );
 
-            var internalSafeHandleGenerator = new InternalSafeHandleGenerator(
-                template: new InternalSafeHandleTemplate(),
+            var internalSafeHandleGenerator = new InternalHandleGenerator(
+                template: new InternalHandleTemplate(),
                 publisher: new InternalRecordFilePublisher()
             );
 

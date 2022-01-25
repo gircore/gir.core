@@ -1,13 +1,16 @@
 ﻿using Generator3.Converter;
+using Generator3.Publication;
 
 namespace Generator3
 {
     public static class Namespace
     {
-        public static void Generate(this GirModel.Namespace @namespace)
+        public static void Generate(this GirModel.Namespace @namespace, string outputDirectory)
         {
             try
             {
+                FilePublisher.TargetFolder = outputDirectory;
+
                 @namespace.GenerateFramework();
 
                 @namespace.Enumerations.Generate();

@@ -19,15 +19,9 @@ namespace { model.NamespaceName }
 
     public partial class { model.Name }
     {{
-        public partial class Instance
-        {{
-            public class Methods
-            {{
-                {model.TypeFunction.Render()}
-                {model.Functions.Render()}
-                {model.Methods.Render()}
-            }}
-        }}
+        {model.TypeFunction.Render()}
+        {model.Functions.Render()}
+        {model.Methods.Render()}
     }}
 }}";
         }

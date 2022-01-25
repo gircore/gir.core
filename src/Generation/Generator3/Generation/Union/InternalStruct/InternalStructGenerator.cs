@@ -19,7 +19,7 @@ namespace Generator3.Generation.Union
             {
                 var model = new InternalStructModel(union);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(union.Namespace.GetCanonicalName(), $"{union.Name}.Struct", source);
+                var codeUnit = new CodeUnit(union.Namespace.GetCanonicalName(), model.Name, source);
                 _publisher.Publish(codeUnit);
             }
             catch
