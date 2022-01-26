@@ -1,17 +1,24 @@
-﻿namespace Generator3.Renderer.Internal
+﻿using System;
+
+namespace Generator3.Renderer.Internal
 {
     public static class Method
     {
         public static string Render(this Model.Internal.Method? method)
         {
             if (method is null)
-                return "";
+                return string.Empty;
+
+            if (method.Name == method.ClassName)
+            {
+                Log.Warning($"Method {method.Name} is named like its containing class. This is not allowed. The method should be created with a suffix and be rewritten to it's original name");
+                return string.Empty;
+            }
 
             var renderedParameters = method.Parameters.Render();
 
             if (renderedParameters.Length > 0)
                 renderedParameters = ", " + renderedParameters;
-
 
             return @$"{method.RenderComment()}
 [DllImport(""{ method.NamespaceName }"", EntryPoint = ""{ method.CIdentifier }"")]

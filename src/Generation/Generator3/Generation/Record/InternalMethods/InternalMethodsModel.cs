@@ -25,7 +25,7 @@ namespace Generator3.Generation.Record
                 .ToList();
 
             Methods = record.Methods
-                .Select(method => new Method(method, record.Namespace.Name))
+                .Select(method => new Method(method, record.Namespace.Name, record.Name))
                 .ToList();
 
             Constructors = record.Constructors

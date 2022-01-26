@@ -12,6 +12,7 @@ namespace Generator3.Model.Internal
 
         public GirModel.Method Model { get; }
 
+        public string ClassName { get; set; }
         public string Name => _name ??= Model.GetInternalName();
         public ReturnType ReturnType => _returnType ??= Model.ReturnType.CreateInternalModel();
         public string CIdentifier => Model.CIdentifier;
@@ -21,8 +22,9 @@ namespace Generator3.Model.Internal
 
         public string NamespaceName { get; }
 
-        public Method(GirModel.Method method, string namespaceName)
+        public Method(GirModel.Method method, string namespaceName, string className)
         {
+            ClassName = className;
             Model = method;
             NamespaceName = namespaceName;
         }
