@@ -3,7 +3,6 @@ open SimpleExec
 
 let girFiles =
     [|
-        "GLib-2.0.gir"
         "GObject-2.0.gir"
         "Gio-2.0.gir"
         "cairo-1.0.gir"
@@ -17,6 +16,8 @@ let girFiles =
         "GstVideo-1.0.gir"
         "GstAudio-1.0.gir"
         "GstPbutils-1.0.gir"
+        "PangoCairo-1.0.gir"
+        "Gdk-4.0.gir"
     |]
     |> String.concat " "
 
