@@ -18,6 +18,7 @@ let girFiles =
         "GstPbutils-1.0.gir"
         "PangoCairo-1.0.gir"
         "Gdk-4.0.gir"
+        "Graphene-1.0.gir"
     |]
     |> String.concat " "
 
