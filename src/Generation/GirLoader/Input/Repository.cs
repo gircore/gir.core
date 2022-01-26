@@ -19,7 +19,8 @@ namespace GirLoader.Input
         public override string ToString()
         {
             var namespaceName = Namespace?.Name ?? throw new Exception("A repository without a namespace name is not valid");
-            return "Repository: " + namespaceName;
+            var version = Namespace?.Version ?? "Unspecified";
+            return $"Repository: {namespaceName} Version: {version}";
         }
     }
 }
