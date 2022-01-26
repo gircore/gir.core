@@ -14,5 +14,12 @@ namespace Gtk.Tests
 
             window.Title.Should().Be(title);
         }
+
+        [TestMethod]
+        public void CreateLabelWithNullTextShouldNotThrow()
+        {
+            System.Action createLabelWithNullText = () => Label.New(null);
+            createLabelWithNullText.Should().NotThrow();
+        }
     }
 }
