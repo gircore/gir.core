@@ -35,6 +35,7 @@ namespace GirLoader.Output
                 repository: repository,
                 name: cls.Name,
                 cType: cls.Type,
+                typeName: cls.TypeName,
                 parent: CreateParentTypeReference(cls.Parent, repository.Namespace),
                 implements: _typeReferenceFactory.Create(cls.Implements),
                 methods: _methodFactory.Create(cls.Methods),
