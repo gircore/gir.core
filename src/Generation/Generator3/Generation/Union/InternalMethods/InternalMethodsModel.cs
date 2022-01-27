@@ -25,7 +25,7 @@ namespace Generator3.Generation.Union
                 .ToList();
 
             Methods = union.Methods
-                .Select(method => new Method(method, union.Namespace.Name))
+                .Select(method => new Method(method, union.Namespace.Name, union.Name))
                 .ToList();
 
             Constructors = union.Constructors

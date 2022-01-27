@@ -26,7 +26,7 @@ namespace Generator3.Generation.Class.Fundamental
                 .ToList();
 
             Methods = @class.Methods
-                .Select(method => new Method(method, @class.Namespace.Name))
+                .Select(method => new Method(method, @class.Namespace.Name, @class.Name))
                 .ToList();
 
             Constructors = @class.Constructors
