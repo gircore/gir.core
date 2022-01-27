@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.Gtk</PackageId>
+    <PackageId>Gir.Gtk3</PackageId>
+    <RootNamespace>Gtk</RootNamespace>
   </PropertyGroup>
 </Project>

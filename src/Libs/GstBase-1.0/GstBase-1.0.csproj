@@ -8,6 +8,6 @@
 
   <PropertyGroup>
     <PackageId>Gir.GstBase</PackageId>
-    <RootNamespace>Gst.Base</RootNamespace>
+    <RootNamespace>GstBase</RootNamespace>
   </PropertyGroup>
 </Project>

@@ -9,6 +9,6 @@
 
   <PropertyGroup>
     <PackageId>Gir.GstVideo</PackageId>
-    <RootNamespace>Gst.Video</RootNamespace>
+    <RootNamespace>GstVideo</RootNamespace>
   </PropertyGroup>
 </Project>

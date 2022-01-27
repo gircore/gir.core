@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageId>Gir.Cairo</PackageId>
-    <RootNamespace>Cairo</RootNamespace>
+    <RootNamespace>cairo</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\GLib-2.0\GLib-2.0.csproj" />
