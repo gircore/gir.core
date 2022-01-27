@@ -9,6 +9,6 @@
 
   <PropertyGroup>
     <PackageId>Gir.Gdk3</PackageId>
-    <RootNamespace>Gdk3</RootNamespace>
+    <RootNamespace>Gdk</RootNamespace>
   </PropertyGroup>
 </Project>
