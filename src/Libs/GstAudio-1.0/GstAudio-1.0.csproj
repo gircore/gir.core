@@ -8,6 +8,6 @@
 
   <PropertyGroup>
     <PackageId>Gir.GstAudio</PackageId>
-    <RootNamespace>Gst.Audio</RootNamespace>
+    <RootNamespace>GstAudio</RootNamespace>
   </PropertyGroup>
 </Project>

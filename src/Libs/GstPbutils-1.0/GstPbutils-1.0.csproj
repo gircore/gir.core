@@ -10,6 +10,6 @@
 
   <PropertyGroup>
     <PackageId>Gir.GstPbutils</PackageId>
-    <RootNamespace>Gst.Pbutils</RootNamespace>
+    <RootNamespace>GstPbutils</RootNamespace>
   </PropertyGroup>
 </Project>
