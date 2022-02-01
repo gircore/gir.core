@@ -1,13 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\cairo-1.0\cairo-1.0.csproj" />
     <ProjectReference Include="..\GLib-2.0\GLib-2.0.csproj" />
     <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
-    <ProjectReference Include="..\HarfBuzz-0.0\HarfBuzz-0.0.csproj" />
   </ItemGroup>
-
+  
   <PropertyGroup>
-    <PackageId>Gir.Pango</PackageId>
-    <RootNamespace>Pango</RootNamespace>
+    <PackageId>Gir.HarfBuzz</PackageId>
+    <RootNamespace>HarfBuzz</RootNamespace>
   </PropertyGroup>
 </Project>
