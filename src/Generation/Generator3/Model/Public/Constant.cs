@@ -19,7 +19,7 @@ namespace Generator3.Model.Public
         {
             return _constant.Type switch
             {
-                GirModel.ComplexType { Name: { } name } when name.EndsWith("Flags") => $"({name}) {_constant.Value}",
+                GirModel.Bitfield { Name: { } name } => $"({name}) {_constant.Value}",
                 GirModel.String => "\"" + _constant.Value + "\"",
                 _ => _constant.Value
             };
