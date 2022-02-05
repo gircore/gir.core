@@ -18,6 +18,7 @@ namespace Generator3.Generation.Bitfield
 
             Members = bitfield.Members
                 .Select(member => new Member(member))
+                .Distinct() //Filter duplicates, see: https://gitlab.gnome.org/GNOME/gobject-introspection/-/issues/264
                 .ToList();
         }
     }
