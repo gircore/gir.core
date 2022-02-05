@@ -1,17 +1,15 @@
 ﻿using Generator3.Converter;
 
-namespace Generator3.Model.Public
+namespace Generator3.Model.Public;
+
+public record Member
 {
-    public class Member
+    public string Name { get; }
+    public long Value { get; }
+
+    public Member(GirModel.Member member)
     {
-        private readonly GirModel.Member _member;
-
-        public string Name => _member.GetPublicName();
-        public long Value => _member.Value;
-
-        public Member(GirModel.Member member)
-        {
-            _member = member;
-        }
+        Name = member.GetPublicName();
+        Value = member.Value;
     }
 }
