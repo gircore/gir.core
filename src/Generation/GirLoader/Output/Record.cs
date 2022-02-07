@@ -36,19 +36,12 @@ namespace GirLoader.Output
 
         internal override bool Matches(TypeReference typeReference)
         {
-            if (typeReference.CTypeReference is not null && typeReference.CTypeReference.CType != "gpointer")
-                return typeReference.CTypeReference.CType == CType;
+            var ctypeMatches = typeReference.CTypeReference?.CType == CType;
+            var symbolNameMatches = typeReference.SymbolNameReference?.SymbolName == Name;
+            var namespaceMatches = typeReference.SymbolNameReference?.NamespaceName == Repository.Namespace.Name;
+            var namespaceMissing = typeReference.SymbolNameReference?.NamespaceName == null;
 
-            if (typeReference.SymbolNameReference is not null)
-            {
-                var nameMatches = typeReference.SymbolNameReference.SymbolName == Name;
-                var namespaceMatches = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name;
-                var namespaceMissing = typeReference.SymbolNameReference.NamespaceName == null;
-
-                return nameMatches && (namespaceMatches || namespaceMissing);
-            }
-
-            return false;
+            return ctypeMatches || (symbolNameMatches && (namespaceMatches || namespaceMissing));
         }
     }
 }

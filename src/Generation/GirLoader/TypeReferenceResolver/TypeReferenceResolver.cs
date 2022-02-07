@@ -12,9 +12,6 @@ namespace GirLoader
 
         public bool Resolve(Output.TypeReference typeReference, Output.Repository repository, [MaybeNullWhen(false)] out Output.Type type)
         {
-            if (_globalTypes.TryResolve(typeReference, out type))
-                return true;
-
             if (TryResolveAlias(typeReference, repository, out type))
                 return true;
 
@@ -28,6 +25,9 @@ namespace GirLoader
                 if (cache.TryResolve(typeReference, out type))
                     return true;
             }
+
+            if (_globalTypes.TryResolve(typeReference, out type))
+                return true;
 
             return false;
         }

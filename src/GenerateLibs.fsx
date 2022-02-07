@@ -7,6 +7,7 @@ let girFiles =
         "Gio-2.0.gir"
         "cairo-1.0.gir"
         "Pango-1.0.gir"
+        "HarfBuzz-0.0.gir"
         "Atk-1.0.gir"
         "Gdk-3.0.gir"
         "GdkPixbuf-2.0.gir"

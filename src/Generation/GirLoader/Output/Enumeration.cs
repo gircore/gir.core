@@ -15,18 +15,12 @@ namespace GirLoader.Output
 
         internal override bool Matches(TypeReference typeReference)
         {
-            if (typeReference.SymbolNameReference is not null)
-            {
-                var namespaceOk = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name
-                                  || typeReference.SymbolNameReference.NamespaceName == null;
+            var ctypeMatches = typeReference.CTypeReference?.CType == CType;
+            var symbolNameMatches = typeReference.SymbolNameReference?.SymbolName == Name;
+            var namespaceMatches = typeReference.SymbolNameReference?.NamespaceName == Repository.Namespace.Name
+                                   || typeReference.SymbolNameReference?.NamespaceName == null;
 
-                return namespaceOk && typeReference.SymbolNameReference.SymbolName == Name;
-            }
-
-            if (typeReference.CTypeReference is not null)
-                return typeReference.CTypeReference.CType == CType;
-
-            return false;
+            return ctypeMatches || (namespaceMatches && symbolNameMatches);
         }
     }
 }
