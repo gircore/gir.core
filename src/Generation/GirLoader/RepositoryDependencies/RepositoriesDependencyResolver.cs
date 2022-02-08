@@ -5,14 +5,14 @@ namespace GirLoader.Helper
 {
     // Dependency Resolver Algorithm
     // https://www.electricmonk.nl/docs/dependency_resolving_algorithm/dependency_resolving_algorithm.html
-    internal class RepositoryDependencyResolver
+    internal class RepositoriesDependencyResolver
     {
         private readonly IEnumerable<Output.Repository> _nodeList;
         private readonly List<Output.Repository> _resolvedNodes = new();
         private readonly List<Output.Repository> _unresolvedNodes = new();
         private bool _isResolved;
 
-        public RepositoryDependencyResolver(IEnumerable<Output.Repository> nodeList)
+        public RepositoriesDependencyResolver(IEnumerable<Output.Repository> nodeList)
         {
             _nodeList = nodeList;
         }

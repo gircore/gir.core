@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GirLoader.Output
 {
-    public partial class Interface : ComplexType
+    public partial class Interface : ComplexType, AccessorProvider
     {
         private readonly List<Method> _methods;
         private readonly List<Function> _functions;

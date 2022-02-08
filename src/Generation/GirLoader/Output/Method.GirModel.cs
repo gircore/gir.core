@@ -11,5 +11,7 @@ namespace GirLoader.Output
         GirModel.InstanceParameter GirModel.Method.InstanceParameter => ParameterList.InstanceParameter ?? throw new Exception("Instance parameter mis missing");
         IEnumerable<GirModel.Parameter> GirModel.Method.Parameters => ParameterList.SingleParameters;
         bool GirModel.Method.Introspectable => Introspectable;
+        GirModel.Property? GirModel.Method.GetProperty => GetProperty?.GetProperty();
+        GirModel.Property? GirModel.Method.SetProperty => SetProperty?.GetProperty();
     }
 }

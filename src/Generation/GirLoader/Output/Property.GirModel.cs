@@ -13,5 +13,7 @@
         bool GirModel.Property.ConstructOnly => ConstructOnly;
         GirModel.Transfer GirModel.Property.Transfer => Transfer.ToGirModel();
         bool GirModel.Property.Introspectable => Introspectable;
+        GirModel.Method? GirModel.Property.Getter => Getter?.GetMethod();
+        GirModel.Method? GirModel.Property.Setter => Setter?.Method;
     }
 }

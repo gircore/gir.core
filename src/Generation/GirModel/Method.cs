@@ -10,6 +10,8 @@ namespace GirModel
         InstanceParameter InstanceParameter { get; }
         IEnumerable<Parameter> Parameters { get; }
         bool Introspectable { get; }
+        Property? GetProperty { get; }
+        Property? SetProperty { get; }
 
         bool IsUnref() => Name == "unref";
         bool IsFree() => Name == "free";
