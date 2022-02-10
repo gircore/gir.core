@@ -34,4 +34,4 @@ Command.Run(
         exitCode <- result
         true)
 
-exitCode
+exit exitCode

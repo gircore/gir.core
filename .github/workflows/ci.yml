@@ -35,12 +35,13 @@ jobs:
         run: dotnet fsi GenerateLibs.fsx
         working-directory: './src'
 
-      - name: Verify code format
-        run: dotnet format --verify-no-changes --exclude *.Generated.cs
+      - name: Build solution
+        run: dotnet build --nologo -c ${{ env.configuration }}
         working-directory: './src'
 
-      - name: Build solution
-        run: dotnet build --no-restore --nologo -c ${{ env.configuration }}
+      - name: Verify code format
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: dotnet format --no-restore --verify-no-changes --exclude *.Generated.cs
         working-directory: './src'
 
       - name: Run unit tests
