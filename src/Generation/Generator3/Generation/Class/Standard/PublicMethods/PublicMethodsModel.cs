@@ -16,7 +16,9 @@ namespace Generator3.Generation.Class.Standard
         public PublicMethodsModel(GirModel.Class @class)
         {
             _class = @class;
-            Methods = _class.Methods.Select(x => new Method(x, Name));
+            Methods = _class.Methods
+                .Where(method => !method.IsAccessor())
+                .Select(x => new Method(x, Name));
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Generator3.Model.Internal
         private GirModel.Enumeration Type => (GirModel.Enumeration) ArrayType.AnyType.AsT0;
 
         public override string NullableTypeName => ArrayType.Length is null
-            ? TypeNameConverter.Pointer
+            ? TypeNameExtension.Pointer
             : Type.GetFullyQualified() + "[]";
 
         public override string Direction => Model.GetDirection(

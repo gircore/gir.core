@@ -4,7 +4,7 @@ namespace Generator3.Model.Public
 {
     public class PointerReturnType : ReturnType
     {
-        public override string NullableTypeName => TypeNameConverter.Pointer;
+        public override string NullableTypeName => TypeNameExtension.Pointer;
 
         protected internal PointerReturnType(GirModel.ReturnType model) : base(model)
         {

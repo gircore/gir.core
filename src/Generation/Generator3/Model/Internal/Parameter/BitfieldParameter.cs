@@ -7,7 +7,7 @@ namespace Generator3.Model.Internal
         private GirModel.Bitfield Type => (GirModel.Bitfield) Model.AnyType.AsT0;
         public override string NullableTypeName => Model.IsPointer switch
         {
-            true => TypeNameConverter.Pointer,
+            true => TypeNameExtension.Pointer,
             //Internal does not define any bitfields. They are part of the Public API to avoid converting between them.
             false => Type.GetFullyQualified()
         };

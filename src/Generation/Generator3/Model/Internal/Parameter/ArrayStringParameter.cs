@@ -8,7 +8,7 @@ namespace Generator3.Model.Internal
 
         public override string NullableTypeName
             => Model.Transfer == GirModel.Transfer.None && ArrayType.Length == null
-                ? TypeNameConverter.Pointer // Arrays of string which do not transfer ownership and have no length index can not be marshalled automatically
+                ? TypeNameExtension.Pointer // Arrays of string which do not transfer ownership and have no length index can not be marshalled automatically
                 : ArrayType.GetName();
 
         public override string Attribute => ArrayType.Length is null

@@ -11,7 +11,7 @@ namespace Generator3.Model.Internal
         public override string NullableTypeName
             => IsMarshalAble
                 ? ArrayType.GetName()
-                : TypeNameConverter.Pointer;
+                : TypeNameExtension.Pointer;
 
         protected internal ArrayStringReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {

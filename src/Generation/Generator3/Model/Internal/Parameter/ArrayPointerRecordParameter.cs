@@ -6,7 +6,7 @@ namespace Generator3.Model.Internal
     {
         private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
 
-        public override string NullableTypeName => TypeNameConverter.PointerArray;
+        public override string NullableTypeName => TypeNameExtension.PointerArray;
 
         public override string Attribute => ArrayType.Length is null
             ? string.Empty

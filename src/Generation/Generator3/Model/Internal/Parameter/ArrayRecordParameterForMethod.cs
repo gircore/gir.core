@@ -7,7 +7,7 @@ namespace Generator3.Model.Internal
         private GirModel.ArrayType ArrayType => Model.AnyType.AsT1;
 
         public override string NullableTypeName => ArrayType.Length is null
-            ? TypeNameConverter.PointerArray
+            ? TypeNameExtension.PointerArray
             : ((GirModel.Record) ArrayType.AnyType.AsT0).GetFullyQualifiedInternalStructName() + "[]";
 
         public override string Attribute => ArrayType.Length is null

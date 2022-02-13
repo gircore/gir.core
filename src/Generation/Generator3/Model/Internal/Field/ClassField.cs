@@ -7,7 +7,7 @@ namespace Generator3.Model.Internal
         private GirModel.Class Type => (GirModel.Class) _field.AnyTypeOrCallback.AsT0.AsT0;
 
         public override string NullableTypeName => _field.IsPointer
-            ? TypeNameConverter.Pointer
+            ? TypeNameExtension.Pointer
             : Type.GetFullyQualifiedInternalStructName();
 
         public ClassField(GirModel.Field field) : base(field)

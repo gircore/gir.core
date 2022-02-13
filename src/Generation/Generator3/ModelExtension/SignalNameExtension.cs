@@ -1,6 +1,6 @@
 ﻿namespace Generator3.Converter
 {
-    public static class SignalNameConverter
+    public static class SignalNameExtension
     {
         public static string GetPublicName(this GirModel.Signal signal)
         {

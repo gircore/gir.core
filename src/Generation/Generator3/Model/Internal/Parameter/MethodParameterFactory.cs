@@ -9,7 +9,7 @@ namespace Generator3.Model.Internal
         public static IEnumerable<Parameter> CreateInternalModelsForMethod(this IEnumerable<GirModel.Parameter> parameters)
             => parameters.Select(CreateInternalModelForMethod);
 
-        private static Parameter CreateInternalModelForMethod(this GirModel.Parameter parameter) => parameter.AnyType.Match(
+        public static Parameter CreateInternalModelForMethod(this GirModel.Parameter parameter) => parameter.AnyType.Match(
             type => type switch
             {
                 GirModel.String => new StringParameter(parameter),

@@ -1,6 +1,6 @@
 ﻿namespace Generator3.Converter
 {
-    public static class MemberNameConverter
+    public static class MemberNameExtension
     {
         public static string GetPublicName(this GirModel.Member member)
         {

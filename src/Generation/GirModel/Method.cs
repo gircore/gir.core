@@ -15,5 +15,6 @@ namespace GirModel
 
         bool IsUnref() => Name == "unref";
         bool IsFree() => Name == "free";
+        bool IsAccessor() => GetProperty is not null || SetProperty is not null;
     }
 }

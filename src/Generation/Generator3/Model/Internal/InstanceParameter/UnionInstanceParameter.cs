@@ -4,7 +4,7 @@ namespace Generator3.Model.Internal
 {
     public class UnionInstanceParameter : InstanceParameter
     {
-        public override string NullableTypeName => TypeNameConverter.Pointer;
+        public override string NullableTypeName => TypeNameExtension.Pointer;
 
         public UnionInstanceParameter(GirModel.InstanceParameter instanceParameter) : base(instanceParameter)
         {
