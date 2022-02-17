@@ -18,5 +18,10 @@
             Readable = readable;
             Introspectable = introspectable;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
