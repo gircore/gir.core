@@ -5,7 +5,7 @@
 
   <ItemGroup>
     <PackageReference Include="StrongInject" Version="1.4.3" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" />
     <ProjectReference Include="..\GirModel\GirModel.csproj" />
   </ItemGroup>
 </Project>
