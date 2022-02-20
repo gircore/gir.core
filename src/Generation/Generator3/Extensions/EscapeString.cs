@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis;
 using Sf = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Sk = Microsoft.CodeAnalysis.CSharp.SyntaxKind;
 using St = Microsoft.CodeAnalysis.SyntaxToken;
@@ -17,7 +17,7 @@ internal static class EscapeString
     private static string FixIfIdentifierIsKeyword(string identifier)
     {
         St token = Sf.ParseToken(identifier);
-        if (token.Kind() != Sk.IdentifierToken)
+        if (!token.IsKind(Sk.IdentifierToken))
             identifier = "@" + identifier;
 
         return identifier;
