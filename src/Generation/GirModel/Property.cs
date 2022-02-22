@@ -8,7 +8,7 @@
         bool Readable { get; }
         bool Writeable { get; }
         bool Introspectable { get; }
-
+        bool ConstructOnly { get; }
         //TODO add gobject setter function
         //TODO add gobject getter function
     }
