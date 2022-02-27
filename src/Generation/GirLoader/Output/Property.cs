@@ -9,8 +9,10 @@
         public bool ConstructOnly { get; }
         public TypeReference TypeReference { get; }
         public bool Introspectable { get; }
+        public MethodReference? Getter { get; }
+        public MethodReference? Setter { get; }
 
-        public Property(string name, TypeReference typeReference, bool writeable, bool readable, bool constructOnly, Transfer transfer, bool introspectable)
+        public Property(string name, TypeReference typeReference, bool writeable, bool readable, bool constructOnly, Transfer transfer, bool introspectable, MethodReference? getter, MethodReference? setter)
         {
             Name = name;
             TypeReference = typeReference;
@@ -19,6 +21,8 @@
             Readable = readable;
             ConstructOnly = constructOnly;
             Introspectable = introspectable;
+            Getter = getter;
+            Setter = setter;
         }
 
         public override string ToString()

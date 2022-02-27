@@ -8,8 +8,8 @@ namespace Generator3.Model.Internal
 
         //Interfaces are always passed as a pointer. 
         public override string NullableTypeName => ArrayType.Length is null
-            ? TypeNameConverter.Pointer
-            : TypeNameConverter.PointerArray;
+            ? TypeNameExtension.Pointer
+            : TypeNameExtension.PointerArray;
 
         public override string Attribute => ArrayType.Length is null
             ? string.Empty

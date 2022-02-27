@@ -37,6 +37,12 @@ namespace GirLoader.Input
         [XmlAttribute("introspectable")]
         public bool Introspectable = true;
 
+        [XmlAttribute("get-property", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
+        public string? GetProperty { get; set; }
+
+        [XmlAttribute("set-property", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
+        public string? SetProperty { get; set; }
+
         public override string? ToString()
             => Name ?? Identifier ?? base.ToString();
     }

@@ -1,6 +1,6 @@
 ﻿namespace Generator3.Converter
 {
-    public static class ConstructorNameConverter
+    public static class ConstructorNameExtension
     {
         public static string GetInternalName(this GirModel.Constructor constructor)
         {

@@ -27,7 +27,9 @@ namespace GirLoader.Output
                 readable: property.Readable,
                 constructOnly: property.ConstructOnly,
                 transfer: _transferFactory.FromText(property.TransferOwnership),
-                introspectable: property.Introspectable
+                introspectable: property.Introspectable,
+                getter: MethodReference.Create(property.Getter),
+                setter: MethodReference.Create(property.Setter)
             );
         }
 

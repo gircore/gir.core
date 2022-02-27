@@ -7,7 +7,7 @@ namespace Generator3.Model.Internal
         private GirModel.Enumeration Type => (GirModel.Enumeration) Model.AnyType.AsT0;
         public override string NullableTypeName => Model.IsPointer switch
         {
-            true => TypeNameConverter.Pointer,
+            true => TypeNameExtension.Pointer,
             false => Type.GetFullyQualified()
         };
 

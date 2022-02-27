@@ -31,7 +31,7 @@ namespace TextEditor.Application
             eventBox = EventBox.New();
             eventBox.OnKeyPressEvent += OnKeydown;
             eventBox.CanFocus = true;
-            eventBox.OnRealize += (o, e) => context.SetClientWindow(eventBox.GetWindow());
+            eventBox.OnRealize += (o, e) => context.SetClientWindow(eventBox.Window);
             Child = eventBox;
 
             // Drawing area to display rich text

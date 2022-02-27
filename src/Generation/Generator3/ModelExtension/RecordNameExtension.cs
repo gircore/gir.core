@@ -1,6 +1,6 @@
 ﻿namespace Generator3.Converter
 {
-    public static class RecordNameConverter
+    public static class RecordNameExtension
     {
         public static string GetFullyQualifiedInternalStructName(this GirModel.Record record)
             => record.Namespace.GetInternalName() + "." + GetInternalStructName(record);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Generator3.Fixer.Public;
 using Generator3.Publication;
 using Fundamental = Generator3.Generation.Class.Fundamental;
 using Standard = Generator3.Generation.Class.Standard;
@@ -82,6 +83,8 @@ namespace Generator3
                 template: new Standard.PublicSignalsTemplate(),
                 publisher: new PublicClassFilePublisher()
             );
+
+            @class.Fixup();
 
             standardInternalMethodsGenerator.Generate(@class);
             standardInternalStructGenerator.Generate(@class);

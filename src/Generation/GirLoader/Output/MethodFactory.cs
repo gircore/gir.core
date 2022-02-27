@@ -32,7 +32,9 @@ namespace GirLoader.Output
                     name: method.Name,
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
                     parameterList: _parameterListFactory.Create(method.Parameters, method.Throws),
-                    introspectable: method.Introspectable
+                    introspectable: method.Introspectable,
+                    getProperty: PropertyReference.Create(method.GetProperty),
+                    setProperty: PropertyReference.Create(method.SetProperty)
                 );
             }
 

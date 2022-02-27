@@ -1,6 +1,6 @@
 ﻿namespace Generator3.Converter
 {
-    public static class ParameterNameConverter
+    public static class ParameterNameExtension
     {
         public static string GetInternalName(this GirModel.Parameter parameter)
         {

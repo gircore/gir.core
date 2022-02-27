@@ -27,7 +27,7 @@ namespace GirLoader
 
             var outputRepositories = inputRepositories.CreateOutputRepositories(_includeResolver);
             var orderedOutputRepositories = outputRepositories.OrderByDependencies();
-            orderedOutputRepositories.ResolveTypeReferences();
+            orderedOutputRepositories.ResolveReferences();
             return orderedOutputRepositories;
         }
     }

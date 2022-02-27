@@ -1,6 +1,6 @@
 ﻿namespace Generator3.Converter
 {
-    public static class NamespaceNameConverter
+    public static class NamespaceNameExtension
     {
         public static string GetCanonicalName(this GirModel.Namespace @namespace)
             => $"{@namespace.Name}-{@namespace.Version}";

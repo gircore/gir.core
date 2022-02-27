@@ -1,6 +1,6 @@
 ﻿namespace Generator3.Converter
 {
-    public static class UnionNameConverter
+    public static class UnionNameExtension
     {
         public static string GetFullyQualifiedInternalStructName(this GirModel.Union union)
             => union.Namespace.GetInternalName() + "." + GetInternalStructName(union);

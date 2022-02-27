@@ -7,7 +7,7 @@ namespace Generator3.Model.Public
         private GirModel.PrimitiveValueType Type => (GirModel.PrimitiveValueType) Model.AnyType.AsT0;
 
         public override string NullableTypeName => Model.IsPointer
-            ? TypeNameConverter.Pointer
+            ? TypeNameExtension.Pointer
             : Type.GetName();
 
 

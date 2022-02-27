@@ -42,5 +42,11 @@ namespace GirLoader.Input
 
         [XmlAttribute("introspectable")]
         public bool Introspectable = true;
+
+        [XmlAttribute("getter")]
+        public string? Getter { get; set; }
+
+        [XmlAttribute("setter")]
+        public string? Setter { get; set; }
     }
 }

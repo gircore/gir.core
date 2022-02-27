@@ -26,7 +26,7 @@ namespace TextEditor.Application
             headerBar.ShowCloseButton = true;
             headerBar.Title = WindowTitle;
             this.SetTitlebar(headerBar);
-            this.SetDecorated(true);
+            this.Decorated = true;
 
             // About Dialog Button
             var aboutButton = new Button("About");
@@ -38,8 +38,8 @@ namespace TextEditor.Application
                 // safely substitute it for the built-in GTK AboutDialog.
                 var dlg = new AboutDialog.SampleDialog("Text Editor");
 
-                dlg.SetTransientFor(this);
-                dlg.SetModal(true);
+                dlg.TransientFor = this;
+                dlg.Modal = true;
                 dlg.Present();
             };
             headerBar.PackEnd(aboutButton);

@@ -5,7 +5,7 @@ namespace Generator3.Model.Internal
     public class PrimitiveValueTypeParameter : Parameter
     {
         public override string NullableTypeName => Model.IsPointer
-            ? TypeNameConverter.Pointer
+            ? TypeNameExtension.Pointer
             : Model.AnyType.AsT0.GetName();
 
         public override string Direction => Model.GetDirection(

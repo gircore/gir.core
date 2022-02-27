@@ -4,7 +4,7 @@ namespace Generator3.Model.Internal
 {
     public class ArrayClassReturnType : ReturnType
     {
-        public override string NullableTypeName => TypeNameConverter.PointerArray;
+        public override string NullableTypeName => TypeNameExtension.PointerArray;
 
         protected internal ArrayClassReturnType(GirModel.ReturnType returnValue) : base(returnValue)
         {

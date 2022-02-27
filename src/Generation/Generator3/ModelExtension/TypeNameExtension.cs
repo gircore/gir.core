@@ -2,7 +2,7 @@
 
 namespace Generator3.Converter
 {
-    internal static class TypeNameConverter
+    internal static class TypeNameExtension
     {
         public const string Pointer = "IntPtr";
         public const string PointerArray = "IntPtr[]";
