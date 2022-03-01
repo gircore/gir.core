@@ -21,19 +21,18 @@ We are currently in a period of heavy iteration over the core internals of the p
 
 ### Supported Libraries
 
-| Library        | Description                             | Level of Support  |
-|----------------|-----------------------------------------|-------------------|
-| GTK 3          | UI-Toolkit                              | Partial           |
-| GStreamer      | Multimedia Framework                    | Partial           |
-| Cairo          | Graphics Library                        | Partial           |
-| Pango          | Font/Text Library                       | Partial           |
-| DBus           | Library for inter-process communication | Partial (via GIO) |
-| GdkPixbuf      | Image loading in various formats        | Partial           |
-| GTK 4          | UI-Toolkit                              | Planned           |
-| libadwaita     | Convergent UI for GTK4 on Mobile        | Planned           |
-| libshumate     | Library to display maps                 | Planned           |
-| WebKitGTK      | Browser Engine                          | Planned           |
-| JavaScriptCore | JavaScript engine for WebKit            | Planned           |
+| Library        | Description                                      | Level of Support |
+|----------------|--------------------------------------------------|------------------|
+| GTK 3          | UI-Toolkit                                       | Partial          |
+| GTK 4          | UI-Toolkit                                       | Partial          |
+| GStreamer      | Multimedia Framework                             | Partial          |
+| Cairo          | Graphics Library                                 | Partial          |
+| Pango          | Font/Text Library                                | Partial          |
+| Gio            | Library for high level application functionality | Partial          |
+| GdkPixbuf      | Image loading in various formats                 | Partial          |
+| libshumate     | Library to display maps                          | Planned          |
+| WebKitGTK      | Browser Engine                                   | [Planned](https://github.com/gircore/gir.core/issues/568)      |
+| JavaScriptCore | JavaScript engine for WebKit                     | Planned          |
 
 
 ## Get Involved
