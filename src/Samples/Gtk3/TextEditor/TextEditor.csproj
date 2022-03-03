@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
@@ -9,5 +8,4 @@
       <ProjectReference Include="..\..\..\Libs\Gtk-3.0\Gtk-3.0.csproj" />
       <ProjectReference Include="..\AboutDialog\AboutDialog.csproj" />
     </ItemGroup>
-
 </Project>
