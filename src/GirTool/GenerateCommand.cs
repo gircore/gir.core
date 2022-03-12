@@ -20,38 +20,44 @@ public class GenerateCommand : Command
         description: "Generate C# bindings from gir files"
     )
     {
-        AddArgument(new Argument<string[]>(
+        var inputArgument = new Argument<string[]>(
             name: "input",
             description: "The gir files which should be processed"
-        ));
+        );
 
-        AddOption(new Option<string>(
+        var outputOption = new Option<string>(
             aliases: new[] { "-o", "--output" },
             description: "The directory to write the generated C# files to",
             getDefaultValue: () => "./Libs"
-        ));
+        );
 
-        AddOption(new Option<string>(
+        var searchPathOption = new Option<string>(
             aliases: new[] { "-s", "--search-path" },
             description: "The directory which is searched for dependent gir files",
             getDefaultValue: () => "./Gir"
-        ));
+        );
 
-        AddOption(new Option<bool>(
+        var disableAsyncOption = new Option<bool>(
             aliases: new[] { "-d", "--disable-async" },
             getDefaultValue: () => false,
             description: "Generate files synchronously - useful for debugging"
-        ));
+        );
 
-        AddOption(new Option<LogLevel>(
+        var logLevelOption = new Option<LogLevel>(
             aliases: new[] { "-l", "--log-level" },
             getDefaultValue: () => LogLevel.Standard,
             description: "Set the log level"
-        ));
+        );
+
+        AddArgument(inputArgument);
+        AddOption(outputOption);
+        AddOption(searchPathOption);
+        AddOption(disableAsyncOption);
+        AddOption(logLevelOption);
 
         this.SetHandler<string[], string, string, bool, LogLevel, InvocationContext>(
             handle: Execute,
-            symbols: this.Children.Cast<IValueDescriptor>().ToArray()
+            symbols: new IValueDescriptor[] { inputArgument, outputOption, searchPathOption, disableAsyncOption, logLevelOption }
         );
     }
 
