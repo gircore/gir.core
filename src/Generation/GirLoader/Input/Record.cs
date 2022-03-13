@@ -43,5 +43,8 @@ namespace GirLoader.Input
 
         [XmlAttribute("introspectable")]
         public bool Introspectable = true;
+
+        [XmlAttribute("foreign")]
+        public bool Foreign;
     }
 }

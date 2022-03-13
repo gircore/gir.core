@@ -10,5 +10,6 @@ namespace GirModel
         IEnumerable<Constructor> Constructors { get; }
         IEnumerable<Field> Fields { get; }
         bool Introspectable { get; }
+        bool Foreign { get; }
     }
 }

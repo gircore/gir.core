@@ -20,13 +20,15 @@ namespace GirLoader.Output
         public IEnumerable<Function> Functions => _functions;
         public TypeReference? GLibClassStructFor { get; }
         public bool Introspectable { get; }
+        public bool Foreign { get; }
 
-        public Record(Repository repository, string? cType, string name, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors, bool introspectable) : base(repository, cType, name)
+        public Record(Repository repository, string? cType, string name, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors, bool introspectable, bool foreign) : base(repository, cType, name)
         {
             GLibClassStructFor = gLibClassStructFor;
             GetTypeFunction = getTypeFunction;
             Disguised = disguised;
             Introspectable = introspectable;
+            Foreign = foreign;
 
             this._constructors = constructors.ToList();
             this._methods = methods.ToList();
