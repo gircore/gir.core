@@ -33,23 +33,6 @@ namespace { model.InternalNamespaceName }
         }}
     }}
 
-    public partial class {model.OwnedHandleName} : {model.HandleName}
-    {{
-        private {model.OwnedHandleName}() : base(true) {{ }}
-
-        public {model.OwnedHandleName}(IntPtr handle) : base(true)
-        {{
-            SetHandle(handle);
-        }}
-
-        protected override bool ReleaseHandle()
-        {{
-            {model.RenderFreeCall()}
-        }}
-
-        {model.RenderFreeFunction()}
-    }}
-
     public partial class {model.UnownedHandleName} : {model.HandleName}
     {{
         private {model.UnownedHandleName}() : base(false) {{ }}

@@ -2,7 +2,7 @@
 {
     public static class FreeFunctionRenderer
     {
-        public static string RenderFreeFunction(this InternalHandleModel model)
+        public static string RenderFreeFunction(this InternalOwnedHandleModel model)
         {
             if (model.FreeMethod is null)
                 return "";
