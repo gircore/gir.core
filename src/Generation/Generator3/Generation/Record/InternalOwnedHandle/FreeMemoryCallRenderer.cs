@@ -2,7 +2,7 @@
 {
     public static class FreeMemoryCallRenderer
     {
-        public static string RenderFreeCall(this InternalHandleModel model)
+        public static string RenderFreeCall(this InternalOwnedHandleModel model)
         {
             return model.FreeMethod is null
                 ? $"throw new System.Exception(\"Can't free native handle of type \\\"{model.InternalNamespaceName}.{model.OwnedHandleName}\\\".\");"

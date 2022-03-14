@@ -28,6 +28,11 @@ namespace Generator3
                 publisher: new InternalRecordFilePublisher()
             );
 
+            var internalOwnedHandleGenerator = new InternalOwnedHandleGenerator(
+                template: new InternalOwnedHandleTemplate(),
+                publisher: new InternalRecordFilePublisher()
+            );
+
             var internalManagedHandleGenerator = new InternalManagedHandleGenerator(
                 template: new InternalManagedHandleTemplate(),
                 publisher: new InternalRecordFilePublisher()
@@ -44,6 +49,7 @@ namespace Generator3
                 internalStructGenerator.Generate(record);
                 internalStructDelegatesGenerator.Generate(record);
                 internalSafeHandleGenerator.Generate(record);
+                internalOwnedHandleGenerator.Generate(record);
                 internalManagedHandleGenerator.Generate(record);
 
                 publicClassGenerator.Generate(record);
