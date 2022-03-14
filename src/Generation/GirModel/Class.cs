@@ -5,6 +5,7 @@ namespace GirModel
     public interface Class : ComplexType
     {
         Class? Parent { get; }
+        IEnumerable<Interface> Implements { get; }
         Function TypeFunction { get; }
         bool IsFundamental { get; }
         IEnumerable<Field> Fields { get; }

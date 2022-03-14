@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GirLoader.Output
 {
     public partial class Class : GirModel.Class
     {
         GirModel.Class? GirModel.Class.Parent => (GirModel.Class?) Parent?.Type;
+        IEnumerable<GirModel.Interface> GirModel.Class.Implements => Implements.Select(x => x.GetResolvedType()).Cast<Interface>();
         GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
         string GirModel.ComplexType.Name => Name;
         GirModel.Function GirModel.Class.TypeFunction => GetTypeFunction;

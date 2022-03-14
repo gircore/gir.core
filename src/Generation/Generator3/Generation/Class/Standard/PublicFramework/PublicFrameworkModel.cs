@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Class.Standard
+﻿using System.Collections.Generic;
+
+namespace Generator3.Generation.Class.Standard
 {
     public class PublicFrameworkModel
     {
@@ -11,6 +13,7 @@
         public bool IsInitiallyUnowned => IsNamedInitiallyUnowned(_class.Name);
 
         public GirModel.Class? ParentClass => _class.Parent;
+        public IEnumerable<GirModel.Interface> Implements => _class.Implements;
 
         public PublicFrameworkModel(GirModel.Class @class)
         {
