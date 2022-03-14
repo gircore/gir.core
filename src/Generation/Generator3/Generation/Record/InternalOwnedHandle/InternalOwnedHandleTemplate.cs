@@ -23,10 +23,7 @@ namespace { model.InternalNamespaceName }
             SetHandle(handle);
         }}
 
-        protected override bool ReleaseHandle()
-        {{
-            {model.RenderFreeCall()}
-        }}
+        {model.RenderReleaseHandle()}
 
         {model.RenderFreeFunction()}
     }}
