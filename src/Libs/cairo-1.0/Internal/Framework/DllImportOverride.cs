@@ -16,6 +16,11 @@ namespace cairo.Internal
     {
         #region Fields
 
+        // Identifiers for libcairo / libcairo-gobject.
+        // See TryGetOsDependentLibraryName() for details of the name mapping.
+        public const string CairoLib = "cairo-graphics";
+        private const string CairoGObjectLib = "cairo";
+
         // libcairo (for manually written code)
         private const string _windowsDllName = "libcairo-2.dll";
         private const string _linuxDllName = "libcairo.so.2";
@@ -67,7 +72,7 @@ namespace cairo.Internal
 
             // Confusingly, "cairo" refers to "cairo-gobject" as this is
             // the library specified in "cairo-1.0.gir".
-            if (libraryName == "cairo")
+            if (libraryName == CairoGObjectLib)
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     osDependentLibraryName = _cgoWindowsDllName;
@@ -83,7 +88,7 @@ namespace cairo.Internal
 
             // This is the actual "libcairo" which defines the
             // functions, structs, etc that we want.
-            if (libraryName == "cairo-graphics")
+            if (libraryName == CairoLib)
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     osDependentLibraryName = _windowsDllName;
