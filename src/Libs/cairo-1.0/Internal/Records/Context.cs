@@ -5,7 +5,7 @@ namespace cairo.Internal
     public partial class Context
     {
         [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_destroy")]
-        public static extern void Destroy(ContextHandle handle);
+        public static extern void Destroy(ContextOwnedHandle handle);
 
         [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_fill")]
         public static extern void Fill(ContextHandle cr);

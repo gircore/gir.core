@@ -6,6 +6,6 @@ namespace cairo.Internal
     public partial class Region
     {
         [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_region_destroy")]
-        public static extern void Destroy(RegionHandle handle);
+        public static extern void Destroy(RegionOwnedHandle handle);
     }
 }
