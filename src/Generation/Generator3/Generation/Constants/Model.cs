@@ -9,7 +9,7 @@ namespace Generator3.Generation.Constants
     {
         private readonly IEnumerable<GirModel.Constant> _constants;
 
-        public string NamespaceName => _constants.First().Namespace.Name;
+        public string NamespaceName => _constants.First().Namespace.GetPublicName();
         public IEnumerable<Constant> Constants { get; }
 
         public Model(IEnumerable<GirModel.Constant> constants)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Converter;
 using Generator3.Model.Public;
 
 namespace Generator3.Generation.Enumeration
@@ -9,7 +10,7 @@ namespace Generator3.Generation.Enumeration
         private readonly GirModel.Enumeration _enumeration;
 
         public string Name => _enumeration.Name;
-        public string NamespaceName => _enumeration.Namespace.Name;
+        public string NamespaceName => _enumeration.Namespace.GetPublicName();
         public IEnumerable<Member> Members { get; }
 
         public Model(GirModel.Enumeration enumeration)

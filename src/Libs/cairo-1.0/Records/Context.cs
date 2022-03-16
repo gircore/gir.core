@@ -1,4 +1,4 @@
-﻿namespace cairo
+﻿namespace Cairo
 {
     public partial class Context
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Converter;
 using Generator3.Model.Public;
 
 namespace Generator3.Generation.Callback
@@ -11,7 +12,7 @@ namespace Generator3.Generation.Callback
         private IEnumerable<Parameter>? _parameters;
 
         public string Name => _callback.Name;
-        public string NamespaceName => _callback.Namespace.Name;
+        public string NamespaceName => _callback.Namespace.GetPublicName();
 
         public ReturnType ReturnType => _returnType ??= _callback.ReturnType.CreatePublicModel();
         public IEnumerable<Parameter> Parameters

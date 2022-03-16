@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using cairo;
+using Cairo;
 using Gdk;
 using Gtk;
 using Pango;
@@ -130,7 +130,7 @@ namespace TextEditor.Application
             int xDist = 30;
             int yDist = 100;
 
-            cairo.Context cr = e.Cr;
+            Cairo.Context cr = e.Cr;
 
             // Fill background
             cr.SetSourceRgba(1, 1, 1, 1);

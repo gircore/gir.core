@@ -1,14 +1,16 @@
-﻿namespace Generator3.Generation.Framework
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Framework
 {
     public class InternalExtensionsModel
     {
-        private readonly string _namespace;
+        private readonly GirModel.Namespace _ns;
 
-        public string NamespaceName => _namespace + ".Internal";
+        public string NamespaceName => _ns.GetInternalName();
 
-        public InternalExtensionsModel(string @namespace)
+        public InternalExtensionsModel(GirModel.Namespace ns)
         {
-            this._namespace = @namespace;
+            _ns = ns;
         }
     }
 }

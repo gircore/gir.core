@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Converter;
 
 namespace Generator3.Generation.Framework
 {
@@ -7,7 +8,7 @@ namespace Generator3.Generation.Framework
     {
         private readonly GirModel.Namespace _ns;
 
-        public string NamespaceName => _ns.Name;
+        public string NamespaceName => _ns.GetPublicName();
 
         public IEnumerable<GirModel.Class> Classes => _ns.Classes.Where(cls => !cls.IsFundamental);
         public IEnumerable<GirModel.Record> Records => _ns.Records.Where(record => record.TypeFunction is not null);

@@ -11,11 +11,11 @@
             _publisher = publisher;
         }
 
-        public void Generate(string project, string @namespace)
+        public void Generate(string project, GirModel.Namespace ns)
         {
             try
             {
-                var model = new ModuleDllImportModel(@namespace);
+                var model = new ModuleDllImportModel(ns);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(project, "Module.DllImport", source);
                 _publisher.Publish(codeUnit);

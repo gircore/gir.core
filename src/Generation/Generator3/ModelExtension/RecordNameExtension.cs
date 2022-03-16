@@ -21,7 +21,7 @@
             => record.Namespace.GetInternalName() + "." + GetInternalManagedHandleName(record) + ".Create";
 
         public static string GetFullyQualifiedPublicClassName(this GirModel.Record record)
-            => record.Namespace.Name + "." + record.GetPublicClassName();
+            => record.Namespace.GetPublicName() + "." + record.GetPublicClassName();
 
         public static string GetPublicClassName(this GirModel.Record record)
             => record.Name;

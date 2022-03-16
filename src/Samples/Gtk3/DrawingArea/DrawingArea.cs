@@ -8,7 +8,7 @@ window.Child = drawingArea;
 
 drawingArea.OnDraw += (d, a) =>
 {
-    cairo.Context cr = a.Cr;
+    Cairo.Context cr = a.Cr;
     cr.SetSourceRgba(0.1, 0.1, 0.1, 1.0);
     cr.MoveTo(20, 30);
     cr.ShowText("This is some text, drawn with cairo");

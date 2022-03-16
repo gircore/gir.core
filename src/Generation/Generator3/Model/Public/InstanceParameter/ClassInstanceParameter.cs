@@ -1,4 +1,6 @@
-﻿namespace Generator3.Model.Public
+﻿using Generator3.Converter;
+
+namespace Generator3.Model.Public
 {
     public class ClassInstanceParameter : InstanceParameter
     {
