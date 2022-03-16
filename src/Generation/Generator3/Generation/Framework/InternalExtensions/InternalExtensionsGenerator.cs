@@ -11,11 +11,11 @@
             _publisher = publisher;
         }
 
-        public void Generate(string project, string @namespace)
+        public void Generate(string project, GirModel.Namespace ns)
         {
             try
             {
-                var model = new InternalExtensionsModel(@namespace);
+                var model = new InternalExtensionsModel(ns);
                 var source = _template.Render(model);
                 var codeUnit = new CodeUnit(project, "Extensions", source);
                 _publisher.Publish(codeUnit);

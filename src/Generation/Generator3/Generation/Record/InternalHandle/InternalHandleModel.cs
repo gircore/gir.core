@@ -10,7 +10,6 @@ namespace Generator3.Generation.Record
         public string NullHandleName => Record.GetInternalNullHandleName();
         public string UnownedHandleName => Record.GetInternalUnownedHandleName();
         public string InternalNamespaceName => Record.Namespace.GetInternalName();
-        public string NamespaceName => Record.Namespace.Name;
         public GirModel.Record Record { get; }
 
         public InternalHandleModel(GirModel.Record record)

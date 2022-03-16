@@ -1,12 +1,16 @@
-﻿namespace Generator3.Generation.Framework
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Framework
 {
     public class ModuleDllImportModel
     {
-        public string NamespaceName { get; }
+        private readonly GirModel.Namespace _ns;
 
-        public ModuleDllImportModel(string @namespace)
+        public string NamespaceName => _ns.GetPublicName();
+
+        public ModuleDllImportModel(GirModel.Namespace ns)
         {
-            this.NamespaceName = @namespace;
+            _ns = ns;
         }
     }
 }

@@ -35,10 +35,10 @@ namespace Generator3
             if (ns.SharedLibrary is null)
                 Log.Warning($"Shared library name is not set for project {ns.GetCanonicalName()}. {ns.GetCanonicalName()} method calls will fail as the shared library won't be found.");
             else
-                internalDllImportGenerator.Generate(project, ns.SharedLibrary, ns.Name);
+                internalDllImportGenerator.Generate(project, ns);
 
-            internalExtensionsGenerator.Generate(project, ns.Name);
-            moduleDllImportGenerator.Generate(project, ns.Name);
+            internalExtensionsGenerator.Generate(project, ns);
+            moduleDllImportGenerator.Generate(project, ns);
             moduleTypeRegistration.Generate(project, ns);
         }
     }

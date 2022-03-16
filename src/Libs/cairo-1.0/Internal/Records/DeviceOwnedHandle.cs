@@ -1,4 +1,4 @@
-﻿namespace cairo.Internal
+﻿namespace Cairo.Internal
 {
     public partial class DeviceOwnedHandle : DeviceHandle
     {

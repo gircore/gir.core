@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Generator3.Converter;
 using Generator3.Model.Public;
 
 namespace Generator3.Generation.Bitfield
@@ -9,7 +10,7 @@ namespace Generator3.Generation.Bitfield
         private readonly GirModel.Bitfield _bitfield;
 
         public string Name => _bitfield.Name;
-        public string NamespaceName => _bitfield.Namespace.Name;
+        public string NamespaceName => _bitfield.Namespace.GetPublicName();
         public IEnumerable<Member> Members { get; }
 
         public Model(GirModel.Bitfield bitfield)

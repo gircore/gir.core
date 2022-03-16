@@ -16,7 +16,7 @@ namespace Generator3.Generation.Callback
         public string Name { get; }
         public string DelegateType => _callback.Name;
         public string InternalDelegateType => _callback.Namespace.GetInternalName() + "." + _callback.Name;
-        public string NamespaceName => _callback.Namespace.Name;
+        public string NamespaceName => _callback.Namespace.GetPublicName();
         public Model.Internal.ReturnType InternalReturnType
             => _internalReturnType ??= _internalCallback.ReturnType;
         public IEnumerable<Parameter> InternalParameters

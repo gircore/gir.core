@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace cairo
+namespace Cairo
 {
     internal partial class Module
     {

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace cairo.Internal
+namespace Cairo.Internal
 {
     public partial class Context
     {

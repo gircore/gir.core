@@ -1,4 +1,4 @@
-﻿using cairo;
+﻿using Cairo;
 using Gtk;
 
 namespace TextEditor.Application

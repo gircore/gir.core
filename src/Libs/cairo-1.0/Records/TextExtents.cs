@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace cairo
+namespace Cairo
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct TextExtents
