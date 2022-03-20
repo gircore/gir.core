@@ -43,7 +43,7 @@ namespace TextEditor.Application
                 cr.MoveTo(position, yPos);
 
                 cr.TextExtents(text, out TextExtents lineExtents);
-                var length = lineExtents.xAdvance;
+                var length = lineExtents.XAdvance;
                 var height = fontExtents.Height;
 
                 // Set colour

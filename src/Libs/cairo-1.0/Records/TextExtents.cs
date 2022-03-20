@@ -5,11 +5,11 @@ namespace Cairo
     [StructLayout(LayoutKind.Sequential)]
     public struct TextExtents
     {
-        public double xBearing;
-        public double yBearing;
-        public double width;
-        public double height;
-        public double xAdvance;
-        public double yAdvance;
+        public double XBearing;
+        public double YBearing;
+        public double Width;
+        public double Height;
+        public double XAdvance;
+        public double YAdvance;
     }
 }

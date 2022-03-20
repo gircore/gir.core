@@ -148,15 +148,15 @@ namespace TextEditor.Application
             cr.SetFontSize(16);
 
             cr.TextExtents(cachedText, out TextExtents lineExtents);
-            var height = lineExtents.height;
+            var height = lineExtents.Height;
 
             cr.TextExtents(cachedText.Substring(0, cursorIndex), out TextExtents cursorExtents);
-            var xPos = cursorExtents.width;
+            var xPos = cursorExtents.Width;
 
             cr.FontExtents(out FontExtents fontExtents);
 
             cr.SetSourceRgba(1.0, 0, 0, 1.0);
-            cr.Rectangle(xDist + cursorExtents.xAdvance - 0.5, yDist + fontExtents.Descent, 1, -(fontExtents.Descent + fontExtents.Ascent));
+            cr.Rectangle(xDist + cursorExtents.XAdvance - 0.5, yDist + fontExtents.Descent, 1, -(fontExtents.Descent + fontExtents.Ascent));
             cr.Fill();
 
             // Draw Text from Buffer
