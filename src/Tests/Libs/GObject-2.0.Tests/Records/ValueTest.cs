@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GObject.Tests
 {
     [TestClass, TestCategory("IntegrationTest")]
-    public class ValueTest
+    public class ValueTest : Test
     {
         [DataTestMethod]
         [DataRow(5)]

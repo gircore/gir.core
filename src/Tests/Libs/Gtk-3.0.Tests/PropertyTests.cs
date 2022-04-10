@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Gtk.Tests
 {
     [TestClass, TestCategory("SystemTest")]
-    public class PropertyTests
+    public class PropertyTests : Test
     {
         [DataTestMethod]
         [DataRow(true)]

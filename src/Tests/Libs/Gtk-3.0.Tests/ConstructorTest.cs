@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Gtk.Tests
 {
     [TestClass, TestCategory("SystemTest")]
-    public class ConstructorTest
+    public class ConstructorTest : Test
     {
         [TestMethod]
         public void WindowConstructorShouldSetTitle()

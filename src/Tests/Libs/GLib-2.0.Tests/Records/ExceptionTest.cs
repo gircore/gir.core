@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GLib.Tests
 {
     [TestClass, TestCategory("IntegrationTest")]
-    public class ExceptionTest
+    public class ExceptionTest : Test
     {
         [TestMethod]
         public void ErrorsRaiseAnException()

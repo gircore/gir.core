@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GLib.Tests
 {
     [TestClass, TestCategory("IntegrationTest")]
-    public class VariantTest
+    public class VariantTest : Test
     {
         [TestMethod]
         public void CanCreateInt()

@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Cairo.Tests
 {
     [TestClass, TestCategory("IntegrationTest")]
-    public class ImageSurfaceTest
+    public class ImageSurfaceTest : Test
     {
         [TestMethod]
         public void BindingsShouldSucceed()

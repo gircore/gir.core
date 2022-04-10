@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GLib.Tests
 {
     [TestClass, TestCategory("IntegrationTest")]
-    public class MemoryManagementTest
+    public class MemoryManagementTest : Test
     {
         [TestMethod]
         public void UnownedHandleIsNotFreed()
