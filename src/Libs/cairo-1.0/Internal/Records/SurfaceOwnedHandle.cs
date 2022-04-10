@@ -4,7 +4,7 @@
     {
         protected override partial bool ReleaseHandle()
         {
-            Surface.Destroy(this);
+            Surface.Destroy(handle);
             return true;
         }
     }

@@ -4,7 +4,7 @@
     {
         protected override partial bool ReleaseHandle()
         {
-            FontOptions.Destroy(this);
+            FontOptions.Destroy(handle);
             return true;
         }
     }

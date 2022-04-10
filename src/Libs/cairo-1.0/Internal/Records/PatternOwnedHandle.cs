@@ -4,7 +4,7 @@
     {
         protected override partial bool ReleaseHandle()
         {
-            Pattern.Destroy(this);
+            Pattern.Destroy(handle);
             return true;
         }
     }

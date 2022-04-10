@@ -12,7 +12,7 @@ namespace Cairo.Internal
         public static extern FontOptionsOwnedHandle Create();
 
         [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_font_options_destroy")]
-        public static extern void Destroy(FontOptionsOwnedHandle handle);
+        public static extern void Destroy(IntPtr handle);
 
         [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_font_options_equal")]
         public static extern bool Equal(FontOptionsHandle handle, FontOptionsHandle other);

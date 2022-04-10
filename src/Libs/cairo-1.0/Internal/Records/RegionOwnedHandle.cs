@@ -4,7 +4,7 @@
     {
         protected override partial bool ReleaseHandle()
         {
-            Region.Destroy(this);
+            Region.Destroy(handle);
             return true;
         }
     }

@@ -4,7 +4,7 @@
     {
         protected override partial bool ReleaseHandle()
         {
-            Path.Destroy(this);
+            Path.Destroy(handle);
             return true;
         }
     }
