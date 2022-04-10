@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Cairo.Internal
 {
     public partial class Context
     {
         [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_destroy")]
-        public static extern void Destroy(ContextOwnedHandle handle);
+        public static extern void Destroy(IntPtr handle);
 
         [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_fill")]
         public static extern void Fill(ContextHandle cr);

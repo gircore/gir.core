@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Cairo.Internal
 {
     public partial class Surface
     {
         [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_surface_destroy")]
-        public static extern void Destroy(SurfaceOwnedHandle handle);
+        public static extern void Destroy(IntPtr handle);
 
         [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_surface_create_similar")]
         public static extern SurfaceOwnedHandle CreateSimilar(SurfaceHandle handle, Content content, int width, int height);

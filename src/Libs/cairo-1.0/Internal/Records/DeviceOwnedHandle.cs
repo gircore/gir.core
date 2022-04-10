@@ -4,7 +4,7 @@
     {
         protected override partial bool ReleaseHandle()
         {
-            Device.Destroy(this);
+            Device.Destroy(handle);
             return true;
         }
     }
