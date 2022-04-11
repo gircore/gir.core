@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GdkPixbuf.Tests
 {
     [TestClass, TestCategory("IntegrationTest")]
-    public class MemoryManagementTest
+    public class MemoryManagementTest : Test
     {
         [TestMethod]
         public void TestAutomaticGObjectDisposal()

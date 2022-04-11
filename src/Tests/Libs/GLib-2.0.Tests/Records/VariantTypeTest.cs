@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GLib.Tests
 {
     [TestClass, TestCategory("IntegrationTest")]
-    public class VariantTypeTest
+    public class VariantTypeTest : Test
     {
         [DataTestMethod]
         [DataRow("s")]

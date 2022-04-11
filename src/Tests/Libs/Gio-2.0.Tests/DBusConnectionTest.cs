@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Gio.Tests
 {
     [TestClass, TestCategory("SystemTest")]
-    public class DBusConnectionTest
+    public class DBusConnectionTest : Test
     {
         [TestMethod]
         public void GetSessionBusShouldNotBeNull()

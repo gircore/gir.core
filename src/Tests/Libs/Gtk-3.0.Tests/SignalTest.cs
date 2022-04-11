@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Gtk.Tests
 {
     [TestClass, TestCategory("SystemTest")]
-    public class SignalTest
+    public class SignalTest : Test
     {
         [TestMethod]
         public void TestOnNotifySignal()

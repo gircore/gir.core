@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GdkPixbuf.Tests;
 
 [TestClass, TestCategory("IntegrationTest")]
-public class PropertyTest
+public class PropertyTest : Test
 {
     [TestMethod]
     public void TestIntegerProperty()

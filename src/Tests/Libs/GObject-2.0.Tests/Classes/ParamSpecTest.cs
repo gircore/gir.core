@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GObject.Tests.Classes
 {
     [TestClass, TestCategory("IntegrationTest")]
-    public class ParamSpecTest
+    public class ParamSpecTest : Test
     {
         [TestMethod]
         public void CanCreateBooleanParamSpec()
