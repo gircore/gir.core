@@ -79,7 +79,7 @@ public class GenerateCommand : Command
     {
         try
         {
-            SetupLogLevel(logLevel);
+            Configuration.SetupLogLevel(logLevel);
             FilePublisher.TargetFolder = output;
 
             var platformHandlers = GetPlatformHandler(searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input, invocationContext);
@@ -101,21 +101,6 @@ public class GenerateCommand : Command
             Log.Exception(ex);
             Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
             invocationContext.ExitCode = 1;
-        }
-    }
-
-    private void SetupLogLevel(LogLevel logLevel)
-    {
-        switch (logLevel)
-        {
-            case LogLevel.Debug:
-                GirLoader.Loader.EnableDebugOutput();
-                Generator3.Configuration.EnableDebugOutput();
-                break;
-            case LogLevel.Verbose:
-                GirLoader.Loader.EnableVerboseOutput();
-                Generator3.Configuration.EnableVerboseOutput();
-                break;
         }
     }
 
