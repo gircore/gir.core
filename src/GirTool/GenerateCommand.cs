@@ -87,11 +87,11 @@ public class GenerateCommand : Command
             if (disableAsync)
             {
                 foreach (var platformHandler in platformHandlers)
-                    Generate(platformHandler);
+                    PlatformGenerator.Generate(platformHandler);
             }
             else
             {
-                Parallel.ForEach(platformHandlers, Generate);
+                Parallel.ForEach(platformHandlers, PlatformGenerator.Generate);
             }
 
             Log.Information("Done");
@@ -195,27 +195,5 @@ public class GenerateCommand : Command
         var includeResolver = new IncludeResolver(searchPath);
         var loader = new GirLoader.Loader(includeResolver.ResolveInclude);
         return loader.Load(inputRepositories).ToList();
-    }
-
-    private void Generate(PlatformHandler platformHandler)
-    {
-        var @namespace = new Namespace(platformHandler);
-        @namespace.Fixup();
-        @namespace.GenerateFramework();
-        @namespace.Classes.Generate();
-        @namespace.Enumerations.Generate();
-        @namespace.Bitfields.Generate();
-        @namespace.Records.Generate();
-        @namespace.Unions.Generate();
-        @namespace.Callbacks.Generate();
-        @namespace.Constants.Generate();
-        @namespace.Functions.Generate();
-        @namespace.Interfaces.Generate();
-
-        PlatformSupport.GeneratePlatform(
-            linuxNamespace: platformHandler.LinuxNamespace,
-            macosNamespace: platformHandler.MacosNamespace,
-            windowsNamespace: platformHandler.WindowsNamespace
-        );
     }
 }
