@@ -61,5 +61,8 @@ namespace GirLoader.Output
 
             return false;
         }
+
+        public override string ToString()
+            => Name;
     }
 }
