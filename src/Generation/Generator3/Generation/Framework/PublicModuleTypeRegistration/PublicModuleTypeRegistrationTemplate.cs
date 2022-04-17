@@ -6,6 +6,7 @@
         {
             return $@"
 using System;
+using System.Runtime.InteropServices;
 
 namespace {model.NamespaceName}
 {{

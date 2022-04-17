@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Generator3.Converter;
+﻿using Generator3.Converter;
 
 namespace Generator3.Generation.Record
 {
@@ -11,6 +9,7 @@ namespace Generator3.Generation.Record
         public string UnownedHandleName => Record.GetInternalUnownedHandleName();
         public string InternalNamespaceName => Record.Namespace.GetInternalName();
         public GirModel.Record Record { get; }
+        public GirModel.PlatformDependent? PlatformDependent => Record as GirModel.PlatformDependent;
 
         public InternalHandleModel(GirModel.Record record)
         {

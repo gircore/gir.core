@@ -11,6 +11,8 @@ namespace Generator3.Generation.Record
 
         public string Name => _record.GetInternalStructName();
         public string NamespaceName => _record.Namespace.GetInternalName();
+        public GirModel.PlatformDependent? PlatformDependent => _record as GirModel.PlatformDependent;
+
         public IEnumerable<Field> Fields { get; }
 
         public InternalStructModel(GirModel.Record record)

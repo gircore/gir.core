@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Framework
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Framework
 {
     public class PublicModuleTypeRegistrationGenerator
     {
@@ -11,7 +13,7 @@
             _publisher = publisher;
         }
 
-        public void Generate(string project, GirModel.Namespace ns)
+        public void Generate(GirModel.Namespace ns)
         {
             if (ns.Name == "GLib")
                 return;//We can not register any type of GLib as GLib is not using the GObject type system
@@ -20,7 +22,7 @@
             {
                 var model = new PublicModuleTypeRegistrationModel(ns);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(project, "Module.TypeRegistration", source);
+                var codeUnit = new CodeUnit(ns.GetCanonicalName(), "Module.TypeRegistration", source);
                 _publisher.Publish(codeUnit);
             }
             catch

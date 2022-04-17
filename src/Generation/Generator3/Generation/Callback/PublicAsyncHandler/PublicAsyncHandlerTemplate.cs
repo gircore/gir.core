@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Callback
+﻿using Generator3.Renderer;
+
+namespace Generator3.Generation.Callback
 {
     public class PublicAsyncHandlerTemplate : Template<PublicAsyncHandlerModel>
     {
@@ -8,6 +10,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 #nullable enable
 
@@ -19,6 +22,7 @@ namespace { model.NamespaceName }
     /// Async Handler for {model.DelegateType}. An async annotation indicates the closure will
     /// be called precisely once, after which it is then available for garbage collection.
     /// </summary>
+    {model.PlatformDependent.RenderPlatformSupportAttributes()}
     public class {model.Name} : IDisposable
     {{
         private {model.DelegateType} managedCallback;

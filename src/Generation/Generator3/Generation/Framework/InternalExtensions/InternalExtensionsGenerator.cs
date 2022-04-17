@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Framework
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Framework
 {
     public class InternalExtensionsGenerator
     {
@@ -11,13 +13,13 @@
             _publisher = publisher;
         }
 
-        public void Generate(string project, GirModel.Namespace ns)
+        public void Generate(GirModel.Namespace ns)
         {
             try
             {
                 var model = new InternalExtensionsModel(ns);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(project, "Extensions", source);
+                var codeUnit = new CodeUnit(ns.GetCanonicalName(), "Extensions", source);
                 _publisher.Publish(codeUnit);
             }
             catch

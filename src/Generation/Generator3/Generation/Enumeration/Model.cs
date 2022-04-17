@@ -11,6 +11,7 @@ namespace Generator3.Generation.Enumeration
 
         public string Name => _enumeration.Name;
         public string NamespaceName => _enumeration.Namespace.GetPublicName();
+        public GirModel.PlatformDependent? PlatformDependent => _enumeration as GirModel.PlatformDependent;
         public IEnumerable<Member> Members { get; }
 
         public Model(GirModel.Enumeration enumeration)

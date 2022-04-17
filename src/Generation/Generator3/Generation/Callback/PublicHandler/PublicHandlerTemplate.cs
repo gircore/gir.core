@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Generator3.Converter;
+using Generator3.Renderer;
 using Generator3.Renderer.Internal;
 
 namespace Generator3.Generation.Callback
@@ -13,6 +14,7 @@ namespace Generator3.Generation.Callback
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 #nullable enable
 
@@ -25,6 +27,7 @@ namespace { model.NamespaceName }
     /// be valid for the duration of the call. This handler does not implement any special
     /// memory management. 
     /// </summary>
+    {model.PlatformDependent.RenderPlatformSupportAttributes()}
     public class {model.Name} : IDisposable
     {{
         private {model.DelegateType}  managedCallback;

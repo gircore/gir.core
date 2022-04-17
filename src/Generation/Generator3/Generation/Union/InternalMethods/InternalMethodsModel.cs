@@ -11,6 +11,8 @@ namespace Generator3.Generation.Union
 
         public string Name => _union.Name;
         public string NamespaceName => _union.Namespace.GetInternalName();
+        public GirModel.PlatformDependent? PlatformDependent => _union as GirModel.PlatformDependent;
+
         public IEnumerable<Function> Functions { get; }
         public IEnumerable<Method> Methods { get; }
         public IEnumerable<Constructor> Constructors { get; }

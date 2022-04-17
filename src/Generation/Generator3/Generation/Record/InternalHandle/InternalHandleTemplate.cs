@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Record
+﻿using Generator3.Renderer;
+
+namespace Generator3.Generation.Record
 {
     public class InternalHandleTemplate : Template<InternalHandleModel>
     {
@@ -7,6 +9,7 @@
             return $@"
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 #nullable enable
 
@@ -21,6 +24,7 @@ namespace { model.InternalNamespaceName }
         public sealed override bool IsInvalid => handle == IntPtr.Zero;
     }}
 
+    {model.PlatformDependent.RenderPlatformSupportAttributes()}
     public class {model.NullHandleName} : {model.HandleName}
     {{
         public static {model.NullHandleName} Instance = new {model.NullHandleName}();
@@ -33,6 +37,7 @@ namespace { model.InternalNamespaceName }
         }}
     }}
 
+    {model.PlatformDependent.RenderPlatformSupportAttributes()}
     public partial class {model.UnownedHandleName} : {model.HandleName}
     {{
         private {model.UnownedHandleName}() : base(false) {{ }}

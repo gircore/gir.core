@@ -8,6 +8,7 @@ namespace Generator3.Generation.Class.Fundamental
 
         public string Name => _class.Name;
         public string NamespaceName => _class.Namespace.GetPublicName();
+        public GirModel.PlatformDependent? PlatformDependent => _class as GirModel.PlatformDependent;
         public bool HasParent => _class.Parent is not null;
 
         public GirModel.Class? ParentClass => _class.Parent;

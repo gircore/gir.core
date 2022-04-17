@@ -11,6 +11,7 @@ namespace Generator3.Generation.Class.Standard
 
         public string Name => _class.Name;
         public string NamespaceName => _class.Namespace.GetInternalName();
+        public GirModel.PlatformDependent? PlatformDependent => _class as GirModel.PlatformDependent;
 
         public IEnumerable<Function> Functions { get; }
         public IEnumerable<Method> Methods { get; }

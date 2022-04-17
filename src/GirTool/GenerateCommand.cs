@@ -1,87 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.CommandLine;
-using System.CommandLine.Binding;
 using System.CommandLine.Invocation;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Generator3;
+using Generator3.Converter;
+using Generator3.Publication;
 using GirLoader;
-using GirLoader.Input;
+using GirLoader.PlatformSupport;
+using Repository = GirLoader.Output.Repository;
 
 namespace GirTool;
 
-public class GenerateCommand : Command
+public partial class GenerateCommand : Command
 {
-    public GenerateCommand() : base(
-        name: "generate",
-        description: "Generate C# bindings from gir files"
-    )
-    {
-        var inputArgument = new Argument<string[]>(
-            name: "input",
-            description: "The gir files which should be processed"
-        );
-
-        var outputOption = new Option<string>(
-            aliases: new[] { "-o", "--output" },
-            description: "The directory to write the generated C# files to",
-            getDefaultValue: () => "./Libs"
-        );
-
-        var searchPathOption = new Option<string>(
-            aliases: new[] { "-s", "--search-path" },
-            description: "The directory which is searched for dependent gir files",
-            getDefaultValue: () => "./Gir"
-        );
-
-        var disableAsyncOption = new Option<bool>(
-            aliases: new[] { "-d", "--disable-async" },
-            getDefaultValue: () => false,
-            description: "Generate files synchronously - useful for debugging"
-        );
-
-        var logLevelOption = new Option<LogLevel>(
-            aliases: new[] { "-l", "--log-level" },
-            getDefaultValue: () => LogLevel.Standard,
-            description: "Set the log level"
-        );
-
-        AddArgument(inputArgument);
-        AddOption(outputOption);
-        AddOption(searchPathOption);
-        AddOption(disableAsyncOption);
-        AddOption(logLevelOption);
-
-        this.SetHandler<string[], string, string, bool, LogLevel, InvocationContext>(
-            handle: Execute,
-            symbols: new IValueDescriptor[] { inputArgument, outputOption, searchPathOption, disableAsyncOption, logLevelOption }
-        );
-    }
-
-    private void Execute(string[] input, string output, string searchPath, bool disableAsync, LogLevel logLevel, InvocationContext invocationContext)
+    private void Execute(string[] input, string output, string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, LogLevel logLevel, InvocationContext invocationContext)
     {
         try
         {
-            SetupLogLevel(logLevel);
+            Configuration.SetupLogLevel(logLevel);
+            FilePublisher.TargetFolder = output;
 
-            if (!TryDeserializeInput(input, invocationContext, out List<Repository>? inputRepositories))
-                return;
-
-            var includeResolver = new IncludeResolver(searchPath);
-            var loader = new GirLoader.Loader(includeResolver.ResolveInclude);
-            var repositories = loader.Load(inputRepositories);
+            var platformHandlers = GetPlatformHandler(searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input, invocationContext);
 
             if (disableAsync)
             {
-                foreach (var repository in repositories)
-                    repository.Namespace.Generate(output);
+                foreach (var platformHandler in platformHandlers)
+                    PlatformGenerator.Generate(platformHandler);
             }
             else
             {
-                Parallel.ForEach(repositories, repository => repository.Namespace.Generate(output));
+                Parallel.ForEach(platformHandlers, PlatformGenerator.Generate);
             }
 
             Log.Information("Done");
@@ -94,30 +44,41 @@ public class GenerateCommand : Command
         }
     }
 
-    private void SetupLogLevel(LogLevel logLevel)
-    {
-        switch (logLevel)
-        {
-            case LogLevel.Debug:
-                GirLoader.Loader.EnableDebugOutput();
-                Generator3.Configuration.EnableDebugOutput();
-                break;
-            case LogLevel.Verbose:
-                GirLoader.Loader.EnableVerboseOutput();
-                Generator3.Configuration.EnableVerboseOutput();
-                break;
-        }
-    }
-
-    private bool TryDeserializeInput(string[] input, InvocationContext invocationContext, [MaybeNullWhen(false)] out List<Repository> inputRepositories)
+    private static IEnumerable<PlatformHandler> GetPlatformHandler(string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, string[] input, InvocationContext invocationContext)
     {
         try
         {
-            inputRepositories = input
-                .Select(x => new FileInfo(x).OpenRead().DeserializeGirInputModel())
-                .ToList();
+            (var linuxRepositories, var macosRepositories, var windowsRepositories) = LoadRepositories(searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input);
 
-            return true;
+            var linuxNamespaceNames = linuxRepositories.Select(x => x.Namespace.GetCanonicalName());
+            var macosNamespaceNames = macosRepositories.Select(x => x.Namespace.GetCanonicalName());
+            var windowsNamespaceNames = windowsRepositories.Select(x => x.Namespace.GetCanonicalName());
+            var namespacesNames = linuxNamespaceNames
+                .Union(macosNamespaceNames)
+                .Union(windowsNamespaceNames)
+                .Distinct();
+
+            var platformHandlers = new List<PlatformHandler>();
+
+            foreach (var namespaceName in namespacesNames)
+            {
+                var linuxNamespace = linuxRepositories.FirstOrDefault(x => x.Namespace.GetCanonicalName() == namespaceName)?.Namespace;
+                var macosNamespace = macosRepositories.FirstOrDefault(x => x.Namespace.GetCanonicalName() == namespaceName)?.Namespace;
+                var windowsNamespace = windowsRepositories.FirstOrDefault(x => x.Namespace.GetCanonicalName() == namespaceName)?.Namespace;
+
+                if (linuxNamespace is null)
+                    Log.Information($"There is no {namespaceName} repository for linux");
+
+                if (macosNamespace is null)
+                    Log.Information($"There is no {namespaceName} repository for macos");
+
+                if (windowsNamespace is null)
+                    Log.Information($"There is no {namespaceName} repository for windows");
+
+                platformHandlers.Add(new PlatformHandler(linuxNamespace, macosNamespace, windowsNamespace));
+            }
+
+            return platformHandlers;
         }
         catch (FileNotFoundException fileNotFoundException)
         {
@@ -125,8 +86,54 @@ public class GenerateCommand : Command
             Log.Error("Please make sure that the given input files are readable.");
 
             invocationContext.ExitCode = 1;
-            inputRepositories = null;
-            return false;
         }
+
+        return Enumerable.Empty<PlatformHandler>();
+    }
+
+    private static (List<Repository>, List<Repository>, List<Repository>) LoadRepositories(string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, string[] input)
+    {
+        if (searchPathLinux is null && searchPathMacos is null && searchPathWindows is null)
+            throw new Exception("Please define at least one search parth for a specific platform");
+
+        List<Repository>? linuxRepositories = null;
+        List<Repository>? macosRepositories = null;
+        List<Repository>? windowsRepositories = null;
+
+        void SetLinuxRepositories() => linuxRepositories = DeserializeInput(searchPathLinux, input);
+        void SetMacosRepositories() => macosRepositories = DeserializeInput(searchPathMacos, input);
+        void SetWindowsRepositories() => windowsRepositories = DeserializeInput(searchPathWindows, input);
+
+        if (disableAsync)
+        {
+            SetLinuxRepositories();
+            SetMacosRepositories();
+            SetWindowsRepositories();
+        }
+        else
+        {
+            Parallel.Invoke(
+                SetLinuxRepositories,
+                SetMacosRepositories,
+                SetWindowsRepositories
+            );
+        }
+
+        return (linuxRepositories!, macosRepositories!, windowsRepositories!);
+    }
+
+    private static List<Repository> DeserializeInput(string? searchPath, string[] input)
+    {
+        if (searchPath is null)
+            return new List<Repository>();
+
+        var inputRepositories = input
+            .Select(x => Path.Join(searchPath, x))
+            .Select(x => new FileInfo(x).OpenRead().DeserializeGirInputModel())
+            .ToList();
+
+        var includeResolver = new IncludeResolver(searchPath);
+        var loader = new GirLoader.Loader(includeResolver.ResolveInclude);
+        return loader.Load(inputRepositories).ToList();
     }
 }

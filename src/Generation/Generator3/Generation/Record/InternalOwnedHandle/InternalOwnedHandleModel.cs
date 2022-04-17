@@ -13,6 +13,7 @@ namespace Generator3.Generation.Record
         public bool Foreign => Record.Foreign;
         public GirModel.Record Record { get; }
         public GirModel.Method? FreeMethod => GetFreeOrUnrefMethod(Record.Methods);
+        public GirModel.PlatformDependent? PlatformDependent => Record as GirModel.PlatformDependent;
 
         public InternalOwnedHandleModel(GirModel.Record record)
         {

@@ -9,6 +9,7 @@ namespace Generator3.Generation.Constants
             return $@"
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 #nullable enable
 
