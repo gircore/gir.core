@@ -10,6 +10,7 @@ namespace Generator3.Generation.Record
         public string BaseHandle => _record.GetInternalHandleName();
         public string InternalStruct => _record.GetInternalStructName();
         public string NamespaceName => _record.Namespace.GetInternalName();
+        public GirModel.PlatformDependent? PlatformDependent => _record as GirModel.PlatformDependent;
 
         public InternalManagedHandleModel(GirModel.Record record)
         {

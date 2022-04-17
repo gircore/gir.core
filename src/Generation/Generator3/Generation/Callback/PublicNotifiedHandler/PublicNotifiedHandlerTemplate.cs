@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Callback
+﻿using Generator3.Renderer;
+
+namespace Generator3.Generation.Callback
 {
     public class PublicNotifiedHandlerTemplate : Template<PublicNotifiedHandlerModel>
     {
@@ -8,6 +10,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 #nullable enable
 
@@ -21,6 +24,7 @@ namespace { model.NamespaceName }
     /// destroy_notify event, emitted by the relevant library. Pass <c>DestroyNotify</c> in place of a
     /// destroy_notify callback parameter. 
     /// </summary>
+    {model.PlatformDependent.RenderPlatformSupportAttributes()}
     public class {model.Name} : IDisposable
     {{
         public event EventHandler<EventArgs>? OnDestroyNotify;

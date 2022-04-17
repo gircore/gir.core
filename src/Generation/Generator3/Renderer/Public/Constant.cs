@@ -3,6 +3,8 @@
     public static class Constant
     {
         public static string Render(this Model.Public.Constant constant)
-            => $"public static { constant.TypeName } { constant.Name } = { constant.Value };";
+            => @$"
+{constant.PlatformDependent.RenderPlatformSupportAttributes()}
+public static { constant.TypeName } { constant.Name } = { constant.Value };";
     }
 }

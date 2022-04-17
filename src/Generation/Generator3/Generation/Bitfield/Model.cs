@@ -11,6 +11,7 @@ namespace Generator3.Generation.Bitfield
 
         public string Name => _bitfield.Name;
         public string NamespaceName => _bitfield.Namespace.GetPublicName();
+        public GirModel.PlatformDependent? PlatformDependent => _bitfield as GirModel.PlatformDependent;
         public IEnumerable<Member> Members { get; }
 
         public Model(GirModel.Bitfield bitfield)

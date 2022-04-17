@@ -11,6 +11,8 @@ namespace Generator3.Generation.Interface
 
         public string Name => _interface.Name;
         public string NamespaceName => _interface.Namespace.GetInternalName();
+        public GirModel.PlatformDependent? PlatformDependent => _interface as GirModel.PlatformDependent;
+
         public IEnumerable<Function> Functions { get; }
         public IEnumerable<Method> Methods { get; }
         public Function? TypeFunction { get; }

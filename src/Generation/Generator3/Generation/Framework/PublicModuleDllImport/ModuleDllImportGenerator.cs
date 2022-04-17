@@ -1,4 +1,6 @@
-﻿namespace Generator3.Generation.Framework
+﻿using Generator3.Converter;
+
+namespace Generator3.Generation.Framework
 {
     public class ModuleDllImportGenerator
     {
@@ -11,13 +13,13 @@
             _publisher = publisher;
         }
 
-        public void Generate(string project, GirModel.Namespace ns)
+        public void Generate(GirModel.Namespace ns)
         {
             try
             {
                 var model = new ModuleDllImportModel(ns);
                 var source = _template.Render(model);
-                var codeUnit = new CodeUnit(project, "Module.DllImport", source);
+                var codeUnit = new CodeUnit(ns.GetCanonicalName(), "Module.DllImport", source);
                 _publisher.Publish(codeUnit);
             }
             catch

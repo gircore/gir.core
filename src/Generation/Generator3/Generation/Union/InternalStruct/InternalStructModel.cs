@@ -10,6 +10,8 @@ namespace Generator3.Generation.Union
 
         public string Name => _union.GetInternalStructName();
         public string NamespaceName => _union.Namespace.GetInternalName();
+        public GirModel.PlatformDependent? PlatformDependent => _union as GirModel.PlatformDependent;
+
         public IEnumerable<UnionField> Fields => _union.Fields.Select(field => new UnionField(field));
 
         public InternalStructModel(GirModel.Union union)

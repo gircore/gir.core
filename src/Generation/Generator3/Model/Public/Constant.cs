@@ -9,6 +9,7 @@ namespace Generator3.Model.Public
         public string Name => _constant.GetPublicName();
         public string TypeName => _constant.Type.GetName();
         public string Value => GetValue();
+        public GirModel.PlatformDependent? PlatformDependent => _constant as GirModel.PlatformDependent;
 
         public Constant(GirModel.Constant constant)
         {

@@ -13,15 +13,15 @@ using System.Diagnostics.CodeAnalysis;
 
 #nullable enable
 
-namespace {model.NamespaceName}
+namespace {model.InternalNamespaceName}
 {{
     internal static class DllImport
     {{
         #region Fields
         
-        private const string _windowsDllName = ""{model.WindowsDll}"";
-        private const string _linuxDllName = ""{model.LinuxDll}"";
-        private const string _osxDllName = ""{model.OsxDll}"";
+        private const {model.WindowsType} _windowsDllName = {model.WindowsDll};
+        private const {model.LinuxType} _linuxDllName = {model.LinuxDll};
+        private const {model.OsxType} _osxDllName = {model.OsxDll};
 
         private static readonly Dictionary<string, IntPtr> _cache = new ();
 
@@ -54,18 +54,24 @@ namespace {model.NamespaceName}
         
         private static bool TryGetOsDependentLibraryName(string libraryName, [NotNullWhen(true)] out string? osDependentLibraryName)
         {{
-            if (libraryName != ""{model.LibraryName}"")
+            if (libraryName != ""{model.NamespaceName}"")
             {{
                 osDependentLibraryName = null;
                 return false;
             }}
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                osDependentLibraryName = _windowsDllName;
+            {{
+                {AssignOsDependentLibraryNameWindows(model)}
+            }}
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                osDependentLibraryName = _osxDllName;
+            {{
+                {AssignOsDependentLibraryNameOSX(model)}
+            }}
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                osDependentLibraryName = _linuxDllName;
+            {{
+                {AssignOsDependentLibraryNameLinux(model)}
+            }}
             else
                 throw new Exception(""Unknown platform"");
         
@@ -75,6 +81,27 @@ namespace {model.NamespaceName}
         #endregion
     }}
 }}";
+        }
+
+        private string AssignOsDependentLibraryNameLinux(InternalDllImportModel model)
+        {
+            return model.SupportsLinux
+                ? "osDependentLibraryName = _linuxDllName;"
+                : $"throw new Exception(\"Linux is not supported for library {model.NamespaceName}\");";
+        }
+
+        private string AssignOsDependentLibraryNameOSX(InternalDllImportModel model)
+        {
+            return model.SupportsOSX
+                ? "osDependentLibraryName = _osxDllName;"
+                : $"throw new Exception(\"OSX is not supported for library {model.NamespaceName}\");";
+        }
+
+        private string AssignOsDependentLibraryNameWindows(InternalDllImportModel model)
+        {
+            return model.SupportsWindows
+                ? "osDependentLibraryName = _windowsDllName;"
+                : $"throw new Exception(\"Windows is not supported for library {model.NamespaceName}\");";
         }
     }
 }

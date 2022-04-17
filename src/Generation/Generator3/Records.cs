@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Generator3.Converter;
 using Generator3.Generation.Record;
 using Generator3.Publication;
 
@@ -45,6 +46,9 @@ namespace Generator3
 
             foreach (var record in records)
             {
+                if (record.IsDisabled())
+                    continue;
+
                 internalMethodsGenerator.Generate(record);
                 internalStructGenerator.Generate(record);
                 internalStructDelegatesGenerator.Generate(record);
