@@ -9,7 +9,6 @@ namespace Generator3.Generation.Record
         public string HandleName => Record.GetInternalHandleName();
         public string OwnedHandleName => Record.GetInternalOwnedHandleName();
         public string InternalNamespaceName => Record.Namespace.GetInternalName();
-        public string NamespaceName => Record.Namespace.Name;
         public bool Foreign => Record.Foreign;
         public GirModel.Record Record { get; }
         public GirModel.Method? FreeMethod => GetFreeOrUnrefMethod(Record.Methods);

@@ -20,13 +20,10 @@ namespace Generator3.Model.Internal
         public InstanceParameter InstanceParameter => _instanceParameter ??= Model.InstanceParameter.CreateInternalModel();
         public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateInternalModelsForMethod();
 
-        public string NamespaceName { get; }
-
-        public Method(GirModel.Method method, string namespaceName, string className)
+        public Method(GirModel.Method method, string className)
         {
             ClassName = className;
             Model = method;
-            NamespaceName = namespaceName;
         }
     }
 }

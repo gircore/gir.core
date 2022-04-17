@@ -16,12 +16,9 @@ namespace Generator3.Model.Internal
 
         public IEnumerable<Parameter> Parameters => _parameters ??= Model.Parameters.CreateInternalModels();
 
-        public string NamespaceName { get; }
-
-        public Constructor(GirModel.Constructor constructor, string namespaceName)
+        public Constructor(GirModel.Constructor constructor)
         {
             Model = constructor;
-            NamespaceName = namespaceName;
         }
     }
 }

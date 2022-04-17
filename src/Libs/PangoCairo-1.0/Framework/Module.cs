@@ -1,17 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace PangoCairo
-{
-    internal partial class Module
-    {
-        [ModuleInitializer]
-        internal static void Initialize()
-        {
-            InitializeDllImport();
-            RegisterTypes();
-        }
+namespace PangoCairo;
 
-        static partial void InitializeDllImport();
-        static partial void RegisterTypes();
+internal partial class Module
+{
+    [ModuleInitializer]
+    internal static void Initialize()
+    {
+        Internal.ImportResolver.RegisterAsDllImportResolver();
+        RegisterTypes();
     }
+
+    static partial void RegisterTypes();
 }

@@ -7,11 +7,11 @@ public static class PlatformSupport
 {
     public static void GeneratePlatform(GirModel.Namespace? linuxNamespace, GirModel.Namespace? macosNamespace, GirModel.Namespace? windowsNamespace)
     {
-        var internalDllImportGenerator = new InternalDllImportGenerator(
-            template: new InternalDllImportTemplate(),
+        var internalImportResolverGenerator = new InternalImportResolverGenerator(
+            template: new InternalImportResolverTemplate(),
             publisher: new InternalPlatformSupportFilePublisher()
         );
 
-        internalDllImportGenerator.Generate(linuxNamespace, macosNamespace, windowsNamespace);
+        internalImportResolverGenerator.Generate(linuxNamespace, macosNamespace, windowsNamespace);
     }
 }

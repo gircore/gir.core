@@ -27,11 +27,11 @@ namespace Generator3.Generation.Record
                 .ToList();
 
             Methods = record.Methods
-                .Select(method => new Method(method, record.Namespace.Name, record.Name))
+                .Select(method => new Method(method, record.Name))
                 .ToList();
 
             Constructors = record.Constructors
-                .Select(method => new Constructor(method, record.Namespace.Name))
+                .Select(method => new Constructor(method))
                 .ToList();
 
             TypeFunction = record.TypeFunction is not null

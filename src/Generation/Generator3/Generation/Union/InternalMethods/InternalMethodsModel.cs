@@ -27,11 +27,11 @@ namespace Generator3.Generation.Union
                 .ToList();
 
             Methods = union.Methods
-                .Select(method => new Method(method, union.Namespace.Name, union.Name))
+                .Select(method => new Method(method, union.Name))
                 .ToList();
 
             Constructors = union.Constructors
-                .Select(method => new Constructor(method, union.Namespace.Name))
+                .Select(method => new Constructor(method))
                 .ToList();
 
             TypeFunction = union.TypeFunction is not null
