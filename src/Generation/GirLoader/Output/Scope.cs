@@ -4,16 +4,19 @@
     {
         Call,
         Async,
-        Notified
+        Notified,
+        Forever
     }
 
     internal static class ScopeConverter
     {
-        public static GirModel.Scope ToGirModel(this Scope scope) => scope switch
+        public static GirModel.Scope? ToGirModel(this Scope? scope) => scope switch
         {
             Scope.Notified => GirModel.Scope.Notified,
             Scope.Async => GirModel.Scope.Async,
-            _ => GirModel.Scope.Call
+            Scope.Call => GirModel.Scope.Call,
+            Scope.Forever => GirModel.Scope.Forever,
+            _ => null
         };
     }
 }

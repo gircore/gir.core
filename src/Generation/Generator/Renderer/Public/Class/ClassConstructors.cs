@@ -33,16 +33,18 @@ namespace {Namespace.GetPublicName(cls.Namespace)}
     {
         try
         {
+            var parameters = ParameterToNativeExpression.Initialize(constructor.Parameters);
+
             var newKeyWord = Class.HidesConstructor(cls, constructor)
                 ? "new "
                 : string.Empty;
 
             return @$"
 {VersionAttribute.Render(constructor.Version)}
-public static {newKeyWord}{cls.Name} {Constructor.GetName(constructor)}({Parameters.Render(constructor.Parameters)})
+public static {newKeyWord}{cls.Name} {Constructor.GetName(constructor)}({RenderParameters(parameters)})
 {{
-    {ParametersToNativeExpression.Render(constructor.Parameters, out var parameterNames)}
-    {RenderCallStatement(cls, constructor, parameterNames)}
+    {RenderContent(parameters)}
+    {RenderCallStatement(cls, constructor, parameters)}
 }}";
         }
         catch (Exception e)
@@ -58,12 +60,39 @@ public static {newKeyWord}{cls.Name} {Constructor.GetName(constructor)}({Paramet
         }
     }
 
-    private static string RenderCallStatement(GirModel.Class cls, GirModel.Constructor constructor, IEnumerable<string> parameterNames)
+    private static string RenderParameters(IReadOnlyList<ParameterToNativeData> parameters)
+    {
+        var result = new List<string>();
+        foreach (var parameter in parameters)
+        {
+            if (parameter.IsClosure)
+                continue;
+
+            if (parameter.IsDestroyNotify)
+                continue;
+
+            var typeData = RenderableParameterFactory.Create(parameter.Parameter);
+            result.Add($"{typeData.Direction}{typeData.NullableTypeName} {parameter.GetSignatureName()}");
+        }
+
+        return result.Join(", ");
+    }
+
+    private static string RenderContent(IEnumerable<ParameterToNativeData> parameters)
+    {
+        return parameters
+            .Select(x => x.GetExpression())
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Cast<string>()
+            .Join(Environment.NewLine);
+    }
+
+    private static string RenderCallStatement(GirModel.Class cls, GirModel.Constructor constructor, IEnumerable<ParameterToNativeData> parameters)
     {
         var variableName = "handle";
         var call = new StringBuilder();
         call.Append($"var {variableName} = Internal.{cls.Name}.{Constructor.GetName(constructor)}(");
-        call.Append(string.Join(", ", parameterNames));
+        call.Append(string.Join(", ", parameters.Select(x => x.GetCallName())));
         call.Append(");" + Environment.NewLine);
 
         var ownedRef = Transfer.IsOwnedRef(constructor.ReturnType.Transfer);

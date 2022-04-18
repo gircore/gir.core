@@ -4,6 +4,7 @@
     {
         Call,
         Async,
-        Notified
+        Notified,
+        Forever
     }
 }

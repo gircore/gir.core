@@ -9,10 +9,10 @@
         public bool CallerAllocates { get; }
         public int? ClosureIndex { get; }
         public int? DestroyIndex { get; }
-        public Scope CallbackScope { get; }
+        public Scope? CallbackScope { get; }
         public string Name { get; }
 
-        public SingleParameter(string name, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope scope)
+        public SingleParameter(string name, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope? scope)
         {
             Name = name;
             TypeReference = typeReference;

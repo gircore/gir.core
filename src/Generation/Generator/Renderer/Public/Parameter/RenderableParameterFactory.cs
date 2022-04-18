@@ -4,7 +4,8 @@ namespace Generator.Renderer.Public;
 
 internal static class RenderableParameterFactory
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter) => parameter.AnyType.Match(
+    //TODO: Use Interface and list of converters instead of manual mapping
+    public static ParameterTypeData Create(GirModel.Parameter parameter) => parameter.AnyType.Match(
         type => type switch
         {
             GirModel.Class => ClassParameter.Create(parameter),
@@ -14,6 +15,7 @@ internal static class RenderableParameterFactory
             GirModel.Union => UnionParameter.Create(parameter),
             GirModel.Record => RecordParameter.Create(parameter),
             GirModel.Void => VoidParameter.Create(parameter),
+            GirModel.Callback => CallbackParameter.Create(parameter),
             _ => StandardParameter.Create(parameter) //TODO: Remove Standard Parameter
         },
         arraytype => arraytype.AnyType.Match(

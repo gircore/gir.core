@@ -4,12 +4,11 @@ namespace Generator.Renderer.Public;
 
 public class VoidParameter
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public static ParameterTypeData Create(GirModel.Parameter parameter)
     {
-        return new RenderableParameter(
+        return new ParameterTypeData(
             Direction: string.Empty,
-            NullableTypeName: Type.Pointer,
-            Name: Parameter.GetName(parameter)
+            NullableTypeName: Type.Pointer
         );
     }
 }

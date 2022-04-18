@@ -12,10 +12,11 @@ public static class Callbacks
         var generators = new List<Generator<GirModel.Callback>>()
         {
             new Generator.Internal.CallbackDelegate(publisher),
-            new Generator.Public.CallbackHandler(publisher),
+            new Generator.Public.CallbackCallHandler(publisher),
             new Generator.Public.CallbackAsyncHandler(publisher),
+            new Generator.Public.CallbackNotifiedHandler(publisher),
+            new Generator.Public.CallbackForeverHandler(publisher),
             new Generator.Public.CallbackDelegate(publisher),
-            new Generator.Public.CallbackNotifiedHandler(publisher)
         };
 
         foreach (var callback in callbacks)

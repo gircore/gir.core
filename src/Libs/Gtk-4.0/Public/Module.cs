@@ -12,6 +12,7 @@ public class Module
         Gio.Module.Initialize();
         GdkPixbuf.Module.Initialize();
         Gdk.Module.Initialize();
+        Cairo.Module.Initialize();
 
         Internal.ImportResolver.RegisterAsDllImportResolver();
         Internal.TypeRegistration.RegisterTypes();
