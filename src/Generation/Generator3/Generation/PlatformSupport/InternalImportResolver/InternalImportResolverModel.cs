@@ -6,7 +6,7 @@ using Generator3.Converter;
 
 namespace Generator3.Generation.Framework
 {
-    public class InternalDllImportModel
+    public class InternalImportResolverModel
     {
         public string InternalNamespaceName { get; }
         public string NamespaceName { get; }
@@ -23,7 +23,7 @@ namespace Generator3.Generation.Framework
         public bool SupportsLinux { get; }
         public bool SupportsOSX { get; }
 
-        public InternalDllImportModel(GirModel.Namespace? linuxNamespace, GirModel.Namespace? macosNamespace, GirModel.Namespace? windowsNamespace)
+        public InternalImportResolverModel(GirModel.Namespace? linuxNamespace, GirModel.Namespace? macosNamespace, GirModel.Namespace? windowsNamespace)
         {
             InternalNamespaceName = GetInternalNamespaceName(linuxNamespace, macosNamespace, windowsNamespace);
             NamespaceName = GetNamespaceName(linuxNamespace, macosNamespace, windowsNamespace);

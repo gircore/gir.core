@@ -5,12 +5,12 @@ using Generator3.Converter;
 
 namespace Generator3.Generation.Framework
 {
-    public class InternalDllImportGenerator
+    public class InternalImportResolverGenerator
     {
-        private readonly Template<InternalDllImportModel> _template;
+        private readonly Template<InternalImportResolverModel> _template;
         private readonly Publisher _publisher;
 
-        public InternalDllImportGenerator(Template<InternalDllImportModel> template, Publisher publisher)
+        public InternalImportResolverGenerator(Template<InternalImportResolverModel> template, Publisher publisher)
         {
             _template = template;
             _publisher = publisher;
@@ -20,10 +20,10 @@ namespace Generator3.Generation.Framework
         {
             try
             {
-                var model = new InternalDllImportModel(linuxNamespace, macosNamespace, windowsNamespace);
+                var model = new InternalImportResolverModel(linuxNamespace, macosNamespace, windowsNamespace);
                 var source = _template.Render(model);
                 var projectName = GetProjectName(linuxNamespace, macosNamespace, windowsNamespace);
-                var codeUnit = new CodeUnit(projectName, "DllImport", source);
+                var codeUnit = new CodeUnit(projectName, "ImportResolver", source);
                 _publisher.Publish(codeUnit);
             }
             catch

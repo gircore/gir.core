@@ -23,7 +23,7 @@ namespace Generator3.Renderer.Internal
         private static string RenderFunction(this Model.Internal.Function function)
             => @$"{function.RenderComment()}
 {function.PlatformDependent.RenderPlatformSupportAttributes()}
-[DllImport(""{ function.NameSpaceName }"", EntryPoint = ""{ function.CIdentifier }"")]
+[DllImport(ImportResolver.Library, EntryPoint = ""{ function.CIdentifier }"")]
 public static extern { function.ReturnType.NullableTypeName } { function.Name }({ function.Parameters.Render()});";
 
         private static string RenderComment(this Model.Internal.Function function) =>

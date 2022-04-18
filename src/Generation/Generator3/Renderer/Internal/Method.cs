@@ -21,7 +21,7 @@ namespace Generator3.Renderer.Internal
                 renderedParameters = ", " + renderedParameters;
 
             return @$"{method.RenderComment()}
-[DllImport(""{ method.NamespaceName }"", EntryPoint = ""{ method.CIdentifier }"")]
+[DllImport(ImportResolver.Library, EntryPoint = ""{ method.CIdentifier }"")]
 public static extern { method.ReturnType.NullableTypeName } { method.Name }({method.InstanceParameter.Render()}{ renderedParameters });";
         }
 

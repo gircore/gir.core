@@ -5,7 +5,7 @@ namespace Cairo.Internal
 {
     public partial class Device
     {
-        [DllImport(DllImportOverride.CairoLib, EntryPoint = "cairo_device_destroy")]
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_device_destroy")]
         public static extern void Destroy(IntPtr handle);
     }
 }

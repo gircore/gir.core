@@ -27,11 +27,11 @@ namespace Generator3.Generation.Class.Standard
                 .ToList();
 
             Methods = @class.Methods
-                .Select(method => new Method(method, @class.Namespace.Name, @class.Name))
+                .Select(method => new Method(method, @class.Name))
                 .ToList();
 
             Constructors = @class.Constructors
-                .Select(method => new Constructor(method, @class.Namespace.Name))
+                .Select(method => new Constructor(method))
                 .ToList();
 
             TypeFunction = new Function(@class.TypeFunction);

@@ -12,18 +12,12 @@ namespace Generator3
                 publisher: new InternalFrameworkFilePublisher()
             );
 
-            var moduleDllImportGenerator = new ModuleDllImportGenerator(
-                template: new ModuleDllImportTemplate(),
-                publisher: new PublicFrameworkFilePublisher()
-            );
-
             var moduleTypeRegistration = new PublicModuleTypeRegistrationGenerator(
                 template: new PublicModuleTypeRegistrationTemplate(),
                 publisher: new PublicFrameworkFilePublisher()
             );
 
             internalExtensionsGenerator.Generate(ns);
-            moduleDllImportGenerator.Generate(ns);
             moduleTypeRegistration.Generate(ns);
         }
     }

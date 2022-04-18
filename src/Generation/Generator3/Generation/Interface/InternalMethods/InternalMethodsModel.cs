@@ -26,7 +26,7 @@ namespace Generator3.Generation.Interface
                 .ToList();
 
             Methods = @interface.Methods
-                .Select(method => new Method(method, @interface.Namespace.Name, @interface.Name))
+                .Select(method => new Method(method, @interface.Name))
                 .ToList();
 
             TypeFunction = new Function(@interface.TypeFunction);
