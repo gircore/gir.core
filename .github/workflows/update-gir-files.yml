@@ -20,10 +20,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          submodules: 'true'
       - name: Update submodules
         run: |
           git pull --recurse-submodules
-          git submodule update --remote --recursive
+          git submodule update --remote --merge --recursive
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit -m "update submodules" -a
