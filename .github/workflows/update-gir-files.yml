@@ -24,6 +24,9 @@ jobs:
         run: |
           git pull --recurse-submodules
           git submodule update --remote --recursive
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "update submodules" -a
       - name: Create pull request
         uses: peter-evans/create-pull-request@v3
         with:
