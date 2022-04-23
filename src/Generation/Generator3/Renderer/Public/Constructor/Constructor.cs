@@ -15,7 +15,7 @@ namespace Generator3.Renderer.Public
                 return @$"
 public static {newKeyWord}{constructor.Class.Name} {constructor.PublicName}({constructor.Parameters.Render()})
 {{
-    {ParametersConverter.Render(constructor.Parameters, out var parameterNames)}
+    {ParametersToNativeConverter.RenderToNative(constructor.Parameters, out var parameterNames)}
     {ConstructorCallStatement.Render(constructor, parameterNames)}
 }}";
             }

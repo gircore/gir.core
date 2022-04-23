@@ -36,7 +36,7 @@ namespace Generator3.Renderer.Public
             return @$"
 public {publicReturnType.NullableTypeName} {method.PublicName}({method.Parameters.Render()})
 {{
-    {ParametersConverter.Render(method.Parameters, out var parameterNames)}
+    {ParametersToNativeConverter.RenderToNative(method.Parameters, out var parameterNames)}
     {MethodCallStatement.Render(method, parameterNames, out var resultVariableName)}
     {MethodReturnStatement.Render(method, resultVariableName)}
 }}";
