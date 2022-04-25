@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\Gtk-4.0\Gtk-4.0.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleTestDialog.4.ui">
+      <LogicalName>SampleTestDialog.4.ui</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
