@@ -67,6 +67,7 @@ To use the newly generated libraries in your project just add a reference to the
 The folder structure in this repository is organized as follows:
 * **[src/GirTool](src/GirTool):** The tool to generate the bindings.
 * **[src/Generation/GirLoader](src/Generation/GirLoader):** A library for reading and resolving GObject Introspection repositories.
+* **[src/Generation/GirModel](src/Generation/GirModel):** An interface based definition of the GObject data model. Used by the loader and generator to have a common understanding of the GObject data model.
 * **[src/Generation/Generator3](src/Generation/Generator3):** Code generator generates C# code from GObject Introspection data.
 * **[src/Integration](src/Integration):** Optional source generators to reduce boilerplate code in your projects.
 * **[src/Libs](src/Libs):** Contains manually written code for libraries. The generator outputs code here.
