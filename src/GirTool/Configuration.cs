@@ -8,11 +8,11 @@ internal class Configuration
         {
             case LogLevel.Debug:
                 GirLoader.Loader.EnableDebugOutput();
-                Generator3.Configuration.EnableDebugOutput();
+                Generator.Configuration.EnableDebugOutput();
                 break;
             case LogLevel.Verbose:
                 GirLoader.Loader.EnableVerboseOutput();
-                Generator3.Configuration.EnableVerboseOutput();
+                Generator.Configuration.EnableVerboseOutput();
                 break;
         }
     }

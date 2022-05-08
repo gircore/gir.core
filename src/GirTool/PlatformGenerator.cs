@@ -1,30 +1,31 @@
-﻿using Generator3;
-using Generator3.Fixer.Public;
+﻿using Generator;
+using Generator.Fixer;
 using GirLoader.PlatformSupport;
 
 namespace GirTool;
 
 internal static class PlatformGenerator
 {
-    public static void Generate(PlatformHandler platformHandler)
+    public static void Generate(PlatformHandler platformHandler, string path)
     {
         var @namespace = new Namespace(platformHandler);
-        @namespace.Fixup();
-        @namespace.GenerateFramework();
-        @namespace.Classes.Generate();
-        @namespace.Enumerations.Generate();
-        @namespace.Bitfields.Generate();
-        @namespace.Records.Generate();
-        @namespace.Unions.Generate();
-        @namespace.Callbacks.Generate();
-        @namespace.Constants.Generate();
-        @namespace.Functions.Generate();
-        @namespace.Interfaces.Generate();
+        NamespaceFixer.Fixup(@namespace);
+        @namespace.Generate(path);
+        @namespace.Classes.Generate(path);
+        @namespace.Enumerations.Generate(path);
+        @namespace.Bitfields.Generate(path);
+        @namespace.Records.Generate(path);
+        @namespace.Unions.Generate(path);
+        @namespace.Callbacks.Generate(path);
+        @namespace.Constants.Generate(path);
+        @namespace.Functions.Generate(path);
+        @namespace.Interfaces.Generate(path);
 
         PlatformSupport.GeneratePlatform(
             linuxNamespace: platformHandler.LinuxNamespace,
             macosNamespace: platformHandler.MacosNamespace,
-            windowsNamespace: platformHandler.WindowsNamespace
+            windowsNamespace: platformHandler.WindowsNamespace,
+            path: path
         );
     }
 }

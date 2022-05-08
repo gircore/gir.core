@@ -8,7 +8,7 @@
   
   <ItemGroup>
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <ProjectReference Include="../Generation/Generator3/Generator3.csproj" />
+    <ProjectReference Include="..\Generation\Generator\Generator.csproj" />
     <ProjectReference Include="../Generation/GirLoader/GirLoader.csproj" />
   </ItemGroup>
   

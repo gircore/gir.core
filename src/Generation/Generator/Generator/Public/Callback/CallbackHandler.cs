@@ -1,0 +1,27 @@
+﻿using Generator.Model;
+using Generator.Renderer;
+
+namespace Generator.Generator.Public;
+
+internal class CallbackHandler : Generator<GirModel.Callback>
+{
+    private readonly Publisher _publisher;
+
+    public CallbackHandler(Publisher publisher)
+    {
+        _publisher = publisher;
+    }
+
+    public void Generate(GirModel.Callback callback)
+    {
+        var source = Renderer.Public.CallbackHandler.Render(callback);
+        var codeUnit = new CodeUnit(
+            Project: Namespace.GetCanonicalName(callback.Namespace),
+            Name: $"{callback.Name}.Handler",
+            Source: source,
+            IsInternal: false
+        );
+
+        _publisher.Publish(codeUnit);
+    }
+}

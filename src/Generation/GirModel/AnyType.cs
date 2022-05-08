@@ -18,6 +18,7 @@ namespace GirModel
         public static AnyType From(Type type) => new(OneOf<Type, ArrayType>.FromT0(type));
         public static AnyType From(ArrayType arrayType) => new(OneOf<Type, ArrayType>.FromT1(arrayType));
 
+        //TODO: Delete
         public void VerifyType<T>()
         {
             Switch(
@@ -30,6 +31,7 @@ namespace GirModel
             );
         }
 
+        //TODO: Delete
         public void VerifyArrayType<T>()
         {
             Switch(

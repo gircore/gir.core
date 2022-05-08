@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+      <RootNamespace>Generator3</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\GirModel\GirModel.csproj" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
+    </ItemGroup>
+</Project>
