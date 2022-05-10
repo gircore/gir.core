@@ -5,6 +5,21 @@ namespace Cairo.Internal
 {
     public partial class Context
     {
+        // TODO
+        // - Bindings for cairo_copy_clip_rectangle_list() (cairo_rectangle_list_t)
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_clip")]
+        public static extern void Clip(ContextHandle cr);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_clip_extents")]
+        public static extern void ClipExtents(ContextHandle cr, out double x1, out double y1, out double x2, out double y2);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_clip_preserve")]
+        public static extern void ClipPreserve(ContextHandle cr);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_copy_page")]
+        public static extern void CopyPage(ContextHandle cr);
+
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_create")]
         public static extern ContextOwnedHandle Create(SurfaceHandle target);
 
@@ -13,6 +28,15 @@ namespace Cairo.Internal
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_fill")]
         public static extern void Fill(ContextHandle cr);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_fill_preserve")]
+        public static extern void FillPreserve(ContextHandle cr);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_fill_extents")]
+        public static extern void FillExtents(ContextHandle cr, out double x1, out double y1, out double x2, out double y2);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_font_extents")]
+        public static extern void FontExtents(ContextHandle cr, out FontExtents extents);
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_get_antialias")]
         public static extern Antialias GetAntialias(ContextHandle cr);
@@ -53,11 +77,29 @@ namespace Cairo.Internal
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_get_target")]
         public static extern SurfaceUnownedHandle GetTarget(ContextHandle cr);
 
-        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_font_extents")]
-        public static extern void FontExtents(ContextHandle cr, out FontExtents extents);
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_in_clip")]
+        public static extern bool InClip(ContextHandle cr, double x, double y);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_in_fill")]
+        public static extern bool InFill(ContextHandle cr, double x, double y);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_in_stroke")]
+        public static extern bool InStroke(ContextHandle cr, double x, double y);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_mask")]
+        public static extern void Mask(ContextHandle cr, PatternHandle pattern);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_mask_surface")]
+        public static extern void MaskSurface(ContextHandle cr, SurfaceHandle surface, double surface_x, double surface_y);
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_move_to")]
         public static extern void MoveTo(ContextHandle cr, double x, double y);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_paint")]
+        public static extern void Paint(ContextHandle cr);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_paint_with_alpha")]
+        public static extern void PaintWithAlpha(ContextHandle cr, double alpha);
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_pop_group")]
         public static extern PatternOwnedHandle PopGroup(ContextHandle cr);
@@ -73,6 +115,9 @@ namespace Cairo.Internal
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_rectangle")]
         public static extern void Rectangle(ContextHandle cr, double x, double y, double width, double height);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_reset_clip")]
+        public static extern void ResetClip(ContextHandle cr);
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_restore")]
         public static extern void Restore(ContextHandle cr);
@@ -122,11 +167,23 @@ namespace Cairo.Internal
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_set_tolerance")]
         public static extern void SetTolerance(ContextHandle cr, double tolerance);
 
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_show_page")]
+        public static extern void ShowPage(ContextHandle cr);
+
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_show_text")]
         public static extern void ShowText(ContextHandle cr, [MarshalAs(UnmanagedType.LPUTF8Str)] string utf8);
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_status")]
         public static extern Status Status(ContextHandle cr);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_stroke")]
+        public static extern void Stroke(ContextHandle cr);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_stroke_preserve")]
+        public static extern void StrokePreserve(ContextHandle cr);
+
+        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_stroke_extents")]
+        public static extern void StrokeExtents(ContextHandle cr, out double x1, out double y1, out double x2, out double y2);
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_text_extents")]
         public static extern void TextExtents(ContextHandle cr, [MarshalAs(UnmanagedType.LPUTF8Str)] string utf8, out TextExtents extents);

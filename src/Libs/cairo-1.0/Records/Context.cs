@@ -113,8 +113,68 @@
         }
         #endregion
 
+        #region Clip
+        public void Clip()
+            => Internal.Context.Clip(Handle);
+
+        public void ClipPreserve()
+            => Internal.Context.ClipPreserve(Handle);
+
+        public void ClipExtents(out double x1, out double y1, out double x2, out double y2)
+            => Internal.Context.ClipExtents(Handle, out x1, out y1, out x2, out y2);
+
+        public bool InClip(double x, double y)
+            => Internal.Context.InClip(Handle, x, y);
+
+        public void ResetClip()
+            => Internal.Context.ResetClip(Handle);
+        #endregion
+
+        #region Drawing
         public void Fill()
             => Internal.Context.Fill(Handle);
+
+        public void FillPreserve()
+            => Internal.Context.FillPreserve(Handle);
+
+        public void FillExtents(out double x1, out double y1, out double x2, out double y2)
+            => Internal.Context.FillExtents(Handle, out x1, out y1, out x2, out y2);
+
+        public bool InFill(double x, double y)
+            => Internal.Context.InFill(Handle, x, y);
+
+        public void Mask(Pattern source)
+            => Internal.Context.Mask(Handle, source.Handle);
+
+        public void MaskSurface(Surface surface, double surface_x, double surface_y)
+            => Internal.Context.MaskSurface(Handle, surface.Handle, surface_x, surface_y);
+
+        public void Paint()
+            => Internal.Context.Paint(Handle);
+
+        public void PaintWithAlpha(double alpha)
+            => Internal.Context.PaintWithAlpha(Handle, alpha);
+
+        public void Stroke()
+            => Internal.Context.Stroke(Handle);
+
+        public void StrokePreserve()
+            => Internal.Context.StrokePreserve(Handle);
+
+        public void StrokeExtents(out double x1, out double y1, out double x2, out double y2)
+            => Internal.Context.StrokeExtents(Handle, out x1, out y1, out x2, out y2);
+
+        public bool InStroke(double x, double y)
+            => Internal.Context.InStroke(Handle, x, y);
+        #endregion
+
+        #region Pages
+        public void CopyPage()
+            => Internal.Context.CopyPage(Handle);
+
+        public void ShowPage()
+            => Internal.Context.ShowPage(Handle);
+        #endregion
 
         public void FontExtents(out FontExtents extents)
             => Internal.Context.FontExtents(Handle, out extents);
