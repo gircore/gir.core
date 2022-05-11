@@ -179,12 +179,6 @@
         public void FontExtents(out FontExtents extents)
             => Internal.Context.FontExtents(Handle, out extents);
 
-        public void MoveTo(double x, double y)
-            => Internal.Context.MoveTo(Handle, x, y);
-
-        public void Rectangle(double x, double y, double width, double height)
-            => Internal.Context.Rectangle(Handle, x, y, width, height);
-
         public void SetFontSize(double size)
             => Internal.Context.SetFontSize(Handle, size);
 

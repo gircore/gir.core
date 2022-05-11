@@ -92,9 +92,6 @@ namespace Cairo.Internal
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_mask_surface")]
         public static extern void MaskSurface(ContextHandle cr, SurfaceHandle surface, double surface_x, double surface_y);
 
-        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_move_to")]
-        public static extern void MoveTo(ContextHandle cr, double x, double y);
-
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_paint")]
         public static extern void Paint(ContextHandle cr);
 
@@ -112,9 +109,6 @@ namespace Cairo.Internal
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_push_group_with_content")]
         public static extern void PushGroupWithContent(ContextHandle cr, Content content);
-
-        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_rectangle")]
-        public static extern void Rectangle(ContextHandle cr, double x, double y, double width, double height);
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_reset_clip")]
         public static extern void ResetClip(ContextHandle cr);

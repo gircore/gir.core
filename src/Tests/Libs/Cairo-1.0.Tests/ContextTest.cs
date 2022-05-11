@@ -89,6 +89,39 @@ namespace Cairo.Tests
 
             cr.CopyPage();
             cr.ShowPage();
+
+            Path path = cr.CopyPath();
+            path.Should().NotBeNull();
+
+            cr.NewPath();
+            cr.AppendPath(path);
+            cr.ClosePath();
+
+            path = cr.CopyPathFlat();
+            path.Should().NotBeNull();
+            cr.NewSubPath();
+
+            cr.Arc(0, 0, 2.0, 0, 2 * System.Math.PI);
+
+            cr.HasCurrentPoint.Should().Be(true);
+            cr.GetCurrentPoint(out double x, out double y);
+            x.Should().Be(2);
+            y.Should().Be(0);
+
+            cr.ArcNegative(0, 0, 2.0, 0, 2 * System.Math.PI);
+            cr.CurveTo(1, 2, 3, 4, 5, 6);
+
+            cr.MoveTo(1, 2);
+            cr.LineTo(3, 4);
+            cr.Rectangle(1, 2, 3, 4);
+            cr.TextPath("foo");
+
+            cr.RelCurveTo(1, 2, 3, 4, 5, 6);
+            cr.RelMoveTo(1, 2);
+            cr.RelLineTo(3, 4);
+
+            cr.PathExtents(out x1, out y1, out x2, out y2);
+            x1.Should().Be(-2.0);
         }
     }
 }
