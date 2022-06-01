@@ -144,6 +144,29 @@ namespace Cairo.Tests
 
             var scaled_font = cr.GetScaledFont();
             cr.SetScaledFont(scaled_font);
+
+            cr.IdentityMatrix();
+            cr.Translate(1, 2);
+            cr.Scale(1.1, 1.2);
+            cr.Rotate(System.Math.PI);
+
+            cr.GetMatrix(matrix);
+            cr.SetMatrix(matrix);
+            cr.Transform(matrix);
+
+            x = 1;
+            y = 1;
+            cr.UserToDevice(ref x, ref y);
+            x.Should().NotBe(1);
+            cr.DeviceToUser(ref x, ref y);
+            x.Should().BeApproximately(1, 1e-5);
+            y.Should().BeApproximately(1, 1e-5);
+
+            cr.UserToDeviceDistance(ref x, ref y);
+            x.Should().NotBe(1);
+            cr.DeviceToUserDistance(ref x, ref y);
+            x.Should().BeApproximately(1, 1e-5);
+            y.Should().BeApproximately(1, 1e-5);
         }
     }
 }
