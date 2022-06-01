@@ -122,6 +122,28 @@ namespace Cairo.Tests
 
             cr.PathExtents(out x1, out y1, out x2, out y2);
             x1.Should().Be(-2.0);
+
+            cr.SelectFontFace("serif", FontSlant.Italic, FontWeight.Bold);
+            var matrix = new Matrix(Internal.MatrixManagedHandle.Create());
+            cr.SetFontMatrix(matrix);
+            cr.GetFontMatrix(matrix);
+            cr.SetFontSize(12.0);
+
+            cr.FontExtents(out FontExtents font_extents);
+            font_extents.Height.Should().NotBe(0);
+
+            cr.TextExtents("foo", out TextExtents text_extents);
+            text_extents.Height.Should().NotBe(0);
+
+            var font_opts = new FontOptions();
+            cr.GetFontOptions(font_opts);
+            cr.SetFontOptions(font_opts);
+
+            var font_face = cr.GetFontFace();
+            cr.SetFontFace(font_face);
+
+            var scaled_font = cr.GetScaledFont();
+            cr.SetScaledFont(scaled_font);
         }
     }
 }

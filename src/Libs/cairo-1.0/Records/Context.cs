@@ -175,17 +175,5 @@
         public void ShowPage()
             => Internal.Context.ShowPage(Handle);
         #endregion
-
-        public void FontExtents(out FontExtents extents)
-            => Internal.Context.FontExtents(Handle, out extents);
-
-        public void SetFontSize(double size)
-            => Internal.Context.SetFontSize(Handle, size);
-
-        public void ShowText(string text)
-            => Internal.Context.ShowText(Handle, text);
-
-        public void TextExtents(string text, out TextExtents extents)
-            => Internal.Context.TextExtents(Handle, text, out extents);
     }
 }

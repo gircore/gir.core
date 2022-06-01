@@ -35,9 +35,6 @@ namespace Cairo.Internal
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_fill_extents")]
         public static extern void FillExtents(ContextHandle cr, out double x1, out double y1, out double x2, out double y2);
 
-        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_font_extents")]
-        public static extern void FontExtents(ContextHandle cr, out FontExtents extents);
-
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_get_antialias")]
         public static extern Antialias GetAntialias(ContextHandle cr);
 
@@ -128,9 +125,6 @@ namespace Cairo.Internal
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_set_fill_rule")]
         public static extern void SetFillRule(ContextHandle cr, FillRule fill_rule);
 
-        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_set_font_size")]
-        public static extern void SetFontSize(ContextHandle cr, double size);
-
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_set_line_cap")]
         public static extern void SetLineCap(ContextHandle cr, LineCap line_cap);
 
@@ -164,9 +158,6 @@ namespace Cairo.Internal
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_show_page")]
         public static extern void ShowPage(ContextHandle cr);
 
-        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_show_text")]
-        public static extern void ShowText(ContextHandle cr, [MarshalAs(UnmanagedType.LPUTF8Str)] string utf8);
-
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_status")]
         public static extern Status Status(ContextHandle cr);
 
@@ -178,8 +169,5 @@ namespace Cairo.Internal
 
         [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_stroke_extents")]
         public static extern void StrokeExtents(ContextHandle cr, out double x1, out double y1, out double x2, out double y2);
-
-        [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_text_extents")]
-        public static extern void TextExtents(ContextHandle cr, [MarshalAs(UnmanagedType.LPUTF8Str)] string utf8, out TextExtents extents);
     }
 }
