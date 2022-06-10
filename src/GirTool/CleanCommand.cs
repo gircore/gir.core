@@ -13,15 +13,16 @@ public class CleanCommand : Command
         name: "clean",
         description: "Cleans the output directories")
     {
-        AddArgument(new Argument<string>(
+        var target = new Argument<string>(
             name: "target",
             description: "Target folder to clean of all generated C# files (*.Generated.cs)"
-        ));
-
-        this.SetHandler<string, InvocationContext>(
-            handle: Execute,
-            symbols: this.Children.Cast<IValueDescriptor>().ToArray()
         );
+        AddArgument(target);
+
+        this.SetHandler(context => Execute(
+            folder: context.ParseResult.GetValueForArgument(target),
+            invocationContext: context
+        ));
     }
 
     private static void Execute(string folder, InvocationContext invocationContext)
