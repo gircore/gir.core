@@ -66,5 +66,19 @@ namespace GObject.Internal
 
             return new Type(typeid);
         }
+
+        /* TODO: Enable if init functions are supported again
+        // Default Handler for class initialisation.
+        private static void DoClassInit(IntPtr gClass, IntPtr classData)
+        {
+            Console.WriteLine("Subclass type class initialised!");
+        }
+
+        // Default Handler for instance initialisation.
+        private static void DoInstanceInit(IntPtr gClass, IntPtr classData)
+        {
+            Console.WriteLine("Subclass instance initialised!");
+        }
+        */
     }
 }
