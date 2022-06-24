@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Scriban" Version="4.1.0" IncludeAssets="Build" />
+    <PackageReference Include="Scriban" Version="5.4.6" IncludeAssets="Build" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
   </ItemGroup>
   
