@@ -72,6 +72,7 @@ The folder structure in this repository is organized as follows:
 * **[src/Integration](src/Integration):** Optional source generators to reduce boilerplate code in your projects.
 * **[src/Libs](src/Libs):** Contains manually written code for libraries. The generator outputs code here.
 * **[src/Samples](src/Samples):** Example programs using GTK, GStreamer, and others.
+* **[src/Extensions](src/Extensions):** Auxilary libraries which extend the core libraries.
 * **[src/Tests](src/Tests):** Unit and Integration tests.
 * **[ext/gir-files](https://github.com/gircore/gir-files):** Introspection data from [gircore/gir-files](https://github.com/gircore/gir-files).
 
@@ -88,7 +89,7 @@ The code in the library folder is not complete because most of the code is gener
 [dbus]: https://www.freedesktop.org/wiki/Software/dbus/
 [libchamplain]: https://wiki.gnome.org/Projects/libchamplain
 [GtkSharp]: https://github.com/GtkSharp/GtkSharp
-[sample_gtk_declarative]: https://github.com/gircore/gir.core/blob/develop/Samples/Gtk3/DeclarativeUi/Program.cs
+[sample_gtk_declarative]: https://github.com/gircore/gir.core/blob/develop/src/Samples/Gtk3/DeclarativeUi/Program.cs
 [GdkPixbuf]: https://gitlab.gnome.org/GNOME/gdk-pixbuf
 [GtkBuilder]: https://developer.gnome.org/gtk3/stable/GtkBuilder.html
 
