@@ -80,9 +80,9 @@ namespace TextEditor.Application
 
         private void OnKeydown(object sender, KeyPressEventSignalArgs e)
         {
-            Console.WriteLine("Keydown " + e.@event.Keyval);
+            Console.WriteLine("Keydown " + e.Event.Keyval);
 
-            var keyVal = e.@event.Keyval;
+            var keyVal = e.Event.Keyval;
 
             if (keyVal == Gdk.Constants.KEY_Left)
             {
@@ -97,7 +97,7 @@ namespace TextEditor.Application
             else if (keyVal == Gdk.Constants.KEY_BackSpace)
                 doc.Delete(Math.Clamp(cursorIndex - 1, 0, cachedText.Length), 1);
             else
-                context.FilterKeypress(e.@event); // Check result?
+                context.FilterKeypress(e.Event); // Check result?
         }
 
         private void OnEnterText(object sender, IMContext.CommitSignalArgs e)

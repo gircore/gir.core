@@ -16,4 +16,15 @@ namespace GirModel
         /// </summary>
         OneOf<AnyType, Callback> AnyTypeOrCallback { get; }
     }
+
+    /* TODO: Verify generic fields to allow code like:
+     var bla = field switch
+     {
+        GirModel.Field<Class> => "field of type class"
+     };
+    public interface Field<out T> : Field
+    {
+        T Type { get; }
+    }
+    */
 }

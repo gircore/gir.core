@@ -5,8 +5,6 @@ using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Generator3.Converter;
-using Generator3.Publication;
 using GirLoader;
 using GirLoader.PlatformSupport;
 using Repository = GirLoader.Output.Repository;
@@ -20,18 +18,17 @@ public partial class GenerateCommand : Command
         try
         {
             Configuration.SetupLogLevel(logLevel);
-            FilePublisher.TargetFolder = output;
 
             var platformHandlers = GetPlatformHandler(searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input, invocationContext);
 
             if (disableAsync)
             {
                 foreach (var platformHandler in platformHandlers)
-                    PlatformGenerator.Generate(platformHandler);
+                    PlatformGenerator.Generate(platformHandler, output);
             }
             else
             {
-                Parallel.ForEach(platformHandlers, PlatformGenerator.Generate);
+                Parallel.ForEach(platformHandlers, x => PlatformGenerator.Generate(x, output));
             }
 
             Log.Information("Done");
@@ -50,9 +47,9 @@ public partial class GenerateCommand : Command
         {
             (var linuxRepositories, var macosRepositories, var windowsRepositories) = LoadRepositories(searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input);
 
-            var linuxNamespaceNames = linuxRepositories.Select(x => x.Namespace.GetCanonicalName());
-            var macosNamespaceNames = macosRepositories.Select(x => x.Namespace.GetCanonicalName());
-            var windowsNamespaceNames = windowsRepositories.Select(x => x.Namespace.GetCanonicalName());
+            var linuxNamespaceNames = linuxRepositories.Select(x => GetNamespaceName(x.Namespace));
+            var macosNamespaceNames = macosRepositories.Select(x => GetNamespaceName(x.Namespace));
+            var windowsNamespaceNames = windowsRepositories.Select(x => GetNamespaceName(x.Namespace));
             var namespacesNames = linuxNamespaceNames
                 .Union(macosNamespaceNames)
                 .Union(windowsNamespaceNames)
@@ -62,9 +59,9 @@ public partial class GenerateCommand : Command
 
             foreach (var namespaceName in namespacesNames)
             {
-                var linuxNamespace = linuxRepositories.FirstOrDefault(x => x.Namespace.GetCanonicalName() == namespaceName)?.Namespace;
-                var macosNamespace = macosRepositories.FirstOrDefault(x => x.Namespace.GetCanonicalName() == namespaceName)?.Namespace;
-                var windowsNamespace = windowsRepositories.FirstOrDefault(x => x.Namespace.GetCanonicalName() == namespaceName)?.Namespace;
+                var linuxNamespace = linuxRepositories.FirstOrDefault(x => GetNamespaceName(x.Namespace) == namespaceName)?.Namespace;
+                var macosNamespace = macosRepositories.FirstOrDefault(x => GetNamespaceName(x.Namespace) == namespaceName)?.Namespace;
+                var windowsNamespace = windowsRepositories.FirstOrDefault(x => GetNamespaceName(x.Namespace) == namespaceName)?.Namespace;
 
                 if (linuxNamespace is null)
                     Log.Information($"There is no {namespaceName} repository for linux");
@@ -135,5 +132,10 @@ public partial class GenerateCommand : Command
         var includeResolver = new IncludeResolver(searchPath);
         var loader = new GirLoader.Loader(includeResolver.ResolveInclude);
         return loader.Load(inputRepositories).ToList();
+    }
+
+    private static string GetNamespaceName(GirModel.Namespace ns)
+    {
+        return $"{ns.Name}-{ns.Version}";
     }
 }

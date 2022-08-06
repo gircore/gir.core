@@ -140,7 +140,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirLoader.Tests", "Tests\Ge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirModel", "Generation\GirModel\GirModel.csproj", "{C73005BB-D2DB-41B8-9DAA-1ADD81123A03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator3", "Generation\Generator3\Generator3.csproj", "{6222D769-0F81-490C-B8BD-B0E2D295D97A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generation\Generator\Generator.csproj", "{6222D769-0F81-490C-B8BD-B0E2D295D97A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTool", "GirTool\GirTool.csproj", "{438717C4-F16C-40F5-9537-90554700C6E7}"
 EndProject
