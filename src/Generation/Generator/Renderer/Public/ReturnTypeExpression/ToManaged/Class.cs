@@ -15,7 +15,7 @@ internal class Class : ReturnTypeConverter
         if (!returnType.IsPointer)
             throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
 
-        return cls.IsFundamental
+        return cls.Fundamental
             ? $"new {ComplexType.GetFullyQualified(cls)}({fromVariableName})"
             : $"GObject.Internal.ObjectWrapper.WrapHandle<{ReturnType.Render(returnType)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
     }

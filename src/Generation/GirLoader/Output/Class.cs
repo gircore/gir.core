@@ -11,7 +11,7 @@ namespace GirLoader.Output
         private readonly List<Property> _properties;
         private readonly List<Field> _fields;
         private readonly List<Signal> _signals;
-        public bool IsFundamental { get; }
+        public bool Fundamental { get; }
         public Function GetTypeFunction { get; }
         public IEnumerable<TypeReference> Implements { get; }
         public IEnumerable<Method> Methods => _methods;
@@ -22,9 +22,11 @@ namespace GirLoader.Output
         public IEnumerable<Signal> Signals => _signals;
         public IEnumerable<Constructor> Constructors => _constructors;
         public bool Introspectable { get; }
+        public bool Abstract { get; }
+        public bool Final { get; }
         public string? GlibTypeName { get; }
 
-        public Class(Repository repository, string? cType, string name, string? typeName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool isFundamental, bool introspectable) : base(repository, cType, name)
+        public Class(Repository repository, string? cType, string name, string? typeName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool fundamental, bool @abstract, bool final, bool introspectable) : base(repository, cType, name)
         {
             Parent = parent;
             Implements = implements;
@@ -39,7 +41,9 @@ namespace GirLoader.Output
             this._fields = fields.ToList();
             this._signals = signals.ToList();
 
-            IsFundamental = isFundamental;
+            Fundamental = fundamental;
+            Abstract = @abstract;
+            Final = final;
         }
 
         internal override bool Matches(TypeReference typeReference)

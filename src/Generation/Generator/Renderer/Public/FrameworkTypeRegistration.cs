@@ -22,7 +22,7 @@ namespace {Namespace.GetPublicName(ns)}
         static partial void RegisterTypes()
         {{
             {ns.Classes
-                .Where(cls => !cls.IsFundamental)
+                .Where(cls => !cls.Fundamental)
                 .Select(RenderClass)
                 .Join(Environment.NewLine)}
 

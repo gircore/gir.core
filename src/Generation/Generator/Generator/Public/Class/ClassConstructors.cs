@@ -14,7 +14,7 @@ internal class ClassConstructors : Generator<GirModel.Class>
 
     public void Generate(GirModel.Class obj)
     {
-        if (obj.IsFundamental)
+        if (obj.Fundamental)
             return;
 
         var source = Renderer.Public.ClassConstructors.Render(obj);

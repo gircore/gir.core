@@ -47,6 +47,9 @@ namespace GirLoader.Input
         [XmlAttribute("abstract")]
         public bool Abstract { get; set; }
 
+        [XmlAttribute("final")]
+        public bool Final;
+
         [XmlAttribute("fundamental", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public bool Fundamental { get; set; }
 
