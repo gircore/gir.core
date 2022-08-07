@@ -45,7 +45,9 @@ namespace GirLoader.Output
                 fields: _fieldFactory.Create(cls.Fields, repository),
                 signals: _signalFactory.Create(cls.Signals),
                 constructors: _constructorFactory.Create(cls.Constructors),
-                isFundamental: cls.Fundamental,
+                fundamental: cls.Fundamental,
+                @abstract: cls.Abstract,
+                final: cls.Final,
                 introspectable: cls.Introspectable
             );
         }

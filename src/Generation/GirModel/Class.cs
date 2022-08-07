@@ -7,7 +7,9 @@ namespace GirModel
         Class? Parent { get; }
         IEnumerable<Interface> Implements { get; }
         Function TypeFunction { get; }
-        bool IsFundamental { get; }
+        bool Fundamental { get; }
+        bool Abstract { get; }
+        bool Final { get; }
         IEnumerable<Field> Fields { get; }
         IEnumerable<Function> Functions { get; }
         IEnumerable<Method> Methods { get; }

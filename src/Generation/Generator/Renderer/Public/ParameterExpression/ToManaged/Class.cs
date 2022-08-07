@@ -15,7 +15,7 @@ internal class Class : ParameterConverter
 
         var cls = (GirModel.Class) parameter.AnyType.AsT0;
 
-        if (cls.IsFundamental)
+        if (cls.Fundamental)
         {
             variableName = Parameter.GetConvertedName(parameter);
             return $"var {variableName} = new {ComplexType.GetFullyQualified(cls)}({Parameter.GetName(parameter)});";

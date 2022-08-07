@@ -67,7 +67,7 @@ public static {newKeyWord}{cls.Name} {Constructor.GetName(constructor)}({Paramet
 
         var ownedRef = Transfer.IsOwnedRef(constructor.ReturnType.Transfer);
 
-        var statement = cls.IsFundamental
+        var statement = cls.Fundamental
             ? $"new {cls.Name}({variableName})"
             : $"new {cls.Name}({variableName}, {ownedRef.ToString().ToLower()})";
 

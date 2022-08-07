@@ -14,7 +14,7 @@ internal class FundamentalClassFramework : Generator<GirModel.Class>
 
     public void Generate(GirModel.Class obj)
     {
-        if (!obj.IsFundamental)
+        if (!obj.Fundamental)
             return;
 
         var source = Renderer.Public.FundamentalClassFramework.Render(obj);

@@ -10,7 +10,7 @@ namespace GirLoader.Output
         GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
         string GirModel.ComplexType.Name => Name;
         GirModel.Function GirModel.Class.TypeFunction => GetTypeFunction;
-        bool GirModel.Class.IsFundamental => IsFundamental;
+        bool GirModel.Class.Fundamental => Fundamental;
         IEnumerable<GirModel.Field> GirModel.Class.Fields => Fields;
         IEnumerable<GirModel.Function> GirModel.Class.Functions => Functions;
         IEnumerable<GirModel.Method> GirModel.Class.Methods => Methods;
@@ -18,5 +18,7 @@ namespace GirLoader.Output
         IEnumerable<GirModel.Property> GirModel.Class.Properties => Properties;
         IEnumerable<GirModel.Signal> GirModel.Class.Signals => Signals;
         bool GirModel.Class.Introspectable => Introspectable;
+        bool GirModel.Class.Abstract => Abstract;
+        bool GirModel.Class.Final => Final;
     }
 }
