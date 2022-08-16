@@ -2,7 +2,7 @@
 {
     public interface Property
     {
-        public string Name { get; }
+        string Name { get; }
         AnyType AnyType { get; }
         Transfer Transfer { get; }
         bool Readable { get; }

@@ -34,7 +34,8 @@ namespace GirLoader.Output
                     parameterList: _parameterListFactory.Create(method.Parameters, method.Throws),
                     introspectable: method.Introspectable,
                     getProperty: PropertyReference.Create(method.GetProperty),
-                    setProperty: PropertyReference.Create(method.SetProperty)
+                    setProperty: PropertyReference.Create(method.SetProperty),
+                    version: method.Version
                 );
             }
 

@@ -9,8 +9,9 @@
         public bool Introspectable { get; }
         public PropertyReference? GetProperty { get; }
         public PropertyReference? SetProperty { get; }
+        public string? Version { get; }
 
-        public Method(string identifier, string name, ReturnValue returnValue, ParameterList parameterList, bool introspectable, PropertyReference? getProperty, PropertyReference? setProperty)
+        public Method(string identifier, string name, ReturnValue returnValue, ParameterList parameterList, bool introspectable, PropertyReference? getProperty, PropertyReference? setProperty, string? version)
         {
             Identifier = identifier;
             ReturnValue = returnValue;
@@ -19,6 +20,7 @@
             Introspectable = introspectable;
             GetProperty = getProperty;
             SetProperty = setProperty;
+            Version = version;
         }
 
         public override string ToString()

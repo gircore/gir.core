@@ -6,13 +6,15 @@
         public ParameterList ParameterList { get; }
         public string Name { get; }
         public string Identifier { get; }
+        public string? Version { get; }
 
-        public Constructor(string name, string identifier, ReturnValue returnValue, ParameterList parameterList)
+        public Constructor(string name, string identifier, ReturnValue returnValue, ParameterList parameterList, string? version)
         {
             Name = name;
             Identifier = identifier;
             ReturnValue = returnValue;
             ParameterList = parameterList;
+            Version = version;
         }
 
         public override string ToString()

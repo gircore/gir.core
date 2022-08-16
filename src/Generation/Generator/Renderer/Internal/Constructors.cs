@@ -20,11 +20,10 @@ internal static class Constructors
             return string.Empty;
 
         return @$"
-/// <summary>
-/// Calls native constructor {constructor.CIdentifier}.
-/// </summary>
+{DocComments.Render($"Calls native constructor {constructor.CIdentifier}.", DocComments.RenderVersion(constructor.Version))}
 {DocComments.Render(constructor.Parameters)}
 {DocComments.Render(constructor.ReturnType)}
+{VersionAttribute.Render(constructor.Version)}
 [DllImport(ImportResolver.Library, EntryPoint = ""{ constructor.CIdentifier }"")]
 public static extern { ReturnType.Render(constructor.ReturnType) } { Constructor.GetName(constructor) }({ Parameters.Render(constructor.Parameters) });";
     }

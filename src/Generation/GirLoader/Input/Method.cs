@@ -43,6 +43,9 @@ namespace GirLoader.Input
         [XmlAttribute("set-property", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
         public string? SetProperty { get; set; }
 
+        [XmlAttribute("version")]
+        public string? Version { get; set; }
+
         public override string? ToString()
             => Name ?? Identifier ?? base.ToString();
     }

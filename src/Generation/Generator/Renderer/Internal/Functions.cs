@@ -22,12 +22,11 @@ internal static class Functions
         try
         {
             return @$"
-/// <summary>
-/// Calls native function {function.CIdentifier}.
-/// </summary>
+{DocComments.Render($"Calls native function {function.CIdentifier}.", DocComments.RenderVersion(function.Version))}
 {DocComments.Render(function.Parameters)}
 {DocComments.Render(function.ReturnType)}
 {PlatformSupportAttribute.Render(function as GirModel.PlatformDependent)}
+{VersionAttribute.Render(function.Version)}
 [DllImport(ImportResolver.Library, EntryPoint = ""{ function.CIdentifier }"")]
 public static extern { ReturnType.Render(function.ReturnType) } { Function.GetName(function) }({ Parameters.Render(function.Parameters)});";
         }

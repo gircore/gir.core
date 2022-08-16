@@ -4,8 +4,8 @@ namespace GirModel
 {
     public interface Callback : ComplexType
     {
-        public ReturnType ReturnType { get; }
-        public IEnumerable<Parameter> Parameters { get; }
+        ReturnType ReturnType { get; }
+        IEnumerable<Parameter> Parameters { get; }
         bool Introspectable { get; }
     }
 }

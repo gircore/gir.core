@@ -38,6 +38,7 @@ namespace { Namespace.GetPublicName(cls.Namespace) }
                 : string.Empty;
 
             return @$"
+{VersionAttribute.Render(constructor.Version)}
 public static {newKeyWord}{cls.Name} {Constructor.GetName(constructor)}({Parameters.Render(constructor.Parameters)})
 {{
     {ParametersToNativeExpression.Render(constructor.Parameters, out var parameterNames)}

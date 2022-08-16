@@ -11,7 +11,8 @@ public static class Framework
         var generators = new List<Generator<GirModel.Namespace>>()
         {
             new Generator.Internal.FrameworkExtensions(publisher),
-            new Generator.Public.FrameworkTypeRegistration(publisher)
+            new Generator.Public.FrameworkTypeRegistration(publisher),
+            new Generator.Public.FrameworkVersionAttribute(publisher)
         };
 
         foreach (var generator in generators)
