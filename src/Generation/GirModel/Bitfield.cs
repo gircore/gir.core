@@ -5,7 +5,7 @@ namespace GirModel
     public interface Bitfield : ComplexType
     {
         Method? TypeFunction { get; }
-        public IEnumerable<Member> Members { get; }
+        IEnumerable<Member> Members { get; }
         bool Introspectable { get; }
     }
 }

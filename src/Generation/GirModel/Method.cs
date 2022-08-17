@@ -12,6 +12,7 @@ namespace GirModel
         bool Introspectable { get; }
         Property? GetProperty { get; }
         Property? SetProperty { get; }
+        string? Version { get; }
 
         bool IsUnref() => Name == "unref";
         bool IsFree() => Name == "free";

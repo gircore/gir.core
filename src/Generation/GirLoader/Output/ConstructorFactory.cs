@@ -31,7 +31,8 @@ namespace GirLoader.Output
                     identifier: method.Identifier,
                     name: method.Name,
                     returnValue: _returnValueFactory.Create(method.ReturnValue),
-                    parameterList: _parameterListFactory.Create(method.Parameters, method.Throws)
+                    parameterList: _parameterListFactory.Create(method.Parameters, method.Throws),
+                    version: method.Version
                 );
             }
 

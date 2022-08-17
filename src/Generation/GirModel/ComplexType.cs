@@ -2,7 +2,7 @@
 {
     public interface ComplexType : Type
     {
-        public Namespace Namespace { get; }
-        public string Name { get; }
+        Namespace Namespace { get; }
+        string Name { get; }
     }
 }

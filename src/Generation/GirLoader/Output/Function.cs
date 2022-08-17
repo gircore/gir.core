@@ -8,8 +8,9 @@
         public string Name { get; }
         public string Identifier { get; }
         public bool Introspectable { get; }
+        public string? Version { get; }
 
-        public Function(Repository repository, string name, string identifier, ReturnValue returnValue, ParameterList parameterList, bool introspectable)
+        public Function(Repository repository, string name, string identifier, ReturnValue returnValue, ParameterList parameterList, bool introspectable, string? version)
         {
             _repository = repository;
             ReturnValue = returnValue;
@@ -17,6 +18,7 @@
             Name = name;
             Identifier = identifier;
             Introspectable = introspectable;
+            Version = version;
         }
 
         public override string ToString()

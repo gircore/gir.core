@@ -11,5 +11,6 @@ namespace GirLoader.Output
         string GirModel.Function.CIdentifier => Identifier;
         IEnumerable<GirModel.Parameter> GirModel.Function.Parameters => ParameterList.GetParameters().Cast<GirModel.Parameter>();
         bool GirModel.Function.Introspectable => Introspectable;
+        string? GirModel.Function.Version => Version;
     }
 }

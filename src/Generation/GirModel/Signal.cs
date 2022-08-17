@@ -5,7 +5,7 @@ namespace GirModel
     public interface Signal
     {
         string Name { get; }
-        public IEnumerable<Parameter> Parameters { get; }
+        IEnumerable<Parameter> Parameters { get; }
         bool Introspectable { get; }
     }
 }

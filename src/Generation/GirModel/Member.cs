@@ -2,7 +2,7 @@
 {
     public interface Member
     {
-        public string Name { get; }
-        public long Value { get; }
+        string Name { get; }
+        long Value { get; }
     }
 }

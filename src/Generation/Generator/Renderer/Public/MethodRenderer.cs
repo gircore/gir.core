@@ -13,6 +13,7 @@ internal static class MethodRenderer
         try
         {
             return @$"
+{VersionAttribute.Render(method.Version)}
 public {ReturnType.Render(method.ReturnType)} {Method.GetPublicName(method)}({Parameters.Render(method.Parameters)})
 {{
     {ParametersToNativeExpression.Render(method.Parameters, out var parameterNames)}

@@ -11,4 +11,5 @@ public partial class Function : GirModel.Function
     string GirModel.Function.CIdentifier => _function.CIdentifier;
     IEnumerable<Parameter> GirModel.Function.Parameters => _function.Parameters;
     bool GirModel.Function.Introspectable => _function.Introspectable;
+    string? GirModel.Function.Version => _function.Version;
 }

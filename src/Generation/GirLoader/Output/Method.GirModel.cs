@@ -13,5 +13,6 @@ namespace GirLoader.Output
         bool GirModel.Method.Introspectable => Introspectable;
         GirModel.Property? GirModel.Method.GetProperty => GetProperty?.GetProperty();
         GirModel.Property? GirModel.Method.SetProperty => SetProperty?.GetProperty();
+        string? GirModel.Method.Version => Version;
     }
 }
