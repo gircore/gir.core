@@ -5,7 +5,7 @@
   </ItemGroup>
   
   <PropertyGroup>
-    <PackageId>Gir.HarfBuzz</PackageId>
+    <PackageId>GirCore.HarfBuzz</PackageId>
     <RootNamespace>HarfBuzz</RootNamespace>
   </PropertyGroup>
 </Project>

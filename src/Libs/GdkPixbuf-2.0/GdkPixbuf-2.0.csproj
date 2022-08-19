@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.GdkPixbuf</PackageId>
+    <PackageId>GirCore.GdkPixbuf</PackageId>
     <RootNamespace>GdkPixbuf</RootNamespace>
   </PropertyGroup>
 </Project>

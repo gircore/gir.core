@@ -7,7 +7,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.Pango</PackageId>
+    <PackageId>GirCore.Pango</PackageId>
     <RootNamespace>Pango</RootNamespace>
   </PropertyGroup>
 </Project>

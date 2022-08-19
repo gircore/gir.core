@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>Gir.Cairo</PackageId>
+    <PackageId>GirCore.Cairo</PackageId>
     <RootNamespace>cairo</RootNamespace>
   </PropertyGroup>
   <ItemGroup>

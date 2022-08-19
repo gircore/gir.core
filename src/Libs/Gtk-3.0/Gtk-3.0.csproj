@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.Gtk3</PackageId>
+    <PackageId>GirCore.Gtk3</PackageId>
     <RootNamespace>Gtk</RootNamespace>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 </Project>

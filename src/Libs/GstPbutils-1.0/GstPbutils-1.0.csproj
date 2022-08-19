@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.GstPbutils</PackageId>
+    <PackageId>GirCore.GstPbutils</PackageId>
     <RootNamespace>GstPbutils</RootNamespace>
   </PropertyGroup>
 </Project>

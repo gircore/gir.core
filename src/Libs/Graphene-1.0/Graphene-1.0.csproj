@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Gir.Graphene</PackageId>
+    <PackageId>GirCore.Graphene</PackageId>
     <RootNamespace>Graphene</RootNamespace>
   </PropertyGroup>
 

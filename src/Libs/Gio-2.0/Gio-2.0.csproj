@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Gir.Gio</PackageId>
+    <PackageId>GirCore.Gio</PackageId>
     <RootNamespace>Gio</RootNamespace>
   </PropertyGroup>
 
