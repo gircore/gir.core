@@ -3,6 +3,6 @@
     <RootNamespace>GirModule</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="OneOf" Version="3.0.216" />
+    <PackageReference Include="OneOf" Version="3.0.223" />
   </ItemGroup>
 </Project>
