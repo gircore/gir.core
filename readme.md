@@ -17,7 +17,7 @@ This project aims to provide a complete set of APIs for writing rich cross-platf
 * **Extensibility:** Allows 3rd party developers to write bindings for other GObject-based libraries, achieving full interoperability between them.
 
 ## Status
-We are currently in a period of heavy iteration over the core internals of the project. The code is under heavy development and not ready for production. There is currently _no_ nuget package available.
+We are currently in a period of heavy iteration over the core internals of the project. The code is under heavy development and not ready for production. There are some pre release nuget packages available for testing purposes. Feel free to visit the [nuget organization][GirCoreNuget] to get an overview.
 
 ### Supported Libraries
 
@@ -92,6 +92,7 @@ The code in the library folder is not complete because most of the code is gener
 [sample_gtk_declarative]: https://github.com/gircore/gir.core/blob/develop/src/Samples/Gtk3/DeclarativeUi/Program.cs
 [GdkPixbuf]: https://gitlab.gnome.org/GNOME/gdk-pixbuf
 [GtkBuilder]: https://developer.gnome.org/gtk3/stable/GtkBuilder.html
+[GirCoreNuget]: https://www.nuget.org/profiles/GirCore
 
 ## Licensing terms
 Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.
