@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.GObject</PackageId>
+    <PackageId>GirCore.GObject</PackageId>
     <RootNamespace>GObject</RootNamespace>
   </PropertyGroup>
 </Project>

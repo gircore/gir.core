@@ -7,7 +7,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.GstAudio</PackageId>
+    <PackageId>GirCore.GstAudio</PackageId>
     <RootNamespace>GstAudio</RootNamespace>
   </PropertyGroup>
 </Project>

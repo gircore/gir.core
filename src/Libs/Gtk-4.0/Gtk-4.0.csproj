@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.Gtk4</PackageId>
+    <PackageId>GirCore.Gtk4</PackageId>
     <RootNamespace>Gtk</RootNamespace>
   </PropertyGroup>
 </Project>

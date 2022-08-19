@@ -2,6 +2,15 @@ name: 'Continuous integration'
 
 on:
   workflow_dispatch:
+    inputs:
+      publish:
+        description: If this build should publish nuget packages
+        required: true
+        type: boolean
+      preview:
+        description: If this is a preview package
+        required: true
+        type: boolean
   push:
     branches:
       - develop
@@ -52,3 +61,26 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: dotnet test --no-restore -c ${{ env.configuration }} --filter TestCategory=IntegrationTest
         working-directory: './src'
+
+      - name: Get current time
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: josStorer/get-current-time@v2.0.1
+        id: current-time
+        with:
+          format: YYYYMMDD-HHmmss
+        
+      - name: Pack preview version
+        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'true' && matrix.os == 'ubuntu-latest'}}
+        run: dotnet pack --no-build --nologo -c ${{ env.configuration }} --version-suffix "CI-${{ steps.current-time.outputs.formattedTime }}" -o ../Nuget
+        working-directory: './src'
+              
+      - name: Pack release version
+        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'false' && matrix.os == 'ubuntu-latest' }}
+        run: dotnet pack --no-build --nologo -c ${{ env.configuration }} /p:Version=${{ github.event.release.tag_name }} -o ../Nuget
+        working-directory: './src'
+          
+      - name: Publish to nuget org
+        if: ${{ github.event.inputs.publish == 'true' && matrix.os == 'ubuntu-latest' }}
+        run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s nuget.org
+        working-directory: './Nuget'
+          

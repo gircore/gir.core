@@ -6,7 +6,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.PangoCairo</PackageId>
+    <PackageId>GirCore.PangoCairo</PackageId>
     <RootNamespace>PangoCairo</RootNamespace>
   </PropertyGroup>
 </Project>

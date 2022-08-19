@@ -8,7 +8,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.GstVideo</PackageId>
+    <PackageId>GirCore.GstVideo</PackageId>
     <RootNamespace>GstVideo</RootNamespace>
   </PropertyGroup>
 </Project>

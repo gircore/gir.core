@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>Gir.Gsk4</PackageId>
+    <PackageId>GirCore.Gsk4</PackageId>
     <RootNamespace>Gdk</RootNamespace>
   </PropertyGroup>
 </Project>
