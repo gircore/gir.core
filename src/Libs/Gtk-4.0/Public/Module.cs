@@ -1,15 +1,21 @@
-﻿using System.Runtime.CompilerServices;
+﻿namespace Gtk;
 
-namespace Gtk;
-
-internal partial class Module
+public class Module
 {
-    [ModuleInitializer]
-    internal static void Initialize()
-    {
-        Internal.ImportResolver.RegisterAsDllImportResolver();
-        RegisterTypes();
-    }
+    private static bool IsInitialized;
 
-    static partial void RegisterTypes();
+    public static void Initialize()
+    {
+        if (IsInitialized)
+            return;
+
+        Gio.Module.Initialize();
+        GdkPixbuf.Module.Initialize();
+        Gdk.Module.Initialize();
+
+        Internal.ImportResolver.RegisterAsDllImportResolver();
+        Internal.TypeRegistration.RegisterTypes();
+
+        IsInitialized = true;
+    }
 }

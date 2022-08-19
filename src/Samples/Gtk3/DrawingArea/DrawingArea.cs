@@ -1,6 +1,6 @@
 ﻿using Gtk;
 
-Functions.Init();
+Gtk.Module.Initialize();
 
 var window = new Window("DrawingArea Demo");
 var drawingArea = DrawingArea.New();

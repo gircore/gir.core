@@ -15,11 +15,11 @@ namespace AboutDialog
     {
         public static void Main(string[] args)
         {
-            // Make sure to initialise Gtk beforehand
-            Functions.Init();
+            //Initialie Gtk bindings
+            Gtk.Module.Initialize();
 
             // Create the about dialog
-            SampleDialog dialog = new SampleDialog("Custom AboutDialog");
+            var dialog = new SampleDialog("Custom AboutDialog");
             dialog.OnClose += (dlg, args) => Functions.MainQuit();
 
             // And run!

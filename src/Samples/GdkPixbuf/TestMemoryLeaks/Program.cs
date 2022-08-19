@@ -16,6 +16,8 @@ namespace TestMemoryLeaks
 
         public static void Main(string[] args)
         {
+            GdkPixbuf.Module.Initialize();
+
             var cycles = 10000;
             var fileName = "test.bmp";
 

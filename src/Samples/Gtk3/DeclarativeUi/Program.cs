@@ -9,10 +9,9 @@ namespace DeclarativeUi
     {
         public static void Main(string[] args)
         {
-            // We need to call Gtk.Functions.Init() before using
-            // any Gtk widgets or functions. If you use Gtk.Application,
-            // this is done for you.
-            Functions.Init();
+            // We need to call Gtk.Module.Initialize() before using
+            // any Gtk widgets or functions.
+            Gtk.Module.Initialize();
 
             // Gir.Core supports Object Initialiser Syntax for every widget,
             // allowing for entire widget trees to be created:

@@ -5,6 +5,7 @@ Console.WriteLine("Testing Pixbuf");
 
 try
 {
+    Module.Initialize();
     var pixbuf = Pixbuf.NewFromFile("test.bmp");
 
     Console.WriteLine("Loaded Pixbuf at address " + pixbuf.Handle);
