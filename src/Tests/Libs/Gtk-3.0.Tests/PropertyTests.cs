@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -87,19 +86,14 @@ namespace Gtk.Tests
             window.WindowPosition.Should().Be(windowPosition);
         }
 
-        public static IEnumerable<object[]> GetTestObjectData()
+        [TestMethod]
+        public void TestObject()
         {
-            yield return new object[] { GdkPixbuf.Pixbuf.NewFromFile("test.bmp") };
-            yield return new object[] { null! };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(GetTestObjectData), DynamicDataSourceType.Method)]
-        public void TestObject(GdkPixbuf.Pixbuf? pixbuf)
-        {
+            var pixbuf = GdkPixbuf.Pixbuf.NewFromFile("test.bmp");
             var aboutDialog = new AboutDialog();
-            aboutDialog.Logo = pixbuf;
 
+            aboutDialog.Logo.Should().BeNull();
+            aboutDialog.Logo = pixbuf;
             aboutDialog.Logo.Should().Be(pixbuf);
         }
     }

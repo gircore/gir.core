@@ -1,13 +1,16 @@
-﻿using System.Runtime.CompilerServices;
-using GLib.Internal;
+﻿namespace GLib;
 
-namespace GLib;
-
-internal class Module
+public class Module
 {
-    [ModuleInitializer]
-    internal static void Initialize()
+    private static bool IsInitialized;
+
+    public static void Initialize()
     {
-        ImportResolver.RegisterAsDllImportResolver();
+        if (IsInitialized)
+            return;
+
+        Internal.ImportResolver.RegisterAsDllImportResolver();
+
+        IsInitialized = true;
     }
 }

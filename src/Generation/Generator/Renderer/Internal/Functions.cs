@@ -27,8 +27,8 @@ internal static class Functions
 {DocComments.Render(function.ReturnType)}
 {PlatformSupportAttribute.Render(function as GirModel.PlatformDependent)}
 {VersionAttribute.Render(function.Version)}
-[DllImport(ImportResolver.Library, EntryPoint = ""{ function.CIdentifier }"")]
-public static extern { ReturnType.Render(function.ReturnType) } { Function.GetName(function) }({ Parameters.Render(function.Parameters)});";
+[DllImport(ImportResolver.Library, EntryPoint = ""{function.CIdentifier}"")]
+public static extern {ReturnType.Render(function.ReturnType)} {Function.GetName(function)}({Parameters.Render(function.Parameters)});";
         }
         catch (Exception ex)
         {

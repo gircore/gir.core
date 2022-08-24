@@ -1,5 +1,7 @@
 ﻿using Gtk;
 
+Gtk.Module.Initialize();
+
 var application = Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
 application.OnActivate += (sender, args) =>
 {

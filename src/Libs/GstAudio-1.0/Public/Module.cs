@@ -1,15 +1,17 @@
-﻿using System.Runtime.CompilerServices;
+﻿namespace GstAudio;
 
-namespace GstAudio;
-
-internal partial class Module
+public class Module
 {
-    [ModuleInitializer]
-    internal static void Initialize()
-    {
-        Internal.ImportResolver.RegisterAsDllImportResolver();
-        RegisterTypes();
-    }
+    private static bool IsInitialized;
 
-    static partial void RegisterTypes();
+    public static void Initialize()
+    {
+        if (IsInitialized)
+            return;
+
+        Internal.ImportResolver.RegisterAsDllImportResolver();
+        Internal.TypeRegistration.RegisterTypes();
+
+        IsInitialized = true;
+    }
 }

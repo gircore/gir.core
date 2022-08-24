@@ -1,15 +1,19 @@
-﻿using System.Runtime.CompilerServices;
+﻿namespace Gdk;
 
-namespace Gdk;
-
-internal partial class Module
+public class Module
 {
-    [ModuleInitializer]
-    internal static void Initialize()
-    {
-        Internal.ImportResolver.RegisterAsDllImportResolver();
-        RegisterTypes();
-    }
+    private static bool IsInitialized;
 
-    static partial void RegisterTypes();
+    public static void Initialize()
+    {
+        if (IsInitialized)
+            return;
+
+        GObject.Module.Initialize();
+
+        Internal.ImportResolver.RegisterAsDllImportResolver();
+        Internal.TypeRegistration.RegisterTypes();
+
+        IsInitialized = true;
+    }
 }

@@ -24,6 +24,9 @@ namespace TextEditor
         }
 
         public static int Main(string[] args)
-            => new App().Run();
+        {
+            Gtk.Module.Initialize();
+            return new App().Run();
+        }
     }
 }

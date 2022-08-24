@@ -1,7 +1,7 @@
 ﻿using Generator.Model;
 using Generator.Renderer;
 
-namespace Generator.Generator.Public;
+namespace Generator.Generator.Internal;
 
 internal class FrameworkTypeRegistration : Generator<GirModel.Namespace>
 {
@@ -17,12 +17,12 @@ internal class FrameworkTypeRegistration : Generator<GirModel.Namespace>
         if (ns.Name == "GLib")
             return;//We can not register any type of GLib as GLib is not using the GObject type system
 
-        var source = Renderer.Public.FrameworkTypeRegistration.Render(ns);
+        var source = Renderer.Internal.FrameworkTypeRegistration.Render(ns);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(ns),
-            Name: "Module.TypeRegistration",
+            Name: "TypeRegistration",
             Source: source,
-            IsInternal: false
+            IsInternal: true
         );
 
         _publisher.Publish(codeUnit);

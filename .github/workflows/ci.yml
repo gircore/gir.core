@@ -38,7 +38,7 @@ jobs:
       - name: Prepare .NET
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.0.102'
+          dotnet-version: '6.0.x'
 
       - name: Call generator
         run: dotnet fsi GenerateLibs.fsx

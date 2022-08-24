@@ -1,6 +1,6 @@
 ﻿using Gtk;
 
-Functions.Init();
+Gtk.Module.Initialize();
 
 var mainWindow = new Window("Hello Gtk!");
 mainWindow.OnDestroy += (obj, args) => Functions.MainQuit();
