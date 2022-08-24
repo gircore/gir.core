@@ -27,7 +27,7 @@ internal static class Methods
 {DocComments.Render(method.Parameters)}
 {DocComments.Render(method.ReturnType)}
 {VersionAttribute.Render(method.Version)}
-[DllImport(ImportResolver.Library, EntryPoint = ""{ method.CIdentifier }"")]
-public static extern { ReturnType.Render(method.ReturnType) } { Method.GetInternalName(method) }({InstanceParameters.Render(method.InstanceParameter)}{separator}{ Parameters.Render(method.Parameters) });";
+[DllImport(ImportResolver.Library, EntryPoint = ""{method.CIdentifier}"")]
+public static extern {ReturnType.Render(method.ReturnType)} {Method.GetInternalName(method)}({InstanceParameters.Render(method.InstanceParameter)}{separator}{Parameters.Render(method.Parameters)});";
     }
 }

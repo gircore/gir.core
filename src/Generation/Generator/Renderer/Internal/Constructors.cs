@@ -24,7 +24,7 @@ internal static class Constructors
 {DocComments.Render(constructor.Parameters)}
 {DocComments.Render(constructor.ReturnType)}
 {VersionAttribute.Render(constructor.Version)}
-[DllImport(ImportResolver.Library, EntryPoint = ""{ constructor.CIdentifier }"")]
-public static extern { ReturnType.Render(constructor.ReturnType) } { Constructor.GetName(constructor) }({ Parameters.Render(constructor.Parameters) });";
+[DllImport(ImportResolver.Library, EntryPoint = ""{constructor.CIdentifier}"")]
+public static extern {ReturnType.Render(constructor.ReturnType)} {Constructor.GetName(constructor)}({Parameters.Render(constructor.Parameters)});";
     }
 }
