@@ -21,13 +21,23 @@ namespace Gtk.Tests
         [DataTestMethod]
         [DataRow("NewTitle")]
         [DataRow("Some Text With Unicode ☀🌙🌧")]
-        [DataRow(null)]
         public void TestStringProperty(string str)
         {
             var window = new Window("TestWindow");
             window.Title = str;
 
             window.Title.Should().Be(str);
+        }
+
+        [TestMethod]
+        public void TestNullStringProperty()
+        {
+            var title = "Title";
+            var window = new Window("TestWindow");
+            window.Title = title;
+            window.Title.Should().Be(title);
+            window.Title = null;
+            window.Title.Should().BeNull();
         }
 
         [DataTestMethod]
@@ -90,11 +100,12 @@ namespace Gtk.Tests
         public void TestObject()
         {
             var pixbuf = GdkPixbuf.Pixbuf.NewFromFile("test.bmp");
-            var aboutDialog = new AboutDialog();
-
-            aboutDialog.Logo.Should().BeNull();
-            aboutDialog.Logo = pixbuf;
-            aboutDialog.Logo.Should().Be(pixbuf);
+            var window = new Window("Test");
+            window.Icon.Should().BeNull();
+            window.Icon = pixbuf;
+            window.Icon.Should().Be(pixbuf);
+            window.Icon = null;
+            window.Icon.Should().BeNull();
         }
     }
 }
