@@ -4,6 +4,7 @@
     {
         string GirModel.Parameter.Name => Name;
         int? GirModel.Parameter.Closure => ClosureIndex;
+        int? GirModel.Parameter.Destroy => DestroyIndex;
         bool GirModel.Parameter.IsPointer => TypeReference.CTypeReference?.IsPointer ?? false;
         bool GirModel.Parameter.IsConst => TypeReference.CTypeReference?.IsConst ?? false;
         bool GirModel.Parameter.IsVolatile => TypeReference.CTypeReference?.IsVolatile ?? false;
@@ -14,6 +15,6 @@
         };
         GirModel.Direction GirModel.Parameter.Direction => Direction.ToGirModel();
         GirModel.Transfer GirModel.Parameter.Transfer => Transfer.ToGirModel();
-        GirModel.Scope GirModel.Parameter.Scope => CallbackScope.ToGirModel();
+        GirModel.Scope? GirModel.Parameter.Scope => CallbackScope.ToGirModel();
     }
 }

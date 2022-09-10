@@ -4,12 +4,11 @@ namespace Generator.Renderer.Public;
 
 internal static class BitfieldParameter
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public static ParameterTypeData Create(GirModel.Parameter parameter)
     {
-        return new RenderableParameter(
+        return new ParameterTypeData(
             Direction: GetDirection(parameter),
-            NullableTypeName: GetNullableTypeName(parameter),
-            Name: Parameter.GetName(parameter)
+            NullableTypeName: GetNullableTypeName(parameter)
         );
     }
 

@@ -6,7 +6,7 @@ internal static class CallbackNotifiedHandler
 {
     public static string Render(GirModel.Callback callback)
     {
-        var handlerName = callback.Name + "NotifiedHandler";
+        var handlerName = Callback.GetNotifiedHandlerName(callback);
 
         return $@"
 using System;
@@ -27,36 +27,35 @@ namespace {Namespace.GetPublicName(callback.Namespace)}
     /// destroy_notify callback parameter. 
     /// </summary>
     {PlatformSupportAttribute.Render(callback as GirModel.PlatformDependent)}
-    public class {handlerName} : IDisposable
+    public class {handlerName}
     {{
-        public event EventHandler<EventArgs>? OnDestroyNotify;
-        public {Namespace.GetInternalName(callback.Namespace)}.{callback.Name} NativeCallback;
-        public GLib.Internal.DestroyNotify DestroyNotify;
+        public {Namespace.GetInternalName(callback.Namespace)}.{callback.Name}? NativeCallback;
+        public GLib.Internal.DestroyNotify? DestroyNotify;
 
-        private {callback.Name} managedCallback;
+        private {callback.Name}? managedCallback;
         private GCHandle gch;
 
-        public {handlerName}({callback.Name} managed)
+        public {handlerName}({callback.Name}? managed)
         {{
             DestroyNotify = DestroyCallback;
             managedCallback = managed;
-            gch = GCHandle.Alloc(this);
+            
+            if (managedCallback is null)
+            {{
+                NativeCallback = null;
+                DestroyNotify = null;
+            }}
+            else
+            {{
+                gch = GCHandle.Alloc(this);
 
-            {CallbackCommonHandlerRenderUtils.RenderNativeCallback(callback)}
+                {CallbackCommonHandlerRenderUtils.RenderNativeCallback(callback, GirModel.Scope.Notified)}
+            }}
         }}
 
         private void DestroyCallback(IntPtr userData)
         {{
-            OnDestroyNotify?.Invoke(this, EventArgs.Empty);
-
-            // Allow for garbage collection
             gch.Free();
-        }}
-        
-        public void Dispose()
-        {{
-            if (gch.IsAllocated)
-                gch.Free();
         }}
     }}
 }}";

@@ -18,11 +18,13 @@ namespace GirLoader.Output
             if (parameter.VarArgs is { })
                 throw new VarArgsNotSupportedException("Arguments containing variadic paramters are not supported.");
 
-            Scope callbackScope = parameter.Scope switch
+            Scope? callbackScope = parameter.Scope switch
             {
                 "async" => Scope.Async,
                 "notified" => Scope.Notified,
-                _ => Scope.Call,
+                "call" => Scope.Call,
+                "forever" => Scope.Forever,
+                _ => null
             };
 
             if (parameter.Name is null)

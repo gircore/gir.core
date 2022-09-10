@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Generator.Model;
+using GirModel;
+using Parameter = Generator.Model.Parameter;
 
 namespace Generator.Renderer.Public;
 
 internal static class CallbackCommonHandlerRenderUtils
 {
-    public static string RenderNativeCallback(GirModel.Callback callback)
+    public static string RenderNativeCallback(GirModel.Callback callback, Scope? scope)
     {
         string? nativeCallback;
 
@@ -18,6 +19,7 @@ internal static class CallbackCommonHandlerRenderUtils
 NativeCallback = ({callback.Parameters.Select(Parameter.GetName).Join(", ")}) => {{
     {RenderConvertParameterStatements(callback, out IEnumerable<string> parameters)}
     {RenderCallStatement(callback, parameters, out var resultVariableName)}
+    {RenderFreeStatement(scope)}
     {RenderReturnStatement(callback, resultVariableName)}
 }};";
         }
@@ -29,17 +31,6 @@ NativeCallback = ({callback.Parameters.Select(Parameter.GetName).Join(", ")}) =>
 
         return nativeCallback;
 
-    }
-
-    private static string RenderCallStatement(GirModel.Callback callback, IEnumerable<string> parameterNames, out string resultVariableName)
-    {
-        resultVariableName = "managedCallbackResult";
-        var call = $"managedCallback({parameterNames.Join(", ")});";
-
-        if (callback.ReturnType.AnyType.Is<GirModel.Void>())
-            return call;
-
-        return $"var {resultVariableName} = " + call;
     }
 
     private static string RenderConvertParameterStatements(GirModel.Callback callback, out IEnumerable<string> parameters)
@@ -56,6 +47,24 @@ NativeCallback = ({callback.Parameters.Select(Parameter.GetName).Join(", ")}) =>
         parameters = names;
 
         return call.ToString();
+    }
+
+    private static string RenderCallStatement(GirModel.Callback callback, IEnumerable<string> parameterNames, out string resultVariableName)
+    {
+        resultVariableName = "managedCallbackResult";
+        var call = $"managedCallback({parameterNames.Join(", ")});";
+
+        if (callback.ReturnType.AnyType.Is<GirModel.Void>())
+            return call;
+
+        return $"var {resultVariableName} = " + call;
+    }
+
+    private static string RenderFreeStatement(Scope? scope)
+    {
+        return scope == Scope.Async
+            ? "gch.Free();"
+            : string.Empty;
     }
 
     private static string RenderReturnStatement(GirModel.Callback callback, string returnVariableName)

@@ -6,12 +6,6 @@ namespace Gio
 {
     public partial class DBusConnection
     {
-        #region Fields
-
-        private AsyncReadyCallbackAsyncHandler? _callAsyncCallbackHandler;
-
-        #endregion
-
         #region Static methods
 
         public static DBusConnection Get(BusType busType)
@@ -40,10 +34,9 @@ namespace Gio
                 tcs.SetResult(new Variant(ret));
             }
 
-            //TODO: Use on time CallbackHandler
-            _callAsyncCallbackHandler = new AsyncReadyCallbackAsyncHandler(Callback);
+            var callAsyncCallbackHandler = new AsyncReadyCallbackAsyncHandler(Callback);
 
-            Internal.DBusConnection.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, -1, IntPtr.Zero, _callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
+            Internal.DBusConnection.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, -1, IntPtr.Zero, callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
 
             return tcs.Task;
         }
@@ -56,12 +49,6 @@ namespace Gio
             Error.ThrowOnError(error);
 
             return new Variant(ret);
-        }
-
-        public override void Dispose()
-        {
-            _callAsyncCallbackHandler?.Dispose();
-            base.Dispose();
         }
 
         #endregion

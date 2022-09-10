@@ -6,7 +6,7 @@ internal static class CallbackAsyncHandler
 {
     public static string Render(GirModel.Callback callback)
     {
-        var handlerName = callback.Name + "AsyncHandler";
+        var handlerName = Callback.GetAsyncHandlerName(callback);
 
         return $@"
 using System;
@@ -25,7 +25,7 @@ namespace {Namespace.GetPublicName(callback.Namespace)}
     /// be called precisely once, after which it is then available for garbage collection.
     /// </summary>
     {PlatformSupportAttribute.Render(callback as GirModel.PlatformDependent)}
-    public class {handlerName} : IDisposable
+    public class {handlerName}
     {{
         private {callback.Name} managedCallback;
         private GCHandle gch;
@@ -36,13 +36,7 @@ namespace {Namespace.GetPublicName(callback.Namespace)}
         {{
             managedCallback = managed;
             gch = GCHandle.Alloc(this);
-            {CallbackCommonHandlerRenderUtils.RenderNativeCallback(callback)}
-        }}
-        
-        public void Dispose()
-        {{
-            if (gch.IsAllocated)
-                gch.Free();
+            {CallbackCommonHandlerRenderUtils.RenderNativeCallback(callback, GirModel.Scope.Async)}
         }}
     }}
 }}";
