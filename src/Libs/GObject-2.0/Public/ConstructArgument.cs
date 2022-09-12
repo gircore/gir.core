@@ -17,7 +17,7 @@ namespace GObject
         /// <summary>
         /// The value of the property.
         /// </summary>
-        public Value Value { get; }
+        public Value? Value { get; }
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace GObject
         private ConstructArgument(string name, object? value)
         {
             Name = name;
-            Value = Value.From(value);
+            Value = value is null ? null : Value.From(value);
         }
 
         #endregion
@@ -46,11 +46,11 @@ namespace GObject
         /// </returns>
         public static ConstructArgument With<T>(Property<T> property, T value) => new ConstructArgument(property.Name, value);
 
-        public static ConstructArgument With(string propertyName, object value) => new ConstructArgument(propertyName, value);
+        public static ConstructArgument With(string propertyName, object? value) => new ConstructArgument(propertyName, value);
 
         public void Dispose()
         {
-            Value.Dispose();
+            Value?.Dispose();
         }
 
         #endregion

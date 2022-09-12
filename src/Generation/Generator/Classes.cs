@@ -21,6 +21,7 @@ public static class Classes
             new Generator.Internal.ClassMethods(publisher),
             new Generator.Internal.ClassStruct(publisher),
             new Generator.Public.ClassConstructors(publisher),
+            new Generator.Public.ClassConstructOnlyProperties(publisher),
             new Generator.Public.ClassMethods(publisher),
             new Generator.Public.ClassProperties(publisher),
             new Generator.Public.ClassFramework(publisher),

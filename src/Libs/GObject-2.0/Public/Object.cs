@@ -68,14 +68,18 @@ namespace GObject
 
         private Internal.ValueData[] GetValues(ConstructArgument[] constructParameters)
         {
-            var values = new Internal.ValueData[constructParameters.Length];
+            var values = constructParameters
+                .Where(x => x.Value is not null)
+                .ToList();
+            
+            var valueData = new Internal.ValueData[values.Count];
 
-            for (int i = 0; i < constructParameters.Length; i++)
+            for (int i = 0; i < values.Count; i++)
             {
-                values[i] = constructParameters[i].Value.GetData();
+                valueData[i] = values[i].Value!.GetData();
             }
 
-            return values;
+            return valueData;
         }
 
         /// <summary>
