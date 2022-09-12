@@ -60,15 +60,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLib-2.0.Tests", "Tests\Lib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gio-2.0.Tests", "Tests\Libs\Gio-2.0.Tests\Gio-2.0.Tests.csproj", "{76DD0496-67BC-4B86-BBE1-5648CAF0C719}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GdkPixbuf", "GdkPixbuf", "{7A71B07F-B28B-4DDA-B1EA-565194056951}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GdkPixbuf-2.0", "GdkPixbuf-2.0", "{7A71B07F-B28B-4DDA-B1EA-565194056951}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMemoryLeaks", "Samples\GdkPixbuf\TestMemoryLeaks\TestMemoryLeaks.csproj", "{46E769E2-FEC7-43EA-99B8-E7A7294D68B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMemoryLeaks", "Samples\GdkPixbuf-2.0\TestMemoryLeaks\TestMemoryLeaks.csproj", "{46E769E2-FEC7-43EA-99B8-E7A7294D68B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atk-1.0", "Libs\Atk-1.0\Atk-1.0.csproj", "{C2432595-F82E-4DF1-96FA-BD6B4D470010}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window", "Samples\Gtk3\Window\Window.csproj", "{F450E603-4DCA-473A-A9D6-EAD96421F338}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLoading", "Samples\GdkPixbuf\TestLoading\TestLoading.csproj", "{2BB1527F-D7A1-44BA-A297-4E69A3A4411C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLoading", "Samples\GdkPixbuf-2.0\TestLoading\TestLoading.csproj", "{2BB1527F-D7A1-44BA-A297-4E69A3A4411C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-3.0.Tests", "Tests\Libs\Gtk-3.0.Tests\Gtk-3.0.Tests.csproj", "{F86D983A-9881-4BE7-AF92-FA0CE41FB319}"
 EndProject
