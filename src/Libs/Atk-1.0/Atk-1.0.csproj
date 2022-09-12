@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>GirCore.Atk</PackageId>
+    <PackageId>GirCore.Atk-1.0</PackageId>
     <RootNamespace>Atk</RootNamespace>
   </PropertyGroup>
   <ItemGroup>

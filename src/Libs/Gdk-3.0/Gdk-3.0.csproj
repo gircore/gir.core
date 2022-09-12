@@ -8,7 +8,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>GirCore.Gdk3</PackageId>
+    <PackageId>GirCore.Gdk-3.0</PackageId>
     <RootNamespace>Gdk</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>

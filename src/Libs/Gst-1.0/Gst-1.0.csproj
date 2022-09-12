@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>GirCore.Gst</PackageId>
+    <PackageId>GirCore.Gst-1.0</PackageId>
     <RootNamespace>Gst</RootNamespace>
   </PropertyGroup>
 

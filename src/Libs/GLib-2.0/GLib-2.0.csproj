@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>GirCore.GLib</PackageId>
+    <PackageId>GirCore.GLib-2.0</PackageId>
     <RootNamespace>GLib</RootNamespace>
   </PropertyGroup>
 </Project>
