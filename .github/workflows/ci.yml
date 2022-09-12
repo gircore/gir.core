@@ -13,7 +13,7 @@ on:
         type: boolean
   push:
     branches:
-      - develop
+      - main
     paths-ignore:
       - '**.md'
   pull_request:

@@ -13,11 +13,6 @@ on:
     #        │  │ │ │ │
     #        *  * * * *
     - cron: '30 3 * * *'
-  #push:
-  #  branches: [ develop ]
-  #pull_request:
-  #  # The branches below must be a subset of the branches above
-  #  branches: [ develop ]
 
 jobs:
   analyze:
