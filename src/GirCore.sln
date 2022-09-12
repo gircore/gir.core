@@ -149,17 +149,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarfBuzz-0.0", "Libs\HarfBu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-4.0", "Libs\Gtk-4.0\Gtk-4.0.csproj", "{67EAFE46-6D20-4B24-AF73-67489DC903E5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gtk4", "Gtk4", "{7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gtk-4.0", "Gtk-4.0", "{7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window", "Samples\Gtk4\Window\Window.csproj", "{AD618F85-F8F5-454B-9CA0-ABF936492065}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window", "Samples\Gtk-4.0\Window\Window.csproj", "{AD618F85-F8F5-454B-9CA0-ABF936492065}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboutDialog", "Samples\Gtk4\AboutDialog\AboutDialog.csproj", "{4008E1B8-AC7D-4CC8-AB74-8576493C4FDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboutDialog", "Samples\Gtk-4.0\AboutDialog\AboutDialog.csproj", "{4008E1B8-AC7D-4CC8-AB74-8576493C4FDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cairo-1.0.Tests", "Tests\Libs\Cairo-1.0.Tests\Cairo-1.0.Tests.csproj", "{DE84D292-F45E-4807-893F-294AE0BBCD06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawingArea", "Samples\Gtk4\DrawingArea\DrawingArea.csproj", "{C5875DAA-61E4-4319-911A-523FE47A89F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawingArea", "Samples\Gtk-4.0\DrawingArea\DrawingArea.csproj", "{C5875DAA-61E4-4319-911A-523FE47A89F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builder", "Samples\Gtk4\Builder\Builder.csproj", "{D215B861-1A51-436A-82EB-FCF7AF892748}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builder", "Samples\Gtk-4.0\Builder\Builder.csproj", "{D215B861-1A51-436A-82EB-FCF7AF892748}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{82ACABCF-0CE8-40ED-9402-8499407E846F}"
 	ProjectSection(SolutionItems) = preProject
@@ -168,7 +168,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkDependencyInjection", "Extensions\GtkDependencyInjection\GtkDependencyInjection.csproj", "{2DA15D43-DF53-49A5-AFA7-00E906CE7D39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection", "Samples\Gtk4\DependencyInjection\DependencyInjection.csproj", "{17F42864-8233-4B08-86C5-5E49DA35C2C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection", "Samples\Gtk-4.0\DependencyInjection\DependencyInjection.csproj", "{17F42864-8233-4B08-86C5-5E49DA35C2C2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gst-1.0", "Gst-1.0", "{330F0517-BB42-4C5B-BC85-589F1461C7AA}"
 EndProject
