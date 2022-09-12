@@ -7,7 +7,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>GirCore.GstBase</PackageId>
+    <PackageId>GirCore.GstBase-1.0</PackageId>
     <RootNamespace>GstBase</RootNamespace>
   </PropertyGroup>
 </Project>

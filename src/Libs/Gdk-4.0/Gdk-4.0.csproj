@@ -8,7 +8,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>GirCore.Gdk4</PackageId>
+    <PackageId>GirCore.Gdk-4.0</PackageId>
     <RootNamespace>Gdk</RootNamespace>
   </PropertyGroup>
 </Project>

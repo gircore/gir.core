@@ -8,7 +8,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>GirCore.Pango</PackageId>
+    <PackageId>GirCore.Pango-1.0</PackageId>
     <RootNamespace>Pango</RootNamespace>
   </PropertyGroup>
 </Project>
