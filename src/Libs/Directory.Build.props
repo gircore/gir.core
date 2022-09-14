@@ -4,10 +4,16 @@
   
   <PropertyGroup>
     <VersionPrefix>0.0.3</VersionPrefix>
+    <PackageReadmeFile>NugetReadme.md</PackageReadmeFile>
+    <PackageTags>gobject;gir;binding;gnome;</PackageTags>
   </PropertyGroup>
   
   <PropertyGroup Condition="$(GenerateDocumentationFile) == 'True'">
     <NoWarn>1591</NoWarn>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="../../NugetReadme.md" Pack="true" PackagePath="/"/>
+  </ItemGroup>
 </Project>

@@ -95,6 +95,7 @@ ProjectSection(SolutionItems) = preProject
 	GirCore.Testing.props = GirCore.Testing.props
 	CleanLibs.fsx = CleanLibs.fsx
 	GenerateLibs.fsx = GenerateLibs.fsx
+	NugetReadme.md = NugetReadme.md
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}"
