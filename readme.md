@@ -5,7 +5,7 @@
 [![Continuous integration status](https://github.com/GirCore/gir.core/workflows/Continuous%20integration/badge.svg?branch=develop)](https://github.com/gircore/gir.core/actions)
 [![Website depolyment status](https://github.com/GirCore/gircore.github.io/workflows/Deploy%20website/badge.svg?branch=develop)](https://github.com/gircore/gircore.github.io/actions)
 
-Gir.Core is a C# wrapper for [GObject]-based libraries like [GTK] for user interfaces.
+Gir.Core provides C# bindings for several [GObject] based libraries like [GTK] for user interfaces.
 
 This project aims to provide a complete set of APIs for writing rich cross-platform user interfaces and multimedia programs. It is built upon the well-established [GObject Introspection][gi] framework for language bindings.
 

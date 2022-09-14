@@ -5,7 +5,8 @@
     <Company>GirCore</Company>
     <owners>badcel</owners>
 
-    <RepositoryUrl>https://github.com/GirCore/gir.core</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/gircore/gir.core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/gircore/gir.core.git</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
