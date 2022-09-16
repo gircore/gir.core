@@ -96,13 +96,12 @@ ProjectSection(SolutionItems) = preProject
 	CleanLibs.fsx = CleanLibs.fsx
 	GenerateLibs.fsx = GenerateLibs.fsx
 	NugetReadme.md = NugetReadme.md
+	..\readme.md = ..\readme.md
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}"
 ProjectSection(SolutionItems) = preProject
-	..\docs\contributing.md = ..\docs\contributing.md
-	..\docs\windows.md = ..\docs\windows.md
-	..\readme.md = ..\readme.md
+	..\docs\readme.md = ..\docs\readme.md
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{C48DB577-12BB-4AA8-8734-802A39C093BE}"
@@ -174,6 +173,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gst-1.0", "Gst-1.0", "{330F0517-BB42-4C5B-BC85-589F1461C7AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gio-2.0", "Gio-2.0", "{313F5668-37BB-4002-8CD8-C10A06049733}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4EE9860B-6684-4369-A7F3-E0975E34F249}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\docs\contributing.md = ..\docs\docs\contributing.md
+		..\docs\docs\windows.md = ..\docs\docs\windows.md
+		..\docs\docs\libraries.md = ..\docs\docs\libraries.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -785,5 +791,6 @@ Global
 		{6D2A7966-FED3-4FD5-94DF-BBD6C5D04886} = {330F0517-BB42-4C5B-BC85-589F1461C7AA}
 		{313F5668-37BB-4002-8CD8-C10A06049733} = {1F2E4087-585C-4B48-8E3D-700D949A15DB}
 		{48A4AF23-C232-4498-9D25-B4620ECD9325} = {313F5668-37BB-4002-8CD8-C10A06049733}
+		{4EE9860B-6684-4369-A7F3-E0975E34F249} = {0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}
 	EndGlobalSection
 EndGlobal
