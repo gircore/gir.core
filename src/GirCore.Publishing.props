@@ -9,5 +9,15 @@
     <RepositoryUrl>https://github.com/gircore/gir.core.git</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <VersionPrefix>0.0.3</VersionPrefix>
+    <PackageReadmeFile>NugetReadme.md</PackageReadmeFile>
+    <PackageTags>gobject;gir;binding;gnome;</PackageTags>
+    <PackageIcon>logo-128.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../NugetReadme.md" Pack="true" PackagePath="/"/>
+    <None Include="../../../img/logo-128.png" Pack="true" PackagePath="/"/>
+  </ItemGroup>
 </Project>
