@@ -166,7 +166,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 		Extensions\Directory.Build.props = Extensions\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkDependencyInjection", "Extensions\GtkDependencyInjection\GtkDependencyInjection.csproj", "{2DA15D43-DF53-49A5-AFA7-00E906CE7D39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-4.0.DependencyInjection", "Extensions\Gtk-4.0.DependencyInjection\Gtk-4.0.DependencyInjection.csproj", "{2DA15D43-DF53-49A5-AFA7-00E906CE7D39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection", "Samples\Gtk-4.0\DependencyInjection\DependencyInjection.csproj", "{17F42864-8233-4B08-86C5-5E49DA35C2C2}"
 EndProject

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageId>GirCore.Gtk4.DependencyInjection</PackageId>
+    <PackageId>GirCore.Gtk-4.0.DependencyInjection</PackageId>
     <RootNamespace>Gtk.Extensions.DependencyInjection</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
