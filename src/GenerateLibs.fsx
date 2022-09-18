@@ -23,6 +23,7 @@ let girFiles =
         "Graphene-1.0.gir"
         "Gsk-4.0.gir"
         "Gtk-4.0.gir"
+        "Adw-1.gir"
     |]
     |> String.concat " "
 
