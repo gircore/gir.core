@@ -7,5 +7,6 @@
   <PropertyGroup>
     <PackageId>GirCore.GdkPixbuf-2.0</PackageId>
     <RootNamespace>GdkPixbuf</RootNamespace>
+    <Description>C# bindings for GdkPixbuf.</Description>
   </PropertyGroup>
 </Project>

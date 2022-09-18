@@ -12,5 +12,6 @@
   <PropertyGroup>
     <PackageId>GirCore.GObject-2.0</PackageId>
     <RootNamespace>GObject</RootNamespace>
+    <Description>C# bindings for GObject.</Description>
   </PropertyGroup>
 </Project>

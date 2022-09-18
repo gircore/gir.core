@@ -11,5 +11,6 @@
   <PropertyGroup>
     <PackageId>GirCore.GstPbutils-1.0</PackageId>
     <RootNamespace>GstPbutils</RootNamespace>
+    <Description>C# bindings for GStreamer.</Description>
   </PropertyGroup>
 </Project>

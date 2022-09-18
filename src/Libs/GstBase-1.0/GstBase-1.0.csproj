@@ -9,5 +9,6 @@
   <PropertyGroup>
     <PackageId>GirCore.GstBase-1.0</PackageId>
     <RootNamespace>GstBase</RootNamespace>
+    <Description>C# bindings for GStreamer.</Description>
   </PropertyGroup>
 </Project>
