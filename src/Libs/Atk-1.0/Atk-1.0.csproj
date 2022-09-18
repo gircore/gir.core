@@ -2,6 +2,7 @@
   <PropertyGroup>
     <PackageId>GirCore.Atk-1.0</PackageId>
     <RootNamespace>Atk</RootNamespace>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
