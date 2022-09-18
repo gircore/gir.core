@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PackageId>GirCore.Gio-2.0</PackageId>
     <RootNamespace>Gio</RootNamespace>
+    <Description>C# bindings for Gio.</Description>
   </PropertyGroup>
 
   <ItemGroup>

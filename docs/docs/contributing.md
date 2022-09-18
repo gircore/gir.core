@@ -1,9 +1,7 @@
 # Contributing
-Contributing to gir.core is very easy. If there is something wrong or missing just open an issue to get in contact.
+Contributing to gir.core is very easy. If there is something wrong or missing just open an issue to get in contact or join [#gircore on matrix](https://matrix.to/#/#gircore:matrix.org?via=matrix.org).
 
-Contributing code is very welcome, too. Either look for issues with the `enhancement` Tag and get in contact or just create a pull request containing the improvements.
-
-If a pull request contributes new code, please be aware of the project's [license](LICENSE). For easy adoption of the code please adhere to the following coding guidelines.
+If a pull request contributes new code, please be aware of the project's [license](https://github.com/gircore/gir.core/blob/main/license.txt). For easy adoption of the code please adhere to the following coding guidelines.
 
 ## Coding Guidelines
 The following guidelines aim to provide a framework to write code in a consistent style. If the following guidelines are incomplete the official [C# coding conventions](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions) and [framework design guidelines](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/) apply.

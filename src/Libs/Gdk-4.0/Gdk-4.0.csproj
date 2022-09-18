@@ -10,5 +10,6 @@
   <PropertyGroup>
     <PackageId>GirCore.Gdk-4.0</PackageId>
     <RootNamespace>Gdk</RootNamespace>
+    <Description>C# bindings for Gdk.</Description>
   </PropertyGroup>
 </Project>

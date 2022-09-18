@@ -7,5 +7,6 @@
   <PropertyGroup>
     <PackageId>GirCore.Gtk-4.0</PackageId>
     <RootNamespace>Gtk</RootNamespace>
+    <Description>C# bindings for Gtk.</Description>
   </PropertyGroup>
 </Project>

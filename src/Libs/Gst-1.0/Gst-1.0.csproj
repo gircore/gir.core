@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PackageId>GirCore.Gst-1.0</PackageId>
     <RootNamespace>Gst</RootNamespace>
+    <Description>C# bindings for GStreamer.</Description>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <PackageId>GirCore.Graphene-1.0</PackageId>
     <RootNamespace>Graphene</RootNamespace>
+    <Description>C# bindings for Graphene.</Description>
   </PropertyGroup>
 
   <ItemGroup>

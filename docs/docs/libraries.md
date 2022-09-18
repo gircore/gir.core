@@ -9,6 +9,9 @@ Supported widgets are for example: Windows, dialogs, labels, images, spinner, pr
 
 ![A picture of an example gtk application][GtkApp]
 
+## libadwaita
+[libadwaita] extends GTK with new widgets to comply to the GNOME human interface guidelines. Additionally it supports mobile devices meaning full blown applications automatically adopt their UI to different view modes, if the available space changes.
+
 ## GIO
 [GIO] is a library to allow easy access to input / output operations. Currently there is initial support for [DBus] operations. DBus is a standardized IPC-Framework which all major linux desktops use for interprocess communication.
 
@@ -29,9 +32,6 @@ The bindings make it easy to:
 
 ## libshumate (planned)
 [libshumate] is map component for GTK and can be used to embed maps into an application widget. By default it uses openstreetmap.
-
-## libadwaita (planned)
-[libadwaita] extends GTK with new widgets, to support mobile devices. Meaning full blown applications automatically adopt their UI to different view modes,if the available space changes.
 
 [DBus]: https://www.freedesktop.org/wiki/Software/dbus/
 [GIO]: https://developer.gnome.org/gio/stable/

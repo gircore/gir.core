@@ -9,7 +9,7 @@ Gir.Core provides C# bindings for several [GObject] based libraries like [GTK] f
 
 This project aims to provide a complete set of APIs for writing rich cross-platform user interfaces and multimedia programs. It is built upon the well-established [GObject Introspection][gi] framework for language bindings.
 
-### Features
+## Features
 * **Idiomatic C#:** An API which feels natural to C# developers (including the async/await feature).
 * **Simplicity:** Memory management is handled automatically, greatly simplifying the C-API.
 * **Complete API:** Support for the entire GTK and GStreamer stack, enabling feature-rich applications which deeply integrate with the OS.
@@ -19,49 +19,40 @@ This project aims to provide a complete set of APIs for writing rich cross-platf
 ## Status
 We are currently in a period of heavy iteration over the core internals of the project. The code is under heavy development and not ready for production. There are some pre release nuget packages available for testing purposes. Feel free to visit the [nuget organization][GirCoreNuget] to get an overview.
 
-### Supported Libraries
+## Supported Libraries
 
-| Library        | Description                                      | Level of Support |
-|----------------|--------------------------------------------------|------------------|
-| GTK 3          | UI-Toolkit                                       | Partial          |
-| GTK 4          | UI-Toolkit                                       | Partial          |
-| GStreamer      | Multimedia Framework                             | Partial          |
-| Cairo          | Graphics Library                                 | Partial          |
-| Pango          | Font/Text Library                                | Partial          |
-| Gio            | Library for high level application functionality | Partial          |
-| GdkPixbuf      | Image loading in various formats                 | Partial          |
-| libshumate     | Library to display maps                          | Planned          |
-| WebKitGTK      | Browser Engine                                   | [Planned](https://github.com/gircore/gir.core/issues/568)      |
-| JavaScriptCore | JavaScript engine for WebKit                     | Planned          |
+| Library                     | Description                                      | Level of Support |
+|-----------------------------|--------------------------------------------------|------------------|
+| GTK 3                       | UI-Toolkit                                       | Partial          |
+| [GTK-4.0][Gtk4Nuget]        | UI-Toolkit                                       | Partial          |
+| Libadwaita                  | Building blocks for modern GNOME applications    | Partial          |
+| [GStreamer][GstNuget]       | Multimedia Framework                             | Partial          |
+| [Cairo][CairoNuget]         | Graphics Library                                 | Partial          |
+| [Pango][PangoNuget]         | Font/Text Library                                | Partial          |
+| [Gio][GioNuget]             | Library for high level application functionality | Partial          |
+| [GdkPixbuf][GdkPixbufNuget] | Image loading in various formats                 | Partial          |
+| libshumate                  | Library to display maps                          | Planned          |
+| WebKitGTK                   | Browser Engine                                   | [Planned](https://github.com/gircore/gir.core/issues/568)      |
+| JavaScriptCore              | JavaScript engine for WebKit                     | Planned          |
 
 
 ## Get Involved
-Anyone who wants to help is very welcome. If you want to start working on the project, take a look at our [Good First Issues](https://github.com/gircore/gir.core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or get in touch by starting a [Discussion](https://github.com/gircore/gir.core/discussions).
+Anyone who wants to help is very welcome. If you want to get in contact feel free to chat with us via matrix ([#gircore:matrix.org](https://matrix.to/#/#gircore:matrix.org?via=matrix.org)) or open a [discussion](https://github.com/gircore/gir.core/discussions) and don't forget to check out our [contribution guidelines](docs/docs/contributing.md).
 
-### Matrix Room
-We have a matrix room for discussing gir.core. Please join if you'd like to help (or just want to chat!)
-
-https://matrix.to/#/#gircore:matrix.org?via=matrix.org
-
-## Generate & Use
-To generate the bindings locally follow these steps. Make sure to initialise submodules with `--recursive` otherwise the `gir-files` directory will not be loaded properly.
+## Build
+To generate the bindings locally execute the following commands in a terminal. Make sure to initialise submodules with `--recursive` otherwise the `gir-files` directory will not be loaded properly.
 
 ```sh
 $ git clone --recursive https://github.com/gircore/gir.core.git
 $ cd gir.core/src
 $ dotnet fsi GenerateLibs.fsx
 ```
-If you want to build using Windows please see the accompanying [documentation](docs/windows.md).
 
-### Examples
+The `GenerateLibs.fsx` is a F# script which calls the GirTool to generate the bindings.
 
 If you want to clean the [Libs folder](src/Libs) of all generated files run:
 
     $ dotnet fsi CleanLibs.fsx
-
-To use the newly generated libraries in your project just add a reference to the csproj file of the project you want to use, e.g:
-
-    $ dotnet add reference [RepoPath]/Libs/Gtk/Gtk.csproj
 
 ## Code structure
 The folder structure in this repository is organized as follows:
@@ -93,6 +84,12 @@ The code in the library folder is not complete because most of the code is gener
 [GdkPixbuf]: https://gitlab.gnome.org/GNOME/gdk-pixbuf
 [GtkBuilder]: https://developer.gnome.org/gtk3/stable/GtkBuilder.html
 [GirCoreNuget]: https://www.nuget.org/profiles/GirCore
+[Gtk4Nuget]: https://www.nuget.org/packages/GirCore.Gtk-4.0/
+[GstNuget]: https://www.nuget.org/packages/GirCore.Gst-1.0/
+[CairoNuget]: https://www.nuget.org/packages/GirCore.Cairo-1.0/
+[PangoNuget]: https://www.nuget.org/packages/GirCore.Pango-1.0/
+[GioNuget]: https://www.nuget.org/packages/GirCore.Gio-2.0/
+[GdkPixbufNuget]: https://www.nuget.org/packages/GirCore.GdkPixbuf-2.0/
 
 ## Licensing terms
 Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.

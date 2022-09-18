@@ -2,5 +2,6 @@
   <PropertyGroup>
     <PackageId>GirCore.GLib-2.0</PackageId>
     <RootNamespace>GLib</RootNamespace>
+    <Description>C# bindings for GLib.</Description>
   </PropertyGroup>
 </Project>

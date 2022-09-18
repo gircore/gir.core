@@ -2,6 +2,7 @@
   <PropertyGroup>
     <PackageId>GirCore.Cairo-1.0</PackageId>
     <RootNamespace>Cairo</RootNamespace>
+    <Description>C# bindings for cairo.</Description>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\GLib-2.0\GLib-2.0.csproj" />
