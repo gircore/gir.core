@@ -177,8 +177,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4EE9860B-6684-4369-A7F3-E0975E34F249}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\docs\contributing.md = ..\docs\docs\contributing.md
-		..\docs\docs\windows.md = ..\docs\docs\windows.md
 		..\docs\docs\libraries.md = ..\docs\docs\libraries.md
+		..\docs\docs\use.md = ..\docs\docs\use.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adw-1", "Libs\Adw-1\Adw-1.csproj", "{CC67D284-6ADE-4F4D-9EE0-544143A7FF40}"

@@ -9,7 +9,7 @@ Gir.Core provides C# bindings for several [GObject] based libraries like [GTK] f
 
 This project aims to provide a complete set of APIs for writing rich cross-platform user interfaces and multimedia programs. It is built upon the well-established [GObject Introspection][gi] framework for language bindings.
 
-### Features
+## Features
 * **Idiomatic C#:** An API which feels natural to C# developers (including the async/await feature).
 * **Simplicity:** Memory management is handled automatically, greatly simplifying the C-API.
 * **Complete API:** Support for the entire GTK and GStreamer stack, enabling feature-rich applications which deeply integrate with the OS.
@@ -19,7 +19,7 @@ This project aims to provide a complete set of APIs for writing rich cross-platf
 ## Status
 We are currently in a period of heavy iteration over the core internals of the project. The code is under heavy development and not ready for production. There are some pre release nuget packages available for testing purposes. Feel free to visit the [nuget organization][GirCoreNuget] to get an overview.
 
-### Supported Libraries
+## Supported Libraries
 
 | Library                     | Description                                      | Level of Support |
 |-----------------------------|--------------------------------------------------|------------------|
@@ -37,32 +37,22 @@ We are currently in a period of heavy iteration over the core internals of the p
 
 
 ## Get Involved
-Anyone who wants to help is very welcome. If you want to start working on the project, take a look at our [Good First Issues](https://github.com/gircore/gir.core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or get in touch by starting a [Discussion](https://github.com/gircore/gir.core/discussions).
+Anyone who wants to help is very welcome. If you want to get in contact feel free to chat with us via matrix ([#gircore:matrix.org](https://matrix.to/#/#gircore:matrix.org?via=matrix.org)) or open a [discussion](https://github.com/gircore/gir.core/discussions) and don't forget to check out our [contribution guidelines](docs/docs/contributing.md).
 
-### Matrix Room
-We have a matrix room for discussing gir.core. Please join if you'd like to help (or just want to chat!)
-
-https://matrix.to/#/#gircore:matrix.org?via=matrix.org
-
-## Generate & Use
-To generate the bindings locally follow these steps. Make sure to initialise submodules with `--recursive` otherwise the `gir-files` directory will not be loaded properly.
+## Build
+To generate the bindings locally execute the following commands in a terminal. Make sure to initialise submodules with `--recursive` otherwise the `gir-files` directory will not be loaded properly.
 
 ```sh
 $ git clone --recursive https://github.com/gircore/gir.core.git
 $ cd gir.core/src
 $ dotnet fsi GenerateLibs.fsx
 ```
-If you want to build using Windows please see the accompanying [documentation](docs/windows.md).
 
-### Examples
+The `GenerateLibs.fsx` is a F# script which calls the GirTool to generate the bindings.
 
 If you want to clean the [Libs folder](src/Libs) of all generated files run:
 
     $ dotnet fsi CleanLibs.fsx
-
-To use the newly generated libraries in your project just add a reference to the csproj file of the project you want to use, e.g:
-
-    $ dotnet add reference [RepoPath]/Libs/Gtk/Gtk.csproj
 
 ## Code structure
 The folder structure in this repository is organized as follows:
