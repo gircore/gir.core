@@ -64,7 +64,7 @@ jobs:
 
       - name: Get current time
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: josStorer/get-current-time@v2.0.1
+        uses: josStorer/get-current-time@v2.0.2
         id: current-time
         with:
           format: YYYYMMDD-HHmmss
