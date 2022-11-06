@@ -57,14 +57,22 @@ namespace {Namespace.GetPublicName(cls.Namespace)}
         };
 
         if (IsInitiallyUnowned(cls))
+        {
             constructors.Add($@"
 // As initially unowned objects always start with a floating reference
 // we can safely set the ""owned"" parameter to false.
 protected internal {cls.Name}(params ConstructArgument[] constructArguments) : base(owned: false, constructArguments) {{}}");
+            constructors.Add($"public {cls.Name}() : this(Array.Empty<ConstructArgument>()) {{}}");
+        }
         else if (InheritsInitiallyUnowned(cls))
+        {
             constructors.Add($"protected internal {cls.Name}(params ConstructArgument[] constructArguments) : base(constructArguments) {{}}");
+            constructors.Add($"public {cls.Name}() : this(Array.Empty<ConstructArgument>()) {{}}");
+        }
         else
+        {
             constructors.Add($"protected internal {cls.Name}(bool owned, params ConstructArgument[] constructArguments) : base(owned, constructArguments) {{}}");
+        }
 
         return constructors.Join(Environment.NewLine);
     }
