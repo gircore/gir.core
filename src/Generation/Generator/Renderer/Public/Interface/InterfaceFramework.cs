@@ -21,6 +21,7 @@ namespace {Namespace.GetPublicName(iface.Namespace)}
     {PlatformSupportAttribute.Render(iface as GirModel.PlatformDependent)}
     public partial interface {iface.Name} : GLib.IHandle
     {{
+/*
         IntPtr GLib.IHandle.Handle
         {{
             get
@@ -33,6 +34,7 @@ namespace {Namespace.GetPublicName(iface.Namespace)}
                 return ((GObject.Object)this).Handle;
             }}
         }}
+*/
     }}
 }}";
     }

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using Generator.Fixer;
 using Generator.Generator;
 
 namespace Generator;
 
 public static class Classes
 {
-    public static void Generate(this IEnumerable<GirModel.Class> classes, string path)
+    public static void Generate(IEnumerable<GirModel.Class> classes, string path)
     {
         var publisher = new Publisher(path);
         var generators = new List<Generator<GirModel.Class>>()
@@ -22,17 +21,14 @@ public static class Classes
             new Generator.Internal.ClassStruct(publisher),
             new Generator.Public.ClassConstructors(publisher),
             new Generator.Public.ClassMethods(publisher),
+            new Generator.Public.ClassInterfaceMethods(publisher),
             new Generator.Public.ClassProperties(publisher),
             new Generator.Public.ClassFramework(publisher),
             new Generator.Public.ClassSignals(publisher),
         };
 
         foreach (var cls in classes)
-        {
-            ClassFixer.Fixup(cls);
-
             foreach (var generator in generators)
                 generator.Generate(cls);
-        }
     }
 }

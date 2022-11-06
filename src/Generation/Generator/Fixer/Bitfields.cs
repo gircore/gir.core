@@ -1,11 +1,18 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Generator.Model;
 
 namespace Generator.Fixer;
 
-internal static class BitfieldFixer
+public static class Bitfields
 {
-    public static void Fixup(GirModel.Bitfield bitfield)
+    public static void Fixup(IEnumerable<GirModel.Bitfield> bitfields)
+    {
+        foreach (var bitfield in bitfields)
+            Fixup(bitfield);
+    }
+
+    private static void Fixup(GirModel.Bitfield bitfield)
     {
         DisableDuplicateMembers(bitfield);
     }

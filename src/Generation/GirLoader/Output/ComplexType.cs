@@ -1,6 +1,6 @@
 ﻿namespace GirLoader.Output
 {
-    public abstract class ComplexType : Type
+    public abstract partial class ComplexType : Type
     {
         public Repository Repository { get; }
         public string Name { get; }

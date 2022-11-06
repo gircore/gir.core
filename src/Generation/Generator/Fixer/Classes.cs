@@ -1,14 +1,24 @@
-﻿using Generator.Model;
+﻿using System.Collections.Generic;
+using Generator.Model;
 
 namespace Generator.Fixer;
 
-internal static class ClassFixer
+public static class Classes
 {
-    public static void Fixup(GirModel.Class @class)
+    public static void Fixup(IEnumerable<GirModel.Class> classes)
+    {
+        foreach (var @class in classes)
+            Fixup(@class);
+    }
+
+    private static void Fixup(GirModel.Class @class)
     {
         FixPublicMethodsColldingWithProperties(@class);
         FixInternalMethodsNamedLikeClass(@class);
         FixPropertyNamedLikeClass(@class);
+
+        //TODO: Replace with explicit interface implementation in case of signature collisions
+        FixInterfaceMethodsCollidingWithClassMethods(@class);
     }
 
     private static void FixPublicMethodsColldingWithProperties(GirModel.Class @class)
@@ -56,6 +66,19 @@ internal static class ClassFixer
             {
                 Property.Disable(property);
                 Log.Warning($"Property {property.Name} is named like its containing class. This is not allowed. The property should be created with a suffix and be rewritten to it's original name");
+            }
+        }
+    }
+
+    private static void FixInterfaceMethodsCollidingWithClassMethods(GirModel.Class @class)
+    {
+        foreach (var method in @class.Methods)
+        {
+            var duplicateMethods = Class.DuplicateMethods(@class, method);
+            foreach (var duplicateMethod in duplicateMethods)
+            {
+                Method.Disable(duplicateMethod);
+                Log.Warning($"Disabled method {duplicateMethod.Parent.Name}.{duplicateMethod.Name} for class {@class.Name} as there is a conflicting method on the class.");
             }
         }
     }

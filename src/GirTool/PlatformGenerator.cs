@@ -1,30 +1,34 @@
-﻿using Generator;
-using Generator.Fixer;
-using GirLoader.PlatformSupport;
+﻿using GirLoader.PlatformSupport;
 
 namespace GirTool;
 
 internal static class PlatformGenerator
 {
-    public static void Generate(PlatformHandler platformHandler, string path)
+    public static void Fixup(Namespace @namespace)
     {
-        var @namespace = new Namespace(platformHandler);
-        NamespaceFixer.Fixup(@namespace);
-        @namespace.Generate(path);
-        @namespace.Classes.Generate(path);
-        @namespace.Enumerations.Generate(path);
-        @namespace.Bitfields.Generate(path);
-        @namespace.Records.Generate(path);
-        @namespace.Unions.Generate(path);
-        @namespace.Callbacks.Generate(path);
-        @namespace.Constants.Generate(path);
-        @namespace.Functions.Generate(path);
-        @namespace.Interfaces.Generate(path);
+        Generator.Fixer.Namespace.Fixup(@namespace);
+        Generator.Fixer.Bitfields.Fixup(@namespace.Bitfields);
+        Generator.Fixer.Classes.Fixup(@namespace.Classes);
+        Generator.Fixer.Records.Fixup(@namespace.Records);
+    }
 
-        PlatformSupport.GeneratePlatform(
-            linuxNamespace: platformHandler.LinuxNamespace,
-            macosNamespace: platformHandler.MacosNamespace,
-            windowsNamespace: platformHandler.WindowsNamespace,
+    public static void Generate(Namespace @namespace, string path)
+    {
+        Generator.Framework.Generate(@namespace, path);
+        Generator.Classes.Generate(@namespace.Classes, path);
+        Generator.Enumerations.Generate(@namespace.Enumerations, path);
+        Generator.Bitfields.Generate(@namespace.Bitfields, path);
+        Generator.Records.Generate(@namespace.Records, path);
+        Generator.Unions.Generate(@namespace.Unions, path);
+        Generator.Callbacks.Generate(@namespace.Callbacks, path);
+        Generator.Constants.Generate(@namespace.Constants, path);
+        Generator.Functions.Generate(@namespace.Functions, path);
+        Generator.Interfaces.Generate(@namespace.Interfaces, path);
+
+        Generator.PlatformSupport.GeneratePlatform(
+            linuxNamespace: @namespace.GetPlatformHandler().LinuxNamespace,
+            macosNamespace: @namespace.GetPlatformHandler().MacosNamespace,
+            windowsNamespace: @namespace.GetPlatformHandler().WindowsNamespace,
             path: path
         );
     }

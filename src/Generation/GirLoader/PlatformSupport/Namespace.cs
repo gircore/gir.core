@@ -61,6 +61,8 @@ public class Namespace : GirModel.Namespace
         };
     }
 
+    public PlatformHandler GetPlatformHandler() => _handler;
+
     public override string ToString()
     {
         return Name;

@@ -5,7 +5,7 @@ namespace Generator;
 
 public static class Interfaces
 {
-    public static void Generate(this IEnumerable<GirModel.Interface> interfaces, string path)
+    public static void Generate(IEnumerable<GirModel.Interface> interfaces, string path)
     {
         var publisher = new Publisher(path);
         var generators = new List<Generator<GirModel.Interface>>()

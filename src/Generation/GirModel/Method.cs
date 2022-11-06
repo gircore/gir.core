@@ -4,6 +4,7 @@ namespace GirModel
 {
     public interface Method
     {
+        ComplexType Parent { get; }
         string Name { get; }
         ReturnType ReturnType { get; }
         string CIdentifier { get; }
