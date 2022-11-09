@@ -10,9 +10,9 @@ namespace Gtk.Tests
         public void WindowConstructorShouldSetTitle()
         {
             var title = "MyTitle";
-            var window = new Window(title);
+            var label = Label.New(title);
 
-            window.Title.Should().Be(title);
+            label.GetLabel().Should().Be(title);
         }
 
         [TestMethod]

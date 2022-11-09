@@ -66,7 +66,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atk-1.0", "Libs\Atk-1.0\Atk
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLoading", "Samples\GdkPixbuf-2.0\TestLoading\TestLoading.csproj", "{2BB1527F-D7A1-44BA-A297-4E69A3A4411C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-3.0.Tests", "Tests\Libs\Gtk-3.0.Tests\Gtk-3.0.Tests.csproj", "{F86D983A-9881-4BE7-AF92-FA0CE41FB319}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-4.0.Tests", "Tests\Libs\Gtk-4.0.Tests\Gtk-4.0.Tests.csproj", "{F86D983A-9881-4BE7-AF92-FA0CE41FB319}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdkPixbuf-2.0.Tests", "Tests\Libs\GdkPixbuf-2.0.Tests\GdkPixbuf-2.0.Tests.csproj", "{61016ABA-608B-47FA-9FBD-CA17D24BAB89}"
 EndProject
