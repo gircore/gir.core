@@ -7,7 +7,7 @@ public class MethodReference
     private Method? _method;
 
     public string Name { get; }
-    public Method? Method => _method; //Workaround: Remove property if GTK3 gets removed
+    public Method? Method => _method; //Workaround: Remove property if AccessorResolver gets fixed
 
     public MethodReference(string name)
     {

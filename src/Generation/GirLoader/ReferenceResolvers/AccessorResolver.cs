@@ -26,8 +26,8 @@ internal static class AccessorResolver
         property.Getter?.ResolveMethod(accessorProvider.Methods.First(method => method.Name == property.Getter.Name));
 
         // Workaround: Use "FirstOrDefault" because not all defined setters can be found e.g. if the
-        // refrenced method uses varargs arguments (GTK3.Actionable.action-target property). Restore
-        // ".First" and remove nullable argument from "ResolveMethod" if GTK3 support get's dropped.
+        // refrenced method uses varargs arguments (GTK4.Actionable.action-target property). Restore
+        // ".First" and remove nullable argument from "ResolveMethod" if problem is fixed upstream
         property.Setter?.ResolveMethod(accessorProvider.Methods.FirstOrDefault(method => method.Name == property.Setter.Name));
     }
 

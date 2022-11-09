@@ -12,6 +12,7 @@ internal static class FrameworkTypeRegistration
     {
         return $@"
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -44,11 +45,11 @@ namespace {Namespace.GetInternalName(ns)}
             try
             {{
                 if(supportedPlatforms.Any(RuntimeInformation.IsOSPlatform))
-                    GObject.Internal.TypeDictionary.Add(typeof(T), new GObject.Type(getType()));   
+                    GObject.Internal.TypeDictionary.Add(typeof(T), new GObject.Type(getType()));
             }}
             catch(Exception e)
             {{
-                Console.WriteLine($""Could not register type '{{nameof(T)}}': {{e.Message}}"");
+                Debug.WriteLine($""Could not register type '{{nameof(T)}}': {{e.Message}}"");
             }}
         }}
     }}
