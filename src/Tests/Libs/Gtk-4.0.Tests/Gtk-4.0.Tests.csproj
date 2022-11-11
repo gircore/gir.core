@@ -10,6 +10,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libs\Gtk-3.0\Gtk-3.0.csproj" />
+    <ProjectReference Include="..\..\..\Libs\Gtk-4.0\Gtk-4.0.csproj" />
   </ItemGroup>
 </Project>

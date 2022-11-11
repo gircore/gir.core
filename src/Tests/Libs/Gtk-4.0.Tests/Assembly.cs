@@ -9,5 +9,6 @@ public static class Assembly
     public static void Initialize(TestContext context)
     {
         Module.Initialize();
+        Internal.Functions.Init();
     }
 }

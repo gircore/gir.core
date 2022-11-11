@@ -12,7 +12,7 @@ namespace Gtk.Tests
             var senderOk = false;
             var parameterNameOk = false;
 
-            var window = new Window("Window");
+            var window = new Window();
             window.OnNotify += (sender, args) =>
             {
                 senderOk = sender == window;

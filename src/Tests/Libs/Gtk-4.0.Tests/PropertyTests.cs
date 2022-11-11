@@ -12,7 +12,7 @@ namespace Gtk.Tests
         [DataRow(false)]
         public void TestBoolProperty(bool value)
         {
-            var window = new Window("TestWindow");
+            var window = new Window();
             window.Resizable = value;
 
             window.Resizable.Should().Be(value);
@@ -23,7 +23,7 @@ namespace Gtk.Tests
         [DataRow("Some Text With Unicode ☀🌙🌧")]
         public void TestStringProperty(string str)
         {
-            var window = new Window("TestWindow");
+            var window = new Window();
             window.Title = str;
 
             window.Title.Should().Be(str);
@@ -33,7 +33,7 @@ namespace Gtk.Tests
         public void TestNullStringProperty()
         {
             var title = "Title";
-            var window = new Window("TestWindow");
+            var window = new Window();
             window.Title = title;
             window.Title.Should().Be(title);
             window.Title = null;
@@ -44,7 +44,7 @@ namespace Gtk.Tests
         [DataRow(500)]
         public void TestIntegerProperty(int value)
         {
-            var window = new Window("TestWindow");
+            var window = new Window();
             window.DefaultWidth = value;
 
             window.DefaultWidth.Should().Be(value);
@@ -54,10 +54,10 @@ namespace Gtk.Tests
         [DataRow(7u)]
         public void TestUnsignedIntegerProperty(uint value)
         {
-            var window = new Window("TestWindow");
-            window.BorderWidth = value;
+            var spinButton = new SpinButton();
+            spinButton.Digits = value;
 
-            window.BorderWidth.Should().Be(value);
+            spinButton.Digits.Should().Be(value);
         }
 
         [DataTestMethod]
@@ -66,7 +66,7 @@ namespace Gtk.Tests
         [DataRow(0.9)]
         public void TestDoubleProperty(double value)
         {
-            var window = new Window("TestWindow");
+            var window = new Window();
             window.Opacity = value;
 
             //TODO: It lookls like double values are very unprecise?
@@ -86,26 +86,27 @@ namespace Gtk.Tests
         }
 
         [DataTestMethod]
-        [DataRow(WindowPosition.Center)]
-        [DataRow(WindowPosition.Mouse)]
-        public void TestEnum(WindowPosition windowPosition)
+        [DataRow(License.MitX11)]
+        [DataRow(License.Agpl30)]
+        public void TestEnum(License windowPosition)
         {
-            var window = new Window("TestWindow");
-            window.WindowPosition = windowPosition;
+            var aboutDialog = new AboutDialog();
+            aboutDialog.LicenseType = windowPosition;
 
-            window.WindowPosition.Should().Be(windowPosition);
+            aboutDialog.LicenseType.Should().Be(windowPosition);
         }
 
         [TestMethod]
         public void TestObject()
         {
             var pixbuf = GdkPixbuf.Pixbuf.NewFromFile("test.bmp");
-            var window = new Window("Test");
-            window.Icon.Should().BeNull();
-            window.Icon = pixbuf;
-            window.Icon.Should().Be(pixbuf);
-            window.Icon = null;
-            window.Icon.Should().BeNull();
+            var texture = Gdk.Texture.NewForPixbuf(pixbuf);
+            var dialog = new AboutDialog();
+            dialog.Logo.Should().BeNull();
+            dialog.Logo = texture;
+            dialog.Logo.Should().Be(texture);
+            dialog.Logo = null!;
+            dialog.Logo.Should().BeNull();
         }
     }
 }

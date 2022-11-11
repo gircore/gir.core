@@ -35,6 +35,9 @@ public partial class GenerateCommand : Command
         }
         catch (Exception ex)
         {
+            if (ex.StackTrace is not null)
+                Log.Debug(ex.StackTrace);
+
             Log.Exception(ex);
             Log.Error("An error occurred while writing files. Please save a copy of your log output and open an issue at: https://github.com/gircore/gir.core/issues/new");
             invocationContext.ExitCode = 1;
