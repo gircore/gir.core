@@ -23,7 +23,6 @@ We are currently in a period of heavy iteration over the core internals of the p
 
 | Library                     | Description                                      | Level of Support |
 |-----------------------------|--------------------------------------------------|------------------|
-| GTK 3                       | UI-Toolkit                                       | Partial          |
 | [GTK-4.0][Gtk4Nuget]        | UI-Toolkit                                       | Partial          |
 | Libadwaita                  | Building blocks for modern GNOME applications    | Partial          |
 | [GStreamer][GstNuget]       | Multimedia Framework                             | Partial          |
