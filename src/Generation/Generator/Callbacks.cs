@@ -5,7 +5,7 @@ namespace Generator;
 
 public static class Callbacks
 {
-    public static void Generate(this IEnumerable<GirModel.Callback> callbacks, string path)
+    public static void Generate(IEnumerable<GirModel.Callback> callbacks, string path)
     {
         var publisher = new Publisher(path);
 

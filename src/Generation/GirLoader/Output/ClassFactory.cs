@@ -31,7 +31,7 @@ namespace GirLoader.Output
             if (cls.GetTypeFunction is null)
                 throw new Exception($"Class {cls.Name} is missing a get type function");
 
-            return new Class(
+            var @class = new Class(
                 repository: repository,
                 name: cls.Name,
                 cType: cls.Type,
@@ -50,6 +50,11 @@ namespace GirLoader.Output
                 final: cls.Final,
                 introspectable: cls.Introspectable
             );
+
+            foreach (var method in @class.Methods)
+                method.SetParent(@class);
+
+            return @class;
         }
 
         private TypeReference? CreateParentTypeReference(string? parentName, Namespace @namespace)

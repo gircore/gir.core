@@ -10,8 +10,13 @@ internal class String : ToNativeParameterConverter
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
+
+        var prefix = parameter.Parameter.Direction == GirModel.Direction.Out
+            ? "out "
+            : string.Empty;
+
         var parameterName = Parameter.GetName(parameter.Parameter);
         parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(parameterName);
+        parameter.SetCallName(prefix + parameterName);
     }
 }

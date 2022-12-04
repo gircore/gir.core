@@ -1,4 +1,7 @@
-﻿using Generator.Model;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Generator.Model;
 
 namespace Generator.Renderer.Public;
 
@@ -19,8 +22,46 @@ namespace {Namespace.GetPublicName(iface.Namespace)}
 
     public partial interface {iface.Name}
     {{
-        //TODO implement interface
+        {iface.Methods
+            .Where(Method.IsEnabled)
+            .Select(RenderMethodDefinition)
+            .Join(Environment.NewLine)}
     }}
 }}";
+    }
+
+    private static string RenderMethodDefinition(GirModel.Method method)
+    {
+        try
+        {
+            var parameters = ParameterToNativeExpression.Initialize(method.Parameters);
+
+            return @$"
+{VersionAttribute.Render(method.Version)}
+{ReturnType.Render(method.ReturnType)} {Method.GetPublicName(method)}({RenderParameters(parameters)});";
+        }
+        catch (Exception ex)
+        {
+            Log.Warning($"Could not render interface method defintion {method.Name}: {ex.Message}");
+            return string.Empty;
+        }
+    }
+
+    private static string RenderParameters(IEnumerable<ParameterToNativeData> parameters)
+    {
+        var result = new List<string>();
+        foreach (var parameter in parameters)
+        {
+            if (parameter.IsClosure)
+                continue;
+
+            if (parameter.IsDestroyNotify)
+                continue;
+
+            var typeData = RenderableParameterFactory.Create(parameter.Parameter);
+            result.Add($"{typeData.Direction}{typeData.NullableTypeName} {parameter.GetSignatureName()}");
+        }
+
+        return result.Join(", ");
     }
 }

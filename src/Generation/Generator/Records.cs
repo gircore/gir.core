@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator.Fixer;
 using Generator.Generator;
 using Generator.Model;
 
@@ -8,7 +7,7 @@ namespace Generator;
 
 public static class Records
 {
-    public static void Generate(this IEnumerable<GirModel.Record> records, string path)
+    public static void Generate(IEnumerable<GirModel.Record> records, string path)
     {
         var publisher = new Publisher(path);
         var generators = new List<Generator<GirModel.Record>>()
@@ -23,11 +22,7 @@ public static class Records
         };
 
         foreach (var record in records.Where(Record.IsEnabled))
-        {
-            RecordFixer.Fixup(record);
-
             foreach (var generator in generators)
                 generator.Generate(record);
-        }
     }
 }

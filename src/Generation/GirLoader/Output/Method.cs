@@ -2,6 +2,8 @@
 {
     public partial class Method
     {
+        private ComplexType? _parent;
+
         public string Identifier { get; }
         public ReturnValue ReturnValue { get; }
         public ParameterList ParameterList { get; }
@@ -21,6 +23,11 @@
             GetProperty = getProperty;
             SetProperty = setProperty;
             Version = version;
+        }
+
+        internal void SetParent(ComplexType parent)
+        {
+            this._parent = parent;
         }
 
         public override string ToString()

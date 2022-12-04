@@ -5,8 +5,7 @@ using Generator.Model;
 
 namespace Generator.Fixer;
 
-//TODO: Can we make this class internal somehow?
-public static class NamespaceFixer
+public static class Namespace
 {
     public static void Fixup(GirModel.Namespace ns)
     {

@@ -28,7 +28,7 @@ namespace GirLoader.Output
             if (@interface.GetTypeFunction is null)
                 throw new Exception($"Interface {@interface.Name} is missing a {nameof(@interface.GetTypeFunction)}");
 
-            return new Interface(
+            var iface = new Interface(
                 repository: repository,
                 cType: @interface.Type,
                 name: @interface.Name,
@@ -39,6 +39,11 @@ namespace GirLoader.Output
                 properties: _propertyFactory.Create(@interface.Properties),
                 introspectable: @interface.Introspectable
             );
+
+            foreach (var method in iface.Methods)
+                method.SetParent(iface);
+
+            return iface;
         }
     }
 }

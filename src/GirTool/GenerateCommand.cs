@@ -19,16 +19,20 @@ public partial class GenerateCommand : Command
         {
             Configuration.SetupLogLevel(logLevel);
 
-            var platformHandlers = GetPlatformHandler(searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input, invocationContext);
+            var namespaces = GetNamespaces(searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input, invocationContext);
 
             if (disableAsync)
             {
-                foreach (var platformHandler in platformHandlers)
-                    PlatformGenerator.Generate(platformHandler, output);
+                foreach (var @namespace in namespaces)
+                    PlatformGenerator.Fixup(@namespace);
+
+                foreach (var @namespace in namespaces)
+                    PlatformGenerator.Generate(@namespace, output);
             }
             else
             {
-                Parallel.ForEach(platformHandlers, x => PlatformGenerator.Generate(x, output));
+                Parallel.ForEach(namespaces, PlatformGenerator.Fixup);
+                Parallel.ForEach(namespaces, x => PlatformGenerator.Generate(x, output));
             }
 
             Log.Information("Done");
@@ -44,7 +48,7 @@ public partial class GenerateCommand : Command
         }
     }
 
-    private static IEnumerable<PlatformHandler> GetPlatformHandler(string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, string[] input, InvocationContext invocationContext)
+    private static IEnumerable<Namespace> GetNamespaces(string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, string[] input, InvocationContext invocationContext)
     {
         try
         {
@@ -58,7 +62,7 @@ public partial class GenerateCommand : Command
                 .Union(windowsNamespaceNames)
                 .Distinct();
 
-            var platformHandlers = new List<PlatformHandler>();
+            var namespaces = new List<Namespace>();
 
             foreach (var namespaceName in namespacesNames)
             {
@@ -75,10 +79,10 @@ public partial class GenerateCommand : Command
                 if (windowsNamespace is null)
                     Log.Information($"There is no {namespaceName} repository for windows");
 
-                platformHandlers.Add(new PlatformHandler(linuxNamespace, macosNamespace, windowsNamespace));
+                namespaces.Add(new Namespace(new PlatformHandler(linuxNamespace, macosNamespace, windowsNamespace)));
             }
 
-            return platformHandlers;
+            return namespaces;
         }
         catch (FileNotFoundException fileNotFoundException)
         {
@@ -88,7 +92,7 @@ public partial class GenerateCommand : Command
             invocationContext.ExitCode = 1;
         }
 
-        return Enumerable.Empty<PlatformHandler>();
+        return Enumerable.Empty<Namespace>();
     }
 
     private static (List<Repository>, List<Repository>, List<Repository>) LoadRepositories(string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, string[] input)

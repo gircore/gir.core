@@ -5,7 +5,7 @@ namespace Generator;
 
 public static class Framework
 {
-    public static void Generate(this GirModel.Namespace ns, string path)
+    public static void Generate(GirModel.Namespace ns, string path)
     {
         var publisher = new Publisher(path);
         var generators = new List<Generator<GirModel.Namespace>>()

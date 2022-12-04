@@ -5,7 +5,7 @@ namespace Generator;
 
 public static class Functions
 {
-    public static void Generate(this IEnumerable<GirModel.Function> functions, string path)
+    public static void Generate(IEnumerable<GirModel.Function> functions, string path)
     {
         var publisher = new Publisher(path);
         var generator = new Generator.Internal.GlobalFunctions(publisher);

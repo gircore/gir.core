@@ -7,8 +7,6 @@ namespace GirLoader.Output
     {
         GirModel.Class? GirModel.Class.Parent => (GirModel.Class?) Parent?.Type;
         IEnumerable<GirModel.Interface> GirModel.Class.Implements => Implements.Select(x => x.GetResolvedType()).Cast<Interface>();
-        GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
-        string GirModel.ComplexType.Name => Name;
         GirModel.Function GirModel.Class.TypeFunction => GetTypeFunction;
         bool GirModel.Class.Fundamental => Fundamental;
         IEnumerable<GirModel.Field> GirModel.Class.Fields => Fields;

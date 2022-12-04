@@ -1,10 +1,17 @@
-﻿using Generator.Model;
+﻿using System.Collections.Generic;
+using Generator.Model;
 
 namespace Generator.Fixer;
 
-internal static class RecordFixer
+public static class Records
 {
-    public static void Fixup(GirModel.Record record)
+    public static void Fixup(IEnumerable<GirModel.Record> records)
+    {
+        foreach (var record in records)
+            Fixup(record);
+    }
+
+    private static void Fixup(GirModel.Record record)
     {
         FixInternalMethodsNamedLikeRecord(record);
     }
