@@ -1,12 +1,10 @@
-﻿namespace Cairo.Internal
+﻿namespace Cairo.Internal;
+
+public partial class PathOwnedHandle : PathHandle
 {
-    public partial class PathOwnedHandle : PathHandle
+    protected override partial bool ReleaseHandle()
     {
-        protected override partial bool ReleaseHandle()
-        {
-            Path.Destroy(handle);
-            return true;
-        }
+        Path.Destroy(handle);
+        return true;
     }
 }
-

@@ -1,11 +1,10 @@
-﻿namespace GLib
+﻿namespace GLib;
+
+public partial class Error
 {
-    public partial class Error
+    public static void ThrowOnError(Internal.ErrorHandle error)
     {
-        public static void ThrowOnError(Internal.ErrorHandle error)
-        {
-            if (!error.IsInvalid)
-                throw new GException(error);
-        }
+        if (!error.IsInvalid)
+            throw new GException(error);
     }
 }

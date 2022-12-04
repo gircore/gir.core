@@ -1,25 +1,24 @@
 ﻿using System.Xml.Serialization;
 
-namespace GirLoader.Input
+namespace GirLoader.Input;
+
+public class Constant : AnyType
 {
-    public class Constant : AnyType
-    {
-        [XmlAttribute("name")]
-        public string? Name { get; set; }
+    [XmlAttribute("name")]
+    public string? Name { get; set; }
 
-        [XmlAttribute("value")]
-        public string? Value { get; set; }
+    [XmlAttribute("value")]
+    public string? Value { get; set; }
 
-        [XmlElement("type")]
-        public Type? Type { get; set; }
+    [XmlElement("type")]
+    public Type? Type { get; set; }
 
-        [XmlElement("array")]
-        public ArrayType? Array { get; set; }
+    [XmlElement("array")]
+    public ArrayType? Array { get; set; }
 
-        [XmlElement("doc")]
-        public Doc? Doc { get; set; }
+    [XmlElement("doc")]
+    public Doc? Doc { get; set; }
 
-        [XmlAttribute("introspectable")]
-        public bool Introspectable = true;
-    }
+    [XmlAttribute("introspectable")]
+    public bool Introspectable = true;
 }

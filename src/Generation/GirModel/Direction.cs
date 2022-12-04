@@ -1,9 +1,8 @@
-﻿namespace GirModel
+﻿namespace GirModel;
+
+public enum Direction
 {
-    public enum Direction
-    {
-        Out = 0,
-        In = 1,
-        InOut = 2
-    }
+    Out = 0,
+    In = 1,
+    InOut = 2
 }

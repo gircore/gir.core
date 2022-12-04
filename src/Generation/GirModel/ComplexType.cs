@@ -1,8 +1,7 @@
-﻿namespace GirModel
+﻿namespace GirModel;
+
+public interface ComplexType : Type
 {
-    public interface ComplexType : Type
-    {
-        Namespace Namespace { get; }
-        string Name { get; }
-    }
+    Namespace Namespace { get; }
+    string Name { get; }
 }

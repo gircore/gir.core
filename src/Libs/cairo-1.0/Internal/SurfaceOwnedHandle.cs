@@ -1,12 +1,10 @@
-﻿namespace Cairo.Internal
+﻿namespace Cairo.Internal;
+
+public partial class SurfaceOwnedHandle : SurfaceHandle
 {
-    public partial class SurfaceOwnedHandle : SurfaceHandle
+    protected override partial bool ReleaseHandle()
     {
-        protected override partial bool ReleaseHandle()
-        {
-            Surface.Destroy(handle);
-            return true;
-        }
+        Surface.Destroy(handle);
+        return true;
     }
 }
-

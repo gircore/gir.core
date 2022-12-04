@@ -1,55 +1,54 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace GirLoader.Output
+namespace GirLoader.Output;
+
+internal class ParameterListFactory
 {
-    internal class ParameterListFactory
+    private readonly SingleParameterFactory _singleParameterFactory;
+    private readonly InstanceParameterFactory _instanceParameterFactory;
+
+    public ParameterListFactory(SingleParameterFactory singleParameterFactory, InstanceParameterFactory instanceParameterFactory)
     {
-        private readonly SingleParameterFactory _singleParameterFactory;
-        private readonly InstanceParameterFactory _instanceParameterFactory;
+        _singleParameterFactory = singleParameterFactory;
+        _instanceParameterFactory = instanceParameterFactory;
+    }
 
-        public ParameterListFactory(SingleParameterFactory singleParameterFactory, InstanceParameterFactory instanceParameterFactory)
+    public ParameterList Create(Input.Parameters? parameters, bool throws = false)
+    {
+        List<SingleParameter> list = new();
+        InstanceParameter? instanceParameter = null;
+
+        if (parameters is { })
         {
-            _singleParameterFactory = singleParameterFactory;
-            _instanceParameterFactory = instanceParameterFactory;
-        }
+            if (parameters.InstanceParameter is { })
+                instanceParameter = _instanceParameterFactory.Create(parameters.InstanceParameter);
 
-        public ParameterList Create(Input.Parameters? parameters, bool throws = false)
-        {
-            List<SingleParameter> list = new();
-            InstanceParameter? instanceParameter = null;
+            list = parameters.List.Select(arg => _singleParameterFactory.Create(arg)).ToList();
 
-            if (parameters is { })
+            if (throws)
             {
-                if (parameters.InstanceParameter is { })
-                    instanceParameter = _instanceParameterFactory.Create(parameters.InstanceParameter);
-
-                list = parameters.List.Select(arg => _singleParameterFactory.Create(arg)).ToList();
-
-                if (throws)
+                var parameterInfo = new Input.Parameter()
                 {
-                    var parameterInfo = new Input.Parameter()
+                    Name = "error",
+                    TransferOwnership = "full",
+                    Direction = "out",
+                    CallerAllocates = false,
+                    Type = new Input.Type()
                     {
-                        Name = "error",
-                        TransferOwnership = "full",
-                        Direction = "out",
-                        CallerAllocates = false,
-                        Type = new Input.Type()
-                        {
-                            Name = "GLib.Error",
-                            CType = "GError*"
-                        }
-                    };
+                        Name = "GLib.Error",
+                        CType = "GError*"
+                    }
+                };
 
-                    list.Add(_singleParameterFactory.Create(parameterInfo));
-                }
+                list.Add(_singleParameterFactory.Create(parameterInfo));
             }
-
-            return new ParameterList()
-            {
-                InstanceParameter = instanceParameter,
-                SingleParameters = list
-            };
         }
+
+        return new ParameterList()
+        {
+            InstanceParameter = instanceParameter,
+            SingleParameters = list
+        };
     }
 }

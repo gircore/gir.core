@@ -1,51 +1,50 @@
 ﻿using System;
 
-namespace GirLoader.Output
+namespace GirLoader.Output;
+
+internal class SingleParameterFactory
 {
-    internal class SingleParameterFactory
+    private readonly TypeReferenceFactory _typeReferenceFactory;
+    private readonly TransferFactory _transferFactory;
+
+    public SingleParameterFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory)
     {
-        private readonly TypeReferenceFactory _typeReferenceFactory;
-        private readonly TransferFactory _transferFactory;
+        _typeReferenceFactory = typeReferenceFactory;
+        _transferFactory = transferFactory;
+    }
 
-        public SingleParameterFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory)
+    public SingleParameter Create(Input.Parameter parameter)
+    {
+        if (parameter.VarArgs is { })
+            throw new VarArgsNotSupportedException("Arguments containing variadic paramters are not supported.");
+
+        Scope? callbackScope = parameter.Scope switch
         {
-            _typeReferenceFactory = typeReferenceFactory;
-            _transferFactory = transferFactory;
-        }
+            "async" => Scope.Async,
+            "notified" => Scope.Notified,
+            "call" => Scope.Call,
+            "forever" => Scope.Forever,
+            _ => null
+        };
 
-        public SingleParameter Create(Input.Parameter parameter)
-        {
-            if (parameter.VarArgs is { })
-                throw new VarArgsNotSupportedException("Arguments containing variadic paramters are not supported.");
+        if (parameter.Name is null)
+            throw new Exception("Argument name is null");
 
-            Scope? callbackScope = parameter.Scope switch
-            {
-                "async" => Scope.Async,
-                "notified" => Scope.Notified,
-                "call" => Scope.Call,
-                "forever" => Scope.Forever,
-                _ => null
-            };
+        return new SingleParameter(
+            name: parameter.Name,
+            typeReference: _typeReferenceFactory.Create(parameter),
+            direction: DirectionFactory.Create(parameter.Direction),
+            transfer: _transferFactory.FromText(parameter.TransferOwnership),
+            nullable: parameter.Nullable,
+            callerAllocates: parameter.CallerAllocates,
+            closureIndex: parameter.Closure == -1 ? null : parameter.Closure,
+            destroyIndex: parameter.Destroy == -1 ? null : parameter.Destroy,
+            scope: callbackScope
+        );
+    }
 
-            if (parameter.Name is null)
-                throw new Exception("Argument name is null");
-
-            return new SingleParameter(
-                name: parameter.Name,
-                typeReference: _typeReferenceFactory.Create(parameter),
-                direction: DirectionFactory.Create(parameter.Direction),
-                transfer: _transferFactory.FromText(parameter.TransferOwnership),
-                nullable: parameter.Nullable,
-                callerAllocates: parameter.CallerAllocates,
-                closureIndex: parameter.Closure == -1 ? null : parameter.Closure,
-                destroyIndex: parameter.Destroy == -1 ? null : parameter.Destroy,
-                scope: callbackScope
-            );
-        }
-
-        public class VarArgsNotSupportedException : Exception
-        {
-            public VarArgsNotSupportedException(string message) : base(message) { }
-        }
+    public class VarArgsNotSupportedException : Exception
+    {
+        public VarArgsNotSupportedException(string message) : base(message) { }
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace GirModel
+﻿namespace GirModel;
+
+public interface Member
 {
-    public interface Member
-    {
-        string Name { get; }
-        long Value { get; }
-    }
+    string Name { get; }
+    long Value { get; }
 }

@@ -1,8 +1,7 @@
-﻿namespace GirLoader.Input
+﻿namespace GirLoader.Input;
+
+public interface AnyType
 {
-    public interface AnyType
-    {
-        public Type? Type { get; set; }
-        public ArrayType? Array { get; set; }
-    }
+    public Type? Type { get; set; }
+    public ArrayType? Array { get; set; }
 }

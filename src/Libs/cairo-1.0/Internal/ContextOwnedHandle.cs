@@ -1,12 +1,10 @@
-﻿namespace Cairo.Internal
+﻿namespace Cairo.Internal;
+
+public partial class ContextOwnedHandle : ContextHandle
 {
-    public partial class ContextOwnedHandle : ContextHandle
+    protected override partial bool ReleaseHandle()
     {
-        protected override partial bool ReleaseHandle()
-        {
-            Context.Destroy(handle);
-            return true;
-        }
+        Context.Destroy(handle);
+        return true;
     }
 }
-

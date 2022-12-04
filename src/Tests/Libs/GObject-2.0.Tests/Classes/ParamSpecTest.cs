@@ -1,22 +1,21 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GObject.Tests.Classes
+namespace GObject.Tests.Classes;
+
+[TestClass, TestCategory("IntegrationTest")]
+public class ParamSpecTest : Test
 {
-    [TestClass, TestCategory("IntegrationTest")]
-    public class ParamSpecTest : Test
+    [TestMethod]
+    public void CanCreateBooleanParamSpec()
     {
-        [TestMethod]
-        public void CanCreateBooleanParamSpec()
-        {
-            var pspec = new ParamSpecBoolean(
-                name: "test",
-                nick: "test",
-                blurb: "test",
-                defaultValue: false,
-                flags: ParamFlags.Writable
-            );
-            pspec.Handle.Should().NotBe(default);
-        }
+        var pspec = new ParamSpecBoolean(
+            name: "test",
+            nick: "test",
+            blurb: "test",
+            defaultValue: false,
+            flags: ParamFlags.Writable
+        );
+        pspec.Handle.Should().NotBe(default);
     }
 }

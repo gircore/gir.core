@@ -1,4 +1,3 @@
-﻿namespace GirModel
-{
-    public interface Integer : PrimitiveValueType { }
-}
+﻿namespace GirModel;
+
+public interface Integer : PrimitiveValueType { }

@@ -2,38 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GirLoader.Output
+namespace GirLoader.Output;
+
+internal class PropertyFactory
 {
-    internal class PropertyFactory
+    private readonly TransferFactory _transferFactory;
+    private readonly TypeReferenceFactory _typeReferenceFactory;
+
+    public PropertyFactory(TransferFactory transferFactory, TypeReferenceFactory typeReferenceFactory)
     {
-        private readonly TransferFactory _transferFactory;
-        private readonly TypeReferenceFactory _typeReferenceFactory;
-
-        public PropertyFactory(TransferFactory transferFactory, TypeReferenceFactory typeReferenceFactory)
-        {
-            _transferFactory = transferFactory;
-            _typeReferenceFactory = typeReferenceFactory;
-        }
-
-        private Property Create(Input.Property property)
-        {
-            if (property.Name is null)
-                throw new Exception("Property is missing a name");
-
-            return new Property(
-                name: property.Name,
-                typeReference: _typeReferenceFactory.Create(property),
-                writeable: property.Writeable,
-                readable: property.Readable,
-                constructOnly: property.ConstructOnly,
-                transfer: _transferFactory.FromText(property.TransferOwnership),
-                introspectable: property.Introspectable,
-                getter: MethodReference.Create(property.Getter),
-                setter: MethodReference.Create(property.Setter)
-            );
-        }
-
-        public IEnumerable<Property> Create(IEnumerable<Input.Property> properties)
-            => properties.Select(Create).ToList();
+        _transferFactory = transferFactory;
+        _typeReferenceFactory = typeReferenceFactory;
     }
+
+    private Property Create(Input.Property property)
+    {
+        if (property.Name is null)
+            throw new Exception("Property is missing a name");
+
+        return new Property(
+            name: property.Name,
+            typeReference: _typeReferenceFactory.Create(property),
+            writeable: property.Writeable,
+            readable: property.Readable,
+            constructOnly: property.ConstructOnly,
+            transfer: _transferFactory.FromText(property.TransferOwnership),
+            introspectable: property.Introspectable,
+            getter: MethodReference.Create(property.Getter),
+            setter: MethodReference.Create(property.Setter)
+        );
+    }
+
+    public IEnumerable<Property> Create(IEnumerable<Input.Property> properties)
+        => properties.Select(Create).ToList();
 }

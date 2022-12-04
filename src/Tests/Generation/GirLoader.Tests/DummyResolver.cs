@@ -1,10 +1,9 @@
-﻿namespace GirLoader.Test
+﻿namespace GirLoader.Test;
+
+public static class DummyResolver
 {
-    public static class DummyResolver
+    public static Input.Repository? Resolve(Output.Include include)
     {
-        public static Input.Repository? Resolve(Output.Include include)
-        {
-            return null;
-        }
+        return null;
     }
 }

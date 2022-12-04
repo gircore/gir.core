@@ -1,11 +1,10 @@
-﻿namespace GirModel
+﻿namespace GirModel;
+
+public interface Constant
 {
-    public interface Constant
-    {
-        Namespace Namespace { get; }
-        string Name { get; }
-        string Value { get; }
-        Type Type { get; }
-        bool Introspectable { get; }
-    }
+    Namespace Namespace { get; }
+    string Name { get; }
+    string Value { get; }
+    Type Type { get; }
+    bool Introspectable { get; }
 }

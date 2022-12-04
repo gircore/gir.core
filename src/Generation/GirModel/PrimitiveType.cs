@@ -1,4 +1,3 @@
-﻿namespace GirModel
-{
-    public interface PrimitiveType : Type { }
-}
+﻿namespace GirModel;
+
+public interface PrimitiveType : Type { }

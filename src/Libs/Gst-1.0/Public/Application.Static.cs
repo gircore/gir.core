@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace Gst
+namespace Gst;
+
+public class Application
 {
-    public class Application
+    public static void Init()
     {
-        public static void Init()
-        {
-            var argc = IntPtr.Zero;
-            Internal.Functions.Init(ref argc, new string[0]);
-        }
+        var argc = IntPtr.Zero;
+        Internal.Functions.Init(ref argc, new string[0]);
     }
 }

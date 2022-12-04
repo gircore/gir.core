@@ -1,15 +1,14 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Cairo
+namespace Cairo;
+
+[StructLayout(LayoutKind.Sequential)]
+public struct TextExtents
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct TextExtents
-    {
-        public double XBearing;
-        public double YBearing;
-        public double Width;
-        public double Height;
-        public double XAdvance;
-        public double YAdvance;
-    }
+    public double XBearing;
+    public double YBearing;
+    public double Width;
+    public double Height;
+    public double XAdvance;
+    public double YAdvance;
 }

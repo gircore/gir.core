@@ -1,7 +1,6 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public class Byte : PrimitiveValueType, GirModel.Byte
 {
-    public class Byte : PrimitiveValueType, GirModel.Byte
-    {
-        public Byte(string ctype) : base(ctype) { }
-    }
+    public Byte(string ctype) : base(ctype) { }
 }

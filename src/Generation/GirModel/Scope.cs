@@ -1,10 +1,9 @@
-﻿namespace GirModel
+﻿namespace GirModel;
+
+public enum Scope
 {
-    public enum Scope
-    {
-        Call,
-        Async,
-        Notified,
-        Forever
-    }
+    Call,
+    Async,
+    Notified,
+    Forever
 }

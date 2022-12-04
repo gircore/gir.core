@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace Gtk
-{
-    [AttributeUsage(AttributeTargets.Field)]
-    public class ConnectAttribute : Attribute
-    {
-        public string? WidgetName { get; }
+namespace Gtk;
 
-        public ConnectAttribute(string? widgetName = null)
-        {
-            WidgetName = widgetName;
-        }
+[AttributeUsage(AttributeTargets.Field)]
+public class ConnectAttribute : Attribute
+{
+    public string? WidgetName { get; }
+
+    public ConnectAttribute(string? widgetName = null)
+    {
+        WidgetName = widgetName;
     }
 }

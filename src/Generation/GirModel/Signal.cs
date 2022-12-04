@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace GirModel
+namespace GirModel;
+
+public interface Signal
 {
-    public interface Signal
-    {
-        string Name { get; }
-        IEnumerable<Parameter> Parameters { get; }
-        bool Introspectable { get; }
-    }
+    string Name { get; }
+    IEnumerable<Parameter> Parameters { get; }
+    bool Introspectable { get; }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace GLib
+namespace GLib;
+
+public interface IHandle
 {
-    public interface IHandle
-    {
-        IntPtr Handle { get; }
-    }
+    IntPtr Handle { get; }
 }

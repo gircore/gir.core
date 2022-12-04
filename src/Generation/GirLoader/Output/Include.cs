@@ -1,25 +1,24 @@
 ﻿using System;
 
-namespace GirLoader.Output
+namespace GirLoader.Output;
+
+public record Include(string Name, string Version)
 {
-    public record Include(string Name, string Version)
+    public Repository? ResolvedRepository { get; private set; }
+
+    public void Resolve(Repository repository)
     {
-        public Repository? ResolvedRepository { get; private set; }
+        ResolvedRepository = repository;
+    }
 
-        public void Resolve(Repository repository)
-        {
-            ResolvedRepository = repository;
-        }
+    public Repository GetResolvedRepository()
+    {
+        if (ResolvedRepository is null)
+            throw new Exception($"{nameof(Include)} {Name} is not resolved");
 
-        public Repository GetResolvedRepository()
-        {
-            if (ResolvedRepository is null)
-                throw new Exception($"{nameof(Include)} {Name} is not resolved");
+        return ResolvedRepository;
+    }
 
-            return ResolvedRepository;
-        }
-
-        public string ToCanonicalName()
-            => $"{Name}-{Version}";
-    };
-}
+    public string ToCanonicalName()
+        => $"{Name}-{Version}";
+};

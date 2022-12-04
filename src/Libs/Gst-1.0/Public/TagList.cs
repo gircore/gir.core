@@ -2,75 +2,74 @@
 using System.Runtime.InteropServices;
 using GObject;
 
-namespace Gst
+namespace Gst;
+
+public partial class TagList
 {
-    public partial class TagList
+    public void Foreach(TagForeachFunc func)
     {
-        public void Foreach(TagForeachFunc func)
+        throw new NotImplementedException(); //TODO
+        // Marshal this structure
+        /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<TagList>());
+        Marshal.StructureToPtr<TagList>(this, thisPtr, false);
+
+        Native.@foreach(thisPtr, func, IntPtr.Zero);
+
+        // Update this structure (TODO: Check for NULL)
+        this = Marshal.PtrToStructure<TagList>(thisPtr)!;*/
+    }
+
+    public void Add(TagMergeMode mode, string tag, params Value[] values)
+    {
+        foreach (Value val in values)
         {
-            throw new NotImplementedException(); //TODO
-            // Marshal this structure
-            /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<TagList>());
-            Marshal.StructureToPtr<TagList>(this, thisPtr, false);
-
-            Native.@foreach(thisPtr, func, IntPtr.Zero);
-
-            // Update this structure (TODO: Check for NULL)
-            this = Marshal.PtrToStructure<TagList>(thisPtr)!;*/
+            AddValue(mode, tag, val);
         }
+    }
 
-        public void Add(TagMergeMode mode, string tag, params Value[] values)
-        {
-            foreach (Value val in values)
-            {
-                AddValue(mode, tag, val);
-            }
-        }
+    public void AddValue(TagMergeMode mode, string tag, Value value)
+    {
+        throw new NotImplementedException(); //TODO
+        // Marshal this structure
+        /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<TagList>());
+        Marshal.StructureToPtr<TagList>(this, thisPtr, false);
 
-        public void AddValue(TagMergeMode mode, string tag, Value value)
-        {
-            throw new NotImplementedException(); //TODO
-            // Marshal this structure
-            /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<TagList>());
-            Marshal.StructureToPtr<TagList>(this, thisPtr, false);
+        Native.add_value(thisPtr, mode, tag, ref value);
 
-            Native.add_value(thisPtr, mode, tag, ref value);
+        // Update this structure (TODO: Check for NULL)
+        this = Marshal.PtrToStructure<TagList>(thisPtr)!;
 
-            // Update this structure (TODO: Check for NULL)
-            this = Marshal.PtrToStructure<TagList>(thisPtr)!;
+        // Dispose of Value afterwards
+        value.Dispose();*/
+    }
 
-            // Dispose of Value afterwards
-            value.Dispose();*/
-        }
+    public uint GetTagSize(string tag)
+    {
+        throw new NotImplementedException(); //TODO
+        // Marshal this structure
+        /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<TagList>());
+        Marshal.StructureToPtr<TagList>(this, thisPtr, false);
 
-        public uint GetTagSize(string tag)
-        {
-            throw new NotImplementedException(); //TODO
-            // Marshal this structure
-            /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<TagList>());
-            Marshal.StructureToPtr<TagList>(this, thisPtr, false);
+        var result = Native.get_tag_size(thisPtr, tag);
 
-            var result = Native.get_tag_size(thisPtr, tag);
+        // Update this structure (TODO: Check for NULL)
+        this = Marshal.PtrToStructure<TagList>(thisPtr)!;
 
-            // Update this structure (TODO: Check for NULL)
-            this = Marshal.PtrToStructure<TagList>(thisPtr)!;
+        return result;*/
+    }
 
-            return result;*/
-        }
+    public Value GetValueIndex(string tag, uint index)
+    {
+        throw new NotImplementedException(); //TODO
+        // Marshal this structure
+        /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<TagList>());
+        Marshal.StructureToPtr<TagList>(this, thisPtr, false);
 
-        public Value GetValueIndex(string tag, uint index)
-        {
-            throw new NotImplementedException(); //TODO
-            // Marshal this structure
-            /*IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<TagList>());
-            Marshal.StructureToPtr<TagList>(this, thisPtr, false);
+        var result = Native.get_value_index(thisPtr, tag, index);
 
-            var result = Native.get_value_index(thisPtr, tag, index);
+        // Update this structure (TODO: Check for NULL)
+        this = Marshal.PtrToStructure<TagList>(thisPtr)!;
 
-            // Update this structure (TODO: Check for NULL)
-            this = Marshal.PtrToStructure<TagList>(thisPtr)!;
-
-            return result;*/
-        }
+        return result;*/
     }
 }

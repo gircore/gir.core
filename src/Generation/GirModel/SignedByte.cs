@@ -1,4 +1,3 @@
-﻿namespace GirModel
-{
-    public interface SignedByte : PrimitiveValueType { }
-}
+﻿namespace GirModel;
+
+public interface SignedByte : PrimitiveValueType { }

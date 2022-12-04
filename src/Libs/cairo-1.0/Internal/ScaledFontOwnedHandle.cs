@@ -1,12 +1,10 @@
-﻿namespace Cairo.Internal
+﻿namespace Cairo.Internal;
+
+public partial class ScaledFontOwnedHandle : ScaledFontHandle
 {
-    public partial class ScaledFontOwnedHandle : ScaledFontHandle
+    protected override partial bool ReleaseHandle()
     {
-        protected override partial bool ReleaseHandle()
-        {
-            ScaledFont.Destroy(handle);
-            return true;
-        }
+        ScaledFont.Destroy(handle);
+        return true;
     }
 }
-

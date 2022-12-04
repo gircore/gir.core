@@ -1,17 +1,16 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+internal class TransferFactory
 {
-    internal class TransferFactory
+    public Transfer FromText(string? text)
     {
-        public Transfer FromText(string? text)
+        return text switch
         {
-            return text switch
-            {
-                "none" => Transfer.None,
-                "container" => Transfer.Container,
-                "full" => Transfer.Full,
-                "floating" => Transfer.None,
-                _ => Transfer.Unknown
-            };
-        }
+            "none" => Transfer.None,
+            "container" => Transfer.Container,
+            "full" => Transfer.Full,
+            "floating" => Transfer.None,
+            _ => Transfer.Unknown
+        };
     }
 }

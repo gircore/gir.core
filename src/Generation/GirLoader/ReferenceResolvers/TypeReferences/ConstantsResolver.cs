@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using GirLoader.Output;
 
-namespace GirLoader
+namespace GirLoader;
+
+internal static class ConstantsResolver
 {
-    internal static class ConstantsResolver
+    public static void ResolveConstants(this RepositoryTypeReferenceResolver resolver, Repository repository)
     {
-        public static void ResolveConstants(this RepositoryTypeReferenceResolver resolver, Repository repository)
-        {
-            resolver.ResolveTypeReferences(repository.Namespace.Constants.Select(x => x.TypeReference), repository);
-        }
+        resolver.ResolveTypeReferences(repository.Namespace.Constants.Select(x => x.TypeReference), repository);
     }
 }

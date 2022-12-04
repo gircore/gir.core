@@ -1,36 +1,35 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GLib.Tests
+namespace GLib.Tests;
+
+[TestClass, TestCategory("IntegrationTest")]
+public class VariantTest : Test
 {
-    [TestClass, TestCategory("IntegrationTest")]
-    public class VariantTest : Test
+    [TestMethod]
+    public void CanCreateInt()
     {
-        [TestMethod]
-        public void CanCreateInt()
-        {
-            int value = 5;
-            var variant = Variant.Create(value);
+        int value = 5;
+        var variant = Variant.Create(value);
 
-            variant.GetInt().Should().Be(value);
-        }
+        variant.GetInt().Should().Be(value);
+    }
 
-        [TestMethod]
-        public void CanCreateString()
-        {
-            string value = "test";
-            var variant = Variant.Create(value);
+    [TestMethod]
+    public void CanCreateString()
+    {
+        string value = "test";
+        var variant = Variant.Create(value);
 
-            variant.GetString().Should().Be(value);
-        }
+        variant.GetString().Should().Be(value);
+    }
 
-        [TestMethod]
-        public void DisposeClosesHandle()
-        {
-            var variant = Variant.Create("Test");
-            variant.Handle.IsClosed.Should().BeFalse();
-            variant.Dispose();
-            variant.Handle.IsClosed.Should().BeTrue();
-        }
+    [TestMethod]
+    public void DisposeClosesHandle()
+    {
+        var variant = Variant.Create("Test");
+        variant.Handle.IsClosed.Should().BeFalse();
+        variant.Dispose();
+        variant.Handle.IsClosed.Should().BeTrue();
     }
 }

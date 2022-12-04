@@ -1,4 +1,3 @@
-﻿namespace GirModel
-{
-    public interface UnsignedShort : PrimitiveValueType { }
-}
+﻿namespace GirModel;
+
+public interface UnsignedShort : PrimitiveValueType { }

@@ -2,107 +2,106 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace GirLoader.Output
+namespace GirLoader.Output;
+
+internal class TypeReferenceFactory
 {
-    internal class TypeReferenceFactory
+    public ResolveableTypeReference CreateResolveable(string? name, string? ctype)
     {
-        public ResolveableTypeReference CreateResolveable(string? name, string? ctype)
+        return new ResolveableTypeReference(
+            symbolNameReference: GetSymbolNameReference(name),
+            ctype: GetCType(ctype)
+        );
+    }
+
+    public TypeReference Create(Input.AnyType anyType)
+    {
+        if (TryCreateResolveableTypeReference(anyType, out var typeRefernece))
+            return typeRefernece;
+
+        if (TryCreateArrayTypeReference(anyType, out var arrayTypeRefernece))
+            return arrayTypeRefernece;
+
+        return CreateResolveable("void", "none");
+    }
+
+    private bool TryCreateResolveableTypeReference(Input.AnyType anyType, [NotNullWhen(true)] out TypeReference? typeReference)
+    {
+        if (anyType.Type is null)
         {
-            return new ResolveableTypeReference(
-                symbolNameReference: GetSymbolNameReference(name),
-                ctype: GetCType(ctype)
-            );
+            typeReference = null;
+            return false;
         }
 
-        public TypeReference Create(Input.AnyType anyType)
+        typeReference = new ResolveableTypeReference(
+            symbolNameReference: GetSymbolNameReference(anyType.Type.Name),
+            ctype: GetCType(anyType.Type.CType));
+
+        return true;
+    }
+
+    private bool TryCreateArrayTypeReference(Input.AnyType anyType, [NotNullWhen(true)] out ArrayTypeReference? arrayTypeReference)
+    {
+        if (anyType.Array is null)
         {
-            if (TryCreateResolveableTypeReference(anyType, out var typeRefernece))
-                return typeRefernece;
-
-            if (TryCreateArrayTypeReference(anyType, out var arrayTypeRefernece))
-                return arrayTypeRefernece;
-
-            return CreateResolveable("void", "none");
+            arrayTypeReference = null;
+            return false;
         }
 
-        private bool TryCreateResolveableTypeReference(Input.AnyType anyType, [NotNullWhen(true)] out TypeReference? typeReference)
+        var typeReference = Create(anyType.Array);
+
+        int? length = int.TryParse(anyType.Array.Length, out var l) ? l : null;
+        int? fixedSize = int.TryParse(anyType.Array.FixedSize, out var f) ? f : null;
+
+        arrayTypeReference = new ArrayTypeReference(
+            typeReference: typeReference,
+            symbolNameReference: null,
+            ctype: GetCType(anyType.Array.CType))
         {
-            if (anyType.Type is null)
-            {
-                typeReference = null;
-                return false;
-            }
+            Length = length,
+            FixedSize = fixedSize,
+            IsZeroTerminated = anyType.Array.ZeroTerminated
+        };
 
-            typeReference = new ResolveableTypeReference(
-                symbolNameReference: GetSymbolNameReference(anyType.Type.Name),
-                ctype: GetCType(anyType.Type.CType));
+        return true;
+    }
 
-            return true;
+    public IEnumerable<TypeReference> Create(IEnumerable<Input.Implement> implements)
+    {
+        var list = new List<TypeReference>();
+
+        foreach (Input.Implement implement in implements)
+        {
+            if (implement.Name is null)
+                throw new Exception("Implement is missing a name");
+
+            list.Add(CreateResolveable(implement.Name, null));
         }
 
-        private bool TryCreateArrayTypeReference(Input.AnyType anyType, [NotNullWhen(true)] out ArrayTypeReference? arrayTypeReference)
-        {
-            if (anyType.Array is null)
-            {
-                arrayTypeReference = null;
-                return false;
-            }
+        return list;
+    }
 
-            var typeReference = Create(anyType.Array);
+    private static SymbolNameReference? GetSymbolNameReference(string? name)
+    {
+        if (name is null)
+            return null;
 
-            int? length = int.TryParse(anyType.Array.Length, out var l) ? l : null;
-            int? fixedSize = int.TryParse(anyType.Array.FixedSize, out var f) ? f : null;
+        if (!name.Contains("."))
+            return new SymbolNameReference(name, null);
 
-            arrayTypeReference = new ArrayTypeReference(
-                typeReference: typeReference,
-                symbolNameReference: null,
-                ctype: GetCType(anyType.Array.CType))
-            {
-                Length = length,
-                FixedSize = fixedSize,
-                IsZeroTerminated = anyType.Array.ZeroTerminated
-            };
+        var parts = name.Split('.', 2);
 
-            return true;
-        }
+        return new SymbolNameReference(
+            parts[1],
+            new NamespaceName(parts[0])
+        );
+    }
 
-        public IEnumerable<TypeReference> Create(IEnumerable<Input.Implement> implements)
-        {
-            var list = new List<TypeReference>();
+    private static CTypeReference? GetCType(string? ctype)
+    {
+        if (ctype is null)
+            return null;
 
-            foreach (Input.Implement implement in implements)
-            {
-                if (implement.Name is null)
-                    throw new Exception("Implement is missing a name");
-
-                list.Add(CreateResolveable(implement.Name, null));
-            }
-
-            return list;
-        }
-
-        private static SymbolNameReference? GetSymbolNameReference(string? name)
-        {
-            if (name is null)
-                return null;
-
-            if (!name.Contains("."))
-                return new SymbolNameReference(name, null);
-
-            var parts = name.Split('.', 2);
-
-            return new SymbolNameReference(
-                parts[1],
-                new NamespaceName(parts[0])
-            );
-        }
-
-        private static CTypeReference? GetCType(string? ctype)
-        {
-            if (ctype is null)
-                return null;
-
-            return new CTypeReference(ctype);
-        }
+        return new CTypeReference(ctype);
     }
 }

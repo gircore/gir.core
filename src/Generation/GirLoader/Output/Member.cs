@@ -1,14 +1,13 @@
-﻿namespace GirLoader.Output
-{
-    public partial class Member
-    {
-        public string Name { get; }
-        public string Value { get; }
+﻿namespace GirLoader.Output;
 
-        public Member(string name, string value)
-        {
-            Name = name;
-            Value = value;
-        }
+public partial class Member
+{
+    public string Name { get; }
+    public string Value { get; }
+
+    public Member(string name, string value)
+    {
+        Name = name;
+        Value = value;
     }
 }

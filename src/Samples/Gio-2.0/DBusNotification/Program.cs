@@ -1,11 +1,10 @@
-﻿namespace Samples
+﻿namespace Samples;
+
+internal static class Program
 {
-    internal static class Program
+    private static void Main(string[] args)
     {
-        private static void Main(string[] args)
-        {
-            Gio.Module.Initialize();
-            Sample.DBus.SendNotification();
-        }
+        Gio.Module.Initialize();
+        Sample.DBus.SendNotification();
     }
 }

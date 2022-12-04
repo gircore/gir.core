@@ -2,19 +2,18 @@
 using System.IO;
 using System.Reflection;
 
-namespace Gir.Integration.CSharp
+namespace Gir.Integration.CSharp;
+
+internal static class AssemblyExtension
 {
-    internal static class AssemblyExtension
+    public static string ReadResourceAsString(this Assembly assembly, string resource)
     {
-        public static string ReadResourceAsString(this Assembly assembly, string resource)
-        {
-            Stream? stream = assembly.GetManifestResourceStream(resource);
+        Stream? stream = assembly.GetManifestResourceStream(resource);
 
-            if (stream == null)
-                throw new Exception("Cannot get resource file '" + resource + "'");
+        if (stream == null)
+            throw new Exception("Cannot get resource file '" + resource + "'");
 
-            using var reader = new StreamReader(stream);
-            return reader.ReadToEnd();
-        }
+        using var reader = new StreamReader(stream);
+        return reader.ReadToEnd();
     }
 }

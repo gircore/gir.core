@@ -1,36 +1,35 @@
 ﻿using Scriban;
 using Scriban.Runtime;
 
-namespace Gir.Integration.CSharp
+namespace Gir.Integration.CSharp;
+
+public class TemplateProvider
 {
-    public class TemplateProvider
+    public string Get(string templateName, object data)
     {
-        public string Get(string templateName, object data)
-        {
-            var templateContent = GetTemplateContent(templateName);
-            var template = Template.Parse(templateContent);
+        var templateContent = GetTemplateContent(templateName);
+        var template = Template.Parse(templateContent);
 
-            TemplateContext context = GetTemplateContext(data);
-            var content = template.Render(context);
+        TemplateContext context = GetTemplateContext(data);
+        var content = template.Render(context);
 
-            return content;
-        }
+        return content;
+    }
 
-        private TemplateContext GetTemplateContext(object data)
-        {
-            var scriptObject = new ScriptObject();
-            scriptObject.Import(data);
+    private TemplateContext GetTemplateContext(object data)
+    {
+        var scriptObject = new ScriptObject();
+        scriptObject.Import(data);
 
-            var context = new TemplateContext();
-            context.PushGlobal(scriptObject);
-            context.IndentWithInclude = true;
+        var context = new TemplateContext();
+        context.PushGlobal(scriptObject);
+        context.IndentWithInclude = true;
 
-            return context;
-        }
+        return context;
+    }
 
-        private string GetTemplateContent(string templateName)
-        {
-            return typeof(TemplateProvider).Assembly.ReadResourceAsString(templateName);
-        }
+    private string GetTemplateContent(string templateName)
+    {
+        return typeof(TemplateProvider).Assembly.ReadResourceAsString(templateName);
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace GirModel
+﻿namespace GirModel;
+
+public interface ReturnType : Nullable
 {
-    public interface ReturnType : Nullable
-    {
-        AnyType AnyType { get; }
-        Transfer Transfer { get; }
-        bool IsPointer { get; }
-    }
+    AnyType AnyType { get; }
+    Transfer Transfer { get; }
+    bool IsPointer { get; }
 }

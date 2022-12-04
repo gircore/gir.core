@@ -1,4 +1,3 @@
-﻿namespace GirModel
-{
-    public interface Bool : PrimitiveValueType { }
-}
+﻿namespace GirModel;
+
+public interface Bool : PrimitiveValueType { }
