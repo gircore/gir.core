@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace GirLoader.Output
+namespace GirLoader.Output;
+
+public partial class Constructor : GirModel.Constructor
 {
-    public partial class Constructor : GirModel.Constructor
-    {
-        string GirModel.Constructor.Name => Name;
-        GirModel.ReturnType GirModel.Constructor.ReturnType => ReturnValue;
-        string GirModel.Constructor.CIdentifier => Identifier;
-        string? GirModel.Constructor.Version => Version;
-        IEnumerable<GirModel.Parameter> GirModel.Constructor.Parameters => ParameterList.GetParameters().Cast<GirModel.Parameter>();
-    }
+    string GirModel.Constructor.Name => Name;
+    GirModel.ReturnType GirModel.Constructor.ReturnType => ReturnValue;
+    string GirModel.Constructor.CIdentifier => Identifier;
+    string? GirModel.Constructor.Version => Version;
+    IEnumerable<GirModel.Parameter> GirModel.Constructor.Parameters => ParameterList.GetParameters().Cast<GirModel.Parameter>();
 }

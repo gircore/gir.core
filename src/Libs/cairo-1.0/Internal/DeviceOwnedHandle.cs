@@ -1,12 +1,10 @@
-﻿namespace Cairo.Internal
+﻿namespace Cairo.Internal;
+
+public partial class DeviceOwnedHandle : DeviceHandle
 {
-    public partial class DeviceOwnedHandle : DeviceHandle
+    protected override partial bool ReleaseHandle()
     {
-        protected override partial bool ReleaseHandle()
-        {
-            Device.Destroy(handle);
-            return true;
-        }
+        Device.Destroy(handle);
+        return true;
     }
 }
-

@@ -1,14 +1,13 @@
-﻿namespace Gio
+﻿namespace Gio;
+
+public partial class Application
 {
-    public partial class Application
+    #region Methods
+
+    public int Run()
     {
-        #region Methods
-
-        public int Run()
-        {
-            return Internal.Application.Run(Handle, 0, new string[0]);
-        }
-
-        #endregion
+        return Internal.Application.Run(Handle, 0, new string[0]);
     }
+
+    #endregion
 }

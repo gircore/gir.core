@@ -1,4 +1,3 @@
-﻿namespace GirModel
-{
-    public interface Long : PrimitiveValueType { }
-}
+﻿namespace GirModel;
+
+public interface Long : PrimitiveValueType { }

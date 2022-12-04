@@ -1,35 +1,34 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace GLib
+namespace GLib;
+
+public partial class VariantType : IDisposable
 {
-    public partial class VariantType : IDisposable
-    {
-        #region Static Member
+    #region Static Member
 
-        public static readonly VariantType String = new VariantType("s");
-        public static readonly VariantType Variant = new VariantType("v");
+    public static readonly VariantType String = new VariantType("s");
+    public static readonly VariantType Variant = new VariantType("v");
 
-        #endregion
+    #endregion
 
-        #region Constructors
+    #region Constructors
 
-        public VariantType(string type) : this(Internal.VariantType.New(type)) { }
+    public VariantType(string type) : this(Internal.VariantType.New(type)) { }
 
-        #endregion
+    #endregion
 
-        #region Methods
+    #region Methods
 
-        public override string? ToString()
-            => Marshal.PtrToStringAnsi(Internal.VariantType.PeekString(Handle));
+    public override string? ToString()
+        => Marshal.PtrToStringAnsi(Internal.VariantType.PeekString(Handle));
 
-        #endregion
+    #endregion
 
-        #region IDisposable Implementation
+    #region IDisposable Implementation
 
-        public void Dispose()
-            => Handle.Dispose();
+    public void Dispose()
+        => Handle.Dispose();
 
-        #endregion
-    }
+    #endregion
 }

@@ -1,7 +1,6 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public class Long : PrimitiveValueType, GirModel.Long
 {
-    public class Long : PrimitiveValueType, GirModel.Long
-    {
-        public Long(string ctype) : base(ctype) { }
-    }
+    public Long(string ctype) : base(ctype) { }
 }

@@ -1,16 +1,15 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public class VoidPointer : Pointer
 {
-    public class VoidPointer : Pointer
+    public VoidPointer() : base("void") { }
+
+    internal override bool Matches(TypeReference typeReference)
     {
-        public VoidPointer() : base("void") { }
+        if (typeReference.CTypeReference is null)
+            return false;
 
-        internal override bool Matches(TypeReference typeReference)
-        {
-            if (typeReference.CTypeReference is null)
-                return false;
-
-            return typeReference.CTypeReference.CType == CType
-                   && typeReference.CTypeReference.IsPointer;
-        }
+        return typeReference.CTypeReference.CType == CType
+               && typeReference.CTypeReference.IsPointer;
     }
 }

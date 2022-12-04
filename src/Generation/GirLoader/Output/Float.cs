@@ -1,7 +1,6 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public class Float : PrimitiveValueType, GirModel.Float
 {
-    public class Float : PrimitiveValueType, GirModel.Float
-    {
-        public Float(string ctype) : base(ctype) { }
-    }
+    public Float(string ctype) : base(ctype) { }
 }

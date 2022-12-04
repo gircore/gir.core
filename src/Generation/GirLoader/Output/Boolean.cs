@@ -1,7 +1,6 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public class Boolean : PrimitiveValueType, GirModel.Bool
 {
-    public class Boolean : PrimitiveValueType, GirModel.Bool
-    {
-        public Boolean(string ctype) : base(ctype) { }
-    }
+    public Boolean(string ctype) : base(ctype) { }
 }

@@ -1,7 +1,6 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public class NativeUnsignedInteger : PrimitiveValueType, GirModel.NativeUnsignedInteger
 {
-    public class NativeUnsignedInteger : PrimitiveValueType, GirModel.NativeUnsignedInteger
-    {
-        public NativeUnsignedInteger(string ctype) : base(ctype) { }
-    }
+    public NativeUnsignedInteger(string ctype) : base(ctype) { }
 }

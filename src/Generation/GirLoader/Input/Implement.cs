@@ -1,10 +1,9 @@
 ﻿using System.Xml.Serialization;
 
-namespace GirLoader.Input
+namespace GirLoader.Input;
+
+public class Implement
 {
-    public class Implement
-    {
-        [XmlAttribute("name")]
-        public string? Name { get; set; }
-    }
+    [XmlAttribute("name")]
+    public string? Name { get; set; }
 }

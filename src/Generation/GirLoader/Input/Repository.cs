@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace GirLoader.Input
+namespace GirLoader.Input;
+
+[XmlRoot(ElementName = "repository")]
+public class Repository
 {
-    [XmlRoot(ElementName = "repository")]
-    public class Repository
+    [XmlAttribute("version")]
+    public string? Version { get; set; }
+
+    [XmlElement("namespace")]
+    public Namespace? Namespace { get; set; }
+
+    [XmlElement("include")]
+    public List<Include> Includes { get; set; } = new();
+
+    public override string ToString()
     {
-        [XmlAttribute("version")]
-        public string? Version { get; set; }
-
-        [XmlElement("namespace")]
-        public Namespace? Namespace { get; set; }
-
-        [XmlElement("include")]
-        public List<Include> Includes { get; set; } = new();
-
-        public override string ToString()
-        {
-            var namespaceName = Namespace?.Name ?? throw new Exception("A repository without a namespace name is not valid");
-            var version = Namespace?.Version ?? "Unspecified";
-            return $"Repository: {namespaceName} Version: {version}";
-        }
+        var namespaceName = Namespace?.Name ?? throw new Exception("A repository without a namespace name is not valid");
+        var version = Namespace?.Version ?? "Unspecified";
+        return $"Repository: {namespaceName} Version: {version}";
     }
 }

@@ -1,27 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace GirLoader.Output
+namespace GirLoader.Output;
+
+public class ParameterList
 {
-    public class ParameterList
+    public InstanceParameter? InstanceParameter { get; init; }
+
+    public IEnumerable<SingleParameter> SingleParameters { get; init; } = Enumerable.Empty<SingleParameter>();
+
+    public bool Any()
     {
-        public InstanceParameter? InstanceParameter { get; init; }
+        return InstanceParameter is { } || SingleParameters.Any();
+    }
 
-        public IEnumerable<SingleParameter> SingleParameters { get; init; } = Enumerable.Empty<SingleParameter>();
+    public IEnumerable<Parameter> GetParameters()
+    {
+        IEnumerable<Parameter> ret = SingleParameters;
 
-        public bool Any()
-        {
-            return InstanceParameter is { } || SingleParameters.Any();
-        }
+        if (InstanceParameter is { })
+            ret = ret.Prepend(InstanceParameter); //Prepend to keep order
 
-        public IEnumerable<Parameter> GetParameters()
-        {
-            IEnumerable<Parameter> ret = SingleParameters;
-
-            if (InstanceParameter is { })
-                ret = ret.Prepend(InstanceParameter); //Prepend to keep order
-
-            return ret;
-        }
+        return ret;
     }
 }

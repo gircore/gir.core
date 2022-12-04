@@ -1,10 +1,9 @@
 ﻿using System.Xml.Serialization;
 
-namespace GirLoader.Input
+namespace GirLoader.Input;
+
+public class Doc
 {
-    public class Doc
-    {
-        [XmlText]
-        public string? Text { get; set; }
-    }
+    [XmlText]
+    public string? Text { get; set; }
 }

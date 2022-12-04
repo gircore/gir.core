@@ -1,4 +1,3 @@
-﻿namespace GirModel
-{
-    public interface Pointer : PrimitiveType { }
-}
+﻿namespace GirModel;
+
+public interface Pointer : PrimitiveType { }

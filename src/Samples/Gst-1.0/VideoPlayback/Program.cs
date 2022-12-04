@@ -1,11 +1,10 @@
-﻿namespace Samples
+﻿namespace Samples;
+
+public static class Program
 {
-    public static class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            Gst.Module.Initialize();
-            Sample.Gst.Play();
-        }
+        Gst.Module.Initialize();
+        Sample.Gst.Play();
     }
 }

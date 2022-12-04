@@ -1,14 +1,13 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Cairo
+namespace Cairo;
+
+[StructLayout(LayoutKind.Sequential)]
+public struct FontExtents
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct FontExtents
-    {
-        public double Ascent;
-        public double Descent;
-        public double Height;
-        public double MaxXAdvance;
-        public double MaxYAdvance;
-    }
+    public double Ascent;
+    public double Descent;
+    public double Height;
+    public double MaxXAdvance;
+    public double MaxYAdvance;
 }

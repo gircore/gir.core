@@ -1,9 +1,8 @@
-﻿namespace GirModel
+﻿namespace GirModel;
+
+public enum Transfer
 {
-    public enum Transfer
-    {
-        None = 0,
-        Container = 1,
-        Full = 2
-    }
+    None = 0,
+    Container = 1,
+    Full = 2
 }

@@ -1,13 +1,12 @@
 ﻿using System.Xml.Serialization;
 
-namespace GirLoader.Input
-{
-    public class Include
-    {
-        [XmlAttribute("name")]
-        public string? Name { get; set; }
+namespace GirLoader.Input;
 
-        [XmlAttribute("version")]
-        public string? Version { get; set; }
-    }
+public class Include
+{
+    [XmlAttribute("name")]
+    public string? Name { get; set; }
+
+    [XmlAttribute("version")]
+    public string? Version { get; set; }
 }

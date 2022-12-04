@@ -1,11 +1,10 @@
-﻿namespace GirModel
+﻿namespace GirModel;
+
+public interface InstanceParameter : Nullable
 {
-    public interface InstanceParameter : Nullable
-    {
-        string Name { get; }
-        Direction Direction { get; }
-        Transfer Transfer { get; }
-        bool CallerAllocates { get; }
-        Type Type { get; }
-    }
+    string Name { get; }
+    Direction Direction { get; }
+    Transfer Transfer { get; }
+    bool CallerAllocates { get; }
+    Type Type { get; }
 }

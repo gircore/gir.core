@@ -1,10 +1,9 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public interface Parameter
 {
-    public interface Parameter
-    {
-        string Name { get; }
-        Direction Direction { get; }
-        bool Nullable { get; }
-        bool CallerAllocates { get; }
-    }
+    string Name { get; }
+    Direction Direction { get; }
+    bool Nullable { get; }
+    bool CallerAllocates { get; }
 }

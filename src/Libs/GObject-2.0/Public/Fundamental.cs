@@ -1,14 +1,13 @@
 ﻿using System;
 
-namespace GObject
-{
-    public abstract class Fundamental
-    {
-        public IntPtr Handle { get; }
+namespace GObject;
 
-        protected Fundamental(IntPtr ptr)
-        {
-            Handle = ptr;
-        }
+public abstract class Fundamental
+{
+    public IntPtr Handle { get; }
+
+    protected Fundamental(IntPtr ptr)
+    {
+        Handle = ptr;
     }
 }

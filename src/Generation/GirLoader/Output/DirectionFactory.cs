@@ -1,16 +1,15 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public static class DirectionFactory
 {
-    public static class DirectionFactory
+    public static Direction Create(string? direction)
     {
-        public static Direction Create(string? direction)
+        return direction switch
         {
-            return direction switch
-            {
-                "in" => Direction.In,
-                "out" => Direction.Out,
-                "inout" => Direction.Ref,
-                _ => Direction.Default
-            };
-        }
+            "in" => Direction.In,
+            "out" => Direction.Out,
+            "inout" => Direction.Ref,
+            _ => Direction.Default
+        };
     }
 }

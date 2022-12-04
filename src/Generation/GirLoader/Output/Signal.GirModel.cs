@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace GirLoader.Output
+namespace GirLoader.Output;
+
+public partial class Signal : GirModel.Signal
 {
-    public partial class Signal : GirModel.Signal
-    {
-        string GirModel.Signal.Name => Name;
-        IEnumerable<GirModel.Parameter> GirModel.Signal.Parameters => ParameterList.SingleParameters;
-        bool GirModel.Signal.Introspectable => Introspectable;
-    }
+    string GirModel.Signal.Name => Name;
+    IEnumerable<GirModel.Parameter> GirModel.Signal.Parameters => ParameterList.SingleParameters;
+    bool GirModel.Signal.Introspectable => Introspectable;
 }

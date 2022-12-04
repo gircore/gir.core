@@ -3,23 +3,22 @@ using System.IO;
 using System.Reflection;
 using GLib;
 
-namespace GObject
+namespace GObject;
+
+public static class AssemblyExtension
 {
-    public static class AssemblyExtension
+    public static byte[] ReadResourceAsByteArray(this Assembly assembly, string resource)
     {
-        public static byte[] ReadResourceAsByteArray(this Assembly assembly, string resource)
-        {
-            Stream? stream = assembly.GetManifestResourceStream(resource);
+        Stream? stream = assembly.GetManifestResourceStream(resource);
 
-            if (stream == null)
-                throw new Exception("Cannot get resource file '" + resource + "'");
+        if (stream == null)
+            throw new Exception("Cannot get resource file '" + resource + "'");
 
-            var size = (int) stream.Length;
-            var buffer = new byte[size];
-            stream.Read(buffer, 0, size);
-            stream.Close();
+        var size = (int) stream.Length;
+        var buffer = new byte[size];
+        stream.Read(buffer, 0, size);
+        stream.Close();
 
-            return buffer;
-        }
+        return buffer;
     }
 }

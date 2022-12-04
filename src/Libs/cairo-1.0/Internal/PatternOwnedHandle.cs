@@ -1,12 +1,10 @@
-﻿namespace Cairo.Internal
+﻿namespace Cairo.Internal;
+
+public partial class PatternOwnedHandle : PatternHandle
 {
-    public partial class PatternOwnedHandle : PatternHandle
+    protected override partial bool ReleaseHandle()
     {
-        protected override partial bool ReleaseHandle()
-        {
-            Pattern.Destroy(handle);
-            return true;
-        }
+        Pattern.Destroy(handle);
+        return true;
     }
 }
-

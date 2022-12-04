@@ -1,32 +1,31 @@
 ﻿using System.Collections.Generic;
 
-namespace GirLoader.Output
+namespace GirLoader.Output;
+
+public partial class Bitfield : ComplexType
 {
-    public partial class Bitfield : ComplexType
+    public IEnumerable<Member> Members { get; }
+    public bool Introspectable { get; }
+
+    public Bitfield(Repository repository, string? cType, string name, IEnumerable<Member> members, bool introspectable) : base(repository, cType, name)
     {
-        public IEnumerable<Member> Members { get; }
-        public bool Introspectable { get; }
+        Members = members;
+        Introspectable = introspectable;
+    }
 
-        public Bitfield(Repository repository, string? cType, string name, IEnumerable<Member> members, bool introspectable) : base(repository, cType, name)
+    internal override bool Matches(TypeReference typeReference)
+    {
+        if (typeReference.SymbolNameReference is not null)
         {
-            Members = members;
-            Introspectable = introspectable;
+            var namespaceOk = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name
+                              || typeReference.SymbolNameReference.NamespaceName == null;
+
+            return namespaceOk && typeReference.SymbolNameReference.SymbolName == Name;
         }
 
-        internal override bool Matches(TypeReference typeReference)
-        {
-            if (typeReference.SymbolNameReference is not null)
-            {
-                var namespaceOk = typeReference.SymbolNameReference.NamespaceName == Repository.Namespace.Name
-                                  || typeReference.SymbolNameReference.NamespaceName == null;
+        if (typeReference.CTypeReference is not null)
+            return typeReference.CTypeReference.CType == CType;
 
-                return namespaceOk && typeReference.SymbolNameReference.SymbolName == Name;
-            }
-
-            if (typeReference.CTypeReference is not null)
-                return typeReference.CTypeReference.CType == CType;
-
-            return false;
-        }
+        return false;
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public class UnsignedLong : PrimitiveValueType, GirModel.UnsignedLong
 {
-    public class UnsignedLong : PrimitiveValueType, GirModel.UnsignedLong
-    {
-        public UnsignedLong(string ctype) : base(ctype) { }
-    }
+    public UnsignedLong(string ctype) : base(ctype) { }
 }

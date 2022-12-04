@@ -1,7 +1,6 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public class Double : PrimitiveValueType, GirModel.Double
 {
-    public class Double : PrimitiveValueType, GirModel.Double
-    {
-        public Double(string ctype) : base(ctype) { }
-    }
+    public Double(string ctype) : base(ctype) { }
 }

@@ -1,15 +1,14 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public class UnsignedPointer : Type, GirModel.UnsignedPointer
 {
-    public class UnsignedPointer : Type, GirModel.UnsignedPointer
+    public UnsignedPointer(string ctype) : base(ctype) { }
+
+    internal override bool Matches(TypeReference typeReference)
     {
-        public UnsignedPointer(string ctype) : base(ctype) { }
+        if (typeReference.CTypeReference is null)
+            return false;
 
-        internal override bool Matches(TypeReference typeReference)
-        {
-            if (typeReference.CTypeReference is null)
-                return false;
-
-            return typeReference.CTypeReference.CType == CType;
-        }
+        return typeReference.CTypeReference.CType == CType;
     }
 }

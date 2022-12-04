@@ -1,16 +1,15 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gio.Tests
+namespace Gio.Tests;
+
+[TestClass, TestCategory("SystemTest")]
+public class DBusConnectionTest : Test
 {
-    [TestClass, TestCategory("SystemTest")]
-    public class DBusConnectionTest : Test
+    [TestMethod]
+    public void GetSessionBusShouldNotBeNull()
     {
-        [TestMethod]
-        public void GetSessionBusShouldNotBeNull()
-        {
-            var obj = DBusConnection.Get(BusType.Session);
-            obj.Should().NotBeNull();
-        }
+        var obj = DBusConnection.Get(BusType.Session);
+        obj.Should().NotBeNull();
     }
 }

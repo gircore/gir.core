@@ -1,8 +1,7 @@
-﻿namespace GirLoader.Output
+﻿namespace GirLoader.Output;
+
+public abstract partial class ComplexType : GirModel.ComplexType
 {
-    public abstract partial class ComplexType : GirModel.ComplexType
-    {
-        GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
-        string GirModel.ComplexType.Name => Name;
-    }
+    GirModel.Namespace GirModel.ComplexType.Namespace => Repository.Namespace;
+    string GirModel.ComplexType.Name => Name;
 }

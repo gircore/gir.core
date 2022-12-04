@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace GirModel
+namespace GirModel;
+
+public interface Bitfield : ComplexType
 {
-    public interface Bitfield : ComplexType
-    {
-        Method? TypeFunction { get; }
-        IEnumerable<Member> Members { get; }
-        bool Introspectable { get; }
-    }
+    Method? TypeFunction { get; }
+    IEnumerable<Member> Members { get; }
+    bool Introspectable { get; }
 }

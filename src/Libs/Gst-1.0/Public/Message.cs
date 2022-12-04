@@ -2,129 +2,128 @@
 using System.Runtime.InteropServices;
 using GLib;
 
-namespace Gst
-{
-    public class MessageTypeMismatchException : Exception
-    {
-        public MessageTypeMismatchException(MessageType actual, MessageType expected)
-            : base($"Expected message type of {expected} but received ${actual}.")
-        {
+namespace Gst;
 
-        }
+public class MessageTypeMismatchException : Exception
+{
+    public MessageTypeMismatchException(MessageType actual, MessageType expected)
+        : base($"Expected message type of {expected} but received ${actual}.")
+    {
+
+    }
+}
+
+//TODO
+/*public partial record Message
+{
+    public MessageType Type => type;
+
+    //TODO: Clarify if this is needed, see: https://github.com/gircore/gir.core/pull/184#discussion_r554907963
+    public Gst.Object Src
+    {
+        get => GObject.Object.WrapHandle<Gst.Object>(src, false);
+        set => src = value.Handle;
     }
 
-    //TODO
-    /*public partial record Message
+    public Structure GetStructure()
     {
-        public MessageType Type => type;
+        // Marshal this structure
+        IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+        Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
-        //TODO: Clarify if this is needed, see: https://github.com/gircore/gir.core/pull/184#discussion_r554907963
-        public Gst.Object Src
-        {
-            get => GObject.Object.WrapHandle<Gst.Object>(src, false);
-            set => src = value.Handle;
-        }
+        IntPtr ptr = Native.get_structure(thisPtr);
 
-        public Structure GetStructure()
-        {
-            // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
-            Marshal.StructureToPtr<Message>(this, thisPtr, false);
+        // Update this structure (is this necessary?)
+        // TODO: Check for NULL
+        this = Marshal.PtrToStructure<Message>(thisPtr)!;
 
-            IntPtr ptr = Native.get_structure(thisPtr);
+        Marshal.FreeHGlobal(thisPtr);
 
-            // Update this structure (is this necessary?)
-            // TODO: Check for NULL
-            this = Marshal.PtrToStructure<Message>(thisPtr)!;
+        return Marshal.PtrToStructure<Structure>(ptr);
+    }
 
-            Marshal.FreeHGlobal(thisPtr);
+    public void ParseStateChanged(out State? oldState, out State? newState, out State? pendingState)
+    {
+        if (type != MessageType.StateChanged)
+            throw new MessageTypeMismatchException(type, MessageType.StateChanged);
 
-            return Marshal.PtrToStructure<Structure>(ptr);
-        }
+        // Empty pointers
+        IntPtr oldStatePtr = default, newStatePtr = default, pendingStatePtr = default;
 
-        public void ParseStateChanged(out State? oldState, out State? newState, out State? pendingState)
-        {
-            if (type != MessageType.StateChanged)
-                throw new MessageTypeMismatchException(type, MessageType.StateChanged);
+        // Marshal this structure
+        IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+        Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
-            // Empty pointers
-            IntPtr oldStatePtr = default, newStatePtr = default, pendingStatePtr = default;
+        Native.parse_state_changed(thisPtr, out oldStatePtr, out newStatePtr, out pendingStatePtr);
 
-            // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
-            Marshal.StructureToPtr<Message>(this, thisPtr, false);
+        // Update and free (TODO: Check for NULL)
+        this = Marshal.PtrToStructure<Message>(thisPtr)!;
+        Marshal.FreeHGlobal(thisPtr);
 
-            Native.parse_state_changed(thisPtr, out oldStatePtr, out newStatePtr, out pendingStatePtr);
+        // Assign out variables
+        oldState = (State) oldStatePtr;// != IntPtr.Zero ? Marshal.PtrToStructure<State>(oldStatePtr) : null;
+        newState = (State) newStatePtr;// != IntPtr.Zero ? Marshal.PtrToStructure<State>(newStatePtr) : null;
+        pendingState = (State) pendingStatePtr;// != IntPtr.Zero ? Marshal.PtrToStructure<State>(pendingStatePtr) : null;
+    }
 
-            // Update and free (TODO: Check for NULL)
-            this = Marshal.PtrToStructure<Message>(thisPtr)!;
-            Marshal.FreeHGlobal(thisPtr);
+    public void ParseTag(out TagList? tagList)
+    {
+        if (type != MessageType.Tag)
+            throw new MessageTypeMismatchException(type, MessageType.Tag);
 
-            // Assign out variables
-            oldState = (State) oldStatePtr;// != IntPtr.Zero ? Marshal.PtrToStructure<State>(oldStatePtr) : null;
-            newState = (State) newStatePtr;// != IntPtr.Zero ? Marshal.PtrToStructure<State>(newStatePtr) : null;
-            pendingState = (State) pendingStatePtr;// != IntPtr.Zero ? Marshal.PtrToStructure<State>(pendingStatePtr) : null;
-        }
+        // Empty pointers
+        IntPtr tagListPtr = default;
 
-        public void ParseTag(out TagList? tagList)
-        {
-            if (type != MessageType.Tag)
-                throw new MessageTypeMismatchException(type, MessageType.Tag);
+        // Marshal this structure
+        IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+        Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
-            // Empty pointers
-            IntPtr tagListPtr = default;
+        Native.parse_tag(thisPtr, out tagListPtr);
 
-            // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
-            Marshal.StructureToPtr<Message>(this, thisPtr, false);
+        // Update and free (TODO: Check for NULL)
+        this = Marshal.PtrToStructure<Message>(thisPtr)!;
+        Marshal.FreeHGlobal(thisPtr);
 
-            Native.parse_tag(thisPtr, out tagListPtr);
+        // Assign out variables
+        tagList = tagListPtr != IntPtr.Zero ? Marshal.PtrToStructure<TagList>(tagListPtr) : null;
+    }
 
-            // Update and free (TODO: Check for NULL)
-            this = Marshal.PtrToStructure<Message>(thisPtr)!;
-            Marshal.FreeHGlobal(thisPtr);
+    public void ParseBuffering(out int percent)
+    {
+        if (type != MessageType.Buffering)
+            throw new MessageTypeMismatchException(type, MessageType.Buffering);
 
-            // Assign out variables
-            tagList = tagListPtr != IntPtr.Zero ? Marshal.PtrToStructure<TagList>(tagListPtr) : null;
-        }
+        // Empty pointers
+        percent = 0;
 
-        public void ParseBuffering(out int percent)
-        {
-            if (type != MessageType.Buffering)
-                throw new MessageTypeMismatchException(type, MessageType.Buffering);
+        // Marshal this structure
+        IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+        Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
-            // Empty pointers
-            percent = 0;
+        Native.parse_buffering(thisPtr, out percent);
 
-            // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
-            Marshal.StructureToPtr<Message>(this, thisPtr, false);
+        // Update and free (TODO: Check for NULL)
+        this = Marshal.PtrToStructure<Message>(thisPtr)!;
+        Marshal.FreeHGlobal(thisPtr);
+    }
 
-            Native.parse_buffering(thisPtr, out percent);
+    public void ParseError(out GLib.Error? error, out string? debug)
+    {
+        if (type != MessageType.Error)
+            throw new MessageTypeMismatchException(type, MessageType.Error);
 
-            // Update and free (TODO: Check for NULL)
-            this = Marshal.PtrToStructure<Message>(thisPtr)!;
-            Marshal.FreeHGlobal(thisPtr);
-        }
+        // Empty pointers
 
-        public void ParseError(out GLib.Error? error, out string? debug)
-        {
-            if (type != MessageType.Error)
-                throw new MessageTypeMismatchException(type, MessageType.Error);
+        // Marshal this structure
+        IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
+        Marshal.StructureToPtr<Message>(this, thisPtr, false);
 
-            // Empty pointers
+        Native.parse_error(thisPtr, out IntPtr errPtr, out IntPtr strPtr);
 
-            // Marshal this structure
-            IntPtr thisPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Message>());
-            Marshal.StructureToPtr<Message>(this, thisPtr, false);
-
-            Native.parse_error(thisPtr, out IntPtr errPtr, out IntPtr strPtr);
-
-            // Update and free (TODO: Check for NULL)
-            this = Marshal.PtrToStructure<Message>(thisPtr)!;
-            debug = StringHelper.ToNullableAnsiStringAndFree(strPtr);
-            error = Marshal.PtrToStructure<GLib.Error>(errPtr);
-            Marshal.FreeHGlobal(thisPtr);
-        }
-    }*/
-}
+        // Update and free (TODO: Check for NULL)
+        this = Marshal.PtrToStructure<Message>(thisPtr)!;
+        debug = StringHelper.ToNullableAnsiStringAndFree(strPtr);
+        error = Marshal.PtrToStructure<GLib.Error>(errPtr);
+        Marshal.FreeHGlobal(thisPtr);
+    }
+}*/
