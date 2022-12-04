@@ -10,7 +10,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
-    <VersionPrefix>0.0.3</VersionPrefix>
+    <VersionPrefix>0.1.0</VersionPrefix>
     <PackageReadmeFile>NugetReadme.md</PackageReadmeFile>
     <PackageTags>gobject;gir;binding;gnome;</PackageTags>
     <PackageIcon>logo-128.png</PackageIcon>
