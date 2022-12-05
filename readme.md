@@ -21,18 +21,18 @@ We are currently in a period of heavy iteration over the core internals of the p
 
 ## Supported Libraries
 
-| Library                     | Description                                      | Level of Support |
-|-----------------------------|--------------------------------------------------|------------------|
-| [GTK-4.0][Gtk4Nuget]        | UI-Toolkit                                       | Partial          |
-| Libadwaita                  | Building blocks for modern GNOME applications    | Partial          |
-| [GStreamer][GstNuget]       | Multimedia Framework                             | Partial          |
-| [Cairo][CairoNuget]         | Graphics Library                                 | Partial          |
-| [Pango][PangoNuget]         | Font/Text Library                                | Partial          |
-| [Gio][GioNuget]             | Library for high level application functionality | Partial          |
-| [GdkPixbuf][GdkPixbufNuget] | Image loading in various formats                 | Partial          |
-| libshumate                  | Library to display maps                          | Planned          |
-| WebKitGTK                   | Browser Engine                                   | [Planned](https://github.com/gircore/gir.core/issues/568)      |
-| JavaScriptCore              | JavaScript engine for WebKit                     | Planned          |
+| Library                         | Description                                      | Level of Support |
+|---------------------------------|--------------------------------------------------|------------------|
+| [GTK-4.0][Gtk4Nuget]            | UI-Toolkit                                       | Partial          |
+| [Libadwaita-1][LibadwaitaNuget] | Building blocks for modern GNOME applications    | Partial          |
+| [GStreamer-1.0][GstNuget]       | Multimedia Framework                             | Partial          |
+| [Cairo-1.0][CairoNuget]         | Graphics Library                                 | Partial          |
+| [Pango-1.0][PangoNuget]         | Font/Text Library                                | Partial          |
+| [Gio-2.0][GioNuget]             | Library for high level application functionality | Partial          |
+| [GdkPixbuf-2.0][GdkPixbufNuget] | Image loading in various formats                 | Partial          |
+| libshumate                      | Library to display maps                          | Planned          |
+| WebKitGTK                       | Browser Engine                                   | [Planned](https://github.com/gircore/gir.core/issues/568)      |
+| JavaScriptCore                  | JavaScript engine for WebKit                     | Planned          |
 
 
 ## Get Involved
@@ -89,6 +89,7 @@ The code in the library folder is not complete because most of the code is gener
 [PangoNuget]: https://www.nuget.org/packages/GirCore.Pango-1.0/
 [GioNuget]: https://www.nuget.org/packages/GirCore.Gio-2.0/
 [GdkPixbufNuget]: https://www.nuget.org/packages/GirCore.GdkPixbuf-2.0/
+[LibadwaitaNuget]: https://www.nuget.org/packages/GirCore.Adw-1
 
 ## Licensing terms
 Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.
