@@ -2,12 +2,13 @@
 
 public partial class Application
 {
-    #region Methods
+    static Application()
+    {
+        Module.Initialize();
+    }
 
     public int Run()
     {
         return Internal.Application.Run(Handle, 0, new string[0]);
     }
-
-    #endregion
 }

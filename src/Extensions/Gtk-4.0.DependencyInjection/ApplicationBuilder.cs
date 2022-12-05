@@ -34,8 +34,6 @@ public partial class ApplicationBuilder
 
     public int Show<StartView>() where StartView : Widget
     {
-        Gtk.Module.Initialize();
-
         if (_serviceProviderFactory is null)
             throw new Exception($"Please call {nameof(SetServiceProviderFactory)} first.");
 

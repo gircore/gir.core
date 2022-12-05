@@ -1,14 +1,10 @@
-﻿using Gtk;
-
-Gtk.Module.Initialize();
-
-var application = Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
+﻿var application = Gtk.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
 application.OnActivate += (sender, args) =>
 {
-    var drawingArea = DrawingArea.New();
+    var drawingArea = Gtk.DrawingArea.New();
     drawingArea.SetDrawFunc(Draw);
 
-    var window = ApplicationWindow.New((Application) sender);
+    var window = Gtk.ApplicationWindow.New((Gtk.Application) sender);
     window.Title = "DrawingArea Demo";
     window.Child = drawingArea;
     window.Show();
