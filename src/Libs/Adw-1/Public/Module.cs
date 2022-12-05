@@ -13,6 +13,7 @@ public class Module
 
         Internal.ImportResolver.RegisterAsDllImportResolver();
         Internal.TypeRegistration.RegisterTypes();
+        Internal.Functions.Init();
 
         IsInitialized = true;
     }

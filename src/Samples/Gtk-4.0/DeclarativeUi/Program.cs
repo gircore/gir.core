@@ -1,6 +1,4 @@
-﻿Gtk.Module.Initialize();
-
-var application = Gtk.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
+﻿var application = Gtk.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
 application.OnActivate += (sender, args) =>
 {
     var mainWindow = new Gtk.Window
