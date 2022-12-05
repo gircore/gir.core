@@ -22,7 +22,9 @@ public partial class Object
             _callback = action;
         }
 
-        private void MarshalCallback(Closure closure, Value? returnValue, uint nParamValues, Value[] paramValues, IntPtr? invocationHint, IntPtr? marshalData)
+        //From this method the "IntPtr? userData" parameter was removed due to https://gitlab.gnome.org/GNOME/glib/-/issues/2827
+        //If this issue is fixed it must be added again
+        private void MarshalCallback(Closure closure, Value? returnValue, uint nParamValues, Value[] paramValues, IntPtr? invocationHint)
         {
             Debug.Assert(
                 condition: paramValues.Length == nParamValues,
