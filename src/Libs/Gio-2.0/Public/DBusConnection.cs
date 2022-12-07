@@ -34,7 +34,7 @@ public partial class DBusConnection
             tcs.SetResult(new Variant(ret));
         }
 
-        var callAsyncCallbackHandler = new AsyncReadyCallbackAsyncHandler(Callback);
+        var callAsyncCallbackHandler = new Internal.AsyncReadyCallbackAsyncHandler(Callback);
 
         Internal.DBusConnection.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, -1, IntPtr.Zero, callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
 
