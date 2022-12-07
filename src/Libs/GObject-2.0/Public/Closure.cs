@@ -10,11 +10,11 @@ public partial class Closure : IDisposable
     // A call handler keeps the delegate alive for the
     // lifetime of the call handler. As we save it as a
     // field here, the delegate will match this class' lifetime.
-    private readonly ClosureMarshalCallHandler _closureMarshalCallHandler;
+    private readonly Internal.ClosureMarshalCallHandler _closureMarshalCallHandler;
 
     internal Closure(ClosureMarshal action)
     {
-        _closureMarshalCallHandler = new ClosureMarshalCallHandler(action);
+        _closureMarshalCallHandler = new Internal.ClosureMarshalCallHandler(action);
         _handle = Internal.Closure.NewSimple((uint) Marshal.SizeOf<Internal.ClosureData>(), IntPtr.Zero);
 
         Debug.WriteLine($"Instantiating Closure: Address {_handle.DangerousGetHandle()}.");
