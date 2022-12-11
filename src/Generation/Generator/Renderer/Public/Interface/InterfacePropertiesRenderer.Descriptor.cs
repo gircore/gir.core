@@ -5,15 +5,15 @@ using Generator.Model;
 
 namespace Generator.Renderer.Public;
 
-public static partial class ClassProperties
+public static partial class InterfaceProperties
 {
-    private static string RenderDescriptor(GirModel.ComplexType complexType, GirModel.Property property)
+    private static string RenderDescriptor(GirModel.Interface @interface, GirModel.Property property)
     {
         if (property is { Readable: false, Writeable: false })
             return string.Empty;
 
         var builder = new StringBuilder();
-        builder.AppendLine($"public static readonly Property<{Property.GetNullableTypeName(property)}> {Property.GetDescriptorName(property)} = Property<{Property.GetNullableTypeName(property)}>.Register<{Namespace.GetPublicName(complexType.Namespace)}.{complexType.Name}>(");
+        builder.AppendLine($"public static readonly Property<{Property.GetNullableTypeName(property)}> {Property.GetDescriptorName(property)} = Property<{Property.GetNullableTypeName(property)}>.Register<{@interface.Name}>(");
 
         builder.AppendLine(string.Join($",{Environment.NewLine}    ", GetArguments(property)));
 
