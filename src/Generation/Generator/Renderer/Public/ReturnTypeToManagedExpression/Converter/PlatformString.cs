@@ -1,5 +1,4 @@
-﻿using Generator.Model;
-using GirModel;
+﻿using GirModel;
 using Transfer = Generator.Model.Transfer;
 
 namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
