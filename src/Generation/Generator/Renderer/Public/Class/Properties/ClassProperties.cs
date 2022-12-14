@@ -22,27 +22,32 @@ namespace {Namespace.GetPublicName(cls.Namespace)}
     {{
         {cls.Properties
             .Where(Property.IsEnabled)
-            .Select(x => Render(cls, x))
+            .Select(prop => Render(cls, prop))
+            .Join(Environment.NewLine)}
+
+        {cls.Implements.SelectMany(@interface => @interface.Properties
+            .Where(Property.IsEnabled)
+            .Select(prop => Render(@interface, prop)))
             .Join(Environment.NewLine)}
     }}
 }}";
     }
 
-    private static string Render(GirModel.Class cls, GirModel.Property property)
+    private static string Render(GirModel.ComplexType complexType, GirModel.Property property)
     {
         try
         {
-            ThrowIfNotSupported(cls, property);
+            Property.ThrowIfNotSupported(complexType, property);
 
             var builder = new StringBuilder();
-            builder.AppendLine(RenderDescriptor(cls, property));
-            builder.AppendLine(RenderAccessor(cls, property));
+            builder.AppendLine(RenderDescriptor(complexType, property));
+            builder.AppendLine(RenderAccessor(complexType, property));
 
             return builder.ToString();
         }
         catch (Exception ex)
         {
-            var message = $"Did not generate property '{cls.Name}.{property.Name}': {ex.Message}";
+            var message = $"Did not generate property '{complexType.Name}.{property.Name}': {ex.Message}";
 
             if (ex is NotImplementedException)
                 Log.Debug(message);
@@ -51,37 +56,5 @@ namespace {Namespace.GetPublicName(cls.Namespace)}
 
             return string.Empty;
         }
-    }
-
-    private static void ThrowIfNotSupported(GirModel.Class cls, GirModel.Property property)
-    {
-        if (!property.Readable && (!property.Writeable || property.ConstructOnly))
-            throw new Exception("Not accessible");
-
-        if (property.AnyType.Is<GirModel.PrimitiveType>())
-            return;
-
-        if (property.AnyType.IsArray<GirModel.String>())
-            return;
-
-        if (property.AnyType.IsArray<GirModel.Byte>())
-            return;
-
-        if (property.AnyType.Is<GirModel.Enumeration>())
-            return;
-
-        if (property.AnyType.Is<GirModel.Bitfield>())
-            return;
-
-        if (property.AnyType.Is<GirModel.Class>())
-            return;
-
-        if (property.AnyType.Is<GirModel.Interface>())
-            return;
-
-        if (property.AnyType.Is<GirModel.Record>())
-            throw new NotImplementedException("There is currently no concept for transfering native records (structs) into the managed world.");
-
-        throw new Exception($"Property {cls.Name}.{property.Name} is not supported");
     }
 }

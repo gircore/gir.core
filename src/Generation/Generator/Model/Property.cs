@@ -93,4 +93,36 @@ internal static partial class Property
 
         return GetNullableTypeName(property) == setterType;
     }
+
+    public static void ThrowIfNotSupported(GirModel.ComplexType complexType, GirModel.Property property)
+    {
+        if (!property.Readable && (!property.Writeable || property.ConstructOnly))
+            throw new System.Exception("Not accessible");
+
+        if (property.AnyType.Is<GirModel.PrimitiveType>())
+            return;
+
+        if (property.AnyType.IsArray<GirModel.String>())
+            return;
+
+        if (property.AnyType.IsArray<GirModel.Byte>())
+            return;
+
+        if (property.AnyType.Is<GirModel.Enumeration>())
+            return;
+
+        if (property.AnyType.Is<GirModel.Bitfield>())
+            return;
+
+        if (property.AnyType.Is<GirModel.Class>())
+            return;
+
+        if (property.AnyType.Is<GirModel.Interface>())
+            return;
+
+        if (property.AnyType.Is<GirModel.Record>())
+            throw new System.NotImplementedException("There is currently no concept for transfering native records (structs) into the managed world.");
+
+        throw new System.Exception($"Property {complexType.Name}.{property.Name} is not supported");
+    }
 }

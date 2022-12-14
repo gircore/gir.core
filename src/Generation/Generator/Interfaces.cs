@@ -13,6 +13,7 @@ public static class Interfaces
             new Generator.Internal.InterfaceMethods(publisher),
             new Generator.Public.InterfaceFramework(publisher),
             new Generator.Public.InterfaceMethods(publisher),
+            new Generator.Public.InterfaceProperties(publisher),
         };
 
         foreach (var iface in interfaces)

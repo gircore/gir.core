@@ -2,24 +2,21 @@
 
 namespace Generator.Generator.Public;
 
-internal class ClassSignals : Generator<GirModel.Class>
+internal class InterfaceProperties : Generator<GirModel.Interface>
 {
     private readonly Publisher _publisher;
 
-    public ClassSignals(Publisher publisher)
+    public InterfaceProperties(Publisher publisher)
     {
         _publisher = publisher;
     }
 
-    public void Generate(GirModel.Class obj)
+    public void Generate(GirModel.Interface obj)
     {
-        if (obj.Fundamental)
-            return;
-
-        var source = Renderer.Public.ClassSignals.Render(obj);
+        var source = Renderer.Public.InterfaceProperties.Render(obj);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),
-            Name: $"{obj.Name}.Signals",
+            Name: $"{obj.Name}.Properties",
             Source: source,
             IsInternal: false
         );

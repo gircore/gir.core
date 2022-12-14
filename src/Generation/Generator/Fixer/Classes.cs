@@ -16,9 +16,28 @@ public static class Classes
         FixPublicMethodsColldingWithProperties(@class);
         FixInternalMethodsNamedLikeClass(@class);
         FixPropertyNamedLikeClass(@class);
+        FixPropertyLikeInterfaceProperty(@class);
 
         //TODO: Replace with explicit interface implementation in case of signature collisions
         FixInterfaceMethodsCollidingWithClassMethods(@class);
+    }
+
+    private static void FixPropertyLikeInterfaceProperty(GirModel.Class @class)
+    {
+        foreach (var @interface in @class.Implements)
+        {
+            foreach (var interfaceProperty in @interface.Properties)
+            {
+                foreach (var property in @class.Properties)
+                {
+                    if (Property.GetName(property) == Property.GetName(interfaceProperty))
+                    {
+                        Log.Warning($"Disabling {@class.Namespace.Name}.{@class.Name}.{Property.GetName(property)} becuase it conflcits with a property of an interface ({@interface.Namespace.Name}.{@interface.Name}.{Property.GetName(interfaceProperty)})");
+                        Property.Disable(property);
+                    }
+                }
+            }
+        }
     }
 
     private static void FixPublicMethodsColldingWithProperties(GirModel.Class @class)
@@ -65,7 +84,19 @@ public static class Classes
             if (Property.GetName(property) == @class.Name)
             {
                 Property.Disable(property);
-                Log.Warning($"Property {property.Name} is named like its containing class. This is not allowed. The property should be created with a suffix and be rewritten to it's original name");
+                Log.Warning($"Property {property.Name} is named like its containing class {@class.Namespace.Name}.{@class.Name}. This is not allowed. The property should be created with a suffix and be rewritten to it's original name");
+            }
+        }
+
+        foreach (var @interface in @class.Implements)
+        {
+            foreach (var interfaceProperty in @interface.Properties)
+            {
+                if (Property.GetName(interfaceProperty) == @class.Name)
+                {
+                    Property.Disable(interfaceProperty);
+                    Log.Warning($"Property {interfaceProperty.Name} of interface {@interface.Namespace.Name}.{@interface.Name} is named like its containing class {@class.Namespace.Name}.{@class.Name}. This is not allowed. The property should be created with a suffix and be rewritten to it's original name");
+                }
             }
         }
     }

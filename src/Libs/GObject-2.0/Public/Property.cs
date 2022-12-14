@@ -81,7 +81,6 @@ public sealed class Property<T>
     /// An instance of <see cref="Property{T}"/> representing the GProperty description.
     /// </returns>
     public static Property<T> Register<TObject>(string nativeName, string managedName, Func<TObject, T>? get = null, Action<TObject, T>? set = null)
-        where TObject : Object
     {
         return new Property<T>(nativeName, managedName)
         {

@@ -5,9 +5,9 @@ namespace Generator.Renderer.Public;
 
 public static partial class ClassProperties
 {
-    private static string RenderAccessor(GirModel.Class cls, GirModel.Property property)
+    private static string RenderAccessor(GirModel.ComplexType complexType, GirModel.Property property)
     {
-        if (!property.Readable && !property.Writeable)
+        if (property is { Readable: false, Writeable: false })
             return string.Empty;
 
         var builder = new StringBuilder();
@@ -15,27 +15,27 @@ public static partial class ClassProperties
         builder.AppendLine("{");
 
         if (property.Readable)
-            builder.AppendLine($"    get => {GetGetter(cls, property)};");
+            builder.AppendLine($"    get => {GetGetter(complexType, property)};");
 
-        if (property.Writeable && !property.ConstructOnly)
-            builder.AppendLine($"    set => {GetSetter(cls, property)};");
+        if (property is { Writeable: true, ConstructOnly: false })
+            builder.AppendLine($"    set => {GetSetter(complexType, property)};");
 
         builder.AppendLine("}");
 
         return builder.ToString();
     }
 
-    private static string GetGetter(GirModel.Class cls, GirModel.Property property)
+    private static string GetGetter(GirModel.ComplexType complexType, GirModel.Property property)
     {
         return Property.SupportsAccessorGetMethod(property, out var getter)
-            ? $"Internal.{cls.Name}.{Method.GetInternalName(getter)}(Handle)"
+            ? $"{Namespace.GetPublicName(complexType.Namespace)}.Internal.{complexType.Name}.{Method.GetInternalName(getter)}(Handle)"
             : $"GetProperty({Property.GetDescriptorName(property)})";
     }
 
-    private static string GetSetter(GirModel.Class cls, GirModel.Property property)
+    private static string GetSetter(GirModel.ComplexType complexType, GirModel.Property property)
     {
         return Property.SupportsAccessorSetMethod(property, out var setter)
-            ? $"Internal.{cls.Name}.{Method.GetInternalName(setter)}(Handle, value)"
+            ? $"{Namespace.GetPublicName(complexType.Namespace)}.Internal.{complexType.Name}.{Method.GetInternalName(setter)}(Handle, value)"
             : $"SetProperty({Property.GetDescriptorName(property)}, value)";
     }
 }
