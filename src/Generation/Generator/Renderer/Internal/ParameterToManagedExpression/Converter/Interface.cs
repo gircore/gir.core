@@ -16,6 +16,6 @@ internal class Interface : ToManagedParameterConverter
         var iface = (GirModel.Interface) parameter.AnyType.AsT0;
 
         variableName = Parameter.GetConvertedName(parameter);
-        return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapHandle<{ComplexType.GetFullyQualified(iface)}>({Parameter.GetName(parameter)}, {Transfer.IsOwnedRef(parameter.Transfer).ToString().ToLower()});";
+        return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(iface)}>({Parameter.GetName(parameter)}, {Transfer.IsOwnedRef(parameter.Transfer).ToString().ToLower()});";
     }
 }

@@ -13,6 +13,8 @@ internal class Interface : ReturnTypeConverter
         if (!returnType.IsPointer)
             throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
 
-        return $"GObject.Internal.ObjectWrapper.WrapHandle<{ReturnType.Render(returnType)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
+        var @interface = (GirModel.Interface) returnType.AnyType.AsT0;
+
+        return $"GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
     }
 }
