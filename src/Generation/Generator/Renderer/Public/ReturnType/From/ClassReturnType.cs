@@ -6,7 +6,7 @@ internal static class ClassReturnType
 {
     public static RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Class) returnType.AnyType.AsT0);
+        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Class) returnType.AnyType.AsT0) + Nullable.Render(returnType);
 
         return new RenderableReturnType(nullableTypeName);
     }
