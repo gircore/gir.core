@@ -3,7 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Extensions\Gtk-4.0.DependencyInjection\Gtk-4.0.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\..\Libs\Gtk-4.0\Gtk-4.0.csproj" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -5,6 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libs\Gtk-4.0\Gtk-4.0.csproj" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
   </ItemGroup>
 </Project>
