@@ -15,8 +15,8 @@ public partial class Object
     /// <returns>
     /// The value of the GProperty.
     /// </returns>
-    protected T GetProperty<T>(Property<T> property)
-        => GetProperty(property.Name).Extract<T>();
+    protected T GetProperty<T>(PropertyDefinition<T> property)
+        => GetProperty(property.UnmanagedName).Extract<T>();
 
     /// <summary>
     /// Sets the <paramref name="value"/> of the GProperty described by <paramref name="property"/>.
@@ -24,11 +24,11 @@ public partial class Object
     /// <param name="property">The property descriptor of the GProperty on which set the value.</param>
     /// <param name="value">The value to set to the GProperty.</param>
     /// <typeparam name="T">The tye of the value to define.</typeparam>
-    protected void SetProperty<T>(Property<T> property, T value)
+    protected void SetProperty<T>(PropertyDefinition<T> property, T value)
     {
-        using Value v = CreateValue(property.Name);
+        using Value v = CreateValue(property.UnmanagedName);
         v.Set(value);
-        SetProperty(property.Name, v);
+        SetProperty(property.UnmanagedName, v);
     }
 
     /// <summary>

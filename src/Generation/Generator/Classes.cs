@@ -23,6 +23,7 @@ public static class Classes
             new Generator.Public.ClassMethods(publisher),
             new Generator.Public.ClassInterfaceMethods(publisher),
             new Generator.Public.ClassProperties(publisher),
+            new Generator.Public.ClassInterfaceProperties(publisher),
             new Generator.Public.ClassFramework(publisher),
             new Generator.Public.ClassSignals(publisher),
         };

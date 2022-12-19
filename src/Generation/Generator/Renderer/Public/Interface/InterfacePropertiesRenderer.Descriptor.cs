@@ -13,9 +13,9 @@ public static partial class InterfaceProperties
             return string.Empty;
 
         var builder = new StringBuilder();
-        builder.AppendLine($"public static readonly Property<{Property.GetNullableTypeName(property)}> {Property.GetDescriptorName(property)} = Property<{Property.GetNullableTypeName(property)}>.Register<{@interface.Name}>(");
+        builder.AppendLine($"public static readonly Property<{Property.GetNullableTypeName(property)}, {@interface.Name}> {Property.GetDescriptorName(property)} = new (");
 
-        builder.AppendLine(string.Join($",{Environment.NewLine}    ", GetArguments(property)));
+        builder.AppendLine("    " + string.Join($",{Environment.NewLine}    ", GetArguments(property)));
 
         builder.AppendLine(");");
         return builder.ToString();
@@ -25,7 +25,7 @@ public static partial class InterfaceProperties
     {
         var arguments = new List<string>()
         {
-            $"nativeName: \"{property.Name}\"",
+            $"unmanagedName: \"{property.Name}\"",
             $"managedName: nameof({Property.GetName(property)})"
         };
 

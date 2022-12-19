@@ -5,7 +5,7 @@ using Generator.Model;
 
 namespace Generator.Renderer.Public;
 
-public static partial class ClassProperties
+public static partial class ClassInterfaceProperties
 {
     public static string Render(GirModel.Class cls)
     {
@@ -20,29 +20,28 @@ namespace {Namespace.GetPublicName(cls.Namespace)}
 
     public partial class {cls.Name}
     {{
-        {cls.Properties
+        {cls.Implements.SelectMany(@interface => @interface.Properties
             .Where(Property.IsEnabled)
-            .Select(prop => Render(cls, prop))
+            .Select(prop => Render(@interface, prop)))
             .Join(Environment.NewLine)}
     }}
 }}";
     }
 
-    private static string Render(GirModel.Class cls, GirModel.Property property)
+    private static string Render(GirModel.Interface @interface, GirModel.Property property)
     {
         try
         {
-            Property.ThrowIfNotSupported(cls, property);
+            Property.ThrowIfNotSupported(@interface, property);
 
             var builder = new StringBuilder();
-            builder.AppendLine(RenderDescriptor(cls, property));
-            builder.AppendLine(RenderAccessor(cls, property));
+            builder.AppendLine(RenderAccessor(@interface, property));
 
             return builder.ToString();
         }
         catch (Exception ex)
         {
-            var message = $"Did not generate property '{cls.Name}.{property.Name}': {ex.Message}";
+            var message = $"Did not generate property '{@interface.Name}.{property.Name}': {ex.Message}";
 
             if (ex is NotImplementedException)
                 Log.Debug(message);
