@@ -36,7 +36,6 @@ public partial class {Interface.GetImplementationName(@interface)}
             Property.ThrowIfNotSupported(complexType, property);
 
             var builder = new StringBuilder();
-            builder.AppendLine(RenderDescriptor(complexType, property));
             builder.AppendLine(RenderAccessor(complexType, property));
 
             return builder.ToString();

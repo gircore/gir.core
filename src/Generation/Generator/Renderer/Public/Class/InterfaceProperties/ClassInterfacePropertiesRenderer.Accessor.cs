@@ -28,14 +28,14 @@ public static partial class ClassInterfaceProperties
     private static string GetGetter(GirModel.Interface @interface, GirModel.Property property)
     {
         return Property.SupportsAccessorGetMethod(property, out var getter)
-            ? $"{Namespace.GetPublicName(@interface.Namespace)}.Internal.{@interface.Name}.{Method.GetInternalName(getter)}(Handle)"
-            : $"GetProperty({Namespace.GetPublicName(@interface.Namespace)}.{@interface.Name}.{Property.GetDescriptorName(property)})";
+            ? $"{Namespace.GetInternalName(@interface.Namespace)}.{@interface.Name}.{Method.GetInternalName(getter)}(Handle)"
+            : $"{ComplexType.GetFullyQualified(@interface)}.{Property.GetDescriptorName(property)}.Get(this)";
     }
 
     private static string GetSetter(GirModel.Interface @interface, GirModel.Property property)
     {
         return Property.SupportsAccessorSetMethod(property, out var setter)
-            ? $"{Namespace.GetPublicName(@interface.Namespace)}.Internal.{@interface.Name}.{Method.GetInternalName(setter)}(Handle, value)"
-            : $"SetProperty({Namespace.GetPublicName(@interface.Namespace)}.{@interface.Name}.{Property.GetDescriptorName(property)}, value)";
+            ? $"{Namespace.GetInternalName(@interface.Namespace)}.{@interface.Name}.{Method.GetInternalName(setter)}(Handle, value)"
+            : $"{ComplexType.GetFullyQualified(@interface)}.{Property.GetDescriptorName(property)}.Set(this, value)";
     }
 }

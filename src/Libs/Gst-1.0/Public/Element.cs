@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using GLib;
-using GObject.Internal;
 using Value = GObject.Value;
 
 namespace Gst;
@@ -51,7 +49,7 @@ public partial class Element
 
         Error.ThrowOnError(error);
 
-        return ObjectWrapper.WrapHandle<Element>(result, false);
+        return GObject.Internal.ObjectWrapper.WrapHandle<Element>(result, false);
     }
 
     /*public Bus? GetBus()
@@ -151,7 +149,10 @@ public partial class Element
         {
             try
             {
-                return GetProperty(property).Extract();
+                var handle = GObject.Internal.ValueManagedHandle.Create();
+                GObject.Internal.Object.GetProperty(Handle, property, handle);
+
+                return new Value(handle).Extract();
             }
             catch (Exception e)
             {
