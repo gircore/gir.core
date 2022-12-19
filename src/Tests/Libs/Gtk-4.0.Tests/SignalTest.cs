@@ -16,7 +16,7 @@ public class SignalTest : Test
         window.OnNotify += (sender, args) =>
         {
             senderOk = sender == window;
-            parameterNameOk = args.Pspec.GetName() == Window.TitlePropertyDefinition.Name;
+            parameterNameOk = args.Pspec.GetName() == Window.TitlePropertyDefinition.UnmanagedName;
         };
 
         window.Title = "Title";

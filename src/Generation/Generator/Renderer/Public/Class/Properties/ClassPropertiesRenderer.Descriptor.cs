@@ -13,9 +13,9 @@ public static partial class ClassProperties
             return string.Empty;
 
         var builder = new StringBuilder();
-        builder.AppendLine($"public static readonly Property<{Property.GetNullableTypeName(property)}> {Property.GetDescriptorName(property)} = Property<{Property.GetNullableTypeName(property)}>.Register<{Namespace.GetPublicName(complexType.Namespace)}.{complexType.Name}>(");
+        builder.AppendLine($"public static readonly Property<{Property.GetNullableTypeName(property)}, {complexType.Name}> {Property.GetDescriptorName(property)} = new (");
 
-        builder.AppendLine(string.Join($",{Environment.NewLine}    ", GetArguments(property)));
+        builder.AppendLine("    " + string.Join($",{Environment.NewLine}    ", GetArguments(property)));
 
         builder.AppendLine(");");
         return builder.ToString();
@@ -23,9 +23,9 @@ public static partial class ClassProperties
 
     private static IEnumerable<string> GetArguments(GirModel.Property property)
     {
-        var arguments = new List<string>()
+        var arguments = new List<string>
         {
-            $"nativeName: \"{property.Name}\"",
+            $"unmanagedName: \"{property.Name}\"",
             $"managedName: nameof({Property.GetName(property)})"
         };
 
@@ -37,5 +37,4 @@ public static partial class ClassProperties
 
         return arguments;
     }
-
 }
