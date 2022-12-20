@@ -28,14 +28,14 @@ public static partial class ClassProperties
     private static string GetGetter(GirModel.ComplexType complexType, GirModel.Property property)
     {
         return Property.SupportsAccessorGetMethod(property, out var getter)
-            ? $"{Namespace.GetPublicName(complexType.Namespace)}.Internal.{complexType.Name}.{Method.GetInternalName(getter)}(Handle)"
-            : $"GetProperty({Property.GetDescriptorName(property)})";
+            ? $"{Namespace.GetInternalName(complexType.Namespace)}.{complexType.Name}.{Method.GetInternalName(getter)}(Handle)"
+            : $"{Property.GetDescriptorName(property)}.Get(this)";
     }
 
     private static string GetSetter(GirModel.ComplexType complexType, GirModel.Property property)
     {
         return Property.SupportsAccessorSetMethod(property, out var setter)
-            ? $"{Namespace.GetPublicName(complexType.Namespace)}.Internal.{complexType.Name}.{Method.GetInternalName(setter)}(Handle, value)"
-            : $"SetProperty({Property.GetDescriptorName(property)}, value)";
+            ? $"{Namespace.GetInternalName(complexType.Namespace)}.{complexType.Name}.{Method.GetInternalName(setter)}(Handle, value)"
+            : $"{Property.GetDescriptorName(property)}.Set(this, value)";
     }
 }

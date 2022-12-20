@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace GObject;
 
@@ -9,9 +10,6 @@ namespace GObject;
 /// <typeparam name="K">The type of the class / interface implementing this property.</typeparam>
 public sealed class Property<T, K> : PropertyDefinition<T>
 {
-    private readonly Func<K, T>? _get;
-    private readonly Action<K, T>? _set;
-
     /// <summary>
     /// The name of the property in GObject/C.
     /// </summary>
@@ -23,46 +21,52 @@ public sealed class Property<T, K> : PropertyDefinition<T>
     public string ManagedName { get; }
 
     /// <summary>
-    /// Checks if this GProperty is readable.
-    /// </summary>
-    public bool IsReadable => _get != null;
-
-    /// <summary>
-    /// Checks if this GProperty is writeable.
-    /// </summary>
-    public bool IsWriteable => _set != null;
-
-    /// <summary>
     /// Initializes a new instance of <see cref="Property{T,K}"/>.
     /// </summary>
     /// <param name="unmanagedName">The GObject/C name of this property.</param>
     /// <param name="managedName">The dotnet name of this property.</param>
-    /// <param name="get">The function called when retrieving the value of this property in bindings.</param>
-    /// <param name="set">The function called when defining the value of this property in bindings.</param>
-    public Property(string unmanagedName, string managedName, Func<K, T>? get = null, Action<K, T>? set = null)
+    public Property(string unmanagedName, string managedName)
     {
         UnmanagedName = unmanagedName;
         ManagedName = managedName;
-        _get = get;
-        _set = set;
     }
 
     /// <summary>
     /// Get the value of this property in the given object.
     /// </summary>
-    public T Get(K o) => _get is null
-        ? throw new InvalidOperationException("Trying to read the value of a write-only property.")
-        : _get(o);
+    public T Get(K obj)
+    {
+        if (obj is not Object o)
+            throw new Exception($"Can't get property {ManagedName} for object of type {typeof(K).Name} as it is not derived from {nameof(Object)}.");
+
+        var valueHandle = Internal.ValueManagedHandle.Create();
+        Internal.Object.GetProperty(o.Handle, UnmanagedName, valueHandle);
+
+        return new Value(valueHandle).Extract<T>();
+    }
 
     /// <summary>
     /// Set the value of this property in the given object
     /// using the given value.
     /// </summary>
-    public void Set(K o, T v)
+    public void Set(K obj, T value)
     {
-        if (_set is null)
-            throw new InvalidOperationException("Trying to write the value of a read-only property.");
+        if (obj is not Object o)
+            throw new Exception($"Can't set property {ManagedName} for object of type {typeof(K).Name} as it is not derived from {nameof(Object)}.");
 
-        _set(o, v);
+        var type = GetPropertyType(o.Handle);
+        using var gvalue = new Value(type);
+        gvalue.Set(value);
+        Internal.Object.SetProperty(o.Handle, UnmanagedName, gvalue.Handle);
+    }
+
+    private Type GetPropertyType(IntPtr handle)
+    {
+        var instance = Marshal.PtrToStructure<Internal.ObjectData>(handle);
+        var classPtr = instance.GTypeInstance.GClass;
+        var paramSpecPtr = Internal.ObjectClass.FindProperty(new Internal.ObjectClassUnownedHandle(classPtr), UnmanagedName);
+        var paramSpec = Marshal.PtrToStructure<Internal.ParamSpecData>(paramSpecPtr);
+
+        return new Type(paramSpec.ValueType);
     }
 }
