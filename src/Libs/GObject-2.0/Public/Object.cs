@@ -17,7 +17,6 @@ public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHan
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private readonly ObjectHandle _handle;
-    private SignalRegistry _signalRegistry;
 
     public IntPtr Handle => _handle.Handle;
 
@@ -82,15 +81,10 @@ public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHan
     /// Does common initialization tasks.
     /// Wrapper and subclasses can override here to perform immediate initialization.
     /// </summary>
-    [MemberNotNull(nameof(_signalRegistry))]
     protected virtual void Initialize()
     {
         Debug.WriteLine($"Initialising Object: Address {_handle.Handle}, Type {GetType()}.");
-        _signalRegistry = new SignalRegistry(this);
     }
-
-    internal ClosureRegistry GetClosureRegistry(string signalName)
-        => _signalRegistry.GetClosureRegistry(signalName);
 
     /// <summary>
     /// Notify this object that a property has just changed.
@@ -107,7 +101,7 @@ public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHan
     public virtual void Dispose()
     {
         Debug.WriteLine($"Disposing Object: Address {_handle.Handle}, Type {GetType()}.");
-        _signalRegistry.Dispose();
+        DisposeClosures();
         _handle.Dispose();
     }
 }
