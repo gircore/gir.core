@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cairo.Tests;
@@ -11,6 +12,10 @@ public class ImageSurfaceTest : Test
     {
         var surf = new Cairo.ImageSurface(Cairo.Format.Argb32, 800, 600);
         surf.Status.Should().Be(Status.Success);
+
+        // 4 bytes per pixel since the format is Argb32.
+        Span<byte> data = surf.GetData();
+        data.Length.Should().Be(surf.Width * surf.Height * 4);
 
         surf.Width.Should().Be(800);
         surf.Height.Should().Be(600);
