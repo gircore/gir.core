@@ -13,7 +13,6 @@ public static partial class ClassSignal
             return $@"
 #region {Signal.GetName(signal)}
 {RenderArgs(signal)}
-{RenderArgsIndexer(cls, signal)}
 {RenderDescriptor(cls, signal)}
 {RenderEvent(cls, signal)}
 #endregion

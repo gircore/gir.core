@@ -21,25 +21,10 @@ namespace {Namespace.GetPublicName(cls.Namespace)}
 
     public partial class {cls.Name}
     {{
-        {RenderObjectIndexer(cls)}
         {cls.Signals
             .Select(x => ClassSignal.Render(cls, x))
             .Join(Environment.NewLine)}
     }}
-}}";
-    }
-
-    private static string RenderObjectIndexer(GirModel.Class cls)
-    {
-        return !cls.Signals.Any()
-            ? string.Empty
-            : @$"
-/// <summary>
-/// Indexer to connect with a SignalHandler&lt;{cls.Name}&gt;
-/// </summary>
-public SignalHandler<{cls.Name}> this[Signal<{cls.Name}> signal]
-{{
-    set => signal.Connect(this, value, true);
 }}";
     }
 }

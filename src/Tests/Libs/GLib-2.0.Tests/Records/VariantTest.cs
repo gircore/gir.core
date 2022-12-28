@@ -25,6 +25,13 @@ public class VariantTest : Test
     }
 
     [TestMethod]
+    public void CanCreateStringArray()
+    {
+        var variant = Variant.Create("Str1", "Str2", "Str3");
+        variant.Print(false).Should().Be("['Str1', 'Str2', 'Str3']");
+    }
+
+    [TestMethod]
     public void DisposeClosesHandle()
     {
         var variant = Variant.Create("Test");

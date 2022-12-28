@@ -13,7 +13,6 @@ This project aims to provide a complete set of APIs for writing rich cross-platf
 * **Idiomatic C#:** An API which feels natural to C# developers (including the async/await feature).
 * **Simplicity:** Memory management is handled automatically, greatly simplifying the C-API.
 * **Complete API:** Support for the entire GTK and GStreamer stack, enabling feature-rich applications which deeply integrate with the OS.
-* **Declarative UI:** A declarative syntax for creating GTK UIs (See the [DeclarativeUI Sample][sample_gtk_declarative]). User interfaces may also be created the traditional way and/or with [GtkBuilder XML][GtkBuilder].
 * **Extensibility:** Allows 3rd party developers to write bindings for other GObject-based libraries, achieving full interoperability between them.
 
 ## Status
@@ -79,9 +78,7 @@ The code in the library folder is not complete because most of the code is gener
 [dbus]: https://www.freedesktop.org/wiki/Software/dbus/
 [libchamplain]: https://wiki.gnome.org/Projects/libchamplain
 [GtkSharp]: https://github.com/GtkSharp/GtkSharp
-[sample_gtk_declarative]: https://github.com/gircore/gir.core/blob/develop/src/Samples/Gtk3/DeclarativeUi/Program.cs
 [GdkPixbuf]: https://gitlab.gnome.org/GNOME/gdk-pixbuf
-[GtkBuilder]: https://developer.gnome.org/gtk3/stable/GtkBuilder.html
 [GirCoreNuget]: https://www.nuget.org/profiles/GirCore
 [Gtk4Nuget]: https://www.nuget.org/packages/GirCore.Gtk-4.0/
 [GstNuget]: https://www.nuget.org/packages/GirCore.Gst-1.0/
