@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Generator.Model;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
@@ -10,6 +11,9 @@ internal class StringArray : ToNativeParameterConverter
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
+        if (parameter.Parameter.Direction != GirModel.Direction.In)
+            throw new NotImplementedException($"{parameter.Parameter.AnyType}: String array type with direction != in not yet supported");
+
         var arrayType = parameter.Parameter.AnyType.AsT1;
         if (parameter.Parameter.Transfer == GirModel.Transfer.None && arrayType.Length == null)
         {
