@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Generator.Model;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
@@ -21,6 +22,13 @@ internal class RecordArray : ToNativeParameterConverter
 
         parameter.SetSignatureName(parameterName);
         parameter.SetCallName(nativeVariableName);
-        parameter.SetExpression($"var {nativeVariableName} = {parameterName}.Select(record => record.Handle.DangerousGethandle()).ToArray();");
+
+        var expression = new StringBuilder();
+        expression.Append($"var {nativeVariableName} = {parameterName}.Select(record => record.Handle.DangerousGetHandle())");
+        if (arrayType.IsZeroTerminated)
+            expression.Append(".Append(IntPtr.Zero)");
+
+        expression.Append(".ToArray();");
+        parameter.SetExpression(expression.ToString());
     }
 }

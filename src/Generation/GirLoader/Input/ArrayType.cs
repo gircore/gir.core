@@ -4,11 +4,14 @@ namespace GirLoader.Input;
 
 public class ArrayType : AnyType
 {
+    [XmlAttribute("name")]
+    public string? Name { get; set; }
+
     [XmlAttribute("length")]
     public string? Length { get; set; }
 
     [XmlAttribute("zero-terminated")]
-    public bool ZeroTerminated { get; set; }
+    public string? ZeroTerminated { get; set; }
 
     [XmlAttribute("fixed-size")]
     public string? FixedSize { get; set; }

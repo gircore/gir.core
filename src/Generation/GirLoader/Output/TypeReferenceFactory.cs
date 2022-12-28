@@ -52,6 +52,7 @@ internal class TypeReferenceFactory
 
         int? length = int.TryParse(anyType.Array.Length, out var l) ? l : null;
         int? fixedSize = int.TryParse(anyType.Array.FixedSize, out var f) ? f : null;
+        bool? zeroTerminated = bool.TryParse(anyType.Array.ZeroTerminated, out var b) ? b : null;
 
         arrayTypeReference = new ArrayTypeReference(
             typeReference: typeReference,
@@ -60,7 +61,11 @@ internal class TypeReferenceFactory
         {
             Length = length,
             FixedSize = fixedSize,
-            IsZeroTerminated = anyType.Array.ZeroTerminated
+            // TODO: The zero-terminated attribute is not consistently present in the gir file.
+            // If there isn't a length, fixed size, or name specified, treat as zero-terminated anyways.
+            // This can be removed if the C gir generator changes this behavior.
+            IsZeroTerminated = zeroTerminated ??
+                (length is null && fixedSize is null && anyType.Array.Name is null)
         };
 
         return true;
