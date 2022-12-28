@@ -11,7 +11,7 @@ internal static class Interface
     }
 
     public static string GetImplementationName(GirModel.Interface @interface)
-        => @interface.Name + "Impl";
+        => @interface.Name + "Helper";
 
     public static string GetFullyQualifiedImplementationName(GirModel.Interface @interface)
         => Namespace.GetPublicName(@interface.Namespace) + "." + GetImplementationName(@interface);

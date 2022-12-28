@@ -71,7 +71,13 @@ public static {ReturnType.Render(function.ReturnType)} {Function.GetName(functio
         if (!function.ReturnType.AnyType.Is<GirModel.Void>())
             call.Append($"var {resultVariableName} = ");
 
-        call.Append($"{Namespace.GetInternalName(function.Namespace)}.Functions.{Function.GetName(function)}(");
+        var parent = function.Parent switch
+        {
+            null => "Functions", //This is a global function which is part of the "Functions" class
+            { } p => p.Name
+        };
+
+        call.Append($"{Namespace.GetInternalName(function.Namespace)}.{parent}.{Function.GetName(function)}(");
         call.Append(string.Join(", ", parameters.Select(x => x.GetCallName())));
         call.Append(");\n");
 

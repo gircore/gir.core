@@ -1,8 +1,12 @@
-﻿namespace GirLoader.Output;
+﻿using System.Diagnostics;
+
+namespace GirLoader.Output;
 
 public partial class Function
 {
     private readonly Repository _repository;
+    private ComplexType? _parent;
+
     public ReturnValue ReturnValue { get; }
     public ParameterList ParameterList { get; }
     public string Name { get; }
@@ -19,6 +23,16 @@ public partial class Function
         Identifier = identifier;
         Introspectable = introspectable;
         Version = version;
+    }
+
+    internal void SetParent(ComplexType parent)
+    {
+        Debug.Assert(
+            condition: parent.Repository == _repository,
+            message: $"Parent of function {Name} must be in {_repository} but is in {parent.Name} / {parent.Repository}"
+        );
+
+        this._parent = parent;
     }
 
     public override string ToString()

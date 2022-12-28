@@ -40,6 +40,11 @@ internal class InterfaceFactory
             introspectable: @interface.Introspectable
         );
 
+        iface.GetTypeFunction.SetParent(iface);
+
+        foreach (var function in iface.Functions)
+            function.SetParent(iface);
+
         foreach (var method in iface.Methods)
             method.SetParent(iface);
 

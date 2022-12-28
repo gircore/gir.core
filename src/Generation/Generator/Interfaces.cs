@@ -17,6 +17,7 @@ public static class Interfaces
 
             new Generator.Public.InterfaceImplementationFramework(publisher),
             new Generator.Public.InterfaceImplementationMethods(publisher),
+            new Generator.Public.InterfaceImplementationFunctions(publisher),
             new Generator.Public.InterfaceImplementationProperties(publisher)
         };
 

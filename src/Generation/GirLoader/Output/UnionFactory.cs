@@ -1,4 +1,5 @@
 ﻿using System;
+using OneOf.Types;
 
 namespace GirLoader.Output;
 
@@ -28,7 +29,7 @@ internal class UnionFactory
             _ => null
         };
 
-        return new Union(
+        var newUnion = new Union(
             repository: repository,
             cType: union.CType,
             name: union.Name,
@@ -40,5 +41,13 @@ internal class UnionFactory
             constructors: _constructorFactory.Create(union.Constructors),
             introspectable: union.Introspectable
         );
+
+        if (getTypeFunction is not null)
+            getTypeFunction.SetParent(newUnion);
+
+        foreach (var function in newUnion.Functions)
+            function.SetParent(newUnion);
+
+        return newUnion;
     }
 }
