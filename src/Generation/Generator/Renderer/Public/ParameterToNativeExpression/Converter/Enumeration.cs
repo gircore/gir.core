@@ -14,6 +14,9 @@ internal class Enumeration : ToNativeParameterConverter
         if (parameter.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameter.Parameter.AnyType}: Enumeration with direction != in not yet supported");
 
+        if (parameter.Parameter.IsPointer)
+            throw new NotImplementedException($"{parameter.Parameter.AnyType}: Enumeration pointers with direction == in not yet supported");
+
         //We don't need any conversion for enumerations
         var parameterName = Parameter.GetName(parameter.Parameter);
         parameter.SetSignatureName(parameterName);
