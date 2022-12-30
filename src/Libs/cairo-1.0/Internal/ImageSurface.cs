@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Cairo.Internal;
 
@@ -9,6 +10,9 @@ public class ImageSurface
 
     // Skip cairo_image_surface_create_for_data for now, as it has some
     // additional lifetime requirements for the input buffer.
+
+    [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_image_surface_get_data")]
+    public static extern IntPtr GetData(SurfaceHandle handle);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_image_surface_get_format")]
     public static extern Format GetFormat(SurfaceHandle handle);
