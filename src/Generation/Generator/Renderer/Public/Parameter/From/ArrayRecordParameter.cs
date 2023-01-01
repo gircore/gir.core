@@ -16,9 +16,7 @@ internal static class ArrayRecordParameter
     {
         var arrayType = parameter.AnyType.AsT1;
 
-        return arrayType.Length is null
-            ? Type.PointerArray
-            : ComplexType.GetFullyQualified((GirModel.Record) arrayType.AnyType.AsT0) + "[]";
+        return ComplexType.GetFullyQualified((GirModel.Record) arrayType.AnyType.AsT0) + "[]";
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
