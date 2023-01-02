@@ -25,7 +25,7 @@ public partial class {Interface.GetImplementationName(@interface)}
     {@interface.Methods
         .Where(Method.IsEnabled)
         .Where(method => !method.IsFree())//Freeing is handled by the framework via a IDisposable implementation.
-        .Select(x => MethodRenderer.Render(@interface, x))
+        .Select(MethodRenderer.Render)
         .Join(Environment.NewLine)}
 }}";
     }

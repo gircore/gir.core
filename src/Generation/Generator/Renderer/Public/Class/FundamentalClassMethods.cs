@@ -24,7 +24,7 @@ public partial class {cls.Name}
     {cls.Methods
         .Where(Method.IsEnabled)
         .Where(method => !method.IsFree())//Freeing is handled by the framework via a IDisposable implementation.
-        .Select(x => MethodRenderer.Render(cls, x))
+        .Select(MethodRenderer.Render)
         .Join(Environment.NewLine)}
 }}";
     }
