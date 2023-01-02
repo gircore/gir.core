@@ -16,6 +16,11 @@ internal class String : ToNativeParameterConverter
         if (parameter.Parameter.CallerAllocates)
             throw new NotImplementedException($"{parameter.Parameter.AnyType}: String type with caller-allocates=1 not yet supported");
 
+        // TODO - the default marshalling for 'ref string' produces crashes for functions
+        // like pango_skip_space(), so custom marshalling may be required.
+        if (parameter.Parameter.Direction == GirModel.Direction.InOut)
+            throw new NotImplementedException($"{parameter.Parameter.AnyType}: String type with direction=inout not yet supported");
+
         var prefix = parameter.Parameter.Direction == GirModel.Direction.Out
             ? "out "
             : string.Empty;
