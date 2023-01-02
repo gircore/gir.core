@@ -1,5 +1,4 @@
-﻿using System;
-using OneOf;
+﻿using OneOf;
 
 public static class AnyTypeExtension
 {
@@ -17,39 +16,5 @@ namespace GirModel
 
         public static AnyType From(Type type) => new(OneOf<Type, ArrayType>.FromT0(type));
         public static AnyType From(ArrayType arrayType) => new(OneOf<Type, ArrayType>.FromT1(arrayType));
-
-        //TODO: Delete
-        public void VerifyType<T>()
-        {
-            Switch(
-                type =>
-                {
-                    if (type is not T)
-                        throw new Exception($"Return type must be of type {typeof(T).FullName}");
-                },
-                arrayType => throw new Exception("Return type is not a regular type but an array.")
-            );
-        }
-
-        //TODO: Delete
-        public void VerifyArrayType<T>()
-        {
-            Switch(
-                type => throw new Exception("Return type is not a array type but a type."),
-                arrayType =>
-                {
-                    arrayType.AnyType.Switch(
-                        ThrowIfNot<T>,
-                        _ => throw new NotSupportedException("Arrays of arrays not yet supported")
-                    );
-                }
-            );
-        }
-
-        private static void ThrowIfNot<T>(Type type)
-        {
-            if (type is not T)
-                throw new Exception($"Return type must be of array type {typeof(T).FullName}");
-        }
     }
 }
