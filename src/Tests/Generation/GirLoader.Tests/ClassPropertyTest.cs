@@ -10,7 +10,7 @@ public class ClassPropertyTest
     private static Input.Repository GetRepositoryWithStubClass()
     {
         var repository = Helper.GetInputRepository("ns", "1.0");
-        repository.Namespace.Classes.Add(new()
+        repository.Namespace!.Classes.Add(new()
         {
             Name = "ClassName",
             GetTypeFunction = "get_type"
@@ -22,7 +22,7 @@ public class ClassPropertyTest
     private static Output.Property GetLoadedProperty(string? ctype, string? name)
     {
         var repository = GetRepositoryWithStubClass();
-        repository.Namespace.Classes.First().Properties.Add(new()
+        repository.Namespace!.Classes.First().Properties.Add(new()
         {
             Name = "TestProperty",
             Type = new()
@@ -43,7 +43,7 @@ public class ClassPropertyTest
         var propertyName = "MyPropName";
 
         var repository = GetRepositoryWithStubClass();
-        repository.Namespace.Classes.First().Properties.Add(new()
+        repository.Namespace!.Classes.First().Properties.Add(new()
         {
             Name = propertyName,
             Type = new()
