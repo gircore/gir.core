@@ -8,7 +8,13 @@ public static class Functions
     public static void Generate(IEnumerable<GirModel.Function> functions, string path)
     {
         var publisher = new Publisher(path);
-        var generator = new Generator.Internal.GlobalFunctions(publisher);
-        generator.Generate(functions);
+        var generators = new List<Generator<IEnumerable<GirModel.Function>>>()
+        {
+            new Generator.Internal.GlobalFunctions(publisher),
+            new Generator.Public.GlobalFunctions(publisher)
+        };
+
+        foreach (var generator in generators)
+            generator.Generate(functions);
     }
 }
