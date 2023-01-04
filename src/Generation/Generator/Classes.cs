@@ -14,6 +14,7 @@ public static class Classes
             new Generator.Internal.FundamentalClassMethods(publisher),
             new Generator.Internal.FundamentalClassStruct(publisher),
             new Generator.Public.FundamentalClassMethods(publisher),
+            new Generator.Public.FundamentalClassFunctions(publisher),
             new Generator.Public.FundamentalClassFramework(publisher),
 
             //Standard generators
@@ -21,6 +22,7 @@ public static class Classes
             new Generator.Internal.ClassStruct(publisher),
             new Generator.Public.ClassConstructors(publisher),
             new Generator.Public.ClassMethods(publisher),
+            new Generator.Public.ClassFunctions(publisher),
             new Generator.Public.ClassInterfaceMethods(publisher),
             new Generator.Public.ClassProperties(publisher),
             new Generator.Public.ClassInterfaceProperties(publisher),

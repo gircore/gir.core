@@ -65,7 +65,7 @@ public static {ReturnType.Render(function.ReturnType)} {Function.GetName(functio
 
     private static string RenderCallStatement(GirModel.Function function, IReadOnlyList<ParameterToNativeData> parameters, out string resultVariableName)
     {
-        resultVariableName = "result";
+        resultVariableName = $"result{Function.GetName(function)}";
         var call = new StringBuilder();
 
         if (!function.ReturnType.AnyType.Is<GirModel.Void>())

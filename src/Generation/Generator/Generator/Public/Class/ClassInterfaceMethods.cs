@@ -14,6 +14,9 @@ internal class ClassInterfaceMethods : Generator<GirModel.Class>
 
     public void Generate(GirModel.Class obj)
     {
+        if (obj.Fundamental)
+            return;
+
         if (!obj.Implements.Any())
             return;
 
