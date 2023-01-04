@@ -1,12 +1,13 @@
-﻿using Generator.Model;
+﻿using System.Linq;
+using Generator.Model;
 
 namespace Generator.Generator.Public;
 
-internal class ClassMethods : Generator<GirModel.Class>
+internal class ClassFunctions : Generator<GirModel.Class>
 {
     private readonly Publisher _publisher;
 
-    public ClassMethods(Publisher publisher)
+    public ClassFunctions(Publisher publisher)
     {
         _publisher = publisher;
     }
@@ -16,10 +17,13 @@ internal class ClassMethods : Generator<GirModel.Class>
         if (obj.Fundamental)
             return;
 
-        var source = Renderer.Public.ClassMethods.Render(obj);
+        if (!obj.Functions.Any())
+            return;
+
+        var source = Renderer.Public.ClassFunctions.Render(obj);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),
-            Name: $"{obj.Name}.Methods",
+            Name: $"{obj.Name}.Functions",
             Source: source,
             IsInternal: false
         );
