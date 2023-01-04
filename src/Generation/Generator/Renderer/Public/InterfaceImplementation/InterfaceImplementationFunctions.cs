@@ -4,7 +4,7 @@ using Generator.Model;
 
 namespace Generator.Renderer.Public;
 
-internal static class InterfaceImplementationMethods
+internal static class InterfaceImplementationFunctions
 {
     public static string Render(GirModel.Interface @interface)
     {
@@ -22,10 +22,8 @@ namespace {Namespace.GetPublicName(@interface.Namespace)};
 
 public partial class {Interface.GetImplementationName(@interface)}
 {{
-    {@interface.Methods
-        .Where(Method.IsEnabled)
-        .Where(method => !method.IsFree())//Freeing is handled by the framework via a IDisposable implementation.
-        .Select(MethodRenderer.Render)
+    {@interface.Functions
+        .Select(FunctionRenderer.Render)
         .Join(Environment.NewLine)}
 }}";
     }

@@ -30,7 +30,7 @@ internal class RecordFactory
             _ => null
         };
 
-        return new Record(
+        var newRecord = new Record(
             repository: repository,
             cType: record.CType,
             name: record.Name,
@@ -44,6 +44,14 @@ internal class RecordFactory
             introspectable: record.Introspectable,
             foreign: record.Foreign
         );
+
+        if (getTypeFunction is not null)
+            getTypeFunction.SetParent(newRecord);
+
+        foreach (var function in newRecord.Functions)
+            function.SetParent(newRecord);
+
+        return newRecord;
     }
 
     private TypeReference? GetGLibClassStructFor(string? classStructForName, Namespace @namespace)

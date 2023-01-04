@@ -8,7 +8,7 @@ namespace Generator.Renderer.Public;
 
 internal static class MethodRenderer
 {
-    public static string Render(GirModel.ComplexType complexType, GirModel.Method method)
+    public static string Render(GirModel.Method method)
     {
         try
         {
@@ -19,13 +19,13 @@ internal static class MethodRenderer
 public {ReturnType.Render(method.ReturnType)} {Method.GetPublicName(method)}({RenderParameters(parameters)})
 {{
     {RenderMethodContent(parameters)}
-    {RenderCallStatement(complexType, method, parameters, out var resultVariableName)}
+    {RenderCallStatement(method, parameters, out var resultVariableName)}
     {RenderReturnStatement(method, resultVariableName)}
 }}";
         }
         catch (Exception e)
         {
-            var message = $"Did not generate method '{complexType.Name}.{Method.GetPublicName(method)}': {e.Message}";
+            var message = $"Did not generate method '{method.Parent.Name}.{Method.GetPublicName(method)}': {e.Message}";
 
             if (e is NotImplementedException)
                 Log.Debug(message);
@@ -63,7 +63,7 @@ public {ReturnType.Render(method.ReturnType)} {Method.GetPublicName(method)}({Re
         return result.Join(", ");
     }
 
-    private static string RenderCallStatement(GirModel.ComplexType complexType, GirModel.Method method, IReadOnlyList<ParameterToNativeData> parameters, out string resultVariableName)
+    private static string RenderCallStatement(GirModel.Method method, IReadOnlyList<ParameterToNativeData> parameters, out string resultVariableName)
     {
         resultVariableName = "result";
         var call = new StringBuilder();
@@ -71,7 +71,7 @@ public {ReturnType.Render(method.ReturnType)} {Method.GetPublicName(method)}({Re
         if (!method.ReturnType.AnyType.Is<GirModel.Void>())
             call.Append($"var {resultVariableName} = ");
 
-        call.Append($"{complexType.Namespace.Name}.Internal.{complexType.Name}.{Method.GetInternalName(method)}(");
+        call.Append($"{Namespace.GetInternalName(method.Parent.Namespace)}.{method.Parent.Name}.{Method.GetInternalName(method)}(");
         call.Append("this.Handle" + (parameters.Any() ? ", " : string.Empty));
         call.Append(string.Join(", ", parameters.Select(x => x.GetCallName())));
         call.Append(");\n");

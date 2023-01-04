@@ -51,6 +51,11 @@ internal class ClassFactory
             introspectable: cls.Introspectable
         );
 
+        @class.GetTypeFunction.SetParent(@class);
+
+        foreach (var function in @class.Functions)
+            function.SetParent(@class);
+
         foreach (var method in @class.Methods)
             method.SetParent(@class);
 

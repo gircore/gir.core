@@ -32,7 +32,7 @@ public partial class {cls.Name}
     {
         return @interface.Methods
             .Where(Method.IsEnabled)
-            .Select(x => MethodRenderer.Render(@interface, x))
+            .Select(MethodRenderer.Render)
             .Join(Environment.NewLine);
     }
 }

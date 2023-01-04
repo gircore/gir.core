@@ -6,6 +6,7 @@ namespace GirLoader.Output;
 public partial class Function : GirModel.Function
 {
     GirModel.Namespace GirModel.Function.Namespace => _repository.Namespace;
+    GirModel.ComplexType? GirModel.Function.Parent => _parent;
     string GirModel.Function.Name => Name;
     GirModel.ReturnType GirModel.Function.ReturnType => ReturnValue;
     string GirModel.Function.CIdentifier => Identifier;
