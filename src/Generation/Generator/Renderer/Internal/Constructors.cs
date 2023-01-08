@@ -19,12 +19,21 @@ internal static class Constructors
         if (constructor is null)
             return string.Empty;
 
-        return @$"
+        try
+        {
+            return @$"
 {DocComments.Render($"Calls native constructor {constructor.CIdentifier}.", DocComments.RenderVersion(constructor.Version))}
 {DocComments.Render(constructor.Parameters)}
 {DocComments.Render(constructor.ReturnType)}
 {VersionAttribute.Render(constructor.Version)}
 [DllImport(ImportResolver.Library, EntryPoint = ""{constructor.CIdentifier}"")]
 public static extern {ReturnType.Render(constructor.ReturnType)} {Constructor.GetName(constructor)}({Parameters.Render(constructor.Parameters)});";
+        }
+        catch (Exception e)
+        {
+            Log.Warning($"Did not generate constructor '{Constructor.GetName(constructor)}' / '{constructor.CIdentifier}': {e.Message}");
+
+            return string.Empty;
+        }
     }
 }
