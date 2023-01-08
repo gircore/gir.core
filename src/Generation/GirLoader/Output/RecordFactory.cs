@@ -51,6 +51,9 @@ internal class RecordFactory
         foreach (var function in newRecord.Functions)
             function.SetParent(newRecord);
 
+        foreach (var method in newRecord.Methods)
+            method.SetParent(newRecord);
+
         return newRecord;
     }
 
