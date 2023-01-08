@@ -65,7 +65,7 @@ public {ReturnType.Render(method.ReturnType)} {Method.GetPublicName(method)}({Re
 
     private static string RenderCallStatement(GirModel.Method method, IReadOnlyList<ParameterToNativeData> parameters, out string resultVariableName)
     {
-        resultVariableName = "result";
+        resultVariableName = $"result{Method.GetPublicName(method)}";
         var call = new StringBuilder();
 
         if (!method.ReturnType.AnyType.Is<GirModel.Void>())
