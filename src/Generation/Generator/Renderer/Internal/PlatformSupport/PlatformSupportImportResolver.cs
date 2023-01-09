@@ -56,7 +56,7 @@ internal static class ImportResolver
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {AssignOsDependentLibraryNameLinux(model)}
 
-        throw new Exception(""Unknown platform"");
+        throw new System.Exception(""Unknown platform"");
     }}
 }}";
     }
@@ -65,20 +65,20 @@ internal static class ImportResolver
     {
         return model.SupportsLinux
             ? "return LinuxLibraryName;"
-            : $"throw new Exception(\"Linux is not supported for library {model.NamespaceName}\");";
+            : $"throw new System.Exception(\"Linux is not supported for library {model.NamespaceName}\");";
     }
 
     private static string AssignOsDependentLibraryNameOsx(ImportResolverModel model)
     {
         return model.SupportsOSX
             ? "return OsxLibraryName;"
-            : $"throw new Exception(\"OSX is not supported for library {model.NamespaceName}\");";
+            : $"throw new System.Exception(\"OSX is not supported for library {model.NamespaceName}\");";
     }
 
     private static string AssignOsDependentLibraryNameWindows(ImportResolverModel model)
     {
         return model.SupportsWindows
             ? "return WindowsLibraryName;"
-            : $"throw new Exception(\"Windows is not supported for library {model.NamespaceName}\");";
+            : $"throw new System.Exception(\"Windows is not supported for library {model.NamespaceName}\");";
     }
 }

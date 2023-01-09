@@ -23,7 +23,7 @@ internal static class Extensions
         var data = new T[array.Length];
     
         for(int i = 0; i < array.Length; i++)
-            data[i] = Marshal.PtrToStructure<T>(array[i]) ?? throw new Exception(""Cant marshal IntPtr[] because one element is not marshallable"");
+            data[i] = Marshal.PtrToStructure<T>(array[i]) ?? throw new System.Exception(""Cant marshal IntPtr[] because one element is not marshallable"");
 
         return data;
     }}

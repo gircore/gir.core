@@ -25,7 +25,7 @@ public partial class {name} : GLib.IHandle
 {{
     private readonly Internal.{internalHandleName} _handle;
 
-    public Internal.{internalHandleName} Handle => !_handle.IsInvalid ? _handle : throw new Exception(""Invalid Handle"");
+    public Internal.{internalHandleName} Handle => !_handle.IsInvalid ? _handle : throw new System.Exception(""Invalid Handle"");
     IntPtr GLib.IHandle.Handle => _handle.DangerousGetHandle();
 
     // Override this to perform additional steps in the constructor

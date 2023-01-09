@@ -47,7 +47,7 @@ internal class TypeRegistration
             if(supportedPlatforms.Any(RuntimeInformation.IsOSPlatform))
                 GObject.Internal.TypeDictionary.Add(typeof(T), new GObject.Type(getType()));
         }}
-        catch(Exception e)
+        catch(System.Exception e)
         {{
             Debug.WriteLine($""Could not register type '{{nameof(T)}}': {{e.Message}}"");
         }}
