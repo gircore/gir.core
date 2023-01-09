@@ -1,4 +1,5 @@
-﻿using Generator.Model;
+﻿using System.Linq;
+using Generator.Model;
 
 namespace Generator.Generator.Public;
 
@@ -14,6 +15,9 @@ internal class ClassMethods : Generator<GirModel.Class>
     public void Generate(GirModel.Class obj)
     {
         if (obj.Fundamental)
+            return;
+
+        if (!obj.Methods.Any())
             return;
 
         var source = Renderer.Public.ClassMethods.Render(obj);
