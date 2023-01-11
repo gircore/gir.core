@@ -22,6 +22,8 @@ namespace {Namespace.GetPublicName(cls.Namespace)};
 
 public partial class {cls.Name}
 {{
+    {FunctionRenderer.Render(cls.TypeFunction)}
+
     {cls.Functions
         .Select(FunctionRenderer.Render)
         .Join(Environment.NewLine)}

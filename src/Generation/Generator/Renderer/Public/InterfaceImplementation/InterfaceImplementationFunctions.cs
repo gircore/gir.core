@@ -22,6 +22,8 @@ namespace {Namespace.GetPublicName(@interface.Namespace)};
 
 public partial class {Interface.GetImplementationName(@interface)}
 {{
+    {FunctionRenderer.Render(@interface.TypeFunction)}
+
     {@interface.Functions
         .Select(FunctionRenderer.Render)
         .Join(Environment.NewLine)}
