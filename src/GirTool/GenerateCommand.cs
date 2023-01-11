@@ -133,6 +133,7 @@ public partial class GenerateCommand : Command
 
         var inputRepositories = input
             .Select(x => Path.Join(searchPath, x))
+            .Where(File.Exists)
             .Select(x => new FileInfo(x).OpenRead().DeserializeGirInputModel())
             .ToList();
 

@@ -15,6 +15,9 @@ internal class GlobalFunctions : Generator<IEnumerable<GirModel.Function>>
 
     public void Generate(IEnumerable<GirModel.Function> functions)
     {
+        if (!functions.Any())
+            return;
+
         var source = Renderer.Internal.GlobalFunctions.Render(functions);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(functions.First().Namespace),

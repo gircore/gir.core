@@ -17,7 +17,7 @@ internal class ClassInterfaceMethods : Generator<GirModel.Class>
         if (obj.Fundamental)
             return;
 
-        if (!obj.Implements.Any())
+        if (!obj.Implements.SelectMany(x => x.Methods).Any())
             return;
 
         var source = Renderer.Public.ClassInterfaceMethods.Render(obj);

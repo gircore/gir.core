@@ -19,14 +19,12 @@ public abstract class TypeReference
 
     public Type GetResolvedType()
     {
-        if (Type is null)
-        {
-            var ctypeName = CTypeReference?.ToString() ?? "??";
-            var symbolName = SymbolNameReference?.ToString() ?? "??";
-            throw new InvalidOperationException($"The type {ctypeName} / {symbolName} has not been resolved.");
-        }
+        if (Type is not null)
+            return Type;
 
-        return Type;
+        var ctypeName = CTypeReference?.ToString() ?? "??";
+        var symbolName = SymbolNameReference?.ToString() ?? "??";
+        throw new InvalidOperationException($"The type {ctypeName} / {symbolName} has not been resolved.");
     }
 
     public override string ToString()

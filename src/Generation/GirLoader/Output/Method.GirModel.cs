@@ -5,7 +5,7 @@ namespace GirLoader.Output;
 
 public partial class Method : GirModel.Method
 {
-    GirModel.ComplexType GirModel.Method.Parent => _parent ?? throw new Exception("Unknown parent");
+    GirModel.ComplexType GirModel.Method.Parent => _parent ?? throw new Exception($"{Identifier}: Unknown parent");
     string GirModel.Method.Name => Name;
     GirModel.ReturnType GirModel.Method.ReturnType => ReturnValue;
     string GirModel.Method.CIdentifier => Identifier;
