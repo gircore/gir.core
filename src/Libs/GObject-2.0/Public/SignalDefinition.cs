@@ -5,10 +5,15 @@ public interface SignalDefinition
     /// <summary>
     /// The name of the signal in GObject/C.
     /// </summary>
-    public string UnmanagedName { get; }
+    string UnmanagedName { get; }
 
     /// <summary>
     /// The name of the signal in dotnet.
     /// </summary>
-    public string ManagedName { get; }
+    string ManagedName { get; }
+
+    /// <summary>
+    /// The Id of the signal in GObject/C
+    /// </summary>
+    uint Id { get; }
 }

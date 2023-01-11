@@ -13,6 +13,8 @@ internal class InterfaceImplementationFramework : Generator<GirModel.Interface>
 
     public void Generate(GirModel.Interface obj)
     {
+        //There is always at least the type function (GetGType) available
+
         var source = Renderer.Public.InterfaceImplementationFramework.Render(obj);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),
