@@ -38,7 +38,9 @@ jobs:
       - name: Prepare .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version:  |
+            6.0.x
+            7.0.x
 
       - name: Call generator
         run: dotnet fsi GenerateLibs.fsx
@@ -63,7 +65,7 @@ jobs:
         working-directory: './src'
 
       - name: Get current time
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'true' && matrix.os == 'ubuntu-latest' }}
         uses: josStorer/get-current-time@v2.0.2
         id: current-time
         with:

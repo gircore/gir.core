@@ -1,5 +1,5 @@
 <Project>
-  <Import Project="../GirCore.General.props" />
+  <Import Project="../GirCore.Tooling.props" />
   <Import Project="../GirCore.Logging.props" />
 
   <PropertyGroup>

@@ -73,7 +73,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirLoader", "Generation\Gir
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{B670D679-3B2C-43E8-9F87-5E4E17628011}"
 ProjectSection(SolutionItems) = preProject
-	GirCore.General.props = GirCore.General.props
 	GirCore.Publishing.props = GirCore.Publishing.props
 	..\.editorconfig = ..\.editorconfig
 	..\.gitignore = ..\.gitignore
@@ -83,6 +82,8 @@ ProjectSection(SolutionItems) = preProject
 	GenerateLibs.fsx = GenerateLibs.fsx
 	NugetReadme.md = NugetReadme.md
 	..\readme.md = ..\readme.md
+	GirCore.Tooling.props = GirCore.Tooling.props
+	GirCore.Libraries.props = GirCore.Libraries.props
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}"
