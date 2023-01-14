@@ -2,7 +2,7 @@ name: "CodeQL"
 
 on:
   workflow_dispatch:
-  schedule:
+  #schedule:
     #        ┌───────────── minute (0 - 59)
     #        │  ┌───────────── hour (0 - 23)
     #        │  │ ┌───────────── day of the month (1 - 31)
@@ -12,7 +12,7 @@ on:
     #        │  │ │ │ │
     #        │  │ │ │ │
     #        *  * * * *
-    - cron: '30 3 * * *'
+    #- cron: '30 3 * * *'
 
 jobs:
   analyze:
