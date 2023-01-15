@@ -33,7 +33,10 @@ public partial class Closure : IDisposable
             message: "Values were not marshalled correctly. Breakage may occur"
         );
 
-        var returnValue = new Value(new Internal.ValueUnownedHandle(returnValuePtr));
+        var returnValue = returnValuePtr != IntPtr.Zero
+            ? new Value(new Internal.ValueUnownedHandle(returnValuePtr))
+            : null;
+
         var paramValues = paramValuesData
             .Select(valueData => Internal.ValueManagedHandle.Create(valueData))
             .Select(valueHandle => new Value(valueHandle))
