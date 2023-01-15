@@ -17,8 +17,7 @@ internal class ClassFunctions : Generator<GirModel.Class>
         if (obj.Fundamental)
             return;
 
-        if (!obj.Functions.Any())
-            return;
+        //There is always at least the type function (GetGType) available
 
         var source = Renderer.Public.ClassFunctions.Render(obj);
         var codeUnit = new CodeUnit(

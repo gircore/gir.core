@@ -7,9 +7,10 @@ public partial class Object
 {
     private readonly Dictionary<(SignalDefinition, Delegate), (ulong, Closure)> _signalStore = new();
 
-    internal void SignalConnectClosure(SignalDefinition signalDefinition, Delegate callback, Closure closure, bool after)
+    internal void SignalConnectClosure(SignalDefinition signalDefinition, Delegate callback, Closure closure, bool after, string? detail)
     {
-        var handlerId = Internal.Functions.SignalConnectClosure(Handle, signalDefinition.UnmanagedName, closure.Handle, after);
+        var detailQuark = GLib.Functions.QuarkFromString(detail);
+        var handlerId = Internal.Functions.SignalConnectClosureById(Handle, signalDefinition.Id, detailQuark, closure.Handle, after);
 
         if (handlerId == 0)
             throw new Exception($"Could not connect to event {signalDefinition.ManagedName}");
