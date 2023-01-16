@@ -28,7 +28,18 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
-    
+        include:
+          - os: windows-latest
+            shell: msys2 {0}
+          - os: ubuntu-latest
+            shell: bash
+          - os: macos-latest
+            shell: bash
+
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+
     steps:
       - name: Checkout with submodules
         uses: actions/checkout@v3
@@ -42,8 +53,33 @@ jobs:
             6.0.x
             7.0.x
 
+      - name: Install dependencies (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: msys2/setup-msys2@v2
+        with:
+          path-type: inherit # Inherit the path so that dotnet can be found
+          update: true
+          install: >-
+            mingw-w64-x86_64-meson
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-gobject-introspection
+
+      - name: Install dependencies (macOS)
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: brew install meson gobject-introspection
+
+      # Note: gobject-introspection is the actual dependency, but
+      # libgirepository1.0-dev is needed so that meson can find it via pkg-config
+      - name: Install dependencies (Linux)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: sudo apt update && sudo apt install meson libgirepository1.0-dev
+
+      - name: Compile native library
+        run: dotnet fsi GenerateGirTestLib.fsx
+        working-directory: './src'
+
       - name: Call generator
-        run: dotnet fsi GenerateLibs.fsx
+        run: dotnet fsi GenerateLibs.fsx GirTest-0.1.gir
         working-directory: './src'
 
       - name: Build solution
@@ -52,11 +88,11 @@ jobs:
 
       - name: Verify code format
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: dotnet format --no-restore --verify-no-changes --exclude *.Generated.cs
+        run: dotnet format GirCore.sln --no-restore --verify-no-changes --exclude *.Generated.cs
         working-directory: './src'
 
       - name: Run unit tests
-        run: dotnet test --no-restore -c ${{ env.configuration }} --filter TestCategory=UnitTest
+        run: dotnet test --no-restore -c ${{ env.configuration }} --filter "TestCategory=UnitTest | TestCategory=BindingTest"
         working-directory: './src'
 
       - name: Run integration tests

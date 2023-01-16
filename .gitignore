@@ -16,6 +16,8 @@ coverage.*
 *~
 
 #meson
+builddir
+installdir
 
 #Rider
 *.idea
