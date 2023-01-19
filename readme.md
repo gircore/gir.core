@@ -16,7 +16,7 @@ This project aims to provide a complete set of APIs for writing rich cross-platf
 * **Extensibility:** Allows 3rd party developers to write bindings for other GObject-based libraries, achieving full interoperability between them.
 
 ## Status
-We are currently in a period of heavy iteration over the core internals of the project. The code is under heavy development and not ready for production. There are some pre release nuget packages available for testing purposes. Feel free to visit the [nuget organization][GirCoreNuget] to get an overview.
+The code is under development and not ready for production use. There are nuget packages available. The API is subject to change as long as version 1.0 is not released. Feel free to visit the [nuget organization][GirCoreNuget] to get an overview.
 
 ## Supported Libraries
 
@@ -30,8 +30,8 @@ We are currently in a period of heavy iteration over the core internals of the p
 | [Gio-2.0][GioNuget]             | Library for high level application functionality | Partial          |
 | [GdkPixbuf-2.0][GdkPixbufNuget] | Image loading in various formats                 | Partial          |
 | libshumate                      | Library to display maps                          | Planned          |
-| WebKitGTK                       | Browser Engine                                   | [Planned](https://github.com/gircore/gir.core/issues/568)      |
-| JavaScriptCore                  | JavaScript engine for WebKit                     | Planned          |
+| [WebKit2-5.0][WebKit2Nuget]     | Browser engine (Linux only)                      | Partial          |
+| [JavaScriptCore-5.0][JavaScriptCoreNuget] | JavaScript engine for WebKit (Linux only)        | Partial          |
 
 
 ## Get Involved
@@ -72,21 +72,23 @@ The code in the library folder is not complete because most of the code is gener
 [GIO]: https://developer.gnome.org/gio/stable/
 [GObject]: https://developer.gnome.org/gobject/stable/
 [GTK]: https://gtk.org/
-[libhandy]: https://source.puri.sm/Librem5/libhandy
+[libhandy]: https://source.puri.sm/Librem5/libhandy/
 [WebKitGTK]: https://webkitgtk.org/
 [JavaScriptCore]: https://webkitgtk.org/reference/jsc-glib/stable/index.html
 [dbus]: https://www.freedesktop.org/wiki/Software/dbus/
-[libchamplain]: https://wiki.gnome.org/Projects/libchamplain
-[GtkSharp]: https://github.com/GtkSharp/GtkSharp
-[GdkPixbuf]: https://gitlab.gnome.org/GNOME/gdk-pixbuf
-[GirCoreNuget]: https://www.nuget.org/profiles/GirCore
+[libchamplain]: https://wiki.gnome.org/Projects/libchamplain/
+[GtkSharp]: https://github.com/GtkSharp/GtkSharp/
+[GdkPixbuf]: https://gitlab.gnome.org/GNOME/gdk-pixbuf/
+[GirCoreNuget]: https://www.nuget.org/profiles/GirCore/
 [Gtk4Nuget]: https://www.nuget.org/packages/GirCore.Gtk-4.0/
 [GstNuget]: https://www.nuget.org/packages/GirCore.Gst-1.0/
 [CairoNuget]: https://www.nuget.org/packages/GirCore.Cairo-1.0/
 [PangoNuget]: https://www.nuget.org/packages/GirCore.Pango-1.0/
 [GioNuget]: https://www.nuget.org/packages/GirCore.Gio-2.0/
 [GdkPixbufNuget]: https://www.nuget.org/packages/GirCore.GdkPixbuf-2.0/
-[LibadwaitaNuget]: https://www.nuget.org/packages/GirCore.Adw-1
+[LibadwaitaNuget]: https://www.nuget.org/packages/GirCore.Adw-1/
+[WebKit2Nuget]: https://www.nuget.org/packages/GirCore.WebKit2-5.0/
+[JavaScriptCoreNuget]: https://www.nuget.org/packages/GirCore.JavaScriptCore-5.0/
 
 ## Licensing terms
 Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.
