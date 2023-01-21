@@ -1,0 +1,16 @@
+{
+  "solution": {
+    "path": "GirCore.sln",
+    "projects": [
+      "Generation/Generator/Generator.csproj",
+      "Generation/GirLoader/GirLoader.csproj",
+      "Generation/GirModel/GirModel.csproj",
+      "GirTool/GirTool.csproj",
+      "Libs/GirTest-0.1/GirTest-0.1.csproj",
+      "Libs/GLib-2.0/GLib-2.0.csproj",
+      "Libs/GObject-2.0/GObject-2.0.csproj",
+      "Tests/Generation/GirLoader.Tests/GirLoader.Tests.csproj",
+      "Tests/Libs/GirTest-0.1.Tests/GirTest-0.1.Tests.csproj",
+    ]
+  }
+}

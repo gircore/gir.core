@@ -1,6 +1,12 @@
 #r "nuget: SimpleExec, 8.0.0"
 open SimpleExec
 
+(*
+  Include any command line args as extra files to generate.
+  Note that the first argument is the name of the script
+*)
+let extraFiles = fsi.CommandLineArgs[1..]
+
 let girFiles =
     [|
         "Adw-1.gir"
@@ -27,6 +33,7 @@ let girFiles =
         "WebKit2-5.0.gir"
         "WebKit2WebExtension-5.0.gir"
     |]
+    |> Array.append extraFiles
     |> String.concat " "
 
 let mutable exitCode = 0
