@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GirModel;
 using Parameter = Generator.Model.Parameter;
 
 namespace Generator.Renderer.Internal;
 
 internal static class CallbackCommonHandlerRenderUtils
 {
-    public static string RenderNativeCallback(GirModel.Callback callback, Scope? scope)
+    public static string RenderNativeCallback(GirModel.Callback callback, GirModel.Scope? scope)
     {
         string? nativeCallback;
 
@@ -60,9 +59,9 @@ NativeCallback = ({callback.Parameters.Select(Parameter.GetName).Join(", ")}) =>
         return $"var {resultVariableName} = " + call;
     }
 
-    private static string RenderFreeStatement(Scope? scope)
+    private static string RenderFreeStatement(GirModel.Scope? scope)
     {
-        return scope == Scope.Async
+        return scope == GirModel.Scope.Async
             ? "gch.Free();"
             : string.Empty;
     }
