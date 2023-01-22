@@ -13,16 +13,8 @@ public static class StringHelper
     /// </summary>
     /// <returns>a managed version of the string.</returns>
     /// <remarks>This method does not free the unmanaged string represented by ptr.</remarks>
-    public static string ToStringUtf8(IntPtr ptr)
-        => Marshal.PtrToStringUTF8(ptr) ?? string.Empty;
-
-    /// <summary>
-    /// Interprets the given ptr as a nullable string.
-    /// </summary>
-    /// <returns>a managed version of the string.</returns>
-    /// <remarks>This method does not free the unmanaged string represented by ptr.</remarks>
-    public static string? ToNullableStringUtf8(IntPtr ptr)
-        => (ptr != IntPtr.Zero) ? Marshal.PtrToStringUTF8(ptr) : null;
+    public static string? ToStringUtf8(IntPtr ptr)
+        => Marshal.PtrToStringUTF8(ptr);
 
     /// <summary>
     /// Marshals each pointer in the IntPtr array as a UTF-8 encoded string.
@@ -31,7 +23,7 @@ public static class StringHelper
     /// <returns>A managed version of the string array.</returns>
     /// <remarks>This method does not free the unmanaged strings represented by ptr.</remarks>
     public static string[] ToStringArrayUtf8(IntPtr[] ptrArray)
-        => ptrArray.Select(ToStringUtf8).ToArray();
+        => ptrArray.Select(x => ToStringUtf8(x) ?? string.Empty).ToArray();
 
     /// <summary>
     /// Interprets the given ptr as a null terminated string array.
@@ -57,13 +49,13 @@ public static class StringHelper
                 break;
 
             // Marshal string and repeat
-            strArray.Add(ToStringUtf8(strAddress));
+            strArray.Add(ToStringUtf8(strAddress) ?? string.Empty);
         }
 
         return strArray.ToArray();
     }
 
-    public static IntPtr StringToHGlobalUTF8(string str)
+    public static IntPtr StringToHGlobalUTF8(string? str)
     {
         // For some methods/delegates (e.g. TranslateFunc), we need to return
         // a string that Glib will own and we cannot free. Create a new
@@ -71,7 +63,10 @@ public static class StringHelper
 
         // TODO: Check if GLib needs to free this
 
-        byte[] bytes = Encoding.UTF8.GetBytes(str);
+        if (str is null)
+            return IntPtr.Zero;
+
+        var bytes = Encoding.UTF8.GetBytes(str);
         IntPtr alloc = Marshal.AllocHGlobal(bytes.Length + 1);
         Marshal.Copy(bytes, 0, alloc, bytes.Length);
         Marshal.WriteByte(alloc, bytes.Length, 0);
@@ -90,14 +85,11 @@ public class StringArrayNullTerminatedSafeHandle : SafeHandle
         var numStrings = array.Length;
         _data = new IntPtr[numStrings + 1];
 
-        // UTF-8 Encoding Information
-        Encoding encoding = System.Text.Encoding.UTF8;
-
         // Populate with UTF-8 encoded bytes
         for (var i = 0; i < numStrings; i++)
         {
             // Get null-terminated UTF-8 byte array
-            var bytes = encoding.GetBytes(array[i] + '\0');
+            var bytes = Encoding.UTF8.GetBytes(array[i] + '\0');
 
             // Marshal as pointer
             IntPtr ptr = Marshal.AllocHGlobal(bytes.Length);

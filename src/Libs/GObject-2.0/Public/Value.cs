@@ -198,7 +198,7 @@ public partial class Value : IDisposable
     public float GetFloat() => Internal.Value.GetFloat(Handle);
     public ulong GetFlags() => Internal.Value.GetFlags(Handle);
     public long GetEnum() => Internal.Value.GetEnum(Handle);
-    public string? GetString() => StringHelper.ToNullableStringUtf8(Internal.Value.GetString(Handle));
+    public string? GetString() => StringHelper.ToStringUtf8(Internal.Value.GetString(Handle));
 
     private void SetBoxed(IntPtr ptr) => Internal.Value.SetBoxed(Handle, ptr);
     private void SetBoolean(bool b) => Internal.Value.SetBoolean(Handle, b);
