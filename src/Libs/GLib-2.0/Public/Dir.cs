@@ -1,6 +1,8 @@
-﻿namespace GLib;
+﻿using System;
 
-public partial class Dir
+namespace GLib;
+
+public partial class Dir : IDisposable
 {
     public static Dir Open(string path, uint flags)
     {
@@ -8,5 +10,11 @@ public partial class Dir
         Error.ThrowOnError(error);
 
         return new Dir(handle);
+    }
+
+    public void Dispose()
+    {
+        Internal.Dir.Close(_handle);
+        _handle.Dispose();
     }
 }
