@@ -10,8 +10,16 @@ public static partial class ClassInterfaceProperties
         if (property is { Readable: false, Writeable: false })
             return string.Empty;
 
+        var modifier = "public ";
+        var explicitImplementation = string.Empty;
+        if (Property.GetImplemnetExplicitly(property))
+        {
+            modifier = string.Empty;
+            explicitImplementation = $"{Namespace.GetPublicName(@interface.Namespace)}.{@interface.Name}.";
+        }
+
         var builder = new StringBuilder();
-        builder.AppendLine($"public {Property.GetNullableTypeName(property)} {Property.GetName(property)}");
+        builder.AppendLine($"{modifier}{Property.GetNullableTypeName(property)} {explicitImplementation}{Property.GetName(property)}");
         builder.AppendLine("{");
 
         if (property.Readable)
