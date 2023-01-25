@@ -12,11 +12,19 @@ internal static class MethodRenderer
     {
         try
         {
+            var modifier = "public ";
+            var explicitImplementation = string.Empty;
+            if (Method.GetImplemnetExplicitly(method))
+            {
+                modifier = string.Empty;
+                explicitImplementation = $"{Namespace.GetPublicName(method.Parent.Namespace)}.{method.Parent.Name}.";
+            }
+
             var parameters = ParameterToNativeExpression.Initialize(method.Parameters);
 
             return @$"
 {VersionAttribute.Render(method.Version)}
-public {ReturnType.Render(method.ReturnType)} {Method.GetPublicName(method)}({RenderParameters(parameters)})
+{modifier}{ReturnType.Render(method.ReturnType)} {explicitImplementation}{Method.GetPublicName(method)}({RenderParameters(parameters)})
 {{
     {RenderMethodContent(parameters)}
     {RenderCallStatement(method, parameters, out var resultVariableName)}

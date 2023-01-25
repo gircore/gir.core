@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Generator.Renderer.Internal;
 
@@ -6,6 +7,8 @@ namespace Generator.Model;
 
 internal static partial class Property
 {
+    private static readonly HashSet<GirModel.Property> ImplementExplicitly = new();
+
     public static string GetName(GirModel.Property property)
     {
         return property.Name.ToPascalCase();
@@ -124,5 +127,15 @@ internal static partial class Property
             throw new System.NotImplementedException("There is currently no concept for transfering native records (structs) into the managed world.");
 
         throw new System.Exception($"Property {complexType.Name}.{property.Name} is not supported");
+    }
+
+    public static bool GetImplemnetExplicitly(GirModel.Property property)
+    {
+        return ImplementExplicitly.Contains(property);
+    }
+
+    internal static void SetImplementExplicitly(GirModel.Property property)
+    {
+        ImplementExplicitly.Add(property);
     }
 }

@@ -6,6 +6,7 @@ internal static partial class Method
 {
     private static readonly Dictionary<GirModel.Method, string> FixedPublicNames = new();
     private static readonly Dictionary<GirModel.Method, string> FixedInternalNames = new();
+    private static readonly HashSet<GirModel.Method> ImplementExplicitly = new();
 
     public static string GetInternalName(GirModel.Method method)
     {
@@ -29,5 +30,15 @@ internal static partial class Method
     internal static void SetPublicName(GirModel.Method method, string name)
     {
         FixedPublicNames[method] = name;
+    }
+
+    public static bool GetImplemnetExplicitly(GirModel.Method method)
+    {
+        return ImplementExplicitly.Contains(method);
+    }
+
+    internal static void SetImplementExplicitly(GirModel.Method method)
+    {
+        ImplementExplicitly.Add(method);
     }
 }
