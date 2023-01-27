@@ -170,7 +170,7 @@ public partial class Value : IDisposable
     {
         IntPtr ptr = Internal.Value.GetBoxed(Handle);
 
-        if (type == Functions.StrvGetType())
+        if (type == Internal.Functions.StrvGetType())
             return StringHelper.ToStringArrayUtf8(ptr);
 
         // TODO: It would be nice to support boxing arbitrary managed types
