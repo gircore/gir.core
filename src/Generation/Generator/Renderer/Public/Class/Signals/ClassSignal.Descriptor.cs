@@ -10,7 +10,7 @@ public static partial class ClassSignal
 /// <summary>
 /// Signal Descriptor for {Signal.GetName(signal)}.
 /// </summary>
-public static readonly Signal<{GetGenericArgs(cls, signal)}> {Signal.GetDescriptorName(signal)} = new (
+public static readonly {Signal.GetDescriptorClassName(signal, cls)} {Signal.GetDescriptorName(signal)} = new (
     unmanagedName: ""{signal.Name}"",
     managedName: nameof({Signal.GetName(signal)})
 );";

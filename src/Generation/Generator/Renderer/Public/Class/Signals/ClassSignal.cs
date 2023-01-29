@@ -30,11 +30,4 @@ public static partial class ClassSignal
             return string.Empty;
         }
     }
-
-    private static string GetGenericArgs(GirModel.Class cls, GirModel.Signal signal)
-    {
-        return signal.Parameters.Any()
-            ? $"{cls.Name}, {Signal.GetArgsClassName(signal)}"
-            : cls.Name;
-    }
 }
