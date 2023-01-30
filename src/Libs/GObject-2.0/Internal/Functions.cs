@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace GObject;
+namespace GObject.Internal;
 
 public partial class Functions
 {
