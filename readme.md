@@ -18,6 +18,8 @@ This project aims to provide a complete set of APIs for writing rich cross-platf
 ## Status
 The code is under development and not ready for production use. There are nuget packages available. The API is subject to change as long as version 1.0 is not released. Feel free to visit the [nuget organization][GirCoreNuget] to get an overview.
 
+The upcoming features and releases can be checked out in the [milestones](https://github.com/gircore/gir.core/milestones).
+
 ## Supported Libraries
 
 | Library                         | Description                                      | Level of Support |
