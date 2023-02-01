@@ -36,7 +36,7 @@ public partial class {cls.Name}
         {
             var parameters = ParameterToNativeExpression.Initialize(constructor.Parameters);
 
-            var newKeyWord = Class.HidesConstructor(cls, constructor)
+            var newKeyWord = Class.HidesConstructor(cls.Parent, constructor)
                 ? "new "
                 : string.Empty;
 
