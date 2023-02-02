@@ -22,6 +22,7 @@ public partial class Value : IDisposable
     }
 
     public Value(Object value) : this(Type.Object) => SetObject(value);
+    public Value(GLib.Variant value) : this(Type.Variant) => SetVariant(value);
     public Value(bool value) : this(Type.Boolean) => SetBoolean(value);
     public Value(int value) : this(Type.Int) => SetInt(value);
     public Value(uint value) : this(Type.UInt) => SetUint(value);
@@ -61,6 +62,7 @@ public partial class Value : IDisposable
         float v6 => new Value(v6),
         string v7 => new Value(v7),
         Enum _ => new Value((long) value),
+        GLib.Variant v => new Value(v),
         Object obj => new Value(obj),
         _ => throw new NotSupportedException("Unable to create the value from the given type.")
     };
@@ -99,6 +101,9 @@ public partial class Value : IDisposable
                 // Garbage Collector will automatically free the safe handle for us.
                 var strArray = new StringArrayNullTerminatedSafeHandle(array);
                 SetBoxed(strArray.DangerousGetHandle());
+                break;
+            case GLib.Variant v:
+                SetVariant(v);
                 break;
             case Object o:
                 SetObject(o);
@@ -151,6 +156,9 @@ public partial class Value : IDisposable
         if (Functions.TypeIsA(gtype, (nuint) BasicType.Param))
             return GetParam();
 
+        if (Functions.TypeIsA(gtype, (nuint) BasicType.Variant))
+            return GetVariant();
+
         var name = StringHelper.ToStringUtf8(Internal.Functions.TypeName(gtype));
 
         throw new NotSupportedException($"Unable to extract the value for type '{name}'. The type (id: {gtype}) is unknown.");
@@ -199,6 +207,11 @@ public partial class Value : IDisposable
     public ulong GetFlags() => Internal.Value.GetFlags(Handle);
     public long GetEnum() => Internal.Value.GetEnum(Handle);
     public string? GetString() => StringHelper.ToStringUtf8(Internal.Value.GetString(Handle));
+    public GLib.Variant? GetVariant()
+    {
+        var result = Internal.Value.GetVariant(Handle);
+        return result.IsInvalid ? null : new(result);
+    }
 
     private void SetBoxed(IntPtr ptr) => Internal.Value.SetBoxed(Handle, ptr);
     private void SetBoolean(bool b) => Internal.Value.SetBoolean(Handle, b);
@@ -209,6 +222,7 @@ public partial class Value : IDisposable
     private void SetLong(long l) => Internal.Value.SetLong(Handle, l);
     private void SetEnum(Enum e) => Internal.Value.SetEnum(Handle, Convert.ToInt32(e));
     private void SetString(string s) => Internal.Value.SetString(Handle, s);
+    private void SetVariant(GLib.Variant v) => Internal.Value.SetVariant(Handle, v.Handle);
     private void SetObject(Object o) => Internal.Value.SetObject(Handle, o.Handle);
 
     public void Dispose()

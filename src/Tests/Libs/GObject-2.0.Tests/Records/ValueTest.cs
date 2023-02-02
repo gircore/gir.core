@@ -20,6 +20,14 @@ public class ValueTest : Test
         v.Extract().Should().Be(data);
     }
 
+    [TestMethod]
+    public void VariantFromDataShouldContainGivenData()
+    {
+        var variant = GLib.Variant.Create("foo");
+        var v = Value.From(variant);
+        v.Extract<GLib.Variant>().GetString().Should().Be("foo");
+    }
+
     [DataTestMethod]
     [DataRow("Hello", Internal.BasicType.String)]
     [DataRow(true, Internal.BasicType.Boolean)]
