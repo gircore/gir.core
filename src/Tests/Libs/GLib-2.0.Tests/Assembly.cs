@@ -9,5 +9,10 @@ public static class Assembly
     public static void Initialize(TestContext context)
     {
         Module.Initialize();
+        GLib.Functions.LogSetAlwaysFatal(
+            GLib.LogLevelFlags.LevelCritical
+            | GLib.LogLevelFlags.LevelError
+            | GLib.LogLevelFlags.LevelWarning
+        );
     }
 }
