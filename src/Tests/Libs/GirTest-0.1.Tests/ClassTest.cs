@@ -4,13 +4,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GirTest.Tests;
 
 [TestClass, TestCategory("BindingTest")]
-public class ClassTypeTest : Test
+public class ClassTest : Test
 {
     [TestMethod]
     public void CanDisposeInstanceAfterOwnershipIsTransferredAndUnrefed()
     {
         var obj = new TestClass();
-        ClassType.TransferOwnershipFullAndUnref(obj);
+        ClassTester.TransferOwnershipFullAndUnref(obj);
         var act = () => obj.Dispose();
         act.Should().NotThrow();
     }
@@ -24,7 +24,7 @@ public class ClassTypeTest : Test
         {
             var obj = new TestClass();
             reference.Target = obj;
-            ClassType.TransferOwnershipFullAndUnref(obj);
+            ClassTester.TransferOwnershipFullAndUnref(obj);
         });
 
         reference.IsAlive.Should().BeFalse();
