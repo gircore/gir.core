@@ -22,6 +22,18 @@ internal class Class : ToNativeParameterConverter
             ? parameterName + "?.Handle ?? IntPtr.Zero"
             : parameterName + ".Handle";
 
+        // If there is an ownership transfer, the called function will not add
+        // a ref but will hold onto the object and later remove a ref.
+        // However, the original owned ref still exists (e.g. the managed object's handle)
+        // so we need to add an extra ref to account for the remaining owner.
+        if (Transfer.IsOwnedRef(parameter.Parameter.Transfer))
+        {
+            var addRefExpression = parameter.Parameter.Nullable
+                ? $"{parameterName}?.Ref();"
+                : $"{parameterName}.Ref();";
+            parameter.SetExpression(addRefExpression);
+        }
+
         parameter.SetSignatureName(parameterName);
         parameter.SetCallName(callParameter);
     }
