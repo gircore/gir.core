@@ -11,4 +11,11 @@ public abstract class Test
         GC.Collect();
         GC.WaitForPendingFinalizers();
     }
+
+    protected static void CollectAfter(Action action)
+    {
+        action();
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+    }
 }
