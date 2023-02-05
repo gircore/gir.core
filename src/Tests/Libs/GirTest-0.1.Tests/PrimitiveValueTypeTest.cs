@@ -9,6 +9,6 @@ public class PrimitiveValueTypeTest : Test
     [TestMethod]
     public void InParameterShouldSucceed()
     {
-        GirTest.PrimitiveValueType.IntIn(5).Should().Be(10);
+        PrimitiveValueTypeTester.IntIn(5).Should().Be(10);
     }
 }

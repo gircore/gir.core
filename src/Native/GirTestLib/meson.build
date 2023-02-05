@@ -3,14 +3,16 @@ project('girtest', 'c', version: '0.1')
 gobject_dep = dependency('gobject-2.0', version: '>= 2.66.0')
 
 header_files = [
-  'classtype.h',
   'girtest.h',
-  'primitivevaluetype.h'
+  'girtest-class-tester.h',
+  'girtest-primitive-value-type-tester.h',
+  'girtest-returning-signal-tester.h'
 ]
 
 source_files = [
-  'classtype.c',
-  'primitivevaluetype.c'
+  'girtest-class-tester.c',
+  'girtest-primitive-value-type-tester.c',
+  'girtest-returning-signal-tester.c'
 ]
 
 # Build a shared library that depends on gobject.
