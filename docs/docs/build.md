@@ -9,13 +9,13 @@ $ dotnet fsi GenerateLibs.fsx
 $ dotnet build GirCore.Libs.slnf
 ```
 
-If you want to clean the [Libs folder](src/Libs) of all generated files run:
+If you want to clean the [Libs folder](https://github.com/gircore/gir.core/tree/main/src/Libs) of all generated files run:
 
     $ dotnet fsi CleanLibs.fsx
 
 ## Native Libraries
 
-The project includes a C library ([GirTest](src/Native/GirTest)) which is used for testing the generator.
+The project includes a C library ([GirTest](https://github.com/gircore/gir.core/tree/main/src/Native/GirTestLib)) which is used for testing the generator.
 
 This requires some additional dependencies:
 - C compiler
