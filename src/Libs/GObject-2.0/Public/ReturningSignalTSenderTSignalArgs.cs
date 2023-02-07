@@ -33,11 +33,11 @@ public class ReturningSignal<TSender, TSignalArgs, TReturn> : SignalDefinition
     /// <summary>
     /// Connects a <paramref name="signalHandler"/> to this signal.
     /// </summary>
-    /// <param name="o">The object on which connect the handler.</param>
+    /// <param name="sender">The object on which connect the handler.</param>
     /// <param name="signalHandler">The signal handler function.</param>
     /// <param name="after">Define if this action must be called before or after the default handler of this signal.</param>
     /// <param name="detail">Define for which signal detail the connection should be made.</param>
-    public void Connect(TSender o, ReturningSignalHandler<TSender, TSignalArgs, TReturn> signalHandler, bool after = false, string? detail = null)
+    public void Connect(TSender sender, ReturningSignalHandler<TSender, TSignalArgs, TReturn> signalHandler, bool after = false, string? detail = null)
     {
         var closure = new Closure((returnValue, parameters) =>
         {
@@ -47,20 +47,20 @@ public class ReturningSignal<TSender, TSignalArgs, TReturn> : SignalDefinition
             var args = new TSignalArgs();
             args.SetArgs(parameters);
 
-            var result = signalHandler(o, args);
+            var result = signalHandler(sender, args);
             returnValue.Set(result);
         });
 
-        o.SignalConnectClosure(this, signalHandler, closure, after, detail);
+        sender.SignalConnectClosure(this, signalHandler, closure, after, detail);
     }
 
     /// <summary>
     /// Disconnects a <paramref name="signalHandler"/> previously connected to this signal.
     /// </summary>
-    /// <param name="o">The object from which disconnect the handler.</param>
+    /// <param name="sender">The object from which disconnect the handler.</param>
     /// <param name="signalHandler">The signal handler function.</param>
-    public void Disconnect(TSender o, ReturningSignalHandler<TSender, TSignalArgs, TReturn> signalHandler)
+    public void Disconnect(TSender sender, ReturningSignalHandler<TSender, TSignalArgs, TReturn> signalHandler)
     {
-        o.Disconnect(this, signalHandler);
+        sender.Disconnect(this, signalHandler);
     }
 }
