@@ -36,3 +36,53 @@ girtest_primitive_value_type_tester_int_in(int val)
 {
     return 2 * val;
 }
+
+/**
+ * girtest_primitive_value_type_tester_int_in_out:
+ * @val: (inout): An integer value to multiply by 2
+ *
+ * Simple test for an in/out integer parameter.
+ */
+void
+girtest_primitive_value_type_tester_int_in_out(int *val)
+{
+    *val *= 2;
+}
+
+/**
+ * girtest_primitive_value_type_tester_int_in_out_optional:
+ * @val: (inout) (optional): An optional integer value to multiply by 2
+ *
+ * Simple test for a optional in/out integer parameter.
+ */
+void
+girtest_primitive_value_type_tester_int_in_out_optional(int *val)
+{
+    if (val)
+        *val *= 2;
+}
+
+/**
+ * girtest_primitive_value_type_tester_int_out:
+ * @result: (out): An integer value to write to.
+ *
+ * Simple test for an out integer parameter.
+ */
+void
+girtest_primitive_value_type_tester_int_out(int *result)
+{
+    *result = 42;
+}
+
+/**
+ * girtest_primitive_value_type_tester_int_out_optional:
+ * @result: (out) (optional): An optional integer value to write to.
+ *
+ * Simple test for a optional out integer parameter.
+ */
+void
+girtest_primitive_value_type_tester_int_out_optional(int *result)
+{
+    if (result)
+        *result = 42;
+}

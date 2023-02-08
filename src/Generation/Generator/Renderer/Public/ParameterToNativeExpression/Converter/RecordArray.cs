@@ -17,6 +17,9 @@ internal class RecordArray : ToNativeParameterConverter
         if (!arrayType.IsPointer)
             throw new NotImplementedException($"{parameter.Parameter.AnyType}: Not pointed array record types can not yet be converted to native.");
 
+        if (parameter.Parameter.Direction == GirModel.Direction.Out)
+            throw new NotImplementedException($"{parameter.Parameter.AnyType}: Array record type with direction=out not yet supported.");
+
         var parameterName = Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";
 

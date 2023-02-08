@@ -6,7 +6,7 @@ public class Application
 {
     public static void Init()
     {
-        var argc = IntPtr.Zero;
+        int argc = 0;
         Internal.Functions.Init(ref argc, new string[0]);
     }
 }
