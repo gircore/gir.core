@@ -43,42 +43,53 @@ girtest_primitive_value_type_tester_int_in(int val)
  *
  * Simple test for an in/out integer parameter.
  */
-void girtest_primitive_value_type_tester_int_in_out(int *val)
+void
+girtest_primitive_value_type_tester_int_in_out(int *val)
 {
     *val *= 2;
 }
 
 /**
  * girtest_primitive_value_type_tester_int_in_out_nullable:
- * @val: (inout) (nullable): An optional integer value to multiply by 2
+ * @val: (inout) (nullable): A nullable integer value.
+ * If the value is null the parameter will be -1.
+ * For all other cases the value is multiplied by 2. 
  *
  * Simple test for a nullable in/out integer parameter.
  */
-void girtest_primitive_value_type_tester_int_in_out_nullable(int *val)
+void
+girtest_primitive_value_type_tester_int_in_out_nullable(int *val)
 {
-    if (val)
+    if (!val)
+        *val = -1;
+    else
         *val *= 2;
 }
 
 /**
  * girtest_primitive_value_type_tester_int_out:
- * @val: (out caller-allocates): An integer value to write to.
+ * @result: (out): An integer which outputs 42.
  *
  * Simple test for an out integer parameter.
  */
-void girtest_primitive_value_type_tester_int_out(int *result)
+void
+girtest_primitive_value_type_tester_int_out(int *result)
 {
     *result = 42;
 }
 
 /**
  * girtest_primitive_value_type_tester_int_out_nullable:
- * @val: (out) (nullable): An optional integer value to write to.
+ * @return_null: A boolean defining the value for "result".
+ * @result: (out) (nullable): A nullable integer which returns 42 if "return_null" is false otherwise NULL.
  *
  * Simple test for a nullable out integer parameter.
  */
-void girtest_primitive_value_type_tester_int_out_nullable(int *result)
+void
+girtest_primitive_value_type_tester_int_out_nullable(gboolean return_null, int *result)
 {
-    if (result)
+    if (return_null)
+        result = NULL;
+    else
         *result = 42;
 }
