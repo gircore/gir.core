@@ -5,9 +5,10 @@ namespace GirLoader.Output;
 
 public partial class Constructor : GirModel.Constructor
 {
-    string GirModel.Constructor.Name => Name;
+    string GirModel.Callable.Name => Name;
     GirModel.ReturnType GirModel.Constructor.ReturnType => ReturnValue;
-    string GirModel.Constructor.CIdentifier => Identifier;
+    string GirModel.Callable.CIdentifier => Identifier;
     string? GirModel.Constructor.Version => Version;
-    IEnumerable<GirModel.Parameter> GirModel.Constructor.Parameters => ParameterList.GetParameters().Cast<GirModel.Parameter>();
+    IEnumerable<GirModel.Parameter> GirModel.Callable.Parameters => ParameterList.GetParameters().Cast<GirModel.Parameter>();
+    GirModel.InstanceParameter? GirModel.Callable.InstanceParameter => null;
 }

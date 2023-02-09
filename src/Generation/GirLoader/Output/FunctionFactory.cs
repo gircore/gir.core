@@ -32,7 +32,8 @@ internal class FunctionFactory
                 identifier: method.Identifier,
                 name: method.Name,
                 returnValue: _returnValueFactory.Create(method.ReturnValue),
-                parameterList: _parameterListFactory.Create(method.Parameters, method.Throws),
+                parameterList: _parameterListFactory.Create(method.Parameters),
+                throws: method.Throws,
                 introspectable: method.Introspectable,
                 version: method.Version
             );
@@ -59,6 +60,7 @@ internal class FunctionFactory
             name: "GetGType",
             returnValue: returnValue,
             parameterList: new ParameterList(),
+            throws: false,
             introspectable: true,
             version: null
         );

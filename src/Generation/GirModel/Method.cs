@@ -2,14 +2,12 @@
 
 namespace GirModel;
 
-public interface Method
+public interface Method : Callable
 {
     ComplexType Parent { get; }
-    string Name { get; }
     ReturnType ReturnType { get; }
-    string CIdentifier { get; }
-    InstanceParameter InstanceParameter { get; }
-    IEnumerable<Parameter> Parameters { get; }
+    // Methods always have an instance parameter.
+    new InstanceParameter InstanceParameter { get; }
     bool Introspectable { get; }
     Property? GetProperty { get; }
     Property? SetProperty { get; }

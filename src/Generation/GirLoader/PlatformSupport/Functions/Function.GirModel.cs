@@ -6,10 +6,12 @@ public partial class Function : GirModel.Function
 {
     GirModel.Namespace GirModel.Function.Namespace => _function.Namespace;
     GirModel.ComplexType? GirModel.Function.Parent => _function.Parent;
-    string GirModel.Function.Name => _function.Name;
+    string GirModel.Callable.Name => _function.Name;
     GirModel.ReturnType GirModel.Function.ReturnType => _function.ReturnType;
-    string GirModel.Function.CIdentifier => _function.CIdentifier;
-    IEnumerable<GirModel.Parameter> GirModel.Function.Parameters => _function.Parameters;
+    string GirModel.Callable.CIdentifier => _function.CIdentifier;
+    IEnumerable<GirModel.Parameter> GirModel.Callable.Parameters => _function.Parameters;
+    GirModel.InstanceParameter? GirModel.Callable.InstanceParameter => _function.InstanceParameter;
+    bool GirModel.Callable.Throws => _function.Throws;
     bool GirModel.Function.Introspectable => _function.Introspectable;
     string? GirModel.Function.Version => _function.Version;
 }
