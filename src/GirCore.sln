@@ -168,6 +168,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4EE9860B-6
 		..\docs\docs\libraries.md = ..\docs\docs\libraries.md
 		..\docs\docs\use.md = ..\docs\docs\use.md
 		..\docs\docs\apps.md = ..\docs\docs\apps.md
+		..\docs\docs\build.md = ..\docs\docs\build.md
+		..\docs\docs\toc.yml = ..\docs\docs\toc.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adw-1", "Libs\Adw-1\Adw-1.csproj", "{CC67D284-6ADE-4F4D-9EE0-544143A7FF40}"
@@ -195,6 +197,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTest-0.1", "Libs\GirTest-0.1\GirTest-0.1.csproj", "{BF0E85F5-34EC-49BB-8221-517B839B6550}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTest-0.1.Tests", "Tests\Libs\GirTest-0.1.Tests\GirTest-0.1.Tests.csproj", "{6D09E811-20BF-48A0-BFCD-A2A0B357C8BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{15AC3143-9682-4F78-9A9C-3C4D32A9A48C}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\img\GstSintel.png = ..\docs\img\GstSintel.png
+		..\docs\img\GtkApp.png = ..\docs\img\GtkApp.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -873,5 +881,6 @@ Global
 		{1AF16CCD-2220-4F60-A68F-622F186BEA8F} = {825BF602-98A7-45E7-A2C9-9E68160B7DF3}
 		{BF0E85F5-34EC-49BB-8221-517B839B6550} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
 		{6D09E811-20BF-48A0-BFCD-A2A0B357C8BD} = {46D66262-FC61-43B9-8E76-A361FA3D6C81}
+		{15AC3143-9682-4F78-9A9C-3C4D32A9A48C} = {0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}
 	EndGlobalSection
 EndGlobal

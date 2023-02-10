@@ -52,5 +52,5 @@ Visit the [WebKit samples](https://github.com/gircore/gir.core/tree/main/src/Sam
 [Xfce]: https://xfce.org
 [GStreamer]: https://gstreamer.freedesktop.org/
 
-[GtkApp]: img/GtkApp.png "Example GtkApp"
-[GstSintel]: img/GstSintel.png "Gstreamer playing back Tears of Steel (https://mango.blender.org/)"
+[GtkApp]: ../img/GtkApp.png "Example GtkApp"
+[GstSintel]: ../img/GstSintel.png "Gstreamer playing back Tears of Steel (https://mango.blender.org/)"
