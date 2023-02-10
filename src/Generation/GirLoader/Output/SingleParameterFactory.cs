@@ -36,6 +36,7 @@ internal class SingleParameterFactory
             direction: DirectionFactory.Create(parameter.Direction),
             transfer: _transferFactory.FromText(parameter.TransferOwnership),
             nullable: parameter.Nullable,
+            optional: parameter.Optional,
             callerAllocates: parameter.CallerAllocates,
             closureIndex: parameter.Closure == -1 ? null : parameter.Closure,
             destroyIndex: parameter.Destroy == -1 ? null : parameter.Destroy,

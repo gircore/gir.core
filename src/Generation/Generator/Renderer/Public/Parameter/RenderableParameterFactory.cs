@@ -16,6 +16,7 @@ internal static class RenderableParameterFactory
             GirModel.Record => RecordParameter.Create(parameter),
             GirModel.Void => VoidParameter.Create(parameter),
             GirModel.Callback => CallbackParameter.Create(parameter),
+            GirModel.PrimitiveValueType => PrimitiveValueTypeParameter.Create(parameter),
             _ => StandardParameter.Create(parameter) //TODO: Remove Standard Parameter
         },
         arraytype => arraytype.AnyType.Match(

@@ -13,6 +13,9 @@ public class Parameter : AnyType
     [XmlAttribute("direction")]
     public string? Direction { get; set; }
 
+    [XmlAttribute("optional")]
+    public bool Optional;
+
     [XmlAttribute("caller-allocates")]
     public bool CallerAllocates;
 
