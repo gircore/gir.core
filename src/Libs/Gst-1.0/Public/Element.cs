@@ -43,15 +43,6 @@ public partial class Element
 
     #endregion
 
-    public static Element MakeFromUri(URIType type, string uri, string elementName)
-    {
-        IntPtr result = Internal.Element.MakeFromUri(type, uri, elementName, out var error);
-
-        Error.ThrowOnError(error);
-
-        return GObject.Internal.ObjectWrapper.WrapHandle<Element>(result, false);
-    }
-
     /*public Bus? GetBus()
     {
         IntPtr ptr = Native.Element.Instance.Methods.GetBus(Handle);

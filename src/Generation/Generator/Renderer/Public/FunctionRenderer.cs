@@ -79,7 +79,10 @@ public static {ReturnType.Render(function.ReturnType)} {Function.GetName(functio
 
         call.Append($"{Namespace.GetInternalName(function.Namespace)}.{parent}.{Function.GetName(function)}(");
         call.Append(string.Join(", ", parameters.Select(x => x.GetCallName())));
+        call.Append(Error.RenderParameter(function));
         call.Append(");\n");
+
+        call.Append(Error.RenderThrowOnError(function));
 
         return call.ToString();
     }

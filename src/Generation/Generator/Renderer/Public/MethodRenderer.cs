@@ -82,7 +82,10 @@ internal static class MethodRenderer
         call.Append($"{Namespace.GetInternalName(method.Parent.Namespace)}.{method.Parent.Name}.{Method.GetInternalName(method)}(");
         call.Append("this.Handle" + (parameters.Any() ? ", " : string.Empty));
         call.Append(string.Join(", ", parameters.Select(x => x.GetCallName())));
+        call.Append(Error.RenderParameter(method));
         call.Append(");\n");
+
+        call.Append(Error.RenderThrowOnError(method));
 
         return call.ToString();
     }
