@@ -14,7 +14,7 @@ internal class ParameterListFactory
         _instanceParameterFactory = instanceParameterFactory;
     }
 
-    public ParameterList Create(Input.Parameters? parameters, bool throws = false)
+    public ParameterList Create(Input.Parameters? parameters)
     {
         List<SingleParameter> list = new();
         InstanceParameter? instanceParameter = null;
@@ -25,24 +25,6 @@ internal class ParameterListFactory
                 instanceParameter = _instanceParameterFactory.Create(parameters.InstanceParameter);
 
             list = parameters.List.Select(arg => _singleParameterFactory.Create(arg)).ToList();
-
-            if (throws)
-            {
-                var parameterInfo = new Input.Parameter()
-                {
-                    Name = "error",
-                    TransferOwnership = "full",
-                    Direction = "out",
-                    CallerAllocates = false,
-                    Type = new Input.Type()
-                    {
-                        Name = "GLib.Error",
-                        CType = "GError*"
-                    }
-                };
-
-                list.Add(_singleParameterFactory.Create(parameterInfo));
-            }
         }
 
         return new ParameterList()

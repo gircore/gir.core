@@ -102,6 +102,13 @@ internal static partial class Property
         if (!property.Readable && (!property.Writeable || property.ConstructOnly))
             throw new System.Exception("Not accessible");
 
+        // Ignore properties which throw. This only occurs in deprecated WebKit2WebExtension functions.
+        if (property.Getter is not null && property.Getter.Throws)
+            throw new System.NotImplementedException($"Property {complexType.Name}.{property.Name} getter with throws=true is not supported");
+
+        if (property.Setter is not null && property.Setter.Throws)
+            throw new System.NotImplementedException($"Property {complexType.Name}.{property.Name} setter with throws=true is not supported");
+
         if (property.AnyType.Is<GirModel.PrimitiveType>())
             return;
 

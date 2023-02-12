@@ -94,7 +94,10 @@ public static {newKeyWord}{cls.Name} {Constructor.GetName(constructor)}({RenderP
         var call = new StringBuilder();
         call.Append($"var {variableName} = Internal.{cls.Name}.{Constructor.GetName(constructor)}(");
         call.Append(string.Join(", ", parameters.Select(x => x.GetCallName())));
+        call.Append(Error.RenderParameter(constructor));
         call.Append(");" + Environment.NewLine);
+
+        call.Append(Error.RenderThrowOnError(constructor));
 
         var ownedRef = Transfer.IsOwnedRef(constructor.ReturnType.Transfer);
 

@@ -47,6 +47,15 @@ internal static class Class
             .Where(x => ParameterMatch(x.Parameters.ToArray(), method.Parameters.ToArray()));
     }
 
+    public static IEnumerable<GirModel.Method> DuplicateMethods(GirModel.Class cls, GirModel.Constructor constructor)
+    {
+        var publicName = Constructor.GetName(constructor);
+
+        return AllMethods(cls)
+            .Where(x => Method.GetPublicName(x) == publicName)
+            .Where(x => ParameterMatch(x.Parameters.ToArray(), constructor.Parameters.ToArray()));
+    }
+
     public static IEnumerable<GirModel.Method> AllMethods(GirModel.Class cls)
     {
         var methods = new HashSet<GirModel.Method>();

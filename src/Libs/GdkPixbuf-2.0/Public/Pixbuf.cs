@@ -11,14 +11,6 @@ public partial class Pixbuf
 
     #endregion
 
-    public static Pixbuf NewFromFile(string fileName)
-    {
-        IntPtr handle = Internal.Pixbuf.NewFromFile(fileName, out var error);
-        Error.ThrowOnError(error);
-
-        return new Pixbuf(handle, true);
-    }
-
     protected override void Initialize()
     {
         base.Initialize();

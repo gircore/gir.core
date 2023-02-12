@@ -11,16 +11,18 @@ public partial class Function
     public ParameterList ParameterList { get; }
     public string Name { get; }
     public string Identifier { get; }
+    public bool Throws { get; }
     public bool Introspectable { get; }
     public string? Version { get; }
 
-    public Function(Repository repository, string name, string identifier, ReturnValue returnValue, ParameterList parameterList, bool introspectable, string? version)
+    public Function(Repository repository, string name, string identifier, ReturnValue returnValue, ParameterList parameterList, bool throws, bool introspectable, string? version)
     {
         _repository = repository;
         ReturnValue = returnValue;
         ParameterList = parameterList;
         Name = name;
         Identifier = identifier;
+        Throws = throws;
         Introspectable = introspectable;
         Version = version;
     }
