@@ -8,11 +8,15 @@ internal static partial class Method
 
     public static void Disable(GirModel.Method method)
     {
-        DisabledMethods.Add(method);
+        lock (DisabledMethods)
+        {
+            DisabledMethods.Add(method);
+        }
     }
 
     public static bool IsEnabled(GirModel.Method method)
     {
+        //Does not need a lock as it is called only after all insertions are done.
         return !DisabledMethods.Contains(method);
     }
 }

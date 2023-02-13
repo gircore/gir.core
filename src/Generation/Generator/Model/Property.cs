@@ -138,11 +138,15 @@ internal static partial class Property
 
     public static bool GetImplemnetExplicitly(GirModel.Property property)
     {
+        //Does not need a lock as it is called only after all insertions are done.
         return ImplementExplicitly.Contains(property);
     }
 
     internal static void SetImplementExplicitly(GirModel.Property property)
     {
-        ImplementExplicitly.Add(property);
+        lock (ImplementExplicitly)
+        {
+            ImplementExplicitly.Add(property);
+        }
     }
 }
