@@ -8,11 +8,15 @@ internal static partial class Member
 
     public static void Disable(GirModel.Member member)
     {
-        DisabledMembers.Add(member);
+        lock (DisabledMembers)
+        {
+            DisabledMembers.Add(member);
+        }
     }
 
     public static bool IsEnabled(GirModel.Member member)
     {
+        //Does not need a lock as it is called only after all insertions are done.
         return !DisabledMembers.Contains(member);
     }
 }

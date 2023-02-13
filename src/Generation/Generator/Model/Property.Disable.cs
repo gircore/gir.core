@@ -8,11 +8,15 @@ internal static partial class Property
 
     public static void Disable(GirModel.Property property)
     {
-        DisabledProperties.Add(property);
+        lock (DisabledProperties)
+        {
+            DisabledProperties.Add(property);
+        }
     }
 
     public static bool IsEnabled(GirModel.Property property)
     {
+        //Does not need a lock as it is called only after all insertions are done.
         return !DisabledProperties.Contains(property);
     }
 }

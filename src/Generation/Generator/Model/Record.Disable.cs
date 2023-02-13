@@ -8,11 +8,15 @@ internal static partial class Record
 
     public static void Disable(GirModel.Record record)
     {
-        DisabledRecords.Add(record);
+        lock (DisabledRecords)
+        {
+            DisabledRecords.Add(record);
+        }
     }
 
     public static bool IsEnabled(GirModel.Record record)
     {
+        //Does not need a lock as it is called only after all insertions are done.
         return !DisabledRecords.Contains(record);
     }
 }
