@@ -34,7 +34,7 @@ public static class ObjectWrapper
         Type gtype = GetTypeFromInstance(handle);
 
         Debug.Assert(
-            condition: Marshal.PtrToStringUTF8(Functions.TypeName(gtype.Value)) == Marshal.PtrToStringUTF8(Functions.TypeNameFromInstance(new TypeInstanceUnownedHandle(handle))),
+            condition: Functions.TypeName(gtype.Value).ConvertToString() == Functions.TypeNameFromInstance(new TypeInstanceUnownedHandle(handle)).ConvertToString(),
             message: "GType name of instance and class do not match"
         );
 

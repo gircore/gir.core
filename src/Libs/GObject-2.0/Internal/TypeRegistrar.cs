@@ -59,7 +59,7 @@ public static class TypeRegistrar
         Console.WriteLine($"Registering new type {qualifiedName} with parent {parentType.ToString()}");
 
         TypeInfoHandle handle = TypeInfoManagedHandle.Create(typeInfo);
-        var typeid = Functions.TypeRegisterStatic(parentType.Value, qualifiedName, handle, 0);
+        var typeid = Functions.TypeRegisterStatic(parentType.Value, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(qualifiedName), handle, 0);
 
         if (typeid == 0)
             throw new TypeRegistrationException("Type Registration Failed!");

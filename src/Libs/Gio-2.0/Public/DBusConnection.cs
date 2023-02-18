@@ -36,7 +36,10 @@ public partial class DBusConnection
 
         var callAsyncCallbackHandler = new Internal.AsyncReadyCallbackAsyncHandler(Callback);
 
-        Internal.DBusConnection.Call(Handle, busName, objectPath, interfaceName, methodName, parameters.GetSafeHandle(), GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, -1, IntPtr.Zero, callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
+        Internal.DBusConnection.Call(Handle,
+            GLib.Internal.NullableUtf8StringOwnedHandle.Create(busName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(objectPath),
+            GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(interfaceName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(methodName),
+            parameters.GetSafeHandle(), GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, -1, IntPtr.Zero, callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
 
         return tcs.Task;
     }
@@ -44,7 +47,10 @@ public partial class DBusConnection
     public Variant Call(string busName, string objectPath, string interfaceName, string methodName, Variant? parameters = null)
     {
         var parameterHandle = parameters?.Handle ?? GLib.Internal.VariantNullHandle.Instance;
-        var ret = Internal.DBusConnection.CallSync(Handle, busName, objectPath, interfaceName, methodName, parameterHandle, GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
+        var ret = Internal.DBusConnection.CallSync(Handle,
+            GLib.Internal.NullableUtf8StringOwnedHandle.Create(busName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(objectPath),
+            GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(interfaceName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(methodName),
+            parameterHandle, GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
 
         Error.ThrowOnError(error);
 

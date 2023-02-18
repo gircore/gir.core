@@ -53,7 +53,7 @@ public struct Type
     // Print out the name of the GType
     public override string ToString()
     {
-        return StringHelper.ToStringUtf8(Internal.Functions.TypeName(_value));
+        return Internal.Functions.TypeName(_value).ConvertToString();
     }
 
     //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h

@@ -14,14 +14,14 @@ public partial class VariantType : IDisposable
 
     #region Constructors
 
-    public VariantType(string type) : this(Internal.VariantType.New(type)) { }
+    public VariantType(string type) : this(Internal.VariantType.New(Internal.NonNullableUtf8StringOwnedHandle.Create(type))) { }
 
     #endregion
 
     #region Methods
 
-    public override string? ToString()
-        => Marshal.PtrToStringAnsi(Internal.VariantType.PeekString(Handle));
+    public override string ToString()
+        => Internal.VariantType.PeekString(Handle).ConvertToString();
 
     #endregion
 

@@ -141,7 +141,7 @@ public partial class Element
             try
             {
                 var handle = GObject.Internal.ValueManagedHandle.Create();
-                GObject.Internal.Object.GetProperty(Handle, property, handle);
+                GObject.Internal.Object.GetProperty(Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(property), handle);
 
                 return new Value(handle).Extract();
             }

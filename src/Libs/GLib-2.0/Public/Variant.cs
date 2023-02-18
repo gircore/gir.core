@@ -45,7 +45,7 @@ public partial class Variant : IDisposable
 
     public static Variant Create(int i) => new(Internal.Variant.NewInt32(i));
     public static Variant Create(uint ui) => new(Internal.Variant.NewUint32(ui));
-    public static Variant Create(string str) => new(Internal.Variant.NewString(str));
+    public static Variant Create(string str) => new(Internal.Variant.NewString(Internal.NonNullableUtf8StringOwnedHandle.Create(str)));
     public static Variant Create(params string[] strs) => new(Internal.Variant.NewStrv(strs, strs.Length));
 
     public static Variant CreateEmptyDictionary(VariantType key, VariantType value)
@@ -69,7 +69,7 @@ public partial class Variant : IDisposable
     }
 
     public string GetString()
-        => StringHelper.ToStringUtf8(Internal.Variant.GetString(_handle, out _));
+        => Internal.Variant.GetString(_handle, out _).ConvertToString();
 
     public int GetInt()
         => Internal.Variant.GetInt32(_handle);
@@ -78,7 +78,8 @@ public partial class Variant : IDisposable
         => Internal.Variant.GetUint32(_handle);
 
     public string Print(bool typeAnnotate)
-        => Internal.Variant.Print(_handle, typeAnnotate);
+        => Internal.Variant.Print(_handle, typeAnnotate).ConvertToString();
+
 
     #endregion
 
