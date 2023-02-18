@@ -8,7 +8,7 @@ internal static class PrimitiveValueTypeParameter
     {
         return new ParameterTypeData(
             Direction: GetDirection(parameter),
-            NullableTypeName: Type.GetName(parameter.AnyType.AsT0)
+            NullableTypeName: Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
         );
     }
 

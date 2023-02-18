@@ -14,7 +14,7 @@ internal static class ArrayRecordParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var arrayType = parameter.AnyType.AsT1;
+        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
 
         return ComplexType.GetFullyQualified((GirModel.Record) arrayType.AnyType.AsT0) + "[]";
     }

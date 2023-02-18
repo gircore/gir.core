@@ -17,7 +17,7 @@ internal static class EnumerationParameter
     private static string GetNullableTypeName(GirModel.Parameter parameter) => parameter.IsPointer switch
     {
         true => Type.Pointer,
-        false => ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyType.AsT0)
+        false => ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0)
     };
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

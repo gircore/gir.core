@@ -12,13 +12,13 @@ internal class RecordArray : ToNativeParameterConverter
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
-        var arrayType = parameter.Parameter.AnyType.AsT1;
+        var arrayType = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
 
         if (!arrayType.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: Not pointed array record types can not yet be converted to native.");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Not pointed array record types can not yet be converted to native.");
 
         if (parameter.Parameter.Direction == GirModel.Direction.Out)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: Array record type with direction=out not yet supported.");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Array record type with direction=out not yet supported.");
 
         var parameterName = Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";

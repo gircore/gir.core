@@ -14,7 +14,7 @@ internal static class EnumerationParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Enumeration) parameter.AnyType.AsT0;
+        var type = (GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         return ComplexType.GetFullyQualified(type);
     }
 

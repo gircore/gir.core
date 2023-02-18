@@ -17,7 +17,7 @@ internal static class CallbackParameter
     //Internal callbacks are not nullable
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Callback) parameter.AnyType.AsT0;
+        var type = (GirModel.Callback) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         return Namespace.GetInternalName(type.Namespace) + "." + Type.GetName((GirModel.Type) type);
     }
 }

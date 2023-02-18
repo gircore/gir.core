@@ -18,7 +18,7 @@ internal static class RecordParameter
     //Native records are represented as SafeHandles and are not nullable
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Record) parameter.AnyType.AsT0;
+        var type = (GirModel.Record) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         return parameter switch
         {
             { Direction: GirModel.Direction.In } => Record.GetFullyQualifiedInternalHandle(type),

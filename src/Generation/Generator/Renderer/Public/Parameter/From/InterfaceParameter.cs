@@ -14,7 +14,7 @@ internal static class InterfaceParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Interface) parameter.AnyType.AsT0;
+        var type = (GirModel.Interface) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         return ComplexType.GetFullyQualified(type) + Nullable.Render(parameter);
     }
 

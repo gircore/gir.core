@@ -15,7 +15,7 @@ internal class PrimitiveValueType : ToNativeParameterConverter
         // the pointer to be an array, e.g. gdk_pango_layout_get_clip_region(), so in general this
         // is not safe to generate bindings for.
         if (parameter.Parameter.IsPointer && parameter.Parameter.Direction == GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: Pointed primitive value types with direction == in can not yet be converted to native");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Pointed primitive value types with direction == in can not yet be converted to native");
 
         // Add the direction keyword, e.g. ref or out, when calling the native function.
         var direction = PrimitiveValueTypeParameter.GetDirection(parameter.Parameter);

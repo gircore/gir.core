@@ -14,7 +14,7 @@ internal static class RecordParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Record) parameter.AnyType.AsT0;
+        var type = (GirModel.Record) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         return ComplexType.GetFullyQualified(type) + Nullable.Render(parameter);
     }
 

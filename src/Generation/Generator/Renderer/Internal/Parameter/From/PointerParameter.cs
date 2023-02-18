@@ -10,7 +10,7 @@ internal static class PointerParameter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: string.Empty,
-            NullableTypeName: Type.GetName(parameter.AnyType.AsT0),
+            NullableTypeName: Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0),
             Name: Parameter.GetName(parameter)
         );
     }

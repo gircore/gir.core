@@ -20,7 +20,7 @@ internal static class UnionParameter
         return parameter.IsPointer switch
         {
             true => Type.Pointer,
-            false => Type.GetName(parameter.AnyType.AsT0)
+            false => Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
         };
     }
 

@@ -43,7 +43,7 @@ public class ParameterToNativeData
 
     public string GetCallName()
     {
-        return _callName ?? throw new Exception($"Callname of parameter {Parameter.Name} ({Parameter.AnyType} is not set");
+        return _callName ?? throw new Exception($"Callname of parameter {Parameter.Name} ({Parameter.AnyTypeOrVarArgs} is not set");
     }
 
     public void SetSignatureName(string signatureName)
@@ -53,6 +53,6 @@ public class ParameterToNativeData
 
     public string GetSignatureName()
     {
-        return _signatureName ?? throw new Exception($"Signaturename of parameter {Parameter.Name} ({Parameter.AnyType} is not set");
+        return _signatureName ?? throw new Exception($"Signaturename of parameter {Parameter.Name} ({Parameter.AnyTypeOrVarArgs} is not set");
     }
 }

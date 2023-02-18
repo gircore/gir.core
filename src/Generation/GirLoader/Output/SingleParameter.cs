@@ -2,7 +2,7 @@
 
 public partial class SingleParameter : Parameter
 {
-    public TypeReference TypeReference { get; }
+    public OneOf.OneOf<TypeReference, VarArgs> TypeReferenceOrVarArgs { get; }
     public Direction Direction { get; }
     public Transfer Transfer { get; }
     public bool Nullable { get; }
@@ -13,10 +13,10 @@ public partial class SingleParameter : Parameter
     public Scope? CallbackScope { get; }
     public string Name { get; }
 
-    public SingleParameter(string name, TypeReference typeReference, Direction direction, Transfer transfer, bool nullable, bool optional, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope? scope)
+    public SingleParameter(string name, OneOf.OneOf<TypeReference, VarArgs> typeReferenceOrVarArgs, Direction direction, Transfer transfer, bool nullable, bool optional, bool callerAllocates, int? closureIndex, int? destroyIndex, Scope? scope)
     {
         Name = name;
-        TypeReference = typeReference;
+        TypeReferenceOrVarArgs = typeReferenceOrVarArgs;
         Direction = direction;
         Transfer = transfer;
         Nullable = nullable;

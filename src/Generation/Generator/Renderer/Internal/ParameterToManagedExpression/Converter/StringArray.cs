@@ -9,7 +9,7 @@ internal class StringArray : ToManagedParameterConverter
 
     public string? GetExpression(GirModel.Parameter parameter, out string variableName)
     {
-        var arrayType = parameter.AnyType.AsT1;
+        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
         if (parameter.Transfer == GirModel.Transfer.None && arrayType.Length == null)
         {
             variableName = Parameter.GetConvertedName(parameter);

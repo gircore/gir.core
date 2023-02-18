@@ -18,7 +18,7 @@ internal static class BitfieldParameter
     {
         true => Type.Pointer,
         //Internal does not define any bitfields. They are part of the Public API to avoid converting between them.
-        false => ComplexType.GetFullyQualified((GirModel.Bitfield) parameter.AnyType.AsT0)
+        false => ComplexType.GetFullyQualified((GirModel.Bitfield) parameter.AnyTypeOrVarArgs.AsT0.AsT0)
     };
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

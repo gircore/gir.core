@@ -16,7 +16,7 @@ internal static class ArrayClassParameter
 
     private static string GetAttribute(GirModel.Parameter parameter)
     {
-        return parameter.AnyType.AsT1.Length switch
+        return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length switch
         {
             { } length => MarshalAs.UnmanagedLpArray(sizeParamIndex: length),
             _ => string.Empty,
@@ -25,7 +25,7 @@ internal static class ArrayClassParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return parameter.AnyType.AsT1.Length is null
+        return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is null
             ? Type.Pointer
             : Type.PointerArray;
     }

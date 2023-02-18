@@ -14,7 +14,7 @@ internal static class BitfieldParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Bitfield) parameter.AnyType.AsT0;
+        var type = (GirModel.Bitfield) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         return ComplexType.GetFullyQualified(type);
     }
 

@@ -76,10 +76,6 @@ internal class FunctionFactory
             {
                 list.Add(Create(method, repository));
             }
-            catch (SingleParameterFactory.VarArgsNotSupportedException ex)
-            {
-                Log.Verbose($"Function {method.Name} could not be created: {ex.Message}");
-            }
             catch (FunctionMovedException ex)
             {
                 Log.Verbose($"Function ignored: {ex.Message}");

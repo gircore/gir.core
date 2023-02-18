@@ -15,9 +15,6 @@ internal class SingleParameterFactory
 
     public SingleParameter Create(Input.Parameter parameter)
     {
-        if (parameter.VarArgs is { })
-            throw new VarArgsNotSupportedException("Arguments containing variadic paramters are not supported.");
-
         Scope? callbackScope = parameter.Scope switch
         {
             "async" => Scope.Async,
@@ -32,7 +29,7 @@ internal class SingleParameterFactory
 
         return new SingleParameter(
             name: parameter.Name,
-            typeReference: _typeReferenceFactory.Create(parameter),
+            typeReferenceOrVarArgs: parameter.VarArgs is not null ? new VarArgs() : _typeReferenceFactory.Create(parameter),
             direction: DirectionFactory.Create(parameter.Direction),
             transfer: _transferFactory.FromText(parameter.TransferOwnership),
             nullable: parameter.Nullable,
@@ -42,10 +39,5 @@ internal class SingleParameterFactory
             destroyIndex: parameter.Destroy == -1 ? null : parameter.Destroy,
             scope: callbackScope
         );
-    }
-
-    public class VarArgsNotSupportedException : Exception
-    {
-        public VarArgsNotSupportedException(string message) : base(message) { }
     }
 }

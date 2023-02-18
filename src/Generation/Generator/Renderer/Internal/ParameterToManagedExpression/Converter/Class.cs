@@ -11,9 +11,9 @@ internal class Class : ToManagedParameterConverter
     public string? GetExpression(GirModel.Parameter parameter, out string variableName)
     {
         if (!parameter.IsPointer)
-            throw new NotImplementedException($"{parameter.AnyType}: Unpointed class parameter not yet supported");
+            throw new NotImplementedException($"{parameter.AnyTypeOrVarArgs}: Unpointed class parameter not yet supported");
 
-        var cls = (GirModel.Class) parameter.AnyType.AsT0;
+        var cls = (GirModel.Class) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
 
         if (cls.Fundamental)
         {

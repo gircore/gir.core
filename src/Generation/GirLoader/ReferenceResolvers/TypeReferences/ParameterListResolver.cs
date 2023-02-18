@@ -11,7 +11,13 @@ internal static class ParameterListResolver
         if (parameterList.InstanceParameter is not null)
             resolver.ResolveTypeReference(parameterList.InstanceParameter.TypeReference, repository);
 
-        resolver.ResolveTypeReferences(parameterList.SingleParameters.Select(x => x.TypeReference), repository);
+        //Ignore variadic arguments as those don't need to be resolved
+        var typeReferences = parameterList.SingleParameters
+            .Select(x => x.TypeReferenceOrVarArgs)
+            .Where(x => x.IsT0)
+            .Select(x => x.AsT0);
+
+        resolver.ResolveTypeReferences(typeReferences, repository);
     }
 
     public static void ResolveParameterLists(this RepositoryTypeReferenceResolver resolver, IEnumerable<ParameterList> parameterLists, Repository repository)
