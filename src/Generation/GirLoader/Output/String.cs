@@ -12,9 +12,7 @@ public class Utf8String : String, GirModel.Utf8String
 }
 
 /// <summary>
-/// A platform native string. This should be utf-8 on Windows and
-/// a zero terminated guint8 array on Unix.
-/// TODO: We currently use null terminated ASCII on both platforms, which may be problematic.
+/// A platform native filename string. See https://docs.gtk.org/glib/character-set.html
 /// </summary>
 public class PlatformString : String, GirModel.PlatformString
 {

@@ -4,10 +4,10 @@ using Generator.Model;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
-internal class String : ToNativeParameterConverter
+internal class PlatformString : ToNativeParameterConverter
 {
     public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.String>();
+        => type.Is<GirModel.PlatformString>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
@@ -21,12 +21,20 @@ internal class String : ToNativeParameterConverter
         if (parameter.Parameter.Direction == GirModel.Direction.InOut)
             throw new NotImplementedException($"{parameter.Parameter.AnyType}: String type with direction=inout not yet supported");
 
-        var prefix = parameter.Parameter.Direction == GirModel.Direction.Out
-            ? "out "
-            : string.Empty;
+        // TODO - support output strings
+        if (parameter.Parameter.Direction == GirModel.Direction.Out)
+            throw new NotImplementedException($"{parameter.Parameter.AnyType}: String type with direction=out not yet supported");
 
         var parameterName = Parameter.GetName(parameter.Parameter);
         parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(prefix + parameterName);
+
+        string nativeVariableName = Parameter.GetConvertedName(parameter.Parameter);
+
+        string ownedHandleTypeName = parameter.Parameter.Nullable
+            ? Model.PlatformString.GetInternalNullableOwnedHandleName()
+            : Model.PlatformString.GetInternalNonNullableOwnedHandleName();
+
+        parameter.SetExpression($"var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
+        parameter.SetCallName(nativeVariableName);
     }
 }

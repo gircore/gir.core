@@ -2,7 +2,7 @@
 
 namespace Generator.Renderer.Internal;
 
-internal static class PlatformStringReturnTypeFactory
+internal static class Utf8StringReturnTypeFactory
 {
     public static RenderableReturnType CreateForCallback(GirModel.ReturnType returnType)
     {
@@ -14,10 +14,10 @@ internal static class PlatformStringReturnTypeFactory
     {
         var nullableTypeName = returnType switch
         {
-            { Nullable: true, Transfer: GirModel.Transfer.None } => PlatformString.GetInternalNullableUnownedHandleName(),
-            { Nullable: false, Transfer: GirModel.Transfer.None } => PlatformString.GetInternalNonNullableUnownedHandleName(),
-            { Nullable: true, Transfer: GirModel.Transfer.Full } => PlatformString.GetInternalNullableOwnedHandleName(),
-            _ => PlatformString.GetInternalNonNullableOwnedHandleName(),
+            { Nullable: true, Transfer: GirModel.Transfer.None } => Utf8String.GetInternalNullableUnownedHandleName(),
+            { Nullable: false, Transfer: GirModel.Transfer.None } => Utf8String.GetInternalNonNullableUnownedHandleName(),
+            { Nullable: true, Transfer: GirModel.Transfer.Full } => Utf8String.GetInternalNullableOwnedHandleName(),
+            _ => Utf8String.GetInternalNonNullableOwnedHandleName(),
         };
 
         return new RenderableReturnType(nullableTypeName);

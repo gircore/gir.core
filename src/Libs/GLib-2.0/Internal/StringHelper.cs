@@ -55,19 +55,18 @@ public static class StringHelper
         return strArray.ToArray();
     }
 
-    public static IntPtr StringToHGlobalUTF8(string? str)
+    /// <summary>
+    /// Creates a null-terminated UTF-8 string in unmanaged memory.
+    /// </summary>
+    /// <returns>A pointer to a null-terminated UTF-8 string.</returns>
+    /// <remarks>The result should later be freed with g_free().</remarks>
+    public static IntPtr StringToPtrUtf8(string? str)
     {
-        // For some methods/delegates (e.g. TranslateFunc), we need to return
-        // a string that Glib will own and we cannot free. Create a new
-        // null-terminated string in unmanaged memory and pass it to GLib.
-
-        // TODO: Check if GLib needs to free this
-
         if (str is null)
             return IntPtr.Zero;
 
         var bytes = Encoding.UTF8.GetBytes(str);
-        IntPtr alloc = Marshal.AllocHGlobal(bytes.Length + 1);
+        IntPtr alloc = GLib.Internal.Functions.Malloc((uint) (bytes.Length + 1));
         Marshal.Copy(bytes, 0, alloc, bytes.Length);
         Marshal.WriteByte(alloc, bytes.Length, 0);
 

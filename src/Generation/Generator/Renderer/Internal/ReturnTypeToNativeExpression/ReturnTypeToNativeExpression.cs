@@ -11,7 +11,7 @@ internal static class ReturnTypeToNativeExpression
         new ReturnTypeToNativeExpressions.Enumeration(),
         new ReturnTypeToNativeExpressions.PrimitiveValueType(),
         new ReturnTypeToNativeExpressions.Record(),
-        new ReturnTypeToNativeExpressions.String(),
+        new ReturnTypeToNativeExpressions.Utf8String(),
     };
 
     public static string Render(GirModel.ReturnType from, string fromVariableName)
