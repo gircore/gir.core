@@ -1,1 +1,1 @@
-I agree that my contribution may be licensed either under MIT or any version of LGPL license.
+- [ ] I agree that my contribution may be licensed either under MIT or any version of LGPL license.
