@@ -19,28 +19,6 @@ public class PropertyTests : Test
     }
 
     [DataTestMethod]
-    [DataRow("NewTitle")]
-    [DataRow("Some Text With Unicode ☀🌙🌧")]
-    public void TestStringProperty(string str)
-    {
-        var window = new Window();
-        window.Title = str;
-
-        window.Title.Should().Be(str);
-    }
-
-    [TestMethod]
-    public void TestNullStringProperty()
-    {
-        var title = "Title";
-        var window = new Window();
-        window.Title = title;
-        window.Title.Should().Be(title);
-        window.Title = null;
-        window.Title.Should().BeNull();
-    }
-
-    [DataTestMethod]
     [DataRow(500)]
     public void TestIntegerProperty(int value)
     {

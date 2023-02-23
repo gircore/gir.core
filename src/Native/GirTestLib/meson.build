@@ -7,6 +7,7 @@ header_files = [
   'girtest-class-tester.h',
   'girtest-error-tester.h',
   'girtest-primitive-value-type-tester.h',
+  'girtest-property-tester.h',
   'girtest-returning-signal-tester.h',
   'girtest-string-tester.h',
 ]
@@ -15,6 +16,7 @@ source_files = [
   'girtest-class-tester.c',
   'girtest-error-tester.c',
   'girtest-primitive-value-type-tester.c',
+  'girtest-property-tester.c',
   'girtest-returning-signal-tester.c',
   'girtest-string-tester.c',
 ]
