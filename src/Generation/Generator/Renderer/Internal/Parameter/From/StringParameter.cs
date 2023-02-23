@@ -7,30 +7,21 @@ internal static class StringParameterFactory
     public static RenderableParameter Create(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
-            Attribute: GetAttribute(parameter),
+            Attribute: string.Empty,
             Direction: GetDirection(parameter),
             NullableTypeName: GetNullableTypeName(parameter),
             Name: Parameter.GetName(parameter)
         );
     }
 
-    private static string GetAttribute(GirModel.Parameter parameter) => parameter.AnyType.AsT0 switch
+    private static string GetNullableTypeName(GirModel.Parameter parameter) => parameter switch
     {
-        // Marshal as a UTF-8 encoded string
-        GirModel.Utf8String => MarshalAs.UnmanagedLpUtf8String(),
-
-        // Marshal as a null-terminated array of ANSI characters
-        // TODO: This is likely incorrect:
-        //  - GObject introspection specifies that Windows should use
-        //    UTF-8 and Unix should use ANSI. Does using ANSI for
-        //    everything cause problems here?
-        GirModel.PlatformString => MarshalAs.UnmanagedLpString(),
-
-        _ => ""
+        // TODO the type name should depend on the transfer / direction / caller-allocates flags.
+        { AnyType.AsT0: GirModel.PlatformString, Nullable: true } => PlatformString.GetInternalNullableHandleName(),
+        { AnyType.AsT0: GirModel.PlatformString, Nullable: false } => PlatformString.GetInternalNonNullableHandleName(),
+        { AnyType.AsT0: GirModel.Utf8String, Nullable: true } => Utf8String.GetInternalNullableHandleName(),
+        _ => Utf8String.GetInternalNonNullableHandleName(),
     };
-
-    private static string GetNullableTypeName(GirModel.Parameter parameter)
-        => Type.GetName(parameter.AnyType.AsT0) + Nullable.Render(parameter);
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {

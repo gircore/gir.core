@@ -9,7 +9,7 @@ namespace Gtk;
 public partial class Builder
 {
     #region Constructors
-    private Builder(string templateXml, bool owned) : this(Internal.Builder.NewFromString(templateXml, Encoding.UTF8.GetByteCount(templateXml)), owned)
+    private Builder(string templateXml, bool owned) : this(Internal.Builder.NewFromString(GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(templateXml), Encoding.UTF8.GetByteCount(templateXml)), owned)
     {
     }
     public Builder(string embeddedTemplateName) : this(GetTemplate(Assembly.GetCallingAssembly(), embeddedTemplateName), true)
@@ -32,7 +32,7 @@ public partial class Builder
 
     public IntPtr GetPointer(string name)
     {
-        return Internal.Builder.GetObject(this.Handle, name);
+        return Internal.Builder.GetObject(this.Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(name));
     }
 
     /*

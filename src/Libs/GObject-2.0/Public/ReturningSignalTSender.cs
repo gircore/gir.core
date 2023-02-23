@@ -26,7 +26,7 @@ public class ReturningSignal<TSender, TReturn> : SignalDefinition
         var gType = Internal.GTypeProviderHelper.GetGType<TSender>();
 #endif
 
-        return Internal.Functions.SignalLookup(UnmanagedName, gType);
+        return Internal.Functions.SignalLookup(GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(UnmanagedName), gType);
     }
 
     /// <summary>

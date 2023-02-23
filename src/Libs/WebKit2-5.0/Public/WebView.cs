@@ -20,7 +20,7 @@ public partial class WebView
             tcs.SetResult(value);
         }
 
-        Internal.WebView.RunJavascript(Handle, script, IntPtr.Zero, Callback, IntPtr.Zero);
+        Internal.WebView.RunJavascript(Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(script), IntPtr.Zero, Callback, IntPtr.Zero);
 
         return tcs.Task;
     }

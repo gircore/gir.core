@@ -40,7 +40,7 @@ public sealed class Property<T, K> : PropertyDefinition<T>
             throw new Exception($"Can't get property {ManagedName} for object of type {typeof(K).Name} as it is not derived from {nameof(Object)}.");
 
         var valueHandle = Internal.ValueManagedHandle.Create();
-        Internal.Object.GetProperty(o.Handle, UnmanagedName, valueHandle);
+        Internal.Object.GetProperty(o.Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(UnmanagedName), valueHandle);
 
         return new Value(valueHandle).Extract<T>();
     }
@@ -57,14 +57,14 @@ public sealed class Property<T, K> : PropertyDefinition<T>
         var type = GetPropertyType(o.Handle);
         using var gvalue = new Value(type);
         gvalue.Set(value);
-        Internal.Object.SetProperty(o.Handle, UnmanagedName, gvalue.Handle);
+        Internal.Object.SetProperty(o.Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(UnmanagedName), gvalue.Handle);
     }
 
     private Type GetPropertyType(IntPtr handle)
     {
         var instance = Marshal.PtrToStructure<Internal.ObjectData>(handle);
         var classPtr = instance.GTypeInstance.GClass;
-        var paramSpecPtr = Internal.ObjectClass.FindProperty(new Internal.ObjectClassUnownedHandle(classPtr), UnmanagedName);
+        var paramSpecPtr = Internal.ObjectClass.FindProperty(new Internal.ObjectClassUnownedHandle(classPtr), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(UnmanagedName));
         var paramSpec = Marshal.PtrToStructure<Internal.ParamSpecData>(paramSpecPtr);
 
         return new Type(paramSpec.ValueType);

@@ -159,7 +159,7 @@ public partial class Value : IDisposable
         if (Functions.TypeIsA(gtype, (nuint) BasicType.Variant))
             return GetVariant();
 
-        var name = StringHelper.ToStringUtf8(Internal.Functions.TypeName(gtype));
+        var name = Internal.Functions.TypeName(gtype).ConvertToString();
 
         throw new NotSupportedException($"Unable to extract the value for type '{name}'. The type (id: {gtype}) is unknown.");
     }
@@ -206,7 +206,7 @@ public partial class Value : IDisposable
     public float GetFloat() => Internal.Value.GetFloat(Handle);
     public ulong GetFlags() => Internal.Value.GetFlags(Handle);
     public long GetEnum() => Internal.Value.GetEnum(Handle);
-    public string? GetString() => StringHelper.ToStringUtf8(Internal.Value.GetString(Handle));
+    public string GetString() => Internal.Value.GetString(Handle).ConvertToString();
     public GLib.Variant? GetVariant()
     {
         var result = Internal.Value.GetVariant(Handle);
@@ -221,7 +221,7 @@ public partial class Value : IDisposable
     private void SetFloat(float f) => Internal.Value.SetFloat(Handle, f);
     private void SetLong(long l) => Internal.Value.SetLong(Handle, l);
     private void SetEnum(Enum e) => Internal.Value.SetEnum(Handle, Convert.ToInt32(e));
-    private void SetString(string s) => Internal.Value.SetString(Handle, s);
+    private void SetString(string s) => Internal.Value.SetString(Handle, GLib.Internal.NullableUtf8StringOwnedHandle.Create(s));
     private void SetVariant(GLib.Variant v) => Internal.Value.SetVariant(Handle, v.Handle);
     private void SetObject(Object o) => Internal.Value.SetObject(Handle, o.Handle);
 

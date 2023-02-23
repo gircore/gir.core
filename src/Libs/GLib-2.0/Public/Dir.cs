@@ -6,7 +6,7 @@ public partial class Dir : IDisposable
 {
     public static Dir Open(string path, uint flags)
     {
-        var handle = Internal.Dir.Open(path, flags, out var error);
+        var handle = Internal.Dir.Open(Internal.NonNullableUtf8StringOwnedHandle.Create(path), flags, out var error);
         Error.ThrowOnError(error);
 
         return new Dir(handle);

@@ -8,5 +8,5 @@ public static class Version
     public static int Nano => Constants.VERSION_NANO;
 
     public static string VersionString
-        => Internal.Functions.VersionString();
+        => Internal.Functions.VersionString().ConvertToString();
 }
