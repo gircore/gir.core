@@ -50,5 +50,11 @@ girtest_string_tester_filename_return_nullable_transfer_none(const gchar *s);
 int
 girtest_string_tester_callback_return_string_transfer_full(GirTestReturnStringFunc callback, gpointer user_data, GDestroyNotify destroy);
 
+gchar *
+girtest_string_tester_utf8_return_unexpected_null();
+
+gchar *
+girtest_string_tester_filename_return_unexpected_null();
+
 G_END_DECLS
 

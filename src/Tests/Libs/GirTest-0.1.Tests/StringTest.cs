@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
@@ -58,5 +59,19 @@ public class StringTest : Test
     public void ReturnStringFromCallbackShouldSucceed()
     {
         StringTester.CallbackReturnStringTransferFull(() => TestString).Should().Be(TestString.Length);
+    }
+
+    [TestMethod]
+    public void UnexpectedUtf8NullThrowsNullHandleException()
+    {
+        Action act = () => StringTester.Utf8ReturnUnexpectedNull();
+        act.Should().Throw<GLib.Internal.NullHandleException>();
+    }
+
+    [TestMethod]
+    public void UnexpectedFilenameNullThrowsNullHandleException()
+    {
+        Action act = () => StringTester.FilenameReturnUnexpectedNull();
+        act.Should().Throw<GLib.Internal.NullHandleException>();
     }
 }
