@@ -224,3 +224,29 @@ girtest_string_tester_callback_return_string_transfer_full (GirTestReturnStringF
 
     return len;
 }
+
+/**
+ * girtest_string_tester_utf8_return_unexpected_null:
+ *
+ * Returns null but is missing the annotation.
+ *
+ * Returns: NULL
+ */
+gchar *
+girtest_string_tester_utf8_return_unexpected_null()
+{
+    return NULL;
+}
+
+/**
+ * girtest_string_tester_filename_return_unexpected_null:
+ *
+ * Returns null but is missing the annotation.
+ *
+ * Returns: (type filename): NULL
+ */
+gchar *
+girtest_string_tester_filename_return_unexpected_null()
+{
+    return NULL;
+}

@@ -206,7 +206,7 @@ public partial class Value : IDisposable
     public float GetFloat() => Internal.Value.GetFloat(Handle);
     public ulong GetFlags() => Internal.Value.GetFlags(Handle);
     public long GetEnum() => Internal.Value.GetEnum(Handle);
-    public string GetString() => Internal.Value.GetString(Handle).ConvertToString();
+    public string? GetString() => GetString(Handle).ConvertToString();
     public GLib.Variant? GetVariant()
     {
         var result = Internal.Value.GetVariant(Handle);
@@ -242,8 +242,14 @@ public partial class Value : IDisposable
     // avoid the GObject.Internal.Value.Handle creation this method
     // returns just an IntPtr. It is okay to return an IntPtr as the
     // returned IntPtr points to the location of the "value" parameter.
-    [DllImport("GObject", EntryPoint = "g_value_init")]
+    [DllImport(ImportResolver.Library, EntryPoint = "g_value_init")]
     private static extern IntPtr Init(GObject.Internal.ValueHandle value, nuint gType);
+
+    //TODO: g_value_get_string get's redeclared here as it is not annotated correctly.
+    //Remove after release of: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3301
+    //Use "Internal.Value.GetString(Handle).ConvertToString();" again
+    [DllImport(ImportResolver.Library, EntryPoint = "g_value_get_string")]
+    public static extern GLib.Internal.NullableUtf8StringUnownedHandle GetString(GObject.Internal.ValueHandle value);
 
     #endregion
 }
