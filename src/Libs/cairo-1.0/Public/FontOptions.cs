@@ -49,14 +49,9 @@ public partial class FontOptions : IEquatable<FontOptions>
         set => Internal.FontOptions.SetSubpixelOrder(Handle, value);
     }
 
-    public string Variations
+    public string? Variations
     {
-        get
-        {
-            var result = Internal.FontOptions.GetVariations(Handle);
-            return GLib.Internal.StringHelper.ToStringUtf8(result);
-        }
-
-        set => Internal.FontOptions.SetVariations(Handle, value);
+        get => Internal.FontOptions.GetVariations(Handle).ConvertToString();
+        set => Internal.FontOptions.SetVariations(Handle, GLib.Internal.NullableUtf8StringOwnedHandle.Create(value));
     }
 }

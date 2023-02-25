@@ -21,7 +21,7 @@ public partial class Context
     public static extern ScaledFontUnownedHandle GetScaledFont(ContextHandle cr);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_select_font_face")]
-    public static extern void SelectFontFace(ContextHandle cr, [MarshalAs(UnmanagedType.LPUTF8Str)] string family, FontSlant slant, FontWeight weight);
+    public static extern void SelectFontFace(ContextHandle cr, GLib.Internal.NonNullableUtf8StringHandle family, FontSlant slant, FontWeight weight);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_set_font_face")]
     public static extern void SetFontFace(ContextHandle cr, FontFaceHandle font_face);
@@ -39,8 +39,8 @@ public partial class Context
     public static extern void SetScaledFont(ContextHandle cr, ScaledFontHandle scaled_font);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_show_text")]
-    public static extern void ShowText(ContextHandle cr, [MarshalAs(UnmanagedType.LPUTF8Str)] string utf8);
+    public static extern void ShowText(ContextHandle cr, GLib.Internal.NonNullableUtf8StringHandle utf8);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_text_extents")]
-    public static extern void TextExtents(ContextHandle cr, [MarshalAs(UnmanagedType.LPUTF8Str)] string utf8, out TextExtents extents);
+    public static extern void TextExtents(ContextHandle cr, GLib.Internal.NonNullableUtf8StringHandle utf8, out TextExtents extents);
 }

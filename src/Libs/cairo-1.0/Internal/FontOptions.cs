@@ -30,7 +30,7 @@ public partial class FontOptions
     public static extern SubpixelOrder GetSubpixelOrder(FontOptionsHandle handle);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_font_options_get_variations")]
-    public static extern IntPtr GetVariations(FontOptionsHandle handle);
+    public static extern GLib.Internal.NullableUtf8StringUnownedHandle GetVariations(FontOptionsHandle handle);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_font_options_hash")]
     public static extern ulong Hash(FontOptionsHandle handle);
@@ -51,7 +51,7 @@ public partial class FontOptions
     public static extern void SetSubpixelOrder(FontOptionsHandle handle, SubpixelOrder subpixelOrder);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_font_options_set_variations")]
-    public static extern void SetVariations(FontOptionsHandle handle, [MarshalAs(UnmanagedType.LPUTF8Str)] string variations);
+    public static extern void SetVariations(FontOptionsHandle handle, GLib.Internal.NullableUtf8StringHandle variations);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_font_options_status")]
     public static extern Status Status(FontOptionsHandle handle);

@@ -8,7 +8,7 @@ public partial class Context
     // - cairo_glyph_extents()
 
     public void SelectFontFace(string family, FontSlant slant, FontWeight weight)
-        => Internal.Context.SelectFontFace(Handle, family, slant, weight);
+        => Internal.Context.SelectFontFace(Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(family), slant, weight);
 
     public void SetFontSize(double size)
         => Internal.Context.SetFontSize(Handle, size);
@@ -38,11 +38,11 @@ public partial class Context
         => new ScaledFont(Internal.Context.GetScaledFont(Handle));
 
     public void ShowText(string text)
-        => Internal.Context.ShowText(Handle, text);
+        => Internal.Context.ShowText(Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(text));
 
     public void FontExtents(out FontExtents extents)
         => Internal.Context.FontExtents(Handle, out extents);
 
     public void TextExtents(string text, out TextExtents extents)
-        => Internal.Context.TextExtents(Handle, text, out extents);
+        => Internal.Context.TextExtents(Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(text), out extents);
 }

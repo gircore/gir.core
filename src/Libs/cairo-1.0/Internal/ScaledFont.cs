@@ -36,5 +36,5 @@ public partial class ScaledFont
     public static extern Status Status(ScaledFontHandle handle);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_scaled_font_text_extents")]
-    public static extern void TextExtents(ScaledFontHandle handle, [MarshalAs(UnmanagedType.LPUTF8Str)] string utf8, out TextExtents extents);
+    public static extern void TextExtents(ScaledFontHandle handle, GLib.Internal.NonNullableUtf8StringHandle utf8, out TextExtents extents);
 }
