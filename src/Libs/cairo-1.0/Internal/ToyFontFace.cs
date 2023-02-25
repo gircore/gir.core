@@ -6,10 +6,10 @@ namespace Cairo.Internal;
 public class ToyFontFace
 {
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_toy_font_face_create")]
-    public static extern FontFaceOwnedHandle Create([MarshalAs(UnmanagedType.LPUTF8Str)] string family, FontSlant slant, FontWeight weight);
+    public static extern FontFaceOwnedHandle Create(GLib.Internal.NonNullableUtf8StringHandle family, FontSlant slant, FontWeight weight);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_toy_font_face_get_family")]
-    public static extern IntPtr GetFamily(FontFaceHandle handle);
+    public static extern GLib.Internal.NonNullableUtf8StringUnownedHandle GetFamily(FontFaceHandle handle);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_toy_font_face_get_slant")]
     public static extern FontSlant GetSlant(FontFaceHandle handle);

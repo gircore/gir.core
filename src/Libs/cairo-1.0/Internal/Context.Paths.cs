@@ -60,5 +60,5 @@ public partial class Context
     public static extern void RelMoveTo(ContextHandle cr, double x, double y);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_text_path")]
-    public static extern void TextPath(ContextHandle cr, [MarshalAs(UnmanagedType.LPUTF8Str)] string utf8);
+    public static extern void TextPath(ContextHandle cr, GLib.Internal.NonNullableUtf8StringHandle utf8);
 }

@@ -24,6 +24,8 @@ public class FontOptionsTest : Test
         opts.SubpixelOrder = SubpixelOrder.Vrgb;
         opts.SubpixelOrder.Should().Be(SubpixelOrder.Vrgb);
 
+        opts.Variations = null;
+        opts.Variations.Should().BeNull();
         opts.Variations = "foo";
         opts.Variations.Should().Be("foo");
 

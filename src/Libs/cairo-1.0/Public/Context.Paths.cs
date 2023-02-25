@@ -48,7 +48,7 @@ public partial class Context
         => Internal.Context.Rectangle(Handle, x, y, width, height);
 
     public void TextPath(string text)
-        => Internal.Context.TextPath(Handle, text);
+        => Internal.Context.TextPath(Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(text));
 
     public void RelCurveTo(double x1, double y1, double x2, double y2, double x3, double y3)
         => Internal.Context.RelCurveTo(Handle, x1, y1, x2, y2, x3, y3);
