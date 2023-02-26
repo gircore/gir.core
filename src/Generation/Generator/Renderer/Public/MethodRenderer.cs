@@ -28,6 +28,7 @@ internal static class MethodRenderer
 {{
     {RenderMethodContent(parameters)}
     {RenderCallStatement(method, parameters, out var resultVariableName)}
+    {RenderPostCallContent(parameters)}
     {RenderReturnStatement(method, resultVariableName)}
 }}";
         }
@@ -48,6 +49,15 @@ internal static class MethodRenderer
     {
         return parameters
             .Select(x => x.GetExpression())
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Cast<string>()
+            .Join(Environment.NewLine);
+    }
+
+    private static string RenderPostCallContent(IEnumerable<ParameterToNativeData> parameters)
+    {
+        return parameters
+            .Select(x => x.GetPostCallExpression())
             .Where(x => !string.IsNullOrEmpty(x))
             .Cast<string>()
             .Join(Environment.NewLine);
