@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Generator.Model;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
@@ -31,8 +32,11 @@ internal class PlatformString : ToNativeParameterConverter
             // Note: optional parameters are generated as regular out parameters, which the caller can ignore with 'out var _' if desired.
             parameter.SetCallName($"out var {nativeVariableName}");
 
-            // After the call, convert the resulting handle to a managed string.
-            parameter.SetPostCallExpression($"{parameterName} = {nativeVariableName}.ConvertToString();");
+            // After the call, convert the resulting handle to a managed string and free the native memory right away.
+            var expression = new StringBuilder();
+            expression.AppendLine($"{parameterName} = {nativeVariableName}.ConvertToString();");
+            expression.Append($"{nativeVariableName}.Dispose();");
+            parameter.SetPostCallExpression(expression.ToString());
         }
         else
         {
@@ -40,7 +44,7 @@ internal class PlatformString : ToNativeParameterConverter
                 ? Model.PlatformString.GetInternalNullableOwnedHandleName()
                 : Model.PlatformString.GetInternalNonNullableOwnedHandleName();
 
-            parameter.SetExpression($"var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
+            parameter.SetExpression($"using var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
             parameter.SetCallName(nativeVariableName);
         }
     }
