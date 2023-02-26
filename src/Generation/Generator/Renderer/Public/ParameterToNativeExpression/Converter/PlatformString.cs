@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Generator.Model;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
@@ -16,25 +17,35 @@ internal class PlatformString : ToNativeParameterConverter
         if (parameter.Parameter.CallerAllocates)
             throw new NotImplementedException($"{parameter.Parameter.AnyType}: String type with caller-allocates=1 not yet supported");
 
-        // TODO - the default marshalling for 'ref string' produces crashes for functions
-        // like pango_skip_space(), so custom marshalling may be required.
+        // inout string parameters only occur for deprecated functions like pango_skip_space(), which may have incorrect ownership transfer annotations.
+        // These functions just update the char** parameter to point at a different location in the provided char*, but have transfer=full and caller-allocates=0
         if (parameter.Parameter.Direction == GirModel.Direction.InOut)
             throw new NotImplementedException($"{parameter.Parameter.AnyType}: String type with direction=inout not yet supported");
-
-        // TODO - support output strings
-        if (parameter.Parameter.Direction == GirModel.Direction.Out)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: String type with direction=out not yet supported");
 
         var parameterName = Parameter.GetName(parameter.Parameter);
         parameter.SetSignatureName(parameterName);
 
         string nativeVariableName = Parameter.GetConvertedName(parameter.Parameter);
 
-        string ownedHandleTypeName = parameter.Parameter.Nullable
-            ? Model.PlatformString.GetInternalNullableOwnedHandleName()
-            : Model.PlatformString.GetInternalNonNullableOwnedHandleName();
+        if (parameter.Parameter.Direction == GirModel.Direction.Out)
+        {
+            // Note: optional parameters are generated as regular out parameters, which the caller can ignore with 'out var _' if desired.
+            parameter.SetCallName($"out var {nativeVariableName}");
 
-        parameter.SetExpression($"var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
-        parameter.SetCallName(nativeVariableName);
+            // After the call, convert the resulting handle to a managed string and free the native memory right away.
+            var expression = new StringBuilder();
+            expression.AppendLine($"{parameterName} = {nativeVariableName}.ConvertToString();");
+            expression.Append($"{nativeVariableName}.Dispose();");
+            parameter.SetPostCallExpression(expression.ToString());
+        }
+        else
+        {
+            string ownedHandleTypeName = parameter.Parameter.Nullable
+                ? Model.PlatformString.GetInternalNullableOwnedHandleName()
+                : Model.PlatformString.GetInternalNonNullableOwnedHandleName();
+
+            parameter.SetExpression($"using var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
+            parameter.SetCallName(nativeVariableName);
+        }
     }
 }

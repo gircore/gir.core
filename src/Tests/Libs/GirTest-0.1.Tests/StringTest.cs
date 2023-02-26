@@ -74,4 +74,84 @@ public class StringTest : Test
         Action act = () => StringTester.FilenameReturnUnexpectedNull();
         act.Should().Throw<GLib.Internal.NullHandleException>();
     }
+
+    [TestMethod]
+    public void OutUtf8ParameterShouldSucceed()
+    {
+        StringTester.Utf8OutTransferNone(TestString, out string result);
+        result.Should().Be(TestString);
+
+        StringTester.Utf8OutOptionalTransferNone(TestString, out string result2);
+        result2.Should().Be(TestString);
+
+        StringTester.Utf8OutTransferFull(TestString, out string result3);
+        result3.Should().Be(TestString);
+
+        StringTester.Utf8OutOptionalTransferFull(TestString, out string result4);
+        result4.Should().Be(TestString);
+
+        StringTester.Utf8OutNullableTransferNone(TestString, out string? result5);
+        result5.Should().Be(TestString);
+
+        StringTester.Utf8OutNullableTransferNone(null, out string? result6);
+        result6.Should().BeNull();
+
+        StringTester.Utf8OutNullableOptionalTransferNone(TestString, out string? result7);
+        result7.Should().Be(TestString);
+
+        StringTester.Utf8OutNullableOptionalTransferNone(null, out string? result8);
+        result8.Should().BeNull();
+
+        StringTester.Utf8OutNullableTransferFull(TestString, out string? result9);
+        result9.Should().Be(TestString);
+
+        StringTester.Utf8OutNullableTransferFull(null, out string? result10);
+        result10.Should().BeNull();
+
+        StringTester.Utf8OutNullableOptionalTransferFull(TestString, out string? result11);
+        result11.Should().Be(TestString);
+
+        StringTester.Utf8OutNullableOptionalTransferFull(null, out string? result12);
+        result12.Should().BeNull();
+    }
+
+    [TestMethod]
+    public void OutFilenameParameterShouldSucceed()
+    {
+        StringTester.FilenameOutTransferNone(TestString, out string result);
+        result.Should().Be(TestString);
+
+        StringTester.FilenameOutOptionalTransferNone(TestString, out string result2);
+        result2.Should().Be(TestString);
+
+        StringTester.FilenameOutTransferFull(TestString, out string result3);
+        result3.Should().Be(TestString);
+
+        StringTester.FilenameOutOptionalTransferFull(TestString, out string result4);
+        result4.Should().Be(TestString);
+
+        StringTester.FilenameOutNullableTransferNone(TestString, out string? result5);
+        result5.Should().Be(TestString);
+
+        StringTester.FilenameOutNullableTransferNone(null, out string? result6);
+        result6.Should().BeNull();
+
+        StringTester.FilenameOutNullableOptionalTransferNone(TestString, out string? result7);
+        result7.Should().Be(TestString);
+
+        StringTester.FilenameOutNullableOptionalTransferNone(null, out string? result8);
+        result8.Should().BeNull();
+
+        StringTester.FilenameOutNullableTransferFull(TestString, out string? result9);
+        result9.Should().Be(TestString);
+
+        StringTester.FilenameOutNullableTransferFull(null, out string? result10);
+        result10.Should().BeNull();
+
+        StringTester.FilenameOutNullableOptionalTransferFull(TestString, out string? result11);
+        result11.Should().Be(TestString);
+
+        StringTester.FilenameOutNullableOptionalTransferFull(null, out string? result12);
+        result12.Should().BeNull();
+    }
 }

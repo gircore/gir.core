@@ -20,6 +20,7 @@ public static {ReturnType.Render(function.ReturnType)} {Function.GetName(functio
 {{
     {RenderFunctionContent(parameters)}
     {RenderCallStatement(function, parameters, out var resultVariableName)}
+    {RenderPostCallContent(parameters)}
     {RenderReturnStatement(function, resultVariableName)}
 }}";
         }
@@ -40,6 +41,15 @@ public static {ReturnType.Render(function.ReturnType)} {Function.GetName(functio
     {
         return parameters
             .Select(x => x.GetExpression())
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Cast<string>()
+            .Join(Environment.NewLine);
+    }
+
+    private static string RenderPostCallContent(IEnumerable<ParameterToNativeData> parameters)
+    {
+        return parameters
+            .Select(x => x.GetPostCallExpression())
             .Where(x => !string.IsNullOrEmpty(x))
             .Cast<string>()
             .Join(Environment.NewLine);

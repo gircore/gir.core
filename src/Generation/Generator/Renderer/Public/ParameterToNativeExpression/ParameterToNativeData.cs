@@ -8,6 +8,7 @@ public class ParameterToNativeData
     private string? _callName;
     private string? _signatureName;
     private string? _expression;
+    private string? _postCallExpression;
 
     public Parameter Parameter { get; }
 
@@ -27,6 +28,13 @@ public class ParameterToNativeData
     }
 
     public string? GetExpression() => _expression;
+
+    public void SetPostCallExpression(string expression)
+    {
+        _postCallExpression = expression;
+    }
+
+    public string? GetPostCallExpression() => _postCallExpression;
 
     public void SetCallName(string name)
     {

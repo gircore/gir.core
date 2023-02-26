@@ -250,3 +250,235 @@ girtest_string_tester_filename_return_unexpected_null()
 {
     return NULL;
 }
+
+/**
+ * girtest_string_tester_utf8_out_transfer_none:
+ * @s: (in): Pointer to the start of a UTF-8 encoded string.
+ * @result: (out) (transfer none): A reference to the input string, with no ownership.
+ *
+ * Test for a UTF-8 string output value with no ownership transfer.
+ */
+void
+girtest_string_tester_utf8_out_transfer_none(const gchar *s, const gchar **result)
+{
+    g_assert_nonnull(s);
+    g_assert_nonnull(result);
+    *result = s;
+}
+
+/**
+ * girtest_string_tester_utf8_out_optional_transfer_none:
+ * @s: (in): Pointer to the start of a UTF-8 encoded string.
+ * @result: (out) (optional) (transfer none): A reference to the input string, with no ownership.
+ *
+ * Test for an optional UTF-8 string output value with no ownership transfer.
+ */
+void
+girtest_string_tester_utf8_out_optional_transfer_none(const gchar *s, const gchar **result)
+{
+    g_assert_nonnull(s);
+    if (result)
+        *result = s;
+}
+
+/**
+ * girtest_string_tester_utf8_out_nullable_transfer_none:
+ * @s: (in) (nullable): Pointer to the start of a UTF-8 encoded string, or NULL.
+ * @result: (out) (nullable) (transfer none): A reference to the input string, with no ownership.
+ *
+ * Test for a nullable UTF-8 string output value with no ownership transfer.
+ */
+void
+girtest_string_tester_utf8_out_nullable_transfer_none(const gchar *s, const gchar **result)
+{
+    g_assert_nonnull(result);
+    *result = s;
+}
+
+/**
+ * girtest_string_tester_utf8_out_nullable_optional_transfer_none:
+ * @s: (in) (nullable): Pointer to the start of a UTF-8 encoded string, or NULL.
+ * @result: (out) (optional) (nullable) (transfer none): A reference to the input string, with no ownership.
+ *
+ * Test for an optional and nullable UTF-8 string output value with no ownership transfer.
+ */
+void
+girtest_string_tester_utf8_out_nullable_optional_transfer_none(const gchar *s, const gchar **result)
+{
+    if (result)
+        *result = s;
+}
+
+/**
+ * girtest_string_tester_utf8_out_transfer_full:
+ * @s: (in): Pointer to the start of a UTF-8 encoded string.
+ * @result: (out) (transfer full): A copy of the input string.
+ *
+ * Test for a UTF-8 string output value with full ownership transfer.
+ */
+void
+girtest_string_tester_utf8_out_transfer_full(const gchar *s, gchar **result)
+{
+    g_assert_nonnull(s);
+    g_assert_nonnull(result);
+    *result = g_strdup(s);
+}
+
+/**
+ * girtest_string_tester_utf8_out_optional_transfer_full:
+ * @s: (in): Pointer to the start of a UTF-8 encoded string.
+ * @result: (out) (optional) (transfer full): A copy of the input string.
+ *
+ * Test for an optional UTF-8 string output value with full ownership transfer.
+ */
+void
+girtest_string_tester_utf8_out_optional_transfer_full(const gchar *s, gchar **result)
+{
+    g_assert_nonnull(s);
+    if (result)
+        *result = g_strdup(s);
+}
+
+/**
+ * girtest_string_tester_utf8_out_nullable_transfer_full:
+ * @s: (in) (nullable): Pointer to the start of a UTF-8 encoded string, or NULL.
+ * @result: (out) (nullable) (transfer full): A copy of the input string.
+ *
+ * Test for a nullable UTF-8 string output value with full ownership transfer.
+ */
+void
+girtest_string_tester_utf8_out_nullable_transfer_full(const gchar *s, gchar **result)
+{
+    g_assert_nonnull(result);
+    *result = s ? g_strdup(s) : NULL;
+}
+
+/**
+ * girtest_string_tester_utf8_out_nullable_optional_transfer_full:
+ * @s: (in) (nullable): Pointer to the start of a UTF-8 encoded string, or NULL.
+ * @result: (out) (optional) (nullable) (transfer full): A copy of the input string.
+ *
+ * Test for a optional and nullable UTF-8 string output value with full ownership transfer.
+ */
+void
+girtest_string_tester_utf8_out_nullable_optional_transfer_full(const gchar *s, gchar **result)
+{
+    if (result)
+        *result = s ? g_strdup(s) : NULL;
+}
+
+/**
+ * girtest_string_tester_filename_out_transfer_none:
+ * @s: (in) (type filename): Pointer to the start of a filename encoded string.
+ * @result: (out) (type filename) (transfer none): A reference to the input string, with no ownership.
+ *
+ * Test for a filename string output value with no ownership transfer.
+ */
+void
+girtest_string_tester_filename_out_transfer_none(const gchar *s, const gchar **result)
+{
+    g_assert_nonnull(s);
+    g_assert_nonnull(result);
+    *result = s;
+}
+
+/**
+ * girtest_string_tester_filename_out_optional_transfer_none:
+ * @s: (in) (type filename): Pointer to the start of a filename encoded string.
+ * @result: (out) (type filename) (optional) (transfer none): A reference to the input string, with no ownership.
+ *
+ * Test for an optional filename string output value with no ownership transfer.
+ */
+void
+girtest_string_tester_filename_out_optional_transfer_none(const gchar *s, const gchar **result)
+{
+    g_assert_nonnull(s);
+    if (result)
+        *result = s;
+}
+
+/**
+ * girtest_string_tester_filename_out_nullable_transfer_none:
+ * @s: (in) (type filename) (nullable): Pointer to the start of a filename encoded string, or NULL.
+ * @result: (out) (type filename) (nullable) (transfer none): A reference to the input string, with no ownership.
+ *
+ * Test for a nullable filename string output value with no ownership transfer.
+ */
+void
+girtest_string_tester_filename_out_nullable_transfer_none(const gchar *s, const gchar **result)
+{
+    g_assert_nonnull(result);
+    *result = s;
+}
+
+/**
+ * girtest_string_tester_filename_out_nullable_optional_transfer_none:
+ * @s: (in) (type filename) (nullable): Pointer to the start of a filename encoded string, or NULL.
+ * @result: (out) (type filename) (optional) (nullable) (transfer none): A reference to the input string, with no ownership.
+ *
+ * Test for an optional and nullable filename string output value with no ownership transfer.
+ */
+void
+girtest_string_tester_filename_out_nullable_optional_transfer_none(const gchar *s, const gchar **result)
+{
+    if (result)
+        *result = s;
+}
+
+/**
+ * girtest_string_tester_filename_out_transfer_full:
+ * @s: (in) (type filename): Pointer to the start of a filename encoded string.
+ * @result: (out) (type filename) (transfer full): A copy of the input string.
+ *
+ * Test for a filename string output value with full ownership transfer.
+ */
+void
+girtest_string_tester_filename_out_transfer_full(const gchar *s, gchar **result)
+{
+    g_assert_nonnull(s);
+    g_assert_nonnull(result);
+    *result = g_strdup(s);
+}
+
+/**
+ * girtest_string_tester_filename_out_optional_transfer_full:
+ * @s: (in) (type filename): Pointer to the start of a filename encoded string.
+ * @result: (out) (type filename) (optional) (transfer full): A copy of the input string.
+ *
+ * Test for an optional filename string output value with full ownership transfer.
+ */
+void
+girtest_string_tester_filename_out_optional_transfer_full(const gchar *s, gchar **result)
+{
+    g_assert_nonnull(s);
+    if (result)
+        *result = g_strdup(s);
+}
+
+/**
+ * girtest_string_tester_filename_out_nullable_transfer_full:
+ * @s: (in) (type filename) (nullable): Pointer to the start of a filename encoded string, or NULL.
+ * @result: (out) (type filename) (nullable) (transfer full): A copy of the input string.
+ *
+ * Test for a nullable filename string output value with full ownership transfer.
+ */
+void
+girtest_string_tester_filename_out_nullable_transfer_full(const gchar *s, gchar **result)
+{
+    g_assert_nonnull(result);
+    *result = s ? g_strdup(s) : NULL;
+}
+
+/**
+ * girtest_string_tester_filename_out_nullable_optional_transfer_full:
+ * @s: (in) (type filename) (nullable): Pointer to the start of a filename encoded string, or NULL.
+ * @result: (out) (type filename) (optional) (nullable) (transfer full): A copy of the input string.
+ *
+ * Test for a optional and nullable filename string output value with full ownership transfer.
+ */
+void
+girtest_string_tester_filename_out_nullable_optional_transfer_full(const gchar *s, gchar **result)
+{
+    if (result)
+        *result = s ? g_strdup(s) : NULL;
+}

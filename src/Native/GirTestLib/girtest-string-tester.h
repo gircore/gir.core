@@ -56,5 +56,53 @@ girtest_string_tester_utf8_return_unexpected_null();
 gchar *
 girtest_string_tester_filename_return_unexpected_null();
 
+void
+girtest_string_tester_utf8_out_transfer_none(const gchar *s, const gchar **result);
+
+void
+girtest_string_tester_utf8_out_optional_transfer_none(const gchar *s, const gchar **result);
+
+void
+girtest_string_tester_utf8_out_nullable_transfer_none(const gchar *s, const gchar **result);
+
+void
+girtest_string_tester_utf8_out_nullable_optional_transfer_none(const gchar *s, const gchar **result);
+
+void
+girtest_string_tester_utf8_out_transfer_full(const gchar *s, gchar **result);
+
+void
+girtest_string_tester_utf8_out_optional_transfer_full(const gchar *s, gchar **result);
+
+void
+girtest_string_tester_utf8_out_nullable_transfer_full(const gchar *s, gchar **result);
+
+void
+girtest_string_tester_utf8_out_nullable_optional_transfer_full(const gchar *s, gchar **result);
+
+void
+girtest_string_tester_filename_out_transfer_none(const gchar *s, const gchar **result);
+
+void
+girtest_string_tester_filename_out_optional_transfer_none(const gchar *s, const gchar **result);
+
+void
+girtest_string_tester_filename_out_nullable_transfer_none(const gchar *s, const gchar **result);
+
+void
+girtest_string_tester_filename_out_nullable_optional_transfer_none(const gchar *s, const gchar **result);
+
+void
+girtest_string_tester_filename_out_transfer_full(const gchar *s, gchar **result);
+
+void
+girtest_string_tester_filename_out_optional_transfer_full(const gchar *s, gchar **result);
+
+void
+girtest_string_tester_filename_out_nullable_transfer_full(const gchar *s, gchar **result);
+
+void
+girtest_string_tester_filename_out_nullable_optional_transfer_full(const gchar *s, gchar **result);
+
 G_END_DECLS
 
