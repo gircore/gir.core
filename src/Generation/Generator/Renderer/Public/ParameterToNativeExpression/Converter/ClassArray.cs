@@ -11,10 +11,10 @@ internal class ClassArray : ToNativeParameterConverter
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
-        var arrayType = parameter.Parameter.AnyType.AsT1;
+        var arrayType = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
 
         if (arrayType.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: Pointed class array can not yet be converted to native.");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Pointed class array can not yet be converted to native.");
 
         var parameterName = Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";

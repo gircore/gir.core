@@ -30,7 +30,7 @@ internal static class Class
 
         for (var i = 0; i < parameters.Length; i++)
         {
-            if (!parameters[i].AnyType.Equals(foundParameters[i].AnyType))
+            if (!parameters[i].AnyTypeOrVarArgs.Equals(foundParameters[i].AnyTypeOrVarArgs))
                 return HidesConstructor(cls.Parent, constructor);
         }
 
@@ -78,7 +78,7 @@ internal static class Class
 
         for (var i = 0; i < p1.Length; i++)
         {
-            if (!p1[i].AnyType.Equals(p2[i].AnyType))
+            if (!p1[i].AnyTypeOrVarArgs.Equals(p2[i].AnyTypeOrVarArgs))
                 return false;
         }
 

@@ -16,7 +16,7 @@ internal static class ArrayPointerRecordParameterForMethod
 
     private static string GetAttribute(GirModel.Parameter parameter)
     {
-        return parameter.AnyType.AsT1.Length switch
+        return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length switch
         {
             { } length => MarshalAs.UnmanagedLpArray(sizeParamIndex: length + 1),
             _ => string.Empty,

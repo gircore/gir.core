@@ -14,7 +14,7 @@ internal static class UnionParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Union) parameter.AnyType.AsT0;
+        var type = (GirModel.Union) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         return ComplexType.GetFullyQualified(type);
     }
 

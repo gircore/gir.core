@@ -24,7 +24,7 @@ internal static class ArrayEnumerationParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var arrayType = parameter.AnyType.AsT1;
+        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
         var type = (GirModel.Enumeration) arrayType.AnyType.AsT0;
 
         return arrayType.Length is null

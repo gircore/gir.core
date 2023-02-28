@@ -57,10 +57,6 @@ internal class MethodFactory
             {
                 list.Add(Create(method));
             }
-            catch (SingleParameterFactory.VarArgsNotSupportedException ex)
-            {
-                Log.Verbose($"Method {method.Name} could not be created: {ex.Message}");
-            }
             catch (MethodMovedException ex)
             {
                 Log.Verbose($"Method ignored: {ex.Message}");

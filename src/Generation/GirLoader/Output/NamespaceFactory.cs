@@ -74,10 +74,6 @@ internal class NamespaceFactory
             {
                 list.Add(_functionFactory.Create(function, repository));
             }
-            catch (SingleParameterFactory.VarArgsNotSupportedException ex)
-            {
-                Log.Verbose($"Function {function.Name} could not be created: {ex.Message}");
-            }
             catch (FunctionFactory.FunctionMovedException ex)
             {
                 Log.Verbose($"Function ignored: {ex.Message}");

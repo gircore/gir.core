@@ -12,7 +12,7 @@ internal class Interface : ToNativeParameterConverter
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
         if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: Interface parameter with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Interface parameter with direction != in not yet supported");
 
         var parameterName = Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";

@@ -35,7 +35,10 @@ internal static class ParameterToNativeExpression
 
             foreach (var converter in Converter)
             {
-                if (converter.Supports(parameter.Parameter.AnyType))
+                if (parameter.Parameter.AnyTypeOrVarArgs.IsT1)
+                    throw new Exception("Variadic parameters are not yet supported");
+
+                if (converter.Supports(parameter.Parameter.AnyTypeOrVarArgs.AsT0))
                 {
                     converter.Initialize(parameter, parameterToNativeDatas);
                     converterFound = true;
@@ -44,7 +47,7 @@ internal static class ParameterToNativeExpression
             }
 
             if (!converterFound)
-                throw new NotImplementedException($"Missing converter to convert from parameter {parameter.Parameter} ({parameter.Parameter.AnyType}) to native");
+                throw new NotImplementedException($"Missing converter to convert from parameter {parameter.Parameter} ({parameter.Parameter.AnyTypeOrVarArgs}) to native");
         }
 
         return parameterToNativeDatas;

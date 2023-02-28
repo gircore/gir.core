@@ -16,7 +16,7 @@ internal static class ArrayRecordParameterForMethod
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var arrayType = parameter.AnyType.AsT1;
+        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
 
         return arrayType.Length is null
             ? Type.PointerArray
@@ -25,7 +25,7 @@ internal static class ArrayRecordParameterForMethod
 
     private static string GetAttribute(GirModel.Parameter parameter)
     {
-        return parameter.AnyType.AsT1.Length switch
+        return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length switch
         {
             { } length => MarshalAs.UnmanagedLpArray(sizeParamIndex: length + 1),
             _ => string.Empty,

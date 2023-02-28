@@ -22,9 +22,14 @@ internal static class ParameterToManagedExpression
     public static string? ToManaged(this GirModel.Parameter from, out string variableName)
     {
         foreach (var converter in Converter)
-            if (converter.Supports(from.AnyType))
-                return converter.GetExpression(from, out variableName);
+        {
+            if (from.AnyTypeOrVarArgs.IsT1)
+                throw new Exception("Variadic parameters are not yet supported");
 
-        throw new NotImplementedException($"Missing converter to convert from parameter {from.Name} ({from.AnyType}) to managed");
+            if (converter.Supports(from.AnyTypeOrVarArgs.AsT0))
+                return converter.GetExpression(from, out variableName);
+        }
+
+        throw new NotImplementedException($"Missing converter to convert from parameter {from.Name} ({from.AnyTypeOrVarArgs}) to managed");
     }
 }

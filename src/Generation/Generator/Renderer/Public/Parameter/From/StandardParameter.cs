@@ -12,7 +12,7 @@ internal static class StandardParameter
         );
     }
 
-    private static string GetNullableTypeName(GirModel.Parameter parameter) => parameter.AnyType.Match(
+    private static string GetNullableTypeName(GirModel.Parameter parameter) => parameter.AnyTypeOrVarArgs.AsT0.Match(
         type => Type.GetName(type) + Nullable.Render(parameter),
         arrayType => ArrayType.GetName(arrayType) //TODO: Consider if StandardParameter should support arrays?
     );

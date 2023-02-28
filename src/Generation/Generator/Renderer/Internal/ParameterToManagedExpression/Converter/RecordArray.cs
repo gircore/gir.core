@@ -9,7 +9,7 @@ internal class RecordArray : ToManagedParameterConverter
 
     public string GetExpression(GirModel.Parameter parameter, out string variableName)
     {
-        var arrayType = parameter.AnyType.AsT1;
+        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
         var record = (GirModel.Record) arrayType.AnyType.AsT0;
         variableName = Parameter.GetConvertedName(parameter);
 

@@ -12,10 +12,10 @@ internal class Class : ToNativeParameterConverter
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
         if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: class parameter with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: class parameter with direction != in not yet supported");
 
         if (!parameter.Parameter.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: class parameter which is no pointer can not be converted to native");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: class parameter which is no pointer can not be converted to native");
 
         var parameterName = Parameter.GetName(parameter.Parameter);
         var callParameter = parameter.Parameter.Nullable

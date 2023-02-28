@@ -16,5 +16,5 @@ internal static class UnsignedPointerParameter
 
     //IntPtr can't be nullable. They can be "nulled" via IntPtr.Zero.
     private static string GetNullableTypeName(GirModel.Parameter parameter)
-        => Type.GetName(parameter.AnyType.AsT0);
+        => Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0);
 }

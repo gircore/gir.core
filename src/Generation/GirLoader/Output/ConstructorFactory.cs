@@ -54,10 +54,6 @@ internal class ConstructorFactory
             {
                 list.Add(Create(method));
             }
-            catch (SingleParameterFactory.VarArgsNotSupportedException ex)
-            {
-                Log.Verbose($"Constructor {method.Name} could not be created: {ex.Message}");
-            }
             catch (ConstructorMovedException ex)
             {
                 Log.Verbose($"Constructor ignored: {ex.Message}");

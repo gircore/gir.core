@@ -10,7 +10,7 @@ internal static class PrimitiveValueTypeParameter
         // If the parameter is both nullable and optional this implies a parameter type like 'int **' and possibly
         // ownership transfer (this combination does not currently occur for any functions).
         if (parameter.Nullable && parameter.Optional)
-            throw new System.NotImplementedException($"{parameter.AnyType} - Primitive value type with nullable=true and optional=true not yet supported");
+            throw new System.NotImplementedException($"{parameter.AnyTypeOrVarArgs} - Primitive value type with nullable=true and optional=true not yet supported");
 
         // Nullable-only parameters likely have incorrect annotations and should be marked optional instead.
         if (parameter.Nullable)
@@ -32,7 +32,7 @@ internal static class PrimitiveValueTypeParameter
     {
         // Public bindings are not generated for pointer types with direction=in, but we can still generate the internal binding with a pointer.
         { Direction: GirModel.Direction.In, IsPointer: true } => Type.Pointer,
-        _ => Type.GetName(parameter.AnyType.AsT0)
+        _ => Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
     };
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

@@ -11,7 +11,7 @@ internal class Pointer : ToManagedParameterConverter
     public string? GetExpression(GirModel.Parameter parameter, out string variableName)
     {
         if (parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.AnyType}: Pointer with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.AnyTypeOrVarArgs}: Pointer with direction != in not yet supported");
 
         //We don't need any conversion for bitfields
         variableName = Parameter.GetName(parameter);

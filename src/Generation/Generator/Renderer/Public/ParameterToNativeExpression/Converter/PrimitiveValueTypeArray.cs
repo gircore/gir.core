@@ -12,10 +12,10 @@ internal class PrimitiveValueTypeArray : ToNativeParameterConverter
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
         if (parameter.Parameter.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: Pointed primitive value type array can not yet be converted to native");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Pointed primitive value type array can not yet be converted to native");
 
         if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyType}: Primitive value type array with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Primitive value type array with direction != in not yet supported");
 
         //We don't need any conversion for native parameters
         var parameterName = Parameter.GetName(parameter.Parameter);

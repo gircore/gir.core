@@ -11,12 +11,12 @@ internal class Record : ToManagedParameterConverter
     public string GetExpression(GirModel.Parameter parameter, out string variableName)
     {
         if (parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.AnyType}: record with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.AnyTypeOrVarArgs}: record with direction != in not yet supported");
 
         if (!parameter.IsPointer)
-            throw new NotImplementedException($"Unpointed record parameter {parameter.Name} ({parameter.AnyType}) can not yet be converted to managed");
+            throw new NotImplementedException($"Unpointed record parameter {parameter.Name} ({parameter.AnyTypeOrVarArgs}) can not yet be converted to managed");
 
-        var record = (GirModel.Record) parameter.AnyType.AsT0;
+        var record = (GirModel.Record) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         var ownedHandle = parameter.Transfer == GirModel.Transfer.Full;
 
         variableName = Parameter.GetConvertedName(parameter);
