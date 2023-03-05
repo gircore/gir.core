@@ -34,6 +34,6 @@ public partial class Constants
 
         return @$"
 {PlatformSupportAttribute.Render(constant as GirModel.PlatformDependent)}
-public static {renderableConstant.Type} {renderableConstant.Name} = {renderableConstant.Value};";
+public const {renderableConstant.Type} {renderableConstant.Name} = {renderableConstant.Value};";
     }
 }
