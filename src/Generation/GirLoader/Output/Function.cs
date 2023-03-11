@@ -2,7 +2,7 @@
 
 namespace GirLoader.Output;
 
-public partial class Function
+public partial class Function : Callable
 {
     private readonly Repository _repository;
     private ComplexType? _parent;
@@ -14,8 +14,10 @@ public partial class Function
     public bool Throws { get; }
     public bool Introspectable { get; }
     public string? Version { get; }
+    public ShadowsReference? ShadowsReference { get; }
+    public ShadowedByReference? ShadowedByReference { get; }
 
-    public Function(Repository repository, string name, string identifier, ReturnValue returnValue, ParameterList parameterList, bool throws, bool introspectable, string? version)
+    public Function(Repository repository, string name, string identifier, ReturnValue returnValue, ParameterList parameterList, bool throws, bool introspectable, string? version, ShadowsReference? shadows, ShadowedByReference? shadowedBy)
     {
         _repository = repository;
         ReturnValue = returnValue;
@@ -25,6 +27,8 @@ public partial class Function
         Throws = throws;
         Introspectable = introspectable;
         Version = version;
+        ShadowsReference = shadows;
+        ShadowedByReference = shadowedBy;
     }
 
     internal void SetParent(ComplexType parent)

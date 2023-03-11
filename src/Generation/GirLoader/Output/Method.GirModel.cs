@@ -16,4 +16,6 @@ public partial class Method : GirModel.Method
     GirModel.Property? GirModel.Method.GetProperty => GetProperty?.GetProperty();
     GirModel.Property? GirModel.Method.SetProperty => SetProperty?.GetProperty();
     string? GirModel.Method.Version => Version;
+    GirModel.Callable? GirModel.Callable.Shadows => ShadowsReference?.GetResolvedCallable();
+    GirModel.Callable? GirModel.Callable.ShadowedBy => ShadowedByReference?.GetResolvedCallable();
 }

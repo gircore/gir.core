@@ -27,14 +27,21 @@ internal class ConstructorFactory
 
         if (method.Name != string.Empty)
         {
-            return new Constructor(
+            var c = new Constructor(
                 identifier: method.Identifier,
                 name: method.Name,
                 returnValue: _returnValueFactory.Create(method.ReturnValue),
                 parameterList: _parameterListFactory.Create(method.Parameters),
                 throws: method.Throws,
-                version: method.Version
+                version: method.Version,
+                shadows: ShadowsReference.Create(method.Shadows),
+                shadowedBy: ShadowedByReference.Create(method.ShadowedBy)
             );
+
+            c.ShadowsReference?.SetParentCallable(c);
+            c.ShadowedByReference?.SetParentCallable(c);
+
+            return c;
         }
 
         if (!string.IsNullOrEmpty(method.MovedTo))

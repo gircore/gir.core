@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GirModel;
+﻿namespace GirModel;
 
 public interface Function : Callable
 {
