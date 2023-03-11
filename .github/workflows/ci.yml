@@ -102,7 +102,7 @@ jobs:
 
       - name: Get current time
         if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'true' && matrix.os == 'ubuntu-latest' }}
-        uses: josStorer/get-current-time@v2.0.2
+        uses: josStorer/get-current-time@v2.1.0
         id: current-time
         with:
           format: YYYYMMDD-HHmmss
