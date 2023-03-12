@@ -1,6 +1,6 @@
 ﻿namespace GirLoader.Output;
 
-public partial class Method
+public partial class Method : Callable
 {
     private ComplexType? _parent;
 
@@ -13,8 +13,10 @@ public partial class Method
     public PropertyReference? GetProperty { get; }
     public PropertyReference? SetProperty { get; }
     public string? Version { get; }
+    public ShadowsReference? ShadowsReference { get; }
+    public ShadowedByReference? ShadowedByReference { get; }
 
-    public Method(string identifier, string name, ReturnValue returnValue, ParameterList parameterList, bool throws, bool introspectable, PropertyReference? getProperty, PropertyReference? setProperty, string? version)
+    public Method(string identifier, string name, ReturnValue returnValue, ParameterList parameterList, bool throws, bool introspectable, PropertyReference? getProperty, PropertyReference? setProperty, string? version, ShadowsReference? shadows, ShadowedByReference? shadowedBy)
     {
         Identifier = identifier;
         ReturnValue = returnValue;
@@ -25,6 +27,8 @@ public partial class Method
         GetProperty = getProperty;
         SetProperty = setProperty;
         Version = version;
+        ShadowsReference = shadows;
+        ShadowedByReference = shadowedBy;
     }
 
     internal void SetParent(ComplexType parent)

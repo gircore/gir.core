@@ -9,4 +9,6 @@ public interface Callable
     bool Throws { get; }
     IEnumerable<Parameter> Parameters { get; }
     InstanceParameter? InstanceParameter { get; }
+    Callable? Shadows { get; }
+    Callable? ShadowedBy { get; }
 }

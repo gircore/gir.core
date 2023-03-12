@@ -27,7 +27,7 @@ internal class MethodFactory
 
         if (method.Name != string.Empty)
         {
-            return new Method(
+            var m = new Method(
                 identifier: method.Identifier,
                 name: method.Name,
                 returnValue: _returnValueFactory.Create(method.ReturnValue),
@@ -36,8 +36,15 @@ internal class MethodFactory
                 introspectable: method.Introspectable,
                 getProperty: PropertyReference.Create(method.GetProperty),
                 setProperty: PropertyReference.Create(method.SetProperty),
-                version: method.Version
+                version: method.Version,
+                shadows: ShadowsReference.Create(method.Shadows),
+                shadowedBy: ShadowedByReference.Create(method.ShadowedBy)
             );
+
+            m.ShadowsReference?.SetParentCallable(m);
+            m.ShadowedByReference?.SetParentCallable(m);
+
+            return m;
         }
 
         if (!string.IsNullOrEmpty(method.MovedTo))

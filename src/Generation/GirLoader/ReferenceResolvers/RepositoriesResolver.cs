@@ -20,6 +20,12 @@ internal static class RepositoriesResolver
 
             repository.Namespace.Classes.ResolveAccessors();
             repository.Namespace.Interfaces.ResolveAccessors();
+
+            ShadowableResolver.ResolceShadowReferences(repository.Namespace.Classes);
+            ShadowableResolver.ResolceShadowReferences(repository.Namespace.Interfaces);
+            ShadowableResolver.ResolceShadowReferences(repository.Namespace.Records);
+            ShadowableResolver.ResolceShadowReferences(new[] { new ShadowableAdapter(repository.Namespace.Functions) });
+
         }
     }
 }

@@ -27,7 +27,7 @@ internal class FunctionFactory
 
         if (method.Name != string.Empty)
         {
-            return new Function(
+            var f = new Function(
                 repository: repository,
                 identifier: method.Identifier,
                 name: method.Name,
@@ -35,8 +35,15 @@ internal class FunctionFactory
                 parameterList: _parameterListFactory.Create(method.Parameters),
                 throws: method.Throws,
                 introspectable: method.Introspectable,
-                version: method.Version
+                version: method.Version,
+                shadows: ShadowsReference.Create(method.Shadows),
+                shadowedBy: ShadowedByReference.Create(method.ShadowedBy)
             );
+
+            f.ShadowsReference?.SetParentCallable(f);
+            f.ShadowedByReference?.SetParentCallable(f);
+
+            return f;
         }
 
         if (!string.IsNullOrEmpty(method.MovedTo))
@@ -62,7 +69,9 @@ internal class FunctionFactory
             parameterList: new ParameterList(),
             throws: false,
             introspectable: true,
-            version: null
+            version: null,
+            shadows: null,
+            shadowedBy: null
         );
     }
 

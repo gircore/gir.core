@@ -1,6 +1,6 @@
 ﻿namespace GirLoader.Output;
 
-public partial class Constructor
+public partial class Constructor : Callable
 {
     public ReturnValue ReturnValue { get; }
     public ParameterList ParameterList { get; }
@@ -8,8 +8,10 @@ public partial class Constructor
     public string Identifier { get; }
     public bool Throws { get; }
     public string? Version { get; }
+    public ShadowsReference? ShadowsReference { get; }
+    public ShadowedByReference? ShadowedByReference { get; }
 
-    public Constructor(string name, string identifier, ReturnValue returnValue, ParameterList parameterList, bool throws, string? version)
+    public Constructor(string name, string identifier, ReturnValue returnValue, ParameterList parameterList, bool throws, string? version, ShadowsReference? shadows, ShadowedByReference? shadowedBy)
     {
         Name = name;
         Identifier = identifier;
@@ -17,6 +19,8 @@ public partial class Constructor
         ParameterList = parameterList;
         Throws = throws;
         Version = version;
+        ShadowsReference = shadows;
+        ShadowedByReference = shadowedBy;
     }
 
     public override string ToString()

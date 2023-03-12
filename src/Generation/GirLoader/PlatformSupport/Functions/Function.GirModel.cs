@@ -14,4 +14,6 @@ public partial class Function : GirModel.Function
     bool GirModel.Callable.Throws => _function.Throws;
     bool GirModel.Function.Introspectable => _function.Introspectable;
     string? GirModel.Function.Version => _function.Version;
+    GirModel.Callable? GirModel.Callable.Shadows => _function.Shadows;
+    GirModel.Callable? GirModel.Callable.ShadowedBy => _function.ShadowedBy;
 }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GirLoader.Output;
 
-public partial class Interface : ComplexType, AccessorProvider
+public partial class Interface : ComplexType, AccessorProvider, ShadowableProvider
 {
     private readonly List<Method> _methods;
     private readonly List<Function> _functions;
@@ -12,6 +12,7 @@ public partial class Interface : ComplexType, AccessorProvider
     public Function GetTypeFunction { get; }
     public IEnumerable<TypeReference> Implements { get; }
 
+    public IEnumerable<Constructor>? Constructors => null; //TODO: Not implemented yet
     public IEnumerable<Method> Methods => _methods;
     public IEnumerable<Function> Functions => _functions;
     public IEnumerable<Property> Properties => _properties;

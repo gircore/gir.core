@@ -34,6 +34,12 @@ public class Method
     [XmlAttribute("moved-to")]
     public string? MovedTo { get; set; }
 
+    [XmlAttribute("shadows")]
+    public string? Shadows { get; set; }
+
+    [XmlAttribute("shadowed-by")]
+    public string? ShadowedBy { get; set; }
+
     [XmlAttribute("introspectable")]
     public bool Introspectable = true;
 

@@ -14,4 +14,6 @@ public partial class Function : GirModel.Function
     GirModel.InstanceParameter? GirModel.Callable.InstanceParameter => null;
     bool GirModel.Function.Introspectable => Introspectable;
     string? GirModel.Function.Version => Version;
+    GirModel.Callable? GirModel.Callable.Shadows => ShadowsReference?.GetResolvedCallable();
+    GirModel.Callable? GirModel.Callable.ShadowedBy => ShadowedByReference?.GetResolvedCallable();
 }

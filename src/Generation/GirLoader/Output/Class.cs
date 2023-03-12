@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GirLoader.Output;
 
-public partial class Class : ComplexType, AccessorProvider
+public partial class Class : ComplexType, AccessorProvider, ShadowableProvider
 {
     private readonly List<Method> _methods;
     private readonly List<Function> _functions;
