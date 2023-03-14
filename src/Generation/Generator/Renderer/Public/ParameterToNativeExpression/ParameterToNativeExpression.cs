@@ -8,21 +8,22 @@ internal static class ParameterToNativeExpression
 {
     private static readonly List<ParameterToNativeExpressions.ToNativeParameterConverter> Converter = new()
     {
-        new ParameterToNativeExpressions.PrimitiveValueType(),
-        new ParameterToNativeExpressions.PrimitiveValueTypeArray(),
-        new ParameterToNativeExpressions.Enumeration(),
         new ParameterToNativeExpressions.Bitfield(),
-        new ParameterToNativeExpressions.PlatformString(),
-        new ParameterToNativeExpressions.Utf8String(),
-        new ParameterToNativeExpressions.StringArray(),
-        new ParameterToNativeExpressions.Interface(),
-        new ParameterToNativeExpressions.InterfaceArray(),
+        new ParameterToNativeExpressions.Callback(),
         new ParameterToNativeExpressions.Class(),
         new ParameterToNativeExpressions.ClassArray(),
+        new ParameterToNativeExpressions.Enumeration(),
+        new ParameterToNativeExpressions.Interface(),
+        new ParameterToNativeExpressions.InterfaceArray(),
+        new ParameterToNativeExpressions.PlatformString(),
+        new ParameterToNativeExpressions.Pointer(),
+        new ParameterToNativeExpressions.PrimitiveValueType(),
+        new ParameterToNativeExpressions.PrimitiveValueTypeAlias(),
+        new ParameterToNativeExpressions.PrimitiveValueTypeArray(),
         new ParameterToNativeExpressions.Record(),
         new ParameterToNativeExpressions.RecordArray(),
-        new ParameterToNativeExpressions.Callback(),
-        new ParameterToNativeExpressions.Pointer(),
+        new ParameterToNativeExpressions.StringArray(),
+        new ParameterToNativeExpressions.Utf8String(),
     };
 
     public static IReadOnlyList<ParameterToNativeData> Initialize(IEnumerable<GirModel.Parameter> parameters)

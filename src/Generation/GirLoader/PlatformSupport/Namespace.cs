@@ -12,6 +12,7 @@ public class Namespace : GirModel.Namespace
     public string Version { get; }
     public string? SharedLibrary => null; //Null because differnt platforms have different shared libraries
 
+    public IEnumerable<GirModel.Alias> Aliases { get; }
     public IEnumerable<GirModel.Enumeration> Enumerations { get; }
     public IEnumerable<GirModel.Bitfield> Bitfields { get; }
     public IEnumerable<GirModel.Record> Records { get; }
@@ -29,6 +30,7 @@ public class Namespace : GirModel.Namespace
         Name = GetVerified(ns => ns.Name);
         Version = GetVerified(ns => ns.Version);
 
+        Aliases = handler.GetAliases().ToList();
         Enumerations = handler.GetEnumerations().ToList();
         Bitfields = handler.GetBitfields().ToList();
         Records = handler.GetRecords().ToList();

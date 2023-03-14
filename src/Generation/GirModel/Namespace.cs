@@ -8,6 +8,7 @@ public interface Namespace
     string Version { get; }
     string? SharedLibrary { get; }
 
+    IEnumerable<Alias> Aliases { get; }
     IEnumerable<Enumeration> Enumerations { get; }
     IEnumerable<Bitfield> Bitfields { get; }
     IEnumerable<Record> Records { get; }

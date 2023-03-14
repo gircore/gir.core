@@ -43,16 +43,9 @@ internal partial class TypeReferenceResolver
 
     private bool TryResolveFromAlias(Output.TypeReference typeReference, Output.Repository repository, [MaybeNullWhen(false)] out Output.Type type)
     {
-        var directResult = repository.Namespace.Aliases.FirstOrDefault(x => x.Matches(typeReference));
+        type = repository.Namespace.Aliases.FirstOrDefault(x => x.Matches(typeReference));
 
-        if (directResult is { })
-        {
-            type = directResult.TypeReference.GetResolvedType();
-            return true;
-        }
-
-        type = null;
-        return false;
+        return type is not null;
     }
 
     private bool TryResolveFromForeignType(Output.TypeReference typeReference, Output.Repository repository, [MaybeNullWhen(false)] out Output.Type type)

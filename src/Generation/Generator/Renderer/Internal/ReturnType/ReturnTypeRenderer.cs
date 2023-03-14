@@ -6,22 +6,22 @@ internal static class ReturnTypeRenderer
 {
     private static readonly List<ReturnType.ReturnTypeConverter> converters = new()
     {
-        new ReturnType.PrimitiveValueType(),
         new ReturnType.Bitfield(),
-        new ReturnType.Enumeration(),
-        new ReturnType.Utf8String(),
-        new ReturnType.PlatformString(),
-        new ReturnType.Record(),
         new ReturnType.Class(),
-        new ReturnType.Interface(),
-        new ReturnType.Pointer(),
-        new ReturnType.Union(),
-        new ReturnType.Void(),
-
-        new ReturnType.StringArray(),
-        new ReturnType.RecordArray(),
         new ReturnType.ClassArray(),
+        new ReturnType.Enumeration(),
+        new ReturnType.Interface(),
+        new ReturnType.PlatformString(),
+        new ReturnType.Pointer(),
+        new ReturnType.PrimitiveValueType(),
+        new ReturnType.PrimitiveValueTypeAlias(),
         new ReturnType.PrimitiveValueTypeArray(),
+        new ReturnType.Record(),
+        new ReturnType.RecordArray(),
+        new ReturnType.StringArray(),
+        new ReturnType.Union(),
+        new ReturnType.Utf8String(),
+        new ReturnType.Void(),
     };
 
     public static string Render(GirModel.ReturnType returnType)
@@ -30,6 +30,6 @@ internal static class ReturnTypeRenderer
             if (converter.Supports(returnType))
                 return converter.Convert(returnType).NullableTypeName;
 
-        throw new System.Exception($"Return type of type {returnType.AnyType} can not be rendered");
+        throw new System.Exception($"Internal return type of type {returnType.AnyType} can not be rendered");
     }
 }

@@ -4,6 +4,7 @@ public static class AnyTypeExtension
 {
     public static bool Is<T>(this GirModel.AnyType anyType) where T : GirModel.Type
         => anyType.TryPickT0(out var type, out _) && type is T;
+
     public static bool IsArray<T>(this GirModel.AnyType anyType) where T : GirModel.Type
         => anyType.TryPickT1(out var arrayType, out _)
            && arrayType is GirModel.StandardArrayType
@@ -22,6 +23,20 @@ public static class AnyTypeExtension
         => anyType.TryPickT1(out var arrayType, out _)
            && arrayType is GirModel.GArrayType
            && arrayType.AnyType.Is<T>();
+
+    public static bool IsAlias<T>(this GirModel.AnyType anyType) where T : GirModel.Type
+        => anyType.TryPickT0(out var type, out _)
+           && type is GirModel.Alias { Type: T };
+
+    public static bool IsArrayAlias<T>(this GirModel.AnyType anyType) where T : GirModel.Type
+        => anyType.TryPickT1(out var arrayType, out _)
+           && arrayType is GirModel.StandardArrayType
+           && arrayType.AnyType.IsAlias<T>();
+
+    public static bool IsGLibArrayAlias<T>(this GirModel.AnyType anyType) where T : GirModel.Type
+        => anyType.TryPickT1(out var arrayType, out _)
+           && arrayType is GirModel.GArrayType
+           && arrayType.AnyType.IsAlias<T>();
 }
 
 namespace GirModel

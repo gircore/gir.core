@@ -5,10 +5,10 @@ namespace Generator.Model;
 
 internal static class ArrayType
 {
-    public static string GetName(GirModel.ArrayType arrayType)
+    public static string GetName(GirModel.ArrayType arrayType, bool solveAlias = false)
     {
         var nameParts = new List<string>();
-        arrayType.FillArrayNameParts(nameParts);
+        arrayType.FillArrayNameParts(nameParts, solveAlias);
 
         var sb = new StringBuilder(nameParts.Count + 1);
 
@@ -20,13 +20,16 @@ internal static class ArrayType
         return sb.ToString();
     }
 
-    private static void FillArrayNameParts(this GirModel.ArrayType arrayType, ICollection<string> nameParts)
+    private static void FillArrayNameParts(this GirModel.ArrayType arrayType, ICollection<string> nameParts, bool solveAlias)
     {
         while (true)
         {
             if (arrayType.AnyType.TryPickT0(out var type, out var array))
             {
-                nameParts.Add(Type.GetName(type));
+                if (type is GirModel.Alias a)
+                    nameParts.Add(solveAlias ? Type.GetName(a.Type) : Type.GetName(a));
+                else
+                    nameParts.Add(Type.GetName(type));
             }
             else
             {

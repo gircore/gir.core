@@ -6,34 +6,38 @@ internal static class CallbackParameters
 {
     private static readonly List<Parameter.ParameterConverter> converters = new()
     {
-        new Parameter.String(),
-        new Parameter.Pointer(),
-        new Parameter.UnsignedPointer(),
-        new Parameter.Class(),
-        new Parameter.Interface(),
-        new Parameter.Union(),
-        new Parameter.PrimitiveValueType(),
-        new Parameter.Callback(),
-        new Parameter.Enumeration(),
         new Parameter.Bitfield(),
-        new Parameter.Void(),
-        new Parameter.RecordAsPointer(), //Callbacks do not support record safe handles in parameters
-        
-        new Parameter.ClassArray(),
-        new Parameter.InterfaceArray(),
-        new Parameter.StringArray(),
-        new Parameter.EnumerationArray(),
-        new Parameter.RecordArray(),
         new Parameter.ByteArray(),
+        new Parameter.Callback(),
+        new Parameter.Class(),
+        new Parameter.ClassArray(),
+        new Parameter.Enumeration(),
+        new Parameter.EnumerationArray(),
+        new Parameter.GLibByteArray(),
+        new Parameter.Interface(),
+        new Parameter.InterfaceArray(),
         new Parameter.NativeUnsignedIntegerArray(),
+        new Parameter.Pointer(),
+        new Parameter.PointerAlias(),
+        new Parameter.PointerArray(),
         new Parameter.PointerGLibArray(),
         new Parameter.PointerGLibPtrArray(),
-        new Parameter.PrimitiveValueTypeGLibPtrArray(),
-        new Parameter.ArrayGLibPointerRecord(),
-        new Parameter.GLibByteArray(),
-        new Parameter.PrimitiveValueTypeGLibArray(),
-        new Parameter.PointerArray(),
+        new Parameter.PrimitiveValueType(),
+        new Parameter.PrimitiveValueTypeAlias(),
         new Parameter.PrimitiveValueTypeArray(),
+        new Parameter.PrimitiveValueTypeArrayAlias(),
+        new Parameter.PrimitiveValueTypeGLibArray(),
+        new Parameter.PrimitiveValueTypeGLibArrayAlias(),
+        new Parameter.PrimitiveValueTypeGLibPtrArray(),
+        new Parameter.RecordArray(),
+        new Parameter.RecordAsPointer(), //Callbacks do not support record safe handles in parameters
+        new Parameter.RecordAsPointerAlias(), //Callbacks do not support record safe handles in parameters
+        new Parameter.RecordGLibPtrArray(),
+        new Parameter.String(),
+        new Parameter.StringArray(),
+        new Parameter.Union(),
+        new Parameter.UnsignedPointer(),
+        new Parameter.Void(),
     };
 
     public static string Render(IEnumerable<GirModel.Parameter> parameters)
@@ -55,7 +59,7 @@ internal static class CallbackParameters
             if (converter.Supports(parameter.AnyTypeOrVarArgs.AsT0))
                 return Render(converter.Convert(parameter));
 
-        throw new System.Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
+        throw new System.Exception($"Internal parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
     }
 
     private static string Render(Parameter.RenderableParameter parameter)

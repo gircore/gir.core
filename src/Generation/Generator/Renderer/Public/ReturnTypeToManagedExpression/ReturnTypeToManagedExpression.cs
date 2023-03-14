@@ -6,17 +6,18 @@ internal static class ReturnTypeToManagedExpression
 {
     private static readonly List<ReturnTypeToManagedExpressions.ReturnTypeConverter> Converter = new()
     {
-        new ReturnTypeToManagedExpressions.Pointer(),
         new ReturnTypeToManagedExpressions.Bitfield(),
-        new ReturnTypeToManagedExpressions.Enumeration(),
-        new ReturnTypeToManagedExpressions.PrimitiveValueType(),
-        new ReturnTypeToManagedExpressions.PrimitiveValueTypeArray(),
-        new ReturnTypeToManagedExpressions.Utf8String(),
-        new ReturnTypeToManagedExpressions.StringArray(),
-        new ReturnTypeToManagedExpressions.PlatformString(),
         new ReturnTypeToManagedExpressions.Class(),
+        new ReturnTypeToManagedExpressions.Enumeration(),
         new ReturnTypeToManagedExpressions.Interface(),
+        new ReturnTypeToManagedExpressions.PlatformString(),
+        new ReturnTypeToManagedExpressions.Pointer(),
+        new ReturnTypeToManagedExpressions.PrimitiveValueType(),
+        new ReturnTypeToManagedExpressions.PrimitiveValueTypeAlias(),
+        new ReturnTypeToManagedExpressions.PrimitiveValueTypeArray(),
         new ReturnTypeToManagedExpressions.Record(),
+        new ReturnTypeToManagedExpressions.StringArray(),
+        new ReturnTypeToManagedExpressions.Utf8String(),
     };
 
     public static string Render(GirModel.ReturnType from, string fromVariableName)
