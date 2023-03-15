@@ -1,22 +1,30 @@
-﻿namespace Generator.Renderer.Public;
+﻿using System.Collections.Generic;
+
+namespace Generator.Renderer.Public.ReturnType;
 
 internal static class RenderableReturnTypeFactory
 {
-    public static RenderableReturnType Create(GirModel.ReturnType returnValue) => returnValue.AnyType.Match(
-        type => type switch
-        {
-            GirModel.Pointer => PointerReturnType.Create(returnValue),
-            GirModel.PrimitiveValueType => PrimitiveValueReturnType.Create(returnValue),
-            GirModel.Class => ClassReturnType.Create(returnValue),
-            GirModel.Interface => InterfaceReturnType.Create(returnValue),
-            GirModel.Record => RecordReturnType.Create(returnValue),
-            GirModel.Bitfield => BitfieldReturnType.Create(returnValue),
-            GirModel.Enumeration => EnumerationReturnType.Create(returnValue),
-            _ => StandardReturnType.Create(returnValue)
-        },
-        arrayType => arrayType switch
-        {
-            _ => StandardReturnType.Create(returnValue)
-        }
-    );
+    private static readonly List<ReturnTypeConverter> converters = new()
+    {
+        new Bitfield(),
+        new Class(),
+        new Enumeration(),
+        new Interface(),
+        new Pointer(),
+        new PrimitiveValue(),
+        new Record(),
+        new String(),
+        new Void(),
+        new RecordArray(),
+        new StringArray(),
+    };
+
+    public static RenderableReturnType Create(GirModel.ReturnType returnValue)
+    {
+        foreach (var converter in converters)
+            if (converter.Supports(returnValue))
+                return converter.Create(returnValue);
+
+        throw new System.NotImplementedException($"Missing converter for return type {returnValue.AnyType}.");
+    }
 }

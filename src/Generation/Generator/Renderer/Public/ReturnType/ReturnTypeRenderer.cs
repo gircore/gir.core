@@ -1,6 +1,8 @@
-﻿namespace Generator.Renderer.Public;
+﻿using Generator.Renderer.Public.ReturnType;
 
-internal static class ReturnType
+namespace Generator.Renderer.Public;
+
+internal static class ReturnTypeRenderer
 {
     public static string Render(GirModel.ReturnType returnType)
     {

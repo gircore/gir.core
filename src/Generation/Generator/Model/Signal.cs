@@ -43,7 +43,7 @@ internal static class Signal
     private static string GetGenericReturningArgs(GirModel.Signal signal, GirModel.Class cls)
     {
         return signal.Parameters.Any()
-            ? $"{cls.Name}, {GetArgsClassName(signal)}, {Renderer.Public.ReturnType.Render(signal.ReturnType)}"
-            : $"{cls.Name}, {Renderer.Public.ReturnType.Render(signal.ReturnType)}";
+            ? $"{cls.Name}, {GetArgsClassName(signal)}, {Renderer.Public.ReturnTypeRenderer.Render(signal.ReturnType)}"
+            : $"{cls.Name}, {Renderer.Public.ReturnTypeRenderer.Render(signal.ReturnType)}";
     }
 }

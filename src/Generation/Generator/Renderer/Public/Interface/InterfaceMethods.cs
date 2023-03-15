@@ -37,7 +37,7 @@ public partial interface {iface.Name}
 
             return @$"
 {VersionAttribute.Render(method.Version)}
-{ReturnType.Render(method.ReturnType)} {Method.GetPublicName(method)}({RenderParameters(parameters)});";
+{ReturnTypeRenderer.Render(method.ReturnType)} {Method.GetPublicName(method)}({RenderParameters(parameters)});";
         }
         catch (Exception ex)
         {
