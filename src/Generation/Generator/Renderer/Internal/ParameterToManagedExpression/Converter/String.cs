@@ -1,6 +1,4 @@
-﻿using Generator.Model;
-
-namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
+﻿namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class String : ToManagedParameterConverter
 {
@@ -9,7 +7,7 @@ internal class String : ToManagedParameterConverter
 
     public string GetExpression(GirModel.Parameter parameter, out string variableName)
     {
-        variableName = Parameter.GetConvertedName(parameter);
-        return $"var {variableName} = {Parameter.GetName(parameter)}.ConvertToString();";
+        variableName = Model.Parameter.GetConvertedName(parameter);
+        return $"var {variableName} = {Model.Parameter.GetName(parameter)}.ConvertToString();";
     }
 }

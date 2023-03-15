@@ -1,27 +1,25 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Parameter;
 
-namespace Generator.Renderer.Internal;
-
-internal static class UnionParameter
+public class ArrayPrimitiveValueType : ParameterConverter
 {
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.IsArray<GirModel.PrimitiveValueType>();
+    }
 
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
             NullableTypeName: GetNullableTypeName(parameter),
-            Name: Parameter.GetName(parameter)
+            Name: Model.Parameter.GetName(parameter)
         );
     }
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return parameter.IsPointer switch
-        {
-            true => Type.Pointer,
-            false => Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
-        };
+        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
@@ -32,3 +30,4 @@ internal static class UnionParameter
         _ => ParameterDirection.In()
     };
 }
+

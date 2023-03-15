@@ -1,15 +1,17 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Parameter;
 
-namespace Generator.Renderer.Internal;
-
-internal static class PrimitiveValueTypeParameter
+internal class PrimitiveValueType : ParameterConverter
 {
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.Is<GirModel.PrimitiveValueType>();
+    }
 
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         // If the parameter is both nullable and optional this implies a parameter type like 'int **' and possibly
         // ownership transfer (this combination does not currently occur for any functions).
-        if (parameter.Nullable && parameter.Optional)
+        if (parameter is { Nullable: true, Optional: true })
             throw new System.NotImplementedException($"{parameter.AnyTypeOrVarArgs} - Primitive value type with nullable=true and optional=true not yet supported");
 
         // Nullable-only parameters likely have incorrect annotations and should be marked optional instead.
@@ -24,15 +26,15 @@ internal static class PrimitiveValueTypeParameter
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
             NullableTypeName: GetNullableTypeName(parameter),
-            Name: Parameter.GetName(parameter)
+            Name: Model.Parameter.GetName(parameter)
         );
     }
 
     private static string GetNullableTypeName(GirModel.Parameter parameter) => parameter switch
     {
         // Public bindings are not generated for pointer types with direction=in, but we can still generate the internal binding with a pointer.
-        { Direction: GirModel.Direction.In, IsPointer: true } => Type.Pointer,
-        _ => Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
+        { Direction: GirModel.Direction.In, IsPointer: true } => Model.Type.Pointer,
+        _ => Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
     };
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

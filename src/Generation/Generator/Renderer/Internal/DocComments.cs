@@ -29,7 +29,7 @@ internal static class DocComments
     }
 
     private static string Render(GirModel.Parameter parameter) =>
-        $@"/// <param name=""{Parameter.GetName(parameter)}"">Transfer ownership: {parameter.Transfer} Nullable: {parameter.Nullable}</param>";
+        $@"/// <param name=""{Model.Parameter.GetName(parameter)}"">Transfer ownership: {parameter.Transfer} Nullable: {parameter.Nullable}</param>";
 
     public static string Render(GirModel.ReturnType returnType) =>
         $@"/// <returns>Transfer ownership: {returnType.Transfer} Nullable: {returnType.Nullable}</returns>";
