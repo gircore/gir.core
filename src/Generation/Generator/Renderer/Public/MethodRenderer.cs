@@ -24,7 +24,7 @@ internal static class MethodRenderer
 
             return @$"
 {VersionAttribute.Render(method.Version)}
-{modifier}{ReturnType.Render(method.ReturnType)} {explicitImplementation}{Method.GetPublicName(method)}({RenderParameters(parameters)})
+{modifier}{ReturnTypeRenderer.Render(method.ReturnType)} {explicitImplementation}{Method.GetPublicName(method)}({RenderParameters(parameters)})
 {{
     {RenderMethodContent(parameters)}
     {RenderCallStatement(method, parameters, out var resultVariableName)}

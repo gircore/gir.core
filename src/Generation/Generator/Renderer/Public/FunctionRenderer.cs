@@ -16,7 +16,7 @@ internal static class FunctionRenderer
 
             return @$"
 {VersionAttribute.Render(function.Version)}
-public static {ReturnType.Render(function.ReturnType)} {Function.GetName(function)}({RenderParameters(parameters)})
+public static {ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName(function)}({RenderParameters(parameters)})
 {{
     {RenderFunctionContent(parameters)}
     {RenderCallStatement(function, parameters, out var resultVariableName)}
