@@ -1,16 +1,19 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Parameter;
 
-namespace Generator.Renderer.Internal;
-
-internal static class ArrayRecordParameterForMethod
+public class ArrayGLibPointerPointer : ParameterConverter
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.IsGLibPtrArray<GirModel.Pointer>();
+    }
+
+    public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
             Attribute: GetAttribute(parameter),
             Direction: string.Empty,
             NullableTypeName: GetNullableTypeName(parameter),
-            Name: Parameter.GetName(parameter)
+            Name: Model.Parameter.GetName(parameter)
         );
     }
 
@@ -19,16 +22,17 @@ internal static class ArrayRecordParameterForMethod
         var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
 
         return arrayType.Length is null
-            ? Type.PointerArray
-            : Record.GetFullyQualifiedInternalStructName(((GirModel.Record) arrayType.AnyType.AsT0)) + "[]";
+            ? Model.Type.PointerArray
+            : Model.Record.GetFullyQualifiedInternalStructName((GirModel.Record) arrayType.AnyType.AsT0) + "[]";
     }
 
     private static string GetAttribute(GirModel.Parameter parameter)
     {
         return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length switch
         {
-            { } length => MarshalAs.UnmanagedLpArray(sizeParamIndex: length + 1),
+            { } length => MarshalAs.UnmanagedLpArray(sizeParamIndex: length),
             _ => string.Empty,
         };
     }
 }
+

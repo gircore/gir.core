@@ -1,16 +1,19 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Parameter;
 
-namespace Generator.Renderer.Internal;
-
-internal static class ClassParameter
+internal class Interface : ParameterConverter
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.Is<GirModel.Interface>();
+    }
+
+    public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
-            NullableTypeName: Type.Pointer,
-            Name: Parameter.GetName(parameter)
+            NullableTypeName: Model.Type.Pointer,
+            Name: Model.Parameter.GetName(parameter)
         );
     }
 

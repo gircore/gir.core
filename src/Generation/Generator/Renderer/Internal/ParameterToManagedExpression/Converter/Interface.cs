@@ -1,5 +1,4 @@
 ﻿using System;
-using Generator.Model;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
@@ -15,7 +14,7 @@ internal class Interface : ToManagedParameterConverter
 
         var iface = (GirModel.Interface) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
 
-        variableName = Parameter.GetConvertedName(parameter);
-        return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(iface)}>({Parameter.GetName(parameter)}, {Transfer.IsOwnedRef(parameter.Transfer).ToString().ToLower()});";
+        variableName = Model.Parameter.GetConvertedName(parameter);
+        return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(iface)}>({Model.Parameter.GetName(parameter)}, {Model.Transfer.IsOwnedRef(parameter.Transfer).ToString().ToLower()});";
     }
 }

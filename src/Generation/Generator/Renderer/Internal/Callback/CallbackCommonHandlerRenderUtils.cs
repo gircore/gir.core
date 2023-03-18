@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Parameter = Generator.Model.Parameter;
 
 namespace Generator.Renderer.Internal;
 
@@ -15,7 +14,7 @@ internal static class CallbackCommonHandlerRenderUtils
         try
         {
             nativeCallback = $@"
-NativeCallback = ({callback.Parameters.Select(Parameter.GetName).Join(", ")}) => {{
+NativeCallback = ({callback.Parameters.Select(Model.Parameter.GetName).Join(", ")}) => {{
     {RenderConvertParameterStatements(callback, out IEnumerable<string> parameters)}
     {RenderCallStatement(callback, parameters, out var resultVariableName)}
     {RenderFreeStatement(scope)}

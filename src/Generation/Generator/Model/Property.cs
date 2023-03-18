@@ -91,8 +91,7 @@ internal static partial class Property
         setter = property.Setter;
         var setterType = property.Setter.Parameters
             .First()
-            .Map(RenderableParameterFactory.Create)
-            .NullableTypeName;
+            .Map(Parameters.GetNullableTypeName);
 
         return GetNullableTypeName(property) == setterType;
     }

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Generator.Renderer.Internal;
+﻿namespace Generator.Renderer.Internal;
 
 internal static class Callback
 {
@@ -9,20 +6,12 @@ internal static class Callback
     {
         try
         {
-            return $"public delegate {ReturnType.RenderForCallback(callback.ReturnType)} {Model.Callback.GetInternalDelegateName(callback)}({RenderParameters(callback.Parameters)});";
+            return $"public delegate {ReturnType.RenderForCallback(callback.ReturnType)} {Model.Callback.GetInternalDelegateName(callback)}({CallbackParameters.Render(callback.Parameters)});";
         }
         catch (System.Exception ex)
         {
             Log.Warning($"Could not render internal callback: {callback.Name}: {ex.Message}");
             return string.Empty;
         }
-    }
-
-    private static string RenderParameters(IEnumerable<GirModel.Parameter> parameters)
-    {
-        return parameters
-                .Select(RenderableCallbackParameterFactory.Create)
-                .Select(parameter => $@"{parameter.Attribute}{parameter.Direction}{parameter.NullableTypeName} {parameter.Name}")
-                .Join(", ");
     }
 }

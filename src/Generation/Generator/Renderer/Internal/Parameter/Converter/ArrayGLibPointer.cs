@@ -1,25 +1,26 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Parameter;
 
-namespace Generator.Renderer.Internal;
-
-internal static class BitfieldParameter
+public class ArrayGLibPointer : ParameterConverter
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.IsGLibArray<GirModel.Pointer>();
+    }
+
+    public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
             NullableTypeName: GetNullableTypeName(parameter),
-            Name: Parameter.GetName(parameter)
+            Name: Model.Parameter.GetName(parameter)
         );
     }
 
-    private static string GetNullableTypeName(GirModel.Parameter parameter) => parameter.IsPointer switch
+    private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        true => Type.Pointer,
-        //Internal does not define any bitfields. They are part of the Public API to avoid converting between them.
-        false => ComplexType.GetFullyQualified((GirModel.Bitfield) parameter.AnyTypeOrVarArgs.AsT0.AsT0)
-    };
+        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1);
+    }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
@@ -29,3 +30,4 @@ internal static class BitfieldParameter
         _ => ParameterDirection.In()
     };
 }
+

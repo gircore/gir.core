@@ -2,7 +2,7 @@
 
 namespace Generator.Renderer.Internal;
 
-internal static class Parameters
+internal static class CallbackParameters
 {
     private static readonly List<Parameter.ParameterConverter> converters = new()
     {
@@ -17,8 +17,8 @@ internal static class Parameters
         new Parameter.Enumeration(),
         new Parameter.Bitfield(),
         new Parameter.Void(),
-        new Parameter.Record(),
-
+        new Parameter.RecordAsPointer(), //Callbacks do not support record safe handles in parameters
+        
         new Parameter.ArrayClass(),
         new Parameter.ArrayInterface(),
         new Parameter.ArrayString(),
@@ -35,18 +35,6 @@ internal static class Parameters
         new Parameter.ArrayPointer(),
         new Parameter.ArrayPrimitiveValueType(),
     };
-
-    public static string GetNullableTypeName(GirModel.Parameter parameter)
-    {
-        if (parameter.AnyTypeOrVarArgs.IsT1)
-            throw new System.Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered as variadic parameters are not supported");
-
-        foreach (var converter in converters)
-            if (converter.Supports(parameter.AnyTypeOrVarArgs.AsT0))
-                return converter.Convert(parameter).NullableTypeName;
-
-        throw new System.Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
-    }
 
     public static string Render(IEnumerable<GirModel.Parameter> parameters)
     {

@@ -1,6 +1,4 @@
-﻿using Generator.Model;
-
-namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
+﻿namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class StringArray : ToManagedParameterConverter
 {
@@ -12,13 +10,13 @@ internal class StringArray : ToManagedParameterConverter
         var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
         if (parameter.Transfer == GirModel.Transfer.None && arrayType.Length == null)
         {
-            variableName = Parameter.GetConvertedName(parameter);
-            return $"var {variableName} = GLib.Internal.StringHelper.ToStringArrayUtf8({Parameter.GetName(parameter)});";
+            variableName = Model.Parameter.GetConvertedName(parameter);
+            return $"var {variableName} = GLib.Internal.StringHelper.ToStringArrayUtf8({Model.Parameter.GetName(parameter)});";
         }
         else
         {
             //We don't need any conversion for string[]
-            variableName = Parameter.GetName(parameter);
+            variableName = Model.Parameter.GetName(parameter);
             return null;
         }
     }

@@ -1,16 +1,19 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Parameter;
 
-namespace Generator.Renderer.Internal;
-
-internal static class ArrayClassParameter
+internal class ArrayClass : ParameterConverter
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.IsArray<GirModel.Class>();
+    }
+
+    public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
             Attribute: GetAttribute(parameter),
             Direction: string.Empty,
             NullableTypeName: GetNullableTypeName(parameter),
-            Name: Parameter.GetName(parameter)
+            Name: Model.Parameter.GetName(parameter)
         );
     }
 
@@ -26,7 +29,7 @@ internal static class ArrayClassParameter
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
         return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is null
-            ? Type.Pointer
-            : Type.PointerArray;
+            ? Model.Type.Pointer
+            : Model.Type.PointerArray;
     }
 }

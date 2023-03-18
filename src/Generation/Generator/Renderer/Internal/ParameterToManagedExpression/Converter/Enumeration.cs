@@ -1,5 +1,4 @@
 ﻿using System;
-using Generator.Model;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
@@ -14,7 +13,7 @@ internal class Enumeration : ToManagedParameterConverter
             throw new NotImplementedException($"{parameter.AnyTypeOrVarArgs}: Enumeration with direction != in not yet supported");
 
         //We don't need any conversion for enumerations
-        variableName = Parameter.GetName(parameter);
+        variableName = Model.Parameter.GetName(parameter);
         return null;
     }
 }

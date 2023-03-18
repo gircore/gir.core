@@ -1,5 +1,4 @@
 ﻿using System;
-using Generator.Model;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
@@ -17,13 +16,13 @@ internal class Class : ToManagedParameterConverter
 
         if (cls.Fundamental)
         {
-            variableName = Parameter.GetConvertedName(parameter);
-            return $"var {variableName} = new {ComplexType.GetFullyQualified(cls)}({Parameter.GetName(parameter)});";
+            variableName = Model.Parameter.GetConvertedName(parameter);
+            return $"var {variableName} = new {Model.ComplexType.GetFullyQualified(cls)}({Model.Parameter.GetName(parameter)});";
         }
         else
         {
-            variableName = Parameter.GetConvertedName(parameter);
-            return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapHandle<{ComplexType.GetFullyQualified(cls)}>({Parameter.GetName(parameter)}, {Transfer.IsOwnedRef(parameter.Transfer).ToString().ToLower()});";
+            variableName = Model.Parameter.GetConvertedName(parameter);
+            return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapHandle<{Model.ComplexType.GetFullyQualified(cls)}>({Model.Parameter.GetName(parameter)}, {Model.Transfer.IsOwnedRef(parameter.Transfer).ToString().ToLower()});";
         }
     }
 }

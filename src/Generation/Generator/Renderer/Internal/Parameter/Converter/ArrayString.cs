@@ -1,16 +1,19 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Parameter;
 
-namespace Generator.Renderer.Internal;
-
-internal static class ArrayStringParameterForMethod
+internal class ArrayString : ParameterConverter
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.IsArray<GirModel.String>();
+    }
+
+    public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
             Attribute: GetAttribute(parameter),
             Direction: string.Empty,
             NullableTypeName: GetNullableTypeName(parameter),
-            Name: Parameter.GetName(parameter)
+            Name: Model.Parameter.GetName(parameter)
         );
     }
 
@@ -19,8 +22,8 @@ internal static class ArrayStringParameterForMethod
         return parameter switch
         {
             // Arrays of string which do not transfer ownership and have no length index can not be marshalled automatically
-            { Transfer: GirModel.Transfer.None, AnyTypeOrVarArgs.AsT0.AsT1.Length: null } => Type.Pointer,
-            _ => ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1)
+            { Transfer: GirModel.Transfer.None, AnyTypeOrVarArgs.AsT0.AsT1.Length: null } => Model.Type.Pointer,
+            _ => Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1)
         };
     }
 
@@ -29,8 +32,7 @@ internal static class ArrayStringParameterForMethod
         return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length switch
         {
             null => string.Empty,
-            //We add 1 to the length because Methods contain an instance parameter which is not counted
-            { } l => MarshalAs.UnmanagedLpArray(sizeParamIndex: l + 1)
+            { } l => MarshalAs.UnmanagedLpArray(sizeParamIndex: l)
         };
     }
 }

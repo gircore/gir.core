@@ -1,5 +1,4 @@
 ﻿using System;
-using Generator.Model;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
@@ -17,7 +16,7 @@ internal class PrimitiveValueType : ToManagedParameterConverter
             throw new NotImplementedException($"{parameter.AnyTypeOrVarArgs}: Primitive value type with direction != in not yet supported");
 
         //We don't need any conversion for native parameters
-        variableName = Parameter.GetName(parameter);
+        variableName = Model.Parameter.GetName(parameter);
         return null;
     }
 }

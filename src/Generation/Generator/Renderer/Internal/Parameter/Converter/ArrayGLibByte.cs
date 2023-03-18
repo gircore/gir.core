@@ -1,17 +1,25 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Parameter;
 
-namespace Generator.Renderer.Internal;
-
-internal static class ArrayEnumerationParameter
+public class ArrayGLibByte : ParameterConverter
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.IsGLibByteArray();
+    }
+
+    public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
             NullableTypeName: GetNullableTypeName(parameter),
-            Name: Parameter.GetName(parameter)
+            Name: Model.Parameter.GetName(parameter)
         );
+    }
+
+    private static string GetNullableTypeName(GirModel.Parameter parameter)
+    {
+        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
@@ -21,14 +29,5 @@ internal static class ArrayEnumerationParameter
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
         _ => ParameterDirection.In()
     };
-
-    private static string GetNullableTypeName(GirModel.Parameter parameter)
-    {
-        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
-        var type = (GirModel.Enumeration) arrayType.AnyType.AsT0;
-
-        return arrayType.Length is null
-            ? Type.Pointer
-            : ComplexType.GetFullyQualified(type) + "[]";
-    }
 }
+

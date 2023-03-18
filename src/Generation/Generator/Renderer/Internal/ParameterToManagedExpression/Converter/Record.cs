@@ -1,5 +1,4 @@
 ﻿using System;
-using Generator.Model;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
@@ -19,12 +18,12 @@ internal class Record : ToManagedParameterConverter
         var record = (GirModel.Record) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         var ownedHandle = parameter.Transfer == GirModel.Transfer.Full;
 
-        variableName = Parameter.GetConvertedName(parameter);
+        variableName = Model.Parameter.GetConvertedName(parameter);
 
         var handleClass = ownedHandle
             ? Model.Record.GetFullyQualifiedInternalOwnedHandle(record)
             : Model.Record.GetFullyQualifiedInternalUnownedHandle(record);
 
-        return $"var {variableName} = new {Model.Record.GetFullyQualifiedPublicClassName(record)}(new {handleClass}({Parameter.GetName(parameter)}));";
+        return $"var {variableName} = new {Model.Record.GetFullyQualifiedPublicClassName(record)}(new {handleClass}({Model.Parameter.GetName(parameter)}));";
     }
 }

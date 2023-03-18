@@ -1,24 +1,26 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Parameter;
 
-namespace Generator.Renderer.Internal;
-
-internal static class EnumerationParameter
+public class ArrayGLibPrimitiveValueType : ParameterConverter
 {
-    public static RenderableParameter Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.IsGLibArray<GirModel.PrimitiveValueType>();
+    }
+
+    public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
             NullableTypeName: GetNullableTypeName(parameter),
-            Name: Parameter.GetName(parameter)
+            Name: Model.Parameter.GetName(parameter)
         );
     }
 
-    private static string GetNullableTypeName(GirModel.Parameter parameter) => parameter.IsPointer switch
+    private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        true => Type.Pointer,
-        false => ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0)
-    };
+        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1);
+    }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
@@ -28,3 +30,4 @@ internal static class EnumerationParameter
         _ => ParameterDirection.In()
     };
 }
+
