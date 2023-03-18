@@ -67,8 +67,7 @@ internal static partial class Property
 
         getter = property.Getter;
         var getterType = property.Getter.ReturnType
-            .Map(RenderableReturnTypeFactory.Create)
-            .NullableTypeName;
+            .Map(ReturnTypeRenderer.Render);
 
         return GetNullableTypeName(property) == getterType;
     }
