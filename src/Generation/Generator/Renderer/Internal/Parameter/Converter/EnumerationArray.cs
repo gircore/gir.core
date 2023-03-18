@@ -1,10 +1,10 @@
 ﻿namespace Generator.Renderer.Internal.Parameter;
 
-public class ArrayGLibPointer : ParameterConverter
+internal class EnumerationArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsGLibArray<GirModel.Pointer>();
+        return anyType.IsArray<GirModel.Enumeration>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -17,11 +17,6 @@ public class ArrayGLibPointer : ParameterConverter
         );
     }
 
-    private static string GetNullableTypeName(GirModel.Parameter parameter)
-    {
-        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1);
-    }
-
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
         { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
@@ -29,5 +24,14 @@ public class ArrayGLibPointer : ParameterConverter
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
         _ => ParameterDirection.In()
     };
-}
 
+    private static string GetNullableTypeName(GirModel.Parameter parameter)
+    {
+        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        var type = (GirModel.Enumeration) arrayType.AnyType.AsT0;
+
+        return arrayType.Length is null
+            ? Model.Type.Pointer
+            : Model.ComplexType.GetFullyQualified(type) + "[]";
+    }
+}

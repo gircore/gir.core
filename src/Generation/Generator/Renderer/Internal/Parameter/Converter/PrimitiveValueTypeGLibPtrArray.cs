@@ -1,10 +1,10 @@
 ﻿namespace Generator.Renderer.Internal.Parameter;
 
-public class ArrayGLibByte : ParameterConverter
+public class PrimitiveValueTypeGLibPtrArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsGLibByteArray();
+        return anyType.IsGLibPtrArray<GirModel.PrimitiveValueType>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

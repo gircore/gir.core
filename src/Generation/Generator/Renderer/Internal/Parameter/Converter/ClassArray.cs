@@ -1,10 +1,10 @@
 ﻿namespace Generator.Renderer.Internal.Parameter;
 
-internal class ArrayInterface : ParameterConverter
+internal class ClassArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsArray<GirModel.Interface>();
+        return anyType.IsArray<GirModel.Class>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

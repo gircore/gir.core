@@ -1,6 +1,6 @@
 ﻿namespace Generator.Renderer.Internal.Parameter;
 
-internal class ArrayRecord : ParameterConverter
+internal class RecordArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {

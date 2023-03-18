@@ -1,6 +1,6 @@
 ﻿namespace Generator.Renderer.Internal.ReturnType;
 
-internal class ArrayPrimitiveValueType : ReturnTypeConverter
+internal class PrimitiveValueTypeArray : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {

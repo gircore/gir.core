@@ -1,6 +1,6 @@
 ﻿namespace Generator.Renderer.Internal.Parameter;
 
-public class ArrayGLibPointerPointer : ParameterConverter
+public class PointerGLibPtrArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
