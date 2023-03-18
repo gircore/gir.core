@@ -27,7 +27,7 @@ internal static class Constructors
 {DocComments.Render(constructor.ReturnType)}
 {VersionAttribute.Render(constructor.Version)}
 [DllImport(ImportResolver.Library, EntryPoint = ""{constructor.CIdentifier}"")]
-public static extern {ReturnType.Render(constructor.ReturnType)} {Constructor.GetName(constructor)}({Parameters.Render(constructor.Parameters)}{Error.Render(constructor)});";
+public static extern {ReturnTypeRenderer.Render(constructor.ReturnType)} {Constructor.GetName(constructor)}({Parameters.Render(constructor.Parameters)}{Error.Render(constructor)});";
         }
         catch (Exception e)
         {
