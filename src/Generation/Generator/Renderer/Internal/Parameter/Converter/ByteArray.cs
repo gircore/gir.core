@@ -1,10 +1,10 @@
 ﻿namespace Generator.Renderer.Internal.Parameter;
 
-public class ArrayGLibPrimitiveValueType : ParameterConverter
+public class ByteArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsGLibArray<GirModel.PrimitiveValueType>();
+        return anyType.IsArray<GirModel.Byte>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -12,14 +12,9 @@ public class ArrayGLibPrimitiveValueType : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
-            NullableTypeName: GetNullableTypeName(parameter),
+            NullableTypeName: Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1),
             Name: Model.Parameter.GetName(parameter)
         );
-    }
-
-    private static string GetNullableTypeName(GirModel.Parameter parameter)
-    {
-        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
@@ -30,4 +25,3 @@ public class ArrayGLibPrimitiveValueType : ParameterConverter
         _ => ParameterDirection.In()
     };
 }
-

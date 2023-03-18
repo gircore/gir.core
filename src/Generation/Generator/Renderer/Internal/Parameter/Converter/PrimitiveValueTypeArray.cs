@@ -1,10 +1,10 @@
 ﻿namespace Generator.Renderer.Internal.Parameter;
 
-public class ArrayPointer : ParameterConverter
+public class PrimitiveValueTypeArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsArray<GirModel.Pointer>();
+        return anyType.IsArray<GirModel.PrimitiveValueType>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

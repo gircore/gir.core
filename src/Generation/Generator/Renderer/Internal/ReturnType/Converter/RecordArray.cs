@@ -2,7 +2,7 @@
 
 namespace Generator.Renderer.Internal.ReturnType;
 
-internal class ArrayRecord : ReturnTypeConverter
+internal class RecordArray : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {

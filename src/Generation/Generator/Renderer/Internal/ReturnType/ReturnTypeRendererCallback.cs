@@ -18,10 +18,10 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.Union(),
         new ReturnType.Void(),
 
-        new ReturnType.ArrayString(),
-        new ReturnType.ArrayRecord(),
-        new ReturnType.ArrayClass(),
-        new ReturnType.ArrayPrimitiveValueType(),
+        new ReturnType.StringArray(),
+        new ReturnType.RecordArray(),
+        new ReturnType.ClassArray(),
+        new ReturnType.PrimitiveValueTypeArray(),
     };
 
     public static string Render(GirModel.ReturnType returnType)
