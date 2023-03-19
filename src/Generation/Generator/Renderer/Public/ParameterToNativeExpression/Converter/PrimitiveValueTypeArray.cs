@@ -18,7 +18,7 @@ internal class PrimitiveValueTypeArray : ToNativeParameterConverter
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Primitive value type array with direction != in not yet supported");
 
         //We don't need any conversion for native parameters
-        var parameterName = Parameter.GetName(parameter.Parameter);
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
         parameter.SetSignatureName(parameterName);
         parameter.SetCallName(parameterName);
     }

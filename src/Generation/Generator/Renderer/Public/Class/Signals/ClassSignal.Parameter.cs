@@ -21,7 +21,7 @@ public static partial class ClassSignal
 
     private static string RenderAsSignalParammeter(GirModel.Parameter parameter, int index)
     {
-        var p = RenderableParameterFactory.Create(parameter);
+        var p = ParameterRenderer.Render(parameter);
 
         return $@"public {p.NullableTypeName} {parameter.Name.ToPascalCase()} => Args[{index}].Extract<{p.NullableTypeName}>();";
     }

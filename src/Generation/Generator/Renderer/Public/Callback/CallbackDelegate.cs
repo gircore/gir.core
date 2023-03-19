@@ -30,8 +30,8 @@ public delegate {ReturnTypeRenderer.Render(callback.ReturnType)} {callback.Name}
 
     private static string RenderParameter(GirModel.Parameter parameter)
     {
-        var name = Parameter.GetName(parameter);
-        var typeData = RenderableParameterFactory.Create(parameter);
+        var name = Model.Parameter.GetName(parameter);
+        var typeData = ParameterRenderer.Render(parameter);
 
         return $"{typeData.Direction}{typeData.NullableTypeName} {name}";
     }

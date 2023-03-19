@@ -16,7 +16,7 @@ internal class ClassArray : ToNativeParameterConverter
         if (arrayType.IsPointer)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Pointed class array can not yet be converted to native.");
 
-        var parameterName = Parameter.GetName(parameter.Parameter);
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";
 
         parameter.SetSignatureName(parameterName);

@@ -14,7 +14,7 @@ internal class Interface : ToNativeParameterConverter
         if (parameter.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Interface parameter with direction != in not yet supported");
 
-        var parameterName = Parameter.GetName(parameter.Parameter);
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";
 
         parameter.SetSignatureName(parameterName);

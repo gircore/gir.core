@@ -17,7 +17,7 @@ internal class StringArray : ToNativeParameterConverter
         var arrayType = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
         if (parameter.Parameter.Transfer == GirModel.Transfer.None && arrayType.Length == null)
         {
-            var variableName = Parameter.GetName(parameter.Parameter);
+            var variableName = Model.Parameter.GetName(parameter.Parameter);
             var nativeVariableName = variableName + "Native";
 
             parameter.SetSignatureName(variableName);
@@ -27,7 +27,7 @@ internal class StringArray : ToNativeParameterConverter
         else
         {
             //We don't need any conversion for string[]
-            var variableName = Parameter.GetName(parameter.Parameter);
+            var variableName = Model.Parameter.GetName(parameter.Parameter);
             parameter.SetSignatureName(variableName);
             parameter.SetCallName(variableName);
         }

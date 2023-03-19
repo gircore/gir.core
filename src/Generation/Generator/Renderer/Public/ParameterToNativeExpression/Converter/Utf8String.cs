@@ -22,10 +22,10 @@ internal class Utf8String : ToNativeParameterConverter
         if (parameter.Parameter.Direction == GirModel.Direction.InOut)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: String type with direction=inout not yet supported");
 
-        var parameterName = Parameter.GetName(parameter.Parameter);
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
         parameter.SetSignatureName(parameterName);
 
-        string nativeVariableName = Parameter.GetConvertedName(parameter.Parameter);
+        string nativeVariableName = Model.Parameter.GetConvertedName(parameter.Parameter);
 
         if (parameter.Parameter.Direction == GirModel.Direction.Out)
         {

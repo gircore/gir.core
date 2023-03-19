@@ -14,7 +14,7 @@ internal class Bitfield : ToNativeParameterConverter
         if (parameterData.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: Bitfield with direction != in not yet supported");
 
-        var parameterName = Parameter.GetName(parameterData.Parameter);
+        var parameterName = Model.Parameter.GetName(parameterData.Parameter);
         parameterData.SetSignatureName(parameterName);
         parameterData.SetCallName(parameterName);
     }

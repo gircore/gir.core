@@ -1,10 +1,13 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Public.Parameter;
 
-namespace Generator.Renderer.Public;
-
-internal static class BitfieldParameter
+internal class Bitfield : ParameterConverter
 {
-    public static ParameterTypeData Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.Is<GirModel.Bitfield>();
+    }
+
+    public ParameterTypeData Create(GirModel.Parameter parameter)
     {
         return new ParameterTypeData(
             Direction: GetDirection(parameter),
@@ -15,7 +18,7 @@ internal static class BitfieldParameter
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
         var type = (GirModel.Bitfield) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
-        return ComplexType.GetFullyQualified(type);
+        return Model.ComplexType.GetFullyQualified(type);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
