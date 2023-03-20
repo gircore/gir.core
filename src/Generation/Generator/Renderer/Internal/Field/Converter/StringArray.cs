@@ -1,13 +1,18 @@
 ﻿using Generator.Model;
 
-namespace Generator.Renderer.Internal;
+namespace Generator.Renderer.Internal.Field;
 
-internal static class ArrayRecordFieldFactory
+internal class StringArray : FieldConverter
 {
-    public static RenderableField Create(GirModel.Field field)
+    public bool Supports(GirModel.Field field)
+    {
+        return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.IsArray<GirModel.String>();
+    }
+
+    public RenderableField Convert(GirModel.Field field)
     {
         return new RenderableField(
-            Name: Field.GetName(field),
+            Name: Model.Field.GetName(field),
             Attribute: GetAttribute(field),
             NullableTypeName: GetNullableTypeName(field)
         );
@@ -24,7 +29,6 @@ internal static class ArrayRecordFieldFactory
     private static string GetNullableTypeName(GirModel.Field field)
     {
         var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
-        var type = (GirModel.Record) arrayType.AnyType.AsT0;
-        return Record.GetFullyQualifiedInternalStructName(type) + "[]";
+        return ArrayType.GetName(arrayType);
     }
 }

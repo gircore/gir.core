@@ -1,18 +1,20 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Internal.Field;
 
-namespace Generator.Renderer.Internal;
-
-internal static class ArrayUnionFieldFactory
+internal class EnumerationArray : FieldConverter
 {
-    public static RenderableField Create(GirModel.Field field)
+    public bool Supports(GirModel.Field field)
+    {
+        return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.IsArray<GirModel.Enumeration>();
+    }
+
+    public RenderableField Convert(GirModel.Field field)
     {
         return new RenderableField(
-            Name: Field.GetName(field),
+            Name: Model.Field.GetName(field),
             Attribute: GetAttribute(field),
             NullableTypeName: GetNullableTypeName(field)
         );
     }
-
     private static string? GetAttribute(GirModel.Field field)
     {
         var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
@@ -24,7 +26,6 @@ internal static class ArrayUnionFieldFactory
     private static string GetNullableTypeName(GirModel.Field field)
     {
         var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
-        var type = (GirModel.Union) arrayType.AnyType.AsT0;
-        return Union.GetFullyQualifiedInternalStructName(type) + "[]";
+        return Model.ArrayType.GetName(arrayType);
     }
 }
