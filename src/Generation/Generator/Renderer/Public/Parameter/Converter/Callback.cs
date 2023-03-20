@@ -1,10 +1,13 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Public.Parameter;
 
-namespace Generator.Renderer.Public;
-
-internal static class UnionParameter
+internal class Callback : ParameterConverter
 {
-    public static ParameterTypeData Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.Is<GirModel.Callback>();
+    }
+
+    public ParameterTypeData Create(GirModel.Parameter parameter)
     {
         return new ParameterTypeData(
             Direction: GetDirection(parameter),
@@ -14,8 +17,8 @@ internal static class UnionParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Union) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
-        return ComplexType.GetFullyQualified(type);
+        var type = (GirModel.Callback) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        return Model.ComplexType.GetFullyQualified(type) + Nullable.Render(parameter);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

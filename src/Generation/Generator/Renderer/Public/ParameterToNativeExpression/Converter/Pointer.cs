@@ -14,7 +14,7 @@ internal class Pointer : ToNativeParameterConverter
         if (parameter.IsClosure)
         {
             //User data is not used
-            parameter.SetSignatureName(Parameter.GetName(parameter.Parameter));
+            parameter.SetSignatureName(Model.Parameter.GetName(parameter.Parameter));
             parameter.SetCallName("IntPtr.Zero");
         }
         else

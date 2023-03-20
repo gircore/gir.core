@@ -66,7 +66,7 @@ public static {ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName
             if (parameter.IsDestroyNotify)
                 continue;
 
-            var typeData = RenderableParameterFactory.Create(parameter.Parameter);
+            var typeData = ParameterRenderer.Render(parameter.Parameter);
             result.Add($"{typeData.Direction}{typeData.NullableTypeName} {parameter.GetSignatureName()}");
         }
 

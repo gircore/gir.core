@@ -1,10 +1,13 @@
-﻿using Generator.Model;
+﻿namespace Generator.Renderer.Public.Parameter;
 
-namespace Generator.Renderer.Public;
-
-internal static class ArrayClassParameter
+internal class RecordArray : ParameterConverter
 {
-    public static ParameterTypeData Create(GirModel.Parameter parameter)
+    public bool Supports(GirModel.AnyType anyType)
+    {
+        return anyType.IsArray<GirModel.Record>();
+    }
+
+    public ParameterTypeData Create(GirModel.Parameter parameter)
     {
         return new ParameterTypeData(
             Direction: GetDirection(parameter),
@@ -14,8 +17,8 @@ internal static class ArrayClassParameter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var cls = (GirModel.Class) parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0;
-        return ComplexType.GetFullyQualified(cls) + "[]";
+        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        return Model.ComplexType.GetFullyQualified((GirModel.Record) arrayType.AnyType.AsT0) + "[]";
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

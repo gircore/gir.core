@@ -10,7 +10,7 @@ internal class InterfaceArray : ToNativeParameterConverter
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
-        var parameterName = Parameter.GetName(parameter.Parameter);
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var nativevariableName = parameterName + "Native";
 
         parameter.SetSignatureName(parameterName);

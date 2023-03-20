@@ -72,7 +72,7 @@ public static {newKeyWord}{cls.Name} {Constructor.GetName(constructor)}({RenderP
             if (parameter.IsDestroyNotify)
                 continue;
 
-            var typeData = RenderableParameterFactory.Create(parameter.Parameter);
+            var typeData = ParameterRenderer.Render(parameter.Parameter);
             result.Add($"{typeData.Direction}{typeData.NullableTypeName} {parameter.GetSignatureName()}");
         }
 

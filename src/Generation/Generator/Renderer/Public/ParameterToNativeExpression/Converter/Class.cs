@@ -17,7 +17,7 @@ internal class Class : ToNativeParameterConverter
         if (!parameter.Parameter.IsPointer)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: class parameter which is no pointer can not be converted to native");
 
-        var parameterName = Parameter.GetName(parameter.Parameter);
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var callParameter = parameter.Parameter.Nullable
             ? parameterName + "?.Handle ?? IntPtr.Zero"
             : parameterName + ".Handle";

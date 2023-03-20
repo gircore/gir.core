@@ -1,5 +1,4 @@
 ﻿using System;
-using GirModel;
 
 namespace Generator.Renderer.Public;
 
@@ -10,7 +9,7 @@ public class ParameterToNativeData
     private string? _expression;
     private string? _postCallExpression;
 
-    public Parameter Parameter { get; }
+    public GirModel.Parameter Parameter { get; }
 
     public bool IsClosure { get; internal set; }
     public bool IsDestroyNotify { get; internal set; }

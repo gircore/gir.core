@@ -37,7 +37,7 @@ internal class Callback : ToNativeParameterConverter
     private static void FillNotifiedScope(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> parameters)
     {
         var callback = (GirModel.Callback) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
-        var parameterName = Parameter.GetName(parameter.Parameter);
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var handlerNameVariable = parameterName + "Handler";
 
         if (parameter.Parameter.Destroy is null)

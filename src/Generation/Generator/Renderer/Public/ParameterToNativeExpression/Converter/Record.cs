@@ -17,7 +17,7 @@ internal class Record : ToNativeParameterConverter
         if (!parameter.Parameter.IsPointer)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Not pointed record types can not yet be converted to native");
 
-        var parameterName = Parameter.GetName(parameter.Parameter);
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var variableName = parameter.Parameter.Nullable
             ? parameterName + "?.Handle ?? " + Model.Record.GetFullyQualifiedInternalNullHandleInstance((GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0)
             : parameterName + ".Handle";
