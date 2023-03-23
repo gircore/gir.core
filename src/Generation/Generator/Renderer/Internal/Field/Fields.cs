@@ -1,20 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Generator.Renderer.Internal;
 
 internal static class Fields
 {
+    private static readonly List<Field.FieldConverter> converters = new()
+    {
+        new Field.Bitfield(),
+        new Field.Callback(),
+        new Field.CallbackType(),
+        new Field.Class(),
+        new Field.ClassArray(),
+        new Field.Enumeration(),
+        new Field.EnumerationArray(),
+        new Field.Pointer(),
+        new Field.PointerArray(),
+        new Field.PrimitiveValueType(),
+        new Field.PrimitiveValueTypeArray(),
+        new Field.Record(),
+        new Field.RecordArray(),
+        new Field.String(),
+        new Field.StringArray(),
+        new Field.Union(),
+        new Field.UnionArray(),
+    };
+
     public static string Render(IEnumerable<GirModel.Field> fields)
     {
-        return fields
-            .Select(RenderableFieldFactory.Create)
-            .Select(Render)
-            .Join(Environment.NewLine);
+        var fieldList = new List<string>();
+
+        foreach (var field in fields)
+            fieldList.Add(Render(field));
+
+        return fieldList.Join(System.Environment.NewLine);
     }
 
-    private static string Render(RenderableField field)
+    public static string Render(GirModel.Field field)
+    {
+        foreach (var converter in converters)
+            if (converter.Supports(field))
+                return Render(converter.Convert(field));
+
+        throw new System.Exception($"Internal field \"{field.Name}\" of type {field.AnyTypeOrCallback} can not be rendered");
+    }
+
+    private static string Render(Field.RenderableField field)
     {
         return @$"{field.Attribute} public {field.NullableTypeName} {field.Name};";
     }

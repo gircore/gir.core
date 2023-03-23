@@ -31,8 +31,6 @@ public partial struct {Union.GetInternalStructName(union)}
 
     private static string RenderField(GirModel.Field field)
     {
-        var renderableField = RenderableFieldFactory.Create(field);
-
-        return @$"[FieldOffset(0)]{renderableField.Attribute} public {renderableField.NullableTypeName} {renderableField.Name};";
+        return @$"[FieldOffset(0)]{Fields.Render(field)}";
     }
 }
