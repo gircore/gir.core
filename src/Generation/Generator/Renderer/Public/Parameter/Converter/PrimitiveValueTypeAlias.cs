@@ -9,9 +9,11 @@ internal class PrimitiveValueTypeAlias : ParameterConverter
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
     {
+        var alias = (GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+
         return new ParameterTypeData(
             Direction: GetDirection(parameter),
-            NullableTypeName: Model.Type.GetName(((GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT0).Type)
+            NullableTypeName: Model.Namespace.GetPublicName(alias.Namespace) + "." + Model.Type.GetName(alias)
         );
     }
 

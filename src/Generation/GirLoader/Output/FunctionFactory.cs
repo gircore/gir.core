@@ -56,7 +56,7 @@ internal class FunctionFactory
     public Function CreateGetTypeFunction(string getTypeMethodName, Repository repository)
     {
         ReturnValue returnValue = _returnValueFactory.Create(
-            ctype: "gsize",
+            ctype: "GType",
             transfer: Transfer.None,
             nullable: false
         );

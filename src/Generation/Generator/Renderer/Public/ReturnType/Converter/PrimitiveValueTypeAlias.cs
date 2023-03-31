@@ -6,9 +6,11 @@ internal class PrimitiveValueTypeAlias : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
+        var alias = (GirModel.Alias) returnType.AnyType.AsT0;
+
         var nullableTypeName = returnType.IsPointer
             ? Type.Pointer
-            : Type.GetName(((GirModel.Alias) returnType.AnyType.AsT0).Type);
+            : $"{Namespace.GetPublicName(alias.Namespace)}.{Type.GetName(alias)}";
 
         return new RenderableReturnType(nullableTypeName);
     }

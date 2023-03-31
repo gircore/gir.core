@@ -4,6 +4,7 @@ gobject_dep = dependency('gobject-2.0', version: '>= 2.66.0')
 
 header_files = [
   'girtest.h',
+  'girtest-alias-tester.h',
   'girtest-class-tester.h',
   'girtest-constant-tester.h',
   'girtest-error-tester.h',
@@ -15,6 +16,7 @@ header_files = [
 ]
 
 source_files = [
+  'girtest-alias-tester.c',
   'girtest-class-tester.c',
   'girtest-error-tester.c',
   'girtest-primitive-value-type-tester.c',

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Generator.Model;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
@@ -17,13 +16,54 @@ internal class PrimitiveValueTypeAlias : ToNativeParameterConverter
         if (parameter.Parameter is { IsPointer: true, Direction: GirModel.Direction.In })
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Pointed primitive value types with direction == in can not yet be converted to native");
 
-        // Add the direction keyword, e.g. ref or out, when calling the native function.
-        var direction = GetDirection(parameter.Parameter);
+        var direcion = parameter.Parameter.Direction;
+        switch (direcion)
+        {
+            case GirModel.Direction.In:
+                In(parameter);
+                break;
+            case GirModel.Direction.InOut:
+                InOut(parameter);
+                break;
+            case GirModel.Direction.Out:
+                Out(parameter);
+                break;
+        }
+    }
 
-        //We don't need any conversion for native parameters
+    private static void In(ParameterToNativeData parameter)
+    {
+        var direction = GetDirection(parameter.Parameter);
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
+
         parameter.SetSignatureName(parameterName);
         parameter.SetCallName(direction + parameterName);
+    }
+
+    private static void InOut(ParameterToNativeData parameter)
+    {
+        var alias = (GirModel.Alias) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var direction = GetDirection(parameter.Parameter);
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
+        var parameterNameNative = parameterName + "Native";
+
+        parameter.SetSignatureName(parameterName);
+        parameter.SetExpression($"var {parameterNameNative} = ({Model.Type.GetName(alias.Type)}) {parameterName};");
+        parameter.SetCallName(direction + parameterNameNative);
+        parameter.SetPostCallExpression($"{parameterName} = new {Model.Namespace.GetPublicName(alias.Namespace)}.{alias.Name}({parameterNameNative});");
+    }
+
+    private static void Out(ParameterToNativeData parameter)
+    {
+        var alias = (GirModel.Alias) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var direction = GetDirection(parameter.Parameter);
+
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
+        var parameterNameNative = parameterName + "Native";
+
+        parameter.SetSignatureName(parameterName);
+        parameter.SetCallName($"{direction}var {parameterNameNative}");
+        parameter.SetPostCallExpression($"{parameterName} = new {Model.Namespace.GetPublicName(alias.Namespace)}.{alias.Name}({parameterNameNative});");
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
