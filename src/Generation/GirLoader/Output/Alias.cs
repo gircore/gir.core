@@ -1,26 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace GirLoader.Output;
 
-public class Alias
+public partial class Alias : Type
 {
     public string Name { get; }
-    public string CType { get; }
+    public new string CType => base.CType ?? throw new Exception($"Alias {Name} is missing a ctype");
     public Repository Repository { get; }
     public TypeReference TypeReference { get; }
 
-    public Alias(Repository repository, string name, string cType, TypeReference typeReference)
+    public Alias(Repository repository, string name, string cType, TypeReference typeReference) : base(cType)
     {
         TypeReference = typeReference;
         Repository = repository;
         Name = name;
-        CType = cType;
     }
 
     public override string ToString()
         => CType;
 
-    internal bool Matches(TypeReference typeReference)
+    internal override bool Matches(TypeReference typeReference)
     {
         if (typeReference.CTypeReference?.CType is not null)
             return typeReference.CTypeReference.CType == CType;//Prefer CType

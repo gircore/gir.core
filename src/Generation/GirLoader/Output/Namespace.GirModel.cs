@@ -8,6 +8,7 @@ public partial class Namespace : GirModel.Namespace
     string GirModel.Namespace.Version => Version;
     string? GirModel.Namespace.SharedLibrary => SharedLibrary;
 
+    IEnumerable<GirModel.Alias> GirModel.Namespace.Aliases => Aliases;
     IEnumerable<GirModel.Enumeration> GirModel.Namespace.Enumerations => Enumerations;
     IEnumerable<GirModel.Bitfield> GirModel.Namespace.Bitfields => Bitfields;
     IEnumerable<GirModel.Record> GirModel.Namespace.Records => Records;

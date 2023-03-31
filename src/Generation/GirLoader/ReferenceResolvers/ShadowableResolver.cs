@@ -7,7 +7,7 @@ namespace GirLoader;
 
 internal static class ShadowableResolver
 {
-    public static void ResolceShadowReferences(this IEnumerable<ShadowableProvider> shadowableProviders)
+    public static void Resolve(IEnumerable<ShadowableProvider> shadowableProviders)
     {
         foreach (var shadowableProvider in shadowableProviders)
         {

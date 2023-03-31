@@ -5,7 +5,7 @@ using Generator.Model;
 
 namespace Generator.Renderer.Public;
 
-internal static class Constants
+internal static class ConstantsRenderer
 {
     public static string Render(IEnumerable<GirModel.Constant> constants)
     {
@@ -30,10 +30,18 @@ public partial class Constants
 
     private static string Render(GirModel.Constant constant)
     {
-        var renderableConstant = RenderableConstantFactory.Create(constant);
+        try
+        {
+            var renderableConstant = ConstantRenderer.Render(constant);
 
-        return @$"
+            return @$"
 {PlatformSupportAttribute.Render(constant as GirModel.PlatformDependent)}
 public const {renderableConstant.Type} {renderableConstant.Name} = {renderableConstant.Value};";
+        }
+        catch (Exception ex)
+        {
+            Log.Warning($"Did not generate constant: {ex.Message}");
+            return string.Empty;
+        }
     }
 }

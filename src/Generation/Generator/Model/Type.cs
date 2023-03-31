@@ -28,6 +28,8 @@ internal static class Type
             GirModel.NativeUnsignedInteger => "nuint",
             GirModel.Pointer => Pointer,
             GirModel.UnsignedPointer => "UIntPtr",
+            GirModel.Alias { Type: GirModel.PrimitiveType p } a => GetName(p),
+            GirModel.Alias { Type: GirModel.ComplexType c } => c.Name,
 
             _ => throw new Exception($"Can't convert type {type} into a code representation.")
         };
