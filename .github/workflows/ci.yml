@@ -41,6 +41,10 @@ jobs:
         shell: ${{ matrix.shell }}
 
     steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+        shell: bash
+
       - name: Checkout with submodules
         uses: actions/checkout@v3
         with:
