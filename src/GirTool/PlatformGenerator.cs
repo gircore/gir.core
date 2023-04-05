@@ -15,6 +15,7 @@ internal static class PlatformGenerator
     public static void Generate(Namespace @namespace, string path)
     {
         Generator.Framework.Generate(@namespace, path);
+        Generator.Aliases.Generate(@namespace.Aliases, path);
         Generator.Classes.Generate(@namespace.Classes, path);
         Generator.Enumerations.Generate(@namespace.Enumerations, path);
         Generator.Bitfields.Generate(@namespace.Bitfields, path);

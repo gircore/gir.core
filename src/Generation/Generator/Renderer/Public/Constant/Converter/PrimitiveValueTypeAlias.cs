@@ -14,7 +14,9 @@ internal class PrimitiveValueTypeAlias : ConstantsConverter
         if (!IsValidValue(constant))
             throw new Exception($"Can't render primitive value type alias constant {constant.Name} of type {constant.Type} and with value {constant.Value} as the value could not be parsed.");
 
-        var typeName = Model.Type.GetName(constant.Type);
+        //Constants must be a primitive type. The wrapper structs of aliases are not constant.
+        var alias = (GirModel.Alias) constant.Type;
+        var typeName = Model.Type.GetName(alias.Type);
 
         return new RenderableConstant(
             Type: typeName,

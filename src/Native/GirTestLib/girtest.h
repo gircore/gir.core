@@ -1,6 +1,7 @@
 #pragma once
 
 // Simple C library to test the generated bindings.
+#include "girtest-alias-tester.h"
 #include "girtest-class-tester.h"
 #include "girtest-constant-tester.h"
 #include "girtest-error-tester.h"

@@ -17,7 +17,8 @@ internal class PrimitiveValueTypeArrayAlias : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1, true);
+        var alias = (GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0;
+        return $"{Model.Namespace.GetPublicName(alias.Namespace)}.{Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1)}";
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

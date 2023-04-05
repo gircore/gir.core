@@ -1,18 +1,8 @@
-﻿using System.Runtime.InteropServices;
-using GLib.Internal;
+﻿namespace GObject;
 
-namespace GObject;
-
-[StructLayout(LayoutKind.Explicit, Size = 8)]
-public struct Type
+public partial struct Type
 {
-    #region Fields
-
-    [FieldOffset(0)] private readonly nuint _value;
-
     public nuint Value => _value;
-
-    #endregion
 
     #region Statics
 
@@ -41,16 +31,6 @@ public struct Type
 
     #endregion Statics
 
-    #region Constructors
-
-    public Type(nuint value)
-    {
-        _value = value;
-    }
-
-    #endregion
-
-    // Print out the name of the GType
     public override string ToString()
     {
         return Internal.Functions.TypeName(_value).ConvertToString();

@@ -18,4 +18,6 @@ internal static class Element
     }
 
     public static K Map<T, K>(this T value, Func<T, K> f) => f(value);
+
+    public static bool In<T>(this T value, params T[] elements) => elements.Contains(value);
 }
