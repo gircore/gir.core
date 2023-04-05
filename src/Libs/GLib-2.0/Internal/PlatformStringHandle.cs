@@ -26,9 +26,9 @@ public abstract class NullablePlatformStringHandle : SafeHandle
         if (IsInvalid)
             return null;
 
-        NonNullableUtf8StringOwnedHandle result = FilenameToUtf8(handle, -1, out _, out _, out var error);
+        var fileName = FilenameToUtf8(handle, -1, out _, out _, out var error);
         GLib.Error.ThrowOnError(error);
-        return result.ConvertToString();
+        return fileName.ConvertToString();
     }
 }
 
@@ -36,6 +36,29 @@ public class NullablePlatformStringUnownedHandle : NullablePlatformStringHandle
 {
     private NullablePlatformStringUnownedHandle() : base(false)
     {
+    }
+
+    // Manual binding since the generated binding returns an owned handle
+    [DllImport(ImportResolver.Library, EntryPoint = "g_filename_from_utf8")]
+    private static extern IntPtr FilenameFromUtf8(NonNullableUtf8StringHandle utf8string, long len, out nuint bytesRead, out nuint bytesWritten, out ErrorOwnedHandle error);
+
+    /// <summary>
+    /// Creates a nullable platform string handle for the given string.
+    /// </summary>
+    /// <param name="s">The string which should be used to create the handle.</param>
+    /// <returns>A nullable platform string handle</returns>
+    /// <exception cref="GLib.GException">Thrown if the string could not be converted into a platform string.</exception>
+    public static NullablePlatformStringUnownedHandle Create(string? s)
+    {
+        var handle = new NullablePlatformStringUnownedHandle();
+        if (s is null)
+            return handle;
+
+        var fileName = FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error);
+        GLib.Error.ThrowOnError(error);
+
+        handle.SetHandle(fileName);
+        return handle;
     }
 
     protected override bool ReleaseHandle()
@@ -63,18 +86,19 @@ public class NullablePlatformStringOwnedHandle : NullablePlatformStringHandle
     public static NullablePlatformStringOwnedHandle Create(string? s)
     {
         var handle = new NullablePlatformStringOwnedHandle();
-        if (s is not null)
-        {
-            handle.SetHandle(FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error));
-            GLib.Error.ThrowOnError(error);
-        }
+        if (s is null)
+            return handle;
 
+        var fileName = FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error);
+        GLib.Error.ThrowOnError(error);
+
+        handle.SetHandle(fileName);
         return handle;
     }
 
     protected override bool ReleaseHandle()
     {
-        GLib.Internal.Functions.Free(handle);
+        Functions.Free(handle);
         return true;
     }
 }
@@ -99,9 +123,9 @@ public abstract class NonNullablePlatformStringHandle : SafeHandle
         if (IsInvalid)
             throw new NullHandleException($"{nameof(NonNullablePlatformStringHandle)} should not have a null handle");
 
-        NonNullableUtf8StringOwnedHandle result = GLib.Internal.Functions.FilenameToUtf8(this, -1, out _, out _, out var error);
+        var fileName = Functions.FilenameToUtf8(this, -1, out _, out _, out var error);
         GLib.Error.ThrowOnError(error);
-        return result.ConvertToString();
+        return fileName.ConvertToString();
     }
 }
 
@@ -109,6 +133,27 @@ public class NonNullablePlatformStringUnownedHandle : NonNullablePlatformStringH
 {
     private NonNullablePlatformStringUnownedHandle() : base(false)
     {
+    }
+
+    // Manual binding since the generated binding returns an owned handle
+    [DllImport(ImportResolver.Library, EntryPoint = "g_filename_from_utf8")]
+    private static extern IntPtr FilenameFromUtf8(NonNullableUtf8StringHandle utf8string, long len, out nuint bytesRead, out nuint bytesWritten, out ErrorOwnedHandle error);
+
+    /// <summary>
+    /// Creates a non nullable platform string handle for the given string.
+    /// </summary>
+    /// <param name="s">The string which should be used to create the handle.</param>
+    /// <returns>A non nullable utf8 string handle</returns>
+    /// <exception cref="GLib.GException">Thrown if the string could not be converted into a platform string.</exception>
+    public static NonNullablePlatformStringUnownedHandle Create(string s)
+    {
+        var fileName = FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error);
+        GLib.Error.ThrowOnError(error);
+
+        var handle = new NonNullablePlatformStringUnownedHandle();
+        handle.SetHandle(fileName);
+
+        return handle;
     }
 
     protected override bool ReleaseHandle()
@@ -135,14 +180,14 @@ public class NonNullablePlatformStringOwnedHandle : NonNullablePlatformStringHan
     /// <exception cref="GLib.GException">Thrown if the string could not be converted into a platform string.</exception>
     public static NonNullablePlatformStringOwnedHandle Create(string s)
     {
-        var handle = GLib.Internal.Functions.FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error);
+        var handle = Functions.FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error);
         GLib.Error.ThrowOnError(error);
         return handle;
     }
 
     protected override bool ReleaseHandle()
     {
-        GLib.Internal.Functions.Free(handle);
+        Functions.Free(handle);
         return true;
     }
 }

@@ -14,14 +14,26 @@ G_DECLARE_FINAL_TYPE(GirTestStringTester, girtest_string_tester,
 int
 girtest_string_tester_utf8_in(const gchar *s);
 
+void
+girtest_string_tester_utf8_in_transfer_full(gchar *s);
+
 int
 girtest_string_tester_utf8_in_nullable(const gchar *s);
+
+void
+girtest_string_tester_utf8_in_nullable_transfer_full(gchar *s);
 
 int
 girtest_string_tester_filename_in(const gchar *s);
 
+void
+girtest_string_tester_filename_in_transfer_full(gchar *s);
+
 int
 girtest_string_tester_filename_in_nullable(const gchar *s);
+
+void
+girtest_string_tester_filename_in_nullable_transfer_full(gchar *s);
 
 gchar *
 girtest_string_tester_utf8_return_transfer_full(const gchar *s);

@@ -66,7 +66,7 @@ public static class StringHelper
             return IntPtr.Zero;
 
         var bytes = Encoding.UTF8.GetBytes(str);
-        IntPtr alloc = GLib.Internal.Functions.Malloc((uint) (bytes.Length + 1));
+        IntPtr alloc = Functions.Malloc((uint) (bytes.Length + 1));
         Marshal.Copy(bytes, 0, alloc, bytes.Length);
         Marshal.WriteByte(alloc, bytes.Length, 0);
 

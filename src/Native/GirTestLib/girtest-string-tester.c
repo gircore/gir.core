@@ -38,6 +38,18 @@ girtest_string_tester_utf8_in(const gchar *s)
 }
 
 /**
+ * girtest_string_tester_utf8_in_transfer_full:
+ * @s: (in) (transfer full): Pointer to the start of a UTF-8 encoded string
+ *
+ * Test for a nullable UTF-8 string parameter which is freed immediately.
+ */
+void
+girtest_string_tester_utf8_in_transfer_full(gchar *s)
+{
+    g_free(s);
+}
+
+/**
  * girtest_string_tester_utf8_in_nullable:
  * @s: (in) (nullable): Pointer to the start of a UTF-8 encoded string, or NULL.
  *
@@ -49,6 +61,19 @@ int
 girtest_string_tester_utf8_in_nullable(const gchar *s)
 {
     return s ? girtest_string_tester_utf8_in(s) : -1;
+}
+
+/**
+ * girtest_string_tester_utf8_in_nullable_transfer_full:
+ * @s: (in) (nullable) (transfer full): Pointer to the start of a UTF-8 encoded string, or NULL.
+ *
+ * Test for a nullable UTF-8 string parameter which is freed immediately if not NULL.
+ */
+void
+girtest_string_tester_utf8_in_nullable_transfer_full(gchar *s)
+{
+    if(s)
+        g_free(s);
 }
 
 /**
@@ -73,6 +98,22 @@ girtest_string_tester_filename_in(const gchar *s)
 }
 
 /**
+ * girtest_string_tester_filename_in_transfer_full:
+ * @s: (in) (type filename) (transfer full): A string in the filename encoding.
+ *
+ * Test for a filename string parameter which is freed immediately.
+ */
+void
+girtest_string_tester_filename_in_transfer_full(gchar *s)
+{
+    GError *error = NULL;
+    gchar *utf8 = g_filename_to_utf8(s, -1, NULL, NULL, &error);
+    g_assert_no_error(error);
+    g_free(utf8);
+    g_free(s);
+}
+
+/**
  * girtest_string_tester_filename_in_nullable:
  * @s: (in) (type filename) (nullable): A string in the filename encoding, or NULL.
  *
@@ -84,6 +125,25 @@ int
 girtest_string_tester_filename_in_nullable(const gchar *s)
 {
     return s ? girtest_string_tester_filename_in(s) : -1;
+}
+
+/**
+ * girtest_string_tester_filename_in_nullable_transfer_full:
+ * @s: (in) (nullable) (type filename) (transfer full): A string in the filename encoding, or NULL.
+ *
+ * Test for a filename string parameter which is freed immediately if not NULL
+ */
+void
+girtest_string_tester_filename_in_nullable_transfer_full(gchar *s)
+{    
+    if(s)
+    {
+        GError *error = NULL;
+        gchar *utf8 = g_filename_to_utf8(s, -1, NULL, NULL, &error);
+        g_assert_no_error(error);
+        g_free(utf8);
+        g_free(s);
+    }
 }
 
 /**

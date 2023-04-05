@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Generator.Model;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
@@ -40,9 +39,14 @@ internal class Utf8String : ToNativeParameterConverter
         }
         else
         {
-            string ownedHandleTypeName = parameter.Parameter.Nullable
-                ? Model.Utf8String.GetInternalNullableOwnedHandleName()
-                : Model.Utf8String.GetInternalNonNullableOwnedHandleName();
+            var ownedHandleTypeName = parameter.Parameter switch
+            {
+                { Nullable: true, Transfer: GirModel.Transfer.Full } => Model.Utf8String.GetInternalNullableUnownedHandleName(),
+                { Nullable: true, Transfer: GirModel.Transfer.None } => Model.Utf8String.GetInternalNullableOwnedHandleName(),
+                { Nullable: false, Transfer: GirModel.Transfer.Full } => Model.Utf8String.GetInternalNonNullableUnownedHandleName(),
+                { Nullable: false, Transfer: GirModel.Transfer.None } => Model.Utf8String.GetInternalNonNullableOwnedHandleName(),
+                _ => throw new Exception($"Parameter {parameter.Parameter.Name} of type {parameter.Parameter.AnyTypeOrVarArgs} not supported")
+            };
 
             parameter.SetExpression($"using var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
             parameter.SetCallName(nativeVariableName);

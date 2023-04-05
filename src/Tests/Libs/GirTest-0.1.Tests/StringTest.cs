@@ -12,10 +12,29 @@ public class StringTest : Test
     private const string TestString = "a\u00f6bc";
 
     [TestMethod]
+    public void InUtf8ParameterWithFullTransferDoNotDoubleFree()
+    {
+        //In case a double free bug occurs the runtime crashes and the "dotnet test" command returns an error
+
+        StringTester.Utf8InTransferFull(TestString);
+        StringTester.Utf8InNullableTransferFull(TestString);
+        StringTester.Utf8InNullableTransferFull(null);
+    }
+
+    [TestMethod]
+    public void InFilenameParameterWithFullTransferDoNotDoubleFree()
+    {
+        //In case a double free bug occurs the runtime crashes and the "dotnet test" command returns an error
+
+        StringTester.FilenameInTransferFull(TestString);
+        StringTester.FilenameInNullableTransferFull(TestString);
+        StringTester.FilenameInNullableTransferFull(null);
+    }
+
+    [TestMethod]
     public void InUtf8ParameterShouldSucceed()
     {
         StringTester.Utf8In(TestString).Should().Be(TestString.Length);
-
         StringTester.Utf8InNullable(TestString).Should().Be(TestString.Length);
         StringTester.Utf8InNullable(null).Should().Be(-1);
     }
