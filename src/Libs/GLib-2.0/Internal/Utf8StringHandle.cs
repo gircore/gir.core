@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace GLib.Internal;
 
@@ -27,6 +26,18 @@ public class NullableUtf8StringUnownedHandle : NullableUtf8StringHandle
 {
     private NullableUtf8StringUnownedHandle() : base(false)
     {
+    }
+
+    /// <summary>
+    /// Creates a nullable utf8 string handle for the given string.
+    /// </summary>
+    /// <param name="s">The string which should be used to create the handle.</param>
+    /// <returns>A nullable utf8 string handle</returns>
+    public static NullableUtf8StringUnownedHandle Create(string? s)
+    {
+        var alloc = new NullableUtf8StringUnownedHandle();
+        alloc.SetHandle(StringHelper.StringToPtrUtf8(s));
+        return alloc;
     }
 
     protected override bool ReleaseHandle()
@@ -91,6 +102,18 @@ public class NonNullableUtf8StringUnownedHandle : NonNullableUtf8StringHandle
 {
     private NonNullableUtf8StringUnownedHandle() : base(false)
     {
+    }
+
+    /// <summary>
+    /// Creates a non nullable utf8 string handle for the given string.
+    /// </summary>
+    /// <param name="s">The string which should be used to create the handle.</param>
+    /// <returns>A non nullable utf8 string handle</returns>
+    public static NonNullableUtf8StringUnownedHandle Create(string s)
+    {
+        var alloc = new NonNullableUtf8StringUnownedHandle();
+        alloc.SetHandle(StringHelper.StringToPtrUtf8(s));
+        return alloc;
     }
 
     protected override bool ReleaseHandle()

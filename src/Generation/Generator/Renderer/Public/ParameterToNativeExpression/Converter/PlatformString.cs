@@ -40,9 +40,14 @@ internal class PlatformString : ToNativeParameterConverter
         }
         else
         {
-            string ownedHandleTypeName = parameter.Parameter.Nullable
-                ? Model.PlatformString.GetInternalNullableOwnedHandleName()
-                : Model.PlatformString.GetInternalNonNullableOwnedHandleName();
+            var ownedHandleTypeName = parameter.Parameter switch
+            {
+                { Nullable: true, Transfer: GirModel.Transfer.Full } => Model.PlatformString.GetInternalNullableUnownedHandleName(),
+                { Nullable: true, Transfer: GirModel.Transfer.None } => Model.PlatformString.GetInternalNullableOwnedHandleName(),
+                { Nullable: false, Transfer: GirModel.Transfer.Full } => Model.PlatformString.GetInternalNonNullableUnownedHandleName(),
+                { Nullable: false, Transfer: GirModel.Transfer.None } => Model.PlatformString.GetInternalNonNullableOwnedHandleName(),
+                _ => throw new Exception($"Parameter {parameter.Parameter.Name} of type {parameter.Parameter.AnyTypeOrVarArgs} not supported")
+            };
 
             parameter.SetExpression($"using var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
             parameter.SetCallName(nativeVariableName);
