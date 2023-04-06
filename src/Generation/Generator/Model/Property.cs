@@ -8,10 +8,23 @@ namespace Generator.Model;
 internal static partial class Property
 {
     private static readonly HashSet<GirModel.Property> ImplementExplicitly = new();
+    private static readonly Dictionary<GirModel.Property, string> FixedNames = new();
 
     public static string GetName(GirModel.Property property)
     {
+        //Does not need a lock as it is called only after all insertions are done.
+        if (FixedNames.TryGetValue(property, out var value))
+            return value;
+
         return property.Name.ToPascalCase();
+    }
+
+    internal static void SetName(GirModel.Property property, string name)
+    {
+        lock (FixedNames)
+        {
+            FixedNames[property] = name;
+        }
     }
 
     public static string GetDescriptorName(GirModel.Property property)

@@ -27,4 +27,12 @@ public class PropertyTest : Test
         obj.StringValue = null;
         obj.StringValue.Should().BeNull();
     }
+
+    [TestMethod]
+    public void PropertyNamedLikeClass()
+    {
+        //Properties named like a class are suffixed with an underscore.
+        var obj = PropertyTester.New();
+        obj.PropertyTester_ = "test";
+    }
 }
