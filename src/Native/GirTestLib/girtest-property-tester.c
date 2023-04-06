@@ -9,6 +9,7 @@
 typedef enum
 {
     PROP_STRING_VALUE = 1,
+    PROP_PROPERTY_TESTER = 2,
     N_PROPERTIES
 } PropertyTesterProperty;
 
@@ -17,6 +18,7 @@ struct _GirTestPropertyTester
     GObject parent_instance;
 
     gchar *string_value;
+    gchar *property_tester;
 };
 
 G_DEFINE_TYPE(GirTestPropertyTester, girtest_property_tester, G_TYPE_OBJECT)
@@ -37,6 +39,9 @@ girtest_property_tester_get_property (GObject    *object,
     case PROP_STRING_VALUE:
         g_value_set_string (value, self->string_value);
         break;
+    case PROP_PROPERTY_TESTER:
+        g_value_set_string (value, self->property_tester);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -54,6 +59,9 @@ girtest_property_tester_set_property (GObject      *object,
     {
     case PROP_STRING_VALUE:
         self->string_value = g_value_dup_string (value);
+        break;
+    case PROP_PROPERTY_TESTER:
+        self->property_tester = g_value_dup_string (value);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -77,6 +85,13 @@ girtest_property_tester_class_init(GirTestPropertyTesterClass *class)
       g_param_spec_string ("string-value",
                            "String Value",
                            "A string value",
+                           NULL  /* default value */,
+                           G_PARAM_READWRITE);
+
+    properties[PROP_PROPERTY_TESTER] =
+      g_param_spec_string ("property-tester",
+                           "Property Tester",
+                           "A string value named like it's class",
                            NULL  /* default value */,
                            G_PARAM_READWRITE);
 
