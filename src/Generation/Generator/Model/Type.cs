@@ -34,4 +34,14 @@ internal static class Type
             _ => throw new Exception($"Can't convert type {type} into a code representation.")
         };
     }
+
+    public static string GetPublicNameFullyQuallified(GirModel.Type type)
+    {
+        return type switch
+        {
+            GirModel.Alias a => $"{Namespace.GetPublicName(a.Namespace)}.{GetName(type)}",
+            GirModel.ComplexType ct => $"{Namespace.GetPublicName(ct.Namespace)}.{GetName(type)}",
+            _ => GetName(type)
+        };
+    }
 }

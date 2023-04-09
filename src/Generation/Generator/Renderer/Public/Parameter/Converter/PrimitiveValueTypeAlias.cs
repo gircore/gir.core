@@ -21,6 +21,7 @@ internal class PrimitiveValueTypeAlias : ParameterConverter
     {
         { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
+        { Direction: GirModel.Direction.In, IsPointer: true } => ParameterDirection.Ref(),
         _ => ParameterDirection.In()
     };
 }

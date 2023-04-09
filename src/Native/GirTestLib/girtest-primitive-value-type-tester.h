@@ -12,6 +12,9 @@ G_DECLARE_FINAL_TYPE(GirTestPrimitiveValueTypeTester, girtest_primitive_value_ty
 int
 girtest_primitive_value_type_tester_int_in(int val);
 
+void
+girtest_primitive_value_type_tester_int_pointer_in(int *val);
+
 void girtest_primitive_value_type_tester_int_in_out(int *val);
 
 void girtest_primitive_value_type_tester_int_in_out_optional(int *val);

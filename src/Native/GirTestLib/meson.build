@@ -5,27 +5,35 @@ gobject_dep = dependency('gobject-2.0', version: '>= 2.66.0')
 header_files = [
   'girtest.h',
   'girtest-alias-tester.h',
+  'girtest-byte-array-tester.h',
   'girtest-callback-tester.h',
   'girtest-class-tester.h',
   'girtest-constant-tester.h',
   'girtest-error-tester.h',
+  'girtest-integer-array-tester.h',
   'girtest-primitive-value-type-tester.h',
   'girtest-property-tester.h',
   'girtest-rename-to-tester.h',
   'girtest-returning-signal-tester.h',
   'girtest-string-tester.h',
+  'data/girtest-executor.h',
+  'data/girtest-executor-impl.h',
 ]
 
 source_files = [
   'girtest-alias-tester.c',
+  'girtest-byte-array-tester.c',
   'girtest-callback-tester.c',
   'girtest-class-tester.c',
   'girtest-error-tester.c',
+  'girtest-integer-array-tester.c',
   'girtest-primitive-value-type-tester.c',
   'girtest-property-tester.c',
   'girtest-rename-to-tester.c',
   'girtest-returning-signal-tester.c',
   'girtest-string-tester.c',
+  'data/girtest-executor.c',
+  'data/girtest-executor-impl.c',
 ]
 
 # Build a shared library that depends on gobject.

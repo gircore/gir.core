@@ -9,11 +9,16 @@ internal static class ParameterToManagedExpression
     private static readonly List<ParameterToManagedExpressions.ToManagedParameterConverter> Converter = new()
     {
         new ParameterToManagedExpressions.Bitfield(),
+        new ParameterToManagedExpressions.Callback(),
         new ParameterToManagedExpressions.Class(),
         new ParameterToManagedExpressions.Enumeration(),
         new ParameterToManagedExpressions.Interface(),
         new ParameterToManagedExpressions.Pointer(),
+        new ParameterToManagedExpressions.PointerAlias(),
         new ParameterToManagedExpressions.PrimitiveValueType(),
+        new ParameterToManagedExpressions.PrimitiveValueTypeAlias(),
+        new ParameterToManagedExpressions.PrimitiveValueTypeArray(),
+        new ParameterToManagedExpressions.PrimitiveValueTypeArrayAlias(),
         new ParameterToManagedExpressions.Record(),
         new ParameterToManagedExpressions.RecordArray(),
         new ParameterToManagedExpressions.String(),

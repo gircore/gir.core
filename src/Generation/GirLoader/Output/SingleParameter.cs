@@ -26,4 +26,9 @@ public partial class SingleParameter : Parameter
         DestroyIndex = destroyIndex;
         CallbackScope = scope;
     }
+
+    public override string ToString()
+    {
+        return $"Parameter {Name}";
+    }
 }

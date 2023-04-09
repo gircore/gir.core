@@ -93,3 +93,183 @@ girtest_callback_tester_run_notified_callback(GirTestCallbackTester *tester,
 
     return result;
 }
+
+int
+mirror_input(int input)
+{
+    return input;
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_mirror_input_callback:
+ * @callback: (scope call): a function that is called and provides another function
+ *
+ * Calls the callback and offers a functions which mirrors data.
+ **/
+void
+girtest_callback_tester_run_callback_with_mirror_input_callback(GirTestCallbackWithCallback callback)
+{
+    callback(mirror_input);
+}
+
+/**
+ * girtest_callback_tester_run_callback_return_int_pointer_value:
+ * @callback: (scope call): a function that is called and allows to define an integer.
+ *
+ * Calls the callback and returns the data provided in the pointer parameter. The given value is initialized with 42.
+ **/
+int
+girtest_callback_tester_run_callback_return_int_pointer_value(GirTestIntPointerCallback callback)
+{
+    int i = 42;
+    callback(&i);
+
+    return i;
+}
+
+/**
+ * girtest_callback_tester_run_callback_out_pointer:
+ * @callback: (scope call): a function that is called and allows to return a pointer.
+ *
+ * Calls the callback and returns the output pointer. 
+ **/
+gpointer
+girtest_callback_tester_run_callback_out_pointer(GirTestOutPointerCallback callback)
+{
+    gpointer p = 0;
+
+    callback(&p);
+
+    return p;
+}
+
+/**
+ * girtest_callback_tester_run_callback_error:
+ * @callback: (scope call): a function that is called and allows to throw an error
+ * @error: Return location for an error
+ *
+ * Calls the callback and can return an error.
+ **/
+void
+girtest_callback_tester_run_callback_error(GirTestCallbackError callback, GError **error)
+{
+    callback(error);
+}
+
+void raise_error(GError **error)
+{
+    g_set_error_literal(error, 1, 1, "CustomError");
+}
+
+void raise_error_not_last_param(GError **error, int dummyValue)
+{
+    g_set_error_literal(error, 1, 1, "CustomError");
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_raise_error_callback:
+ * @callback: (scope call): a function that is called and provides another function
+ *
+ * Calls the callback and offers a functions which raises an error.
+ **/
+void
+girtest_callback_tester_run_callback_with_raise_error_callback(GirTestCallbackWithErrorCallback callback)
+{
+    callback(raise_error);
+}
+
+/**
+ * girtest_callback_tester_run_callback_error_not_last_param:
+ * @callback: (scope call): a function that is called and allows to throw an error
+ * @error: Return location for an error
+ *
+ * Calls the callback and can return an error.
+ **/
+void
+girtest_callback_tester_run_callback_error_not_last_param(GirTestCallbackErrorNotLastParam callback, GError **error)
+{
+    callback(error, 42);
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_raise_error_callback_not_last_param:
+ * @callback: (scope call): a function that is called and provides another function
+ *
+ * Calls the callback and offers a functions which raises an error.
+ **/
+void
+girtest_callback_tester_run_callback_with_raise_error_callback_not_last_param(GirTestCallbackWithErrorCallbackNotLastParam callback)
+{
+    callback(raise_error_not_last_param);
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_type_return:
+ * @callback: (scope call): a function that is called and returns a type
+ *
+ * Calls the callback and returns it's result
+ **/
+GType
+girtest_callback_tester_run_callback_with_type_return(GirTestTypeReturnCallback callback)
+{
+    return callback();
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_object_return:
+ * @callback: (scope call): a function that is called and returns a new object
+ *
+ * Calls the callback and returns the new object
+ * 
+ * Returns: (transfer full): The new object
+ **/
+GObject*
+girtest_callback_tester_run_callback_with_object_return(GirTestObjectReturnCallback callback)
+{
+    return callback();
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_executor_interface_return:
+ * @callback: (scope call): a function that is called and returns an executor
+ *
+ * Calls the callback and returns if the given executor is valid
+ * 
+ * Returns: If the executor is valid
+ **/
+gboolean
+girtest_callback_tester_run_callback_with_executor_interface_return(GirTestExecutorReturnCallback callback)
+{
+    GirTestExecutor* executor = callback();
+    return executor != NULL;
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_out_pointed_primitive_value_type:
+ * @callback: (scope call): a function that is called and outputs an integer
+ *
+ * Calls the callback and returns the value of the callbacks out parameter.
+ * 
+ * Returns: The out value of the callback
+ **/
+int
+girtest_callback_tester_run_callback_with_out_pointed_primitive_value_type(GirTestOutPointedPrimitiveValueTypeCallback callback)
+{
+    int result;
+    callback(&result);
+
+    return result;
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_pointed_primitive_value_type_alias:
+ * @callback: (scope call): a function that is called and receives a GType
+ * @type: A GType that is passed into the callback
+ *
+ * Calls the callback and uses the given GType as argument.
+ **/
+void
+girtest_callback_tester_run_callback_with_pointed_primitive_value_type_alias(GirTestPointedPrimitiveValueTypeAliasCallback callback, GType* type)
+{
+    callback(type);
+}

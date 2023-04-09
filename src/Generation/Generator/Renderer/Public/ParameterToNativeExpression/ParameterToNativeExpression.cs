@@ -17,6 +17,7 @@ internal static class ParameterToNativeExpression
         new ParameterToNativeExpressions.InterfaceArray(),
         new ParameterToNativeExpressions.PlatformString(),
         new ParameterToNativeExpressions.Pointer(),
+        new ParameterToNativeExpressions.PointerAlias(),
         new ParameterToNativeExpressions.PrimitiveValueType(),
         new ParameterToNativeExpressions.PrimitiveValueTypeAlias(),
         new ParameterToNativeExpressions.PrimitiveValueTypeArray(),

@@ -6,9 +6,11 @@ internal static class CallbackNotifiedHandler
 {
     public static string Render(GirModel.Callback callback)
     {
-        var handlerName = Model.Callback.GetNotifiedHandlerName(callback);
+        try
+        {
+            var handlerName = Model.Callback.GetNotifiedHandlerName(callback);
 
-        return $@"
+            return $@"
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -58,5 +60,11 @@ public class {handlerName}
         gch.Free();
     }}
 }}";
+        }
+        catch (System.Exception ex)
+        {
+            Log.Warning($"Can not generate callback notified handler for {callback.Name}: {ex.Message}");
+            return string.Empty;
+        }
     }
 }

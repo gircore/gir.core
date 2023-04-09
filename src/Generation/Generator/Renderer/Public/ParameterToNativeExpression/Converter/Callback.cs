@@ -15,13 +15,14 @@ internal class Callback : ToNativeParameterConverter
         if (parameter.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Callback parameter with direction != in not yet supported");
 
-        if (parameter.HasCallName && parameter.HasSignatureName)
+        if (parameter is { HasCallName: true, HasSignatureName: true })
             return; //If this parameter got already initialized by another parameter we can skip it as it is not part of the public api
 
         switch (parameter.Parameter.Scope)
         {
             case GirModel.Scope.Call:
-                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Call scope not yet implemented");
+                FillCallScope(parameter, parameters);
+                break;
             case GirModel.Scope.Async:
                 throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Async scope not yet implemented");
             case GirModel.Scope.Notified:
@@ -59,5 +60,16 @@ internal class Callback : ToNativeParameterConverter
         destroyParameter.SetCallName(handlerNameVariable + ".DestroyNotify");
 
         parameter.SetExpression($"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetNotifiedHandlerName(callback)}({parameterName});");
+    }
+
+    private static void FillCallScope(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> parameters)
+    {
+        var callback = (GirModel.Callback) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
+        var handlerNameVariable = parameterName + "Handler";
+
+        parameter.SetSignatureName(parameterName);
+        parameter.SetCallName(handlerNameVariable + ".NativeCallback");
+        parameter.SetExpression($"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetCallHandlerName(callback)}({parameterName});");
     }
 }

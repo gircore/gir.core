@@ -13,6 +13,7 @@ internal static class GlobalFunctions
         return $@"
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 #nullable enable
 

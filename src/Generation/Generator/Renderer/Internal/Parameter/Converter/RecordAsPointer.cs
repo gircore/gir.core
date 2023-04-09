@@ -9,9 +9,15 @@ internal class RecordAsPointer : ParameterConverter
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
+        var direction = parameter.Direction switch
+        {
+            GirModel.Direction.Out => ParameterDirection.Out(),
+            _ => ParameterDirection.In()
+        };
+
         return new RenderableParameter(
             Attribute: string.Empty,
-            Direction: string.Empty,
+            Direction: direction,
             NullableTypeName: Model.Type.Pointer,
             Name: Model.Parameter.GetName(parameter)
         );

@@ -9,22 +9,52 @@ internal class PrimitiveValueTypeArray : ParameterConverter
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
     {
+        return parameter switch
+        {
+            { Direction: GirModel.Direction.Out, CallerAllocates: true } => OutCallerAllocates(parameter),
+            { Direction: GirModel.Direction.In } => In(parameter),
+            { Direction: GirModel.Direction.InOut } => InOut(parameter),
+            _ => throw new System.Exception("Unsupported byte array type")
+        };
+    }
+
+    private static ParameterTypeData InOut(GirModel.Parameter parameter)
+    {
+        var type = Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0);
+
         return new ParameterTypeData(
-            Direction: GetDirection(parameter),
-            NullableTypeName: GetNullableTypeName(parameter)
+            Direction: ParameterDirection.In(),
+            NullableTypeName: $"Span<{type}>"
         );
     }
 
-    private static string GetNullableTypeName(GirModel.Parameter parameter)
+    private static ParameterTypeData OutCallerAllocates(GirModel.Parameter parameter)
     {
-        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1);
+        var type = Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0);
+
+        return new ParameterTypeData(
+            Direction: ParameterDirection.In(),
+            NullableTypeName: $"Span<{type}>"
+        );
     }
 
-    private static string GetDirection(GirModel.Parameter parameter) => parameter switch
+    private static ParameterTypeData In(GirModel.Parameter parameter)
     {
-        { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
-        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.Ref(),
-        { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
-        _ => ParameterDirection.In()
-    };
+        var type = Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0);
+
+        if (parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null)
+        {
+            return new ParameterTypeData(
+                Direction: ParameterDirection.In(),
+                NullableTypeName: $"Span<{type}>"
+            );
+        }
+        else
+        {
+            return new ParameterTypeData(
+                Direction: ParameterDirection.In(),
+                NullableTypeName: $"ref {type}"
+            );
+        }
+    }
 }

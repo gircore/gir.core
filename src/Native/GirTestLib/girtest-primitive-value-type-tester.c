@@ -38,6 +38,19 @@ girtest_primitive_value_type_tester_int_in(int val)
 }
 
 /**
+ * girtest_primitive_value_type_tester_int_pointer_in:
+ * @val: (in): An integer value
+ *
+ * Simple test for an input pointed integer parameter.
+ * The pointed value is multiplied by 2.
+ */
+void
+girtest_primitive_value_type_tester_int_pointer_in(int *val)
+{
+    *val = *val * 2;
+}
+
+/**
  * girtest_primitive_value_type_tester_int_in_out:
  * @val: (inout): An integer value to multiply by 2
  *

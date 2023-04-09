@@ -10,6 +10,8 @@ internal static class FunctionRenderer
 {
     public static string Render(GirModel.Function function)
     {
+        if (!IsSupported(function))
+            return string.Empty;
         try
         {
             var parameters = ParameterToNativeExpression.Initialize(function.Parameters);
@@ -66,6 +68,12 @@ public static {ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName
             if (parameter.IsDestroyNotify)
                 continue;
 
+            if (parameter.IsArrayLengthParameter)
+                continue;
+
+            if (parameter.IsGLibErrorParameter)
+                continue;
+
             var typeData = ParameterRenderer.Render(parameter.Parameter);
             result.Add($"{typeData.Direction}{typeData.NullableTypeName} {parameter.GetSignatureName()}");
         }
@@ -102,5 +110,25 @@ public static {ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName
         return function.ReturnType.AnyType.Is<GirModel.Void>()
             ? string.Empty
             : $"return {ReturnTypeToManagedExpression.Render(function.ReturnType, returnVariable)};";
+    }
+
+    private static bool IsSupported(GirModel.Function function)
+    {
+        var parameter = function.Parameters.FirstOrDefault(x => x is { Direction: GirModel.Direction.InOut }
+                                                               && x.AnyTypeOrVarArgs.TryPickT0(out var anyType, out _)
+                                                               && anyType.TryPickT1(out var arrayType, out _)
+                                                               && arrayType.Length is not null);
+
+        if (parameter is null)
+            return true;
+
+        var lengthParameter = function.Parameters.ElementAt(parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length!.Value);
+        if (lengthParameter.Direction == GirModel.Direction.InOut)
+        {
+            Log.Warning($"Skipping public function {function.CIdentifier} as it has a size parameter which is defined as inout parameter which is not supported currently.");
+            return false;
+        }
+
+        return true;
     }
 }

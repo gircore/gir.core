@@ -74,6 +74,12 @@ internal static class MethodRenderer
             if (parameter.IsDestroyNotify)
                 continue;
 
+            if (parameter.IsArrayLengthParameter)
+                continue;
+
+            if (parameter.IsGLibErrorParameter)
+                continue;
+
             var typeData = ParameterRenderer.Render(parameter.Parameter);
             result.Add($"{typeData.Direction}{typeData.NullableTypeName} {parameter.GetSignatureName()}");
         }

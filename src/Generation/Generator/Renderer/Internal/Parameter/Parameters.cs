@@ -7,7 +7,6 @@ internal static class Parameters
     private static readonly List<Parameter.ParameterConverter> converters = new()
     {
         new Parameter.Bitfield(),
-        new Parameter.ByteArray(),
         new Parameter.Callback(),
         new Parameter.CallbackAlias(),
         new Parameter.Class(),

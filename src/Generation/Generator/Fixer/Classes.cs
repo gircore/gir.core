@@ -13,6 +13,7 @@ public static class Classes
         new PropertyLikeInterfacePropertyFixer(),
         new InterfaceMethodsCollidingWithClassMethodsFixer(),
         new InterfaceMethodsCollidingWithClassConstructorsFixer(),
+        new PublicMethodsWithCallbackParameterWithInvalidOutRecordParameterFixer(),
         new PublicMethodsWithInvalidOutParameterFixer()
     };
 

@@ -17,7 +17,8 @@ internal class PointerAlias : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return Model.Type.GetName(((GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT0).Type) + Nullable.Render(parameter);
+        var alias = (GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        return Model.Namespace.GetPublicName(alias.Namespace) + "." + Model.Type.GetName(alias) + Nullable.Render(parameter);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
