@@ -12,7 +12,8 @@ public static class Classes
         new PropertyNamedLikeClassFixer(),
         new PropertyLikeInterfacePropertyFixer(),
         new InterfaceMethodsCollidingWithClassMethodsFixer(),
-        new InterfaceMethodsCollidingWithClassConstructorsFixer()
+        new InterfaceMethodsCollidingWithClassConstructorsFixer(),
+        new PublicMethodsWithInvalidOutParameterFixer()
     };
 
     public static void Fixup(IEnumerable<GirModel.Class> classes)
