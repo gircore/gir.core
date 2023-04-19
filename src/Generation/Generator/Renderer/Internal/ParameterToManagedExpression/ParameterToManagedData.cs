@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Generator.Renderer.Public;
+namespace Generator.Renderer.Internal;
 
-public class ParameterToNativeData
+public class ParameterToManagedData
 {
     private string? _callName;
     private string? _signatureName;
@@ -12,11 +12,12 @@ public class ParameterToNativeData
     public GirModel.Parameter Parameter { get; }
 
     public bool IsCallbackUserData { get; internal set; }
-    public bool IsDestroyNotify { get; internal set; }
+    public bool IsCallbackDestroyNotify { get; internal set; }
+    public bool IsArrayLengthParameter { get; internal set; }
     public bool HasCallName => _callName is not null;
     public bool HasSignatureName => _signatureName is not null;
 
-    public ParameterToNativeData(GirModel.Parameter parameter)
+    public ParameterToManagedData(GirModel.Parameter parameter)
     {
         Parameter = parameter;
     }

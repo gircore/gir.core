@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
@@ -7,23 +8,26 @@ internal class Record : ToManagedParameterConverter
     public bool Supports(GirModel.AnyType type)
         => type.Is<GirModel.Record>();
 
-    public string GetExpression(GirModel.Parameter parameter, out string variableName)
+    public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
-        if (parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.AnyTypeOrVarArgs}: record with direction != in not yet supported");
+        if (parameterData.Parameter.Direction != GirModel.Direction.In)
+            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: record with direction != in not yet supported");
 
-        if (!parameter.IsPointer)
-            throw new NotImplementedException($"Unpointed record parameter {parameter.Name} ({parameter.AnyTypeOrVarArgs}) can not yet be converted to managed");
+        if (!parameterData.Parameter.IsPointer)
+            throw new NotImplementedException($"Unpointed record parameter {parameterData.Parameter.Name} ({parameterData.Parameter.AnyTypeOrVarArgs}) can not yet be converted to managed");
 
-        var record = (GirModel.Record) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
-        var ownedHandle = parameter.Transfer == GirModel.Transfer.Full;
-
-        variableName = Model.Parameter.GetConvertedName(parameter);
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var ownedHandle = parameterData.Parameter.Transfer == GirModel.Transfer.Full;
+        var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
         var handleClass = ownedHandle
             ? Model.Record.GetFullyQualifiedInternalOwnedHandle(record)
             : Model.Record.GetFullyQualifiedInternalUnownedHandle(record);
 
-        return $"var {variableName} = new {Model.Record.GetFullyQualifiedPublicClassName(record)}(new {handleClass}({Model.Parameter.GetName(parameter)}));";
+        var signatureName = Model.Parameter.GetName(parameterData.Parameter);
+
+        parameterData.SetSignatureName(signatureName);
+        parameterData.SetExpression($"var {variableName} = new {Model.Record.GetFullyQualifiedPublicClassName(record)}(new {handleClass}({signatureName}));");
+        parameterData.SetCallName(variableName);
     }
 }

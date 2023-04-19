@@ -13,10 +13,12 @@ internal static class CallbackCommonHandlerRenderUtils
         //TODO: try / catch is a helper as long as there are errors
         try
         {
+            var parameterData = ParameterToManagedExpression.Initialize(callback.Parameters);
+
             nativeCallback = $@"
-NativeCallback = ({callback.Parameters.Select(Model.Parameter.GetName).Join(", ")}) => {{
-    {RenderConvertParameterStatements(callback, out IEnumerable<string> parameters)}
-    {RenderCallStatement(callback, parameters, out var resultVariableName)}
+NativeCallback = ({parameterData.Select(x => x.GetSignatureName()).Join(", ")}) => {{
+    {RenderConvertParameterStatements(parameterData)}
+    {RenderCallStatement(callback, parameterData, out var resultVariableName)}
     {RenderFreeStatement(scope)}
     {RenderReturnStatement(callback, resultVariableName)}
 }};";
@@ -31,26 +33,48 @@ NativeCallback = ({callback.Parameters.Select(Model.Parameter.GetName).Join(", "
 
     }
 
-    private static string RenderConvertParameterStatements(GirModel.Callback callback, out IEnumerable<string> parameters)
+    private static string RenderConvertParameterStatements(IEnumerable<ParameterToManagedData> data)
     {
         var call = new StringBuilder();
-        var names = new List<string>();
 
-        foreach (GirModel.Parameter p in callback.Parameters.Where(x => x.Closure is null or 0))
+        foreach (var p in data)
         {
-            call.AppendLine(p.ToManaged(out var variableName));
-            names.Add(variableName);
-        }
+            if (p.IsCallbackDestroyNotify)
+                continue;
 
-        parameters = names;
+            if (p.IsCallbackUserData)
+                continue;
+
+            if (p.IsArrayLengthParameter)
+                continue;
+
+            call.AppendLine(p.GetExpression());
+        }
 
         return call.ToString();
     }
 
-    private static string RenderCallStatement(GirModel.Callback callback, IEnumerable<string> parameterNames, out string resultVariableName)
+    private static string RenderCallStatement(GirModel.Callback callback, IEnumerable<ParameterToManagedData> parameterData, out string resultVariableName)
     {
         resultVariableName = "managedCallbackResult";
-        var call = $"managedCallback({parameterNames.Join(", ")});";
+
+
+        var parameters = new List<string>();
+        foreach (var p in parameterData)
+        {
+            if (p.IsArrayLengthParameter)
+                continue;
+
+            if (p.IsCallbackUserData)
+                continue;
+
+            if (p.IsCallbackDestroyNotify)
+                continue;
+
+            parameters.Add(p.GetCallName());
+        }
+
+        var call = $"managedCallback({parameters.Join(", ")});";
 
         if (callback.ReturnType.AnyType.Is<GirModel.Void>())
             return call;

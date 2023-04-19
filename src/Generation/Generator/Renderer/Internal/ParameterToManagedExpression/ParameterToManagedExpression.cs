@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Generator.Renderer.Internal;
 
@@ -7,29 +8,43 @@ internal static class ParameterToManagedExpression
 {
     private static readonly List<ParameterToManagedExpressions.ToManagedParameterConverter> Converter = new()
     {
-        new ParameterToManagedExpressions.PrimitiveValueType(),
-        new ParameterToManagedExpressions.Enumeration(),
         new ParameterToManagedExpressions.Bitfield(),
+        new ParameterToManagedExpressions.Class(),
+        new ParameterToManagedExpressions.Enumeration(),
+        new ParameterToManagedExpressions.Interface(),
         new ParameterToManagedExpressions.Pointer(),
-        new ParameterToManagedExpressions.String(),
-        new ParameterToManagedExpressions.StringArray(),
+        new ParameterToManagedExpressions.PrimitiveValueType(),
         new ParameterToManagedExpressions.Record(),
         new ParameterToManagedExpressions.RecordArray(),
-        new ParameterToManagedExpressions.Class(),
-        new ParameterToManagedExpressions.Interface(),
+        new ParameterToManagedExpressions.String(),
+        new ParameterToManagedExpressions.StringArray(),
     };
 
-    public static string? ToManaged(this GirModel.Parameter from, out string variableName)
+    public static IReadOnlyList<ParameterToManagedData> Initialize(IEnumerable<GirModel.Parameter> parameters)
     {
-        foreach (var converter in Converter)
-        {
-            if (from.AnyTypeOrVarArgs.IsT1)
-                throw new Exception("Variadic parameters are not yet supported");
+        var parameterToManagedDatas = new List<ParameterToManagedData>(parameters.Select(x => new ParameterToManagedData(x)));
 
-            if (converter.Supports(from.AnyTypeOrVarArgs.AsT0))
-                return converter.GetExpression(from, out variableName);
+        foreach (var parameter in parameterToManagedDatas)
+        {
+            var converterFound = false;
+
+            foreach (var converter in Converter)
+            {
+                if (parameter.Parameter.AnyTypeOrVarArgs.IsT1)
+                    throw new Exception("Can't convert to managed: Variadic parameters are not yet supported");
+
+                if (converter.Supports(parameter.Parameter.AnyTypeOrVarArgs.AsT0))
+                {
+                    converter.Initialize(parameter, parameterToManagedDatas);
+                    converterFound = true;
+                    break;
+                }
+            }
+
+            if (!converterFound)
+                throw new NotImplementedException($"Missing converter to convert from parameter {parameter.Parameter} ({parameter.Parameter.AnyTypeOrVarArgs}) to managed");
         }
 
-        throw new NotImplementedException($"Missing converter to convert from parameter {from.Name} ({from.AnyTypeOrVarArgs}) to managed");
+        return parameterToManagedDatas;
     }
 }

@@ -1,23 +1,30 @@
-﻿namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
+﻿using System.Collections.Generic;
+
+namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class StringArray : ToManagedParameterConverter
 {
     public bool Supports(GirModel.AnyType type)
         => type.IsArray<GirModel.String>();
 
-    public string? GetExpression(GirModel.Parameter parameter, out string variableName)
+    public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
-        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
-        if (parameter.Transfer == GirModel.Transfer.None && arrayType.Length == null)
+        var arrayType = parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        if (parameterData.Parameter.Transfer == GirModel.Transfer.None && arrayType.Length == null)
         {
-            variableName = Model.Parameter.GetConvertedName(parameter);
-            return $"var {variableName} = GLib.Internal.StringHelper.ToStringArrayUtf8({Model.Parameter.GetName(parameter)});";
+            var signatureName = Model.Parameter.GetName(parameterData.Parameter);
+            var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
+
+            parameterData.SetSignatureName(signatureName);
+            parameterData.SetExpression($"var {callName} = GLib.Internal.StringHelper.ToStringArrayUtf8({signatureName});");
+            parameterData.SetCallName(callName);
         }
         else
         {
-            //We don't need any conversion for string[]
-            variableName = Model.Parameter.GetName(parameter);
-            return null;
+            var variableName = Model.Parameter.GetName(parameterData.Parameter);
+
+            parameterData.SetSignatureName(variableName);
+            parameterData.SetCallName(variableName);
         }
     }
 }

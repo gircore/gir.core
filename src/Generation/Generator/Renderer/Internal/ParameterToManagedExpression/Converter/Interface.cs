@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
@@ -7,14 +8,18 @@ internal class Interface : ToManagedParameterConverter
     public bool Supports(GirModel.AnyType type)
         => type.Is<GirModel.Interface>();
 
-    public string? GetExpression(GirModel.Parameter parameter, out string variableName)
+    public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
-        if (!parameter.IsPointer)
-            throw new NotImplementedException($"{parameter.AnyTypeOrVarArgs}: Unpointed interface parameter not yet supported");
+        if (!parameterData.Parameter.IsPointer)
+            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: Unpointed interface parameter not yet supported");
 
-        var iface = (GirModel.Interface) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var iface = (GirModel.Interface) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
 
-        variableName = Model.Parameter.GetConvertedName(parameter);
-        return $"var {variableName} = GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(iface)}>({Model.Parameter.GetName(parameter)}, {Model.Transfer.IsOwnedRef(parameter.Transfer).ToString().ToLower()});";
+        var signatureName = Model.Parameter.GetName(parameterData.Parameter);
+        var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
+
+        parameterData.SetSignatureName(signatureName);
+        parameterData.SetExpression($"var {callName} = GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(iface)}>({signatureName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
+        parameterData.SetCallName(callName);
     }
 }
