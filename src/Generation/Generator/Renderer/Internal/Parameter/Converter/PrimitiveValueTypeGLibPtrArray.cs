@@ -12,14 +12,9 @@ public class PrimitiveValueTypeGLibPtrArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
-            NullableTypeName: GetNullableTypeName(parameter),
+            NullableTypeName: Model.Type.Pointer,
             Name: Model.Parameter.GetName(parameter)
         );
-    }
-
-    private static string GetNullableTypeName(GirModel.Parameter parameter)
-    {
-        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
