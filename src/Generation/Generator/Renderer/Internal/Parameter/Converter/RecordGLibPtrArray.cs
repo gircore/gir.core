@@ -12,18 +12,9 @@ public class RecordGLibPtrArray : ParameterConverter
         return new RenderableParameter(
             Attribute: GetAttribute(parameter),
             Direction: string.Empty,
-            NullableTypeName: GetNullableTypeName(parameter),
+            NullableTypeName: Model.Type.Pointer,
             Name: Model.Parameter.GetName(parameter)
         );
-    }
-
-    private static string GetNullableTypeName(GirModel.Parameter parameter)
-    {
-        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
-
-        return arrayType.Length is null
-            ? Model.Type.PointerArray
-            : Model.Record.GetFullyQualifiedInternalStructName((GirModel.Record) arrayType.AnyType.AsT0) + "[]";
     }
 
     private static string GetAttribute(GirModel.Parameter parameter)
