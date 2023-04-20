@@ -36,10 +36,10 @@ Partial classes are allowed do split the content of a class into well named file
 Implementations which are external to the concrete class must be either in a separate `#region` or a separate partial class (e.g. interface implementations).
 
 Inside a source file the structure is like:
- 1. Private fields (enclosed in a region tag `#region Fields`)
- 2. Properties (enclosed in a region tag `#region Properties`)
- 3. Constructors (enclosed in a region tag `#region Constructors`)
- 4. Methods (enclosed in a region tag `#region Methods`)
+ 1. Private fields
+ 2. Properties
+ 3. Constructors
+ 4. Methods
  
  ### Access modifiers
  All access modifiers should explicitly stated in the code.
