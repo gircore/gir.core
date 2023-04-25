@@ -1,23 +1,29 @@
-﻿namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
+﻿using System.Collections.Generic;
+
+namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class RecordArray : ToManagedParameterConverter
 {
     public bool Supports(GirModel.AnyType type)
         => type.IsArray<GirModel.Record>();
 
-    public string GetExpression(GirModel.Parameter parameter, out string variableName)
+    public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
-        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        var arrayType = parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
         var record = (GirModel.Record) arrayType.AnyType.AsT0;
-        variableName = Model.Parameter.GetConvertedName(parameter);
+        var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
+        var signatureName = Model.Parameter.GetName(parameterData.Parameter);
+
+        parameterData.SetCallName(callName);
+        parameterData.SetSignatureName(signatureName);
 
         if (arrayType.IsPointer)
         {
-            return $"var {variableName} = {Model.Parameter.GetName(parameter)}.Select(x => new {Model.Record.GetFullyQualifiedPublicClassName(record)}(x)).ToArray();";
+            parameterData.SetExpression($"var {callName} = {signatureName}.Select(x => new {Model.Record.GetFullyQualifiedPublicClassName(record)}(x)).ToArray();");
         }
         else
         {
-            return $"var {variableName} = ({Model.Record.GetFullyQualifiedPublicClassName(record)}[]){Model.Parameter.GetName(parameter)}.Select(x => new {Model.Record.GetFullyQualifiedPublicClassName(record)}({Model.Record.GetFullyQualifiedInternalManagedHandleCreateMethod(record)}(x))).ToArray();";
+            parameterData.SetExpression($"var {callName} = ({Model.Record.GetFullyQualifiedPublicClassName(record)}[]){signatureName}.Select(x => new {Model.Record.GetFullyQualifiedPublicClassName(record)}({Model.Record.GetFullyQualifiedInternalManagedHandleCreateMethod(record)}(x))).ToArray();");
         }
     }
 }

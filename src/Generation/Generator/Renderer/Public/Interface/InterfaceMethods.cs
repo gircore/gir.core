@@ -51,7 +51,7 @@ public partial interface {iface.Name}
         var result = new List<string>();
         foreach (var parameter in parameters)
         {
-            if (parameter.IsClosure)
+            if (parameter.IsCallbackUserData)
                 continue;
 
             if (parameter.IsDestroyNotify)

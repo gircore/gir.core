@@ -44,7 +44,7 @@ internal class Callback : ToNativeParameterConverter
             throw new Exception($"{parameter.Parameter.AnyTypeOrVarArgs}: Notified scope misses destroy index");
 
         if (parameter.Parameter.Closure is { } closureIndex)
-            parameters.ElementAt(closureIndex).IsClosure = true;
+            parameters.ElementAt(closureIndex).IsCallbackUserData = true;
 
         parameter.SetSignatureName(parameterName);
         parameter.SetCallName(handlerNameVariable + ".NativeCallback");
