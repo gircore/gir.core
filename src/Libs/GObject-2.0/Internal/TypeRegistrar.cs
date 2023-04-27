@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace GObject.Internal;
@@ -56,7 +57,7 @@ public static class TypeRegistrar
         };
 
         // Perform Registration
-        Console.WriteLine($"Registering new type {qualifiedName} with parent {parentType.ToString()}");
+        Debug.WriteLine($"Registering new type {qualifiedName} with parent {parentType.ToString()}");
 
         TypeInfoHandle handle = TypeInfoManagedHandle.Create(typeInfo);
         var typeid = Functions.TypeRegisterStatic(parentType.Value, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(qualifiedName), handle, 0);
