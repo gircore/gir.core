@@ -25,6 +25,7 @@ let girFiles =
         "GstPbutils-1.0.gir"
         "GstVideo-1.0.gir"
         "Gtk-4.0.gir"
+        "GtkSource-5.gir"
         "HarfBuzz-0.0.gir"
         "JavaScriptCore-5.0.gir"
         "Pango-1.0.gir"
