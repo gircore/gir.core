@@ -15,10 +15,11 @@ internal class Interface : ToNativeParameterConverter
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Interface parameter with direction != in not yet supported");
 
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        var nativeVariableName = parameterName + "Native";
+        var callParameter = parameter.Parameter.Nullable
+            ? parameterName + "?.Handle ?? IntPtr.Zero"
+            : parameterName + ".Handle";
 
         parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(nativeVariableName);
-        parameter.SetExpression($"var {nativeVariableName} = ({parameterName} as GObject.Object).Handle;");
+        parameter.SetCallName(callParameter);
     }
 }
