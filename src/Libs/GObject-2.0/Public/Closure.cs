@@ -42,7 +42,14 @@ public partial class Closure : IDisposable
             .Select(valueHandle => new Value(valueHandle))
             .ToArray();
 
-        _callback(returnValue, paramValues);
+        try
+        {
+            _callback(returnValue, paramValues);
+        }
+        catch (Exception e)
+        {
+            GLib.UnhandledException.Raise(e);
+        }
     }
 
     public void Dispose()
