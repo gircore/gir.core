@@ -12,6 +12,11 @@ public sealed partial class MainLoop
         _handle = Internal.MainLoop.New(context, isRunning);
     }
 
+    public MainContext GetContext()
+    {
+        return new MainContext(Internal.MainLoop.GetContext(Handle));
+    }
+
     public bool IsRunning() => Internal.MainLoop.IsRunning(Handle);
 
     public void Run() => Internal.MainLoop.Run(Handle);
