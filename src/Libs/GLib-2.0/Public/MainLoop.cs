@@ -1,4 +1,6 @@
-﻿namespace GLib;
+﻿using System.Threading;
+
+namespace GLib;
 
 public sealed partial class MainLoop
 {
@@ -20,6 +22,22 @@ public sealed partial class MainLoop
     public bool IsRunning() => Internal.MainLoop.IsRunning(Handle);
 
     public void Run() => Internal.MainLoop.Run(Handle);
+
+    public void RunWithSynchronizationContext()
+    {
+        var original = SynchronizationContext.Current;
+
+        SynchronizationContext.SetSynchronizationContext(new Internal.MainLoopSynchronizationContext());
+
+        try
+        {
+            Run();
+        }
+        finally
+        {
+            SynchronizationContext.SetSynchronizationContext(original);
+        }
+    }
 
     public void Quit() => Internal.MainLoop.Quit(Handle);
 }
