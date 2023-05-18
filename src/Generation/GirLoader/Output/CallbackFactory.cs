@@ -27,7 +27,8 @@ internal class CallbackFactory
             name: callback.Name,
             returnValue: _returnValueFactory.Create(callback.ReturnValue),
             parameterList: _parameterListFactory.Create(callback.Parameters),
-            introspectable: callback.Introspectable
+            introspectable: callback.Introspectable,
+            throws: callback.Throws
         );
     }
 }

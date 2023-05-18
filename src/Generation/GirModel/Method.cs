@@ -3,6 +3,7 @@
 public interface Method : Callable
 {
     ComplexType Parent { get; }
+    string CIdentifier { get; }
     ReturnType ReturnType { get; }
     // Methods always have an instance parameter.
     new InstanceParameter InstanceParameter { get; }

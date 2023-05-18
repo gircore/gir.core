@@ -13,6 +13,9 @@ public class Callback
     [XmlElement("return-value")]
     public ReturnValue? ReturnValue { get; set; }
 
+    [XmlAttribute("throws")]
+    public bool Throws { get; set; }
+
     [XmlElement("doc", Namespace = "http://www.gtk.org/introspection/core/1.0")]
     public Doc? Doc { get; set; }
 

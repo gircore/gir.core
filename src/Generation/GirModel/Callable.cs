@@ -5,7 +5,6 @@ namespace GirModel;
 public interface Callable
 {
     string Name { get; }
-    string CIdentifier { get; }
     bool Throws { get; }
     IEnumerable<Parameter> Parameters { get; }
     InstanceParameter? InstanceParameter { get; }

@@ -8,7 +8,7 @@ public partial class Function : GirModel.Function
     GirModel.ComplexType? GirModel.Function.Parent => _function.Parent;
     string GirModel.Callable.Name => _function.Name;
     GirModel.ReturnType GirModel.Function.ReturnType => _function.ReturnType;
-    string GirModel.Callable.CIdentifier => _function.CIdentifier;
+    string GirModel.Function.CIdentifier => _function.CIdentifier;
     IEnumerable<GirModel.Parameter> GirModel.Callable.Parameters => _function.Parameters;
     GirModel.InstanceParameter? GirModel.Callable.InstanceParameter => _function.InstanceParameter;
     bool GirModel.Callable.Throws => _function.Throws;
