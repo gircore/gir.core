@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\cairo-1.0\cairo-1.0.csproj" />
-    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
-    <ProjectReference Include="..\Pango-1.0\Pango-1.0.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <PackageId>GirCore.PangoCairo-1.0</PackageId>
     <RootNamespace>PangoCairo</RootNamespace>
     <Description>C# bindings for PangoCairo.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\cairo-1.0\cairo-1.0.csproj" />
+    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
+    <ProjectReference Include="..\Pango-1.0\Pango-1.0.csproj" />
+  </ItemGroup>
 </Project>

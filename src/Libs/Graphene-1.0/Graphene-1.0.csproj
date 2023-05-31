@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <PackageId>GirCore.Graphene-1.0</PackageId>
     <RootNamespace>Graphene</RootNamespace>

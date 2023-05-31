@@ -10,6 +10,7 @@ public class Module
             return;
 
         GObject.Module.Initialize();
+        GLib.Module.Initialize();
 
         Internal.ImportResolver.RegisterAsDllImportResolver();
         Internal.TypeRegistration.RegisterTypes();

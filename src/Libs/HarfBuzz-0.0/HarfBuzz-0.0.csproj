@@ -1,13 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\freetype2-2.0\freetype2-2.0.csproj" />
-    <ProjectReference Include="..\GLib-2.0\GLib-2.0.csproj" />
-    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
-  </ItemGroup>
-  
   <PropertyGroup>
     <PackageId>GirCore.HarfBuzz-0.0</PackageId>
     <RootNamespace>HarfBuzz</RootNamespace>
     <Description>C# bindings for HarfBuzz.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\freetype2-2.0\freetype2-2.0.csproj" />
+    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
+  </ItemGroup>
 </Project>

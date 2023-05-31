@@ -9,6 +9,7 @@ public class Module
         if (IsInitialized)
             return;
 
+        Gio.Module.Initialize();
         Gtk.Module.Initialize();
 
         Internal.ImportResolver.RegisterAsDllImportResolver();

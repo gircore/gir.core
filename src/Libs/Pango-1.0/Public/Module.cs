@@ -9,6 +9,11 @@ public class Module
         if (IsInitialized)
             return;
 
+        GObject.Module.Initialize();
+        Gio.Module.Initialize();
+        Cairo.Module.Initialize();
+        HarfBuzz.Module.Initialize();
+
         Internal.ImportResolver.RegisterAsDllImportResolver();
         Internal.TypeRegistration.RegisterTypes();
 

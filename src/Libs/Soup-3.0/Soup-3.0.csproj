@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\Gio-2.0\Gio-2.0.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <PackageId>GirCore.Soup-3.0</PackageId>
     <RootNamespace>Soup</RootNamespace>
     <Description>C# bindings for Soup.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gio-2.0\Gio-2.0.csproj" />
+  </ItemGroup>
 </Project>

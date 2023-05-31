@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
-    <ProjectReference Include="..\Gsk-4.0\Gsk-4.0.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <PackageId>GirCore.Gtk-4.0</PackageId>
     <RootNamespace>Gtk</RootNamespace>
     <Description>C# bindings for Gtk.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
+    <ProjectReference Include="..\Gsk-4.0\Gsk-4.0.csproj" />
+  </ItemGroup>
 </Project>
