@@ -12,7 +12,11 @@ public class Module
         if (IsInitialized)
             return;
 
-        GObject.Module.Initialize();
+        Cairo.Module.Initialize();
+        GdkPixbuf.Module.Initialize();
+        Gio.Module.Initialize();
+        Pango.Module.Initialize();
+        PangoCairo.Module.Initialize();
 
         Internal.ImportResolver.RegisterAsDllImportResolver();
         Internal.TypeRegistration.RegisterTypes();

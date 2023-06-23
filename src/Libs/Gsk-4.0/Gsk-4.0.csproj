@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
-    <ProjectReference Include="..\Graphene-1.0\Graphene-1.0.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <PackageId>GirCore.Gsk-4.0</PackageId>
     <RootNamespace>Gdk</RootNamespace>
     <Description>C# bindings for Gsk.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
+    <ProjectReference Include="..\Graphene-1.0\Graphene-1.0.csproj" />
+  </ItemGroup>
 </Project>

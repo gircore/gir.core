@@ -9,6 +9,9 @@ public class Module
         if (IsInitialized)
             return;
 
+        Gdk.Module.Initialize();
+        Graphene.Module.Initialize();
+
         Internal.ImportResolver.RegisterAsDllImportResolver();
         Internal.TypeRegistration.RegisterTypes();
 

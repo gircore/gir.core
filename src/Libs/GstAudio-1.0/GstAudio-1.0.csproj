@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
-    <ProjectReference Include="..\Gst-1.0\Gst-1.0.csproj" />
-    <ProjectReference Include="..\GstBase-1.0\GstBase-1.0.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <PackageId>GirCore.GstAudio-1.0</PackageId>
     <RootNamespace>GstAudio</RootNamespace>
     <Description>C# bindings for GStreamer.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
+    <ProjectReference Include="..\GLib-2.0\GLib-2.0.csproj" />
+    <ProjectReference Include="..\Gst-1.0\Gst-1.0.csproj" />
+    <ProjectReference Include="..\GstBase-1.0\GstBase-1.0.csproj" />
+  </ItemGroup>
 </Project>

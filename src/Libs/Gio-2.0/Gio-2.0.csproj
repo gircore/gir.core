@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <PackageId>GirCore.Gio-2.0</PackageId>
     <RootNamespace>Gio</RootNamespace>

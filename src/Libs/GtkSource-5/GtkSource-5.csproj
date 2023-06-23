@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\Gtk-4.0\Gtk-4.0.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <PackageId>GirCore.GtkSource-5</PackageId>
     <RootNamespace>GtkSource</RootNamespace>
     <Description>C# bindings for GtkSourceView.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gtk-4.0\Gtk-4.0.csproj" />
+  </ItemGroup>
 </Project>

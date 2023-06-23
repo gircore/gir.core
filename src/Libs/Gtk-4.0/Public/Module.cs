@@ -9,10 +9,8 @@ public class Module
         if (IsInitialized)
             return;
 
-        Gio.Module.Initialize();
-        GdkPixbuf.Module.Initialize();
         Gdk.Module.Initialize();
-        Cairo.Module.Initialize();
+        Gsk.Module.Initialize();
 
         Internal.ImportResolver.RegisterAsDllImportResolver();
         Internal.TypeRegistration.RegisterTypes();

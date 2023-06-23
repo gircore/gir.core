@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <PackageId>GirCore.JavaScriptCore-5.0</PackageId>
     <RootNamespace>JavaScriptCore</RootNamespace>
     <Description>C# bindings for JavaScriptCore.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
+  </ItemGroup>
 </Project>

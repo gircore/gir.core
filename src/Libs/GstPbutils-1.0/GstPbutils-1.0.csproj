@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
     <ProjectReference Include="..\Gst-1.0\Gst-1.0.csproj" />
     <ProjectReference Include="..\GstAudio-1.0\GstAudio-1.0.csproj" />
     <ProjectReference Include="..\GstBase-1.0\GstBase-1.0.csproj" />
