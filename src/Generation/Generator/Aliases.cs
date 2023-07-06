@@ -10,7 +10,8 @@ public static class Aliases
         var publisher = new Publisher(path);
         var generators = new List<Generator<GirModel.Alias>>
         {
-            new Generator.Public.AliasPrimitiveValueType(publisher)
+            new Generator.Public.AliasPrimitiveValueType(publisher),
+            new Generator.Public.AliasPointer(publisher)
         };
 
         foreach (var alias in aliases)

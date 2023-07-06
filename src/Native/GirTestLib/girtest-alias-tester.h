@@ -12,6 +12,13 @@ G_BEGIN_DECLS
 typedef int GirTestIntAlias;
 
 /**
+ * GirTestPointerAlias:
+ * 
+ * A pointer value with a special name.
+ */
+typedef gpointer GirTestPointerAlias;
+
+/**
  * GIRTEST_INT_ALIAS_ZERO: (value 0) (type GirTestIntAlias)
  *
  * Constant to define an undefined int alias.
@@ -33,5 +40,11 @@ girtest_alias_tester_alias_out(GirTestIntAlias* alias);
 
 void
 girtest_alias_tester_alias_in_out(GirTestIntAlias* alias);
+
+gpointer
+girtest_alias_tester_to_pointer(GirTestPointerAlias alias);
+
+GirTestPointerAlias
+girtest_alias_tester_to_pointer_alias(gpointer pointer);
 
 G_END_DECLS

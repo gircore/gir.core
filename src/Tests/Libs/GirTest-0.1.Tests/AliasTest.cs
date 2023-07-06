@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
@@ -90,5 +91,17 @@ public class AliasTest
             _ => false
         };
         result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public void CanConvertPointerAliasToPointer()
+    {
+        AliasTester.ToPointer(new PointerAlias((IntPtr) 42)).Should().Be((IntPtr) 42);
+    }
+
+    [TestMethod]
+    public void CanConvertPointerToPointerAlias()
+    {
+        AliasTester.ToPointerAlias((IntPtr) 42).Should().Be(new PointerAlias((IntPtr) 42));
     }
 }

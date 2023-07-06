@@ -70,3 +70,27 @@ girtest_alias_tester_alias_in_out(GirTestIntAlias* alias)
 {
 	*alias = ((int) *alias) * 2;
 }
+
+/**
+ * girtest_alias_tester_to_pointer:
+ * @alias: A pointer alias
+ *
+ * Converts a given pointer alias into its coresponding gpointer.
+ */
+gpointer
+girtest_alias_tester_to_pointer(GirTestPointerAlias alias)
+{
+    return (gpointer) alias;
+}
+
+/**
+ * girtest_alias_tester_to_pointer_alias:
+ * @pointer: A pointer value
+ *
+ * Converts a given gpointer into its corresponding pointer alias.
+ */
+GirTestPointerAlias
+girtest_alias_tester_to_pointer_alias(gpointer pointer)
+{
+    return (GirTestPointerAlias) pointer;
+}

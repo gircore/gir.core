@@ -9,15 +9,11 @@ internal class Pointer : ParameterConverter
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
     {
+        //IntPtr can't be nullable. They can be "nulled" via IntPtr.Zero.
         return new ParameterTypeData(
             Direction: GetDirection(parameter),
-            NullableTypeName: GetNullableTypeName(parameter)
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
         );
-    }
-
-    private static string GetNullableTypeName(GirModel.Parameter parameter)
-    {
-        return Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0) + Nullable.Render(parameter);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

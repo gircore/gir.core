@@ -11,6 +11,7 @@ internal static class ReturnTypeRenderer
         new ReturnType.Enumeration(),
         new ReturnType.Interface(),
         new ReturnType.Pointer(),
+        new ReturnType.PointerAlias(),
         new ReturnType.PrimitiveValueType(),
         new ReturnType.PrimitiveValueTypeAlias(),
         new ReturnType.Record(),

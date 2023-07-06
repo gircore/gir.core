@@ -43,4 +43,7 @@ internal static partial class Record
 
     public static string GetInternalManagedHandleName(GirModel.Record record)
         => record.Name + "ManagedHandle";
+
+    public static bool IsGLibError(GirModel.Record record)
+        => record.Namespace.Name == "GLib" && record.Name == "Error";
 }

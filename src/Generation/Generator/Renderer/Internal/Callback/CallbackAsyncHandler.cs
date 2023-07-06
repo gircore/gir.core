@@ -6,9 +6,11 @@ internal static class CallbackAsyncHandler
 {
     public static string Render(GirModel.Callback callback)
     {
-        var handlerName = Model.Callback.GetAsyncHandlerName(callback);
+        try
+        {
+            var handlerName = Model.Callback.GetAsyncHandlerName(callback);
 
-        return $@"
+            return $@"
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -39,5 +41,11 @@ public class {handlerName}
         {CallbackCommonHandlerRenderUtils.RenderNativeCallback(callback, GirModel.Scope.Async)}
     }}
 }}";
+        }
+        catch (System.Exception ex)
+        {
+            Log.Warning($"Can not generate callback async handler for {callback.Name}: {ex.Message}");
+            return string.Empty;
+        }
     }
 }

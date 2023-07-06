@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Generator.Model;
+﻿using System.Linq;
 
 namespace Generator.Renderer.Internal;
 
@@ -18,5 +15,19 @@ internal static class Error
             separator = ", ";
 
         return $"{separator}out GLib.Internal.ErrorOwnedHandle error";
+    }
+
+    public static string RenderCallback(GirModel.Callback callback)
+    {
+        if (!callback.Throws)
+            return string.Empty;
+
+        // Add a separator if there are any previous parameters.
+        var separator = string.Empty;
+        if (callback.Parameters.Any())
+            separator = ", ";
+
+        //Callbacks can not marshal SafeHandles. This is why we need to use IntPtr.
+        return $"{separator}out IntPtr error";
     }
 }

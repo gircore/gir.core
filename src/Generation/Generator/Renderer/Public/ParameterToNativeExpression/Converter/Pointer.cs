@@ -34,6 +34,19 @@ internal class Pointer : ToNativeParameterConverter
             parameterData.IsCallbackUserData = true;
         }
         else
-            throw new Exception("Pointer parameter not yet supported.");
+        {
+            var direction = GetDirection(parameterData.Parameter);
+            var parameterName = Model.Parameter.GetName(parameterData.Parameter);
+            parameterData.SetSignatureName(parameterName);
+            parameterData.SetCallName($"{direction} {parameterName}");
+        }
     }
+
+    private static string GetDirection(GirModel.Parameter parameter) => parameter switch
+    {
+        { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
+        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.Ref(),
+        { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
+        _ => ParameterDirection.In()
+    };
 }

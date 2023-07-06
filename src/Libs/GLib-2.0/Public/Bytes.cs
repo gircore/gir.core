@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace GLib;
 
@@ -22,9 +23,9 @@ public sealed partial class Bytes : IDisposable
 
     #region Methods
 
-    public static Bytes From(byte[] data)
+    public static Bytes From(Span<byte> data)
     {
-        var obj = new Bytes(Internal.Bytes.New(data, (nuint) data.Length));
+        var obj = new Bytes(Internal.Bytes.New(ref MemoryMarshal.GetReference(data), (nuint) data.Length));
         return obj;
     }
 

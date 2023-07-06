@@ -1,4 +1,6 @@
-﻿namespace Generator.Renderer.Public.Parameter;
+﻿using System;
+
+namespace Generator.Renderer.Public.Parameter;
 
 internal class PrimitiveValueType : ParameterConverter
 {
@@ -17,8 +19,10 @@ internal class PrimitiveValueType : ParameterConverter
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
+        { Direction: GirModel.Direction.In, IsPointer: true } => ParameterDirection.Ref(),
+        { Direction: GirModel.Direction.In, IsPointer: false } => ParameterDirection.In(),
         { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
-        _ => ParameterDirection.In()
+        _ => throw new Exception($"Could not determin direction of public primitive value type parameter {parameter}.")
     };
 }

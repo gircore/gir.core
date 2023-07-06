@@ -1,5 +1,4 @@
-﻿
-using Generator.Model;
+﻿using Generator.Model;
 
 namespace Generator.Renderer.Internal;
 
@@ -7,9 +6,11 @@ internal static class CallbackForeverHandler
 {
     public static string Render(GirModel.Callback callback)
     {
-        var handlerName = Model.Callback.GetForeverHandlerName(callback);
+        try
+        {
+            var handlerName = Model.Callback.GetForeverHandlerName(callback);
 
-        return $@"
+            return $@"
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -40,5 +41,11 @@ public class {handlerName}
         {CallbackCommonHandlerRenderUtils.RenderNativeCallback(callback, GirModel.Scope.Forever)}
     }}
 }}";
+        }
+        catch (System.Exception ex)
+        {
+            Log.Warning($"Can not generate callback forever handler for {callback.Name}: {ex.Message}");
+            return string.Empty;
+        }
     }
 }

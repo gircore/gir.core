@@ -2,7 +2,7 @@
 
 namespace Generator.Model;
 
-internal static class Function
+internal static partial class Function
 {
     public static string GetName(GirModel.Function function)
     {

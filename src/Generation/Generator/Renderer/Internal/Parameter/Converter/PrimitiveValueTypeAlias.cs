@@ -25,23 +25,17 @@ internal class PrimitiveValueTypeAlias : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
-            NullableTypeName: GetNullableTypeName(parameter),
+            NullableTypeName: Model.Type.GetPublicNameFullyQuallified(parameter.AnyTypeOrVarArgs.AsT0.AsT0),
             Name: Model.Parameter.GetName(parameter)
         );
     }
-
-    private static string GetNullableTypeName(GirModel.Parameter parameter) => parameter switch
-    {
-        // Public bindings are not generated for pointer types with direction=in, but we can still generate the internal binding with a pointer.
-        { Direction: GirModel.Direction.In, IsPointer: true } => Model.Type.Pointer,
-        _ => Model.Type.GetName(((GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT0).Type)
-    };
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
         // - Optional inout and out types are just exposed as non-nullable ref / out parameters which the user can ignore if desired.
         { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
+        { Direction: GirModel.Direction.In, IsPointer: true } => ParameterDirection.Ref(),
         _ => ParameterDirection.In()
     };
 }

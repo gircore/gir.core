@@ -14,8 +14,8 @@ internal class RecordArray : ToManagedParameterConverter
         var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetCallName(callName);
         parameterData.SetSignatureName(signatureName);
+        parameterData.SetCallName(callName);
 
         if (arrayType.IsPointer)
         {

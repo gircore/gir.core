@@ -14,6 +14,7 @@ public class ParameterToManagedData
     public bool IsCallbackUserData { get; internal set; }
     public bool IsCallbackDestroyNotify { get; internal set; }
     public bool IsArrayLengthParameter { get; internal set; }
+    public bool IsGLibErrorParameter { get; internal set; }
     public bool HasCallName => _callName is not null;
     public bool HasSignatureName => _signatureName is not null;
 

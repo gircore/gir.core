@@ -11,14 +11,14 @@ public class ParameterList
 
     public bool Any()
     {
-        return InstanceParameter is { } || SingleParameters.Any();
+        return InstanceParameter is not null || SingleParameters.Any();
     }
 
     public IEnumerable<Parameter> GetParameters()
     {
         IEnumerable<Parameter> ret = SingleParameters;
 
-        if (InstanceParameter is { })
+        if (InstanceParameter is not null)
             ret = ret.Prepend(InstanceParameter); //Prepend to keep order
 
         return ret;

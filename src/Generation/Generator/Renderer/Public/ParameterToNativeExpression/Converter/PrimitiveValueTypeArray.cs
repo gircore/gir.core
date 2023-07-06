@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Generator.Model;
+using System.Linq;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
@@ -9,17 +9,45 @@ internal class PrimitiveValueTypeArray : ToNativeParameterConverter
     public bool Supports(GirModel.AnyType type)
         => type.IsArray<GirModel.PrimitiveValueType>();
 
-    public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
+    public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
     {
-        if (parameter.Parameter.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Pointed primitive value type array can not yet be converted to native");
+        switch (parameter.Parameter)
+        {
+            case { Direction: GirModel.Direction.Out, CallerAllocates: true }
+                when parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null:
+            case { Direction: GirModel.Direction.In }
+                when parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null:
+            case { Direction: GirModel.Direction.InOut }
+                when parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null:
+                Span(parameter, allParameters);
+                break;
+            case { Direction: GirModel.Direction.In }:
+                Ref(parameter);
+                break;
+            default:
+                throw new Exception($"{parameter.Parameter}: This kind of primitive array is not yet supported");
+        }
+    }
 
-        if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Primitive value type array with direction != in not yet supported");
-
-        //We don't need any conversion for native parameters
+    private static void Ref(ParameterToNativeData parameter)
+    {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(parameterName);
+        parameter.SetCallName($"ref {parameterName}");
+
+        //TODO
+        throw new Exception("Test missing");
+    }
+
+    private static void Span(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
+    {
+        var parameterName = Model.Parameter.GetName(parameter.Parameter);
+        parameter.SetSignatureName(parameterName);
+        parameter.SetCallName($"ref MemoryMarshal.GetReference({parameterName})");
+
+        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthParameter = allParameters.ElementAt(lengthIndex);
+        lengthParameter.IsArrayLengthParameter = true;
+        lengthParameter.SetCallName($"({Model.Type.GetName(lengthParameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0)}) {parameterName}.Length");
     }
 }

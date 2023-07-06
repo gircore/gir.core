@@ -7,7 +7,6 @@ internal static class CallbackParameters
     private static readonly List<Parameter.ParameterConverter> converters = new()
     {
         new Parameter.Bitfield(),
-        new Parameter.ByteArray(),
         new Parameter.Callback(),
         new Parameter.Class(),
         new Parameter.ClassArray(),
@@ -39,6 +38,30 @@ internal static class CallbackParameters
         new Parameter.UnsignedPointer(),
         new Parameter.Void(),
     };
+
+    public static string GetDirection(GirModel.Parameter parameter)
+    {
+        if (parameter.AnyTypeOrVarArgs.IsT1)
+            throw new System.Exception($"Callback parameter direction \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered as variadic parameters are not supported");
+
+        foreach (var converter in converters)
+            if (converter.Supports(parameter.AnyTypeOrVarArgs.AsT0))
+                return converter.Convert(parameter).Direction;
+
+        throw new System.Exception($"Internal callback parameter direction \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
+    }
+
+    public static string GetNullableTypeName(GirModel.Parameter parameter)
+    {
+        if (parameter.AnyTypeOrVarArgs.IsT1)
+            throw new System.Exception($"Callback parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered as variadic parameters are not supported");
+
+        foreach (var converter in converters)
+            if (converter.Supports(parameter.AnyTypeOrVarArgs.AsT0))
+                return converter.Convert(parameter).NullableTypeName;
+
+        throw new System.Exception($"Internal callback parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
+    }
 
     public static string Render(IEnumerable<GirModel.Parameter> parameters)
     {

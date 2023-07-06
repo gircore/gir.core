@@ -6,9 +6,11 @@ internal static class CallbackCallHandler
 {
     public static string Render(GirModel.Callback callback)
     {
-        var handlerName = Model.Callback.GetCallHandlerName(callback);
+        try
+        {
+            var handlerName = Model.Callback.GetCallHandlerName(callback);
 
-        return $@"
+            return $@"
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -38,5 +40,11 @@ public class {handlerName}
         {CallbackCommonHandlerRenderUtils.RenderNativeCallback(callback, GirModel.Scope.Call)}
     }}
 }}";
+        }
+        catch (System.Exception ex)
+        {
+            Log.Warning($"Can not generate callback call handler for {callback.Name}: {ex.Message}");
+            return string.Empty;
+        }
     }
 }

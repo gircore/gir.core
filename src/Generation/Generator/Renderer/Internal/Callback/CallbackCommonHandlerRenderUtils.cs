@@ -8,29 +8,29 @@ internal static class CallbackCommonHandlerRenderUtils
 {
     public static string RenderNativeCallback(GirModel.Callback callback, GirModel.Scope? scope)
     {
-        string? nativeCallback;
+        var parameterData = ParameterToManagedExpression.Initialize(callback.Parameters);
 
-        //TODO: try / catch is a helper as long as there are errors
-        try
-        {
-            var parameterData = ParameterToManagedExpression.Initialize(callback.Parameters);
-
-            nativeCallback = $@"
-NativeCallback = ({parameterData.Select(x => x.GetSignatureName()).Join(", ")}) => {{
+        return $@"
+NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(callback)}) => {{
     {RenderConvertParameterStatements(parameterData)}
     {RenderCallStatement(callback, parameterData, out var resultVariableName)}
     {RenderFreeStatement(scope)}
     {RenderReturnStatement(callback, resultVariableName)}
 }};";
-        }
-        catch (System.Exception ex)
+    }
+
+    private static string GetParameterDefinition(IReadOnlyList<ParameterToManagedData> parameterData)
+    {
+        var parameters = new List<string>();
+
+        foreach (var parameter in parameterData)
         {
-            Log.Warning($"Can not generate callback for {callback.Name}: {ex.Message}");
-            nativeCallback = string.Empty;
+            var type = CallbackParameters.GetNullableTypeName(parameter.Parameter);
+            var direction = CallbackParameters.GetDirection(parameter.Parameter);
+            parameters.Add($"{direction}{type} {parameter.GetSignatureName()}");
         }
 
-        return nativeCallback;
-
+        return parameters.Join(", ");
     }
 
     private static string RenderConvertParameterStatements(IEnumerable<ParameterToManagedData> data)
@@ -58,7 +58,6 @@ NativeCallback = ({parameterData.Select(x => x.GetSignatureName()).Join(", ")}) 
     {
         resultVariableName = "managedCallbackResult";
 
-
         var parameters = new List<string>();
         foreach (var p in parameterData)
         {
@@ -71,15 +70,34 @@ NativeCallback = ({parameterData.Select(x => x.GetSignatureName()).Join(", ")}) 
             if (p.IsCallbackDestroyNotify)
                 continue;
 
+            if (p.IsGLibErrorParameter)
+                continue;
+
             parameters.Add(p.GetCallName());
         }
 
-        var call = $"managedCallback({parameters.Join(", ")});";
+        var call = new StringBuilder();
 
-        if (callback.ReturnType.AnyType.Is<GirModel.Void>())
-            return call;
+        if (!callback.ReturnType.AnyType.Is<GirModel.Void>())
+            call.AppendLine($"{Model.Type.GetPublicNameFullyQuallified(callback.ReturnType.AnyType.AsT0)} {resultVariableName} = default;");
 
-        return $"var {resultVariableName} = " + call;
+        if (callback.Throws || parameterData.Any(x => x.IsGLibErrorParameter))
+            call.AppendLine("try { ");
+
+        if (!callback.ReturnType.AnyType.Is<GirModel.Void>())
+            call.AppendLine($"{resultVariableName} = managedCallback({parameters.Join(", ")});");
+        else
+            call.AppendLine($"managedCallback({parameters.Join(", ")});");
+
+        if (callback.Throws || parameterData.Any(x => x.IsGLibErrorParameter))
+        {
+            call.AppendLine("error = IntPtr.Zero;");
+            call.AppendLine("} catch(Exception ex) {");
+            call.AppendLine("error = GLib.Internal.Error.NewLiteralUnowned(1, 1, GLib.Internal.NonNullableUtf8StringUnownedHandle.Create(ex.Message)).DangerousGetHandle();");
+            call.AppendLine("}");
+        }
+
+        return call.ToString();
     }
 
     private static string RenderFreeStatement(GirModel.Scope? scope)
