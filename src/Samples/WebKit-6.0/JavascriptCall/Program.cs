@@ -1,27 +1,27 @@
 ﻿#pragma warning disable CA1416
 
-WebKit2.Module.Initialize();
+WebKit.Module.Initialize();
 
 var application = Gtk.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
 application.OnActivate += (sender, _) =>
 {
-    var webView = WebKit2.WebView.New();
+    var webView = WebKit.WebView.New();
     webView.HeightRequest = 500;
     webView.WidthRequest = 500;
 
     var ucm = webView.GetUserContentManager();
-    ucm.AddScript(WebKit2.UserScript.New(
+    ucm.AddScript(WebKit.UserScript.New(
         source: "function testFunc() { return 'Success' }",
-        injectedFrames: WebKit2.UserContentInjectedFrames.AllFrames,
-        injectionTime: WebKit2.UserScriptInjectionTime.End)
+        injectedFrames: WebKit.UserContentInjectedFrames.AllFrames,
+        injectionTime: WebKit.UserScriptInjectionTime.End)
     );
 
     webView.OnLoadChanged += async (view, signalArgs) =>
     {
-        if (signalArgs.LoadEvent != WebKit2.LoadEvent.Finished)
+        if (signalArgs.LoadEvent != WebKit.LoadEvent.Finished)
             return;
 
-        var result = await webView.RunJavascriptAsync("testFunc()");
+        var result = await webView.EvaluateJavascriptAsync("testFunc();");
         System.Console.WriteLine(result.ToString()); //Writes "Success" into the console
     };
 

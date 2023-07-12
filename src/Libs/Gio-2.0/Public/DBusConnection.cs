@@ -25,7 +25,7 @@ public partial class DBusConnection
     {
         var tcs = new TaskCompletionSource<Variant>();
 
-        void Callback(GObject.Object sourceObject, AsyncResult res)
+        void Callback(GObject.Object sourceObject, AsyncResult res, IntPtr data)
         {
             // TODO: Make sure this is correct (can we assume res is a GObject?)
             var ret = Internal.DBusConnection.CallFinish(sourceObject.Handle, (res as GObject.Object).Handle, out var error);

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebKit2;
+namespace WebKit;
 
 public partial class UserScript
 {
