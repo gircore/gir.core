@@ -4,7 +4,7 @@ public class PointerGLibPtrArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsGLibPtrArray<GirModel.Pointer>();
+        return anyType.IsGLibPtrArray();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
