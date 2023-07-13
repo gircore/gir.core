@@ -26,6 +26,7 @@ internal class Bitfield : ParameterConverter
         { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
         { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.Ref(),
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
+        { IsPointer: true } => ParameterDirection.Ref(),
         _ => ParameterDirection.In()
     };
 }

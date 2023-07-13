@@ -2,6 +2,7 @@
 
 // Simple C library to test the generated bindings.
 #include "girtest-alias-tester.h"
+#include "girtest-bitfield-tester.h"
 #include "girtest-byte-array-tester.h"
 #include "girtest-callback-tester.h"
 #include "girtest-class-tester.h"
