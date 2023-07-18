@@ -13,6 +13,7 @@
 #include "girtest-property-tester.h"
 #include "girtest-rename-to-tester.h"
 #include "girtest-returning-signal-tester.h"
+#include "girtest-signal-tester.h"
 #include "girtest-string-tester.h"
 #include "data/girtest-executor.h"
 #include "data/girtest-executor-impl.h"
