@@ -27,12 +27,12 @@ let girFiles =
         "Gtk-4.0.gir"
         "GtkSource-5.gir"
         "HarfBuzz-0.0.gir"
-        "JavaScriptCore-5.0.gir"
+        "JavaScriptCore-6.0.gir"
         "Pango-1.0.gir"
         "PangoCairo-1.0.gir"
         "Soup-3.0.gir"
-        "WebKit2-5.0.gir"
-        "WebKit2WebExtension-5.0.gir"
+        "WebKit-6.0.gir"
+        "WebKitWebProcessExtension-6.0.gir"
     |]
     |> Array.append extraFiles
     |> String.concat " "

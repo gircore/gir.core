@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libs\Gtk-4.0\Gtk-4.0.csproj" />
-    <ProjectReference Include="..\..\..\Libs\WebKit2-5.0\WebKit2-5.0.csproj" />
+    <ProjectReference Include="..\..\..\Libs\WebKit-6.0\WebKit-6.0.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

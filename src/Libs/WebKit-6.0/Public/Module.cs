@@ -1,16 +1,16 @@
-﻿namespace WebKit2WebExtension;
+﻿namespace WebKit;
 
 public class Module
 {
     private static bool IsInitialized;
 
     /// <summary>
-    /// Initialize the <c>WebKit2WebExtension</c> module.
+    /// Initialize the <c>WebKit2</c> module.
     /// </summary>
     /// <remarks>
     /// <para>
     /// Calling this method is necessary to correctly initialize the bindings
-    /// and should be done before using anything else in the <see cref="WebKit2WebExtension" />
+    /// and should be done before using anything else in the <see cref="WebKit2" />
     /// namespace.
     /// </para>
     /// <para>
