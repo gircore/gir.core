@@ -22,18 +22,19 @@ The upcoming features and releases can be checked out in the [milestones](https:
 
 ## Supported Libraries
 
-| Library                         | Description                                      | Level of Support |
-|---------------------------------|--------------------------------------------------|------------------|
-| [GTK-4.0][Gtk4Nuget]            | UI-Toolkit                                       | Partial          |
-| [Libadwaita-1][LibadwaitaNuget] | Building blocks for modern GNOME applications    | Partial          |
-| [GStreamer-1.0][GstNuget]       | Multimedia Framework                             | Partial          |
-| [Cairo-1.0][CairoNuget]         | Graphics Library                                 | Partial          |
-| [Pango-1.0][PangoNuget]         | Font/Text Library                                | Partial          |
-| [Gio-2.0][GioNuget]             | Library for high level application functionality | Partial          |
-| [GdkPixbuf-2.0][GdkPixbufNuget] | Image loading in various formats                 | Partial          |
-| libshumate                      | Library to display maps                          | Planned          |
-| [WebKit2-5.0][WebKit2Nuget]     | Browser engine (Linux only)                      | Partial          |
-| [JavaScriptCore-5.0][JavaScriptCoreNuget] | JavaScript engine for WebKit (Linux only)        | Partial          |
+| Library                                 | Description                                            | Level of Support |
+|-----------------------------------------|--------------------------------------------------------|------------------|
+| [GTK-4.0][Gtk4Nuget]                    | UI-Toolkit                                             | Partial          |
+| [Libadwaita-1][LibadwaitaNuget]         | Building blocks for modern GNOME applications          | Partial          |
+| [GStreamer-1.0][GstNuget]               | Multimedia Framework                                   | Partial          |
+| [Cairo-1.0][CairoNuget]                 | Graphics Library                                       | Partial          |
+| [Pango-1.0][PangoNuget]                 | Font/Text Library                                      | Partial          |
+| [Gio-2.0][GioNuget]                     | Library for high level application functionality       | Partial          |
+| [GdkPixbuf-2.0][GdkPixbufNuget]         | Image loading in various formats                       | Partial          |
+| libshumate                              | Library to display maps                                | Planned          |
+| [WebKit-6.0][WebKitNuget]               | Browser engine (Linux only)                            | Partial          |
+| [JavaScriptCore-6.0][JavaScriptCoreNuget] | JavaScript engine for WebKit (Linux only)              | Partial          |
+| [GtkSource-5][GtkSourceNuget]      | Extends a Gtk.TextView to be like a source code editor | Partial          |
 
 
 ## Get Involved
@@ -90,8 +91,9 @@ The code in the library folder is not complete because most of the code is gener
 [GioNuget]: https://www.nuget.org/packages/GirCore.Gio-2.0/
 [GdkPixbufNuget]: https://www.nuget.org/packages/GirCore.GdkPixbuf-2.0/
 [LibadwaitaNuget]: https://www.nuget.org/packages/GirCore.Adw-1/
-[WebKit2Nuget]: https://www.nuget.org/packages/GirCore.WebKit2-5.0/
-[JavaScriptCoreNuget]: https://www.nuget.org/packages/GirCore.JavaScriptCore-5.0/
+[WebKitNuget]: https://www.nuget.org/packages/GirCore.WebKit-6.0/
+[JavaScriptCoreNuget]: https://www.nuget.org/packages/GirCore.JavaScriptCore-6.0/
+[GtkSourceNuget]: https://www.nuget.org/packages/GirCore.GtkSource-5/
 
 ## Licensing terms
 Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.
