@@ -8,11 +8,12 @@
     <PackageScribanIncludeSource>true</PackageScribanIncludeSource>
     <PackageId>Gir.Integration.CSharp</PackageId>
     <IsPackable>false</IsPackable>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Scriban" Version="5.7.0" IncludeAssets="Build" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
   </ItemGroup>
   
   <ItemGroup>
