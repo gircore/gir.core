@@ -21,23 +21,27 @@ public partial class DBusConnection
     {
         var tcs = new TaskCompletionSource<Variant>();
 
-        void Callback(GObject.Object sourceObject, AsyncResult res, IntPtr data)
+        var callback = new Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
         {
-            // TODO: Make sure this is correct (can we assume res is a GObject?)
-            var ret = Internal.DBusConnection.CallFinish(sourceObject.Handle, (res as GObject.Object).Handle, out var error);
+            if (sourceObject is null)
+            {
+                tcs.SetException(new Exception("Missing source object"));
+            }
+            else
+            {
+                var ret = Internal.DBusConnection.CallFinish(sourceObject.Handle, res.Handle, out var error);
 
-            if (!error.IsInvalid)
-                throw new GException(error);
+                if (!error.IsInvalid)
+                    throw new GException(error);
 
-            tcs.SetResult(new Variant(ret));
-        }
-
-        var callAsyncCallbackHandler = new Internal.AsyncReadyCallbackAsyncHandler(Callback);
+                tcs.SetResult(new Variant(ret));
+            }
+        });
 
         Internal.DBusConnection.Call(Handle,
             GLib.Internal.NullableUtf8StringOwnedHandle.Create(busName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(objectPath),
             GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(interfaceName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(methodName),
-            parameters.GetSafeHandle(), GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, -1, IntPtr.Zero, callAsyncCallbackHandler.NativeCallback, IntPtr.Zero);
+            parameters.GetSafeHandle(), GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, -1, IntPtr.Zero, callback.NativeCallback, IntPtr.Zero);
 
         return tcs.Task;
     }

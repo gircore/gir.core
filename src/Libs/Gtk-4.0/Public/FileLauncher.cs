@@ -10,21 +10,28 @@ public partial class FileLauncher
     {
         var tcs = new TaskCompletionSource<bool>();
 
-        void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
+        var callback = new Gio.Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
         {
-            var launchValue = Internal.FileLauncher.LaunchFinish(sourceObject, res, out var error);
+            if (sourceObject is null)
+            {
+                tcs.SetException(new Exception("Missing source object"));
+            }
+            else
+            {
+                var launchValue = Internal.FileLauncher.LaunchFinish(sourceObject.Handle, res.Handle, out var error);
 
-            if (!error.IsInvalid)
-                throw new GLib.GException(error);
+                if (!error.IsInvalid)
+                    throw new GLib.GException(error);
 
-            tcs.SetResult(launchValue);
-        }
+                tcs.SetResult(launchValue);
+            }
+        });
 
         Internal.FileLauncher.Launch(
             self: Handle,
             parent: parent.Handle,
             cancellable: IntPtr.Zero,
-            callback: Callback,
+            callback: callback.NativeCallback,
             userData: IntPtr.Zero
         );
 
@@ -36,21 +43,28 @@ public partial class FileLauncher
     {
         var tcs = new TaskCompletionSource<bool>();
 
-        void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
+        var callback = new Gio.Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
         {
-            var launchValue = Internal.FileLauncher.OpenContainingFolderFinish(sourceObject, res, out var error);
+            if (sourceObject is null)
+            {
+                tcs.SetException(new Exception("Missing source object"));
+            }
+            else
+            {
+                var launchValue = Internal.FileLauncher.OpenContainingFolderFinish(sourceObject.Handle, res.Handle, out var error);
 
-            if (!error.IsInvalid)
-                throw new GLib.GException(error);
+                if (!error.IsInvalid)
+                    throw new GLib.GException(error);
 
-            tcs.SetResult(launchValue);
-        }
+                tcs.SetResult(launchValue);
+            }
+        });
 
         Internal.FileLauncher.OpenContainingFolder(
             self: Handle,
             parent: parent.Handle,
             cancellable: IntPtr.Zero,
-            callback: Callback,
+            callback: callback.NativeCallback,
             userData: IntPtr.Zero
         );
 

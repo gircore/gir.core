@@ -10,29 +10,36 @@ public partial class FileDialog
     {
         var tcs = new TaskCompletionSource<Gio.File?>();
 
-        void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
+        var callback = new Gio.Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
         {
-            var fileValue = Internal.FileDialog.OpenFinish(sourceObject, res, out var error);
-
-            if (!error.IsInvalid)
-                throw new GLib.GException(error);
-
-            if (fileValue == IntPtr.Zero)
+            if (sourceObject is null)
             {
-                tcs.SetResult(null);
+                tcs.SetException(new Exception("Missing source object"));
             }
             else
             {
-                var value = new Gio.FileHelper(fileValue, true);
-                tcs.SetResult(value);
+                var fileValue = Internal.FileDialog.OpenFinish(sourceObject.Handle, res.Handle, out var error);
+
+                if (!error.IsInvalid)
+                    throw new GLib.GException(error);
+
+                if (fileValue == IntPtr.Zero)
+                {
+                    tcs.SetResult(null);
+                }
+                else
+                {
+                    var value = new Gio.FileHelper(fileValue, true);
+                    tcs.SetResult(value);
+                }
             }
-        }
+        });
 
         Internal.FileDialog.Open(
             self: Handle,
             parent: parent.Handle,
             cancellable: IntPtr.Zero,
-            callback: Callback,
+            callback: callback.NativeCallback,
             userData: IntPtr.Zero
         );
 
@@ -44,29 +51,36 @@ public partial class FileDialog
     {
         var tcs = new TaskCompletionSource<Gio.File?>();
 
-        void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
+        var callback = new Gio.Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
         {
-            var fileValue = Internal.FileDialog.SaveFinish(sourceObject, res, out var error);
-
-            if (!error.IsInvalid)
-                throw new GLib.GException(error);
-
-            if (fileValue == IntPtr.Zero)
+            if (sourceObject is null)
             {
-                tcs.SetResult(null);
+                tcs.SetException(new Exception("Missing source object"));
             }
             else
             {
-                var value = new Gio.FileHelper(fileValue, true);
-                tcs.SetResult(value);
+                var fileValue = Internal.FileDialog.SaveFinish(sourceObject.Handle, res.Handle, out var error);
+
+                if (!error.IsInvalid)
+                    throw new GLib.GException(error);
+
+                if (fileValue == IntPtr.Zero)
+                {
+                    tcs.SetResult(null);
+                }
+                else
+                {
+                    var value = new Gio.FileHelper(fileValue, true);
+                    tcs.SetResult(value);
+                }
             }
-        }
+        });
 
         Internal.FileDialog.Save(
             self: Handle,
             parent: parent.Handle,
             cancellable: IntPtr.Zero,
-            callback: Callback,
+            callback: callback.NativeCallback,
             userData: IntPtr.Zero
         );
 
@@ -79,29 +93,36 @@ public partial class FileDialog
     {
         var tcs = new TaskCompletionSource<Gio.File?>();
 
-        void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
+        var callback = new Gio.Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
         {
-            var fileValue = Internal.FileDialog.SelectFolderFinish(sourceObject, res, out var error);
-
-            if (!error.IsInvalid)
-                throw new GLib.GException(error);
-
-            if (fileValue == IntPtr.Zero)
+            if (sourceObject is null)
             {
-                tcs.SetResult(null);
+                tcs.SetException(new Exception("Missing source object"));
             }
             else
             {
-                var value = new Gio.FileHelper(fileValue, true);
-                tcs.SetResult(value);
+                var fileValue = Internal.FileDialog.SelectFolderFinish(sourceObject.Handle, res.Handle, out var error);
+
+                if (!error.IsInvalid)
+                    throw new GLib.GException(error);
+
+                if (fileValue == IntPtr.Zero)
+                {
+                    tcs.SetResult(null);
+                }
+                else
+                {
+                    var value = new Gio.FileHelper(fileValue, true);
+                    tcs.SetResult(value);
+                }
             }
-        }
+        });
 
         Internal.FileDialog.SelectFolder(
             self: Handle,
             parent: parent.Handle,
             cancellable: IntPtr.Zero,
-            callback: Callback,
+            callback: callback.NativeCallback,
             userData: IntPtr.Zero
         );
 
