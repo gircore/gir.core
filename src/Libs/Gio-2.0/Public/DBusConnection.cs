@@ -6,19 +6,15 @@ namespace Gio;
 
 public partial class DBusConnection
 {
-    #region Static methods
-
     public static DBusConnection Get(BusType busType)
     {
         var handle = Internal.Functions.BusGetSync(busType, IntPtr.Zero, out var error);
-        Error.ThrowOnError(error);
+
+        if (!error.IsInvalid)
+            throw new GException(error);
 
         return GObject.Internal.ObjectWrapper.WrapHandle<DBusConnection>(handle, true);
     }
-
-    #endregion
-
-    #region Methods
 
     public Task<Variant> CallAsync(string busName, string objectPath, string interfaceName, string methodName,
         Variant? parameters = null)
@@ -29,7 +25,9 @@ public partial class DBusConnection
         {
             // TODO: Make sure this is correct (can we assume res is a GObject?)
             var ret = Internal.DBusConnection.CallFinish(sourceObject.Handle, (res as GObject.Object).Handle, out var error);
-            Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GException(error);
 
             tcs.SetResult(new Variant(ret));
         }
@@ -52,10 +50,9 @@ public partial class DBusConnection
             GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(interfaceName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(methodName),
             parameterHandle, GLib.Internal.VariantTypeNullHandle.Instance, DBusCallFlags.None, 9999, IntPtr.Zero, out var error);
 
-        Error.ThrowOnError(error);
+        if (!error.IsInvalid)
+            throw new GException(error);
 
         return new Variant(ret);
     }
-
-    #endregion
 }

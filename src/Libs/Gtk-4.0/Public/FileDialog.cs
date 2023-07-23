@@ -13,7 +13,9 @@ public partial class FileDialog
         void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
         {
             var fileValue = Internal.FileDialog.OpenFinish(sourceObject, res, out var error);
-            GLib.Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GLib.GException(error);
 
             if (fileValue == IntPtr.Zero)
             {
@@ -45,7 +47,9 @@ public partial class FileDialog
         void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
         {
             var fileValue = Internal.FileDialog.SaveFinish(sourceObject, res, out var error);
-            GLib.Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GLib.GException(error);
 
             if (fileValue == IntPtr.Zero)
             {
@@ -78,7 +82,9 @@ public partial class FileDialog
         void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
         {
             var fileValue = Internal.FileDialog.SelectFolderFinish(sourceObject, res, out var error);
-            GLib.Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GLib.GException(error);
 
             if (fileValue == IntPtr.Zero)
             {

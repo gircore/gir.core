@@ -23,7 +23,8 @@ internal static class Error
     public static string RenderThrowOnError(GirModel.Callable callable)
     {
         return callable.Throws
-            ? "GLib.Error.ThrowOnError(error);" + Environment.NewLine
+            ? @"if(!error.IsInvalid)
+    throw new GLib.GException(error);"
             : string.Empty;
     }
 }

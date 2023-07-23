@@ -13,7 +13,9 @@ public partial class WebView
         void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
         {
             var jsValue = Internal.WebView.EvaluateJavascriptFinish(sourceObject, res, out var error);
-            GLib.Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GLib.GException(error);
 
             var value = GObject.Internal.ObjectWrapper.WrapHandle<JavaScriptCore.Value>(jsValue, true);
             tcs.SetResult(value);

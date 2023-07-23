@@ -13,7 +13,9 @@ public partial class FileLauncher
         void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
         {
             var launchValue = Internal.FileLauncher.LaunchFinish(sourceObject, res, out var error);
-            GLib.Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GLib.GException(error);
 
             tcs.SetResult(launchValue);
         }
@@ -37,7 +39,9 @@ public partial class FileLauncher
         void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
         {
             var launchValue = Internal.FileLauncher.OpenContainingFolderFinish(sourceObject, res, out var error);
-            GLib.Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GLib.GException(error);
 
             tcs.SetResult(launchValue);
         }

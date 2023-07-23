@@ -13,7 +13,9 @@ public partial class UriLauncher
         void Callback(IntPtr sourceObject, IntPtr res, IntPtr userData)
         {
             var launchValue = Internal.UriLauncher.LaunchFinish(sourceObject, res, out var error);
-            GLib.Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GLib.GException(error);
 
             tcs.SetResult(launchValue);
         }

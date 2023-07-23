@@ -27,7 +27,10 @@ public abstract class NullablePlatformStringHandle : SafeHandle
             return null;
 
         var fileName = FilenameToUtf8(handle, -1, out _, out _, out var error);
-        GLib.Error.ThrowOnError(error);
+
+        if (!error.IsInvalid)
+            throw new GException(error);
+
         return fileName.ConvertToString();
     }
 }
@@ -55,7 +58,9 @@ public class NullablePlatformStringUnownedHandle : NullablePlatformStringHandle
             return handle;
 
         var fileName = FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error);
-        GLib.Error.ThrowOnError(error);
+
+        if (!error.IsInvalid)
+            throw new GException(error);
 
         handle.SetHandle(fileName);
         return handle;
@@ -90,7 +95,9 @@ public class NullablePlatformStringOwnedHandle : NullablePlatformStringHandle
             return handle;
 
         var fileName = FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error);
-        GLib.Error.ThrowOnError(error);
+
+        if (!error.IsInvalid)
+            throw new GException(error);
 
         handle.SetHandle(fileName);
         return handle;
@@ -124,7 +131,10 @@ public abstract class NonNullablePlatformStringHandle : SafeHandle
             throw new NullHandleException($"{nameof(NonNullablePlatformStringHandle)} should not have a null handle");
 
         var fileName = Functions.FilenameToUtf8(this, -1, out _, out _, out var error);
-        GLib.Error.ThrowOnError(error);
+
+        if (!error.IsInvalid)
+            throw new GException(error);
+
         return fileName.ConvertToString();
     }
 }
@@ -148,7 +158,9 @@ public class NonNullablePlatformStringUnownedHandle : NonNullablePlatformStringH
     public static NonNullablePlatformStringUnownedHandle Create(string s)
     {
         var fileName = FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error);
-        GLib.Error.ThrowOnError(error);
+
+        if (!error.IsInvalid)
+            throw new GException(error);
 
         var handle = new NonNullablePlatformStringUnownedHandle();
         handle.SetHandle(fileName);
@@ -181,7 +193,10 @@ public class NonNullablePlatformStringOwnedHandle : NonNullablePlatformStringHan
     public static NonNullablePlatformStringOwnedHandle Create(string s)
     {
         var handle = Functions.FilenameFromUtf8(NonNullableUtf8StringOwnedHandle.Create(s), -1, out _, out _, out var error);
-        GLib.Error.ThrowOnError(error);
+
+        if (!error.IsInvalid)
+            throw new GException(error);
+
         return handle;
     }
 
