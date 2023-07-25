@@ -14,10 +14,14 @@ public partial class PixbufLoader
             using var bytes = Bytes.From(data);
 
             Internal.PixbufLoader.WriteBytes(handle, bytes.Handle, out var error);
-            Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GException(error);
 
             Internal.PixbufLoader.Close(handle, out error);
-            Error.ThrowOnError(error);
+
+            if (!error.IsInvalid)
+                throw new GException(error);
 
             return new Pixbuf(Internal.PixbufLoader.GetPixbuf(handle), false);
         }

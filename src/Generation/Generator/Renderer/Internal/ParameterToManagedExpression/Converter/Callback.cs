@@ -86,7 +86,8 @@ internal class Callback : ToManagedParameterConverter
     private static string RenderThrowOnError(GirModel.Callback callback, IEnumerable<Public.ParameterToNativeData> parameters)
     {
         return callback.Throws || parameters.Any(x => x.IsGLibErrorParameter)
-            ? "GLib.Error.ThrowOnError(new GLib.Internal.ErrorUnownedHandle(error));"
+            ? @"if(error != IntPtr.Zero)
+    throw new GLib.GException(new GLib.Internal.ErrorUnownedHandle(error));"
             : string.Empty;
     }
 
