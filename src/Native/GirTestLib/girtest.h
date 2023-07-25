@@ -11,6 +11,7 @@
 #include "girtest-integer-array-tester.h"
 #include "girtest-primitive-value-type-tester.h"
 #include "girtest-property-tester.h"
+#include "girtest-record-tester.h"
 #include "girtest-rename-to-tester.h"
 #include "girtest-returning-signal-tester.h"
 #include "girtest-signal-tester.h"
