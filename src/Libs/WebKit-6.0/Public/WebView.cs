@@ -10,22 +10,20 @@ public partial class WebView
     {
         var tcs = new TaskCompletionSource<JavaScriptCore.Value>();
 
-        var callback = new Gio.Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
+        var callbackHandler = new Gio.Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
         {
             if (sourceObject is null)
             {
                 tcs.SetException(new Exception("Missing source object"));
+                return;
             }
+
+            var jsValue = Internal.WebView.EvaluateJavascriptFinish(sourceObject.Handle, res.Handle, out var error);
+
+            if (!error.IsInvalid)
+                tcs.SetException(new GLib.GException(error));
             else
-            {
-                var jsValue = Internal.WebView.EvaluateJavascriptFinish(sourceObject.Handle, res.Handle, out var error);
-
-                if (!error.IsInvalid)
-                    throw new GLib.GException(error);
-
-                var value = GObject.Internal.ObjectWrapper.WrapHandle<JavaScriptCore.Value>(jsValue, true);
-                tcs.SetResult(value);
-            }
+                tcs.SetResult(GObject.Internal.ObjectWrapper.WrapHandle<JavaScriptCore.Value>(jsValue, true));
         });
 
         Internal.WebView.EvaluateJavascript(
@@ -35,7 +33,7 @@ public partial class WebView
             worldName: GLib.Internal.NullableUtf8StringOwnedHandle.Create(null),
             sourceUri: GLib.Internal.NullableUtf8StringOwnedHandle.Create(null),
             cancellable: IntPtr.Zero,
-            callback: callback.NativeCallback,
+            callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
         );
 

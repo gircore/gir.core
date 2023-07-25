@@ -10,28 +10,27 @@ public partial class UriLauncher
     {
         var tcs = new TaskCompletionSource<bool>();
 
-        var callback = new Gio.Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
+        var callbackHandler = new Gio.Internal.AsyncReadyCallbackAsyncHandler((sourceObject, res, data) =>
         {
             if (sourceObject is null)
             {
                 tcs.SetException(new Exception("Missing source object"));
+                return;
             }
+
+            var launchValue = Internal.UriLauncher.LaunchFinish(sourceObject.Handle, res.Handle, out var error);
+
+            if (!error.IsInvalid)
+                tcs.SetException(new GLib.GException(error));
             else
-            {
-                var launchValue = Internal.UriLauncher.LaunchFinish(sourceObject.Handle, res.Handle, out var error);
-
-                if (!error.IsInvalid)
-                    throw new GLib.GException(error);
-
                 tcs.SetResult(launchValue);
-            }
         });
 
         Internal.UriLauncher.Launch(
             self: Handle,
             parent: parent.Handle,
             cancellable: IntPtr.Zero,
-            callback: callback.NativeCallback,
+            callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
         );
 
