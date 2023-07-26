@@ -11,4 +11,6 @@ public interface Record : ComplexType
     IEnumerable<Field> Fields { get; }
     bool Introspectable { get; }
     bool Foreign { get; }
+    bool Opaque { get; }
+    bool Pointer { get; }
 }

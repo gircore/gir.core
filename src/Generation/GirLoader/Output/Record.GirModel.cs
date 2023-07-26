@@ -11,4 +11,6 @@ public partial class Record : GirModel.Record
     IEnumerable<GirModel.Field> GirModel.Record.Fields => Fields;
     bool GirModel.Record.Introspectable => Introspectable;
     bool GirModel.Record.Foreign => Foreign;
+    bool GirModel.Record.Opaque => Opaque;
+    bool GirModel.Record.Pointer => Pointer;
 }

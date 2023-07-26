@@ -21,14 +21,18 @@ public partial class Record : ComplexType, ShadowableProvider
     public TypeReference? GLibClassStructFor { get; }
     public bool Introspectable { get; }
     public bool Foreign { get; }
+    public bool Opaque { get; }
+    public bool Pointer { get; }
 
-    public Record(Repository repository, string? cType, string name, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors, bool introspectable, bool foreign) : base(repository, cType, name)
+    public Record(Repository repository, string? cType, string name, TypeReference? gLibClassStructFor, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors, bool introspectable, bool foreign, bool opaque, bool pointer) : base(repository, cType, name)
     {
         GLibClassStructFor = gLibClassStructFor;
         GetTypeFunction = getTypeFunction;
         Disguised = disguised;
         Introspectable = introspectable;
         Foreign = foreign;
+        Opaque = opaque;
+        Pointer = pointer;
 
         this._constructors = constructors.ToList();
         this._methods = methods.ToList();
