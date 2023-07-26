@@ -1,6 +1,7 @@
 ﻿using System;
 using Gio;
 using GLib;
+using Array = System.Array;
 
 namespace Sample;
 
@@ -20,12 +21,12 @@ public static partial class DBus
             Variant.Create(""), //Icon
             Variant.Create("Summary"),
             Variant.Create("Body"),
-            Variant.Create(new string[0]),
+            Variant.Create(Array.Empty<string>()),
             Variant.CreateEmptyDictionary(VariantType.String, VariantType.Variant),//hints
             Variant.Create(999)
         );
 
-        using Variant ret = bus.Call("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", "Notify", parameters);
+        using Variant ret = bus.CallSync("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", "Notify", parameters, null, DBusCallFlags.None, 9999, null);
         Console.WriteLine("Result: " + ret.Print(true));
     }
 }

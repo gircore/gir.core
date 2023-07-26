@@ -6,7 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\GObject-2.0\Internal\ImportResolver.Generated.cs">
-      <Link>Internal\ImportResolver.Generated.cs</Link>
+      <Link>GObject\ImportResolver.Generated.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

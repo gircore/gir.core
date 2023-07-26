@@ -21,7 +21,7 @@ public class VariantTypeTest : Test
     [DataRow("v")]
     public void CanCreateTypeFromString(string type)
     {
-        var variantType = new VariantType(type);
+        var variantType = VariantType.New(type);
 
         variantType.ToString().Should().Be(type);
     }

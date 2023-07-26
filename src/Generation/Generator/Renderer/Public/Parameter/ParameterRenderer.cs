@@ -13,6 +13,8 @@ internal static class ParameterRenderer
         new Parameter.Enumeration(),
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
+        new Parameter.OpaqueTypedRecord(),
+        new Parameter.OpaqueTypedRecordArray(),
         new Parameter.Pointer(),
         new Parameter.PointerAlias(),
         new Parameter.PrimitiveValueType(),

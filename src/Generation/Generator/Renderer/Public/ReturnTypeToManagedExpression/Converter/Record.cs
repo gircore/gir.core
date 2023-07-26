@@ -6,7 +6,7 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 internal class Record : ReturnTypeConverter
 {
     public bool Supports(AnyType type)
-        => type.Is<GirModel.Record>();
+        => type.Is<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
 
     public string GetString(GirModel.ReturnType returnType, string fromVariableName)
     {

@@ -4,7 +4,7 @@ internal class Record : InstanceParameterConverter
 {
     public bool Supports(GirModel.Type type)
     {
-        return type is GirModel.Record;
+        return type is GirModel.Record r && !Model.Record.IsOpaqueTyped(r);
     }
 
     public RenderableInstanceParameter Convert(GirModel.InstanceParameter instanceParameter)

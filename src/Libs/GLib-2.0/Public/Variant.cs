@@ -91,9 +91,3 @@ public partial class Variant : IDisposable
         Handle.Dispose();
     }
 }
-
-public static class VariantExtension
-{
-    public static VariantHandle GetSafeHandle(this Variant? variant)
-        => variant is null ? VariantNullHandle.Instance : variant.Handle;
-}

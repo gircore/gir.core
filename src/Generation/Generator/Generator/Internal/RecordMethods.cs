@@ -14,12 +14,14 @@ internal class RecordMethods : Generator<GirModel.Record>
 
     public void Generate(GirModel.Record record)
     {
+        if (Record.IsOpaqueTyped(record))
+            return;
+
         if (!record.Constructors.Any()
             && !record.Methods.Any()
             && !record.Functions.Any()
             && record.TypeFunction is null)
             return;
-
 
         var source = Renderer.Internal.RecordMethods.Render(record);
         var codeUnit = new CodeUnit(

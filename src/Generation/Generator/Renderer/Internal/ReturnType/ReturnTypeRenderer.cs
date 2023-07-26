@@ -12,6 +12,7 @@ internal static class ReturnTypeRenderer
         new ReturnType.Enumeration(),
         new ReturnType.Interface(),
         new ReturnType.InterfaceGLibPtrArray(),
+        new ReturnType.OpaqueTypedRecord(),
         new ReturnType.PlatformString(),
         new ReturnType.Pointer(),
         new ReturnType.PointerAlias(),

@@ -10,6 +10,7 @@ internal static class ConstructorRenderer
     private static readonly List<Constructor.ConstructorConverter> Converters = new()
     {
         new Constructor.Class(),
+        new Constructor.OpaqueTypedRecord(),
     };
 
     public static string Render(GirModel.Constructor constructor)
@@ -17,6 +18,10 @@ internal static class ConstructorRenderer
         try
         {
             var constructorData = GetData(constructor);
+
+            if (!constructorData.AllowRendering)
+                return string.Empty;
+
             var parameters = ParameterToNativeExpression.Initialize(constructor.Parameters);
 
             var newKeyWord = constructorData.RequiresNewModifier
@@ -25,7 +30,7 @@ internal static class ConstructorRenderer
 
             return @$"
 {VersionAttribute.Render(constructor.Version)}
-public static {newKeyWord}{constructor.Parent.Name} {Model.Constructor.GetName(constructor)}({RenderParameters(parameters)})
+public static {newKeyWord}{constructor.Parent.Name}{Nullable.Render(constructor.ReturnType)} {Model.Constructor.GetName(constructor)}({RenderParameters(parameters)})
 {{
     {RenderContent(parameters)}
     {RenderCallStatement(constructor, parameters, constructorData)}

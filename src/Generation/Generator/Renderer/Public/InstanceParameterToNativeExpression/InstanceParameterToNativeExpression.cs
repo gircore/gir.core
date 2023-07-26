@@ -8,6 +8,7 @@ internal static class InstanceParameterToNativeExpression
     {
         new InstanceParameterToNativeExpressions.Class(),
         new InstanceParameterToNativeExpressions.Interface(),
+        new InstanceParameterToNativeExpressions.OpaqueTypedRecord(),
         new InstanceParameterToNativeExpressions.Pointer(),
     };
 

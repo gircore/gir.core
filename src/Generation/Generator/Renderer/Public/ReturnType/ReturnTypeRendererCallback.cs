@@ -10,6 +10,7 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.Class(),
         new ReturnType.Enumeration(),
         new ReturnType.Interface(),
+        new ReturnType.OpaqueTypedRecord(),
         new ReturnType.Pointer(),
         new ReturnType.PointerAlias(),
         new ReturnType.PrimitiveValueType(),
