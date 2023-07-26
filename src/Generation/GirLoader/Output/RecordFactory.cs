@@ -42,7 +42,9 @@ internal class RecordFactory
             disguised: record.Disguised,
             constructors: _constructorFactory.Create(record.Constructors),
             introspectable: record.Introspectable,
-            foreign: record.Foreign
+            foreign: record.Foreign,
+            opaque: record.Opaque,
+            pointer: record.Pointer
         );
 
         if (getTypeFunction is not null)

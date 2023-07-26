@@ -41,6 +41,12 @@ public class Record
     [XmlAttribute("disguised")]
     public bool Disguised;
 
+    [XmlAttribute("opaque")]
+    public bool Opaque;
+
+    [XmlAttribute("pointer")]
+    public bool Pointer;
+
     [XmlAttribute("introspectable")]
     public bool Introspectable = true;
 
