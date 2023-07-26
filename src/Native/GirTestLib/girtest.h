@@ -9,6 +9,7 @@
 #include "girtest-constant-tester.h"
 #include "girtest-error-tester.h"
 #include "girtest-integer-array-tester.h"
+#include "girtest-opaque-record-tester.h"
 #include "girtest-primitive-value-type-tester.h"
 #include "girtest-property-tester.h"
 #include "girtest-record-tester.h"
