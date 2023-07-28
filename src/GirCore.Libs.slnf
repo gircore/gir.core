@@ -2,7 +2,6 @@
   "solution": {
     "path": "GirCore.sln",
     "projects": [
-      "Extensions/Gtk-4.0.DependencyInjection/Gtk-4.0.DependencyInjection.csproj",
       "Generation/Generator/Generator.csproj",
       "Generation/GirLoader/GirLoader.csproj",
       "Generation/GirModel/GirModel.csproj",
@@ -39,7 +38,6 @@
       "Samples/Gst-1.0/VideoPlayback/VideoPlayback.csproj",
       "Samples/Gtk-4.0/AboutDialog/AboutDialog.csproj",
       "Samples/Gtk-4.0/Builder/Builder.csproj",
-      "Samples/Gtk-4.0/DependencyInjection/DependencyInjection.csproj",
       "Samples/Gtk-4.0/DrawingArea/DrawingArea.csproj",
       "Samples/Gtk-4.0/Window/Window.csproj",
       "Samples/WebKit-6.0/JavascriptCall/JavascriptCall.csproj",
