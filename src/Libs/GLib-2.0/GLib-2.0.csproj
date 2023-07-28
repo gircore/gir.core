@@ -4,4 +4,9 @@
     <RootNamespace>GLib</RootNamespace>
     <Description>C# bindings for GLib.</Description>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\GObject-2.0\Internal\ImportResolver.Generated.cs">
+      <Link>Internal\ImportResolver.Generated.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

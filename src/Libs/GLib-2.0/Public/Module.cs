@@ -1,4 +1,8 @@
-﻿namespace GLib;
+﻿using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+namespace GLib;
 
 public class Module
 {
@@ -19,8 +23,20 @@ public class Module
         if (IsInitialized)
             return;
 
-        Internal.ImportResolver.RegisterAsDllImportResolver();
+        NativeLibrary.SetDllImportResolver(typeof(Module).Assembly, Resolve);
 
         IsInitialized = true;
+    }
+
+    private static IntPtr Resolve(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
+    {
+        // There is need for some GObject API which is manually implemented as part of GLib. To be able
+        // to access this API the import resolver from GObject is available, too.
+        return libraryName switch
+        {
+            GLib.Internal.ImportResolver.Library => GLib.Internal.ImportResolver.Resolve(libraryName, assembly, searchPath),
+            GObject.Internal.ImportResolver.Library => GObject.Internal.ImportResolver.Resolve(libraryName, assembly, searchPath),
+            _ => IntPtr.Zero
+        };
     }
 }
