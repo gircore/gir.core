@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GObject.Tests.Classes;
 
-[TestClass, TestCategory("IntegrationTest")]
+[TestClass, TestCategory("UnitTest")]
 public class ParamSpecTest : Test
 {
     [TestMethod]

@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GObject.Tests;
 
-[TestClass, TestCategory("IntegrationTest")]
+[TestClass, TestCategory("UnitTest")]
 public class TypeTest
 {
     [TestMethod]

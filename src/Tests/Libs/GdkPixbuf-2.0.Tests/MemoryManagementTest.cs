@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GdkPixbuf.Tests;
 
-[TestClass, TestCategory("IntegrationTest")]
+[TestClass, TestCategory("UnitTest")]
 public class MemoryManagementTest : Test
 {
     [TestMethod]
