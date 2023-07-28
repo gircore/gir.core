@@ -86,8 +86,12 @@ jobs:
         run: dotnet fsi GenerateLibs.fsx GirTest-0.1.gir
         working-directory: './src'
 
-      - name: Build solution
+      - name: Build complete solution
         run: dotnet build --nologo -c ${{ env.configuration }}
+        working-directory: './src'
+
+      - name: Build libraries only
+        run: dotnet build --nologo -c ${{ env.configuration }} GirCore.Libs.slnf
         working-directory: './src'
 
       - name: Verify code format
