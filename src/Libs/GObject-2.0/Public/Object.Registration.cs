@@ -31,7 +31,14 @@ public partial class Object
     private static class FallbackRegistrationStrategy
     {
         private static string QualifyName(System.Type type)
-            => type.FullName?.Replace(".", "") ?? type.Name;
+            => type.ToString()
+                .Replace(".", string.Empty)
+                .Replace("+", string.Empty)
+                .Replace("`", string.Empty)
+                .Replace("[", "_")
+                .Replace("]", string.Empty)
+                .Replace(" ", string.Empty)
+                .Replace(",", "_");
 
         public static void RegisterSubclassRecursive(System.Type type)
         {
