@@ -8,6 +8,8 @@ internal class Record : ReturnTypeConverter
     {
         var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Record) returnType.AnyType.AsT0);
 
+        if (returnType.Nullable)
+            nullableTypeName = $"{nullableTypeName}?";
         return new RenderableReturnType(nullableTypeName);
     }
 

@@ -17,11 +17,13 @@ header_files = [
   'girtest-property-tester.h',
   'girtest-record-tester.h',
   'girtest-rename-to-tester.h',
+  'girtest-fundamental-tester.h',
   'girtest-returning-signal-tester.h',
   'girtest-signal-tester.h',
   'girtest-string-tester.h',
   'data/girtest-executor.h',
   'data/girtest-executor-impl.h',
+  'data/girtest-instantiatable-fundamental.h',
 ]
 
 source_files = [
@@ -37,11 +39,13 @@ source_files = [
   'girtest-property-tester.c',
   'girtest-record-tester.c',
   'girtest-rename-to-tester.c',
+  'girtest-fundamental-tester.c',
   'girtest-returning-signal-tester.c',
   'girtest-signal-tester.c',
   'girtest-string-tester.c',
   'data/girtest-executor.c',
   'data/girtest-executor-impl.c',
+  'data/girtest-instantiatable-fundamental.c',
 ]
 
 # Build a shared library that depends on gobject.
