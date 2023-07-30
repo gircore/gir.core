@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cairo.Tests;
 
-[TestClass, TestCategory("IntegrationTest")]
+[TestClass, TestCategory("UnitTest")]
 public class ScaledFontTest : Test
 {
     [TestMethod]

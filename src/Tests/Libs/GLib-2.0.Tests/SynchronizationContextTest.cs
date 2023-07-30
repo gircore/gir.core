@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GLib.Tests;
 
-[TestClass, TestCategory("IntegrationTest")]
+[TestClass, TestCategory("UnitTest")]
 public class SynchronizationContextTest : Test
 {
     [TestMethod]

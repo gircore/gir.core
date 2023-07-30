@@ -64,13 +64,15 @@ jobs:
           path-type: inherit # Inherit the path so that dotnet can be found
           update: true
           install: >-
-            mingw-w64-x86_64-meson
+            mingw-w64-x86_64-cairo
             mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-gdk-pixbuf2
             mingw-w64-x86_64-gobject-introspection
+            mingw-w64-x86_64-meson
 
       - name: Install dependencies (macOS)
         if: ${{ matrix.os == 'macos-latest' }}
-        run: brew install meson gobject-introspection
+        run: brew install cairo gdk-pixbuf gobject-introspection meson
 
       # Note: gobject-introspection is the actual dependency, but
       # libgirepository1.0-dev is needed so that meson can find it via pkg-config
