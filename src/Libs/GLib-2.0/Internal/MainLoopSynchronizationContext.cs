@@ -13,7 +13,7 @@ public sealed class MainLoopSynchronizationContext : SynchronizationContext
 
     public override void Send(SendOrPostCallback d, object? state)
     {
-        using ManualResetEventSlim resetEvent = new ManualResetEventSlim(false);
+        using var resetEvent = new ManualResetEventSlim(false);
 
         ScheduleAction(() =>
         {
