@@ -12,7 +12,17 @@ public sealed class MainLoopSynchronizationContext : SynchronizationContext
         => ScheduleAction(() => d(state));
 
     public override void Send(SendOrPostCallback d, object? state)
-        => throw new NotImplementedException();
+    {
+        using ManualResetEventSlim resetEvent = new ManualResetEventSlim(false);
+
+        ScheduleAction(() =>
+        {
+            d(state);
+            resetEvent.Set();
+        });
+
+        resetEvent.Wait();
+    }
 
     private static void ScheduleAction(Action action)
     {
