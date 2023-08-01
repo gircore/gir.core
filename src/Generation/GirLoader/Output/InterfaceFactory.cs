@@ -42,6 +42,10 @@ internal class InterfaceFactory
 
         iface.GetTypeFunction.SetParent(iface);
 
+        if (iface.Constructors is not null)
+            foreach (var constructor in iface.Constructors)
+                constructor.SetParent(iface);
+
         foreach (var function in iface.Functions)
             function.SetParent(iface);
 

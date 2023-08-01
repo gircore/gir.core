@@ -53,6 +53,9 @@ internal class ClassFactory
 
         @class.GetTypeFunction.SetParent(@class);
 
+        foreach (var constructor in @class.Constructors)
+            constructor.SetParent(@class);
+
         foreach (var function in @class.Functions)
             function.SetParent(@class);
 
