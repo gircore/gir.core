@@ -2,6 +2,8 @@
 
 public partial class Constructor : Callable
 {
+    private ComplexType? _parent;
+
     public ReturnValue ReturnValue { get; }
     public ParameterList ParameterList { get; }
     public string Name { get; }
@@ -21,6 +23,11 @@ public partial class Constructor : Callable
         Version = version;
         ShadowsReference = shadows;
         ShadowedByReference = shadowedBy;
+    }
+
+    internal void SetParent(ComplexType parent)
+    {
+        this._parent = parent;
     }
 
     public override string ToString()

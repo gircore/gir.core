@@ -50,6 +50,9 @@ internal class RecordFactory
         if (getTypeFunction is not null)
             getTypeFunction.SetParent(newRecord);
 
+        foreach (var constructor in newRecord.Constructors)
+            constructor.SetParent(newRecord);
+
         foreach (var function in newRecord.Functions)
             function.SetParent(newRecord);
 

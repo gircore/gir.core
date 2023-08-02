@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GirLoader.Output;
 
 public partial class Constructor : GirModel.Constructor
 {
+    GirModel.ComplexType GirModel.Constructor.Parent => _parent ?? throw new Exception($"{Identifier}: Unknown parent");
     string GirModel.Callable.Name => Name;
     GirModel.ReturnType GirModel.Constructor.ReturnType => ReturnValue;
     string GirModel.Constructor.CIdentifier => Identifier;
