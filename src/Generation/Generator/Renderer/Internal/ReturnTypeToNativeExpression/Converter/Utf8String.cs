@@ -1,4 +1,5 @@
-﻿using GirModel;
+﻿using System;
+using GirModel;
 
 namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
 
@@ -9,12 +10,17 @@ internal class Utf8String : ReturnTypeConverter
 
     public string GetString(GirModel.ReturnType returnType, string fromVariableName)
     {
-        // Returning a string with transfer=none means that the called function owns the string (e.g. a constant lifetime)
-        // This doesn't work since we're returning a newly-allocated UTF-8 string converted from the managed callback's return value.
-        if (returnType.Transfer == GirModel.Transfer.None)
-            throw new System.NotImplementedException("String return type with transfer=none cannot be converted to native");
+        return returnType switch
+        {
+            // Return a string that lives as long as the "ConstantString" instance lives.
+            { Transfer: Transfer.None, Nullable: true } => $"{fromVariableName}?.GetHandle() ?? System.IntPtr.Zero",
+            { Transfer: Transfer.None } => $"{fromVariableName}.GetHandle()",
 
-        // If transfer=full, return a string that the native caller will own and we do not free.
-        return $"GLib.Internal.StringHelper.StringToPtrUtf8({fromVariableName})";
+            // Return a string that the native caller will own and we do not free.
+            { Transfer: Transfer.Full } => $"GLib.Internal.StringHelper.StringToPtrUtf8({fromVariableName})",
+
+            { Transfer: Transfer.Container } => throw new Exception("String return type with transfer=container not yet supported"),
+            _ => throw new Exception($"Unknown transfer type {returnType.Transfer}")
+        };
     }
 }

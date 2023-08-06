@@ -192,4 +192,44 @@ public class CallbackTest : Test
         CallbackTester.RunCallbackWithPointedPrimitiveValueTypeAlias(Callback, ref myType);
         executed.Should().BeTrue();
     }
+
+    [TestMethod]
+    public void SupportsCallbackWithConstantStringReturn()
+    {
+        var text = "Test";
+        var constantString = new GLib.ConstantString(text);
+        GLib.ConstantString Callback()
+        {
+            return constantString;
+        }
+
+        var result = CallbackTester.RunCallbackWithConstantStringReturn(Callback);
+        result.Should().Be(text);
+    }
+
+    [TestMethod]
+    public void SupportsCallbackWithNullableConstantStringReturn()
+    {
+        var text = "Test";
+        var constantString = new GLib.ConstantString(text);
+        GLib.ConstantString? Callback()
+        {
+            return constantString;
+        }
+
+        var result = CallbackTester.RunCallbackWithNullableConstantStringReturn(Callback);
+        result.Should().Be(text);
+    }
+
+    [TestMethod]
+    public void SupportsCallbackWithNullableConstantStringReturnAndNullValue()
+    {
+        GLib.ConstantString? Callback()
+        {
+            return null;
+        }
+
+        var result = CallbackTester.RunCallbackWithNullableConstantStringReturn(Callback);
+        result.Should().BeNull();
+    }
 }
