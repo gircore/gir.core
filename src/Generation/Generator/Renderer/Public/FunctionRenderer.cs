@@ -75,7 +75,11 @@ public static {ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName
                 continue;
 
             var typeData = ParameterRenderer.Render(parameter.Parameter);
-            result.Add($"{typeData.Direction}{typeData.NullableTypeName} {parameter.GetSignatureName()}");
+            var direction = parameter.IsInOutArrayLengthParameter
+                ? ParameterDirection.Out()
+                : typeData.Direction;
+
+            result.Add($"{direction}{typeData.NullableTypeName} {parameter.GetSignatureName()}");
         }
 
         return result.Join(", ");
