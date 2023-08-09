@@ -55,6 +55,20 @@ typedef void (* GirTestCallbackErrorNotLastParam) (GError **error, int dummyValu
 typedef void (*GirTestCallbackWithErrorCallback)  (GirTestCallbackError callback);
 typedef void (*GirTestCallbackWithErrorCallbackNotLastParam)  (GirTestCallbackErrorNotLastParam callback);
 
+/**
+ * GirTestConstStringCallback:
+ *
+ * Returns: a string that is owned by the GirTest and must not be freed.
+ */
+typedef const gchar* (*GirTestConstStringCallback) ();
+
+/**
+ * GirTestNullableConstStringCallback:
+ *
+ * Returns: (Nullable): a string that is owned by the GirTest and must not be freed or NULL.
+ */
+typedef const gchar* (*GirTestNullableConstStringCallback) ();
+
 GirTestCallbackTester*
 girtest_callback_tester_new (void);
 
@@ -104,5 +118,11 @@ girtest_callback_tester_run_callback_with_out_pointed_primitive_value_type(GirTe
 
 void
 girtest_callback_tester_run_callback_with_pointed_primitive_value_type_alias(GirTestPointedPrimitiveValueTypeAliasCallback callback, GType* type);
+
+const gchar*
+girtest_callback_tester_run_callback_with_constant_string_return(GirTestConstStringCallback callback);
+
+const gchar*
+girtest_callback_tester_run_callback_with_nullable_constant_string_return(GirTestNullableConstStringCallback callback);
 
 G_END_DECLS

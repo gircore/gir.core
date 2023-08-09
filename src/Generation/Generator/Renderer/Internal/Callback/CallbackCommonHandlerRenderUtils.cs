@@ -79,7 +79,7 @@ NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(c
         var call = new StringBuilder();
 
         if (!callback.ReturnType.AnyType.Is<GirModel.Void>())
-            call.AppendLine($"{Model.Type.GetPublicNameFullyQuallified(callback.ReturnType.AnyType.AsT0)} {resultVariableName} = default;");
+            call.AppendLine($"{Public.ReturnTypeRendererCallback.Render(callback.ReturnType)} {resultVariableName} = default;");
 
         if (callback.Throws || parameterData.Any(x => x.IsGLibErrorParameter))
             call.AppendLine("try { ");

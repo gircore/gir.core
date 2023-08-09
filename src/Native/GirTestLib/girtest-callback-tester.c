@@ -273,3 +273,31 @@ girtest_callback_tester_run_callback_with_pointed_primitive_value_type_alias(Gir
 {
     callback(type);
 }
+
+/**
+ * girtest_callback_tester_run_callback_with_constant_string_return:
+ * @callback: (scope call): a function that is called and returns a constant string
+ *
+ * Calls the callback and returns it's return value.
+ *
+ * Returns: the result of the callback.
+ **/
+const gchar*
+girtest_callback_tester_run_callback_with_constant_string_return(GirTestConstStringCallback callback)
+{
+    return callback();
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_nullable_constant_string_return:
+ * @callback: (scope call): a function that is called and returns a constant string or NULL
+ *
+ * Calls the callback and returns it's return value.
+ *
+ * Returns: (nullable): the result of the callback.
+ **/
+const gchar*
+girtest_callback_tester_run_callback_with_nullable_constant_string_return(GirTestNullableConstStringCallback callback)
+{
+    return callback();
+}
