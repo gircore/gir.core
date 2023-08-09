@@ -35,4 +35,5 @@ void girtest_byte_array_tester_invoke_callback(GirTestByteArrayTesterCallback ca
 void girtest_byte_array_tester_invoke_callback_no_length(GirTestByteArrayTesterCallbackNoLength callback);
 guint8 girtest_byte_array_tester_get_data_from_const_pointer(gconstpointer data, gsize size);
 void girtest_byte_array_tester_clear_data(void *data, gsize count);
+void girtest_byte_array_tester_remove_last_array_element(guint8 *buffer, gsize *len);
 G_END_DECLS

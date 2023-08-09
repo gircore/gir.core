@@ -13,7 +13,6 @@ public class ByteArrayTest
     private const byte Byte2 = 0x22;
     private const nuint DataSize = 3;
 
-
     [TestMethod]
     public void ReturnByteArray()
     {
@@ -107,5 +106,16 @@ public class ByteArrayTest
         ByteArrayTester.ClearData(data);
         data[0].Should().Be(0);
         data[1].Should().Be(0);
+    }
+
+    [DataTestMethod]
+    [DataRow(1)]
+    [DataRow(2)]
+    [DataRow(3)]
+    public void SupportsShrinkingArrays(int size)
+    {
+        var data = new byte[size];
+        ByteArrayTester.RemoveLastArrayElement(data, out var newLength);
+        newLength.Should().Be((nuint) size - 1);
     }
 }

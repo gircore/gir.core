@@ -143,3 +143,17 @@ girtest_byte_array_tester_clear_data(void *data, gsize count)
         ptr++;
     }
 }
+
+/**
+ * girtest_byte_array_tester_remove_last_array_element:
+ * @buffer: (array length=len): data buffer
+ * @len: (inout): an inout parameter. The caller initializes it to the size of @buffer.
+ *   After the call it contains the length of the array -1.
+ *
+ * Simply decreases the len parameter by one, indicating that the array shrunk by 1.
+ */
+void
+girtest_byte_array_tester_remove_last_array_element(guint8 *buffer, gsize *len)
+{
+    *len = *len -1;
+}
