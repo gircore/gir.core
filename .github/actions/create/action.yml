@@ -1,0 +1,48 @@
+name: "Create Gir.Core"
+description: "Creates Gir.Core from scratch"
+
+inputs:
+  configuration:
+    description: "Build configuration to use (e.g. Release)"
+    required: true
+  source_directory:
+    description: "Directory containing the source code (e.g. ./src)"
+    required: true
+  shell:
+    description: "Shell to use"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+          6.0.x
+          7.0.x
+
+    - name: Compile native library
+      run: dotnet fsi GenerateGirTestLib.fsx
+      working-directory: ${{ inputs.source_directory }}
+      shell: ${{ inputs.shell }}
+
+    - name: Call generator
+      run: dotnet fsi GenerateLibs.fsx GirTest-0.1.gir
+      working-directory: ${{ inputs.source_directory }}
+      shell: ${{ inputs.shell }}
+
+    - name: Build complete solution
+      run: dotnet build --nologo -c ${{ inputs.configuration }}
+      working-directory: ${{ inputs.source_directory }}
+      shell: ${{ inputs.shell }}
+
+    - name: Build libraries only
+      run: dotnet build --nologo -c ${{ inputs.configuration }} GirCore.Libs.slnf
+      working-directory: ${{ inputs.source_directory }}
+      shell: ${{ inputs.shell }}
+
+    - name: Run unit tests
+      run: dotnet test --no-restore -c ${{ inputs.configuration }} --filter "TestCategory=UnitTest | TestCategory=BindingTest"
+      working-directory: ${{ inputs.source_directory }}
+      shell: ${{ inputs.shell }}

@@ -3,14 +3,14 @@ name: 'Continuous integration'
 on:
   workflow_dispatch:
     inputs:
-      publish:
+      publish_release:
         description: If this build should publish nuget packages
         required: true
         type: boolean
-      preview:
-        description: If this is a preview package
+      version_suffix:
+        description: Suffix of the version number. Can be used to create a preview package.
         required: true
-        type: boolean
+        type: string
   push:
     branches:
       - main
@@ -20,45 +20,50 @@ on:
 
 env:
   configuration: Release
+  publish_release: ${{ github.event.inputs.publish_release }}
+  version_suffix: ${{ github.event.inputs.version_suffix }}
 
 jobs:
-  build:
-    name: Build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-        include:
-          - os: windows-latest
-            shell: msys2 {0}
-          - os: ubuntu-latest
-            shell: bash
-          - os: macos-latest
-            shell: bash
+  build_macos:
+    name: Build (MacOS)
+    runs-on: macos-latest
+    if: github.event.inputs.publish_release != 'true'
 
     defaults:
       run:
-        shell: ${{ matrix.shell }}
+        shell: bash
 
     steps:
+      - name: Install dependencies
+        run: brew install cairo gdk-pixbuf gobject-introspection meson
+
       - name: Prepare git
         run: git config --global core.autocrlf false
         shell: bash
-        
+
       - name: Checkout with submodules
         uses: actions/checkout@v3
         with:
           submodules: 'true'
 
-      - name: Prepare .NET
-        uses: actions/setup-dotnet@v3
+      - name: Create Gir.Core
+        uses: ./.github/actions/create
         with:
-          dotnet-version:  |
-            6.0.x
-            7.0.x
-
-      - name: Install dependencies (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
+          configuration: ${{ env.configuration }}
+          source_directory: './src'
+          shell: bash
+  
+  build_windows:
+    name: Build (Windows)
+    runs-on: windows-latest
+    if: github.event.inputs.publish_release != 'true'
+    
+    defaults:
+      run:
+        shell: msys2 {0}
+    
+    steps:
+      - name: Install dependencies
         uses: msys2/setup-msys2@v2
         with:
           path-type: inherit # Inherit the path so that dotnet can be found
@@ -70,65 +75,68 @@ jobs:
             mingw-w64-x86_64-gobject-introspection
             mingw-w64-x86_64-meson
 
-      - name: Install dependencies (macOS)
-        if: ${{ matrix.os == 'macos-latest' }}
-        run: brew install cairo gdk-pixbuf gobject-introspection meson
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+        shell: bash
 
-      # Note: gobject-introspection is the actual dependency, but
-      # libgirepository1.0-dev is needed so that meson can find it via pkg-config
-      - name: Install dependencies (Linux)
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: sudo apt update && sudo apt install meson libgirepository1.0-dev
+      - name: Checkout with submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
 
-      - name: Compile native library
-        run: dotnet fsi GenerateGirTestLib.fsx
-        working-directory: './src'
+      - name: Create Gir.Core
+        uses: ./.github/actions/create
+        with:
+          configuration: ${{ env.configuration }}
+          source_directory: './src'
+          shell: msys2 {0}
 
-      - name: Call generator
-        run: dotnet fsi GenerateLibs.fsx GirTest-0.1.gir
-        working-directory: './src'
+  build_linux:
+    name: Build (Linux)
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:latest
+      env:
+        DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
+    
+    defaults:
+      run:
+        shell: bash
+    
+    steps:
+      - name: Install dependencies
+        run: sudo dnf -y upgrade && sudo dnf -y install meson gobject-introspection-devel git gcc glib2-devel gdk-pixbuf2 gdk-pixbuf2-modules cairo-gobject
 
-      - name: Build complete solution
-        run: dotnet build --nologo -c ${{ env.configuration }}
-        working-directory: './src'
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+        shell: bash
 
-      - name: Build libraries only
-        run: dotnet build --nologo -c ${{ env.configuration }} GirCore.Libs.slnf
-        working-directory: './src'
+      - name: Checkout with submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Create Gir.Core
+        uses: ./.github/actions/create
+        with:
+          configuration: ${{ env.configuration }}
+          source_directory: './src'
+          shell: bash
 
       - name: Verify code format
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: dotnet format GirCore.sln --no-restore --verify-no-changes --exclude *.Generated.cs
         working-directory: './src'
 
-      - name: Run unit tests
-        run: dotnet test --no-restore -c ${{ env.configuration }} --filter "TestCategory=UnitTest | TestCategory=BindingTest"
-        working-directory: './src'
-
       - name: Run integration tests
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: dotnet test --no-restore -c ${{ env.configuration }} --filter TestCategory=IntegrationTest
+        run: dotnet test --no-restore -c $configuration --filter TestCategory=IntegrationTest
         working-directory: './src'
 
-      - name: Get current time
-        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'true' && matrix.os == 'ubuntu-latest' }}
-        uses: josStorer/get-current-time@v2.1.1
-        id: current-time
-        with:
-          format: YYYYMMDD-HHmmss
-        
-      - name: Pack preview version
-        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'true' && matrix.os == 'ubuntu-latest'}}
-        run: dotnet pack --no-build --nologo -c ${{ env.configuration }} --version-suffix "CI-${{ steps.current-time.outputs.formattedTime }}" -o ../Nuget
-        working-directory: './src'
-              
       - name: Pack release version
-        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'false' && matrix.os == 'ubuntu-latest' }}
-        run: dotnet pack --no-build --nologo -c ${{ env.configuration }} -o ../Nuget
+        if: env.publish_release == 'true'
+        run: dotnet pack --no-build --nologo -c $configuration --version-suffix "$version_suffix" -o ../Nuget
         working-directory: './src'
-          
+
       - name: Publish to nuget org
-        if: ${{ github.event.inputs.publish == 'true' && matrix.os == 'ubuntu-latest' }}
+        if: env.publish_release == 'true'
         run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s nuget.org
         working-directory: './Nuget'
-          
