@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GirTest.Tests;
 
 [TestClass, TestCategory("BindingTest")]
-public class IntegerArrayTest
+public class IntegerArrayTest : Test
 {
     private const int Int0 = 1;
     private const int Int1 = 2;

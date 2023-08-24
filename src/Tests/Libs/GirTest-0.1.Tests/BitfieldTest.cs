@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GirTest.Tests;
 
 [TestClass, TestCategory("BindingTest")]
-public class BitfieldTest
+public class BitfieldTest : Test
 {
     [TestMethod]
     public void SupportsPointedBitfields()
