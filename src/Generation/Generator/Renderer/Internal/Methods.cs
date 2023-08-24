@@ -26,6 +26,7 @@ internal static class Methods
 
             return $@"
 {DocComments.Render($"Calls native method {method.CIdentifier}.", DocComments.RenderVersion(method.Version))}
+{DocComments.Render(method.InstanceParameter)}
 {DocComments.Render(method.Parameters)}
 {DocComments.Render(method.ReturnType)}
 {VersionAttribute.Render(method.Version)}
