@@ -21,6 +21,9 @@ internal static class DocComments
             : $"Version: {version}";
     }
 
+    public static string Render(GirModel.InstanceParameter instanceParameter) =>
+        $@"/// <param name=""{Model.InstanceParameter.GetName(instanceParameter)}"">Transfer ownership: {instanceParameter.Transfer} Nullable: {instanceParameter.Nullable}</param>";
+
     public static string Render(IEnumerable<GirModel.Parameter> parameters)
     {
         return parameters
