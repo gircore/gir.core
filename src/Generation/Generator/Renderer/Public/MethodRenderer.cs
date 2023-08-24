@@ -100,7 +100,7 @@ internal static class MethodRenderer
             call.Append($"var {resultVariableName} = ");
 
         call.Append($"{Namespace.GetInternalName(method.Parent.Namespace)}.{method.Parent.Name}.{Method.GetInternalName(method)}(");
-        call.Append("this.Handle" + (parameters.Any() ? ", " : string.Empty));
+        call.Append(InstanceParameterToNativeExpression.Render(method.InstanceParameter) + (parameters.Any() ? ", " : string.Empty));
         call.Append(string.Join(", ", parameters.Select(x => x.GetCallName())));
         call.Append(Error.RenderParameter(method));
         call.Append(");\n");
