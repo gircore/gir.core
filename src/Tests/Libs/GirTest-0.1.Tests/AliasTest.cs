@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GirTest.Tests;
 
 [TestClass, TestCategory("BindingTest")]
-public class AliasTest
+public class AliasTest : Test
 {
     [TestMethod]
     public void CanBeCastedExplicitlyToBaseType()

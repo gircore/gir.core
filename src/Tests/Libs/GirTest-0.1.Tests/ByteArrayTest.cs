@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GirTest.Tests;
 
 [TestClass, TestCategory("BindingTest")]
-public class ByteArrayTest
+public class ByteArrayTest : Test
 {
     private const byte Byte0 = 0x00;
     private const byte Byte1 = 0x11;
