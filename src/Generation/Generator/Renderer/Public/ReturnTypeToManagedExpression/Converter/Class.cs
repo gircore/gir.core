@@ -16,7 +16,12 @@ internal class Class : ReturnTypeConverter
             throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
 
         if (cls.Fundamental)
-            return $"new {ComplexType.GetFullyQualified(cls)}({fromVariableName})";
+        {
+            string ctor = $"new {ComplexType.GetFullyQualified(cls)}({fromVariableName})";
+            if (returnType.Nullable)
+                return $"{fromVariableName}.Equals(IntPtr.Zero) ? null : {ctor}";
+            return ctor;
+        }
 
         return returnType.Nullable
             ? $"GObject.Internal.ObjectWrapper.WrapNullableHandle<{ComplexType.GetFullyQualified(cls)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"
