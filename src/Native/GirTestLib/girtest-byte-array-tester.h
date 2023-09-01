@@ -28,6 +28,7 @@ typedef void (*GirTestByteArrayTesterCallback) (const guchar *buf, gsize count);
  */
 typedef void (*GirTestByteArrayTesterCallbackNoLength) (const guchar *buf);
 
+GirTestByteArrayTester* girtest_byte_array_tester_new_from_data(guint8 *buffer, gsize len);
 const guchar* girtest_byte_array_tester_data_return();
 gssize girtest_byte_array_tester_data_out_caller_allocates(void *buffer, gsize count);
 gsize girtest_byte_array_tester_get_data_size();

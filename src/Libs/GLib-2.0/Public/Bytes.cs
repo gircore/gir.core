@@ -13,12 +13,6 @@ public sealed partial class Bytes : IDisposable
         GC.AddMemoryPressure(_size);
     }
 
-    public static Bytes New(Span<byte> data)
-    {
-        var obj = new Bytes(Internal.Bytes.New(ref MemoryMarshal.GetReference(data), (nuint) data.Length));
-        return obj;
-    }
-
     public void Dispose()
     {
         Handle.Dispose();
