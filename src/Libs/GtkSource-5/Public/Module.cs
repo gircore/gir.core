@@ -1,6 +1,6 @@
 ﻿namespace GtkSource;
 
-public class Module
+public static class Module
 {
     private static bool IsInitialized;
 
