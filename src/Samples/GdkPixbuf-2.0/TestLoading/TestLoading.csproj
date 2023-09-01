@@ -1,12 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-    </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\Libs\GdkPixbuf-2.0\GdkPixbuf-2.0.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\GdkPixbuf-2.0\GdkPixbuf-2.0.csproj" />
+  </ItemGroup>
+
+  <Target Name="CopyTestImage" AfterTargets="AfterBuild">
+    <Copy SourceFiles="test.bmp" DestinationFolder="$(OutDir)" />
+  </Target>
 
 </Project>
