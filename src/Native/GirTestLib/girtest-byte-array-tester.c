@@ -26,6 +26,21 @@ girtest_byte_array_tester_class_init(GirTestByteArrayTesterClass *class)
 }
 
 /**
+ * girtest_byte_array_tester_new_from_data:
+ * @buffer: (array length=len): data buffer
+ * @len: The size of the buffer
+ *
+ * This ignores the parameters as it is only there to test code generation data can be ignored.
+ *
+ * Returns: A new instance
+ */
+GirTestByteArrayTester*
+girtest_byte_array_tester_new_from_data(guint8 *buffer, gsize len)
+{
+    return g_object_new (GIRTEST_TYPE_BYTE_ARRAY_TESTER, NULL);
+}
+
+/**
  * girtest_byte_array_tester_data_return:
  *
  * Simple test for an array return value.

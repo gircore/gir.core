@@ -70,6 +70,9 @@ public static {newKeyWord}{constructor.Parent.Name}{Nullable.Render(constructor.
             if (parameter.IsDestroyNotify)
                 continue;
 
+            if (parameter.IsArrayLengthParameter)
+                continue;
+
             var typeData = ParameterRenderer.Render(parameter.Parameter);
             result.Add($"{typeData.Direction}{typeData.NullableTypeName} {parameter.GetSignatureName()}");
         }

@@ -14,6 +14,13 @@ public class ByteArrayTest : Test
     private const nuint DataSize = 3;
 
     [TestMethod]
+    public void SupportsByteArrayWithLengthInConstructor()
+    {
+        var data = new byte[] { 0x01 };
+        _ = ByteArrayTester.NewFromData(data);
+    }
+
+    [TestMethod]
     public void ReturnByteArray()
     {
         var size = ByteArrayTester.GetDataSize();
