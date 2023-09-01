@@ -57,7 +57,7 @@ internal class TypeRegistration
 
     private static string RenderRegistration(GirModel.ComplexType type)
     {
-        return @$"Register<{ComplexType.GetFullyQualified(type)}>(Internal.{type.Name}.GetGType{RenderPlatforms(type as GirModel.PlatformDependent)});";
+        return @$"Register<{ComplexType.GetFullyQualified(type)}>(Internal.{type.Name}.{Function.GetGType}{RenderPlatforms(type as GirModel.PlatformDependent)});";
     }
 
     private static string RenderPlatforms(GirModel.PlatformDependent? platformDependent)

@@ -9,6 +9,7 @@ internal static class InstanceParameters
     {
         new InstanceParameter.Class(),
         new InstanceParameter.Interface(),
+        new InstanceParameter.OpaqueTypedRecord(),
         new InstanceParameter.Pointer(),
         new InstanceParameter.Record(),
         new InstanceParameter.Union()

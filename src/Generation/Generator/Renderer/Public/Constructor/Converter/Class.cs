@@ -12,7 +12,8 @@ public class Class : ConstructorConverter
         var parentClass = ((GirModel.Class) constructor.Parent).Parent;
         return new(
             RequiresNewModifier: Model.Class.HidesConstructor(parentClass, constructor),
-            GetCreateExpression: CreateExpression
+            GetCreateExpression: CreateExpression,
+            AllowRendering: true
         );
     }
 

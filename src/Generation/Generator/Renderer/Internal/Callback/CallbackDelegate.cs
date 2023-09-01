@@ -1,4 +1,5 @@
-﻿using Generator.Model;
+﻿using System;
+using Generator.Model;
 
 namespace Generator.Renderer.Internal;
 
@@ -6,7 +7,9 @@ internal static class CallbackDelegate
 {
     public static string Render(GirModel.Callback callback)
     {
-        return $@"
+        try
+        {
+            return $@"
 using System;
 using System.Runtime.InteropServices;
 
@@ -18,5 +21,12 @@ namespace {Namespace.GetInternalName(callback.Namespace)}
 
     public delegate {ReturnTypeRendererCallback.Render(callback.ReturnType)} {callback.Name}({CallbackParameters.Render(callback.Parameters)}{Error.RenderCallback(callback)});
 }}";
+        }
+        catch (Exception ex)
+        {
+            Log.Warning($"Did not generate callback delegatre '{callback.Name}': {ex.Message}");
+
+            return string.Empty;
+        }
     }
 }

@@ -8,10 +8,14 @@ namespace Generator.Renderer.Public;
 
 internal static class FunctionRenderer
 {
-    public static string Render(GirModel.Function function)
+    public static string Render(GirModel.Function? function)
     {
+        if (function is null)
+            return string.Empty;
+
         if (!IsSupported(function))
             return string.Empty;
+
         try
         {
             var parameters = ParameterToNativeExpression.Initialize(function.Parameters);

@@ -11,7 +11,9 @@ public class SimpleActionTest : Test
     {
         var action = SimpleAction.NewStateful("myname", GLib.VariantType.String, GLib.Variant.Create("foo"));
 
-        string result = action.GetState().GetString();
+        var result = action.GetState().GetString();
+        result.Should().Be("foo");
+
         action.OnActivate += (_, args) =>
         {
             result = args.Parameter!.GetString();

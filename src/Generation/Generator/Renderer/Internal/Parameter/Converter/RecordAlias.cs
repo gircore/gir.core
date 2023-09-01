@@ -4,7 +4,7 @@ internal class RecordAlias : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsAlias<GirModel.Record>();
+        return anyType.IsAlias<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -31,7 +31,7 @@ internal class RecordAlias : ParameterConverter
             { CallerAllocates: false, Direction: GirModel.Direction.Out, Transfer: GirModel.Transfer.Full } => Model.Record.GetFullyQualifiedInternalOwnedHandle(type),
             { CallerAllocates: false, Direction: GirModel.Direction.Out, Transfer: GirModel.Transfer.Container } => Model.Record.GetFullyQualifiedInternalOwnedHandle(type),
             { CallerAllocates: false, Direction: GirModel.Direction.Out, Transfer: GirModel.Transfer.None } => Model.Record.GetFullyQualifiedInternalUnownedHandle(type),
-            _ => throw new System.Exception($"Can't detect parameter type: CallerAllocates={parameter.CallerAllocates} Direction={parameter.Direction} Transfer={parameter.Transfer}")
+            _ => throw new System.Exception($"Can't detect record alias parameter type {parameter.Name}: CallerAllocates={parameter.CallerAllocates} Direction={parameter.Direction} Transfer={parameter.Transfer}")
         };
     }
 

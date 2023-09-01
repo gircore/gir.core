@@ -10,6 +10,7 @@ internal static class ReturnTypeToNativeExpression
         new ReturnTypeToNativeExpressions.Class(),
         new ReturnTypeToNativeExpressions.Enumeration(),
         new ReturnTypeToNativeExpressions.Interface(),
+        new ReturnTypeToNativeExpressions.OpaqueTypedRecord(),
         new ReturnTypeToNativeExpressions.Pointer(),
         new ReturnTypeToNativeExpressions.PrimitiveValueType(),
         new ReturnTypeToNativeExpressions.PrimitiveValueTypeAlias(),

@@ -13,6 +13,9 @@ internal class RecordHandle : Generator<GirModel.Record>
 
     public void Generate(GirModel.Record record)
     {
+        if (Record.IsOpaqueTyped(record))
+            return;
+
         var source = Renderer.Internal.RecordHandle.Render(record);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(record.Namespace),

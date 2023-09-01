@@ -11,7 +11,7 @@ public class SynchronizationContextTest : Test
     [TestMethod]
     public void AsyncMethodIsExecutedOnMainLoopThread()
     {
-        var mainLoop = new MainLoop();
+        var mainLoop = MainLoop.New(null, false);
         var context = mainLoop.GetContext();
         var source = Functions.TimeoutSourceNew(1);
         source.Attach(context);
@@ -35,7 +35,7 @@ public class SynchronizationContextTest : Test
     [TestMethod]
     public void ExceptionInAsyncMethodCanBeHandledViaUnhandledExceptionHandler()
     {
-        var mainLoop = new MainLoop();
+        var mainLoop = MainLoop.New(null, false);
         var context = mainLoop.GetContext();
         var source = Functions.TimeoutSourceNew(1);
         source.Attach(context);

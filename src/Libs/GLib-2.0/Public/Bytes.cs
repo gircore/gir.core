@@ -5,25 +5,15 @@ namespace GLib;
 
 public sealed partial class Bytes : IDisposable
 {
-    #region Fields
-
     private long _size;
-
-    #endregion
-
-    #region Constructors
 
     partial void Initialize()
     {
-        _size = (long) Internal.Bytes.GetSize(_handle);
+        _size = (long) Internal.Bytes.GetSize(Handle);
         GC.AddMemoryPressure(_size);
     }
 
-    #endregion
-
-    #region Methods
-
-    public static Bytes From(Span<byte> data)
+    public static Bytes New(Span<byte> data)
     {
         var obj = new Bytes(Internal.Bytes.New(ref MemoryMarshal.GetReference(data), (nuint) data.Length));
         return obj;
@@ -31,9 +21,7 @@ public sealed partial class Bytes : IDisposable
 
     public void Dispose()
     {
-        _handle.Dispose();
+        Handle.Dispose();
         GC.RemoveMemoryPressure(_size);
     }
-
-    #endregion
 }

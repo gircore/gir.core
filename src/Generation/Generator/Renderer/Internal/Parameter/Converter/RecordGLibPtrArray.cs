@@ -4,7 +4,7 @@ public class RecordGLibPtrArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsGLibPtrArray<GirModel.Record>();
+        return anyType.IsGLibPtrArray<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

@@ -11,7 +11,7 @@ public partial class PixbufLoader
 
         try
         {
-            using var bytes = Bytes.From(data);
+            using var bytes = Bytes.New(data);
 
             Internal.PixbufLoader.WriteBytes(handle, bytes.Handle, out var error);
 

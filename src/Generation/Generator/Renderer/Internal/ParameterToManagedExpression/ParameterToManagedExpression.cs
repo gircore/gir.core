@@ -13,6 +13,7 @@ internal static class ParameterToManagedExpression
         new ParameterToManagedExpressions.Class(),
         new ParameterToManagedExpressions.Enumeration(),
         new ParameterToManagedExpressions.Interface(),
+        new ParameterToManagedExpressions.OpaqueTypedRecord(),
         new ParameterToManagedExpressions.Pointer(),
         new ParameterToManagedExpressions.PointerAlias(),
         new ParameterToManagedExpressions.PrimitiveValueType(),

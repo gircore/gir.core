@@ -10,6 +10,7 @@ internal static class ReturnTypeToManagedExpression
         new ReturnTypeToManagedExpressions.Class(),
         new ReturnTypeToManagedExpressions.Enumeration(),
         new ReturnTypeToManagedExpressions.Interface(),
+        new ReturnTypeToManagedExpressions.OpaqueTypedRecord(),
         new ReturnTypeToManagedExpressions.PlatformString(),
         new ReturnTypeToManagedExpressions.Pointer(),
         new ReturnTypeToManagedExpressions.PointerAlias(),

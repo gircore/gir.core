@@ -6,7 +6,7 @@ namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 internal class Record : ToManagedParameterConverter
 {
     public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>();
+        => type.Is<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {

@@ -16,6 +16,7 @@ internal static class CallbackParameters
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
         new Parameter.NativeUnsignedIntegerArray(),
+        new Parameter.OpaqueTypedRecordCallback(),
         new Parameter.Pointer(),
         new Parameter.PointerAlias(),
         new Parameter.PointerArray(),
@@ -28,9 +29,9 @@ internal static class CallbackParameters
         new Parameter.PrimitiveValueTypeGLibArray(),
         new Parameter.PrimitiveValueTypeGLibArrayAlias(),
         new Parameter.PrimitiveValueTypeGLibPtrArray(),
+        new Parameter.RecordAliasCallback(), //Callbacks do not support record safe handles in parameters
         new Parameter.RecordArray(),
-        new Parameter.RecordAsPointer(), //Callbacks do not support record safe handles in parameters
-        new Parameter.RecordAsPointerAlias(), //Callbacks do not support record safe handles in parameters
+        new Parameter.RecordCallback(), //Callbacks do not support record safe handles in parameters
         new Parameter.RecordGLibPtrArray(),
         new Parameter.String(),
         new Parameter.StringArray(),

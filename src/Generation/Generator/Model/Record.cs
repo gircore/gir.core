@@ -2,6 +2,14 @@
 
 internal static partial class Record
 {
+    public static bool IsOpaqueTyped(GirModel.Record record)
+    {
+        //Even if there is a TypeFunction it does not mean that it actually is
+        //a typed / boxed record. There is a magic keyword "intern" which means this
+        //record is actually fundamental and does not have a type function.
+        return record is { Opaque: true, TypeFunction.CIdentifier: not "intern" };
+    }
+
     public static string GetFullyQualifiedInternalStructName(GirModel.Record record)
         => Namespace.GetInternalName(record.Namespace) + "." + GetInternalStructName(record);
 

@@ -18,6 +18,8 @@ internal static class Parameters
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
         new Parameter.NativeUnsignedIntegerArray(),
+        new Parameter.OpaqueTypedRecord(),
+        new Parameter.OpaqueTypedRecordArray(),
         new Parameter.Pointer(),
         new Parameter.PointerAlias(),
         new Parameter.PointerArray(),
