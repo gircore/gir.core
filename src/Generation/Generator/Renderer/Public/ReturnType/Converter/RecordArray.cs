@@ -10,5 +10,5 @@ internal class RecordArray : ReturnTypeConverter
     }
 
     public bool Supports(GirModel.ReturnType returnType)
-        => returnType.AnyType.IsArray<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
+        => returnType.AnyType.IsArray<GirModel.Record>(out var record) && Model.Record.IsStandard(record);
 }

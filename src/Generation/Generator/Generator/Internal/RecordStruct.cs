@@ -13,7 +13,7 @@ internal class RecordStruct : Generator<GirModel.Record>
 
     public void Generate(GirModel.Record record)
     {
-        if (Record.IsOpaqueTyped(record))
+        if (!Record.IsStandard(record))
             return;
 
         var source = Renderer.Internal.RecordStruct.Render(record);

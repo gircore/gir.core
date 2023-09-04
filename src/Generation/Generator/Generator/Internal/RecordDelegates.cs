@@ -14,7 +14,7 @@ internal class RecordDelegates : Generator<GirModel.Record>
 
     public void Generate(GirModel.Record record)
     {
-        if (Record.IsOpaqueTyped(record))
+        if (!Record.IsStandard(record))
             return;
 
         if (!record.Fields.Any(field => field.AnyTypeOrCallback.IsT1))

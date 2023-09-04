@@ -4,7 +4,7 @@ internal class RecordCallback : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.Is<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
+        return anyType.Is<GirModel.Record>(out var record) && Model.Record.IsStandard(record);
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

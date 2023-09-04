@@ -7,7 +7,7 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 internal class Record : ToNativeParameterConverter
 {
     public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
+        => type.Is<GirModel.Record>(out var record) && Model.Record.IsStandard(record);
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {

@@ -8,7 +8,7 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 internal class RecordArray : ToNativeParameterConverter
 {
     public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
+        => type.IsArray<GirModel.Record>(out var record) && Model.Record.IsStandard(record);
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
