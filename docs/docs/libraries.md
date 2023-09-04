@@ -1,6 +1,6 @@
 # Libraries
 
-Currently there are multiple libraries available to get started with C# development for Linux: [Gtk], [WebkitGTK], [libshumate] [libadwaita], [GIO], [gstreamer].
+Currently there are bindings for multiple libraries available to use with C# on Linux: [Gtk], [WebkitGTK], [libshumate] [libadwaita], [GIO], [gstreamer].
 
 ## GTK
 [Gtk] is the toolkit which is used to display windows and widgets on the screen. The widgets can be added directly in code or described through an xml file.
