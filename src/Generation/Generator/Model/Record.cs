@@ -2,6 +2,11 @@
 
 internal static partial class Record
 {
+    public static bool IsStandard(GirModel.Record record)
+    {
+        return !IsOpaqueTyped(record);
+    }
+
     public static bool IsOpaqueTyped(GirModel.Record record)
     {
         //Even if there is a TypeFunction it does not mean that it actually is

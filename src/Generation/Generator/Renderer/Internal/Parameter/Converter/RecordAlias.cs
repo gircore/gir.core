@@ -4,7 +4,7 @@ internal class RecordAlias : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsAlias<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
+        return anyType.IsAlias<GirModel.Record>(out var record) && Model.Record.IsStandard(record);
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

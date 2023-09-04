@@ -4,7 +4,7 @@ internal class Record : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
+        return returnType.AnyType.Is<GirModel.Record>(out var record) && Model.Record.IsStandard(record);
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

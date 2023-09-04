@@ -4,7 +4,7 @@ internal class RecordArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsArray<GirModel.Record>(out var record) && !Model.Record.IsOpaqueTyped(record);
+        return anyType.IsArray<GirModel.Record>(out var record) && Model.Record.IsStandard(record);
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
