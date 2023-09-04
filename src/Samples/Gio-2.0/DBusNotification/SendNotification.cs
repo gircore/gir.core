@@ -15,16 +15,16 @@ public static partial class DBus
         //Notification spec: https://developer.gnome.org/notification-spec/
 
         var bus = DBusConnection.Get(BusType.Session);
-        using var parameters = new Variant(
-            Variant.Create("AppName"),
-            Variant.Create(0u),
-            Variant.Create(""), //Icon
-            Variant.Create("Summary"),
-            Variant.Create("Body"),
-            Variant.Create(Array.Empty<string>()),
-            Variant.CreateEmptyDictionary(VariantType.String, VariantType.Variant),//hints
-            Variant.Create(999)
-        );
+        using var parameters = Variant.NewTuple(new[] {
+            Variant.NewString("AppName"),
+            Variant.NewUint32(0u),
+            Variant.NewString(""), //Icon
+            Variant.NewString("Summary"),
+            Variant.NewString("Body"),
+            Variant.NewStrv(Array.Empty<string>(), 0),
+            Variant.NewArray(VariantType.NewDictEntry(VariantType.New("s"), VariantType.New("v")), null), //hints
+            Variant.NewInt32(999)
+        });
 
         using Variant ret = bus.CallSync("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", "Notify", parameters, null, DBusCallFlags.None, 9999, null);
         Console.WriteLine("Result: " + ret.Print(true));

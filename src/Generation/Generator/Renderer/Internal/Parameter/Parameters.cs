@@ -20,6 +20,8 @@ internal static class Parameters
         new Parameter.NativeUnsignedIntegerArray(),
         new Parameter.OpaqueTypedRecord(),
         new Parameter.OpaqueTypedRecordArray(),
+        new Parameter.OpaqueUntypedRecord(),
+        new Parameter.OpaqueUntypedRecordArray(),
         new Parameter.PlatformStringArray(),
         new Parameter.Pointer(),
         new Parameter.PointerAlias(),

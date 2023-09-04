@@ -11,6 +11,7 @@ internal static class ConstructorRenderer
     {
         new Constructor.Class(),
         new Constructor.OpaqueTypedRecord(),
+        new Constructor.OpaqueUntypedRecord(),
     };
 
     public static string Render(GirModel.Constructor constructor)

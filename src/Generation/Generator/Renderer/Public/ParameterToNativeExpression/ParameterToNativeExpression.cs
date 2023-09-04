@@ -17,6 +17,8 @@ internal static class ParameterToNativeExpression
         new ParameterToNativeExpressions.InterfaceArray(),
         new ParameterToNativeExpressions.OpaqueTypedRecord(),
         new ParameterToNativeExpressions.OpaqueTypedRecordArray(),
+        new ParameterToNativeExpressions.OpaqueUntypedRecord(),
+        new ParameterToNativeExpressions.OpaqueUntypedRecordArray(),
         new ParameterToNativeExpressions.PlatformString(),
         new ParameterToNativeExpressions.PlatformStringArray(),
         new ParameterToNativeExpressions.Pointer(),

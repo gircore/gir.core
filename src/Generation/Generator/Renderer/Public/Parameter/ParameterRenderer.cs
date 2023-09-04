@@ -15,6 +15,8 @@ internal static class ParameterRenderer
         new Parameter.InterfaceArray(),
         new Parameter.OpaqueTypedRecord(),
         new Parameter.OpaqueTypedRecordArray(),
+        new Parameter.OpaqueUntypedRecord(),
+        new Parameter.OpaqueUntypedRecordArray(),
         new Parameter.Pointer(),
         new Parameter.PointerAlias(),
         new Parameter.PrimitiveValueType(),

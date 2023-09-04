@@ -24,9 +24,9 @@ public class ValueTest : Test
     public void VariantFromDataShouldContainGivenData()
     {
         var text = "foo";
-        var variant = GLib.Variant.Create(text);
+        var variant = GLib.Variant.NewString(text);
         var v = Value.From(variant);
-        v.Extract<GLib.Variant>().GetString().Should().Be(text);
+        v.Extract<GLib.Variant>().GetString(out _).Should().Be(text);
     }
 
     [DataTestMethod]
