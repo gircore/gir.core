@@ -301,3 +301,16 @@ girtest_callback_tester_run_callback_with_nullable_constant_string_return(GirTes
 {
     return callback();
 }
+
+/**
+ * girtest_callback_tester_run_callback_with_nullable_class_parameter:
+ * @callback: (scope call): a function that is called and passed on the @data parameter.
+ * @data: (nullable): The instance to pass on.
+ *
+ * Calls the callback and passes on @data.
+ **/
+void
+girtest_callback_tester_run_callback_with_nullable_class_parameter(GirTestNullableClassParameterCallback callback, GirTestCallbackTester* data)
+{
+    callback(data);
+}

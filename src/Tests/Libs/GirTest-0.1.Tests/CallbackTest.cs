@@ -232,4 +232,27 @@ public class CallbackTest : Test
         var result = CallbackTester.RunCallbackWithNullableConstantStringReturn(Callback);
         result.Should().BeNull();
     }
+
+    [TestMethod]
+    public void SupportsCallbacksWithNullableClassParameter()
+    {
+        var nullCalled = false;
+        void NullCallback(CallbackTester? callbackTester)
+        {
+            callbackTester.Should().BeNull();
+            nullCalled = true;
+        }
+        CallbackTester.RunCallbackWithNullableClassParameter(NullCallback, null);
+        nullCalled.Should().BeTrue();
+
+        var instanceCalled = false;
+        var instance = CallbackTester.New();
+        void InstanceCallback(CallbackTester? callbackTester)
+        {
+            callbackTester.Should().Be(instance);
+            instanceCalled = true;
+        }
+        CallbackTester.RunCallbackWithNullableClassParameter(InstanceCallback, instance);
+        instanceCalled.Should().BeTrue();
+    }
 }

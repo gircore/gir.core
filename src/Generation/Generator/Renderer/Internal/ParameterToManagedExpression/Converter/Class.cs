@@ -16,22 +16,34 @@ internal class Class : ToManagedParameterConverter
         var cls = (GirModel.Class) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
 
         if (cls.Fundamental)
-        {
-            var paramterName = Model.Parameter.GetName(parameterData.Parameter);
-            var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
-
-            parameterData.SetSignatureName(paramterName);
-            parameterData.SetExpression($"var {variableName} = new {Model.ComplexType.GetFullyQualified(cls)}({paramterName});");
-            parameterData.SetCallName(variableName);
-        }
+            Fundamental(parameterData);
         else
-        {
-            var parameterName = Model.Parameter.GetName(parameterData.Parameter);
-            var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
+            Default(parameterData);
+    }
 
-            parameterData.SetSignatureName(parameterName);
-            parameterData.SetExpression($"var {variableName} = GObject.Internal.ObjectWrapper.WrapHandle<{Model.ComplexType.GetFullyQualified(cls)}>({parameterName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
-            parameterData.SetCallName(variableName);
-        }
+    private static void Fundamental(ParameterToManagedData parameterData)
+    {
+        var cls = (GirModel.Class) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var paramterName = Model.Parameter.GetName(parameterData.Parameter);
+        var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
+
+        parameterData.SetSignatureName(paramterName);
+        parameterData.SetExpression($"var {variableName} = new {Model.ComplexType.GetFullyQualified(cls)}({paramterName});");
+        parameterData.SetCallName(variableName);
+    }
+
+    private static void Default(ParameterToManagedData parameterData)
+    {
+        var cls = (GirModel.Class) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var parameterName = Model.Parameter.GetName(parameterData.Parameter);
+        var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
+
+        var wrapHandle = parameterData.Parameter.Nullable
+            ? "GObject.Internal.ObjectWrapper.WrapNullableHandle"
+            : "GObject.Internal.ObjectWrapper.WrapHandle";
+
+        parameterData.SetSignatureName(parameterName);
+        parameterData.SetExpression($"var {callName} = {wrapHandle}<{Model.ComplexType.GetFullyQualified(cls)}>({parameterName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
+        parameterData.SetCallName(callName);
     }
 }
