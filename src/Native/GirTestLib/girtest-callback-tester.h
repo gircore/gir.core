@@ -69,6 +69,12 @@ typedef const gchar* (*GirTestConstStringCallback) ();
  */
 typedef const gchar* (*GirTestNullableConstStringCallback) ();
 
+/**
+ * GirTestNullableClassParameterCallback:
+ * @data: (nullable): An instance of GirTestCallbackTester or NULL.
+ */
+typedef const void (*GirTestNullableClassParameterCallback) (GirTestCallbackTester* data);
+
 GirTestCallbackTester*
 girtest_callback_tester_new (void);
 
@@ -124,5 +130,8 @@ girtest_callback_tester_run_callback_with_constant_string_return(GirTestConstStr
 
 const gchar*
 girtest_callback_tester_run_callback_with_nullable_constant_string_return(GirTestNullableConstStringCallback callback);
+
+void
+girtest_callback_tester_run_callback_with_nullable_class_parameter(GirTestNullableClassParameterCallback callback, GirTestCallbackTester* data); 
 
 G_END_DECLS
