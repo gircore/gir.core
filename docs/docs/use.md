@@ -1,9 +1,7 @@
 # Use
 To use the bindings create a C# project and just add the corresponding [nuget packages](https://www.nuget.org/profiles/GirCore).
 
-There are a lot of [sample projects](https://github.com/gircore/gir.core/tree/main/src/Samples) available which should get you started.
-
-As long as there is no API documentation available you can refer to the [original documentation](https://developer.gnome.org/documentation/introduction/overview/libraries.html).
+There are a lot of [sample projects](https://github.com/gircore/gir.core/tree/main/src/Samples) available to get you started. Extensive [API documentation](https://gircore.github.io/api/index.html) is provided and the [original documentation](https://developer.gnome.org/documentation/introduction/overview/libraries.html) can also be referenced.
 
 The gir.core project is *not* providing the actual C libraries but only the C# bindings. Please ensure that the corresponding packages are installed on your system otherwise the binding will not find a target to bind to during runtime.
 
