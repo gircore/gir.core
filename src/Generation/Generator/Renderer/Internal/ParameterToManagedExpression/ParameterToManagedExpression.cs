@@ -14,6 +14,7 @@ internal static class ParameterToManagedExpression
         new ParameterToManagedExpressions.Enumeration(),
         new ParameterToManagedExpressions.Interface(),
         new ParameterToManagedExpressions.OpaqueTypedRecord(),
+        new ParameterToManagedExpressions.PlatformStringArray(),
         new ParameterToManagedExpressions.Pointer(),
         new ParameterToManagedExpressions.PointerAlias(),
         new ParameterToManagedExpressions.PrimitiveValueType(),
@@ -23,7 +24,7 @@ internal static class ParameterToManagedExpression
         new ParameterToManagedExpressions.Record(),
         new ParameterToManagedExpressions.RecordArray(),
         new ParameterToManagedExpressions.String(),
-        new ParameterToManagedExpressions.StringArray(),
+        new ParameterToManagedExpressions.Utf8StringArray(),
     };
 
     public static IReadOnlyList<ParameterToManagedData> Initialize(IEnumerable<GirModel.Parameter> parameters)

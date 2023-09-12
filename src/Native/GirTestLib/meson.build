@@ -13,6 +13,7 @@ header_files = [
   'girtest-error-tester.h',
   'girtest-integer-array-tester.h',
   'girtest-opaque-typed-record-tester.h',
+  'girtest-platform-string-array-null-terminated-tester.h',
   'girtest-primitive-value-type-tester.h',
   'girtest-property-tester.h',
   'girtest-record-tester.h',
@@ -20,6 +21,7 @@ header_files = [
   'girtest-returning-signal-tester.h',
   'girtest-signal-tester.h',
   'girtest-string-tester.h',
+  'girtest-utf8-string-array-null-terminated-tester.h',
   'data/girtest-executor.h',
   'data/girtest-executor-impl.h',
 ]
@@ -33,6 +35,7 @@ source_files = [
   'girtest-error-tester.c',
   'girtest-integer-array-tester.c',
   'girtest-opaque-typed-record-tester.c',
+  'girtest-platform-string-array-null-terminated-tester.c',
   'girtest-primitive-value-type-tester.c',
   'girtest-property-tester.c',
   'girtest-record-tester.c',
@@ -40,6 +43,7 @@ source_files = [
   'girtest-returning-signal-tester.c',
   'girtest-signal-tester.c',
   'girtest-string-tester.c',
+  'girtest-utf8-string-array-null-terminated-tester.c',
   'data/girtest-executor.c',
   'data/girtest-executor-impl.c',
 ]

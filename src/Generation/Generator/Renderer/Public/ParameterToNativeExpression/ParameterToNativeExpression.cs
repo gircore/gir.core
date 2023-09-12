@@ -18,6 +18,7 @@ internal static class ParameterToNativeExpression
         new ParameterToNativeExpressions.OpaqueTypedRecord(),
         new ParameterToNativeExpressions.OpaqueTypedRecordArray(),
         new ParameterToNativeExpressions.PlatformString(),
+        new ParameterToNativeExpressions.PlatformStringArray(),
         new ParameterToNativeExpressions.Pointer(),
         new ParameterToNativeExpressions.PointerAlias(),
         new ParameterToNativeExpressions.PrimitiveValueType(),
@@ -25,8 +26,8 @@ internal static class ParameterToNativeExpression
         new ParameterToNativeExpressions.PrimitiveValueTypeArray(),
         new ParameterToNativeExpressions.Record(),
         new ParameterToNativeExpressions.RecordArray(),
-        new ParameterToNativeExpressions.StringArray(),
         new ParameterToNativeExpressions.Utf8String(),
+        new ParameterToNativeExpressions.Utf8StringArray(),
     };
 
     public static IReadOnlyList<ParameterToNativeData> Initialize(IEnumerable<GirModel.Parameter> parameters)

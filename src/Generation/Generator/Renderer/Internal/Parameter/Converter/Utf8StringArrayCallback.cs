@@ -1,10 +1,10 @@
 ﻿namespace Generator.Renderer.Internal.Parameter;
 
-internal class StringArray : ParameterConverter
+internal class Utf8StringArrayCallback : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsArray<GirModel.String>();
+        return anyType.IsArray<GirModel.Utf8String>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

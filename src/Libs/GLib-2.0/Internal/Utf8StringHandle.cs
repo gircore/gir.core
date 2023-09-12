@@ -18,7 +18,7 @@ public abstract class NullableUtf8StringHandle : SafeHandle
     /// <returns>A string containing the handle data or null.</returns>
     public string? ConvertToString()
     {
-        return StringHelper.ToStringUtf8(handle);
+        return Marshal.PtrToStringUTF8(handle);
     }
 }
 
@@ -94,7 +94,7 @@ public abstract class NonNullableUtf8StringHandle : SafeHandle
         if (IsInvalid)
             throw new NullHandleException($"{nameof(NonNullableUtf8StringHandle)} should not have a null handle");
 
-        return StringHelper.ToStringUtf8(handle)!;
+        return Marshal.PtrToStringUTF8(handle)!;
     }
 }
 

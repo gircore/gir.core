@@ -20,6 +20,7 @@ internal static class Parameters
         new Parameter.NativeUnsignedIntegerArray(),
         new Parameter.OpaqueTypedRecord(),
         new Parameter.OpaqueTypedRecordArray(),
+        new Parameter.PlatformStringArray(),
         new Parameter.Pointer(),
         new Parameter.PointerAlias(),
         new Parameter.PointerArray(),
@@ -37,10 +38,10 @@ internal static class Parameters
         new Parameter.RecordArray(),
         new Parameter.RecordGLibPtrArray(),
         new Parameter.String(),
-        new Parameter.StringArray(),
         new Parameter.StringGLibPtrArray(),
         new Parameter.Union(),
         new Parameter.UnsignedPointer(),
+        new Parameter.Utf8StringArray(),
         new Parameter.Void(),
     };
 

@@ -20,7 +20,9 @@ application.OnActivate += (sender, args) =>
             })(this)
             """,
         injectedFrames: WebKit.UserContentInjectedFrames.AllFrames,
-        injectionTime: WebKit.UserScriptInjectionTime.End)
+        injectionTime: WebKit.UserScriptInjectionTime.End,
+        allowList: null,
+        blockList: null)
     );
 
     WebKit.UserContentManager.ScriptMessageReceivedSignal.Connect(ucm, (manager, signalArgs) =>

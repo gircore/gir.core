@@ -17,6 +17,7 @@ internal static class CallbackParameters
         new Parameter.InterfaceArray(),
         new Parameter.NativeUnsignedIntegerArray(),
         new Parameter.OpaqueTypedRecordCallback(),
+        new Parameter.PlatformStringArrayCallback(),
         new Parameter.Pointer(),
         new Parameter.PointerAlias(),
         new Parameter.PointerArray(),
@@ -34,9 +35,9 @@ internal static class CallbackParameters
         new Parameter.RecordCallback(), //Callbacks do not support record safe handles in parameters
         new Parameter.RecordGLibPtrArray(),
         new Parameter.String(),
-        new Parameter.StringArray(),
         new Parameter.Union(),
         new Parameter.UnsignedPointer(),
+        new Parameter.Utf8StringArrayCallback(),
         new Parameter.Void(),
     };
 

@@ -99,7 +99,7 @@ public partial class Value : IDisposable
                 // Marshalling logic happens inside this safe handle. GValue takes a
                 // copy of the boxed memory so we do not need to keep it alive. The
                 // Garbage Collector will automatically free the safe handle for us.
-                var strArray = new StringArrayNullTerminatedSafeHandle(array);
+                var strArray = Utf8StringArrayNullTerminatedOwnedHandle.Create(array);
                 SetBoxed(strArray.DangerousGetHandle());
                 break;
             case GLib.Variant v:
@@ -178,8 +178,11 @@ public partial class Value : IDisposable
     {
         IntPtr ptr = Internal.Value.GetBoxed(Handle);
 
+        if (ptr == IntPtr.Zero)
+            return null;
+
         if (type == Internal.Functions.StrvGetType())
-            return StringHelper.ToStringArrayUtf8(ptr);
+            return new Utf8StringArrayNullTerminatedUnownedHandle(ptr).ConvertToStringArray();
 
         // TODO: It would be nice to support boxing arbitrary managed types
         // One idea for how to achieve this is creating our own 'OpaqueBoxed' type
