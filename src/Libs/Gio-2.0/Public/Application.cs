@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace Gio;
 
@@ -9,12 +10,7 @@ public partial class Application
         Module.Initialize();
     }
 
-    public int Run()
-    {
-        return Internal.Application.Run(Handle, 0, new string[0]);
-    }
-
-    public int RunWithSynchronizationContext()
+    public int RunWithSynchronizationContext(string[]? args)
     {
         var original = SynchronizationContext.Current;
 
@@ -22,7 +18,11 @@ public partial class Application
 
         try
         {
-            return Run();
+            if (args == null)
+            {
+                return Run(0, Array.Empty<string>());
+            }
+            return Run(args.Length, args);
         }
         finally
         {
