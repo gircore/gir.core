@@ -16,4 +16,4 @@ application.OnActivate += (sender, args) =>
     window.Child = view;
     window.Show();
 };
-return application.Run();
+return application.RunWithSynchronizationContext(null);

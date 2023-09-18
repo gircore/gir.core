@@ -6,4 +6,4 @@ application.OnActivate += (sender, args) =>
     window.SetDefaultSize(300, 300);
     window.Show();
 };
-return application.Run();
+return application.RunWithSynchronizationContext(null);

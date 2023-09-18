@@ -19,4 +19,4 @@ void Draw(Gtk.DrawingArea drawingArea, Cairo.Context cr, int width, int height)
     cr.MoveTo(40, 60);
     cr.ShowText("Powered by gir.core - GObject bindings for .NET");
 }
-return application.Run();
+return application.RunWithSynchronizationContext(null);

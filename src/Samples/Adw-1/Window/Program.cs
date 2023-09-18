@@ -8,4 +8,4 @@ application.OnActivate += (sender, args) =>
     window.SetChild(label);
     window.Show();
 };
-return application.Run();
+return application.RunWithSynchronizationContext(null);

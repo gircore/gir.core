@@ -41,6 +41,6 @@ application.OnActivate += (sender, _) =>
     window.SetChild(webView);
     window.Show();
 };
-return application.Run();
+return application.RunWithSynchronizationContext(null);
 
 #pragma warning restore CA1416
