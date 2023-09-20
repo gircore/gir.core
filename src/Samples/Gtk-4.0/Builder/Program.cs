@@ -7,4 +7,4 @@ application.OnActivate += (sender, args) =>
     dialog.OnResponse += (_, _) => application.Quit();
 };
 
-return application.Run();
+return application.RunWithSynchronizationContext(null);

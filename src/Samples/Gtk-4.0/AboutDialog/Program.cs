@@ -6,4 +6,4 @@ application.OnActivate += (sender, args) =>
     dialog.Show();
 };
 
-return application.Run();
+return application.RunWithSynchronizationContext(null);
