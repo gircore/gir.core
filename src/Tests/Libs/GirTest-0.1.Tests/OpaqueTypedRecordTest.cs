@@ -287,4 +287,20 @@ public class OpaqueTypedRecordTest : Test
 
         called.Should().BeTrue();
     }
+
+    [TestMethod]
+    public void SupportsWrapHandle()
+    {
+        var recordTester = OpaqueTypedRecordTester.New();
+
+        var wrapped = (OpaqueTypedRecordTester) GObject.Internal.BoxedWrapper.WrapHandle(
+            handle: recordTester.Handle.DangerousGetHandle(),
+            ownsHandle: false,
+            gtype: OpaqueTypedRecordTester.GetGType()
+        );
+
+        wrapped.Handle.DangerousGetHandle().Should().Be(recordTester.Handle.DangerousGetHandle());
+        recordTester.GetRefCount().Should().Be(2);
+        wrapped.GetRefCount().Should().Be(2);
+    }
 }
