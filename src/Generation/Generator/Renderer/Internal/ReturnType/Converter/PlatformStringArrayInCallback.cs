@@ -1,10 +1,10 @@
 ﻿namespace Generator.Renderer.Internal.ReturnType;
 
-internal class StringArray : ReturnTypeConverter
+internal class PlatformStringArrayInCallback : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.IsArray<GirModel.String>();
+        return returnType.AnyType.IsArray<GirModel.PlatformString>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

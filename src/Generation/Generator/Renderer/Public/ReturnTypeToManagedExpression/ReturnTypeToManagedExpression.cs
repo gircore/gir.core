@@ -12,14 +12,15 @@ internal static class ReturnTypeToManagedExpression
         new ReturnTypeToManagedExpressions.Interface(),
         new ReturnTypeToManagedExpressions.OpaqueTypedRecord(),
         new ReturnTypeToManagedExpressions.PlatformString(),
+        new ReturnTypeToManagedExpressions.PlatformStringArray(),
         new ReturnTypeToManagedExpressions.Pointer(),
         new ReturnTypeToManagedExpressions.PointerAlias(),
         new ReturnTypeToManagedExpressions.PrimitiveValueType(),
         new ReturnTypeToManagedExpressions.PrimitiveValueTypeAlias(),
         new ReturnTypeToManagedExpressions.PrimitiveValueTypeArray(),
         new ReturnTypeToManagedExpressions.Record(),
-        new ReturnTypeToManagedExpressions.StringArray(),
         new ReturnTypeToManagedExpressions.Utf8String(),
+        new ReturnTypeToManagedExpressions.Utf8StringArray(),
     };
 
     public static string Render(GirModel.ReturnType from, string fromVariableName)

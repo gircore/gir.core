@@ -13,7 +13,9 @@ application.OnActivate += (sender, _) =>
     ucm.AddScript(WebKit.UserScript.New(
         source: "function testFunc() { return 'Success' }",
         injectedFrames: WebKit.UserContentInjectedFrames.AllFrames,
-        injectionTime: WebKit.UserScriptInjectionTime.End)
+        injectionTime: WebKit.UserScriptInjectionTime.End,
+        allowList: null,
+        blockList: null)
     );
 
     webView.OnLoadChanged += async (view, signalArgs) =>

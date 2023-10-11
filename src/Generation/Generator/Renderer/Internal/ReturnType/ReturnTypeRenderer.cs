@@ -14,6 +14,7 @@ internal static class ReturnTypeRenderer
         new ReturnType.InterfaceGLibPtrArray(),
         new ReturnType.OpaqueTypedRecord(),
         new ReturnType.PlatformString(),
+        new ReturnType.PlatformStringArray(),
         new ReturnType.Pointer(),
         new ReturnType.PointerAlias(),
         new ReturnType.PrimitiveValueType(),
@@ -21,9 +22,9 @@ internal static class ReturnTypeRenderer
         new ReturnType.PrimitiveValueTypeArray(),
         new ReturnType.Record(),
         new ReturnType.RecordArray(),
-        new ReturnType.StringArray(),
         new ReturnType.Union(),
         new ReturnType.Utf8String(),
+        new ReturnType.Utf8StringArray(),
         new ReturnType.Void(),
     };
 
