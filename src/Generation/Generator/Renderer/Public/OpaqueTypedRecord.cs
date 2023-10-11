@@ -34,6 +34,12 @@ public partial class {name}
         Initialize();
     }}
 
+    //TODO: This is a workaround constructor as long as we are
+    //not having https://github.com/gircore/gir.core/issues/397
+    private {name}(IntPtr ptr, bool ownsHandle) : this(ownsHandle
+        ? new {Model.OpaqueTypedRecord.GetFullyQuallifiedOwnedHandle(record)}(ptr)
+        : new {Model.OpaqueTypedRecord.GetFullyQuallifiedUnownedHandle(record)}(ptr).OwnedCopy()){{ }}
+
     // Implement this to perform additional steps in the constructor
     partial void Initialize();
 
