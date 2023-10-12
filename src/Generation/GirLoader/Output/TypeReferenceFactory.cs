@@ -52,7 +52,6 @@ internal class TypeReferenceFactory
 
         int? length = int.TryParse(anyType.Array.Length, out var l) ? l : null;
         int? fixedSize = int.TryParse(anyType.Array.FixedSize, out var f) ? f : null;
-        bool? zeroTerminated = bool.TryParse(anyType.Array.ZeroTerminated, out var b) ? b : null;
 
         var reference = new ArrayTypeReference(
             typeReference: typeReference,
@@ -61,11 +60,9 @@ internal class TypeReferenceFactory
         {
             Length = length,
             FixedSize = fixedSize,
-            // TODO: The zero-terminated attribute is not consistently present in the gir file.
-            // If there isn't a length and fixed size treat as zero-terminated anyways. The GLib
-            // array types are never zero-terminated and always reset the flag.
-            // This can be removed if the C gir generator changes this behavior.
-            IsZeroTerminated = zeroTerminated ?? (length is null && fixedSize is null)
+            //The fallback is required as gobject-introspection expects an array to be zero terminated,
+            //if neither length nor fixedSize are given.
+            IsZeroTerminated = anyType.Array.ZeroTerminated || (length is null && fixedSize is null)
         };
 
         arrayTypeReference = anyType.Array.Name switch

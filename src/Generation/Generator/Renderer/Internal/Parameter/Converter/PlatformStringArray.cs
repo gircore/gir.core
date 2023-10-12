@@ -11,12 +11,18 @@ internal class PlatformStringArray : ParameterConverter
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is null
-            ? ParameterWithoutLength(parameter)
-            : ParameterWithLength(parameter);
+        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+
+        if (arrayType.IsZeroTerminated)
+            return NullTerminatedArray(parameter);
+
+        if (arrayType.Length is not null)
+            return SizeBasedArray(parameter);
+
+        throw new Exception("Unknown kind of array");
     }
 
-    private static RenderableParameter ParameterWithLength(GirModel.Parameter parameter)
+    private static RenderableParameter SizeBasedArray(GirModel.Parameter parameter)
     {
         var length = parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length must not be null");
 
@@ -28,21 +34,18 @@ internal class PlatformStringArray : ParameterConverter
         );
     }
 
-    private static RenderableParameter ParameterWithoutLength(GirModel.Parameter parameter)
+    private static RenderableParameter NullTerminatedArray(GirModel.Parameter parameter)
     {
         return parameter.Direction switch
         {
-            GirModel.Direction.In => ParameterWithoutLengthIn(parameter),
-            GirModel.Direction.Out => ParameterWithoutLengthOut(parameter),
+            GirModel.Direction.In => NullTerminatedArrayIn(parameter),
+            GirModel.Direction.Out => NullTerminatedArrayOut(parameter),
             _ => throw new Exception("Unknown direction for parameter")
         };
     }
 
-    private static RenderableParameter ParameterWithoutLengthIn(GirModel.Parameter parameter)
+    private static RenderableParameter NullTerminatedArrayIn(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null)
-            throw new Exception("Length must be null");
-
         if (parameter.Direction != GirModel.Direction.In)
             throw new Exception("Direction must be in");
 
@@ -62,11 +65,8 @@ internal class PlatformStringArray : ParameterConverter
         );
     }
 
-    private static RenderableParameter ParameterWithoutLengthOut(GirModel.Parameter parameter)
+    private static RenderableParameter NullTerminatedArrayOut(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null)
-            throw new Exception("Length must be null");
-
         if (parameter.Direction != GirModel.Direction.Out)
             throw new Exception("Direction must be out");
 

@@ -11,10 +11,13 @@ internal class PlatformStringArray : ToNativeParameterConverter
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
         var arrayType = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
-        if (arrayType.Length == null)
+
+        if (arrayType.IsZeroTerminated)
             NullTerminatedArray(parameter);
-        else
+        else if (arrayType.Length is not null)
             SizeBasedArray(parameter);
+        else
+            throw new Exception("Unknown kind of array");
     }
 
     private static void NullTerminatedArray(ParameterToNativeData parameter)

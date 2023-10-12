@@ -13,26 +13,30 @@ internal class PlatformStringArray : ReturnTypeConverter
     {
         var arrayType = returnType.AnyType.AsT1;
 
-        var nullableTypeName = arrayType.Length is null
-            ? NullTerminatedArray(returnType)
-            : SizeBasedArray();
+        if (arrayType.IsZeroTerminated)
+            return NullTerminatedArray(returnType);
 
-        return new RenderableReturnType(nullableTypeName);
+        if (arrayType.Length is not null)
+            return SizeBasedArray();
+
+        throw new Exception("Unknown kind of array");
     }
 
-    private static string NullTerminatedArray(GirModel.ReturnType returnType)
+    private static RenderableReturnType NullTerminatedArray(GirModel.ReturnType returnType)
     {
-        return returnType switch
+        var typeName = returnType switch
         {
             { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.GetInternalOwnedHandleName(),
             { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.GetInternalUnownedHandleName(),
             { Transfer: GirModel.Transfer.Container } => Model.PlatformStringArray.GetInternalContainerHandleName(),
             _ => throw new Exception("Unknown transfer type for platform string array return value")
         };
+
+        return new RenderableReturnType(typeName);
     }
 
-    private static string SizeBasedArray()
+    private static RenderableReturnType SizeBasedArray()
     {
-        return "string[]";
+        return new RenderableReturnType("string[]");
     }
 }
