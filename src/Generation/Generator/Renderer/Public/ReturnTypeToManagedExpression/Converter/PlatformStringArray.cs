@@ -1,4 +1,6 @@
-﻿namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
+﻿using System;
+
+namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class PlatformStringArray : ReturnTypeConverter
 {
@@ -7,10 +9,14 @@ internal class PlatformStringArray : ReturnTypeConverter
 
     public string GetString(GirModel.ReturnType returnType, string fromVariableName)
     {
-        if (returnType.AnyType.AsT1.Length == null)
+        var arrayType = returnType.AnyType.AsT1;
+        if (arrayType.IsZeroTerminated)
             return NullTerminatedArray(returnType, fromVariableName);
-        else
+
+        if (arrayType.Length is not null)
             return SizeBasedArray(returnType, fromVariableName);
+
+        throw new Exception("Unknown kind of array");
     }
 
     private static string NullTerminatedArray(GirModel.ReturnType returnType, string fromVariableName)

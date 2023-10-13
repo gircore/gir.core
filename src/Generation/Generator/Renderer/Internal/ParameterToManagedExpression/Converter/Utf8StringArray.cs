@@ -11,10 +11,13 @@ internal class Utf8StringArray : ToManagedParameterConverter
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
         var arrayType = parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
-        if (arrayType.Length is null)
+
+        if (arrayType.IsZeroTerminated)
             NullTerminatedArray(parameterData);
-        else
+        else if (arrayType.Length is not null)
             SizeBasedArray(parameterData);
+        else
+            throw new Exception("Unknown kind of array");
     }
 
     private static void NullTerminatedArray(ParameterToManagedData parameterData)

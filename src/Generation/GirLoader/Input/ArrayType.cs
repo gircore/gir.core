@@ -11,7 +11,7 @@ public class ArrayType : AnyType
     public string? Length { get; set; }
 
     [XmlAttribute("zero-terminated")]
-    public string? ZeroTerminated { get; set; }
+    public bool ZeroTerminated { get; set; }
 
     [XmlAttribute("fixed-size")]
     public string? FixedSize { get; set; }
