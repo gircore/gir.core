@@ -11,6 +11,7 @@ internal static class ReturnTypeToManagedExpression
         new ReturnTypeToManagedExpressions.Enumeration(),
         new ReturnTypeToManagedExpressions.Interface(),
         new ReturnTypeToManagedExpressions.OpaqueTypedRecord(),
+        new ReturnTypeToManagedExpressions.OpaqueUntypedRecord(),
         new ReturnTypeToManagedExpressions.PlatformString(),
         new ReturnTypeToManagedExpressions.PlatformStringArray(),
         new ReturnTypeToManagedExpressions.Pointer(),

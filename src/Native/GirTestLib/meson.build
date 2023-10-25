@@ -13,6 +13,7 @@ header_files = [
   'girtest-error-tester.h',
   'girtest-integer-array-tester.h',
   'girtest-opaque-typed-record-tester.h',
+  'girtest-opaque-untyped-record-tester.h',
   'girtest-platform-string-array-null-terminated-tester.h',
   'girtest-primitive-value-type-tester.h',
   'girtest-property-tester.h',
@@ -35,6 +36,7 @@ source_files = [
   'girtest-error-tester.c',
   'girtest-integer-array-tester.c',
   'girtest-opaque-typed-record-tester.c',
+  'girtest-opaque-untyped-record-tester.c',
   'girtest-platform-string-array-null-terminated-tester.c',
   'girtest-primitive-value-type-tester.c',
   'girtest-property-tester.c',
@@ -67,5 +69,5 @@ gir = gnome.generate_gir(
   includes: ['GObject-2.0'],
   header: 'girtest.h',
   install_gir: true,
-  fatal_warnings: true,
+  fatal_warnings: false, #TODO Enable if https://gitlab.gnome.org/GNOME/gobject-introspection/-/merge_requests/424 is merged
 )

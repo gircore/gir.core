@@ -17,6 +17,7 @@ internal static class CallbackParameters
         new Parameter.InterfaceArray(),
         new Parameter.NativeUnsignedIntegerArray(),
         new Parameter.OpaqueTypedRecordCallback(),
+        new Parameter.OpaqueUntypedRecordCallback(),
         new Parameter.PlatformStringArrayCallback(),
         new Parameter.Pointer(),
         new Parameter.PointerAlias(),

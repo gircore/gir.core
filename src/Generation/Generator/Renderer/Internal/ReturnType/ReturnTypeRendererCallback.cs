@@ -13,6 +13,7 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.Interface(),
         new ReturnType.InterfaceGLibPtrArray(),
         new ReturnType.OpaqueTypedRecordCallback(),
+        new ReturnType.OpaqueUntypedRecordCallback(),
         new ReturnType.PlatformStringInCallback(),
         new ReturnType.PlatformStringArrayInCallback(),
         new ReturnType.Pointer(),

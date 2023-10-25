@@ -24,6 +24,10 @@ public class ExceptionTest : Test
     [TestMethod]
     public void ErrorsAreNotAlwaysThrown()
     {
+        //TODO: Enable once Dir annotations are fixed
+        //See: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3566
+        Assert.Inconclusive();
+
         //To verify if the exception handling is working we call a method which could potentially throw
         //an exception. We supply valid arguments and check that no exceptin is thrown.
 

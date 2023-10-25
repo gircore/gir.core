@@ -213,7 +213,7 @@ public partial class Value : IDisposable
     public GLib.Variant? GetVariant()
     {
         var result = Internal.Value.GetVariant(Handle);
-        return result.IsInvalid ? null : new(result);
+        return result.IsInvalid ? null : new(result.OwnedCopy());
     }
 
     private void SetBoxed(IntPtr ptr) => Internal.Value.SetBoxed(Handle, ptr);

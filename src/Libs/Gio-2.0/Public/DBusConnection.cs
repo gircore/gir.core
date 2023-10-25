@@ -40,7 +40,7 @@ public partial class DBusConnection
         Internal.DBusConnection.Call(Handle,
             GLib.Internal.NullableUtf8StringOwnedHandle.Create(busName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(objectPath),
             GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(interfaceName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(methodName),
-            parameters?.Handle ?? GLib.Internal.VariantNullHandle.Instance, GLib.Internal.VariantTypeUnownedHandle.NullHandle, DBusCallFlags.None, -1, IntPtr.Zero, callbackHandler.NativeCallback, IntPtr.Zero);
+            (GLib.Internal.VariantHandle?) parameters?.Handle ?? GLib.Internal.VariantUnownedHandle.NullHandle, GLib.Internal.VariantTypeUnownedHandle.NullHandle, DBusCallFlags.None, -1, IntPtr.Zero, callbackHandler.NativeCallback, IntPtr.Zero);
 
         return tcs.Task;
     }

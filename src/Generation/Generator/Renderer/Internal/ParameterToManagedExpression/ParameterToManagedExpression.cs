@@ -14,6 +14,7 @@ internal static class ParameterToManagedExpression
         new ParameterToManagedExpressions.Enumeration(),
         new ParameterToManagedExpressions.Interface(),
         new ParameterToManagedExpressions.OpaqueTypedRecord(),
+        new ParameterToManagedExpressions.OpaqueUntypedRecord(),
         new ParameterToManagedExpressions.PlatformStringArray(),
         new ParameterToManagedExpressions.Pointer(),
         new ParameterToManagedExpressions.PointerAlias(),

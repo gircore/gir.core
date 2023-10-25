@@ -11,6 +11,7 @@ internal static class ReturnTypeToNativeExpression
         new ReturnTypeToNativeExpressions.Enumeration(),
         new ReturnTypeToNativeExpressions.Interface(),
         new ReturnTypeToNativeExpressions.OpaqueTypedRecord(),
+        new ReturnTypeToNativeExpressions.OpaqueUntypedRecord(),
         new ReturnTypeToNativeExpressions.Pointer(),
         new ReturnTypeToNativeExpressions.PrimitiveValueType(),
         new ReturnTypeToNativeExpressions.PrimitiveValueTypeAlias(),

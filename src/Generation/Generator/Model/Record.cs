@@ -4,7 +4,7 @@ internal static partial class Record
 {
     public static bool IsStandard(GirModel.Record record)
     {
-        return !IsOpaqueTyped(record);
+        return !IsOpaqueTyped(record) && !IsOpaqueUntyped(record);
     }
 
     public static bool IsOpaqueTyped(GirModel.Record record)
@@ -13,6 +13,13 @@ internal static partial class Record
         //a typed / boxed record. There is a magic keyword "intern" which means this
         //record is actually fundamental and does not have a type function.
         return record is { Opaque: true, TypeFunction.CIdentifier: not "intern" };
+    }
+
+    public static bool IsOpaqueUntyped(GirModel.Record record)
+    {
+        //A CIdentifier "intern" means that this type is fundamental and can be treated as
+        //untyped.
+        return record is { Opaque: true, TypeFunction: null or { CIdentifier: "intern" } };
     }
 
     public static string GetFullyQualifiedInternalStructName(GirModel.Record record)

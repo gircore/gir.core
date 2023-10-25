@@ -23,18 +23,18 @@ public class VariantTypeTest : Test
     {
         var variantType = VariantType.New(type);
 
-        variantType.ToString().Should().Be(type);
+        variantType.DupString().Should().Be(type);
     }
 
     [TestMethod]
     public void TypeStringIsString()
     {
-        VariantType.String.ToString().Should().Be("s");
+        VariantType.String.DupString().Should().Be("s");
     }
 
     [TestMethod]
     public void TypeVariantIsVariant()
     {
-        VariantType.Variant.ToString().Should().Be("v");
+        VariantType.Variant.DupString().Should().Be("v");
     }
 }
