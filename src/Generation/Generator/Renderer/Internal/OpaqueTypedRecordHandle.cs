@@ -55,7 +55,7 @@ public class {unownedHandleTypeName} : {typeName}
     /// <summary>
     /// Creates a new instance of {ownedHandleTypeName}. Assumes that the given pointer is unowned by the runtime.
     /// </summary>
-    internal {unownedHandleTypeName}(IntPtr ptr) : base(false)
+    public {unownedHandleTypeName}(IntPtr ptr) : base(false)
     {{
         SetHandle(ptr);
     }}
@@ -76,7 +76,7 @@ public class {ownedHandleTypeName} : {typeName}
     /// <summary>
     /// Creates a new instance of {ownedHandleTypeName}. Assumes that the given pointer is owned by the runtime.
     /// </summary>
-    internal {ownedHandleTypeName}(IntPtr ptr) : base(true)
+    public {ownedHandleTypeName}(IntPtr ptr) : base(true)
     {{
         SetHandle(ptr);
     }}
