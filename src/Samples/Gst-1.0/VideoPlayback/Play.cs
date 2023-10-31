@@ -13,7 +13,7 @@ public class Gst
         Element ret = Functions.ParseLaunch("playbin uri=playbin uri=http://ftp.halifax.rwth-aachen.de/blender/demo/movies/ToS/tears_of_steel_720p.mov");
         ret.SetState(State.Playing);
         Bus bus = ret.GetBus();
-        bus.WaitForEndOrError();
+        bus.TimedPopFiltered(Constants.CLOCK_TIME_NONE, MessageType.Eos | MessageType.Error);
         ret.SetState(State.Null);
     }
 }

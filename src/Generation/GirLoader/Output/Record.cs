@@ -49,4 +49,7 @@ public partial class Record : ComplexType, ShadowableProvider
 
         return ctypeMatches || (symbolNameMatches && (namespaceMatches || namespaceMissing));
     }
+
+    public override string ToString()
+        => $"{Repository.Namespace.Name}.{Name}";
 }

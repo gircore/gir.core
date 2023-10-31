@@ -15,36 +15,33 @@ public partial class Closure : IDisposable
     internal Closure(ClosureCallback callback)
     {
         _callback = callback;
-        _handle = Internal.Closure.NewSimple((uint) Marshal.SizeOf<Internal.ClosureData>(), IntPtr.Zero);
+        Handle = Internal.Closure.NewSimple((uint) Marshal.SizeOf<Internal.ClosureData>(), IntPtr.Zero);
 
-        Debug.WriteLine($"Instantiating Closure: Address {_handle.DangerousGetHandle()}.");
+        Debug.WriteLine($"Instantiating Closure: Address {Handle.DangerousGetHandle()}.");
 
         _closureMarshal = InternalCallback; //Save delegate to keep instance alive
 
-        Internal.Closure.Ref(_handle);
-        Internal.Closure.Sink(_handle);
-        Internal.Closure.SetMarshal(_handle, _closureMarshal);
+        Internal.Closure.Ref(Handle);
+        Internal.Closure.Sink(Handle);
+        Internal.Closure.SetMarshal(Handle, _closureMarshal);
     }
 
-    private void InternalCallback(IntPtr closure, IntPtr returnValuePtr, uint nParamValues, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Internal.ValueData[] paramValuesData, IntPtr invocationHint, IntPtr userData)
+    private void InternalCallback(IntPtr closure, IntPtr returnValuePtr, uint nParamValues, IntPtr paramValuesData, IntPtr invocationHint, IntPtr userData)
     {
-        Debug.Assert(
-            condition: paramValuesData.Length == nParamValues,
-            message: "Values were not marshalled correctly. Breakage may occur"
-        );
-
+        var returnUnownedHandle = new Internal.ValueUnownedHandle(returnValuePtr);
         var returnValue = returnValuePtr != IntPtr.Zero
-            ? new Value(new Internal.ValueUnownedHandle(returnValuePtr))
+            ? new Value(returnUnownedHandle.OwnedCopy())
             : null;
 
-        var paramValues = paramValuesData
-            .Select(valueData => Internal.ValueManagedHandle.Create(valueData))
-            .Select(valueHandle => new Value(valueHandle))
-            .ToArray();
+        var paramValues = new Internal.ValueArray2UnownedHandle(paramValuesData, (int) nParamValues).ToArray((int) nParamValues);
 
         try
         {
             _callback(returnValue, paramValues);
+
+            //The result must be copied back into the original value as the callback operates on a copy
+            if (returnValue is not null && !returnUnownedHandle.IsInvalid)
+                Internal.Value.Copy(returnValue.Handle, returnUnownedHandle);
         }
         catch (Exception e)
         {
@@ -54,7 +51,7 @@ public partial class Closure : IDisposable
 
     public void Dispose()
     {
-        Debug.WriteLine($"Disposing Closure: Address {_handle.DangerousGetHandle()}.");
-        _handle.Dispose();
+        Debug.WriteLine($"Disposing Closure: Address {Handle.DangerousGetHandle()}.");
+        Handle.Dispose();
     }
 }

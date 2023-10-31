@@ -23,6 +23,8 @@ internal static class ReturnTypeRenderer
         new ReturnType.PrimitiveValueTypeArray(),
         new ReturnType.Record(),
         new ReturnType.RecordArray(),
+        new ReturnType.TypedRecord(),
+        new ReturnType.TypedRecordArray(),
         new ReturnType.Union(),
         new ReturnType.Utf8String(),
         new ReturnType.Utf8StringArray(),

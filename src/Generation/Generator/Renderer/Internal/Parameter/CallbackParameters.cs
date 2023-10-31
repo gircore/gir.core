@@ -36,6 +36,9 @@ internal static class CallbackParameters
         new Parameter.RecordCallback(), //Callbacks do not support record safe handles in parameters
         new Parameter.RecordGLibPtrArray(),
         new Parameter.String(),
+        new Parameter.TypedRecordCallback(),
+        new Parameter.TypedRecordCallbackAlias(),
+        new Parameter.TypedRecordCallbackArray(),
         new Parameter.Union(),
         new Parameter.UnionArray(),
         new Parameter.UnsignedPointer(),

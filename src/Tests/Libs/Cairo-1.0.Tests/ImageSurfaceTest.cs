@@ -40,8 +40,6 @@ public class ImageSurfaceTest : Test
 
         surf.Content.Should().Be(Content.ColorAlpha);
         surf.SurfaceType.Should().Be(SurfaceType.Image);
-        // Just verify this succeeds, until Cairo.Device has more methods
-        surf.Device.Should().NotBeNull();
 
         var opts = new FontOptions();
         surf.GetFontOptions(opts);

@@ -41,6 +41,8 @@ internal static class Parameters
         new Parameter.RecordGLibPtrArray(),
         new Parameter.String(),
         new Parameter.StringGLibPtrArray(),
+        new Parameter.TypedRecord(),
+        new Parameter.TypedRecordArray(),
         new Parameter.Union(),
         new Parameter.UnionArray(),
         new Parameter.UnsignedPointer(),

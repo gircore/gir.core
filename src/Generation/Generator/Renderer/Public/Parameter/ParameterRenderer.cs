@@ -28,6 +28,8 @@ internal static class ParameterRenderer
         new Parameter.RecordArray(),
         new Parameter.String(),
         new Parameter.StringArray(),
+        new Parameter.TypedRecord(),
+        new Parameter.TypedRecordArray(),
         new Parameter.Union(),
         new Parameter.Void(),
     };

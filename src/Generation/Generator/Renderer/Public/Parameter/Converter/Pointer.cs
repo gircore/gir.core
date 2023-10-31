@@ -19,7 +19,6 @@ internal class Pointer : ParameterConverter
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
         { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
-        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.Ref(),
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
         _ => ParameterDirection.In()
     };

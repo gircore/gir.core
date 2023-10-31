@@ -2,7 +2,7 @@
 
 public class Gradient : Pattern
 {
-    protected Gradient(Internal.PatternHandle handle)
+    protected Gradient(Internal.PatternOwnedHandle handle)
         : base(handle)
     {
     }

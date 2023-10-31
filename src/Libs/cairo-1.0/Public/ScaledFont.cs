@@ -24,7 +24,7 @@ public partial class ScaledFont
         => Internal.ScaledFont.TextExtents(Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(text), out extents);
 
     public FontFace GetFontFace()
-        => new FontFace(Internal.ScaledFont.GetFontFace(Handle));
+        => new FontFace(Internal.ScaledFont.GetFontFace(Handle).OwnedCopy());
 
     public void GetFontOptions(FontOptions options)
         => Internal.ScaledFont.GetFontOptions(Handle, options.Handle);

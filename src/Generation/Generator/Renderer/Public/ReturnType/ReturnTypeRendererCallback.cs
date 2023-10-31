@@ -18,8 +18,10 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.PrimitiveValueTypeAlias(),
         new ReturnType.Record(),
         new ReturnType.RecordArray(),
-        new ReturnType.StringInCallback(),
         new ReturnType.StringArray(),
+        new ReturnType.StringInCallback(),
+        new ReturnType.TypedRecord(),
+        new ReturnType.TypedRecordArray(),
         new ReturnType.Void(),
     };
 

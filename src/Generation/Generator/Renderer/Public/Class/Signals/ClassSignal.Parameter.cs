@@ -23,6 +23,6 @@ public static partial class ClassSignal
     {
         var p = ParameterRenderer.Render(parameter);
 
-        return $@"public {p.NullableTypeName} {parameter.Name.ToPascalCase()} => Args[{index}].Extract<{p.NullableTypeName}>();";
+        return $@"public {p.NullableTypeName} {parameter.Name.ToPascalCase()} => Extract<{p.NullableTypeName}>(Args[{index}]);";
     }
 }

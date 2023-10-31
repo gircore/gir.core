@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GLib;
@@ -48,7 +47,7 @@ public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHan
             objectType: gtype.Value,
             nProperties: (uint) constructArguments.Length,
             names: GetNames(constructArguments),
-            values: GetValues(constructArguments)
+            values: ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
         );
 
         // We can't check if a reference is floating via "g_object_is_floating" here
@@ -64,18 +63,6 @@ public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHan
 
     private string[] GetNames(ConstructArgument[] constructParameters)
         => constructParameters.Select(x => x.Name).ToArray();
-
-    private Internal.ValueData[] GetValues(ConstructArgument[] constructParameters)
-    {
-        var values = new Internal.ValueData[constructParameters.Length];
-
-        for (int i = 0; i < constructParameters.Length; i++)
-        {
-            values[i] = constructParameters[i].Value.GetData();
-        }
-
-        return values;
-    }
 
     /// <summary>
     /// Does common initialization tasks.

@@ -44,4 +44,7 @@ public partial class Interface : ComplexType, AccessorProvider, ShadowableProvid
 
         return false;
     }
+
+    public override string ToString()
+        => $"{Repository.Namespace.Name}.{Name}";
 }
