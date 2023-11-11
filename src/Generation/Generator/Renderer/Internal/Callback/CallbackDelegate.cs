@@ -24,7 +24,7 @@ namespace {Namespace.GetInternalName(callback.Namespace)}
         }
         catch (Exception ex)
         {
-            Log.Warning($"Did not generate callback delegatre '{callback.Name}': {ex.Message}");
+            Log.Warning($"Did not generate callback delegate '{callback.Name}': {ex.Message}");
 
             return string.Empty;
         }
