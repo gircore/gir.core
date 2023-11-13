@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GirModel;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
@@ -27,12 +28,31 @@ internal class Record : ToManagedParameterConverter
 
     private static void RegularRecord(ParameterToManagedData parameterData)
     {
-        if (parameterData.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: record with direction != in not yet supported");
-
         if (!parameterData.Parameter.IsPointer)
             throw new NotImplementedException($"Unpointed record parameter {parameterData.Parameter.Name} ({parameterData.Parameter.AnyTypeOrVarArgs}) can not yet be converted to managed");
 
+        switch (parameterData.Parameter.Direction)
+        {
+            case Direction.In:
+                InRecord(parameterData);
+                break;
+            case Direction.Out:
+                OutRecord(parameterData);
+                break;
+            default:
+                throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: record with direction {parameterData.Parameter.Direction} not yet supported");
+        }
+    }
+
+    private static void OutRecord(ParameterToManagedData parameterData)
+    {
+        var parameterName = Model.Parameter.GetName(parameterData.Parameter);
+        parameterData.SetSignatureName(parameterName);
+        parameterData.SetCallName("out " + parameterName);
+    }
+
+    private static void InRecord(ParameterToManagedData parameterData)
+    {
         var record = (GirModel.Record) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         var ownedHandle = parameterData.Parameter.Transfer == GirModel.Transfer.Full;
         var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);

@@ -37,6 +37,7 @@ internal static class CallbackParameters
         new Parameter.RecordGLibPtrArray(),
         new Parameter.String(),
         new Parameter.Union(),
+        new Parameter.UnionArray(),
         new Parameter.UnsignedPointer(),
         new Parameter.Utf8StringArrayCallback(),
         new Parameter.Void(),

@@ -42,6 +42,7 @@ internal static class Parameters
         new Parameter.String(),
         new Parameter.StringGLibPtrArray(),
         new Parameter.Union(),
+        new Parameter.UnionArray(),
         new Parameter.UnsignedPointer(),
         new Parameter.Utf8StringArray(),
         new Parameter.Void(),
