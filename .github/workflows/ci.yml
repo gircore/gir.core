@@ -9,7 +9,7 @@ on:
         type: boolean
       version_suffix:
         description: Suffix of the version number. Can be used to create a preview package.
-        required: true
+        required: false
         type: string
   push:
     branches:
