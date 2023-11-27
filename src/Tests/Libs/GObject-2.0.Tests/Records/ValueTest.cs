@@ -48,6 +48,16 @@ public class ValueTest : Test
     }
 
     [TestMethod]
+    public void CanSetStringArry()
+    {
+        var array = new[] { "A", "B", "C" };
+        var v = new Value(array);
+
+        var result = v.Extract<string[]>();
+        result.Should().ContainInOrder(array);
+    }
+
+    [TestMethod]
     public void DisposeShouldFreeUnmanagedMemory()
     {
         // This test relies on the memory being zeroed out after it is freed, which is not guaranteed.
