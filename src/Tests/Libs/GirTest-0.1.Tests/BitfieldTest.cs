@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using GObject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
@@ -13,5 +14,15 @@ public class BitfieldTest : Test
         BitfieldTester.ResetFlags(ref flags);
 
         flags.Should().Be(BitfieldTesterSimpleFlags.Zero);
+    }
+
+    [TestMethod]
+    public void CanBeUsedInGValue()
+    {
+        var flags = BitfieldTesterSimpleFlags.One | BitfieldTesterSimpleFlags.Two;
+        var value = new Value(Type.Flags);
+        value.Set(flags);
+        var result = value.Extract<BitfieldTesterSimpleFlags>();
+        result.Should().Be(flags);
     }
 }
