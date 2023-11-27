@@ -7,6 +7,7 @@
 #include "girtest-callback-tester.h"
 #include "girtest-class-tester.h"
 #include "girtest-constant-tester.h"
+#include "girtest-enum-tester.h"
 #include "girtest-error-tester.h"
 #include "girtest-integer-array-tester.h"
 #include "girtest-opaque-typed-record-tester.h"

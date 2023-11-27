@@ -88,7 +88,10 @@ public partial class Value : IDisposable
                 SetDouble(d);
                 break;
             case Enum e:
-                SetEnum(e);
+                if (e.GetType().IsDefined(typeof(FlagsAttribute), false))
+                    SetFlags(e);
+                else
+                    SetEnum(e);
                 break;
             case long l:
                 SetLong(l);
@@ -225,6 +228,7 @@ public partial class Value : IDisposable
     private void SetFloat(float f) => Internal.Value.SetFloat(Handle, f);
     private void SetLong(long l) => Internal.Value.SetLong(Handle, l);
     private void SetEnum(Enum e) => Internal.Value.SetEnum(Handle, Convert.ToInt32(e));
+    private void SetFlags(Enum e) => Internal.Value.SetFlags(Handle, Convert.ToUInt32(e));
     private void SetString(string s) => Internal.Value.SetString(Handle, GLib.Internal.NullableUtf8StringOwnedHandle.Create(s));
     private void SetVariant(GLib.Variant v) => Internal.Value.SetVariant(Handle, v.Handle);
     private void SetObject(Object o) => Internal.Value.SetObject(Handle, o.Handle);
