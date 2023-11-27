@@ -30,6 +30,7 @@ public partial class Value : IDisposable
     public Value(double value) : this(Type.Double) => SetDouble(value);
     public Value(float value) : this(Type.Float) => SetFloat(value);
     public Value(string value) : this(Type.String) => SetString(value);
+    public Value(string[] value) : this(Type.StringArray) => SetBoxed(Utf8StringArrayNullTerminatedOwnedHandle.Create(value).DangerousGetHandle());
 
     #endregion
 

@@ -28,6 +28,7 @@ public partial struct Type
     public static readonly Type Param = new Type((nuint) Internal.BasicType.Param);
     public static readonly Type Object = new Type((nuint) Internal.BasicType.Object);
     public static readonly Type Variant = new Type((nuint) Internal.BasicType.Variant);
+    public static readonly Type StringArray = new Type((nuint) Internal.Functions.StrvGetType());
 
     #endregion Statics
 
