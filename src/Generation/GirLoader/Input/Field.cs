@@ -8,7 +8,7 @@ public class Field : AnyType
     public string? Name { get; set; }
 
     [XmlAttribute("readable")]
-    public bool Readable { get; set; }
+    public bool Readable { get; set; } = true;
 
     [XmlAttribute("writable")]
     public bool Writable { get; set; }
@@ -32,5 +32,5 @@ public class Field : AnyType
     public Doc? Doc { get; set; }
 
     [XmlAttribute("introspectable")]
-    public bool Introspectable = true;
+    public bool Introspectable { get; set; } = true;
 }

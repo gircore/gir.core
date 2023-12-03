@@ -22,7 +22,7 @@ public partial class Field
     /// <param name="writable"></param>
     /// <param name="private"></param>
     /// <param name="name"></param>
-    public Field(string name, TypeReference typeReference, bool introspectable, bool readable = true, bool writable = false, bool @private = false)
+    public Field(string name, TypeReference typeReference, bool introspectable, bool readable, bool writable, bool @private)
     {
         Name = name;
         TypeReference = typeReference;
@@ -32,7 +32,7 @@ public partial class Field
         Introspectable = introspectable;
     }
 
-    public Field(string name, ResolveableTypeReference resolveableTypeReference, Callback callback, bool introspectable, bool readable = true, bool writable = false, bool @private = false)
+    public Field(string name, ResolveableTypeReference resolveableTypeReference, Callback callback, bool introspectable, bool readable, bool writable, bool @private)
         : this(name, resolveableTypeReference, introspectable, readable, writable, @private)
     {
         Callback = callback;
