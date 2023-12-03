@@ -30,6 +30,7 @@ internal class FieldFactory
                 resolveableTypeReference: _typeReferenceFactory.CreateResolveable(info.Callback.Name, info.Callback.Type),
                 callback: _callbackFactory.Create(info.Callback, repository),
                 readable: info.Readable,
+                writable: info.Writable,
                 @private: info.Private,
                 introspectable: info.Introspectable
             );
@@ -39,6 +40,7 @@ internal class FieldFactory
             name: info.Name,
             typeReference: _typeReferenceFactory.Create(info),
             readable: info.Readable,
+            writable: info.Writable,
             @private: info.Private,
             introspectable: info.Introspectable
         );

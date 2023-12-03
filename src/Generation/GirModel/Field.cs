@@ -6,6 +6,7 @@ public interface Field
 {
     string Name { get; }
     bool IsReadable { get; }
+    bool IsWritable { get; }
     bool IsPrivate { get; }
     bool IsPointer { get; }
     bool Introspectable { get; }

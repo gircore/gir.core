@@ -10,8 +10,8 @@ public class Field : AnyType
     [XmlAttribute("readable")]
     public bool Readable { get; set; }
 
-    [XmlAttribute("writeable")]
-    public bool Writeable { get; set; }
+    [XmlAttribute("writable")]
+    public bool Writable { get; set; }
 
     [XmlAttribute("private")]
     public bool Private { get; set; }
