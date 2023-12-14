@@ -211,8 +211,8 @@ public partial class Value : IDisposable
     public long GetLong() => Internal.Value.GetLong(Handle);
     public double GetDouble() => Internal.Value.GetDouble(Handle);
     public float GetFloat() => Internal.Value.GetFloat(Handle);
-    public ulong GetFlags() => Internal.Value.GetFlags(Handle);
-    public long GetEnum() => Internal.Value.GetEnum(Handle);
+    public uint GetFlags() => Internal.Value.GetFlags(Handle);
+    public int GetEnum() => Internal.Value.GetEnum(Handle);
     public string? GetString() => GetString(Handle).ConvertToString();
     public GLib.Variant? GetVariant()
     {
