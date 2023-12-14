@@ -8,12 +8,28 @@ namespace GirTest.Tests;
 public class EnumerationTest : Test
 {
     [TestMethod]
-    public void CanBeUsedInGValue()
+    public void CanUseMaxInGValue()
     {
-        var e = EnumTesterSimpleEnum.A;
+        var max = (int) EnumTesterSimpleEnum.Max;
+        max.Should().Be(0x7FFFFFFF);
+
         var value = new Value(Type.Enum);
-        value.Set(e);
-        var result = value.Extract<EnumTesterSimpleEnum>();
-        result.Should().Be(e);
+        value.Set(EnumTesterSimpleEnum.Max);
+
+        value.Extract<EnumTesterSimpleEnum>().Should().Be(EnumTesterSimpleEnum.Max);
+        value.GetEnum().Should().Be(0x7FFFFFFF);
+    }
+
+    [TestMethod]
+    public void CanUseMinInGValue()
+    {
+        var min = (int) EnumTesterSimpleEnum.Min;
+        min.Should().Be(1 << 31);
+
+        var value = new Value(Type.Enum);
+        value.Set(EnumTesterSimpleEnum.Min);
+
+        value.Extract<EnumTesterSimpleEnum>().Should().Be(EnumTesterSimpleEnum.Min);
+        value.GetEnum().Should().Be(1 << 31);
     }
 }

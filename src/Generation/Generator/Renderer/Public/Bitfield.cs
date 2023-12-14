@@ -21,7 +21,7 @@ namespace {Namespace.GetPublicName(bitfield.Namespace)};
 
 {PlatformSupportAttribute.Render(bitfield as GirModel.PlatformDependent)}
 [Flags]
-public enum {bitfield.Name} : ulong
+public enum {bitfield.Name} : uint
 {{
     {bitfield
         .Members

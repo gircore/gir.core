@@ -25,4 +25,17 @@ public class BitfieldTest : Test
         var result = value.Extract<BitfieldTesterSimpleFlags>();
         result.Should().Be(flags);
     }
+
+    [TestMethod]
+    public void CanUseMaxInGValue()
+    {
+        var max = (uint) BitfieldTesterSimpleFlags.Max;
+        max.Should().Be(1u << 31);
+
+        var value = new Value(Type.Flags);
+        value.Set(BitfieldTesterSimpleFlags.Max);
+
+        value.Extract<BitfieldTesterSimpleFlags>().Should().Be(BitfieldTesterSimpleFlags.Max);
+        value.GetFlags().Should().Be(1u << 31);
+    }
 }
