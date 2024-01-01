@@ -10,6 +10,6 @@ public class SurfacePattern : Pattern
     public Surface GetSurface()
     {
         Internal.Pattern.GetSurface(Handle, out var surface_handle);
-        return new Surface(surface_handle);
+        return new Surface(surface_handle.OwnedCopy());
     }
 }

@@ -25,6 +25,8 @@ internal static class ParameterToManagedExpression
         new ParameterToManagedExpressions.Record(),
         new ParameterToManagedExpressions.RecordArray(),
         new ParameterToManagedExpressions.String(),
+        new ParameterToManagedExpressions.TypedRecord(),
+        new ParameterToManagedExpressions.TypedRecordArray(),
         new ParameterToManagedExpressions.Utf8StringArray(),
     };
 

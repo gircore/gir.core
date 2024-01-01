@@ -14,6 +14,7 @@ internal static class CallbackCommonHandlerRenderUtils
 NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(callback)}) => {{
     {RenderConvertParameterStatements(parameterData)}
     {RenderCallStatement(callback, parameterData, out var resultVariableName)}
+    {RenderPostCallStatements(parameterData)}
     {RenderFreeStatement(scope)}
     {RenderReturnStatement(callback, resultVariableName)}
 }};";
@@ -95,6 +96,20 @@ NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(c
             call.AppendLine("} catch(Exception ex) {");
             call.AppendLine("error = GLib.Internal.Error.NewLiteralUnowned(1, 1, GLib.Internal.NonNullableUtf8StringUnownedHandle.Create(ex.Message)).DangerousGetHandle();");
             call.AppendLine("}");
+        }
+
+        return call.ToString();
+    }
+
+    private static string RenderPostCallStatements(IEnumerable<ParameterToManagedData> data)
+    {
+        var call = new StringBuilder();
+
+        foreach (var p in data)
+        {
+            var postCallExpression = p.GetPostCallExpression();
+            if (postCallExpression is not null)
+                call.AppendLine(postCallExpression);
         }
 
         return call.ToString();

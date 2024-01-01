@@ -14,7 +14,7 @@ public partial class Context
     public void Restore() => Internal.Context.Restore(Handle);
 
     public Surface GetTarget()
-        => new Surface(Internal.Context.GetTarget(Handle));
+        => new Surface(Internal.Context.GetTarget(Handle).OwnedCopy());
 
     #region Groups
     public void PushGroup()
@@ -30,7 +30,7 @@ public partial class Context
         => Internal.Context.PopGroupToSource(Handle);
 
     public Surface GetGroupTarget()
-        => new Surface(Internal.Context.GetGroupTarget(Handle));
+        => new Surface(Internal.Context.GetGroupTarget(Handle).OwnedCopy());
     #endregion
 
     #region Source Pattern
@@ -47,7 +47,7 @@ public partial class Context
         => Internal.Context.SetSourceSurface(Handle, surface.Handle, x, y);
 
     public Pattern GetSource()
-        => new Pattern(Internal.Context.GetSource(Handle));
+        => new Pattern(Internal.Context.GetSource(Handle).OwnedCopy());
     #endregion
 
     #region Properties

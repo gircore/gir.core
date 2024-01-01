@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Generator.Renderer.Public;
 
@@ -20,6 +21,8 @@ internal static class ReturnTypeRenderer
         new ReturnType.RecordArray(),
         new ReturnType.String(),
         new ReturnType.StringArray(),
+        new ReturnType.TypedRecord(),
+        new ReturnType.TypedRecordArray(),
         new ReturnType.Void(),
     };
 

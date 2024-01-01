@@ -29,13 +29,13 @@ public partial class Context
         => Internal.Context.SetFontFace(Handle, font_face.Handle);
 
     public FontFace GetFontFace()
-        => new FontFace(Internal.Context.GetFontFace(Handle));
+        => new FontFace(Internal.Context.GetFontFace(Handle).OwnedCopy());
 
     public void SetScaledFont(ScaledFont scaled_font)
         => Internal.Context.SetScaledFont(Handle, scaled_font.Handle);
 
     public ScaledFont GetScaledFont()
-        => new ScaledFont(Internal.Context.GetScaledFont(Handle));
+        => new ScaledFont(Internal.Context.GetScaledFont(Handle).OwnedCopy());
 
     public void ShowText(string text)
         => Internal.Context.ShowText(Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(text));

@@ -14,6 +14,8 @@ internal static class Fields
         new Field.ClassArray(),
         new Field.Enumeration(),
         new Field.EnumerationArray(),
+        new Field.OpaqueTypedRecord(),
+        new Field.OpaqueUntypedRecord(),
         new Field.Pointer(),
         new Field.PointerAlias(),
         new Field.PointerArray(),
@@ -25,6 +27,8 @@ internal static class Fields
         new Field.RecordArray(),
         new Field.String(),
         new Field.StringArray(),
+        new Field.TypedRecord(),
+        new Field.TypedRecordArray(),
         new Field.Union(),
         new Field.UnionArray(),
     };
@@ -41,15 +45,16 @@ internal static class Fields
 
     public static string Render(GirModel.Field field)
     {
-        foreach (var converter in converters)
-            if (converter.Supports(field))
-                return Render(converter.Convert(field));
-
-        throw new System.Exception($"Internal field \"{field.Name}\" of type {field.AnyTypeOrCallback} can not be rendered");
+        var renderableField = GetRenderableField(field);
+        return $"{renderableField.Attribute} public {renderableField.NullableTypeName} {renderableField.Name};";
     }
 
-    private static string Render(Field.RenderableField field)
+    public static Field.RenderableField GetRenderableField(GirModel.Field field)
     {
-        return @$"{field.Attribute} public {field.NullableTypeName} {field.Name};";
+        foreach (var converter in converters)
+            if (converter.Supports(field))
+                return converter.Convert(field);
+
+        throw new System.Exception($"Internal field \"{field.Name}\" of type {field.AnyTypeOrCallback} can not be rendered");
     }
 }

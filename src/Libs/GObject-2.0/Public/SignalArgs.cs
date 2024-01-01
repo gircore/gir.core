@@ -18,4 +18,6 @@ public class SignalArgs : EventArgs
     {
         Args = args;
     }
+
+    protected T Extract<T>(Value value) => value.Extract<T>();
 }

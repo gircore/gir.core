@@ -12,6 +12,7 @@ internal static class ConstructorRenderer
         new Constructor.Class(),
         new Constructor.OpaqueTypedRecord(),
         new Constructor.OpaqueUntypedRecord(),
+        new Constructor.TypedRecord(),
     };
 
     public static string Render(GirModel.Constructor constructor)
@@ -100,7 +101,13 @@ public static {newKeyWord}{constructor.Parent.Name}{Nullable.Render(constructor.
         call.Append(");" + Environment.NewLine);
 
         call.Append(Error.RenderThrowOnError(constructor));
-        call.Append($"return {data.GetCreateExpression(constructor, variableName)};");
+
+        var postCallExpressions = parameters.Select(x => x.GetPostCallExpression())
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Cast<string>();
+
+        call.AppendJoin(Environment.NewLine, postCallExpressions);
+        call.AppendLine($"return {data.GetCreateExpression(constructor, variableName)};");
 
         return call.ToString();
     }

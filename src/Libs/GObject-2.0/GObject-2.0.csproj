@@ -10,8 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>GObject-2.0.Tests</_Parameter1>
-    </AssemblyAttribute>
+    <InternalsVisibleTo Include="GObject-2.0.Tests" />
+    <InternalsVisibleTo Include="GirTest-0.1.Tests" />
   </ItemGroup>
 </Project>

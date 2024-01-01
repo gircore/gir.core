@@ -20,6 +20,9 @@ internal static class Parameter
         if (!parameter.IsPointer)
             return false;
 
+        if (parameter.Name != "error")
+            return false;
+
         if (parameter.AnyTypeOrVarArgs.TryPickT0(out var anyType, out _)
             && anyType.TryPickT0(out var type, out _)
             && type is GirModel.Record record)

@@ -67,5 +67,5 @@ public partial class Class : ComplexType, AccessorProvider, ShadowableProvider
     }
 
     public override string ToString()
-        => Name;
+        => $"{Repository.Namespace.Name}.{Name}";
 }

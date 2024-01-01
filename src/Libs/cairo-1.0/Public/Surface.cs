@@ -6,7 +6,7 @@ public partial class Surface
     private Device? _device;
 
     public Content Content => Internal.Surface.GetContent(Handle);
-    public Device Device => _device ??= new Device(Internal.Surface.GetDevice(Handle));
+    public Device? Device => _device ??= GetDevice();
     public Status Status => Internal.Surface.Status(Handle);
     public SurfaceType SurfaceType => Internal.Surface.GetType(Handle);
 
@@ -60,4 +60,13 @@ public partial class Surface
 
     public void MarkDirty(int x, int y, int width, int height)
         => Internal.Surface.MarkDirtyRectangle(Handle, x, y, width, height);
+
+    private Device? GetDevice()
+    {
+        var deviceHandle = Internal.Surface.GetDevice(Handle);
+
+        return deviceHandle.IsInvalid
+            ? null
+            : new Device(deviceHandle.OwnedCopy());
+    }
 }

@@ -18,6 +18,7 @@ public class EnumerationTest : Test
 
         value.Extract<EnumTesterSimpleEnum>().Should().Be(EnumTesterSimpleEnum.Max);
         value.GetEnum().Should().Be(0x7FFFFFFF);
+        value.GetEnum<EnumTesterSimpleEnum>().Should().Be(EnumTesterSimpleEnum.Max);
     }
 
     [TestMethod]
@@ -31,5 +32,6 @@ public class EnumerationTest : Test
 
         value.Extract<EnumTesterSimpleEnum>().Should().Be(EnumTesterSimpleEnum.Min);
         value.GetEnum().Should().Be(1 << 31);
+        value.GetEnum<EnumTesterSimpleEnum>().Should().Be(EnumTesterSimpleEnum.Min);
     }
 }

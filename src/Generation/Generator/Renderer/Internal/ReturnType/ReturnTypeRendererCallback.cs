@@ -22,6 +22,8 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.PrimitiveValueTypeArray(),
         new ReturnType.RecordArray(),
         new ReturnType.RecordInCallback(),
+        new ReturnType.TypedRecordCallback(),
+        new ReturnType.TypedRecordArray(),
         new ReturnType.Union(),
         new ReturnType.Utf8StringInCallback(),
         new ReturnType.Utf8StringArrayInCallback(),

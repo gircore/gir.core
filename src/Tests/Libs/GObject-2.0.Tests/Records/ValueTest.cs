@@ -1,5 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using FluentAssertions;
+using GObject.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GObject.Tests;
@@ -7,17 +9,81 @@ namespace GObject.Tests;
 [TestClass, TestCategory("UnitTest")]
 public class ValueTest : Test
 {
-    [DataTestMethod]
-    [DataRow(5)]
-    [DataRow(true)]
-    [DataRow("TestString")]
-    [DataRow(7u)]
-    [DataRow(2.0)]
-    [DataRow(2.0f)]
-    public void ValueFromDataShouldContainGivenData(object data)
+    private static void EnsureBasicType(Value v, Internal.BasicType basicType)
     {
-        var v = Value.From(data);
-        v.Extract().Should().Be(data);
+        var data = Marshal.PtrToStructure<Internal.ValueData>(v.Handle.DangerousGetHandle());
+        data.GType.Should().Be((nuint) basicType);
+        Internal.Functions.TypeCheckValue(v.Handle).Should().Be(true);
+        Internal.Functions.TypeCheckValueHolds(v.Handle, data.GType).Should().BeTrue();
+        Internal.Functions.TypeCheckValueHolds(v.Handle, (nuint) basicType).Should().BeTrue();
+    }
+
+    [DataTestMethod]
+    [DataRow(0)]
+    [DataRow(1)]
+    [DataRow(10)]
+    [DataRow(-10)]
+    public void SupportsInt(int value)
+    {
+        var v = new Value(value);
+        v.GetInt().Should().Be(value);
+
+        EnsureBasicType(v, BasicType.Int);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public void SupportsBool(bool value)
+    {
+        var v = new Value(value);
+        v.GetBoolean().Should().Be(value);
+
+        EnsureBasicType(v, BasicType.Boolean);
+    }
+
+    [DataTestMethod]
+    [DataRow(2.0)]
+    [DataRow(-2.0)]
+    public void SupportsDouble(double value)
+    {
+        var v = new Value(value);
+        v.GetDouble().Should().Be(value);
+
+        EnsureBasicType(v, BasicType.Double);
+    }
+
+    [DataTestMethod]
+    [DataRow(2.0f)]
+    [DataRow(-2.0f)]
+    public void SupportsFloat(float value)
+    {
+        var v = new Value(value);
+        v.GetFloat().Should().Be(value);
+
+        EnsureBasicType(v, BasicType.Float);
+    }
+
+    [DataTestMethod]
+    [DataRow(7u)]
+    [DataRow(1000u)]
+    public void SupportsLong(long value)
+    {
+        var v = new Value(value);
+        v.GetLong().Should().Be(value);
+
+        EnsureBasicType(v, BasicType.Long);
+    }
+
+    [DataTestMethod]
+    [DataRow("ABC")]
+    [DataRow("")]
+    public void SupportsString(string value)
+    {
+        var v = new Value(value);
+        v.GetString().Should().Be(value);
+
+        EnsureBasicType(v, BasicType.String);
     }
 
     [TestMethod]
@@ -25,26 +91,8 @@ public class ValueTest : Test
     {
         var text = "foo";
         var variant = GLib.Variant.NewString(text);
-        var v = Value.From(variant);
+        var v = new Value(variant);
         v.Extract<GLib.Variant>().GetString(out _).Should().Be(text);
-    }
-
-    [DataTestMethod]
-    [DataRow("Hello", Internal.BasicType.String)]
-    [DataRow(true, Internal.BasicType.Boolean)]
-    [DataRow(1.5, Internal.BasicType.Double)]
-    [DataRow(1.5f, Internal.BasicType.Float)]
-    [DataRow(-7, Internal.BasicType.Int)]
-    [DataRow(7u, Internal.BasicType.UInt)]
-    [DataRow(77L, Internal.BasicType.Long)]
-    public void ValueContainsExpectedBasicType(object data, Internal.BasicType basicType)
-    {
-        var v = Value.From(data);
-        Internal.ValueData str = Marshal.PtrToStructure<Internal.ValueData>(v.Handle.DangerousGetHandle());
-        str.GType.Should().Be((nuint) basicType);
-        Internal.Functions.TypeCheckValue(v.Handle).Should().Be(true);
-        Internal.Functions.TypeCheckValueHolds(v.Handle, str.GType).Should().BeTrue();
-        Internal.Functions.TypeCheckValueHolds(v.Handle, (nuint) basicType).Should().BeTrue();
     }
 
     [TestMethod]
@@ -55,6 +103,8 @@ public class ValueTest : Test
 
         var result = v.Extract<string[]>();
         result.Should().ContainInOrder(array);
+
+        v.GetStringArray().Should().ContainInOrder(array);
     }
 
     [TestMethod]
@@ -66,7 +116,7 @@ public class ValueTest : Test
             Assert.Inconclusive();
 
         var value = 1;
-        var v = Value.From(value);
+        var v = new Value(value);
         var ptr = v.Handle.DangerousGetHandle();
 
         var d1 = Marshal.PtrToStructure<Internal.ValueData>(ptr);

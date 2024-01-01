@@ -2,7 +2,7 @@
 
 public class SolidPattern : Pattern
 {
-    private SolidPattern(Internal.PatternHandle handle)
+    private SolidPattern(Internal.PatternOwnedHandle handle)
         : base(handle)
     {
     }

@@ -4,5 +4,6 @@
     <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <TreatWarningsErrors>true</TreatWarningsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 </Project>

@@ -21,9 +21,15 @@ public class BitfieldTest : Test
     {
         var flags = BitfieldTesterSimpleFlags.One | BitfieldTesterSimpleFlags.Two;
         var value = new Value(Type.Flags);
-        value.Set(flags);
-        var result = value.Extract<BitfieldTesterSimpleFlags>();
-        result.Should().Be(flags);
+        value.SetFlags(flags);
+
+        var result1 = value.Extract<BitfieldTesterSimpleFlags>();
+        result1.Should().Be(flags);
+
+        var result2 = value.GetFlags<BitfieldTesterSimpleFlags>();
+        result2.Should().Be(flags);
+
+        value.GetFlags().Should().Be((uint) flags);
     }
 
     [TestMethod]
