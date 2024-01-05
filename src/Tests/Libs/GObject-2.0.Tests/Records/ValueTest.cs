@@ -96,7 +96,7 @@ public class ValueTest : Test
     }
 
     [TestMethod]
-    public void CanSetStringArry()
+    public void SupportsStringArray()
     {
         var array = new[] { "A", "B", "C" };
         var v = new Value(array);
@@ -105,6 +105,15 @@ public class ValueTest : Test
         result.Should().ContainInOrder(array);
 
         v.GetStringArray().Should().ContainInOrder(array);
+    }
+
+    [TestMethod]
+    public void GetStringArrayThrowsIfTypeIsNotAStringArray()
+    {
+        var v = new Value(true);
+
+        var a = () => v.GetStringArray();
+        a.Should().Throw<Exception>().WithMessage("Value does not hold a string array, but a 'gboolean'");
     }
 
     [TestMethod]
