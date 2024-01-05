@@ -120,6 +120,13 @@ public partial class Value : IDisposable
 
     public string[]? GetStringArray()
     {
+        var type = GetTypeValue();
+        if (type != Internal.Functions.StrvGetType())
+        {
+            var typeName = Internal.Functions.TypeName(type).ConvertToString();
+            throw new Exception($"Value does not hold a string array, but a '{typeName}'");
+        }
+
         var ptr = Internal.Value.GetBoxed(Handle);
 
         return ptr == IntPtr.Zero
