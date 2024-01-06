@@ -139,6 +139,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-4.0", "Libs/Gtk-4.0/Gtk
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gtk-4.0", "Gtk-4.0", "{7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontDialog", "Samples/Gtk-4.0/FontDialog/FontDialog.csproj", "{D215B861-1A51-436A-82EB-FCF7AF892748}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window", "Samples/Gtk-4.0/Window/Window.csproj", "{AD618F85-F8F5-454B-9CA0-ABF936492065}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboutDialog", "Samples/Gtk-4.0/AboutDialog/AboutDialog.csproj", "{4008E1B8-AC7D-4CC8-AB74-8576493C4FDD}"
