@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using Generator.Model;
 
 namespace Generator.Renderer.Public;
@@ -49,6 +50,10 @@ public partial class {name}
 
     {FunctionRenderer.Render(record.TypeFunction)}
 
+    {record.Fields
+        .Select(f => RenderField(record, f))
+        .Join(Environment.NewLine)}
+
     {record.Functions
         .Select(FunctionRenderer.Render)
         .Join(Environment.NewLine)}
@@ -58,5 +63,35 @@ public partial class {name}
         .Select(MethodRenderer.Render)
         .Join(Environment.NewLine)}
 }}";
+    }
+
+    private static string RenderField(GirModel.Record record, GirModel.Field field)
+    {
+        try
+        {
+            var renderableField = Fields.GetRenderableField(field);
+
+            if (field is { IsReadable: false, IsWritable: false } || field.IsPrivate)
+                return string.Empty;
+
+            var result = new StringBuilder();
+
+            result.AppendLine($"public {renderableField.NullableTypeName} {renderableField.Name} {{");
+
+            if (field.IsReadable)
+                result.AppendLine($"get => {renderableField.GetExpression(record, field)};");
+
+            if (field.IsWritable)
+                result.AppendLine($"set => {renderableField.SetExpression(record, field)};");
+
+            result.AppendLine("}");
+
+            return result.ToString();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning($"Did not render typed record {record.Name} field {field.Name}: {ex.Message}");
+            return string.Empty;
+        }
     }
 }

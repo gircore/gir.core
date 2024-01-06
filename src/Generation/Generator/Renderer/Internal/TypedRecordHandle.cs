@@ -252,8 +252,7 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
     if (IsClosed || IsInvalid)
         throw new InvalidOperationException(""Handle is closed or invalid"");
 
-    var data = Unsafe.AsRef<{dataName}>((void*)handle);
-    return data.{renderableField.Name};
+    return Unsafe.AsRef<{dataName}>((void*)handle).{renderableField.Name};
 }}";
     }
 
@@ -266,8 +265,7 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
     if (IsClosed || IsInvalid)
         throw new InvalidOperationException(""Handle is closed or invalid"");
 
-    var data = Unsafe.AsRef<{dataName}>((void*)handle);
-    data.{renderableField.Name} = value;
+    Unsafe.AsRef<{dataName}>((void*)handle).{renderableField.Name} = value;
 }}";
     }
 

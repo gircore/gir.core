@@ -5,6 +5,30 @@
 G_BEGIN_DECLS
 
 /**
+ * GirTestTypedRecordTesterEnum:
+ * @A: 1
+ * @B: 2
+ *
+ * Enum to test bindings.
+ */
+typedef enum {
+    TYPED_RECORD_TESTER_ENUM_A = 0,
+    TYPED_RECORD_TESTER_ENUM_B = 1
+} GirTestTypedRecordTesterEnum;
+
+/**
+ * GirTestTypedRecordTesterBitfield:
+ * @ZERO: No flags set.
+ * @ONE: Set first flag.
+ *
+ * Flags to test bindings.
+ */
+typedef enum {
+    TYPED_RECORD_TESTER_ZERO = 0,
+    TYPED_RECORD_TESTER_ONE  = (1 << 0)
+} GirTestTypedRecordTesterBitfield;
+
+/**
  * GirTestTypedRecordTester:
  *
  * Just a record.
@@ -12,6 +36,11 @@ G_BEGIN_DECLS
 struct _GirTestTypedRecordTester
 {
     int ref_count;
+    GirTestTypedRecordTesterEnum custom_enum;
+    GirTestTypedRecordTesterBitfield custom_bitfield;
+    gchar* custom_string;
+    /* < private > */
+    int custom_int_private;
 };
 
 typedef struct _GirTestTypedRecordTester GirTestTypedRecordTester;

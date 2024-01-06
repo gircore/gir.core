@@ -13,6 +13,7 @@ girtest_typed_record_tester_new ()
     GirTestTypedRecordTester *result;
     result = g_new0 (GirTestTypedRecordTester, 1);
     result->ref_count = 1;
+    result->custom_string = g_strdup("Hello");
     return result;
 }
 
@@ -113,6 +114,7 @@ girtest_typed_record_tester_unref (GirTestTypedRecordTester *self)
     if (self->ref_count > 0)
         return;
 
+    g_free(self->custom_string);
     g_free (self);
 }
 

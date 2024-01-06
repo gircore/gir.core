@@ -7,7 +7,8 @@ public static class Records
 {
     private static readonly List<Fixer<GirModel.Record>> Fixers = new()
     {
-        new InternalMethodsNamedLikeRecordFixer()
+        new InternalMethodsNamedLikeRecordFixer(),
+        new PublicMethodsColldingWithFieldFixer()
     };
 
     public static void Fixup(IEnumerable<GirModel.Record> records)
