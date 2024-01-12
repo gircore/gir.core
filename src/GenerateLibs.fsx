@@ -41,7 +41,7 @@ let mutable exitCode = 0
 
 Command.Run(
     name = "dotnet",
-    args = $"run --project ../../src/GirTool/GirTool.csproj -- generate {girFiles} --output ../../src/Libs --search-path-linux linux --search-path-macos macos --search-path-windows windows --log-level Debug",
+    args = $"run --project ../../src/Generation/GirTool/GirTool.csproj -- generate {girFiles} --output ../../src/Libs --search-path-linux linux --search-path-macos macos --search-path-windows windows --log-level Debug",
     workingDirectory = "../ext/gir-files",
     handleExitCode = fun result ->
         exitCode <- result

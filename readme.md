@@ -58,18 +58,18 @@ For more advanced build options, see the [documentation](docs/docs/build.md).
 
 ## Code structure
 The folder structure in this repository is organized as follows:
-* **[src/GirTool](src/GirTool):** The tool to generate the bindings.
+* **[src/Generation/GirTool](src/Generation/GirTool):** The tool to generate the bindings.
 * **[src/Generation/GirLoader](src/Generation/GirLoader):** A library for reading and resolving GObject Introspection repositories.
 * **[src/Generation/GirModel](src/Generation/GirModel):** An interface based definition of the GObject data model. Used by the loader and generator to have a common understanding of the GObject data model.
 * **[src/Generation/Generator](src/Generation/Generator):** Code generator generates C# code from GObject Introspection data.
-* **[src/Integration](src/Integration):** Optional source generators to reduce boilerplate code in your projects.
+* **[src/Extensions/Integration](src/Extensions/Integration):** Optional source generators to reduce boilerplate code in your projects.
 * **[src/Libs](src/Libs):** Contains manually written code for libraries. The generator outputs code here.
 * **[src/Samples](src/Samples):** Example programs using GTK, GStreamer, and others.
 * **[src/Extensions](src/Extensions):** Auxilary libraries which extend the core libraries.
 * **[src/Tests](src/Tests):** Unit and Integration tests.
 * **[ext/gir-files](https://github.com/gircore/gir-files):** Introspection data from [gircore/gir-files](https://github.com/gircore/gir-files).
 
-The code in the library folder is not complete because most of the code is generated when the [GirTool](src/GirTool) is run.
+The code in the library folder is not complete because most of the code is generated when the [GirTool](src/Generation/GirTool) is run.
 
 [gi]: https://gi.readthedocs.io/
 [gstreamer]: https://gstreamer.freedesktop.org/

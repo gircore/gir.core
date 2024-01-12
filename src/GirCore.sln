@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
@@ -39,8 +38,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstPbutils-1.0", "Libs/GstP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstBase-1.0", "Libs/GstBase-1.0/GstBase-1.0.csproj", "{8678914B-C262-4EFB-BCC0-96A15D969C2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration", "Integration/Integration.csproj", "{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8BC11A63-D52B-40CB-9DDD-CD7C6DC21059}"
 	ProjectSection(SolutionItems) = preProject
 		Tests/Directory.Build.props = Tests/Directory.Build.props
@@ -73,17 +70,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirLoader", "Generation/Gir
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{B670D679-3B2C-43E8-9F87-5E4E17628011}"
 	ProjectSection(SolutionItems) = preProject
-		GirCore.Publishing.props = GirCore.Publishing.props
 		../.editorconfig = ../.editorconfig
 		../.gitignore = ../.gitignore
-		GirCore.Logging.props = GirCore.Logging.props
-		GirCore.Testing.props = GirCore.Testing.props
 		CleanLibs.fsx = CleanLibs.fsx
 		GenerateLibs.fsx = GenerateLibs.fsx
 		NugetReadme.md = NugetReadme.md
 		../readme.md = ../readme.md
-		GirCore.Tooling.props = GirCore.Tooling.props
-		GirCore.Libraries.props = GirCore.Libraries.props
 		GenerateGirTestLib.fsx = GenerateGirTestLib.fsx
 	EndProjectSection
 EndProject
@@ -122,8 +114,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirModel", "Generation/GirModel/GirModel.csproj", "{C73005BB-D2DB-41B8-9DAA-1ADD81123A03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generation/Generator/Generator.csproj", "{6222D769-0F81-490C-B8BD-B0E2D295D97A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTool", "GirTool/GirTool.csproj", "{438717C4-F16C-40F5-9537-90554700C6E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gdk-4.0", "Libs/Gdk-4.0/Gdk-4.0.csproj", "{0E47FC0B-FD9B-4F8F-887C-953062CDACBA}"
 EndProject
@@ -212,7 +202,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{A860
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "create", "create", "{C095C48D-7B27-47D5-9472-ACFB5A188099}"
 	ProjectSection(SolutionItems) = preProject
-		..\.github\actions\create\action.yml = ..\.github\actions\create\action.yml
+		../.github/actions/create/action.yml = ../.github/actions/create/action.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration", "Extensions/Integration/Integration.csproj", "{A3B33B42-BCA3-4AE5-935C-50E0151B2325}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTool", "Generation/GirTool/GirTool.csproj", "{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", "{BE2159DE-B264-4C71-9B52-94C5C956F76A}"
+	ProjectSection(SolutionItems) = preProject
+		Properties/GirCore.Libraries.props = Properties/GirCore.Libraries.props
+		Properties/GirCore.Logging.props = Properties/GirCore.Logging.props
+		Properties/GirCore.Publishing.props = Properties/GirCore.Publishing.props
+		Properties/GirCore.Testing.props = Properties/GirCore.Testing.props
+		Properties/GirCore.Tooling.props = Properties/GirCore.Tooling.props
 	EndProjectSection
 EndProject
 Global
@@ -384,18 +387,6 @@ Global
 		{8678914B-C262-4EFB-BCC0-96A15D969C2B}.Release|x64.Build.0 = Release|Any CPU
 		{8678914B-C262-4EFB-BCC0-96A15D969C2B}.Release|x86.ActiveCfg = Release|Any CPU
 		{8678914B-C262-4EFB-BCC0-96A15D969C2B}.Release|x86.Build.0 = Release|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Debug|x64.Build.0 = Debug|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Debug|x86.Build.0 = Debug|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Release|x64.ActiveCfg = Release|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Release|x64.Build.0 = Release|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Release|x86.ActiveCfg = Release|Any CPU
-		{60AA5BC4-7B82-41D2-A2A0-2235D8B04BBF}.Release|x86.Build.0 = Release|Any CPU
 		{53101A81-CB4A-4589-AEB1-0E229D17AE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53101A81-CB4A-4589-AEB1-0E229D17AE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53101A81-CB4A-4589-AEB1-0E229D17AE7A}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -528,18 +519,6 @@ Global
 		{6222D769-0F81-490C-B8BD-B0E2D295D97A}.Release|x64.Build.0 = Release|Any CPU
 		{6222D769-0F81-490C-B8BD-B0E2D295D97A}.Release|x86.ActiveCfg = Release|Any CPU
 		{6222D769-0F81-490C-B8BD-B0E2D295D97A}.Release|x86.Build.0 = Release|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Debug|x64.Build.0 = Debug|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Debug|x86.Build.0 = Debug|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Release|x64.ActiveCfg = Release|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Release|x64.Build.0 = Release|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Release|x86.ActiveCfg = Release|Any CPU
-		{438717C4-F16C-40F5-9537-90554700C6E7}.Release|x86.Build.0 = Release|Any CPU
 		{0E47FC0B-FD9B-4F8F-887C-953062CDACBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E47FC0B-FD9B-4F8F-887C-953062CDACBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E47FC0B-FD9B-4F8F-887C-953062CDACBA}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -828,6 +807,30 @@ Global
 		{9CF39E8D-5543-47E9-A136-A85009FF12C3}.Release|x64.Build.0 = Release|Any CPU
 		{9CF39E8D-5543-47E9-A136-A85009FF12C3}.Release|x86.ActiveCfg = Release|Any CPU
 		{9CF39E8D-5543-47E9-A136-A85009FF12C3}.Release|x86.Build.0 = Release|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Debug|x64.Build.0 = Debug|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Debug|x86.Build.0 = Debug|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Release|x64.ActiveCfg = Release|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Release|x64.Build.0 = Release|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Release|x86.ActiveCfg = Release|Any CPU
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325}.Release|x86.Build.0 = Release|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Debug|x64.Build.0 = Debug|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Release|x64.ActiveCfg = Release|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Release|x64.Build.0 = Release|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BF7F9B0B-CB43-4161-BFAD-C6EE479FC86B} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
@@ -896,5 +899,8 @@ Global
 		{9CF39E8D-5543-47E9-A136-A85009FF12C3} = {825BF602-98A7-45E7-A2C9-9E68160B7DF3}
 		{A8607D28-5605-4833-803F-AB6DC85E8BBD} = {A2ECECDD-9986-450D-A0AC-D2BE32A0B23E}
 		{C095C48D-7B27-47D5-9472-ACFB5A188099} = {A8607D28-5605-4833-803F-AB6DC85E8BBD}
+		{A3B33B42-BCA3-4AE5-935C-50E0151B2325} = {82ACABCF-0CE8-40ED-9402-8499407E846F}
+		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7} = {7A05C10C-8797-4D29-A97A-F399316BE893}
+		{BE2159DE-B264-4C71-9B52-94C5C956F76A} = {B670D679-3B2C-43E8-9F87-5E4E17628011}
 	EndGlobalSection
 EndGlobal
