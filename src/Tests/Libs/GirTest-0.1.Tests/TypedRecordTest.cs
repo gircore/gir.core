@@ -317,4 +317,54 @@ public class TypedRecordTest : Test
         var result = TypedRecordTester.RunCallbackCreateNullableFullOwnershipTransferOut(Callback);
         result!.Handle.DangerousGetHandle().Should().Be(instance.Handle.DangerousGetHandle());
     }
+
+    [TestMethod]
+    public void SupportsPrimitiveValueTypeField()
+    {
+        var instance = TypedRecordTester.New();
+        instance.RefCount.Should().Be(1);
+        instance.RefCount = 2;
+        instance.RefCount.Should().Be(2);
+        instance.RefCount = 1;
+        instance.RefCount.Should().Be(1);
+    }
+
+    [TestMethod]
+    public void SupportsEnumerationField()
+    {
+        var instance = TypedRecordTester.New();
+        instance.CustomEnum.Should().Be(TypedRecordTesterEnum.A);
+        instance.CustomEnum = TypedRecordTesterEnum.B;
+        instance.CustomEnum.Should().Be(TypedRecordTesterEnum.B);
+    }
+
+    [TestMethod]
+    public void SupportsBitfieldField()
+    {
+        var instance = TypedRecordTester.New();
+        instance.CustomBitfield.Should().Be(TypedRecordTesterBitfield.Zero);
+        instance.CustomBitfield = TypedRecordTesterBitfield.One;
+        instance.CustomBitfield.Should().Be(TypedRecordTesterBitfield.One);
+    }
+
+    [TestMethod]
+    public void SupportsStringField()
+    {
+        var instance = TypedRecordTester.New();
+        instance.CustomString.Should().Be("Hello");
+        instance.CustomString = "Test";
+        instance.CustomString.Should().Be("Test");
+        instance.CustomString = null;
+        instance.CustomString.Should().BeNull();
+    }
+
+    [TestMethod]
+    public void SupportsPrivateFields()
+    {
+        var data = new Internal.TypedRecordTesterData();
+        data.CustomIntPrivate.Should().Be(0);
+
+        //Private fields are not rendered in the public API
+        typeof(TypedRecordTester).GetProperty(nameof(data.CustomIntPrivate)).Should().BeNull();
+    }
 }

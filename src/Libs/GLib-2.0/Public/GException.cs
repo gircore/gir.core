@@ -8,9 +8,8 @@ public sealed class GException : Exception, IDisposable
     private readonly Internal.ErrorHandle _errorHandle;
 
     public GException(Internal.ErrorHandle errorHandle)
-        : base(Marshal.PtrToStructure<Internal.ErrorData>(errorHandle.DangerousGetHandle()).Message)
+        : base(Marshal.PtrToStringUTF8(errorHandle.GetMessage()))
     {
-
         _errorHandle = errorHandle;
     }
 
