@@ -4,146 +4,142 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{386AE10F-B7AC-4C97-AC5C-202D3662A868}"
 	ProjectSection(SolutionItems) = preProject
-		Libs/Directory.Build.props = Libs/Directory.Build.props
+		Libs\Directory.Build.props = Libs\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLib-2.0", "Libs/GLib-2.0/GLib-2.0.csproj", "{BF7F9B0B-CB43-4161-BFAD-C6EE479FC86B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLib-2.0", "Libs\GLib-2.0\GLib-2.0.csproj", "{BF7F9B0B-CB43-4161-BFAD-C6EE479FC86B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GObject-2.0", "Libs/GObject-2.0/GObject-2.0.csproj", "{4F64F773-1A9A-4465-A953-900320EA86CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GObject-2.0", "Libs\GObject-2.0\GObject-2.0.csproj", "{4F64F773-1A9A-4465-A953-900320EA86CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cairo-1.0", "Libs/cairo-1.0/cairo-1.0.csproj", "{1E2EF862-C6E1-4614-B02E-B222B5D79FFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cairo-1.0", "Libs\cairo-1.0\cairo-1.0.csproj", "{1E2EF862-C6E1-4614-B02E-B222B5D79FFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdkPixbuf-2.0", "Libs/GdkPixbuf-2.0/GdkPixbuf-2.0.csproj", "{F74B3242-94DE-4C5E-803F-CDC7090120AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdkPixbuf-2.0", "Libs\GdkPixbuf-2.0\GdkPixbuf-2.0.csproj", "{F74B3242-94DE-4C5E-803F-CDC7090120AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gio-2.0", "Libs/Gio-2.0/Gio-2.0.csproj", "{4D008B2E-6056-4580-B8F0-512502A2D288}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gio-2.0", "Libs\Gio-2.0\Gio-2.0.csproj", "{4D008B2E-6056-4580-B8F0-512502A2D288}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pango-1.0", "Libs/Pango-1.0/Pango-1.0.csproj", "{EDECCC4E-9C4E-433D-AFFA-F23E062EC1BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pango-1.0", "Libs\Pango-1.0\Pango-1.0.csproj", "{EDECCC4E-9C4E-433D-AFFA-F23E062EC1BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1F2E4087-585C-4B48-8E3D-700D949A15DB}"
 	ProjectSection(SolutionItems) = preProject
-		Samples/Directory.Build.props = Samples/Directory.Build.props
+		Samples\Directory.Build.props = Samples\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBusNotification", "Samples/Gio-2.0/DBusNotification/DBusNotification.csproj", "{48A4AF23-C232-4498-9D25-B4620ECD9325}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBusNotification", "Samples\Gio-2.0\DBusNotification\DBusNotification.csproj", "{48A4AF23-C232-4498-9D25-B4620ECD9325}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gst-1.0", "Libs/Gst-1.0/Gst-1.0.csproj", "{1567FD28-14D5-4161-AB66-B099E78F6FFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gst-1.0", "Libs\Gst-1.0\Gst-1.0.csproj", "{1567FD28-14D5-4161-AB66-B099E78F6FFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoPlayback", "Samples/Gst-1.0/VideoPlayback/VideoPlayback.csproj", "{6D2A7966-FED3-4FD5-94DF-BBD6C5D04886}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoPlayback", "Samples\Gst-1.0\VideoPlayback\VideoPlayback.csproj", "{6D2A7966-FED3-4FD5-94DF-BBD6C5D04886}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstAudio-1.0", "Libs/GstAudio-1.0/GstAudio-1.0.csproj", "{37F93CBF-43FE-428B-80D0-4D41FD0C01C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstAudio-1.0", "Libs\GstAudio-1.0\GstAudio-1.0.csproj", "{37F93CBF-43FE-428B-80D0-4D41FD0C01C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstVideo-1.0", "Libs/GstVideo-1.0/GstVideo-1.0.csproj", "{E22AC3F0-0298-4784-9C91-76138FA3BD74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstVideo-1.0", "Libs\GstVideo-1.0\GstVideo-1.0.csproj", "{E22AC3F0-0298-4784-9C91-76138FA3BD74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstPbutils-1.0", "Libs/GstPbutils-1.0/GstPbutils-1.0.csproj", "{0488271F-63F9-41BD-A38B-0FD0D7616BE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstPbutils-1.0", "Libs\GstPbutils-1.0\GstPbutils-1.0.csproj", "{0488271F-63F9-41BD-A38B-0FD0D7616BE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstBase-1.0", "Libs/GstBase-1.0/GstBase-1.0.csproj", "{8678914B-C262-4EFB-BCC0-96A15D969C2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstBase-1.0", "Libs\GstBase-1.0\GstBase-1.0.csproj", "{8678914B-C262-4EFB-BCC0-96A15D969C2B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8BC11A63-D52B-40CB-9DDD-CD7C6DC21059}"
 	ProjectSection(SolutionItems) = preProject
-		Tests/Directory.Build.props = Tests/Directory.Build.props
+		Tests\Directory.Build.props = Tests\Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{46D66262-FC61-43B9-8E76-A361FA3D6C81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GObject-2.0.Tests", "Tests/Libs/GObject-2.0.Tests/GObject-2.0.Tests.csproj", "{53101A81-CB4A-4589-AEB1-0E229D17AE7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GObject-2.0.Tests", "Tests\Libs\GObject-2.0.Tests\GObject-2.0.Tests.csproj", "{53101A81-CB4A-4589-AEB1-0E229D17AE7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLib-2.0.Tests", "Tests/Libs/GLib-2.0.Tests/GLib-2.0.Tests.csproj", "{8E6A242B-B0E6-4DA2-ABA3-6389D65AED5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLib-2.0.Tests", "Tests\Libs\GLib-2.0.Tests\GLib-2.0.Tests.csproj", "{8E6A242B-B0E6-4DA2-ABA3-6389D65AED5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gio-2.0.Tests", "Tests/Libs/Gio-2.0.Tests/Gio-2.0.Tests.csproj", "{76DD0496-67BC-4B86-BBE1-5648CAF0C719}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gio-2.0.Tests", "Tests\Libs\Gio-2.0.Tests\Gio-2.0.Tests.csproj", "{76DD0496-67BC-4B86-BBE1-5648CAF0C719}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GdkPixbuf-2.0", "GdkPixbuf-2.0", "{7A71B07F-B28B-4DDA-B1EA-565194056951}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMemoryLeaks", "Samples/GdkPixbuf-2.0/TestMemoryLeaks/TestMemoryLeaks.csproj", "{46E769E2-FEC7-43EA-99B8-E7A7294D68B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMemoryLeaks", "Samples\GdkPixbuf-2.0\TestMemoryLeaks\TestMemoryLeaks.csproj", "{46E769E2-FEC7-43EA-99B8-E7A7294D68B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLoading", "Samples/GdkPixbuf-2.0/TestLoading/TestLoading.csproj", "{2BB1527F-D7A1-44BA-A297-4E69A3A4411C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLoading", "Samples\GdkPixbuf-2.0\TestLoading\TestLoading.csproj", "{2BB1527F-D7A1-44BA-A297-4E69A3A4411C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-4.0.Tests", "Tests/Libs/Gtk-4.0.Tests/Gtk-4.0.Tests.csproj", "{F86D983A-9881-4BE7-AF92-FA0CE41FB319}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-4.0.Tests", "Tests\Libs\Gtk-4.0.Tests\Gtk-4.0.Tests.csproj", "{F86D983A-9881-4BE7-AF92-FA0CE41FB319}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdkPixbuf-2.0.Tests", "Tests/Libs/GdkPixbuf-2.0.Tests/GdkPixbuf-2.0.Tests.csproj", "{61016ABA-608B-47FA-9FBD-CA17D24BAB89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdkPixbuf-2.0.Tests", "Tests\Libs\GdkPixbuf-2.0.Tests\GdkPixbuf-2.0.Tests.csproj", "{61016ABA-608B-47FA-9FBD-CA17D24BAB89}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generation", "Generation", "{7A05C10C-8797-4D29-A97A-F399316BE893}"
 	ProjectSection(SolutionItems) = preProject
-		Generation/Directory.Build.props = Generation/Directory.Build.props
+		Generation\Directory.Build.props = Generation\Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirLoader", "Generation/GirLoader/GirLoader.csproj", "{1EA4392E-960D-4327-9426-4C6220A7B60D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirLoader", "Generation\GirLoader\GirLoader.csproj", "{1EA4392E-960D-4327-9426-4C6220A7B60D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{B670D679-3B2C-43E8-9F87-5E4E17628011}"
 	ProjectSection(SolutionItems) = preProject
-		../.editorconfig = ../.editorconfig
-		../.gitignore = ../.gitignore
+		..\.editorconfig = ..\.editorconfig
+		..\.gitignore = ..\.gitignore
 		CleanLibs.fsx = CleanLibs.fsx
 		GenerateLibs.fsx = GenerateLibs.fsx
 		NugetReadme.md = NugetReadme.md
-		../readme.md = ../readme.md
+		..\readme.md = ..\readme.md
 		GenerateGirTestLib.fsx = GenerateGirTestLib.fsx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}"
 	ProjectSection(SolutionItems) = preProject
-		../docs/readme.md = ../docs/readme.md
+		..\docs\readme.md = ..\docs\readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{C48DB577-12BB-4AA8-8734-802A39C093BE}"
 	ProjectSection(SolutionItems) = preProject
-		../img/logo.svg = ../img/logo.svg
+		..\img\logo.svg = ..\img\logo.svg
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{A2ECECDD-9986-450D-A0AC-D2BE32A0B23E}"
 	ProjectSection(SolutionItems) = preProject
-		../.github/dependabot.yml = ../.github/dependabot.yml
+		..\.github\dependabot.yml = ..\.github\dependabot.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "codeql", "codeql", "{E457B1F7-B32E-48DF-806E-7CE3A398722C}"
 	ProjectSection(SolutionItems) = preProject
-		../.github/codeql/codeql-config.yml = ../.github/codeql/codeql-config.yml
-		../.github/codeql/queries.qls = ../.github/codeql/queries.qls
+		..\.github\codeql\codeql-config.yml = ..\.github\codeql\codeql-config.yml
+		..\.github\codeql\queries.qls = ..\.github\codeql\queries.qls
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{46445B9D-7FBC-46E5-B781-B743237627BE}"
 	ProjectSection(SolutionItems) = preProject
-		../.github/workflows/ci.yml = ../.github/workflows/ci.yml
-		../.github/workflows/codeql-analysis.yml = ../.github/workflows/codeql-analysis.yml
-		../.github/workflows/update-gir-files.yml = ../.github/workflows/update-gir-files.yml
+		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
+		..\.github\workflows\codeql-analysis.yml = ..\.github\workflows\codeql-analysis.yml
+		..\.github\workflows\update-gir-files.yml = ..\.github\workflows\update-gir-files.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generation", "Generation", "{5D5D80C1-4D21-4619-8B59-7B7750016E9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirLoader.Tests", "Tests/Generation/GirLoader.Tests/GirLoader.Tests.csproj", "{B296273E-1932-4B43-88E5-1F3E9D9D773A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirLoader.Tests", "Tests\Generation\GirLoader.Tests\GirLoader.Tests.csproj", "{B296273E-1932-4B43-88E5-1F3E9D9D773A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirModel", "Generation/GirModel/GirModel.csproj", "{C73005BB-D2DB-41B8-9DAA-1ADD81123A03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirModel", "Generation\GirModel\GirModel.csproj", "{C73005BB-D2DB-41B8-9DAA-1ADD81123A03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generation/Generator/Generator.csproj", "{6222D769-0F81-490C-B8BD-B0E2D295D97A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generation\Generator\Generator.csproj", "{6222D769-0F81-490C-B8BD-B0E2D295D97A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gdk-4.0", "Libs/Gdk-4.0/Gdk-4.0.csproj", "{0E47FC0B-FD9B-4F8F-887C-953062CDACBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gdk-4.0", "Libs\Gdk-4.0\Gdk-4.0.csproj", "{0E47FC0B-FD9B-4F8F-887C-953062CDACBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PangoCairo-1.0", "Libs/PangoCairo-1.0/PangoCairo-1.0.csproj", "{D0634971-C783-4D5C-AABC-11D9A73793D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PangoCairo-1.0", "Libs\PangoCairo-1.0\PangoCairo-1.0.csproj", "{D0634971-C783-4D5C-AABC-11D9A73793D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphene-1.0", "Libs/Graphene-1.0/Graphene-1.0.csproj", "{DF694C59-5AED-4CEE-AD22-DCC4A0F2F2FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphene-1.0", "Libs\Graphene-1.0\Graphene-1.0.csproj", "{DF694C59-5AED-4CEE-AD22-DCC4A0F2F2FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gsk-4.0", "Libs/Gsk-4.0/Gsk-4.0.csproj", "{251E78C3-288E-4959-AA70-B9B5944B2211}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gsk-4.0", "Libs\Gsk-4.0\Gsk-4.0.csproj", "{251E78C3-288E-4959-AA70-B9B5944B2211}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarfBuzz-0.0", "Libs/HarfBuzz-0.0/HarfBuzz-0.0.csproj", "{B1A15F0A-1B78-440C-B5D7-C106A199529E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarfBuzz-0.0", "Libs\HarfBuzz-0.0\HarfBuzz-0.0.csproj", "{B1A15F0A-1B78-440C-B5D7-C106A199529E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-4.0", "Libs/Gtk-4.0/Gtk-4.0.csproj", "{67EAFE46-6D20-4B24-AF73-67489DC903E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gtk-4.0", "Libs\Gtk-4.0\Gtk-4.0.csproj", "{67EAFE46-6D20-4B24-AF73-67489DC903E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gtk-4.0", "Gtk-4.0", "{7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontDialog", "Samples/Gtk-4.0/FontDialog/FontDialog.csproj", "{D215B861-1A51-436A-82EB-FCF7AF892748}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window", "Samples\Gtk-4.0\Window\Window.csproj", "{AD618F85-F8F5-454B-9CA0-ABF936492065}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window", "Samples/Gtk-4.0/Window/Window.csproj", "{AD618F85-F8F5-454B-9CA0-ABF936492065}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboutDialog", "Samples\Gtk-4.0\AboutDialog\AboutDialog.csproj", "{4008E1B8-AC7D-4CC8-AB74-8576493C4FDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboutDialog", "Samples/Gtk-4.0/AboutDialog/AboutDialog.csproj", "{4008E1B8-AC7D-4CC8-AB74-8576493C4FDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cairo-1.0.Tests", "Tests\Libs\Cairo-1.0.Tests\Cairo-1.0.Tests.csproj", "{DE84D292-F45E-4807-893F-294AE0BBCD06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cairo-1.0.Tests", "Tests/Libs/Cairo-1.0.Tests/Cairo-1.0.Tests.csproj", "{DE84D292-F45E-4807-893F-294AE0BBCD06}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawingArea", "Samples/Gtk-4.0/DrawingArea/DrawingArea.csproj", "{C5875DAA-61E4-4319-911A-523FE47A89F8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builder", "Samples/Gtk-4.0/Builder/Builder.csproj", "{D215B861-1A51-436A-82EB-FCF7AF892748}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawingArea", "Samples\Gtk-4.0\DrawingArea\DrawingArea.csproj", "{C5875DAA-61E4-4319-911A-523FE47A89F8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{82ACABCF-0CE8-40ED-9402-8499407E846F}"
 	ProjectSection(SolutionItems) = preProject
-		Extensions/Directory.Build.props = Extensions/Directory.Build.props
+		Extensions\Directory.Build.props = Extensions\Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gst-1.0", "Gst-1.0", "{330F0517-BB42-4C5B-BC85-589F1461C7AA}"
@@ -152,71 +148,75 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gio-2.0", "Gio-2.0", "{313F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4EE9860B-6684-4369-A7F3-E0975E34F249}"
 	ProjectSection(SolutionItems) = preProject
-		../docs/docs/contributing.md = ../docs/docs/contributing.md
-		../docs/docs/libraries.md = ../docs/docs/libraries.md
-		../docs/docs/use.md = ../docs/docs/use.md
-		../docs/docs/apps.md = ../docs/docs/apps.md
-		../docs/docs/build.md = ../docs/docs/build.md
-		../docs/docs/toc.yml = ../docs/docs/toc.yml
+		..\docs\docs\contributing.md = ..\docs\docs\contributing.md
+		..\docs\docs\libraries.md = ..\docs\docs\libraries.md
+		..\docs\docs\use.md = ..\docs\docs\use.md
+		..\docs\docs\apps.md = ..\docs\docs\apps.md
+		..\docs\docs\build.md = ..\docs\docs\build.md
+		..\docs\docs\toc.yml = ..\docs\docs\toc.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adw-1", "Libs/Adw-1/Adw-1.csproj", "{CC67D284-6ADE-4F4D-9EE0-544143A7FF40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adw-1", "Libs\Adw-1\Adw-1.csproj", "{CC67D284-6ADE-4F4D-9EE0-544143A7FF40}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adw-1", "Adw-1", "{98F22FA8-3E06-47D0-9516-64BDF61407D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window", "Samples/Adw-1/Window/Window.csproj", "{3647E5F6-E194-4CAD-B387-948CD90FD5DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Window", "Samples\Adw-1\Window\Window.csproj", "{3647E5F6-E194-4CAD-B387-948CD90FD5DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "freetype2-2.0", "Libs/freetype2-2.0/freetype2-2.0.csproj", "{29C4FE32-0609-45EE-9C16-E4E50CA66B81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "freetype2-2.0", "Libs\freetype2-2.0\freetype2-2.0.csproj", "{29C4FE32-0609-45EE-9C16-E4E50CA66B81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JavaScriptCore-6.0", "Libs/JavaScriptCore-6.0/JavaScriptCore-6.0.csproj", "{BD15BF89-69FB-494F-890C-7FB9767C4E4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JavaScriptCore-6.0", "Libs\JavaScriptCore-6.0\JavaScriptCore-6.0.csproj", "{BD15BF89-69FB-494F-890C-7FB9767C4E4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebKitWebProcessExtension-6.0", "Libs/WebKitWebProcessExtension-6.0/WebKitWebProcessExtension-6.0.csproj", "{FA8F1775-0D58-4727-A168-6111773A43A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebKitWebProcessExtension-6.0", "Libs\WebKitWebProcessExtension-6.0\WebKitWebProcessExtension-6.0.csproj", "{FA8F1775-0D58-4727-A168-6111773A43A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup-3.0", "Libs/Soup-3.0/Soup-3.0.csproj", "{A464F066-1DA1-4A3C-B79E-2AA4B116D49E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soup-3.0", "Libs\Soup-3.0\Soup-3.0.csproj", "{A464F066-1DA1-4A3C-B79E-2AA4B116D49E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebKit-6.0", "WebKit-6.0", "{825BF602-98A7-45E7-A2C9-9E68160B7DF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTest-0.1", "Libs/GirTest-0.1/GirTest-0.1.csproj", "{BF0E85F5-34EC-49BB-8221-517B839B6550}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTest-0.1", "Libs\GirTest-0.1\GirTest-0.1.csproj", "{BF0E85F5-34EC-49BB-8221-517B839B6550}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTest-0.1.Tests", "Tests/Libs/GirTest-0.1.Tests/GirTest-0.1.Tests.csproj", "{6D09E811-20BF-48A0-BFCD-A2A0B357C8BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTest-0.1.Tests", "Tests\Libs\GirTest-0.1.Tests\GirTest-0.1.Tests.csproj", "{6D09E811-20BF-48A0-BFCD-A2A0B357C8BD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{15AC3143-9682-4F78-9A9C-3C4D32A9A48C}"
 	ProjectSection(SolutionItems) = preProject
-		../docs/img/GstSintel.png = ../docs/img/GstSintel.png
-		../docs/img/GtkApp.png = ../docs/img/GtkApp.png
+		..\docs\img\GstSintel.png = ..\docs\img\GstSintel.png
+		..\docs\img\GtkApp.png = ..\docs\img\GtkApp.png
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSource-5", "Libs/GtkSource-5/GtkSource-5.csproj", "{9D19B388-AD8B-4DC5-B351-5D9FCEAE8FEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSource-5", "Libs\GtkSource-5\GtkSource-5.csproj", "{9D19B388-AD8B-4DC5-B351-5D9FCEAE8FEA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GtkSource-5", "GtkSource-5", "{9520EBB9-2A53-4046-8749-83BC633EA731}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSourceView", "Samples/GtkSource-5/GtkSourceView/GtkSourceView.csproj", "{C2F46D6C-B890-4316-8090-BB7AA7B8BFD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSourceView", "Samples\GtkSource-5\GtkSourceView\GtkSourceView.csproj", "{C2F46D6C-B890-4316-8090-BB7AA7B8BFD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebKit-6.0", "Libs/WebKit-6.0/WebKit-6.0.csproj", "{1E2FA4E9-75B8-4410-B3D7-15A5AF2FC5C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebKit-6.0", "Libs\WebKit-6.0\WebKit-6.0.csproj", "{1E2FA4E9-75B8-4410-B3D7-15A5AF2FC5C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JavascriptCall", "Samples/WebKit-6.0/JavascriptCall/JavascriptCall.csproj", "{1751A21D-3D4D-4668-A95A-B6969D3ACE0B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JavascriptCall", "Samples\WebKit-6.0\JavascriptCall\JavascriptCall.csproj", "{1751A21D-3D4D-4668-A95A-B6969D3ACE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JavascriptCallback", "Samples/WebKit-6.0/JavascriptCallback/JavascriptCallback.csproj", "{9CF39E8D-5543-47E9-A136-A85009FF12C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JavascriptCallback", "Samples\WebKit-6.0\JavascriptCallback\JavascriptCallback.csproj", "{9CF39E8D-5543-47E9-A136-A85009FF12C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "actions", "actions", "{A8607D28-5605-4833-803F-AB6DC85E8BBD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "create", "create", "{C095C48D-7B27-47D5-9472-ACFB5A188099}"
 	ProjectSection(SolutionItems) = preProject
-		../.github/actions/create/action.yml = ../.github/actions/create/action.yml
+		..\.github\actions\create\action.yml = ..\.github\actions\create\action.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration", "Extensions/Integration/Integration.csproj", "{A3B33B42-BCA3-4AE5-935C-50E0151B2325}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration", "Extensions\Integration\Integration.csproj", "{A3B33B42-BCA3-4AE5-935C-50E0151B2325}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTool", "Generation/GirTool/GirTool.csproj", "{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTool", "Generation\GirTool\GirTool.csproj", "{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", "{BE2159DE-B264-4C71-9B52-94C5C956F76A}"
 	ProjectSection(SolutionItems) = preProject
-		Properties/GirCore.Libraries.props = Properties/GirCore.Libraries.props
-		Properties/GirCore.Logging.props = Properties/GirCore.Logging.props
-		Properties/GirCore.Publishing.props = Properties/GirCore.Publishing.props
-		Properties/GirCore.Testing.props = Properties/GirCore.Testing.props
-		Properties/GirCore.Tooling.props = Properties/GirCore.Tooling.props
+		Properties\GirCore.Libraries.props = Properties\GirCore.Libraries.props
+		Properties\GirCore.Logging.props = Properties\GirCore.Logging.props
+		Properties\GirCore.Publishing.props = Properties\GirCore.Publishing.props
+		Properties\GirCore.Testing.props = Properties\GirCore.Testing.props
+		Properties\GirCore.Tooling.props = Properties\GirCore.Tooling.props
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontDialog", "Samples\Gtk-4.0\FontDialog\FontDialog.csproj", "{B75DC27B-C90A-47E6-909F-C55D6204F35D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Builder", "Samples\Gtk-4.0\Builder\Builder.csproj", "{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -639,18 +639,6 @@ Global
 		{C5875DAA-61E4-4319-911A-523FE47A89F8}.Release|x64.Build.0 = Release|Any CPU
 		{C5875DAA-61E4-4319-911A-523FE47A89F8}.Release|x86.ActiveCfg = Release|Any CPU
 		{C5875DAA-61E4-4319-911A-523FE47A89F8}.Release|x86.Build.0 = Release|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Debug|x64.Build.0 = Debug|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Debug|x86.Build.0 = Debug|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Release|x64.ActiveCfg = Release|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Release|x64.Build.0 = Release|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Release|x86.ActiveCfg = Release|Any CPU
-		{D215B861-1A51-436A-82EB-FCF7AF892748}.Release|x86.Build.0 = Release|Any CPU
 		{CC67D284-6ADE-4F4D-9EE0-544143A7FF40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC67D284-6ADE-4F4D-9EE0-544143A7FF40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC67D284-6ADE-4F4D-9EE0-544143A7FF40}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -831,6 +819,30 @@ Global
 		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Release|x64.Build.0 = Release|Any CPU
 		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Release|x86.ActiveCfg = Release|Any CPU
 		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}.Release|x86.Build.0 = Release|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Debug|x64.Build.0 = Debug|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Debug|x86.Build.0 = Debug|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Release|x64.ActiveCfg = Release|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Release|x64.Build.0 = Release|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Release|x86.ActiveCfg = Release|Any CPU
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D}.Release|x86.Build.0 = Release|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Debug|x64.Build.0 = Debug|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Debug|x86.Build.0 = Debug|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Release|x64.ActiveCfg = Release|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Release|x64.Build.0 = Release|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Release|x86.ActiveCfg = Release|Any CPU
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BF7F9B0B-CB43-4161-BFAD-C6EE479FC86B} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
@@ -874,7 +886,6 @@ Global
 		{4008E1B8-AC7D-4CC8-AB74-8576493C4FDD} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
 		{DE84D292-F45E-4807-893F-294AE0BBCD06} = {46D66262-FC61-43B9-8E76-A361FA3D6C81}
 		{C5875DAA-61E4-4319-911A-523FE47A89F8} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
-		{D215B861-1A51-436A-82EB-FCF7AF892748} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
 		{330F0517-BB42-4C5B-BC85-589F1461C7AA} = {1F2E4087-585C-4B48-8E3D-700D949A15DB}
 		{6D2A7966-FED3-4FD5-94DF-BBD6C5D04886} = {330F0517-BB42-4C5B-BC85-589F1461C7AA}
 		{313F5668-37BB-4002-8CD8-C10A06049733} = {1F2E4087-585C-4B48-8E3D-700D949A15DB}
@@ -902,5 +913,7 @@ Global
 		{A3B33B42-BCA3-4AE5-935C-50E0151B2325} = {82ACABCF-0CE8-40ED-9402-8499407E846F}
 		{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7} = {7A05C10C-8797-4D29-A97A-F399316BE893}
 		{BE2159DE-B264-4C71-9B52-94C5C956F76A} = {B670D679-3B2C-43E8-9F87-5E4E17628011}
+		{B75DC27B-C90A-47E6-909F-C55D6204F35D} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
+		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
 	EndGlobalSection
 EndGlobal
