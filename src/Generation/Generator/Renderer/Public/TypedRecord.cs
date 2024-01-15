@@ -35,6 +35,10 @@ public partial class {name}
         Initialize();
     }}
 
+    public {name}() : this({Model.TypedRecord.GetFullyQuallifiedManagedHandle(record)}.Create())
+    {{
+    }}
+
     //TODO: This is a workaround constructor as long as we are
     //not having https://github.com/gircore/gir.core/issues/397
     private {name}(IntPtr ptr, bool ownsHandle) : this(ownsHandle

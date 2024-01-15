@@ -367,4 +367,11 @@ public class TypedRecordTest : Test
         //Private fields are not rendered in the public API
         typeof(TypedRecordTester).GetProperty(nameof(data.CustomIntPrivate)).Should().BeNull();
     }
+
+    [TestMethod]
+    public void HasParameterlessConstructor()
+    {
+        var instance = new TypedRecordTester();
+        instance.Should().NotBeNull();
+    }
 }
