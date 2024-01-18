@@ -32,7 +32,7 @@ public partial struct Type
 
     #endregion Statics
 
-    public override string ToString()
+    public override string? ToString()
     {
         return Internal.Functions.TypeName(_value).ConvertToString();
     }
