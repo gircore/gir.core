@@ -44,7 +44,7 @@ public partial class Object : IObject, INotifyPropertyChanged, IDisposable, IHan
         Type gtype = GetGTypeOrRegister(GetType());
 
         IntPtr handle = Internal.Object.NewWithProperties(
-            objectType: gtype.Value,
+            objectType: gtype,
             nProperties: (uint) constructArguments.Length,
             names: GetNames(constructArguments),
             values: ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
