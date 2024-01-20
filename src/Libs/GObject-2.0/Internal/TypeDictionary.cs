@@ -47,7 +47,6 @@ public enum BasicType
 public static class TypeDictionary
 {
     private static readonly Dictionary<System.Type, Type> _systemTypeDict = new();
-    private static readonly Dictionary<Type, System.Type> _reverseTypeDict = new();
 
     /// <summary>
     /// Add a new mapping of (System.Type, GObject.Type) to the type dictionary. 
@@ -63,7 +62,6 @@ public static class TypeDictionary
         );
 
         _systemTypeDict[systemType] = type;
-        _reverseTypeDict[type] = systemType;
     }
 
     /// <summary>
@@ -87,39 +85,7 @@ public static class TypeDictionary
         return _systemTypeDict[type];
     }
 
-    /// <summary>
-    /// For a given gtype, retrieve the corresponding managed type.  
-    /// </summary>
-    /// <param name="gtype">A type from the GType type system</param>
-    /// <returns>The equivalent managed type</returns>
-    internal static System.Type GetSystemType(Type gtype)
-    {
-        if (_reverseTypeDict.TryGetValue(gtype, out System.Type? sysType))
-            return sysType;
-
-        // If gtype is not in the type dictionary, walk up the
-        // tree until we find a type that is. As all objects are
-        // descended from GObject, we will eventually find a parent
-        // type that is registered.
-
-        while (!_reverseTypeDict.TryGetValue(gtype, out sysType))
-        {
-            gtype = new Type(Functions.TypeParent(gtype.Value));
-            if (gtype.Value == (nuint) BasicType.Invalid ||
-                gtype.Value == (nuint) BasicType.None)
-                throw new Exception("Could not retrieve parent type - is the typeid valid?");
-        }
-
-        // Store for future lookups
-        _reverseTypeDict[gtype] = sysType;
-
-        return sysType;
-    }
-
     // These may be unneeded - keep for now 
-    internal static bool ContainsGType(Type gtype)
-        => _reverseTypeDict.ContainsKey(gtype);
-
     internal static bool ContainsSystemType(System.Type type)
         => _systemTypeDict.ContainsKey(type);
 }
