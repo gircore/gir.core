@@ -30,6 +30,17 @@ public class ClassTest : Test
         reference.IsAlive.Should().BeFalse();
     }
 
+    [TestMethod]
+    public void CanReturnHiddenInstance()
+    {
+        //Ensure that return type of "CreateHiddenInstance" is "GObject.Object"
+        typeof(ClassTester).GetMethod(nameof(ClassTester.CreateHiddenInstance)).Should().Return<GObject.Object>();
+
+        //Ensure that returned instance actually is a "ClassTester"
+        var instance = ClassTester.CreateHiddenInstance();
+        instance.Should().BeOfType<ClassTester>();
+    }
+
     private class TestClass : GObject.Object
     {
         public TestClass() : base(true, System.Array.Empty<GObject.ConstructArgument>()) { }

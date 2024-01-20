@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using GLib;
 
 namespace GObject.Internal;
@@ -78,16 +78,15 @@ public static class ObjectWrapper
         return (T) ctor.Invoke(new object[] { handle, ownedRef });
     }
 
-    private static Type GetTypeFromInstance(IntPtr handle)
+    private static unsafe Type GetTypeFromInstance(IntPtr handle)
     {
-        TypeInstanceData instance = Marshal.PtrToStructure<TypeInstanceData>(handle);
-        TypeClassData klass = Marshal.PtrToStructure<TypeClassData>(instance.GClass);
-        var typeid = klass.GType;
+        var gclass = Unsafe.AsRef<TypeInstanceData>((void*) handle).GClass;
+        var gtype = Unsafe.AsRef<TypeClassData>((void*) gclass).GType;
 
-        if (typeid == 0)
+        if (gtype == 0)
             throw new Exception("Could not retrieve type from class struct - is the struct valid?");
 
-        return new Type(typeid);
+        return new Type(gtype);
     }
 
     private static ConstructorInfo? GetObjectConstructor(System.Type type)
