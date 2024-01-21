@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using GLib.Internal;
 using GObject.Internal;
@@ -37,10 +38,10 @@ public partial class Value : IDisposable
 
     private static bool HasFlags(Enum e) => e.GetType().IsDefined(typeof(FlagsAttribute), false);
 
-    private nuint GetTypeValue()
+    private unsafe nuint GetTypeValue()
     {
-        var structure = Marshal.PtrToStructure<ValueData>(Handle.DangerousGetHandle());
-        return structure.GType;
+        //The first element of the structure the pointer points to is the gtype of the value
+        return Unsafe.AsRef<nuint>((void*) Handle.DangerousGetHandle());
     }
 
     /// <summary>
