@@ -10,6 +10,7 @@ internal static class ConstructorRenderer
     private static readonly List<Constructor.ConstructorConverter> Converters = new()
     {
         new Constructor.Class(),
+        new Constructor.ForeignTypedRecord(),
         new Constructor.OpaqueTypedRecord(),
         new Constructor.OpaqueUntypedRecord(),
         new Constructor.TypedRecord(),

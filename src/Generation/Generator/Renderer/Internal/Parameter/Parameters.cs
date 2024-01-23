@@ -14,6 +14,8 @@ internal static class Parameters
         new Parameter.ClassGLibPtrArray(),
         new Parameter.Enumeration(),
         new Parameter.EnumerationArray(),
+        new Parameter.ForeignTypedRecord(),
+        new Parameter.ForeignTypedRecordArray(),
         new Parameter.GLibByteArray(),
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),

@@ -11,6 +11,8 @@ internal static class ParameterRenderer
         new Parameter.Class(),
         new Parameter.ClassArray(),
         new Parameter.Enumeration(),
+        new Parameter.ForeignTypedRecord(),
+        new Parameter.ForeignTypedRecordArray(),
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
         new Parameter.OpaqueTypedRecord(),

@@ -10,6 +10,7 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.Class(),
         new ReturnType.ClassArray(),
         new ReturnType.Enumeration(),
+        new ReturnType.ForeignTypedRecordCallback(),
         new ReturnType.Interface(),
         new ReturnType.InterfaceGLibPtrArray(),
         new ReturnType.OpaqueTypedRecordCallback(),

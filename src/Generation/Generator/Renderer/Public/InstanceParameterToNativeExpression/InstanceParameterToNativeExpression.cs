@@ -7,6 +7,7 @@ internal static class InstanceParameterToNativeExpression
     private static readonly List<InstanceParameterToNativeExpressions.InstanceParameterConverter> Converter = new()
     {
         new InstanceParameterToNativeExpressions.Class(),
+        new InstanceParameterToNativeExpressions.ForeignTypedRecord(),
         new InstanceParameterToNativeExpressions.Interface(),
         new InstanceParameterToNativeExpressions.OpaqueTypedRecord(),
         new InstanceParameterToNativeExpressions.OpaqueUntypedRecord(),

@@ -9,6 +9,7 @@ internal static class ReturnTypeToNativeExpression
         new ReturnTypeToNativeExpressions.Bitfield(),
         new ReturnTypeToNativeExpressions.Class(),
         new ReturnTypeToNativeExpressions.Enumeration(),
+        new ReturnTypeToNativeExpressions.ForeignTypedRecord(),
         new ReturnTypeToNativeExpressions.Interface(),
         new ReturnTypeToNativeExpressions.OpaqueTypedRecord(),
         new ReturnTypeToNativeExpressions.OpaqueUntypedRecord(),

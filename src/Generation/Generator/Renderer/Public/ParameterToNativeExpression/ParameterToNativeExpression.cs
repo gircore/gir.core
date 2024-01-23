@@ -13,6 +13,8 @@ internal static class ParameterToNativeExpression
         new ParameterToNativeExpressions.Class(),
         new ParameterToNativeExpressions.ClassArray(),
         new ParameterToNativeExpressions.Enumeration(),
+        new ParameterToNativeExpressions.ForeignTypedRecord(),
+        new ParameterToNativeExpressions.ForeignTypedRecordArray(),
         new ParameterToNativeExpressions.Interface(),
         new ParameterToNativeExpressions.InterfaceArray(),
         new ParameterToNativeExpressions.OpaqueTypedRecord(),

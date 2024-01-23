@@ -12,6 +12,7 @@ internal static class CallbackParameters
         new Parameter.ClassArray(),
         new Parameter.Enumeration(),
         new Parameter.EnumerationArray(),
+        new Parameter.ForeignTypedRecordCallback(),
         new Parameter.GLibByteArray(),
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
