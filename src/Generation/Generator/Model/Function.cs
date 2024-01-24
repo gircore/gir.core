@@ -30,4 +30,41 @@ internal static partial class Function
             _ => "ImportResolver.Library"
         };
     }
+
+    public static bool HidesFunction(GirModel.Function function)
+    {
+        if (function.Parent is not GirModel.Class cls)
+            return false;
+
+        return HidesFunction(cls.Parent, function);
+    }
+
+    private static bool HidesFunction(GirModel.Class? cls, GirModel.Function function)
+    {
+        if (cls is null)
+            return false;
+
+        var publicName = GetName(function);
+        var matchingFunction = cls.Functions.FirstOrDefault(c => GetName(c) == publicName);
+
+        if (matchingFunction is null)
+            matchingFunction = GetName(cls.TypeFunction) == publicName ? cls.TypeFunction : null;
+
+        if (matchingFunction is null)
+            return HidesFunction(cls.Parent, function);
+
+        GirModel.Parameter[] parameters = function.Parameters.ToArray();
+        GirModel.Parameter[] foundParameters = matchingFunction.Parameters.ToArray();
+
+        if (parameters.Length != foundParameters.Length)
+            return HidesFunction(cls.Parent, function);
+
+        for (var i = 0; i < parameters.Length; i++)
+        {
+            if (!parameters[i].AnyTypeOrVarArgs.Equals(foundParameters[i].AnyTypeOrVarArgs))
+                return HidesFunction(cls.Parent, function);
+        }
+
+        return true;
+    }
 }

@@ -19,10 +19,10 @@ internal static class FunctionRenderer
         try
         {
             var parameters = ParameterToNativeExpression.Initialize(function.Parameters);
-
+            var newModifier = Function.HidesFunction(function) ? "new " : string.Empty;
             return @$"
 {VersionAttribute.Render(function.Version)}
-public static {ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName(function)}({RenderParameters(parameters)})
+public static {newModifier}{ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName(function)}({RenderParameters(parameters)})
 {{
     {RenderFunctionContent(parameters)}
     {RenderCallStatement(function, parameters, out var resultVariableName)}
