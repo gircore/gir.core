@@ -43,6 +43,9 @@ internal static class TypedRecord
     public static string GetFullyQuallifiedDataName(GirModel.Record record)
         => $"{Namespace.GetInternalName(record.Namespace)}.{GetDataName(record)}";
 
+    public static string GetFullyQuallifiedManagedHandle(GirModel.Record record)
+        => $"{Namespace.GetInternalName(record.Namespace)}.{GetInternalManagedHandle(record)}";
+
     public static string GetInternalArrayHandle(GirModel.Record record)
     {
         var prefix = $"{Type.GetName(record)}Array";
