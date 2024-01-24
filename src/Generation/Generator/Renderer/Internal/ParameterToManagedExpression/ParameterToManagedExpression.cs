@@ -12,6 +12,7 @@ internal static class ParameterToManagedExpression
         new ParameterToManagedExpressions.Callback(),
         new ParameterToManagedExpressions.Class(),
         new ParameterToManagedExpressions.Enumeration(),
+        new ParameterToManagedExpressions.ForeignTypedRecord(),
         new ParameterToManagedExpressions.Interface(),
         new ParameterToManagedExpressions.OpaqueTypedRecord(),
         new ParameterToManagedExpressions.OpaqueUntypedRecord(),

@@ -4,7 +4,12 @@ internal static partial class Record
 {
     public static bool IsStandard(GirModel.Record record)
     {
-        return !IsOpaqueTyped(record) && !IsOpaqueUntyped(record) && !IsTyped(record);
+        return !IsForeignTyped(record) && !IsOpaqueTyped(record) && !IsOpaqueUntyped(record) && !IsTyped(record);
+    }
+
+    public static bool IsForeignTyped(GirModel.Record record)
+    {
+        return record is { Foreign: true, TypeFunction.CIdentifier: not null };
     }
 
     public static bool IsOpaqueTyped(GirModel.Record record)
@@ -12,14 +17,14 @@ internal static partial class Record
         //Even if there is a TypeFunction it does not mean that it actually is
         //a typed / boxed record. There is a magic keyword "intern" which means this
         //record is actually fundamental and does not have a type function.
-        return record is { Opaque: true, TypeFunction.CIdentifier: not "intern" };
+        return record is { Foreign: false, Opaque: true, TypeFunction.CIdentifier: not "intern" };
     }
 
     public static bool IsOpaqueUntyped(GirModel.Record record)
     {
         //A CIdentifier "intern" means that this type is fundamental and can be treated as
         //untyped.
-        return record is { Opaque: true, TypeFunction: null or { CIdentifier: "intern" } };
+        return record is { Foreign: false, Opaque: true, TypeFunction: null or { CIdentifier: "intern" } };
     }
 
     public static bool IsTyped(GirModel.Record record)
@@ -27,7 +32,7 @@ internal static partial class Record
         //Even if there is a TypeFunction it does not mean that it actually is
         //a typed / boxed record. There is a magic keyword "intern" which means this
         //record is actually fundamental and does not have a type function.
-        return record is { Opaque: false, TypeFunction.CIdentifier: not "intern" };
+        return record is { Foreign: false, Opaque: false, TypeFunction.CIdentifier: not "intern" };
     }
 
     public static string GetFullyQualifiedInternalStructName(GirModel.Record record)

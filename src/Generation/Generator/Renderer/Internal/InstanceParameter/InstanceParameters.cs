@@ -8,6 +8,7 @@ internal static class InstanceParameters
     private static readonly List<InstanceParameter.InstanceParameterConverter> converters = new()
     {
         new InstanceParameter.Class(),
+        new InstanceParameter.ForeignTypedRecord(),
         new InstanceParameter.Interface(),
         new InstanceParameter.OpaqueTypedRecord(),
         new InstanceParameter.OpaqueUntypedRecord(),

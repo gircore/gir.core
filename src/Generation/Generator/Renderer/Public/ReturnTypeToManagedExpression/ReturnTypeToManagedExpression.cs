@@ -9,6 +9,7 @@ internal static class ReturnTypeToManagedExpression
         new ReturnTypeToManagedExpressions.Bitfield(),
         new ReturnTypeToManagedExpressions.Class(),
         new ReturnTypeToManagedExpressions.Enumeration(),
+        new ReturnTypeToManagedExpressions.ForeignTypedRecord(),
         new ReturnTypeToManagedExpressions.Interface(),
         new ReturnTypeToManagedExpressions.OpaqueTypedRecord(),
         new ReturnTypeToManagedExpressions.OpaqueUntypedRecord(),

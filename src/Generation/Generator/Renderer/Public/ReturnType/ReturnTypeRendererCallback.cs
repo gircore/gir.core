@@ -9,6 +9,7 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.Bitfield(),
         new ReturnType.Class(),
         new ReturnType.Enumeration(),
+        new ReturnType.ForeignTypedRecord(),
         new ReturnType.Interface(),
         new ReturnType.OpaqueTypedRecord(),
         new ReturnType.OpaqueUntypedRecord(),

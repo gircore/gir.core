@@ -12,6 +12,11 @@ public static class Records
         var publisher = new Publisher(path);
         var generators = new List<Generator<GirModel.Record>>()
         {
+            //Foreign typed records
+            new Generator.Internal.ForeignTypedRecord(publisher),
+            new Generator.Internal.ForeignTypedRecordHandle(publisher),
+            new Generator.Public.ForeignTypedRecord(publisher),
+            
             //Opaque typed records
             new Generator.Internal.OpaqueTypedRecord(publisher),
             new Generator.Internal.OpaqueTypedRecordHandle(publisher),
