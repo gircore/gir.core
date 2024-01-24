@@ -77,7 +77,7 @@ public class PropertyTests : Test
     [TestMethod]
     public void TestObject()
     {
-        var pixbuf = GdkPixbuf.Pixbuf.NewFromFile("test.bmp");
+        var pixbuf = GdkPixbuf.Pixbuf.NewFromFile("test.bmp") ?? throw new Exception("Missing image");
         var texture = Gdk.Texture.NewForPixbuf(pixbuf);
         var dialog = new AboutDialog();
         dialog.Logo.Should().BeNull();
