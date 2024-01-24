@@ -18,10 +18,8 @@ internal class PointerAlias : ToNativeParameterConverter
                 break;
             case GirModel.Direction.InOut:
                 throw new Exception("PointerAlias: InOut not yet implemented");
-                break;
             case GirModel.Direction.Out:
                 throw new Exception("PointerAlias: Out not yet implemented");
-                break;
         }
     }
 
