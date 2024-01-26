@@ -22,6 +22,7 @@ internal static class ReturnTypeToManagedExpression
         new ReturnTypeToManagedExpressions.PrimitiveValueTypeArray(),
         new ReturnTypeToManagedExpressions.Record(),
         new ReturnTypeToManagedExpressions.TypedRecord(),
+        new ReturnTypeToManagedExpressions.UntypedRecord(),
         new ReturnTypeToManagedExpressions.Utf8String(),
         new ReturnTypeToManagedExpressions.Utf8StringArray(),
     };

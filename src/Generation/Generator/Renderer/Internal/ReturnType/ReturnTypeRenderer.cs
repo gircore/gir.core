@@ -27,6 +27,7 @@ internal static class ReturnTypeRenderer
         new ReturnType.TypedRecord(),
         new ReturnType.TypedRecordArray(),
         new ReturnType.Union(),
+        new ReturnType.UntypedRecord(),
         new ReturnType.Utf8String(),
         new ReturnType.Utf8StringArray(),
         new ReturnType.Void(),

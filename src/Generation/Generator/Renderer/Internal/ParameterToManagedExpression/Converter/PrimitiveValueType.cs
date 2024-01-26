@@ -10,9 +10,6 @@ internal class PrimitiveValueType : ToManagedParameterConverter
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
-        if (parameterData.IsArrayLengthParameter)
-            return;
-
         switch (parameterData.Parameter)
         {
             case { Direction: GirModel.Direction.In, IsPointer: true }:

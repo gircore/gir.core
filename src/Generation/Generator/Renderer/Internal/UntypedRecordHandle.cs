@@ -6,20 +6,18 @@ using Generator.Renderer.Internal.Field;
 
 namespace Generator.Renderer.Internal;
 
-internal static class TypedRecordHandle
+internal static class UntypedRecordHandle
 {
     public static string Render(GirModel.Record record)
     {
-        var typeName = Model.TypedRecord.GetInternalHandle(record);
-        var dataName = Model.TypedRecord.GetDataName(record);
-        var unownedHandleTypeName = Model.TypedRecord.GetInternalUnownedHandle(record);
-        var mangedHandleTypeName = Model.TypedRecord.GetInternalManagedHandle(record);
-        var ownedHandleTypeName = Model.TypedRecord.GetInternalOwnedHandle(record);
-        var arrayHandleType = Model.TypedRecord.GetInternalArrayHandle(record);
-        var arrayUnownedHandleTypeName = Model.TypedRecord.GetInternalArrayUnownedHandle(record);
-        var arrayOwnedHandleTypeName = Model.TypedRecord.GetInternalArrayOwnedHandle(record);
-        var fullyQualifiedType = $"{Model.TypedRecord.GetFullyQualifiedPublicClassName(record)}";
-        var getGType = $"{Model.TypedRecord.GetFullyQualifiedInternalClassName(record)}.{Function.GetGType}()";
+        var typeName = Model.UntypedRecord.GetInternalHandle(record);
+        var dataName = Model.UntypedRecord.GetDataName(record);
+        var unownedHandleTypeName = Model.UntypedRecord.GetInternalUnownedHandle(record);
+        var ownedHandleTypeName = Model.UntypedRecord.GetInternalOwnedHandle(record);
+        var arrayHandleType = Model.UntypedRecord.GetInternalArrayHandle(record);
+        var arrayUnownedHandleTypeName = Model.UntypedRecord.GetInternalArrayUnownedHandle(record);
+        var arrayOwnedHandleTypeName = Model.UntypedRecord.GetInternalArrayOwnedHandle(record);
+        var fullyQualifiedType = Model.TypedRecord.GetFullyQualifiedPublicClassName(record);
 
         return $@"using System;
 using GObject;
@@ -40,18 +38,6 @@ public abstract class {typeName} : SafeHandle
 
     protected {typeName}(bool ownsHandle) : base(IntPtr.Zero, ownsHandle) {{ }}
 
-    public {ownedHandleTypeName} OwnedCopy()
-    {{
-        var ptr = GObject.Internal.Functions.BoxedCopy({getGType}, handle);
-        return new {ownedHandleTypeName}(ptr);
-    }}
-    
-    public {unownedHandleTypeName} UnownedCopy()
-    {{
-        var ptr = GObject.Internal.Functions.BoxedCopy({getGType}, handle);
-        return new {unownedHandleTypeName}(ptr);
-    }}
-
     {record.Fields.Select(x => RenderField(record, x)).Join(Environment.NewLine)}
 }}
 
@@ -71,6 +57,14 @@ public class {unownedHandleTypeName} : {typeName}
     public {unownedHandleTypeName}(IntPtr ptr) : base(false)
     {{
         SetHandle(ptr);
+    }}
+
+    public {ownedHandleTypeName} Copy()
+    {{
+        var size = Marshal.SizeOf<{dataName}>();
+        var ptr = GLib.Functions.Memdup2(handle,(nuint) size);
+            
+        return new {ownedHandleTypeName}(ptr);
     }}
 
     protected override bool ReleaseHandle()
@@ -95,31 +89,9 @@ public class {ownedHandleTypeName} : {typeName}
     }}
 
     /// <summary>
-    /// Create a {ownedHandleTypeName} from a pointer that is assumed unowned. To do so a
-    /// boxed copy is created of the given pointer to be used as the handle.
+    /// Creates a new owned Handle
     /// </summary>
-    /// <param name=""ptr"">A pointer to a {record.Name} which is not owned by the runtime.</param>
-    /// <returns>A {ownedHandleTypeName}</returns>
-    public static {ownedHandleTypeName} FromUnowned(IntPtr ptr)
-    {{
-        var ownedPtr = GObject.Internal.Functions.BoxedCopy({getGType}, ptr);
-        return new {ownedHandleTypeName}(ownedPtr);
-    }}
-
-    protected override bool ReleaseHandle()
-    {{
-        GObject.Internal.Functions.BoxedFree({getGType}, handle);
-        return true;
-    }}
-}}
-
-public class {mangedHandleTypeName} : {ownedHandleTypeName}
-{{
-    private {mangedHandleTypeName}(IntPtr handle) : base(handle) 
-    {{
-    }}
-
-    public static {mangedHandleTypeName} Create()
+    public static {ownedHandleTypeName} Create()
     {{
         var size = Marshal.SizeOf<{dataName}>();
         var ptr = GLib.Functions.Malloc((nuint)size);
@@ -127,12 +99,26 @@ public class {mangedHandleTypeName} : {ownedHandleTypeName}
         var str = new {dataName}();
         Marshal.StructureToPtr(str, ptr, false);
             
-        return new {mangedHandleTypeName}(ptr);
+        return new {ownedHandleTypeName}(ptr);
+    }}
+
+    public unsafe void CopyTo(IntPtr ptr)
+    {{
+        var data = Marshal.PtrToStructure<{dataName}>(handle);
+        Marshal.StructureToPtr(data, ptr, false);
+    }}
+
+    public {unownedHandleTypeName} UnownedCopy()
+    {{
+        var size = Marshal.SizeOf<{dataName}>();
+        var ptr = GLib.Functions.Memdup2(handle,(nuint) size);
+            
+        return new {unownedHandleTypeName}(ptr);
     }}
 
     protected override bool ReleaseHandle()
     {{
-        GObject.Internal.Functions.BoxedFree({getGType}, handle);
+        GLib.Functions.Free(handle);
         return true;
     }}
 }}
@@ -176,7 +162,7 @@ public class {arrayUnownedHandleTypeName} : {arrayHandleType}
         var currentHandle = handle;
         for(int i = 0; i < length; i++)
         {{
-            var ownedHandle = new {Model.TypedRecord.GetFullyQuallifiedUnownedHandle(record)}(currentHandle).OwnedCopy();
+            var ownedHandle = new {Model.UntypedRecord.GetFullyQuallifiedUnownedHandle(record)}(currentHandle).Copy();
             data[i] = new {fullyQualifiedType}(ownedHandle);
             currentHandle += Marshal.SizeOf<{Model.TypedRecord.GetFullyQuallifiedDataName(record)}>();
         }}
@@ -201,14 +187,15 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
         SetHandle(ptr);
     }}
 
-    public static {arrayOwnedHandleTypeName} Create({Model.TypedRecord.GetFullyQualifiedPublicClassName(record)}[] data)
+    public static {arrayOwnedHandleTypeName} Create({Model.UntypedRecord.GetFullyQualifiedPublicClassName(record)}[] data)
     {{
-        var size = Marshal.SizeOf<{Model.TypedRecord.GetFullyQuallifiedDataName(record)}>();
+        var size = Marshal.SizeOf<{Model.UntypedRecord.GetFullyQuallifiedDataName(record)}>();
         var ptr = Marshal.AllocHGlobal(size * data.Length);
         var current = ptr;
         for (int i = 0; i < data.Length; i++)
         {{
-            Marshal.StructureToPtr(data[i], current, false);
+            var structure = Marshal.PtrToStructure<{Model.UntypedRecord.GetFullyQuallifiedDataName(record)}>(data[i].Handle.DangerousGetHandle());
+            Marshal.StructureToPtr(structure, current, false);
             current += size;
         }}
         
@@ -244,8 +231,8 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
 
     private static string RenderFieldGetter(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
     {
-        var typePrefix = field.AnyTypeOrCallback.IsT1 ? $"{Model.TypedRecord.GetDataName(record)}." : string.Empty;
-        var dataName = Model.TypedRecord.GetDataName(record);
+        var typePrefix = field.AnyTypeOrCallback.IsT1 ? $"{Model.UntypedRecord.GetDataName(record)}." : string.Empty;
+        var dataName = Model.UntypedRecord.GetDataName(record);
 
         return @$"public unsafe {typePrefix}{renderableField.NullableTypeName} Get{renderableField.Name}()
 {{
@@ -258,7 +245,7 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
 
     private static string RenderFieldSetter(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
     {
-        var dataName = Model.TypedRecord.GetDataName(record);
+        var dataName = Model.UntypedRecord.GetDataName(record);
 
         return @$"public unsafe void Set{renderableField.Name}({renderableField.NullableTypeName} value)
 {{

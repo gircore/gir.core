@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
-internal class TypedRecordArray : ToManagedParameterConverter
+internal class UntypedRecordArray : ToManagedParameterConverter
 {
     public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.Record>(out var record) && Model.Record.IsTyped(record);
+        => type.IsArray<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
@@ -32,7 +32,7 @@ internal class TypedRecordArray : ToManagedParameterConverter
         parameter.SetCallName(() => $"ref {parameterName}");
 
         //TODO
-        throw new Exception("Test missing for typed record array passed in via a ref to managed");
+        throw new Exception("Test missing for untyped record array passed in via a ref to managed");
     }
 
     private static void WithLength(ParameterToManagedData parameter, IEnumerable<ParameterToManagedData> allParameters)
@@ -45,13 +45,13 @@ internal class TypedRecordArray : ToManagedParameterConverter
 
     private static void PointerArrayWithLength(ParameterToManagedData parameter, IEnumerable<ParameterToManagedData> allParameters)
     {
-        throw new Exception("Pointer array not yet supported for typed record arrays");
+        throw new Exception("Pointer array not yet supported for untyped record arrays");
     }
 
     private static void StructArrayWithLength(ParameterToManagedData parameter, IEnumerable<ParameterToManagedData> allParameters)
     {
         if (parameter.Parameter.Transfer is GirModel.Transfer.Container or GirModel.Transfer.Full)
-            throw new Exception("Can't transfer ownership to native code for typed record");
+            throw new Exception("Can't transfer ownership to native code for untyped record");
 
         var record = (GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0;
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
@@ -69,9 +69,9 @@ internal class TypedRecordArray : ToManagedParameterConverter
         parameter.SetCallName(() => $"{nativeVariableName}.{method}((int){lengthParameter.GetCallName()})");
 
         var nullableExpression = parameter.Parameter.Nullable
-            ? $"{parameterName} == System.IntPtr.Zero ? {Model.TypedRecord.GetFullyQuallifiedArrayNullHandle(record)} : "
+            ? $"{parameterName} == System.IntPtr.Zero ? {Model.UntypedRecord.GetFullyQuallifiedArrayNullHandle(record)} : "
             : string.Empty;
 
-        parameter.SetExpression(() => $"var {nativeVariableName} = {nullableExpression} new {Model.TypedRecord.GetFullyQuallifiedArrayUnownedHandle(record)}({parameterName}, (int) {lengthParameter.GetCallName()});");
+        parameter.SetExpression(() => $"var {nativeVariableName} = {nullableExpression} new {Model.UntypedRecord.GetFullyQuallifiedArrayUnownedHandle(record)}({parameterName}, (int) {lengthParameter.GetCallName()});");
     }
 }

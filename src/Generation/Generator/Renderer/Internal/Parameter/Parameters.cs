@@ -48,6 +48,8 @@ internal static class Parameters
         new Parameter.Union(),
         new Parameter.UnionArray(),
         new Parameter.UnsignedPointer(),
+        new Parameter.UntypedRecord(),
+        new Parameter.UntypedRecordArray(),
         new Parameter.Utf8StringArray(),
         new Parameter.Void(),
     };

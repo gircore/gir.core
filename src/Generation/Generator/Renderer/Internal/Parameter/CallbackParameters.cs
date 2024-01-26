@@ -43,6 +43,8 @@ internal static class CallbackParameters
         new Parameter.Union(),
         new Parameter.UnionArray(),
         new Parameter.UnsignedPointer(),
+        new Parameter.UntypedRecordCallback(),
+        new Parameter.UntypedRecordCallbackArray(),
         new Parameter.Utf8StringArrayCallback(),
         new Parameter.Void(),
     };
