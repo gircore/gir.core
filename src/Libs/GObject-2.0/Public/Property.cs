@@ -39,10 +39,10 @@ public sealed class Property<T, K> : PropertyDefinition<T>
         if (obj is not Object o)
             throw new Exception($"Can't get property {ManagedName} for object of type {typeof(K).Name} as it is not derived from {nameof(Object)}.");
 
-        var valueHandle = Internal.ValueManagedHandle.Create();
-        Internal.Object.GetProperty(o.Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(UnmanagedName), valueHandle);
+        using var value = new Value();
+        o.GetProperty(UnmanagedName, value);
 
-        return new Value(valueHandle).Extract<T>();
+        return value.Extract<T>();
     }
 
     /// <summary>
@@ -57,7 +57,8 @@ public sealed class Property<T, K> : PropertyDefinition<T>
         var type = GetPropertyType(o.Handle);
         using var gvalue = new Value(type);
         gvalue.Set(value);
-        Internal.Object.SetProperty(o.Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(UnmanagedName), gvalue.Handle);
+
+        o.SetProperty(UnmanagedName, gvalue);
     }
 
     private Type GetPropertyType(IntPtr handle)
