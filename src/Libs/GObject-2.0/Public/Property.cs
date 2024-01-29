@@ -41,7 +41,7 @@ public sealed class Property<T, K> : PropertyDefinition<T>
 
         using var value = new Value();
         o.GetProperty(UnmanagedName, value);
-        
+
         return value.Extract<T>();
     }
 
@@ -57,7 +57,8 @@ public sealed class Property<T, K> : PropertyDefinition<T>
         var type = GetPropertyType(o.Handle);
         using var gvalue = new Value(type);
         gvalue.Set(value);
-        Internal.Object.SetProperty(o.Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(UnmanagedName), gvalue.Handle);
+
+        o.SetProperty(UnmanagedName, gvalue);
     }
 
     private Type GetPropertyType(IntPtr handle)
