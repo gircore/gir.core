@@ -39,10 +39,10 @@ public sealed class Property<T, K> : PropertyDefinition<T>
         if (obj is not Object o)
             throw new Exception($"Can't get property {ManagedName} for object of type {typeof(K).Name} as it is not derived from {nameof(Object)}.");
 
-        var valueHandle = Internal.ValueManagedHandle.Create();
-        Internal.Object.GetProperty(o.Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(UnmanagedName), valueHandle);
-
-        return new Value(valueHandle).Extract<T>();
+        using var value = new Value();
+        o.GetProperty(UnmanagedName, value);
+        
+        return value.Extract<T>();
     }
 
     /// <summary>
