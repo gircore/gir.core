@@ -32,16 +32,16 @@ internal class PlatformStringArray : ToManagedParameterConverter
             _ => throw new Exception("Unknown transfer type for platform string array to managed expression")
         };
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetExpression($"var {callName} = {handleExpression};");
-        parameterData.SetCallName(callName);
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetExpression(() => $"var {callName} = {handleExpression};");
+        parameterData.SetCallName(() => callName);
     }
 
     private static void SizeBasedArray(ParameterToManagedData parameterData)
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => variableName);
     }
 }

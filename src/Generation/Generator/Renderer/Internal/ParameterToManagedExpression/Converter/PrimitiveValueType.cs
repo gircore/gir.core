@@ -33,23 +33,23 @@ internal class PrimitiveValueType : ToManagedParameterConverter
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName($"ref {variableName}");
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => $"ref {variableName}");
     }
 
     private static void Direct(ParameterToManagedData parameterData)
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => variableName);
     }
 
     private static void Out(ParameterToManagedData parameterData)
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName($"out {variableName}");
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => $"out {variableName}");
     }
 }

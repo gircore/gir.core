@@ -32,16 +32,16 @@ internal class Utf8StringArray : ToManagedParameterConverter
             _ => throw new Exception("Unknown transfer type for utf8 string array to managed expression")
         };
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetExpression($"var {callName} = {handleExpression};");
-        parameterData.SetCallName(callName);
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetExpression(() => $"var {callName} = {handleExpression};");
+        parameterData.SetCallName(() => callName);
     }
 
     private static void SizeBasedArray(ParameterToManagedData parameterData)
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => variableName);
     }
 }

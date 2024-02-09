@@ -18,8 +18,8 @@ internal class Interface : ToManagedParameterConverter
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
         var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetExpression($"var {callName} = GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(iface)}>({signatureName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
-        parameterData.SetCallName(callName);
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetExpression(() => $"var {callName} = GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(iface)}>({signatureName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
+        parameterData.SetCallName(() => callName);
     }
 }

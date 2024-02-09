@@ -22,8 +22,8 @@ internal class Record : ToManagedParameterConverter
         parameterData.IsGLibErrorParameter = true;
 
         var name = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(name);
-        parameterData.SetCallName(name);
+        parameterData.SetSignatureName(() => name);
+        parameterData.SetCallName(() => name);
     }
 
     private static void RegularRecord(ParameterToManagedData parameterData)
@@ -47,8 +47,8 @@ internal class Record : ToManagedParameterConverter
     private static void OutRecord(ParameterToManagedData parameterData)
     {
         var parameterName = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(parameterName);
-        parameterData.SetCallName("out " + parameterName);
+        parameterData.SetSignatureName(() => parameterName);
+        parameterData.SetCallName(() => "out " + parameterName);
     }
 
     private static void InRecord(ParameterToManagedData parameterData)
@@ -63,8 +63,8 @@ internal class Record : ToManagedParameterConverter
 
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetExpression($"var {variableName} = new {Model.Record.GetFullyQualifiedPublicClassName(record)}(new {handleClass}({signatureName}));");
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetExpression(() => $"var {variableName} = new {Model.Record.GetFullyQualifiedPublicClassName(record)}(new {handleClass}({signatureName}));");
+        parameterData.SetCallName(() => variableName);
     }
 }

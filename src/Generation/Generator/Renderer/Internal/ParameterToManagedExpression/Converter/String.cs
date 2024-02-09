@@ -12,8 +12,8 @@ internal class String : ToManagedParameterConverter
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
         var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetExpression($"var {callName} = {signatureName}.ConvertToString();");
-        parameterData.SetCallName(callName);
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetExpression(() => $"var {callName} = {signatureName}.ConvertToString();");
+        parameterData.SetCallName(() => callName);
     }
 }

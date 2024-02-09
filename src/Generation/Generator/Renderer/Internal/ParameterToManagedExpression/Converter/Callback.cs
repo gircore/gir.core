@@ -23,15 +23,15 @@ internal class Callback : ToManagedParameterConverter
 
         var parameterToNativeDatas = Public.ParameterToNativeExpression.Initialize(callback.Parameters);
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetExpression(@$"var {callName} = new {ns}.{type}(({GetManagedParameters(parameterToNativeDatas)}) => 
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetExpression(() => @$"var {callName} = new {ns}.{type}(({GetManagedParameters(parameterToNativeDatas)}) => 
 {{ 
     {RenderContent(parameterToNativeDatas)}
     {RenderCallStatement(signatureName, callback, parameterToNativeDatas, out var resultVariableName)}
     {RenderThrowOnError(callback, parameterToNativeDatas)}
     {RenderReturnStatement(callback, resultVariableName)}
 }});");
-        parameterData.SetCallName(callName);
+        parameterData.SetCallName(() => callName);
     }
 
     private static string GetManagedParameters(IEnumerable<Public.ParameterToNativeData> parameters)

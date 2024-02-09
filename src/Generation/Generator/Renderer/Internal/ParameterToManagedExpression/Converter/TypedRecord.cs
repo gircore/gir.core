@@ -23,8 +23,8 @@ internal class TypedRecord : ToManagedParameterConverter
         parameterData.IsGLibErrorParameter = true;
 
         var name = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(name);
-        parameterData.SetCallName(name);
+        parameterData.SetSignatureName(() => name);
+        parameterData.SetCallName(() => name);
     }
 
     private static void RegularRecord(ParameterToManagedData parameterData)
@@ -60,9 +60,9 @@ internal class TypedRecord : ToManagedParameterConverter
             ? $" {signatureName} == IntPtr.Zero ? null :"
             : string.Empty;
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetExpression($"var {variableName} ={nullable} new {Model.TypedRecord.GetFullyQualifiedPublicClassName(record)}({ownedHandle});");
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetExpression(() => $"var {variableName} ={nullable} new {Model.TypedRecord.GetFullyQualifiedPublicClassName(record)}({ownedHandle});");
+        parameterData.SetCallName(() => variableName);
     }
 
     private static void Out(ParameterToManagedData parameterData)
@@ -70,8 +70,8 @@ internal class TypedRecord : ToManagedParameterConverter
         var managedName = Model.Parameter.GetName(parameterData.Parameter);
         var nativeName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(nativeName);
-        parameterData.SetCallName($"out var {managedName}");
+        parameterData.SetSignatureName(() => nativeName);
+        parameterData.SetCallName(() => $"out var {managedName}");
 
         var copy = parameterData.Parameter.Transfer switch
         {
@@ -80,7 +80,7 @@ internal class TypedRecord : ToManagedParameterConverter
             _ => throw new NotSupportedException()
         };
 
-        parameterData.SetPostCallExpression(parameterData.Parameter.Nullable
+        parameterData.SetPostCallExpression(() => parameterData.Parameter.Nullable
             ? $"{nativeName} = {managedName}?.Handle.{copy}DangerousGetHandle() ?? IntPtr.Zero;"
             : $"{nativeName} = {managedName}.Handle.{copy}DangerousGetHandle();");
     }

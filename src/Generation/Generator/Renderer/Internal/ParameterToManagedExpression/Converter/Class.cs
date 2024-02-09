@@ -27,9 +27,9 @@ internal class Class : ToManagedParameterConverter
         var paramterName = Model.Parameter.GetName(parameterData.Parameter);
         var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(paramterName);
-        parameterData.SetExpression($"var {variableName} = new {Model.ComplexType.GetFullyQualified(cls)}({paramterName});");
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => paramterName);
+        parameterData.SetExpression(() => $"var {variableName} = new {Model.ComplexType.GetFullyQualified(cls)}({paramterName});");
+        parameterData.SetCallName(() => variableName);
     }
 
     private static void Default(ParameterToManagedData parameterData)
@@ -42,8 +42,8 @@ internal class Class : ToManagedParameterConverter
             ? "GObject.Internal.ObjectWrapper.WrapNullableHandle"
             : "GObject.Internal.ObjectWrapper.WrapHandle";
 
-        parameterData.SetSignatureName(parameterName);
-        parameterData.SetExpression($"var {callName} = {wrapHandle}<{Model.ComplexType.GetFullyQualified(cls)}>({parameterName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
-        parameterData.SetCallName(callName);
+        parameterData.SetSignatureName(() => parameterName);
+        parameterData.SetExpression(() => $"var {callName} = {wrapHandle}<{Model.ComplexType.GetFullyQualified(cls)}>({parameterName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
+        parameterData.SetCallName(() => callName);
     }
 }

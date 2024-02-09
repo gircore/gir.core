@@ -25,8 +25,8 @@ internal class PrimitiveValueTypeArray : ToManagedParameterConverter
     private static void Ref(ParameterToManagedData parameter)
     {
         var signatureName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(signatureName);
-        parameter.SetCallName($"ref {signatureName}");
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetCallName(() => $"ref {signatureName}");
     }
 
     private static void Span(ParameterToManagedData parameter, IEnumerable<ParameterToManagedData> allParameters)
@@ -35,13 +35,13 @@ internal class PrimitiveValueTypeArray : ToManagedParameterConverter
         var lengthParameter = allParameters.ElementAt(lengthIndex);
         var lengthSignatureName = Model.Parameter.GetName(lengthParameter.Parameter);
         lengthParameter.IsArrayLengthParameter = true;
-        lengthParameter.SetSignatureName(lengthSignatureName);
+        lengthParameter.SetSignatureName(() => lengthSignatureName);
 
         var signatureName = Model.Parameter.GetName(parameter.Parameter);
         var callName = signatureName + "Span";
 
-        parameter.SetSignatureName(signatureName);
-        parameter.SetExpression($"var {callName} = MemoryMarshal.CreateSpan(ref {signatureName}, (int) {lengthSignatureName});");
-        parameter.SetCallName(callName);
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetExpression(() => $"var {callName} = MemoryMarshal.CreateSpan(ref {signatureName}, (int) {lengthSignatureName});");
+        parameter.SetCallName(() => callName);
     }
 }

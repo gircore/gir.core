@@ -14,7 +14,7 @@ internal class Bitfield : ToManagedParameterConverter
             throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: Bitfield with direction != in not yet supported");
 
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => variableName);
     }
 }

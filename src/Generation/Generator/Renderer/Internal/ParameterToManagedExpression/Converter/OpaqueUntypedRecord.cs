@@ -29,8 +29,8 @@ internal class OpaqueUntypedRecord : ToManagedParameterConverter
             ? $" {signatureName} == IntPtr.Zero ? null :"
             : string.Empty;
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetExpression($"var {variableName} ={nullable} new {Model.OpaqueUntypedRecord.GetFullyQualifiedPublicClassName(record)}({ownedHandle});");
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetExpression(() => $"var {variableName} ={nullable} new {Model.OpaqueUntypedRecord.GetFullyQualifiedPublicClassName(record)}({ownedHandle});");
+        parameterData.SetCallName(() => variableName);
     }
 }
