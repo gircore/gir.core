@@ -15,8 +15,8 @@ internal class Callback : ToNativeParameterConverter
         if (parameter.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Callback parameter with direction != in not yet supported");
 
-        if (parameter is { HasCallName: true, HasSignatureName: true })
-            return; //If this parameter got already initialized by another parameter we can skip it as it is not part of the public api
+        if (parameter.IsDestroyNotify)
+            return; //If this destroy notify parameter got already initialized by another parameter we can skip it as it is not part of the public api
 
         switch (parameter.Parameter.Scope)
         {
