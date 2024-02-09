@@ -29,8 +29,8 @@ internal class ForeignTypedRecordArray : ToNativeParameterConverter
     private static void Ref(ParameterToNativeData parameter)
     {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName($"ref {parameterName}");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => $"ref {parameterName}");
 
         //TODO
         throw new Exception("Test missing for foreign typed record array passed in via a ref");
@@ -41,15 +41,15 @@ internal class ForeignTypedRecordArray : ToNativeParameterConverter
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName($"ref MemoryMarshal.GetReference({nativeVariableName})");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => $"ref MemoryMarshal.GetReference({nativeVariableName})");
 
         var nullable = parameter.Parameter.Nullable
             ? $"{parameterName} is null ? null : "
             : string.Empty;
 
-        parameter.SetExpression($"var {nativeVariableName} = new Span<IntPtr>({nullable}{parameterName}" +
-                                $".Select(record => record.Handle.DangerousGetHandle()).ToArray());");
+        parameter.SetExpression(() => $"var {nativeVariableName} = new Span<IntPtr>({nullable}{parameterName}" +
+                                      $".Select(record => record.Handle.DangerousGetHandle()).ToArray());");
 
         var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
@@ -59,7 +59,7 @@ internal class ForeignTypedRecordArray : ToNativeParameterConverter
         {
             case GirModel.Direction.In:
                 lengthParameter.IsArrayLengthParameter = true;
-                lengthParameter.SetCallName(parameter.Parameter.Nullable
+                lengthParameter.SetCallName(() => parameter.Parameter.Nullable
                     ? $"({lengthParameterType}) ({parameterName}?.Length ?? 0)"
                     : $"({lengthParameterType}) {parameterName}.Length"
                 );

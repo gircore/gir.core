@@ -15,8 +15,8 @@ internal class Callback : ToNativeParameterConverter
         if (parameter.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Callback parameter with direction != in not yet supported");
 
-        if (parameter is { HasCallName: true, HasSignatureName: true })
-            return; //If this parameter got already initialized by another parameter we can skip it as it is not part of the public api
+        if (parameter.IsDestroyNotify)
+            return; //If this destroy notify parameter got already initialized by another parameter we can skip it as it is not part of the public api
 
         switch (parameter.Parameter.Scope)
         {
@@ -47,8 +47,8 @@ internal class Callback : ToNativeParameterConverter
         if (parameter.Parameter.Closure is { } closureIndex)
             parameters.ElementAt(closureIndex).IsCallbackUserData = true;
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(handlerNameVariable + ".NativeCallback");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => handlerNameVariable + ".NativeCallback");
 
         var destroyParameter = parameters.ElementAt(parameter.Parameter.Destroy.Value);
 
@@ -56,10 +56,10 @@ internal class Callback : ToNativeParameterConverter
             throw new Exception("Destroyparameter is not of type DestroyNotify");
 
         destroyParameter.IsDestroyNotify = true;
-        destroyParameter.SetSignatureName("destroy");
-        destroyParameter.SetCallName(handlerNameVariable + ".DestroyNotify");
+        destroyParameter.SetSignatureName(() => "destroy");
+        destroyParameter.SetCallName(() => handlerNameVariable + ".DestroyNotify");
 
-        parameter.SetExpression($"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetNotifiedHandlerName(callback)}({parameterName});");
+        parameter.SetExpression(() => $"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetNotifiedHandlerName(callback)}({parameterName});");
     }
 
     private static void FillCallScope(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> parameters)
@@ -68,8 +68,8 @@ internal class Callback : ToNativeParameterConverter
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var handlerNameVariable = parameterName + "Handler";
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(handlerNameVariable + ".NativeCallback");
-        parameter.SetExpression($"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetCallHandlerName(callback)}({parameterName});");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => handlerNameVariable + ".NativeCallback");
+        parameter.SetExpression(() => $"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetCallHandlerName(callback)}({parameterName});");
     }
 }

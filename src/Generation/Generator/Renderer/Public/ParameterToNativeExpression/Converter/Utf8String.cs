@@ -37,7 +37,7 @@ internal class Utf8String : ToNativeParameterConverter
     {
         var nativeVariableName = Model.Parameter.GetConvertedName(parameter.Parameter);
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(parameterName);
+        parameter.SetSignatureName(() => parameterName);
 
         var ownedHandleTypeName = parameter.Parameter switch
         {
@@ -48,22 +48,22 @@ internal class Utf8String : ToNativeParameterConverter
             _ => throw new Exception($"Parameter {parameter.Parameter.Name} of type {parameter.Parameter.AnyTypeOrVarArgs} not supported")
         };
 
-        parameter.SetExpression($"using var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
-        parameter.SetCallName(nativeVariableName);
+        parameter.SetExpression(() => $"using var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
+        parameter.SetCallName(() => nativeVariableName);
     }
 
     private static void Out(ParameterToNativeData parameter)
     {
         var nativeVariableName = Model.Parameter.GetConvertedName(parameter.Parameter);
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(parameterName);
+        parameter.SetSignatureName(() => parameterName);
         // Note: optional parameters are generated as regular out parameters, which the caller can ignore with 'out var _' if desired.
-        parameter.SetCallName($"out var {nativeVariableName}");
+        parameter.SetCallName(() => $"out var {nativeVariableName}");
 
         // After the call, convert the resulting handle to a managed string and free the native memory right away.
         var expression = new StringBuilder();
         expression.AppendLine($"{parameterName} = {nativeVariableName}.ConvertToString();");
         expression.Append($"{nativeVariableName}.Dispose();");
-        parameter.SetPostCallExpression(expression.ToString());
+        parameter.SetPostCallExpression(() => expression.ToString());
     }
 }

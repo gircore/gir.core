@@ -32,8 +32,8 @@ internal class PrimitiveValueTypeArray : ToNativeParameterConverter
     private static void Ref(ParameterToNativeData parameter)
     {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName($"ref {parameterName}");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => $"ref {parameterName}");
 
         //TODO
         throw new Exception("Test missing");
@@ -42,8 +42,8 @@ internal class PrimitiveValueTypeArray : ToNativeParameterConverter
     private static void Span(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
     {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName($"ref MemoryMarshal.GetReference({parameterName})");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => $"ref MemoryMarshal.GetReference({parameterName})");
 
         var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
@@ -53,11 +53,11 @@ internal class PrimitiveValueTypeArray : ToNativeParameterConverter
         {
             case GirModel.Direction.In:
                 lengthParameter.IsArrayLengthParameter = true;
-                lengthParameter.SetCallName($"({type}) {parameterName}.Length");
+                lengthParameter.SetCallName(() => $"({type}) {parameterName}.Length");
                 break;
             case GirModel.Direction.InOut:
                 lengthParameter.IsInOutArrayLengthParameter = true;
-                lengthParameter.SetExpression($"{Model.Parameter.GetName(lengthParameter.Parameter)} = ({type}) {parameterName}.Length;");
+                lengthParameter.SetExpression(() => $"{Model.Parameter.GetName(lengthParameter.Parameter)} = ({type}) {parameterName}.Length;");
                 break;
             default:
                 throw new Exception("Unknown direction for length parameter");

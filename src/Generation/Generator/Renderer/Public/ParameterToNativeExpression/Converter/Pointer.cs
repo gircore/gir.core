@@ -19,7 +19,7 @@ internal class Pointer : ToNativeParameterConverter
         {
             //This is the user data parameter of some callback which is another parameter
             parameterData.IsCallbackUserData = true;
-            parameterData.SetCallName("IntPtr.Zero"); //Must be set to fill the internal call with IntPtr.Zero
+            parameterData.SetCallName(() => "IntPtr.Zero"); //Must be set to fill the internal call with IntPtr.Zero
         }
         else if (parameterData.Parameter.Closure is not null)
         {
@@ -37,8 +37,8 @@ internal class Pointer : ToNativeParameterConverter
         {
             var direction = GetDirection(parameterData.Parameter);
             var parameterName = Model.Parameter.GetName(parameterData.Parameter);
-            parameterData.SetSignatureName(parameterName);
-            parameterData.SetCallName($"{direction}{parameterName}");
+            parameterData.SetSignatureName(() => parameterName);
+            parameterData.SetCallName(() => $"{direction}{parameterName}");
         }
     }
 

@@ -19,8 +19,8 @@ internal class ClassArray : ToNativeParameterConverter
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(nativeVariableName);
-        parameter.SetExpression($"var {nativeVariableName} = {parameterName}.Select(cls => cls.Handle).ToArray();");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => nativeVariableName);
+        parameter.SetExpression(() => $"var {nativeVariableName} = {parameterName}.Select(cls => cls.Handle).ToArray();");
     }
 }

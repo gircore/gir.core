@@ -23,20 +23,20 @@ internal class PlatformString : ToNativeParameterConverter
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: String type with direction=inout not yet supported");
 
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(parameterName);
+        parameter.SetSignatureName(() => parameterName);
 
         string nativeVariableName = Model.Parameter.GetConvertedName(parameter.Parameter);
 
         if (parameter.Parameter.Direction == GirModel.Direction.Out)
         {
             // Note: optional parameters are generated as regular out parameters, which the caller can ignore with 'out var _' if desired.
-            parameter.SetCallName($"out var {nativeVariableName}");
+            parameter.SetCallName(() => $"out var {nativeVariableName}");
 
             // After the call, convert the resulting handle to a managed string and free the native memory right away.
             var expression = new StringBuilder();
             expression.AppendLine($"{parameterName} = {nativeVariableName}.ConvertToString();");
             expression.Append($"{nativeVariableName}.Dispose();");
-            parameter.SetPostCallExpression(expression.ToString());
+            parameter.SetPostCallExpression(() => expression.ToString());
         }
         else
         {
@@ -49,8 +49,8 @@ internal class PlatformString : ToNativeParameterConverter
                 _ => throw new Exception($"Parameter {parameter.Parameter.Name} of type {parameter.Parameter.AnyTypeOrVarArgs} not supported")
             };
 
-            parameter.SetExpression($"using var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
-            parameter.SetCallName(nativeVariableName);
+            parameter.SetExpression(() => $"using var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");
+            parameter.SetCallName(() => nativeVariableName);
         }
     }
 }

@@ -14,16 +14,16 @@ internal class RecordArray : ToManagedParameterConverter
         var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetCallName(callName);
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetCallName(() => callName);
 
         if (arrayType.IsPointer)
         {
-            parameterData.SetExpression($"var {callName} = {signatureName}.Select(x => new {Model.Record.GetFullyQualifiedPublicClassName(record)}(x)).ToArray();");
+            parameterData.SetExpression(() => $"var {callName} = {signatureName}.Select(x => new {Model.Record.GetFullyQualifiedPublicClassName(record)}(x)).ToArray();");
         }
         else
         {
-            parameterData.SetExpression($"var {callName} = ({Model.Record.GetFullyQualifiedPublicClassName(record)}[]){signatureName}.Select(x => new {Model.Record.GetFullyQualifiedPublicClassName(record)}({Model.Record.GetFullyQualifiedInternalManagedHandleCreateMethod(record)}(x))).ToArray();");
+            parameterData.SetExpression(() => $"var {callName} = ({Model.Record.GetFullyQualifiedPublicClassName(record)}[]){signatureName}.Select(x => new {Model.Record.GetFullyQualifiedPublicClassName(record)}({Model.Record.GetFullyQualifiedInternalManagedHandleCreateMethod(record)}(x))).ToArray();");
         }
     }
 }

@@ -29,8 +29,8 @@ internal class ForeignTypedRecord : ToManagedParameterConverter
             ? $" {signatureName} == IntPtr.Zero ? null :"
             : string.Empty;
 
-        parameterData.SetSignatureName(signatureName);
-        parameterData.SetExpression($"var {variableName} ={nullable} new {Model.ForeignTypedRecord.GetFullyQualifiedPublicClassName(record)}({ownedHandle});");
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => signatureName);
+        parameterData.SetExpression(() => $"var {variableName} ={nullable} new {Model.ForeignTypedRecord.GetFullyQualifiedPublicClassName(record)}({ownedHandle});");
+        parameterData.SetCallName(() => variableName);
     }
 }

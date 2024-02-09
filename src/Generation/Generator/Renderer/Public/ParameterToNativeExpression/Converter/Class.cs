@@ -31,10 +31,10 @@ internal class Class : ToNativeParameterConverter
             var addRefExpression = parameter.Parameter.Nullable
                 ? $"{parameterName}?.Ref();"
                 : $"{parameterName}.Ref();";
-            parameter.SetExpression(addRefExpression);
+            parameter.SetExpression(() => addRefExpression);
         }
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(callParameter);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => callParameter);
     }
 }

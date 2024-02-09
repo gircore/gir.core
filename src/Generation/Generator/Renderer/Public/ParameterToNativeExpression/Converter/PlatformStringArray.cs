@@ -57,9 +57,9 @@ internal class PlatformStringArray : ToNativeParameterConverter
             _ => throw new Exception("Unknown transfer type for parameter with a null terminated input platform string array")
         };
 
-        parameter.SetSignatureName(signatureName);
-        parameter.SetCallName(nativeVariableName);
-        parameter.SetExpression($"{expressionType} {nativeVariableName} = {createExpression};");
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetCallName(() => nativeVariableName);
+        parameter.SetExpression(() => $"{expressionType} {nativeVariableName} = {createExpression};");
     }
 
     private static void NullTerminatedArrayOut(ParameterToNativeData parameter)
@@ -78,9 +78,9 @@ internal class PlatformStringArray : ToNativeParameterConverter
         if (!parameter.Parameter.Nullable)
             createExpression += " ?? throw new System.Exception(\"Unexpected null value\")";
 
-        parameter.SetSignatureName(signatureName);
-        parameter.SetCallName($"out var {nativeVariableName}");
-        parameter.SetPostCallExpression($"{signatureName} = {createExpression};");
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetCallName(() => $"out var {nativeVariableName}");
+        parameter.SetPostCallExpression(() => $"{signatureName} = {createExpression};");
     }
 
     private static void SizeBasedArray(ParameterToNativeData parameter)
@@ -90,7 +90,7 @@ internal class PlatformStringArray : ToNativeParameterConverter
 
         //We don't need any conversion for string[]
         var variableName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(variableName);
-        parameter.SetCallName(variableName);
+        parameter.SetSignatureName(() => variableName);
+        parameter.SetCallName(() => variableName);
     }
 }

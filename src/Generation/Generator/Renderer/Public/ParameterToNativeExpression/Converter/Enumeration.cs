@@ -19,7 +19,7 @@ internal class Enumeration : ToNativeParameterConverter
 
         //We don't need any conversion for enumerations
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(parameterName);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => parameterName);
     }
 }

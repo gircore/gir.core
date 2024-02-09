@@ -12,7 +12,7 @@ internal class PointerAlias : ToManagedParameterConverter
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => variableName);
     }
 }

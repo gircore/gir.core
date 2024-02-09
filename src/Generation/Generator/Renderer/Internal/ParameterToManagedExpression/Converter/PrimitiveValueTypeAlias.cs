@@ -30,15 +30,15 @@ internal class PrimitiveValueTypeAlias : ToManagedParameterConverter
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => variableName);
     }
 
     private static void InPointer(ParameterToManagedData parameterData)
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
 
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName(ParameterDirection.Ref() + variableName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => ParameterDirection.Ref() + variableName);
     }
 }

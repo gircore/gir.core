@@ -4,6 +4,11 @@ namespace Generator.Renderer.Public;
 
 public class ParameterToNativeData
 {
+    private Func<string>? _getCallName;
+    private Func<string>? _getSignatureName;
+    private Func<string>? _getExpression;
+    private Func<string>? _getPostCallExpression;
+
     private string? _callName;
     private string? _signatureName;
     private string? _expression;
@@ -16,45 +21,45 @@ public class ParameterToNativeData
     public bool IsArrayLengthParameter { get; internal set; }
     public bool IsInOutArrayLengthParameter { get; internal set; }
     public bool IsGLibErrorParameter { get; internal set; }
-    public bool HasCallName => _callName is not null;
-    public bool HasSignatureName => _signatureName is not null;
 
     public ParameterToNativeData(GirModel.Parameter parameter)
     {
         Parameter = parameter;
     }
 
-    public void SetExpression(string expression)
+    public void SetExpression(Func<string> getExpression)
     {
-        _expression = expression;
+        _getExpression = getExpression;
     }
 
-    public string? GetExpression() => _expression;
+    public string? GetExpression() => _expression ??= _getExpression?.Invoke();
 
-    public void SetPostCallExpression(string expression)
+    public void SetPostCallExpression(Func<string> getPostCallExpression)
     {
-        _postCallExpression = expression;
+        _getPostCallExpression = getPostCallExpression;
     }
 
-    public string? GetPostCallExpression() => _postCallExpression;
+    public string? GetPostCallExpression() => _postCallExpression ??= _getPostCallExpression?.Invoke();
 
-    public void SetCallName(string name)
+    public void SetCallName(Func<string> getCallName)
     {
-        _callName = name;
+        _getCallName = getCallName;
     }
 
     public string GetCallName()
     {
+        _callName ??= _getCallName?.Invoke();
         return _callName ?? throw new Exception($"Callname of parameter {Parameter.Name} ({Parameter.AnyTypeOrVarArgs} is not set");
     }
 
-    public void SetSignatureName(string signatureName)
+    public void SetSignatureName(Func<string> getSignatureName)
     {
-        _signatureName = signatureName;
+        _getSignatureName = getSignatureName;
     }
 
     public string GetSignatureName()
     {
+        _signatureName ??= _getSignatureName?.Invoke();
         return _signatureName ?? throw new Exception($"Signaturename of parameter {Parameter.Name} ({Parameter.AnyTypeOrVarArgs} is not set");
     }
 }

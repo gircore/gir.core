@@ -32,21 +32,21 @@ internal class Pointer : ToManagedParameterConverter
     private static void In(ParameterToManagedData parameterData)
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName(variableName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => variableName);
     }
 
     private static void Out(ParameterToManagedData parameterData)
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName($"out {variableName}");
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => $"out {variableName}");
     }
 
     private static void Ref(ParameterToManagedData parameterData)
     {
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetCallName($"ref {variableName}");
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => $"ref {variableName}");
     }
 }

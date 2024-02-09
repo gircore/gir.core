@@ -28,8 +28,8 @@ internal class TypedRecordArray : ToManagedParameterConverter
     private static void WithoutLength(ParameterToManagedData parameter)
     {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName($"ref {parameterName}");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => $"ref {parameterName}");
 
         //TODO
         throw new Exception("Test missing for typed record array passed in via a ref to managed");
@@ -64,13 +64,13 @@ internal class TypedRecordArray : ToManagedParameterConverter
             ? "ToNullableArray"
             : "ToArray";
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName($"{nativeVariableName}.{method}((int){lengthParameter.GetCallName()})");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => $"{nativeVariableName}.{method}((int){lengthParameter.GetCallName()})");
 
         var nullableExpression = parameter.Parameter.Nullable
             ? $"{parameterName} == System.IntPtr.Zero ? {Model.TypedRecord.GetFullyQuallifiedArrayNullHandle(record)} : "
             : string.Empty;
 
-        parameter.SetExpression($"var {nativeVariableName} = {nullableExpression} new {Model.TypedRecord.GetFullyQuallifiedArrayUnownedHandle(record)}({parameterName}, (int) {lengthParameter.GetCallName()});");
+        parameter.SetExpression(() => $"var {nativeVariableName} = {nullableExpression} new {Model.TypedRecord.GetFullyQuallifiedArrayUnownedHandle(record)}({parameterName}, (int) {lengthParameter.GetCallName()});");
     }
 }

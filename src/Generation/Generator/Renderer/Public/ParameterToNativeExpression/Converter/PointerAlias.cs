@@ -28,8 +28,8 @@ internal class PointerAlias : ToNativeParameterConverter
         var direction = GetDirection(parameter.Parameter);
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(direction + parameterName);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => direction + parameterName);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

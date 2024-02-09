@@ -19,7 +19,7 @@ internal class Interface : ToNativeParameterConverter
             ? parameterName + "?.Handle ?? IntPtr.Zero"
             : parameterName + ".Handle";
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(callParameter);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => callParameter);
     }
 }

@@ -20,8 +20,8 @@ internal class PrimitiveValueTypeArrayAlias : ToManagedParameterConverter
         var ns = Model.Namespace.GetPublicName(type.Namespace);
         var typeName = Model.Type.GetName(type);
 
-        parameterData.SetSignatureName(variableName);
-        parameterData.SetExpression($"var {callName} = {variableName}.Select(x => new {ns}.{typeName}(x)).ToArray();");
-        parameterData.SetCallName(callName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetExpression(() => $"var {callName} = {variableName}.Select(x => new {ns}.{typeName}(x)).ToArray();");
+        parameterData.SetCallName(() => callName);
     }
 }
