@@ -30,31 +30,31 @@ internal class PrimitiveValueTypeAlias : ToNativeParameterConverter
     {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(ParameterDirection.Ref() + parameterName);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => ParameterDirection.Ref() + parameterName);
     }
 
     private static void In(ParameterToNativeData parameter)
     {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(ParameterDirection.In() + parameterName);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => ParameterDirection.In() + parameterName);
     }
 
     private static void InOut(ParameterToNativeData parameter)
     {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(ParameterDirection.Ref() + parameterName);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => ParameterDirection.Ref() + parameterName);
     }
 
     private static void Out(ParameterToNativeData parameter)
     {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(ParameterDirection.Out() + parameterName);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => ParameterDirection.Out() + parameterName);
     }
 }

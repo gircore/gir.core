@@ -22,8 +22,8 @@ internal class Record : ToNativeParameterConverter
         parameterData.IsGLibErrorParameter = true;
 
         var name = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(name);
-        parameterData.SetCallName($"out var {name}");
+        parameterData.SetSignatureName(() => name);
+        parameterData.SetCallName(() => $"out var {name}");
     }
 
     private static void RegularRecord(ParameterToNativeData parameter)
@@ -39,7 +39,7 @@ internal class Record : ToNativeParameterConverter
             ? parameterName + "?.Handle ?? " + Model.Record.GetFullyQualifiedInternalNullHandleInstance((GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0)
             : parameterName + ".Handle";
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(variableName);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => variableName);
     }
 }

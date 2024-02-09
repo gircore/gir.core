@@ -21,8 +21,8 @@ internal class TypedRecord : ToNativeParameterConverter
         parameterData.IsGLibErrorParameter = true;
 
         var name = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(name);
-        parameterData.SetCallName($"out var {name}");
+        parameterData.SetSignatureName(() => name);
+        parameterData.SetCallName(() => $"out var {name}");
     }
 
     private static void RegularRecord(ParameterToNativeData parameter)
@@ -44,7 +44,7 @@ internal class TypedRecord : ToNativeParameterConverter
             _ => throw new Exception($"Can't detect call name for parameter record parameter {parameter.Parameter.Name}")
         };
 
-        parameter.SetSignatureName(signatureName);
-        parameter.SetCallName(callName);
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetCallName(() => callName);
     }
 }

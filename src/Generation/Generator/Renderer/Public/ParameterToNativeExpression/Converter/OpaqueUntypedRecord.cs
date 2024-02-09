@@ -27,7 +27,7 @@ internal class OpaqueUntypedRecord : ToNativeParameterConverter
             _ => throw new Exception($"Can't detect call name for untyped opaque parameter {parameter.Parameter.Name}")
         };
 
-        parameter.SetSignatureName(signatureName);
-        parameter.SetCallName(callName);
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetCallName(() => callName);
     }
 }

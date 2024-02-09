@@ -47,8 +47,8 @@ internal class Callback : ToNativeParameterConverter
         if (parameter.Parameter.Closure is { } closureIndex)
             parameters.ElementAt(closureIndex).IsCallbackUserData = true;
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(handlerNameVariable + ".NativeCallback");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => handlerNameVariable + ".NativeCallback");
 
         var destroyParameter = parameters.ElementAt(parameter.Parameter.Destroy.Value);
 
@@ -56,10 +56,10 @@ internal class Callback : ToNativeParameterConverter
             throw new Exception("Destroyparameter is not of type DestroyNotify");
 
         destroyParameter.IsDestroyNotify = true;
-        destroyParameter.SetSignatureName("destroy");
-        destroyParameter.SetCallName(handlerNameVariable + ".DestroyNotify");
+        destroyParameter.SetSignatureName(() => "destroy");
+        destroyParameter.SetCallName(() => handlerNameVariable + ".DestroyNotify");
 
-        parameter.SetExpression($"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetNotifiedHandlerName(callback)}({parameterName});");
+        parameter.SetExpression(() => $"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetNotifiedHandlerName(callback)}({parameterName});");
     }
 
     private static void FillCallScope(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> parameters)
@@ -68,8 +68,8 @@ internal class Callback : ToNativeParameterConverter
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var handlerNameVariable = parameterName + "Handler";
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(handlerNameVariable + ".NativeCallback");
-        parameter.SetExpression($"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetCallHandlerName(callback)}({parameterName});");
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => handlerNameVariable + ".NativeCallback");
+        parameter.SetExpression(() => $"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetCallHandlerName(callback)}({parameterName});");
     }
 }

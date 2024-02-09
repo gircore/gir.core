@@ -28,14 +28,14 @@ internal class Bitfield : ToNativeParameterConverter
     private static void In(ParameterToNativeData parameterData)
     {
         var parameterName = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(parameterName);
-        parameterData.SetCallName(parameterName);
+        parameterData.SetSignatureName(() => parameterName);
+        parameterData.SetCallName(() => parameterName);
     }
 
     private static void Ref(ParameterToNativeData parameterData)
     {
         var parameterName = Model.Parameter.GetName(parameterData.Parameter);
-        parameterData.SetSignatureName(parameterName);
-        parameterData.SetCallName(ParameterDirection.Ref() + parameterName);
+        parameterData.SetSignatureName(() => parameterName);
+        parameterData.SetCallName(() => ParameterDirection.Ref() + parameterName);
     }
 }

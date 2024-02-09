@@ -23,8 +23,8 @@ internal class RecordArray : ToNativeParameterConverter
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";
 
-        parameter.SetSignatureName(parameterName);
-        parameter.SetCallName(nativeVariableName);
+        parameter.SetSignatureName(() => parameterName);
+        parameter.SetCallName(() => nativeVariableName);
 
         var expression = new StringBuilder();
         expression.Append($"var {nativeVariableName} = {parameterName}.Select(record => record.Handle.DangerousGetHandle())");
@@ -32,6 +32,6 @@ internal class RecordArray : ToNativeParameterConverter
             expression.Append(".Append(IntPtr.Zero)");
 
         expression.Append(".ToArray();");
-        parameter.SetExpression(expression.ToString());
+        parameter.SetExpression(() => expression.ToString());
     }
 }
