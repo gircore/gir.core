@@ -40,6 +40,7 @@
       "Samples\\Gtk-4.0\\Builder\\Builder.csproj",
       "Samples\\Gtk-4.0\\DrawingArea\\DrawingArea.csproj",
       "Samples\\Gtk-4.0\\FontDialog\\FontDialog.csproj",
+      "Samples\\Gtk-4.0\\ListView\\ListView.csproj",
       "Samples\\Gtk-4.0\\Window\\Window.csproj",
       "Samples\\GtkSource-5\\GtkSourceView\\GtkSourceView.csproj",
       "Samples\\WebKit-6.0\\JavascriptCall\\JavascriptCall.csproj",
