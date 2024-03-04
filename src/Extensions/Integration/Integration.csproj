@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Scriban" Version="5.7.0" IncludeAssets="Build" />
+    <PackageReference Include="Scriban" Version="5.9.1" IncludeAssets="Build" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
   </ItemGroup>
   
