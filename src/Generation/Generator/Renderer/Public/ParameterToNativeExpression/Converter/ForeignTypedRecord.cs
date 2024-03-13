@@ -24,7 +24,7 @@ internal class ForeignTypedRecord : ToNativeParameterConverter
             { Nullable: false, Transfer: GirModel.Transfer.None } => $"{signatureName}.Handle",
             { Nullable: true, Transfer: GirModel.Transfer.Full } => $"{signatureName}?.Handle.UnownedCopy() ?? {nullHandle}",
             { Nullable: false, Transfer: GirModel.Transfer.Full } => $"{signatureName}.Handle.UnownedCopy()",
-            _ => throw new Exception($"Can't detect call name for parameter opaque parameter {parameter.Parameter.Name}")
+            _ => throw new Exception($"Can't detect call name for foreign typed parameter {parameter.Parameter.Name}")
         };
 
         parameter.SetSignatureName(() => signatureName);

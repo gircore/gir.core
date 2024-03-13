@@ -2,14 +2,13 @@
 
 namespace Generator.Renderer.Internal;
 
-internal static class ForeignTypedRecordHandle
+internal static class ForeignUntypedRecordHandle
 {
     public static string Render(GirModel.Record record)
     {
-        var typeName = Model.ForeignTypedRecord.GetInternalHandle(record);
-        var unownedHandleTypeName = Model.ForeignTypedRecord.GetInternalUnownedHandle(record);
-        var ownedHandleTypeName = Model.ForeignTypedRecord.GetInternalOwnedHandle(record);
-        var getGType = $"{Model.ForeignTypedRecord.GetFullyQualifiedInternalClassName(record)}.{Function.GetGType}()";
+        var typeName = Model.ForeignUntypedRecord.GetInternalHandle(record);
+        var unownedHandleTypeName = Model.ForeignUntypedRecord.GetInternalUnownedHandle(record);
+        var ownedHandleTypeName = Model.ForeignUntypedRecord.GetInternalOwnedHandle(record);
 
         return $@"using System;
 using GObject;
@@ -28,18 +27,6 @@ public abstract class {typeName} : SafeHandle
     public sealed override bool IsInvalid => handle == IntPtr.Zero;
 
     protected {typeName}(bool ownsHandle) : base(IntPtr.Zero, ownsHandle) {{ }}
-
-    public {ownedHandleTypeName} OwnedCopy()
-    {{
-        var ptr = GObject.Internal.Functions.BoxedCopy({getGType}, handle);
-        return new {ownedHandleTypeName}(ptr);
-    }}
-    
-    public {unownedHandleTypeName} UnownedCopy()
-    {{
-        var ptr = GObject.Internal.Functions.BoxedCopy({getGType}, handle);
-        return new {unownedHandleTypeName}(ptr);
-    }}
 }}
 
 public class {unownedHandleTypeName} : {typeName}
@@ -66,7 +53,7 @@ public class {unownedHandleTypeName} : {typeName}
     }}
 }}
 
-public class {ownedHandleTypeName} : {typeName}
+public partial class {ownedHandleTypeName} : {typeName}
 {{
     /// <summary>
     /// Creates a new instance of {ownedHandleTypeName}. Used automatically by PInvoke.
@@ -81,23 +68,7 @@ public class {ownedHandleTypeName} : {typeName}
         SetHandle(ptr);
     }}
 
-    /// <summary>
-    /// Create a {ownedHandleTypeName} from a pointer that is assumed unowned. To do so a
-    /// boxed copy is created of the given pointer to be used as the handle.
-    /// </summary>
-    /// <param name=""ptr"">A pointer to a {record.Name} which is not owned by the runtime.</param>
-    /// <returns>A {ownedHandleTypeName}</returns>
-    public static {ownedHandleTypeName} FromUnowned(IntPtr ptr)
-    {{
-        var ownedPtr = GObject.Internal.Functions.BoxedCopy({getGType}, ptr);
-        return new {ownedHandleTypeName}(ownedPtr);
-    }}
-
-    protected override bool ReleaseHandle()
-    {{
-        GObject.Internal.Functions.BoxedFree({getGType}, handle);
-        return true;
-    }}
+    protected override partial bool ReleaseHandle();
 }}";
     }
 }

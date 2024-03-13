@@ -1,11 +1,24 @@
-﻿namespace Cairo.Internal;
+﻿using System;
+using System.Runtime.InteropServices;
 
-public partial class MatrixOwnedHandle : MatrixHandle
+namespace Cairo.Internal;
+
+public partial class MatrixOwnedHandle
 {
+    public static MatrixOwnedHandle Create()
+    {
+        var size = Marshal.SizeOf<MatrixData>();
+        var ptr = GLib.Functions.Malloc((nuint) size);
+
+        var str = new MatrixData();
+        Marshal.StructureToPtr(str, ptr, false);
+
+        return new MatrixOwnedHandle(ptr);
+    }
+
     protected override partial bool ReleaseHandle()
     {
-        // There isn't any cleanup method for Cairo.Matrix. These are always
-        // allocated and owned by the caller (i.e. MatrixManagedHandle)
-        throw new System.Exception("Can't free native handle of type \"cairo.Internal.MatrixOwnedHandle\".");
+        GLib.Functions.Free(handle);
+        return true;
     }
 }

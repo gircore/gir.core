@@ -17,29 +17,33 @@ public static class Records
             new Generator.Internal.UntypedRecordData(publisher),
             new Generator.Internal.UntypedRecordHandle(publisher),
             new Generator.Public.UntypedRecord(publisher),
-            
+
+            //Foreign untyped records
+            new Generator.Internal.ForeignUntypedRecordHandle(publisher),
+            new Generator.Public.ForeignUntypedRecord(publisher),
+
             //Foreign typed records
             new Generator.Internal.ForeignTypedRecord(publisher),
             new Generator.Internal.ForeignTypedRecordHandle(publisher),
             new Generator.Public.ForeignTypedRecord(publisher),
-            
+
             //Opaque typed records
             new Generator.Internal.OpaqueTypedRecord(publisher),
             new Generator.Internal.OpaqueTypedRecordHandle(publisher),
             new Generator.Public.OpaqueTypedRecord(publisher),
-            
+
             //Opaque untyped records
             new Generator.Internal.OpaqueUntypedRecord(publisher),
             new Generator.Internal.OpaqueUntypedRecordHandle(publisher),
             new Generator.Public.OpaqueUntypedRecord(publisher),
-            
+
             //Typed records
             new Generator.Internal.TypedRecord(publisher),
             new Generator.Internal.TypedRecordDelegates(publisher),
             new Generator.Internal.TypedRecordHandle(publisher),
             new Generator.Internal.TypedRecordData(publisher),
             new Generator.Public.TypedRecord(publisher),
-            
+
             //Regular records
             new Generator.Internal.RecordDelegates(publisher),
             new Generator.Internal.RecordHandle(publisher),
