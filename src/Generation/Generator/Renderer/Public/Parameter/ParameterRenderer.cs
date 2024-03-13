@@ -33,6 +33,8 @@ internal static class ParameterRenderer
         new Parameter.TypedRecord(),
         new Parameter.TypedRecordArray(),
         new Parameter.Union(),
+        new Parameter.UntypedRecord(),
+        new Parameter.UntypedRecordArray(),
         new Parameter.Void(),
     };
 

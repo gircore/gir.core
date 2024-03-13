@@ -20,6 +20,7 @@
 #include "girtest-signal-tester.h"
 #include "girtest-string-tester.h"
 #include "girtest-typed-record-tester.h"
+#include "girtest-untyped-record-tester.h"
 #include "girtest-utf8-string-array-null-terminated-tester.h"
 #include "data/girtest-executor.h"
 #include "data/girtest-executor-impl.h"

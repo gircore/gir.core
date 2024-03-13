@@ -18,14 +18,6 @@ internal class TypeRegistrationException : Exception
 /// </summary>
 public static class TypeRegistrar
 {
-    private static TypeQueryData GetTypeMetrics(Type parentType)
-    {
-        TypeQueryHandle handle = TypeQueryManagedHandle.Create();
-        Functions.TypeQuery(parentType.Value, handle);
-
-        return Marshal.PtrToStructure<TypeQueryData>(handle.DangerousGetHandle());
-    }
-
     /// <summary>
     /// Registers with GType a new child class of 'parentType'.
     /// </summary>
@@ -35,11 +27,13 @@ public static class TypeRegistrar
     /// <exception cref="TypeRegistrationException">The type could not be registered</exception>
     internal static Type RegisterGType(string qualifiedName, Type parentType)
     {
-        // Get metrics about parent type
-        TypeQueryData query = GetTypeMetrics(parentType);
+        var typeQuery = TypeQueryOwnedHandle.Create();
+        Functions.TypeQuery(parentType, typeQuery);
 
-        if (query.Type == 0)
+        if (typeQuery.GetType() == 0)
             throw new TypeRegistrationException("Could not query parent type");
+
+        Debug.WriteLine($"Registering new type {qualifiedName} with parent {parentType.ToString()}");
 
         // Create TypeInfo
         //TODO: Callbacks for "ClassInit" and "InstanceInit" are disabled because if multiple instances
@@ -48,19 +42,13 @@ public static class TypeRegistrar
         //runtime can't do the call anymore and crashes with:
         //A callback was made on a garbage collected delegate of type 'GObject-2.0!GObject.Internal.InstanceInitFunc::Invoke'
         //Fix this by caching the garbage collected instances somehow
-        var typeInfo = new TypeInfoData()
-        {
-            ClassSize = (ushort) query.ClassSize,
-            InstanceSize = (ushort) query.InstanceSize,
-            //ClassInit = DoClassInit,
-            //InstanceInit = DoInstanceInit
-        };
+        var handle = TypeInfoOwnedHandle.Create();
+        handle.SetClassSize((ushort) typeQuery.GetClassSize());
+        handle.SetInstanceSize((ushort) typeQuery.GetInstanceSize());
+        //handle.SetClassInit();
+        //handle.SetInstanceInit();
 
-        // Perform Registration
-        Debug.WriteLine($"Registering new type {qualifiedName} with parent {parentType.ToString()}");
-
-        TypeInfoHandle handle = TypeInfoManagedHandle.Create(typeInfo);
-        var typeid = Functions.TypeRegisterStatic(parentType.Value, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(qualifiedName), handle, 0);
+        var typeid = Functions.TypeRegisterStatic(parentType, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(qualifiedName), handle, 0);
 
         if (typeid == 0)
             throw new TypeRegistrationException("Type Registration Failed!");

@@ -15,7 +15,8 @@ internal static class InstanceParameters
         new InstanceParameter.Pointer(),
         new InstanceParameter.Record(),
         new InstanceParameter.TypedRecord(),
-        new InstanceParameter.Union()
+        new InstanceParameter.Union(),
+        new InstanceParameter.UntypedRecord()
     };
 
     public static string Render(GirModel.InstanceParameter instanceParameter)

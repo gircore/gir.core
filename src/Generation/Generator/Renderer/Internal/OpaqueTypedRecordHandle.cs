@@ -62,7 +62,7 @@ public class {unownedHandleTypeName} : {typeName}
 
     protected override bool ReleaseHandle()
     {{
-        throw new Exception(""UnownedHandle must not be freed"");
+        throw new System.Exception(""UnownedHandle must not be freed"");
     }}
 }}
 

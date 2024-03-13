@@ -12,7 +12,8 @@ internal static class InstanceParameterToNativeExpression
         new InstanceParameterToNativeExpressions.OpaqueTypedRecord(),
         new InstanceParameterToNativeExpressions.OpaqueUntypedRecord(),
         new InstanceParameterToNativeExpressions.Pointer(),
-        new InstanceParameterToNativeExpressions.TypedRecord()
+        new InstanceParameterToNativeExpressions.TypedRecord(),
+        new InstanceParameterToNativeExpressions.UntypedRecord()
     };
 
     public static string Render(GirModel.InstanceParameter instanceParameter)

@@ -31,6 +31,8 @@ internal static class Fields
         new Field.TypedRecordArray(),
         new Field.Union(),
         new Field.UnionArray(),
+        new Field.UntypedRecord(),
+        new Field.UntypedRecordArray()
     };
 
     public static string Render(IEnumerable<GirModel.Field> fields)

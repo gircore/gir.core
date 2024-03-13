@@ -15,7 +15,7 @@ public class OpaqueUntypedRecord : InstanceParameterConverter
         {
             { Transfer: GirModel.Transfer.None } => "this.Handle",
             { Transfer: GirModel.Transfer.Full } => "this.Handle.UnownedCopy()",
-            _ => throw new Exception("Unknown transfer type for opaque untyped instance parameter")
+            _ => throw new Exception("Unknown transfer type for opaque untyped record instance parameter")
         };
     }
 }
