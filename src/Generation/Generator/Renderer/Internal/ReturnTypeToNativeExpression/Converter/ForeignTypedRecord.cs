@@ -15,7 +15,7 @@ internal class ForeignTypedRecord : ReturnTypeConverter
             { Transfer: GirModel.Transfer.None, Nullable: false } => $"{fromVariableName}.Handle.DangerousGetHandle()",
             { Transfer: GirModel.Transfer.Full, Nullable: true } => $"{fromVariableName}?.Handle.UnownedCopy().DangerousGetHandle() ?? IntPtr.Zero",
             { Transfer: GirModel.Transfer.Full, Nullable: false } => $"{fromVariableName}.Handle.UnownedCopy().DangerousGetHandle()",
-            _ => throw new Exception($"Unknown transfer type for opaque record return type which should be converted to native.")
+            _ => throw new Exception($"Unknown transfer type for foreigen typed record return type which should be converted to native.")
         };
     }
 }

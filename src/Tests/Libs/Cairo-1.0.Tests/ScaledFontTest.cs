@@ -10,8 +10,8 @@ public class ScaledFontTest : Test
     public void BindingsShouldSucceed()
     {
         var face = new ToyFontFace("serif", FontSlant.Italic, FontWeight.Bold);
-        var matrix = new Matrix(Internal.MatrixManagedHandle.Create());
-        var ctm = new Matrix(Internal.MatrixManagedHandle.Create());
+        var matrix = new Matrix();
+        var ctm = new Matrix();
         var font = new ScaledFont(face, matrix, ctm, new FontOptions());
         font.Status.Should().Be(Status.Success);
         font.FontType.Should().NotBe(FontType.Toy); // Should be the backend type, e.g. Quartz on macOS

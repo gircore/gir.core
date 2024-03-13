@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Cairo.Internal;
 
 namespace Cairo;
 
 public partial class Matrix
 {
+    public Matrix() : this(MatrixOwnedHandle.Create()) { }
+
     public void Init(double xx, double xy, double yx, double yy, double x0, double y0)
         => Internal.Matrix.Init(Handle, xx, xy, yx, yy, x0, y0);
 

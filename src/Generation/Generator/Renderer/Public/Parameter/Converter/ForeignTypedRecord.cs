@@ -26,6 +26,6 @@ internal class ForeignTypedRecord : ParameterConverter
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
         { Direction: GirModel.Direction.In } => ParameterDirection.In(),
-        _ => throw new Exception("Opaque records with direction != in not yet supported")
+        _ => throw new Exception("Foreign typed records with direction != in not yet supported")
     };
 }

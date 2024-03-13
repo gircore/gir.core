@@ -4,12 +4,17 @@ internal static partial class Record
 {
     public static bool IsStandard(GirModel.Record record)
     {
-        return !IsForeignTyped(record) && !IsOpaqueTyped(record) && !IsOpaqueUntyped(record) && !IsTyped(record) && !IsUntyped(record);
+        return !IsForeignTyped(record) && !IsForeignUntyped(record) && !IsOpaqueTyped(record) && !IsOpaqueUntyped(record) && !IsTyped(record) && !IsUntyped(record);
     }
 
     public static bool IsForeignTyped(GirModel.Record record)
     {
         return record is { Foreign: true, TypeFunction.CIdentifier: not null };
+    }
+
+    public static bool IsForeignUntyped(GirModel.Record record)
+    {
+        return record is { Foreign: true, TypeFunction: null or { CIdentifier: "intern" } };
     }
 
     public static bool IsOpaqueTyped(GirModel.Record record)

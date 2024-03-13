@@ -124,7 +124,7 @@ public class ContextTest : Test
         x1.Should().Be(-2.0);
 
         cr.SelectFontFace("serif", FontSlant.Italic, FontWeight.Bold);
-        var matrix = new Matrix(Internal.MatrixManagedHandle.Create());
+        var matrix = new Matrix();
         cr.SetFontMatrix(matrix);
         cr.GetFontMatrix(matrix);
         cr.SetFontSize(12.0);

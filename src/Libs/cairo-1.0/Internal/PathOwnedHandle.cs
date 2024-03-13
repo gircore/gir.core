@@ -1,6 +1,6 @@
 ﻿namespace Cairo.Internal;
 
-public partial class PathOwnedHandle : PathHandle
+public partial class PathOwnedHandle
 {
     protected override partial bool ReleaseHandle()
     {

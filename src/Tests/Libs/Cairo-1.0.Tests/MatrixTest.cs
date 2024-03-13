@@ -9,7 +9,7 @@ public class MatrixTest : Test
     [TestMethod]
     public void BindingsShouldSucceed()
     {
-        var matrix = new Matrix(Internal.MatrixManagedHandle.Create());
+        var matrix = new Matrix();
         matrix.InitIdentity();
         matrix.Init(1, 0, 0, 1, 2, 3);
 

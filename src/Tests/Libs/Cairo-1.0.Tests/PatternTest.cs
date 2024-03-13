@@ -18,7 +18,7 @@ public class PatternTest : Test
         solid_pattern.Filter = Filter.Gaussian;
         solid_pattern.Filter.Should().Be(Filter.Gaussian);
 
-        var matrix = new Matrix(Internal.MatrixManagedHandle.Create());
+        var matrix = new Matrix();
         solid_pattern.GetMatrix(matrix);
         solid_pattern.SetMatrix(matrix);
 
