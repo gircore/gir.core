@@ -23,8 +23,6 @@ internal static class Fields
         new Field.PrimitiveValueTypeAlias(),
         new Field.PrimitiveValueTypeArray(),
         new Field.PrimitiveValueTypeArrayAlias(),
-        new Field.Record(),
-        new Field.RecordArray(),
         new Field.String(),
         new Field.StringArray(),
         new Field.TypedRecord(),

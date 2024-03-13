@@ -22,8 +22,6 @@ internal static class ReturnTypeRenderer
         new ReturnType.PrimitiveValueType(),
         new ReturnType.PrimitiveValueTypeAlias(),
         new ReturnType.PrimitiveValueTypeArray(),
-        new ReturnType.Record(),
-        new ReturnType.RecordArray(),
         new ReturnType.TypedRecord(),
         new ReturnType.TypedRecordArray(),
         new ReturnType.Union(),

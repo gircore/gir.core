@@ -26,8 +26,6 @@ internal static class ParameterRenderer
         new Parameter.PrimitiveValueTypeArray(),
         new Parameter.PrimitiveValueTypeArrayAlias(),
         new Parameter.PrimitiveValueTypeGLibArrayAlias(),
-        new Parameter.Record(),
-        new Parameter.RecordArray(),
         new Parameter.String(),
         new Parameter.StringArray(),
         new Parameter.TypedRecord(),

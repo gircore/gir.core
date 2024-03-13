@@ -28,8 +28,6 @@ internal static class ParameterToNativeExpression
         new ParameterToNativeExpressions.PrimitiveValueType(),
         new ParameterToNativeExpressions.PrimitiveValueTypeAlias(),
         new ParameterToNativeExpressions.PrimitiveValueTypeArray(),
-        new ParameterToNativeExpressions.Record(),
-        new ParameterToNativeExpressions.RecordArray(),
         new ParameterToNativeExpressions.TypedRecord(),
         new ParameterToNativeExpressions.TypedRecordArray(),
         new ParameterToNativeExpressions.UntypedRecord(),
