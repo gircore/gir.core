@@ -13,7 +13,6 @@ internal static class InstanceParameters
         new InstanceParameter.OpaqueTypedRecord(),
         new InstanceParameter.OpaqueUntypedRecord(),
         new InstanceParameter.Pointer(),
-        new InstanceParameter.Record(),
         new InstanceParameter.TypedRecord(),
         new InstanceParameter.Union(),
         new InstanceParameter.UntypedRecord()

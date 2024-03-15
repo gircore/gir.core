@@ -18,8 +18,6 @@ internal static class ReturnTypeRenderer
         new ReturnType.PointerAlias(),
         new ReturnType.PrimitiveValueType(),
         new ReturnType.PrimitiveValueTypeAlias(),
-        new ReturnType.Record(),
-        new ReturnType.RecordArray(),
         new ReturnType.String(),
         new ReturnType.StringArray(),
         new ReturnType.TypedRecord(),

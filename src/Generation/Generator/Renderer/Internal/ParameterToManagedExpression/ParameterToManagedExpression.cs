@@ -23,8 +23,6 @@ internal static class ParameterToManagedExpression
         new ParameterToManagedExpressions.PrimitiveValueTypeAlias(),
         new ParameterToManagedExpressions.PrimitiveValueTypeArray(),
         new ParameterToManagedExpressions.PrimitiveValueTypeArrayAlias(),
-        new ParameterToManagedExpressions.Record(),
-        new ParameterToManagedExpressions.RecordArray(),
         new ParameterToManagedExpressions.String(),
         new ParameterToManagedExpressions.TypedRecord(),
         new ParameterToManagedExpressions.TypedRecordArray(),

@@ -16,7 +16,6 @@ internal static class ReturnTypeToNativeExpression
         new ReturnTypeToNativeExpressions.Pointer(),
         new ReturnTypeToNativeExpressions.PrimitiveValueType(),
         new ReturnTypeToNativeExpressions.PrimitiveValueTypeAlias(),
-        new ReturnTypeToNativeExpressions.Record(),
         new ReturnTypeToNativeExpressions.TypedRecord(),
         new ReturnTypeToNativeExpressions.Utf8String(),
     };

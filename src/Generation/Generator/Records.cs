@@ -43,15 +43,6 @@ public static class Records
             new Generator.Internal.TypedRecordHandle(publisher),
             new Generator.Internal.TypedRecordData(publisher),
             new Generator.Public.TypedRecord(publisher),
-
-            //Regular records
-            new Generator.Internal.RecordDelegates(publisher),
-            new Generator.Internal.RecordHandle(publisher),
-            new Generator.Internal.RecordOwnedHandle(publisher),
-            new Generator.Internal.RecordMethods(publisher),
-            new Generator.Internal.RecordStruct(publisher),
-            new Generator.Internal.RecordManagedHandle(publisher),
-            new Generator.Public.RecordClass(publisher)
         };
 
         foreach (var record in records.Where(Record.IsEnabled))
