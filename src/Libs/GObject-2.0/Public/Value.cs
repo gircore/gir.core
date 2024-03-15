@@ -186,6 +186,9 @@ public partial class Value : IDisposable
                 var strArray = Utf8StringArrayNullTerminatedOwnedHandle.Create(array);
                 SetBoxed(strArray.DangerousGetHandle());
                 break;
+            case GLib.BoxedRecord b:
+                SetBoxed(b.GetHandle());
+                break;
             case GLib.Variant v:
                 SetVariant(v);
                 break;

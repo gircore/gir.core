@@ -141,8 +141,8 @@ internal static partial class Property
         if (property.AnyType.Is<GirModel.Interface>())
             return;
 
-        if (property.AnyType.Is<GirModel.Record>())
-            throw new System.NotImplementedException("There is currently no concept for transfering native records (structs) into the managed world.");
+        if (property.AnyType.Is<GirModel.Record>(out var record) && (Record.IsTyped(record) || Record.IsForeignTyped(record) || Record.IsOpaqueTyped(record)))
+            return;
 
         throw new System.Exception($"Property {complexType.Name}.{property.Name} is not supported");
     }

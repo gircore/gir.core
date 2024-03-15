@@ -26,6 +26,9 @@ public class PropertyTest : Test
         obj.StringValue.Should().Be(text);
         obj.StringValue = null;
         obj.StringValue.Should().BeNull();
+
+        PropertyTester.StringValuePropertyDefinition.UnmanagedName.Should().Be("string-value");
+        PropertyTester.StringValuePropertyDefinition.ManagedName.Should().Be(nameof(PropertyTester.StringValue));
     }
 
     [TestMethod]
@@ -34,5 +37,22 @@ public class PropertyTest : Test
         //Properties named like a class are suffixed with an underscore.
         var obj = PropertyTester.New();
         obj.PropertyTester_ = "test";
+
+        PropertyTester.PropertyTester_PropertyDefinition.UnmanagedName.Should().Be("property-tester");
+        PropertyTester.PropertyTester_PropertyDefinition.ManagedName.Should().Be(nameof(PropertyTester.PropertyTester_));
+    }
+
+    [TestMethod]
+    public void SupportsTypedRecordProperty()
+    {
+        var r = TypedRecordTester.New();
+        r.CustomBitfield = TypedRecordTesterBitfield.One | TypedRecordTesterBitfield.Zero;
+        var obj = PropertyTester.New();
+        obj.RecordValue = r;
+
+        obj.RecordValue.CustomBitfield.Should().Be(TypedRecordTesterBitfield.One | TypedRecordTesterBitfield.Zero);
+
+        PropertyTester.RecordValuePropertyDefinition.UnmanagedName.Should().Be("record-value");
+        PropertyTester.RecordValuePropertyDefinition.ManagedName.Should().Be(nameof(PropertyTester.RecordValue));
     }
 }
