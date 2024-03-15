@@ -1,4 +1,5 @@
 #include "girtest-property-tester.h"
+#include "girtest-typed-record-tester.h"
 
 /**
  * GirTestPropertyTester:
@@ -10,6 +11,7 @@ typedef enum
 {
     PROP_STRING_VALUE = 1,
     PROP_PROPERTY_TESTER = 2,
+    PROP_TYPED_RECORD_VALUE = 3,
     N_PROPERTIES
 } PropertyTesterProperty;
 
@@ -19,6 +21,7 @@ struct _GirTestPropertyTester
 
     gchar *string_value;
     gchar *property_tester;
+    GirTestTypedRecordTester* record;
 };
 
 G_DEFINE_TYPE(GirTestPropertyTester, girtest_property_tester, G_TYPE_OBJECT)
@@ -42,6 +45,9 @@ girtest_property_tester_get_property (GObject    *object,
     case PROP_PROPERTY_TESTER:
         g_value_set_string (value, self->property_tester);
         break;
+    case PROP_TYPED_RECORD_VALUE:
+        g_value_set_boxed (value, self->record);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -62,6 +68,9 @@ girtest_property_tester_set_property (GObject      *object,
         break;
     case PROP_PROPERTY_TESTER:
         self->property_tester = g_value_dup_string (value);
+        break;
+    case PROP_TYPED_RECORD_VALUE:
+        self->record = g_value_get_boxed (value);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -94,6 +103,13 @@ girtest_property_tester_class_init(GirTestPropertyTesterClass *class)
                            "A string value named like it's class",
                            NULL  /* default value */,
                            G_PARAM_READWRITE);
+
+   /**
+   * GirPropertyTester:record-value:
+   * Contains a typed record tester
+   */
+    properties[PROP_TYPED_RECORD_VALUE] =
+      g_param_spec_boxed ("record-value", NULL, NULL, GIRTEST_TYPE_TYPED_RECORD_TESTER, G_PARAM_READWRITE);
 
     g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 }
