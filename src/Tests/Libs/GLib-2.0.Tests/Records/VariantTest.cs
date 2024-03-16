@@ -115,4 +115,24 @@ public class VariantTest : Test
         variant.Dispose();
         variant.Handle.IsClosed.Should().BeTrue();
     }
+
+    [TestMethod]
+    public void CanUseVariantIter()
+    {
+        var builder = VariantBuilder.New(VariantType.New("as"));
+        builder.AddValue(Variant.NewString("a"));
+        builder.AddValue(Variant.NewString("test"));
+        var variant = builder.End();
+
+        var iter = new VariantIter();
+        var numberItems = iter.Init(variant);
+
+        numberItems.Should().Be(2);
+
+        var first = iter.NextValue()!;
+        first.GetString(out _).Should().Be("a");
+
+        var second = iter.NextValue()!;
+        second.GetString(out _).Should().Be("test");
+    }
 }
