@@ -17,7 +17,16 @@ public class ObjectHandle : SafeHandle
 
     protected sealed override bool ReleaseHandle()
     {
-        ObjectMapper.Unmap(handle);
-        return true;
+        try
+        {
+            ObjectMapper.Unmap(handle);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            var typeName = Functions.TypeNameFromInstance(new TypeInstanceUnownedHandle(handle)).ConvertToString();
+            Console.Error.WriteLine($"Could not release instance {Handle} of type {typeName}. {ex}");
+            return false;
+        }
     }
 }
