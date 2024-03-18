@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Diagnostics;
+using FluentAssertions;
+using GObject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
@@ -52,5 +54,29 @@ public class SignalTest : Test
 
         tester.EmitMySignalFubar();
         received.Should().Be(valid);
+    }
+
+    [TestMethod]
+    public void TestForRaceConditionsIfMemoryIsFeed()
+    {
+        var tester = SignalTester.New();
+        tester.OnMyObjSignal += TesterOnOnMyObjSignal;
+
+        void TesterOnOnMyObjSignal(SignalTester sender, SignalTester.MyObjSignalSignalArgs args)
+        {
+            args.Object.Should().NotBeNull();
+            System.GC.Collect();
+        }
+
+        for (var a = 0; a < 1000; a++)
+        {
+            tester.EmitMyObjSignal();
+        }
+
+        System.GC.Collect();
+        System.GC.WaitForPendingFinalizers();
+
+        System.GC.Collect();
+        System.GC.WaitForPendingFinalizers();
     }
 }
