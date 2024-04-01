@@ -294,4 +294,10 @@ public class OpaqueUntypedRecordTest : Test
         //TODO: Depends on https://github.com/gircore/gir.core/issues/946
         Assert.Inconclusive();
     }
+
+    [TestMethod]
+    public void IsSealed()
+    {
+        typeof(OpaqueUntypedRecordTester).IsSealed.Should().BeTrue();
+    }
 }

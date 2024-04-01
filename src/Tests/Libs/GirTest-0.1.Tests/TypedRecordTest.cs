@@ -374,4 +374,10 @@ public class TypedRecordTest : Test
         var instance = new TypedRecordTester();
         instance.Should().NotBeNull();
     }
+
+    [TestMethod]
+    public void IsSealed()
+    {
+        typeof(TypedRecordTester).IsSealed.Should().BeTrue();
+    }
 }

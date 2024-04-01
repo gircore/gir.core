@@ -303,4 +303,10 @@ public class OpaqueTypedRecordTest : Test
         recordTester.GetRefCount().Should().Be(2);
         wrapped.GetRefCount().Should().Be(2);
     }
+
+    [TestMethod]
+    public void IsSealed()
+    {
+        typeof(OpaqueTypedRecordTester).IsSealed.Should().BeTrue();
+    }
 }
