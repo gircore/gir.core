@@ -118,4 +118,10 @@ public class UntypedRecordTest : Test
         var result = UntypedRecordTester.GetAFromLastElementPointer(array);
         result.Should().Be(6);
     }
+
+    [TestMethod]
+    public void IsSealed()
+    {
+        typeof(UntypedRecordTester).IsSealed.Should().BeTrue();
+    }
 }
