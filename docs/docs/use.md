@@ -20,3 +20,20 @@ The easiest way to get started on Windows is by installing the packages through 
 2. Run `pacman -Syu` to update the package database.
 3. Run `pacman -S mingw-w64-x86_64-XXX` to install a package named XXX.
 4. Add the directory `C:/msys64/mingw64/bin` to the front of the PATH.
+
+## Troubleshooting
+Common problems which can come up during development.
+
+### DLL not found Exception
+If the binaries are installed on the system but are not found during runtime a `DllNotFoundException` is raised. In this case the names of the installed libraries probably don't match the expected names.
+
+The gir.core nuget packages are build against 3 different package sources:
+1. Gnome SDK (Linux)
+2. MSYS2 (Windows)
+3. Homebrew (MacOS)
+
+Each of those sources defines the names of the binaries which must be available to call into them. If a custom build binary is used, the resulting name of the binary can differ from the one specified by the package source, thus resulting in a `DllNotFoundException`.
+
+In case of a custom build C binary it is recommended to use a custom gir.core build, too. Please follow the [build instructions](build.md) to get started. It is important to update the gir-files with the corresponding custom build gir-files.
+
+This allows projects with custom build C binaries to create matching C# binaries without being dependent on one of the package sources.
