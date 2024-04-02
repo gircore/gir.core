@@ -1,19 +1,22 @@
 items:
 - name: Home
-  href: ../index.md
+  href: index.md
+- name: Api Documentation
+  href: api/
+  homepage: api/index.md
 - name: Use
   items:
   - name: Get started
-    href: use.md
+    href: docs/use.md
   - name: Apps
-    href: apps.md
+    href: docs/apps.md
   - name: Libraries
-    href: libraries.md
+    href: docs/libraries.md
 - name: Contribute
   items:
   - name: Guidelines
-    href: contributing.md
+    href: docs/contributing.md
   - name: Build
-    href: build.md
+    href: docs/build.md
   - name: Github
     href: https://github.com/gircore/

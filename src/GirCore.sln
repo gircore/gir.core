@@ -81,7 +81,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}"
 	ProjectSection(SolutionItems) = preProject
-		..\docs\readme.md = ..\docs\readme.md
+		..\docs\index.md = ..\docs\index.md
+		..\docs\toc.yml = ..\docs\toc.yml
+		..\docs\docfx.json = ..\docs\docfx.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{C48DB577-12BB-4AA8-8734-802A39C093BE}"
@@ -105,6 +107,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
 		..\.github\workflows\codeql-analysis.yml = ..\.github\workflows\codeql-analysis.yml
 		..\.github\workflows\update-gir-files.yml = ..\.github\workflows\update-gir-files.yml
+		..\.github\workflows\documentation.yml = ..\.github\workflows\documentation.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generation", "Generation", "{5D5D80C1-4D21-4619-8B59-7B7750016E9D}"
@@ -153,7 +156,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4EE9860B-6
 		..\docs\docs\use.md = ..\docs\docs\use.md
 		..\docs\docs\apps.md = ..\docs\docs\apps.md
 		..\docs\docs\build.md = ..\docs\docs\build.md
-		..\docs\docs\toc.yml = ..\docs\docs\toc.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adw-1", "Libs\Adw-1\Adw-1.csproj", "{CC67D284-6ADE-4F4D-9EE0-544143A7FF40}"
@@ -180,6 +182,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{15AC3143-968
 	ProjectSection(SolutionItems) = preProject
 		..\docs\img\GstSintel.png = ..\docs\img\GstSintel.png
 		..\docs\img\GtkApp.png = ..\docs\img\GtkApp.png
+		..\docs\img\gircore-logo.svg = ..\docs\img\gircore-logo.svg
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GtkSource-5", "Libs\GtkSource-5\GtkSource-5.csproj", "{9D19B388-AD8B-4DC5-B351-5D9FCEAE8FEA}"
@@ -221,6 +224,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListView", "Samples\Gtk-4.0\ListView\ListView.csproj", "{3F6B722F-5192-46BC-A389-5E40ABA9041B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridView", "Samples\Gtk-4.0\GridView\GridView.csproj", "{EE13D29A-42BC-4694-9980-D0498AA15115}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{23ED17AC-703E-40D6-8B4C-0DAE232E1E33}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\api\index.md = ..\docs\api\index.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -945,5 +953,6 @@ Global
 		{48FEE015-C1AD-41EE-A39D-E441F03AC5A3} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
 		{3F6B722F-5192-46BC-A389-5E40ABA9041B} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
 		{EE13D29A-42BC-4694-9980-D0498AA15115} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
+		{23ED17AC-703E-40D6-8B4C-0DAE232E1E33} = {0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}
 	EndGlobalSection
 EndGlobal
