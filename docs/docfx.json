@@ -1,0 +1,36 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../src/Libs",
+          "files": ["**/*.csproj"],
+          "exclude": ["GirTest-0.1/**"]
+        }
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": ["**/*.{md,yml}"],
+        "exclude": ["_site/**"]
+      }
+    ],
+    "resource": [
+      {
+        "files": ["img/**"]
+      }
+    ],
+    "output": "../_site",
+    "template": ["default", "modern"],
+    "globalMetadata": {
+      "_appName": "GirCore",
+      "_appTitle": "GirCore",
+      "_appLogoPath": "img/gircore-logo.svg",
+      "_enableSearch": false,
+      "pdf": false
+    }
+  }
+}
