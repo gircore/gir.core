@@ -18,6 +18,7 @@
 #include "girtest-rename-to-tester.h"
 #include "girtest-returning-signal-tester.h"
 #include "girtest-signal-tester.h"
+#include "girtest-string-array-tester.h"
 #include "girtest-string-tester.h"
 #include "girtest-typed-record-tester.h"
 #include "girtest-untyped-record-tester.h"
