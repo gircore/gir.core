@@ -89,7 +89,12 @@ public partial class ObjectMapper
 
         public void Dispose()
         {
-            Internal.Object.RemoveToggleRef(_handle, _callback, IntPtr.Zero);
+            var sourceFunc = new GLib.Internal.SourceFuncAsyncHandler(() =>
+            {
+                Internal.Object.RemoveToggleRef(_handle, _callback, IntPtr.Zero);
+                return false;
+            });
+            GLib.Internal.MainContext.Invoke(GLib.Internal.MainContextUnownedHandle.NullHandle, sourceFunc.NativeCallback, IntPtr.Zero);
         }
     }
 }
