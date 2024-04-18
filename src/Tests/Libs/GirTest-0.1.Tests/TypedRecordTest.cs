@@ -380,4 +380,25 @@ public class TypedRecordTest : Test
     {
         typeof(TypedRecordTester).IsSealed.Should().BeTrue();
     }
+
+    [TestMethod]
+    public void SupportsReferenceEquality()
+    {
+        var handle1 = Internal.TypedRecordTesterManagedHandle.Create();
+        var handle2 = Internal.TypedRecordTesterManagedHandle.Create();
+        var handle3 = new Internal.TypedRecordTesterUnownedHandle(handle1.DangerousGetHandle());
+
+        handle1.Equals(handle1).Should().BeTrue();
+        handle1.Equals(handle2).Should().BeFalse();
+        handle1.Equals(handle3).Should().BeTrue();
+
+        var instance1 = new TypedRecordTester();
+        var instance2 = new TypedRecordTester();
+        var instance3 = new TypedRecordTester(handle1);
+        var instance4 = new TypedRecordTester(handle1);
+
+        instance1.Equals(instance1).Should().BeTrue();
+        instance1.Equals(instance2).Should().BeFalse();
+        instance3.Equals(instance4).Should().BeTrue();
+    }
 }
