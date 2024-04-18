@@ -309,4 +309,25 @@ public class OpaqueTypedRecordTest : Test
     {
         typeof(OpaqueTypedRecordTester).IsSealed.Should().BeTrue();
     }
+
+    [TestMethod]
+    public void SupportsReferenceEquality()
+    {
+        var instance1 = OpaqueTypedRecordTester.New();
+        var instance2 = OpaqueTypedRecordTester.New();
+
+        instance1.Equals(instance1).Should().BeTrue();
+        instance1.Equals(instance2).Should().BeFalse();
+
+        var handle1 = instance1.Handle;
+        var handle2 = instance2.Handle;
+        var handle3 = handle1.OwnedCopy();
+
+        handle1.Equals(handle1).Should().BeTrue();
+        handle1.Equals(handle2).Should().BeFalse();
+        handle1.Equals(handle3).Should().BeTrue();
+
+        var instance3 = new OpaqueTypedRecordTester(handle1);
+        instance1.Equals(instance3).Should().BeTrue();
+    }
 }
