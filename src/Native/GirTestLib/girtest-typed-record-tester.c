@@ -346,3 +346,21 @@ GirTestTypedRecordTester *  girtest_typed_record_tester_run_callback_create_null
 
     return *ptr;
 }
+
+/**
+ * girtest_typed_record_tester_equals:
+ * @self: An instance
+ * @other: Another instance
+ *
+ * Compare the data of the given instances.
+ * 
+ * Returns: if the given instances contain the same data.
+ **/
+gboolean girtest_typed_record_tester_equals(GirTestTypedRecordTester *self, GirTestTypedRecordTester *other)
+{
+    return self->ref_count == other->ref_count 
+        && self->custom_enum == other->custom_enum 
+        && self->custom_bitfield == other->custom_bitfield
+        && g_strcmp0(self->custom_string, other->custom_string) == 0
+        && self->custom_int_private == other->custom_int_private;
+}
