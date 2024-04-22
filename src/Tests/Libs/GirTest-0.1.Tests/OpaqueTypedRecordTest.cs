@@ -330,4 +330,13 @@ public class OpaqueTypedRecordTest : Test
         var instance3 = new OpaqueTypedRecordTester(handle1);
         instance1.Equals(instance3).Should().BeTrue();
     }
+
+    [TestMethod]
+    public void HasNativeEqualsMethod()
+    {
+        var instance1 = OpaqueTypedRecordTester.New();
+        var instance2 = OpaqueTypedRecordTester.New();
+
+        instance1.NativeEquals(instance2).Should().BeTrue();
+    }
 }

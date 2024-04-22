@@ -401,4 +401,13 @@ public class TypedRecordTest : Test
         instance1.Equals(instance2).Should().BeFalse();
         instance3.Equals(instance4).Should().BeTrue();
     }
+
+    [TestMethod]
+    public void HasNativeEqualsMethod()
+    {
+        var instance1 = new TypedRecordTester();
+        var instance2 = new TypedRecordTester();
+
+        instance1.NativeEquals(instance2).Should().BeTrue();
+    }
 }
