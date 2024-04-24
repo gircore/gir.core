@@ -6,7 +6,10 @@ internal class RecordEqualsMethodCollidesWithGeneratedCode : Fixer<GirModel.Reco
 {
     public void Fixup(GirModel.Record record)
     {
-        if (Model.Record.IsTyped(record) || Model.Record.IsOpaqueTyped(record) || Model.Record.IsOpaqueUntyped(record))
+        if (Model.Record.IsTyped(record)
+            || Model.Record.IsOpaqueTyped(record)
+            || Model.Record.IsOpaqueUntyped(record)
+            || Model.Record.IsUntyped(record))
         {
             foreach (var method in record.Methods)
             {
