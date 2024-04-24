@@ -340,8 +340,8 @@ girtest_opaque_typed_record_tester_run_callback_parameter_no_ownership_transfer_
 
 /**
  * girtest_opaque_typed_record_tester_equals:
- * @callback: (scope call): a callback
- * @data: (transfer none) (nullable): A GirTestOpaqueTypedRecordTester
+ * @self: instance
+ * @other: other instance
  *
  * Compares two instances if they contain the same data.
  * 

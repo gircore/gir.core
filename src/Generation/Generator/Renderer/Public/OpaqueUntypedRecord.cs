@@ -49,6 +49,27 @@ public sealed partial class {name}
         .Where(Method.IsEnabled)
         .Select(MethodRenderer.Render)
         .Join(Environment.NewLine)}
+
+    public bool Equals({name}? other)
+    {{
+        if (ReferenceEquals(null, other))
+            return false;
+
+        if (ReferenceEquals(this, other))
+            return true;
+
+        return Handle.Equals(other.Handle);
+    }}
+
+    public override bool Equals(object? obj)
+    {{
+        return ReferenceEquals(this, obj) || obj is {name} other && Equals(other);
+    }}
+
+    public override int GetHashCode()
+    {{
+        return Handle.GetHashCode();
+    }}
 }}";
     }
 }
