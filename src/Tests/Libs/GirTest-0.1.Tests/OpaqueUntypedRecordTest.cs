@@ -300,4 +300,13 @@ public class OpaqueUntypedRecordTest : Test
     {
         typeof(OpaqueUntypedRecordTester).IsSealed.Should().BeTrue();
     }
+
+    [TestMethod]
+    public void HasNativeEqualsMethod()
+    {
+        var instance1 = OpaqueUntypedRecordTester.New();
+        var instance2 = OpaqueUntypedRecordTester.New();
+
+        instance1.NativeEquals(instance2).Should().BeTrue();
+    }
 }

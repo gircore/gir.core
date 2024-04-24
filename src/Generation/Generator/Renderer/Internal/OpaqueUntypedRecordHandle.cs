@@ -39,6 +39,27 @@ public abstract class {typeName} : SafeHandle
 
     public {ownedHandleTypeName} OwnedCopy() => throw new NotSupportedException(""Can't create a copy of this handle"");
     public {unownedHandleTypeName} UnownedCopy() => throw new NotSupportedException(""Can't create a copy of this handle"");
+
+    public bool Equals({typeName}? other)
+    {{
+        if (ReferenceEquals(null, other))
+            return false;
+
+        if (ReferenceEquals(this, other))
+            return true;
+
+        return handle.Equals(other.handle);
+    }}
+
+    public override bool Equals(object? obj)
+    {{
+        return ReferenceEquals(this, obj) || obj is {typeName} other && Equals(other);
+    }}
+
+    public override int GetHashCode()
+    {{
+        return handle.GetHashCode();
+    }}
 }}
 
 public class {unownedHandleTypeName} : {typeName}

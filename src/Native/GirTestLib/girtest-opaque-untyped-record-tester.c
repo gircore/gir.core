@@ -337,3 +337,18 @@ girtest_opaque_untyped_record_tester_run_callback_parameter_no_ownership_transfe
 {
     callback(data);
 }
+
+/**
+ * girtest_opaque_untyped_record_tester_equals:
+ * @self: instance
+ * @other: other instance
+ *
+ * Compares two instances if they contain the same data.
+ * 
+ * Returns: If both instances have the same data.
+ **/
+gboolean
+girtest_opaque_untyped_record_tester_equals(GirTestOpaqueUntypedRecordTester *self, GirTestOpaqueUntypedRecordTester *other)
+{
+    return self->ref_count == other->ref_count;
+}
