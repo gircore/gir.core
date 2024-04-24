@@ -39,6 +39,27 @@ public abstract class {typeName} : SafeHandle
     protected {typeName}(bool ownsHandle) : base(IntPtr.Zero, ownsHandle) {{ }}
 
     {record.Fields.Select(x => RenderField(record, x)).Join(Environment.NewLine)}
+
+    public bool Equals({typeName}? other)
+    {{
+        if (ReferenceEquals(null, other))
+            return false;
+
+        if (ReferenceEquals(this, other))
+            return true;
+
+        return handle.Equals(other.handle);
+    }}
+
+    public override bool Equals(object? obj)
+    {{
+        return ReferenceEquals(this, obj) || obj is {typeName} other && Equals(other);
+    }}
+
+    public override int GetHashCode()
+    {{
+        return handle.GetHashCode();
+    }}
 }}
 
 public class {unownedHandleTypeName} : {typeName}

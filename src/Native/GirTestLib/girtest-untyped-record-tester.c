@@ -158,3 +158,17 @@ int girtest_untyped_record_tester_get_a_from_last_element_pointer(GirTestUntyped
     GirTestUntypedRecordTester** result = array += (length-1);
     return (*result)->a;
 }
+
+/**
+ * girtest_untyped_record_tester_equals:
+ * @self: An instance
+ * @other: Another instance
+ *
+ * Compare the data of the given instances.
+ * 
+ * Returns: if the given instances contain the same data.
+ **/
+gboolean girtest_untyped_record_tester_equals(GirTestUntypedRecordTester *self, GirTestUntypedRecordTester *other)
+{
+    return self->a == other->a;
+}

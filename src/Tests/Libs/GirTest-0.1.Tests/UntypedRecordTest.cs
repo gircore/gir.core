@@ -124,4 +124,13 @@ public class UntypedRecordTest : Test
     {
         typeof(UntypedRecordTester).IsSealed.Should().BeTrue();
     }
+
+    [TestMethod]
+    public void HasNativeEqualsMethod()
+    {
+        var instance1 = new UntypedRecordTester();
+        var instance2 = new UntypedRecordTester();
+
+        instance1.NativeEquals(instance2).Should().BeTrue();
+    }
 }
