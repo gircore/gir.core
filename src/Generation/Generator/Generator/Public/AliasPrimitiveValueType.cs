@@ -1,4 +1,5 @@
 ﻿using System;
+using Generator.Model;
 
 namespace Generator.Generator.Public;
 
@@ -16,6 +17,9 @@ internal class AliasPrimitiveValueType : Generator<GirModel.Alias>
         try
         {
             if (obj.Type is not GirModel.PrimitiveValueType)
+                return;
+
+            if (!Alias.IsEnabled(obj))
                 return;
 
             var source = Renderer.Public.AliasPrimitiveValueType.Render(obj);

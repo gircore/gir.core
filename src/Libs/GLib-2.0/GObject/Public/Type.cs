@@ -1,7 +1,15 @@
-﻿namespace GObject;
+﻿using System.Runtime.InteropServices;
 
-public partial struct Type
+namespace GObject;
+
+[StructLayout(LayoutKind.Explicit)]
+public struct Type
 {
+
+    //This is a manual implementation of GObject.Type inside GLib project inside the GObject namespace.
+    //The GType alias definition in GObject is disabled through a fixer and the loader has a manual
+    //written resolver for this type so that GLib apis can use GObject.Type.
+
     public nuint Value => _value;
 
     #region Statics
@@ -32,10 +40,20 @@ public partial struct Type
 
     #endregion Statics
 
+    //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
+
+    [FieldOffset(0)] private readonly nuint _value;
+
+    public Type(nuint value)
+    {
+        _value = value;
+    }
+
     public override string? ToString()
     {
         return Internal.Functions.TypeName(_value).ConvertToString();
     }
 
-    //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
+    public static implicit operator nuint(Type o) => o._value;
+    public static implicit operator Type(nuint o) => new Type(o);
 }

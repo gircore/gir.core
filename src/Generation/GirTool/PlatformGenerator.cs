@@ -10,6 +10,7 @@ internal static class PlatformGenerator
         Generator.Fixer.Bitfields.Fixup(@namespace.Bitfields);
         Generator.Fixer.Classes.Fixup(@namespace.Classes);
         Generator.Fixer.Records.Fixup(@namespace.Records);
+        Generator.Fixer.Aliases.Fixup(@namespace.Aliases);
     }
 
     public static void Generate(Namespace @namespace, string path)
