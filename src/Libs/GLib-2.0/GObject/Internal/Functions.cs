@@ -14,10 +14,10 @@ internal static class Functions
 
     [DllImport(ImportResolver.Library, EntryPoint = "g_boxed_free")]
     public static extern void BoxedFree(nuint boxedType, IntPtr boxed);
-    
+
     [DllImport(ImportResolver.Library, EntryPoint = "g_type_name")]
     public static extern GLib.Internal.NullableUtf8StringUnownedHandle TypeName(GObject.Type type);
-    
+
     // "g_strv_get_type" method is defined in GLib gir file but is
     // historically part of the GObject shared library. This is
     // why it is defined manually here.

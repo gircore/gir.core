@@ -18,7 +18,7 @@ internal class AliasPointer : Generator<GirModel.Alias>
         {
             if (obj.Type is not GirModel.Pointer)
                 return;
-            
+
             if (!Alias.IsEnabled(obj))
                 return;
 

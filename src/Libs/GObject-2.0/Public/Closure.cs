@@ -21,7 +21,7 @@ public partial class Closure : IDisposable
         //is not yet sunk. See: https://docs.gtk.org/gobject/method.Closure.sink.html
         Handle = Internal.Closure
             .NewSimple((uint) Marshal.SizeOf<Internal.ClosureData>(), IntPtr.Zero)
-            .OwnedCopy(); 
+            .OwnedCopy();
 
         Debug.WriteLine($"Instantiating Closure: Address {Handle.DangerousGetHandle()}.");
 
