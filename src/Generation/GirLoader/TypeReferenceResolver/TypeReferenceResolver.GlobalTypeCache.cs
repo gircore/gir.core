@@ -70,7 +70,7 @@ internal partial class TypeReferenceResolver
             Add(new Output.Utf8String());
             Add(new Output.PlatformString());
 
-            Add(new Output.GTypeAlias()); //TODO: Only needed until https://gitlab.gnome.org/GNOME/gobject-introspection/-/merge_requests/396 is merged
+            Add(new Output.GTypeAlias()); //Needed to have GType available in GLib as it is only defined in GObject
         }
     }
 }
