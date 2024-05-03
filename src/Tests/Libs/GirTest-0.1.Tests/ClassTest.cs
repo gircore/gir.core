@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Runtime.InteropServices;
+using FluentAssertions;
+using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
@@ -9,7 +11,7 @@ public class ClassTest : Test
     [TestMethod]
     public void CanDisposeInstanceAfterOwnershipIsTransferredAndUnrefed()
     {
-        var obj = new TestClass();
+        var obj = ClassTester.New();
         ClassTester.TransferOwnershipFullAndUnref(obj);
         var act = () => obj.Dispose();
         act.Should().NotThrow();
@@ -22,7 +24,7 @@ public class ClassTest : Test
 
         CollectAfter(() =>
         {
-            var obj = new TestClass();
+            var obj = ClassTester.New();
             reference.Target = obj;
             ClassTester.TransferOwnershipFullAndUnref(obj);
         });
@@ -41,8 +43,21 @@ public class ClassTest : Test
         instance.Should().BeOfType<ClassTester>();
     }
 
-    private class TestClass : GObject.Object
+    [TestMethod]
+    public void CanTransferOwnershipOfInterfaces()
     {
-        public TestClass() : base(true, System.Array.Empty<GObject.ConstructArgument>()) { }
+        var obj = ClassTester.New();
+
+        var executor = GirTest.ExecutorImpl.New();
+        var instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle);
+        instanceData.RefCount.Should().Be(1);
+
+        obj.TakeExecutor(executor);
+        instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle);
+        instanceData.RefCount.Should().Be(2);
+
+        obj.FreeExecutor();
+        instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle);
+        instanceData.RefCount.Should().Be(1);
     }
 }
