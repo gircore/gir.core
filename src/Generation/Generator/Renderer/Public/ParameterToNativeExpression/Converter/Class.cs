@@ -29,8 +29,8 @@ internal class Class : ToNativeParameterConverter
         if (Transfer.IsOwnedRef(parameter.Parameter.Transfer))
         {
             var addRefExpression = parameter.Parameter.Nullable
-                ? $"{parameterName}?.Ref();"
-                : $"{parameterName}.Ref();";
+                ? $"if({parameterName}?.Handle is not null) GObject.Internal.Object.Ref({parameterName}.Handle);"
+                : $"GObject.Internal.Object.Ref({parameterName}.Handle);";
             parameter.SetExpression(() => addRefExpression);
         }
 
