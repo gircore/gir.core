@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/gircore/gir.core/develop/img/logo.svg" align="right" />
+<img src="https://raw.githubusercontent.com/gircore/gir.core/main/img/logo.svg" align="right" />
 
 # Welcome to Gir.Core
 

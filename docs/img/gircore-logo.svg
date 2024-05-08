@@ -1,0 +1,12 @@
+<svg width="38pt" height="38pt" version="1.0" xmlns="http://www.w3.org/2000/svg">
+ <g transform="matrix(.52707 0 0 .52707 -13.594 -10.587)">
+  <g fill-rule="evenodd" stroke="#fff" stroke-linejoin="round" stroke-width="2.1236">
+   <path d="m26.884 34.827 32.933 24.701 53.516-16.467-36.746-21.883z" fill="#971db5"/>
+   <path d="m28.942 86.287-2.0583-51.46 32.933 24.701v55.577z" fill="#812299"/>
+   <path d="m59.817 115.1 49.399-20.584 4.1166-51.46-53.516 16.467z" fill="#68217a"/>
+  </g>
+  <path d="m29.217 85.319 47.269-13.958 32.898 23.083" fill="none" stroke="#fff" stroke-width="1.25"/>
+  <path d="m76.435 21.876v49.109" fill="#babdb6" fill-rule="evenodd" stroke="#fff" stroke-width="1.25"/>
+  <text x="73.826271" y="112.97104" fill="#ffffff" font-family="Mademoiselle" font-size="58.696px" letter-spacing="0px" stroke="#000000" stroke-width="2.1631" word-spacing="0px" style="line-height:1.25" xml:space="preserve">             <tspan x="73.826271" y="112.97104" fill="#ffffff" font-family="sans-serif" font-weight="bold" stroke="#000000" stroke-width="2.1631">#</tspan>        </text>
+ </g>
+</svg>
