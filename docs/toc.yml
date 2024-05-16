@@ -4,14 +4,16 @@ items:
 - name: Api Documentation
   href: api/
   homepage: api/index.md
-- name: Use
+- name: Get started
   items:
-  - name: Get started
+  - name: Use
     href: docs/use.md
   - name: Apps
     href: docs/apps.md
   - name: Libraries
     href: docs/libraries.md
+  - name: Faq
+    href: docs/faq.md
 - name: Contribute
   items:
   - name: Guidelines
