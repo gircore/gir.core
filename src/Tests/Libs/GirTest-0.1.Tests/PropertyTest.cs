@@ -32,6 +32,26 @@ public class PropertyTest : Test
     }
 
     [TestMethod]
+    public void PropertiesCanBeUsedToReceiveNotifyCallbacks()
+    {
+        var value = "MyNewValue";
+        var result = string.Empty;
+
+        var obj = PropertyTester.New();
+        PropertyTester.StringValuePropertyDefinition.Notify(obj, StringValueSignalHandler);
+
+        obj.StringValue = value;
+        result.Should().Be(value);
+
+        PropertyTester.StringValuePropertyDefinition.Unnotify(obj, StringValueSignalHandler);
+
+        void StringValueSignalHandler(GObject.Object sender, GObject.Object.NotifySignalArgs args)
+        {
+            result = ((PropertyTester) sender).StringValue;
+        }
+    }
+
+    [TestMethod]
     public void PropertyNamedLikeClass()
     {
         //Properties named like a class are suffixed with an underscore.

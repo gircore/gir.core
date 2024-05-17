@@ -20,9 +20,9 @@ C# developers are familar with the `INotifyPropertyChanged` interface, which can
 
 Every class which inherits from `GObject.Object` has an event called `Object.OnNotify`. Subscriber to this event get notified about every changed property similar to `INotifyPropertyChanged`. The `NotifySignalArgs` event argument contains a `ParamSpec` instance which can be queried for the *native* property name via `GetName()`.
 
-As the *native* `Object` instance is represented in C# the properties in C# are named differently (mostly camel cased) in comparision to their *native* counterparts. To be able to match the *native* property name with their managed one, every *native* property has a static `Property` descriptor which provides the managed and unmanged name. Additionally it is possible to get or set the properties via their descriptor.
+As the *native* `Object` instance is represented in C# the properties in C# are named differently (mostly camel cased) in comparision to their *native* counterparts. To be able to match the *native* property name with their managed one, every *native* property has a static `Property` descriptor which provides the managed and unmanged name. Additionally, it is possible to get or set the properties via their descriptor.
 
-In Addition to the `OnNotify` event there is a static field for each event which describes the event. Similar to properties it provides the managed and unmanaged name of every event and allows to connect to the event.
+In Addition to the `OnNotify` event there is a static field for each event which describes the event. Similar to properties it provides the managed and unmanaged name of an event and allows to connect to it.
 
 The GObject type system is more advanced than `INotifyPropertyChanged` as it allows to subscribe to specific properties of an instance: This means there are only events received for properties the application is actually interested in. This feature can be used if an event listener is registered via the `NotifySignal.Connect()` method instead of the `OnNotify` event and supplies a *detail* parameter containing the *native* name of the property to watch. (Other events have a *detail* parameter, too with different meanings.)
 
@@ -35,4 +35,13 @@ NotifySignal.Connect(
 );
 ```
 
-Please remember that the detail information must contain the *native name* of a property which is available through the static property descriptor, too.
+Please remember that the detail information must contain the *native name* of a property which is available through the static property descriptor.
+
+There is an alternative API available which avoids defining the name of the property. Every property definition has a `Notify()` method:
+
+```csharp
+Gtk.Button.LabelPropertyDefinition.Notify(
+    sender: myButton,
+    signalHandler: OnButtonLabelChanged
+);
+```
