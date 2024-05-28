@@ -255,7 +255,7 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
         var typePrefix = field.AnyTypeOrCallback.IsT1 ? $"{Model.UntypedRecord.GetDataName(record)}." : string.Empty;
         var dataName = Model.UntypedRecord.GetDataName(record);
 
-        return @$"public unsafe {typePrefix}{renderableField.NullableTypeName} Get{renderableField.Name}()
+        return @$"public {typePrefix}{renderableField.NullableTypeName} Get{renderableField.Name}()
 {{
     if (IsClosed || IsInvalid)
         throw new InvalidOperationException(""Handle is closed or invalid"");
@@ -268,7 +268,7 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
     {
         var dataName = Model.UntypedRecord.GetDataName(record);
 
-        return @$"public unsafe void Set{renderableField.Name}({renderableField.NullableTypeName} value)
+        return @$"public void Set{renderableField.Name}({renderableField.NullableTypeName} value)
 {{
     if (IsClosed || IsInvalid)
         throw new InvalidOperationException(""Handle is closed or invalid"");
