@@ -6,12 +6,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GirTest.Tests;
 
 [TestClass, TestCategory("BindingTest")]
-public class LongRecordTest : Test
+public class LongTest : Test
 {
     [TestMethod]
     public void ShouldUseCLongCULongInInternalStructData()
     {
-        var data = new GirTest.Internal.LongRecordTesterData();
+        var data = new GirTest.Internal.LongTesterData();
         data.Ul.Should().BeOfType<CULong>();
         data.L.Should().BeOfType<CLong>();
     }
@@ -20,7 +20,7 @@ public class LongRecordTest : Test
     public unsafe void GetSizeOfLShouldBeSizeOfCLong()
     {
         var sizeOfCLong = sizeof(CLong);
-        var obj = new LongRecordTester();
+        var obj = new LongTester();
         obj.GetSizeofL().Should().Be((nuint) sizeOfCLong);
     }
 
@@ -32,7 +32,7 @@ public class LongRecordTest : Test
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
             Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
 
-        var obj = new LongRecordTester { L = value };
+        var obj = new LongTester { L = value };
         obj.L.Should().Be(value);
     }
 
@@ -44,7 +44,7 @@ public class LongRecordTest : Test
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
             Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
 
-        var obj = new LongRecordTester { L = value };
+        var obj = new LongTester { L = value };
         obj.L.Should().Be(value);
     }
 
@@ -56,7 +56,7 @@ public class LongRecordTest : Test
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
             Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
 
-        var obj = new LongRecordTester();
+        var obj = new LongTester();
         var act = () => obj.L = value;
         act.Should().Throw<OverflowException>();
     }
@@ -65,7 +65,7 @@ public class LongRecordTest : Test
     public unsafe void GetSizeOfULShouldBeSizeOfCULong()
     {
         var sizeOfCULong = sizeof(CULong);
-        var obj = new LongRecordTester();
+        var obj = new LongTester();
         obj.GetSizeofUl().Should().Be((nuint) sizeOfCULong);
     }
 
@@ -77,7 +77,7 @@ public class LongRecordTest : Test
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
             Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
 
-        var obj = new LongRecordTester { Ul = value };
+        var obj = new LongTester { Ul = value };
         obj.Ul.Should().Be(value);
     }
 
@@ -89,7 +89,7 @@ public class LongRecordTest : Test
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
             Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
 
-        var obj = new LongRecordTester { Ul = value };
+        var obj = new LongTester { Ul = value };
         obj.Ul.Should().Be(value);
     }
 
@@ -99,7 +99,7 @@ public class LongRecordTest : Test
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
             Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
 
-        var obj = new LongRecordTester();
+        var obj = new LongTester();
         var act = () => obj.Ul = ulong.MaxValue;
         act.Should().Throw<OverflowException>();
     }
