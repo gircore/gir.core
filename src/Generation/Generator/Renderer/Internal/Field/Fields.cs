@@ -19,6 +19,8 @@ internal static class Fields
         new Field.Pointer(),
         new Field.PointerAlias(),
         new Field.PointerArray(),
+        new Field.Long(), //Must be before primitive value
+        new Field.UnsignedLong(), //Must be before primitive value
         new Field.PrimitiveValueType(),
         new Field.PrimitiveValueTypeAlias(),
         new Field.PrimitiveValueTypeArray(),

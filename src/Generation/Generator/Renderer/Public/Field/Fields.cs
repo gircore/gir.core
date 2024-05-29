@@ -8,6 +8,8 @@ internal static class Fields
     {
         new Field.Bitfield(),
         new Field.Enumeration(),
+        new Field.Long(), //Must be before PrimitiveValueType
+        new Field.UnsignedLong(), //Must be before PrimitiveValueType
         new Field.PrimitiveValueType(),
         new Field.String(),
     };
