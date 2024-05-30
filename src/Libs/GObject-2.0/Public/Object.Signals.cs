@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace GObject;
 
 public partial class Object
 {
-    private readonly Dictionary<(SignalDefinition, Delegate), (ulong, Closure)> _signalStore = new();
+    private readonly Dictionary<(SignalDefinition, Delegate), (CULong, Closure)> _signalStore = new();
 
     internal void SignalConnectClosure(SignalDefinition signalDefinition, Delegate callback, Closure closure, bool after, string? detail)
     {
         var detailQuark = GLib.Functions.QuarkFromString(detail);
         var handlerId = Internal.Functions.SignalConnectClosureById(Handle, signalDefinition.Id, detailQuark, closure.Handle, after);
 
-        if (handlerId == 0)
+        if (handlerId.Value == 0)
             throw new Exception($"Could not connect to event {signalDefinition.ManagedName}");
 
         _signalStore[(signalDefinition, callback)] = (handlerId, closure);

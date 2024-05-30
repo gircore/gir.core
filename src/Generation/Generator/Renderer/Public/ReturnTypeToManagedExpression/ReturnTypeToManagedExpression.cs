@@ -17,6 +17,8 @@ internal static class ReturnTypeToManagedExpression
         new ReturnTypeToManagedExpressions.PlatformStringArray(),
         new ReturnTypeToManagedExpressions.Pointer(),
         new ReturnTypeToManagedExpressions.PointerAlias(),
+        new ReturnTypeToManagedExpressions.Long(), //Must be before primitive value type
+        new ReturnTypeToManagedExpressions.UnsignedLong(), //Must be before primitive value type
         new ReturnTypeToManagedExpressions.PrimitiveValueType(),
         new ReturnTypeToManagedExpressions.PrimitiveValueTypeAlias(),
         new ReturnTypeToManagedExpressions.PrimitiveValueTypeArray(),

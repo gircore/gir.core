@@ -18,6 +18,8 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.PlatformStringInCallback(),
         new ReturnType.PlatformStringArrayInCallback(),
         new ReturnType.Pointer(),
+        new ReturnType.Long(),
+        new ReturnType.UnsignedLong(),
         new ReturnType.PrimitiveValueType(),
         new ReturnType.PrimitiveValueTypeAlias(),
         new ReturnType.PrimitiveValueTypeArray(),
