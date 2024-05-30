@@ -17,6 +17,6 @@ internal class Interface : ReturnTypeConverter
 
         return returnType.Nullable
             ? $"GObject.Internal.ObjectWrapper.WrapNullableInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"
-            : $"GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"; ;
+            : $"GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
     }
 }

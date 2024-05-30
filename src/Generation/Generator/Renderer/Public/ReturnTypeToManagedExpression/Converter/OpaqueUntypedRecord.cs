@@ -22,7 +22,7 @@ internal class OpaqueUntypedRecord : ReturnTypeConverter
         var createNewInstance = $"new {Model.ComplexType.GetFullyQualified(record)}({handleExpression})";
 
         return returnType.Nullable
-            ? $"{fromVariableName}.IsInvalid ? null : {createNewInstance};"
+            ? $"{fromVariableName}.IsInvalid ? null : {createNewInstance}"
             : createNewInstance;
     }
 }
