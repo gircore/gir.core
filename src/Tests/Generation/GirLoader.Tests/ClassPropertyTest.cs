@@ -89,7 +89,7 @@ public class ClassPropertyTest
     [DataRow("char", false, typeof(Output.SignedByte))]
     [DataRow("gint8", false, typeof(Output.SignedByte))]
     [DataRow("glong", false, typeof(Output.Long))]
-    [DataRow("gssize", false, typeof(Output.Long))]
+    [DataRow("gssize", false, typeof(Output.NativeInteger))]
     [DataRow("gint64", false, typeof(Output.Long))]
     [DataRow("goffset", false, typeof(Output.Long))]
     [DataRow("time_t", false, typeof(Output.Long))]
@@ -125,7 +125,7 @@ public class ClassPropertyTest
     //[DataRow("char*", true, typeof(Output.Model.String))] -> Ambigous between UTF8 and platform strings
     [DataRow("gint8*", true, typeof(Output.SignedByte))]
     [DataRow("glong*", true, typeof(Output.Long))]
-    [DataRow("gssize*", true, typeof(Output.Long))]
+    [DataRow("gssize*", true, typeof(Output.NativeInteger))]
     [DataRow("gint64*", true, typeof(Output.Long))]
     [DataRow("goffset*", true, typeof(Output.Long))]
     [DataRow("time_t*", true, typeof(Output.Long))]

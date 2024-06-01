@@ -42,7 +42,7 @@ public class ByteArrayTest : Test
     {
         var buffer = new byte[5];
         var length = ByteArrayTester.DataOutCallerAllocates(buffer);
-        length.Should().Be((long) DataSize);
+        length.Should().Be((nint) DataSize);
 
         buffer[0].Should().Be(Byte0);
         buffer[1].Should().Be(Byte1);

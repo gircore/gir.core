@@ -36,7 +36,7 @@ public class IntegerArrayTest : Test
     {
         var buffer = new int[5];
         var length = IntegerArrayTester.DataOutCallerAllocates(buffer);
-        length.Should().Be((long) DataSize);
+        length.Should().Be((nint) DataSize);
 
         buffer[0].Should().Be(Int0);
         buffer[1].Should().Be(Int1);
