@@ -25,6 +25,7 @@ internal static class Type
             GirModel.Byte => "byte",
             GirModel.Bool => "bool",
             GirModel.Void => "void",
+            GirModel.NativeInteger => "nint",
             GirModel.NativeUnsignedInteger => "nuint",
             GirModel.Pointer => Pointer,
             GirModel.UnsignedPointer => "UIntPtr",

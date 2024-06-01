@@ -35,6 +35,7 @@ internal class PrimitiveValueTypeAlias : ConstantsConverter
             GirModel.Double => double.TryParse(constant.Value, out _),
             GirModel.Integer => int.TryParse(constant.Value, out _),
             GirModel.Long => long.TryParse(constant.Value, out _),
+            GirModel.NativeInteger => nint.TryParse(constant.Value, out _),
             GirModel.NativeUnsignedInteger => nuint.TryParse(constant.Value, out _),
             GirModel.Short => short.TryParse(constant.Value, out _),
             GirModel.SignedByte => sbyte.TryParse(constant.Value, out _),

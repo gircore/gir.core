@@ -58,7 +58,7 @@ internal partial class TypeReferenceResolver
             Add(new Output.SignedByte("gint8"));
 
             Add(new Output.Long("glong"));
-            Add(new Output.Long("gssize"));
+            Add(new Output.NativeInteger("gssize"));
             Add(new Output.Long("gint64"));
             Add(new Output.Long("goffset"));
             Add(new Output.Long("time_t"));
