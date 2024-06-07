@@ -14,6 +14,8 @@ internal static class ReturnTypeToNativeExpression
         new ReturnTypeToNativeExpressions.OpaqueTypedRecord(),
         new ReturnTypeToNativeExpressions.OpaqueUntypedRecord(),
         new ReturnTypeToNativeExpressions.Pointer(),
+        new ReturnTypeToNativeExpressions.Long(), //Must be before Primitive value type
+        new ReturnTypeToNativeExpressions.UnsigendLong(), //Must be before primitive value type
         new ReturnTypeToNativeExpressions.PrimitiveValueType(),
         new ReturnTypeToNativeExpressions.PrimitiveValueTypeAlias(),
         new ReturnTypeToNativeExpressions.TypedRecord(),

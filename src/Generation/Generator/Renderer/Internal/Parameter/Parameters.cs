@@ -30,6 +30,8 @@ internal static class Parameters
         new Parameter.PointerArray(),
         new Parameter.PointerGLibArray(),
         new Parameter.PointerGLibPtrArray(),
+        new Parameter.Long(), //Must be before primitive value type
+        new Parameter.UnsignedLong(), //Must be before primitive value type
         new Parameter.PrimitiveValueType(),
         new Parameter.PrimitiveValueTypeAlias(),
         new Parameter.PrimitiveValueTypeArray(),

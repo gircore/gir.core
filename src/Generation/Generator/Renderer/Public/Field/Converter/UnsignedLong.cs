@@ -26,7 +26,7 @@ internal class UnsignedLong : FieldConverter
 
     private static string SetExpression(GirModel.Record record, GirModel.Field field)
     {
-        return $"Handle.Set{Model.Field.GetName(field)}(new CULong((nuint)value))";
+        return $"Handle.Set{Model.Field.GetName(field)}(new CULong(checked((nuint)value)))";
     }
 
     private static string GetExpression(GirModel.Record record, GirModel.Field field)
