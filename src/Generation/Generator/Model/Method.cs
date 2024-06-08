@@ -74,4 +74,14 @@ internal static partial class Method
             ImplementExplicitly.Add(method);
         }
     }
+
+    public static bool IsValidCopyFunction(GirModel.Method method)
+    {
+        return !method.Parameters.Any() && method.ReturnType.IsPointer;
+    }
+
+    public static bool IsValidFreeFunction(GirModel.Method method)
+    {
+        return !method.Parameters.Any() && method.ReturnType.AnyType.TryPickT0(out var type, out _) && type is GirModel.Void;
+    }
 }
