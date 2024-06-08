@@ -18,12 +18,17 @@ public partial class Union : ComplexType
     public IEnumerable<Constructor> Constructors => _constructors;
     public IEnumerable<Function> Functions => _functions;
     public bool Introspectable { get; }
+    public Method? CopyFunction { get; }
+    public Method? FreeFunction { get; }
 
-    public Union(Repository repository, string? cType, string name, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors, bool introspectable) : base(repository, cType, name)
+    public Union(Repository repository, string? cType, string name, IEnumerable<Method> methods, IEnumerable<Function> functions, Function? getTypeFunction, IEnumerable<Field> fields, bool disguised, IEnumerable<Constructor> constructors, bool introspectable, Method? copyFunction, Method? freeFunction) : base(repository, cType, name)
     {
         GetTypeFunction = getTypeFunction;
         Disguised = disguised;
         Introspectable = introspectable;
+
+        CopyFunction = copyFunction;
+        FreeFunction = freeFunction;
 
         this._constructors = constructors.ToList();
         this._methods = methods.ToList();

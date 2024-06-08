@@ -52,4 +52,10 @@ public class Record
 
     [XmlAttribute("foreign")]
     public bool Foreign;
+
+    [XmlAttribute("copy-function")]
+    public string? CopyFunction { get; set; }
+
+    [XmlAttribute("free-function")]
+    public string? FreeFunction { get; set; }
 }
