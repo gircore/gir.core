@@ -111,6 +111,24 @@ gchar* girtest_string_array_tester_utf8_return_element_parameter_null_terminated
 }
 
 /**
+ * girtest_string_array_tester_utf8_return_element_parameter_transfer_none_nullable_with_size:
+ * @data: (array length=data_size) (element-type utf8) (transfer none) (nullable): Array
+ * @data_size: The number of values in @data
+ * @position: The index to return
+ *
+ * Returns the string at the given position.
+ *
+ * Returns: (transfer full) (nullable): The string of the array from the given position
+ */
+gchar* girtest_string_array_tester_utf8_return_element_parameter_transfer_none_nullable_with_size(const gchar** data, int data_size, int position)
+{
+    if(!data)
+        return NULL;
+
+    return g_strdup(data[position]);
+}
+
+/**
  * girtest_string_array_tester_filename_return_element_parameter_null_terminated_transfer_none:
  * @data: (array zero-terminated=1) (element-type filename) (transfer none): Array
  * @position: The index to return
