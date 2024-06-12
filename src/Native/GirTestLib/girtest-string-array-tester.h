@@ -16,5 +16,6 @@ const char** girtest_string_array_tester_filename_return_transfer_none_nullable(
 gchar* girtest_string_array_tester_utf8_return_element_parameter_null_terminated_transfer_none(const gchar** data, int position);
 gchar* girtest_string_array_tester_filename_return_element_parameter_null_terminated_transfer_none(const gchar** data, int position);
 gchar* girtest_string_array_tester_utf8_return_element_parameter_null_terminated_transfer_none_nullable(const gchar** data, int position);
+gchar* girtest_string_array_tester_utf8_return_element_parameter_transfer_none_nullable_with_size(const gchar** data, int data_size, int position);
 gchar* girtest_string_array_tester_filename_return_element_parameter_null_terminated_transfer_none_nullable(const gchar** data, int position);
 G_END_DECLS

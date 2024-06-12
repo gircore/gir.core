@@ -25,11 +25,12 @@ internal class Utf8StringArray : ParameterConverter
     private static RenderableParameter SizeBasedArray(GirModel.Parameter parameter)
     {
         var length = parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length must not be null");
+        var typeName = Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1) + Nullable.Render(parameter);
 
         return new RenderableParameter(
             Attribute: MarshalAs.UnmanagedLpArray(sizeParamIndex: length),
             Direction: string.Empty,
-            NullableTypeName: Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1),
+            NullableTypeName: typeName,
             Name: Model.Parameter.GetName(parameter)
         );
     }
