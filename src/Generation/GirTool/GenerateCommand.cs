@@ -19,20 +19,21 @@ public partial class GenerateCommand : Command
         {
             Configuration.SetupLogLevel(logLevel);
 
-            var namespaces = GetNamespaces(searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input, invocationContext);
+            var (allNamespaces, generatedNamespaces) = GetNamespaces(
+                searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input, invocationContext);
 
             if (disableAsync)
             {
-                foreach (var @namespace in namespaces)
+                foreach (var @namespace in allNamespaces)
                     PlatformGenerator.Fixup(@namespace);
 
-                foreach (var @namespace in namespaces)
+                foreach (var @namespace in generatedNamespaces)
                     PlatformGenerator.Generate(@namespace, output);
             }
             else
             {
-                Parallel.ForEach(namespaces, PlatformGenerator.Fixup);
-                Parallel.ForEach(namespaces, x => PlatformGenerator.Generate(x, output));
+                Parallel.ForEach(allNamespaces, PlatformGenerator.Fixup);
+                Parallel.ForEach(generatedNamespaces, x => PlatformGenerator.Generate(x, output));
             }
 
             Log.Information("Done");
@@ -45,27 +46,34 @@ public partial class GenerateCommand : Command
         }
     }
 
-    private static IEnumerable<Namespace> GetNamespaces(string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, string[] input, InvocationContext invocationContext)
+    private static (IEnumerable<Namespace>, IEnumerable<Namespace>) GetNamespaces(string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, string[] input, InvocationContext invocationContext)
     {
         try
         {
             (var linuxRepositories, var macosRepositories, var windowsRepositories) = LoadRepositories(searchPathLinux, searchPathMacos, searchPathWindows, disableAsync, input);
 
-            var linuxNamespaceNames = linuxRepositories.Select(x => GetNamespaceName(x.Namespace));
-            var macosNamespaceNames = macosRepositories.Select(x => GetNamespaceName(x.Namespace));
-            var windowsNamespaceNames = windowsRepositories.Select(x => GetNamespaceName(x.Namespace));
+            var linuxNamespaceNames = linuxRepositories.Repositories.Select(x => GetNamespaceName(x.Namespace));
+            var macosNamespaceNames = macosRepositories.Repositories.Select(x => GetNamespaceName(x.Namespace));
+            var windowsNamespaceNames = windowsRepositories.Repositories.Select(x => GetNamespaceName(x.Namespace));
             var namespacesNames = linuxNamespaceNames
                 .Union(macosNamespaceNames)
                 .Union(windowsNamespaceNames)
                 .Distinct();
 
-            var namespaces = new List<Namespace>();
+            // We only generate code for namespaces that came from the set of inputs
+            var generatedNamespaceNames = linuxRepositories.InputNamespaceNames
+                .Concat(macosRepositories.InputNamespaceNames)
+                .Concat(windowsRepositories.InputNamespaceNames)
+                .ToHashSet();
+
+            var allNamespaces = new List<Namespace>();
+            var generatedNamespaces = new List<Namespace>();
 
             foreach (var namespaceName in namespacesNames)
             {
-                var linuxNamespace = linuxRepositories.FirstOrDefault(x => GetNamespaceName(x.Namespace) == namespaceName)?.Namespace;
-                var macosNamespace = macosRepositories.FirstOrDefault(x => GetNamespaceName(x.Namespace) == namespaceName)?.Namespace;
-                var windowsNamespace = windowsRepositories.FirstOrDefault(x => GetNamespaceName(x.Namespace) == namespaceName)?.Namespace;
+                var linuxNamespace = linuxRepositories.Repositories.FirstOrDefault(x => GetNamespaceName(x.Namespace) == namespaceName)?.Namespace;
+                var macosNamespace = macosRepositories.Repositories.FirstOrDefault(x => GetNamespaceName(x.Namespace) == namespaceName)?.Namespace;
+                var windowsNamespace = windowsRepositories.Repositories.FirstOrDefault(x => GetNamespaceName(x.Namespace) == namespaceName)?.Namespace;
 
                 if (linuxNamespace is null)
                     Log.Information($"There is no {namespaceName} repository for linux");
@@ -76,10 +84,16 @@ public partial class GenerateCommand : Command
                 if (windowsNamespace is null)
                     Log.Information($"There is no {namespaceName} repository for windows");
 
-                namespaces.Add(new Namespace(new PlatformHandler(linuxNamespace, macosNamespace, windowsNamespace)));
+                var @namespace = new Namespace(new PlatformHandler(linuxNamespace, macosNamespace, windowsNamespace));
+                allNamespaces.Add(@namespace);
+
+                if (generatedNamespaceNames.Contains(namespaceName))
+                {
+                    generatedNamespaces.Add(@namespace);
+                }
             }
 
-            return namespaces;
+            return (allNamespaces, generatedNamespaces);
         }
         catch (FileNotFoundException fileNotFoundException)
         {
@@ -89,17 +103,17 @@ public partial class GenerateCommand : Command
             invocationContext.ExitCode = 1;
         }
 
-        return Enumerable.Empty<Namespace>();
+        return (Enumerable.Empty<Namespace>(), Enumerable.Empty<Namespace>());
     }
 
-    private static (List<Repository>, List<Repository>, List<Repository>) LoadRepositories(string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, string[] input)
+    private static (DeserializedInput, DeserializedInput, DeserializedInput) LoadRepositories(string? searchPathLinux, string? searchPathMacos, string? searchPathWindows, bool disableAsync, string[] input)
     {
         if (searchPathLinux is null && searchPathMacos is null && searchPathWindows is null)
             throw new Exception("Please define at least one search parth for a specific platform");
 
-        List<Repository>? linuxRepositories = null;
-        List<Repository>? macosRepositories = null;
-        List<Repository>? windowsRepositories = null;
+        DeserializedInput? linuxRepositories = null;
+        DeserializedInput? macosRepositories = null;
+        DeserializedInput? windowsRepositories = null;
 
         void SetLinuxRepositories() => linuxRepositories = DeserializeInput(searchPathLinux, input);
         void SetMacosRepositories() => macosRepositories = DeserializeInput(searchPathMacos, input);
@@ -123,10 +137,10 @@ public partial class GenerateCommand : Command
         return (linuxRepositories!, macosRepositories!, windowsRepositories!);
     }
 
-    private static List<Repository> DeserializeInput(string? searchPath, string[] input)
+    private static DeserializedInput DeserializeInput(string? searchPath, string[] input)
     {
         if (searchPath is null)
-            return new List<Repository>();
+            return DeserializedInput.Empty();
 
         var inputRepositories = input
             .Select(x => Path.Join(searchPath, x))
@@ -134,13 +148,48 @@ public partial class GenerateCommand : Command
             .Select(x => new FileInfo(x).OpenRead().DeserializeGirInputModel())
             .ToList();
 
+        // Get the namespaces corresponding to the input gir files.
+        // There may be more namespaces included in the output if they are resolved from includes.
+        var inputNamespaces = inputRepositories
+            .Select(repository => repository.Namespace == null ? "" : GetNamespaceName(repository.Namespace))
+            .ToList();
+
         var includeResolver = new IncludeResolver(searchPath);
         var loader = new GirLoader.Loader(includeResolver.ResolveInclude);
-        return loader.Load(inputRepositories).ToList();
+        var outputRepositories = loader.Load(inputRepositories).ToList();
+
+        return new DeserializedInput(outputRepositories, inputNamespaces);
     }
 
     private static string GetNamespaceName(GirModel.Namespace ns)
     {
         return $"{ns.Name}-{ns.Version}";
+    }
+
+    private static string GetNamespaceName(GirLoader.Input.Namespace ns)
+    {
+        return $"{ns.Name}-{ns.Version}";
+    }
+
+    private class DeserializedInput
+    {
+        public DeserializedInput(List<Repository> repositories, List<string> inputNamespaceNames)
+        {
+            Repositories = repositories;
+            InputNamespaceNames = inputNamespaceNames;
+        }
+
+        public static DeserializedInput Empty() =>
+            new DeserializedInput(new List<Repository>(), new List<string>());
+
+        /// <summary>
+        /// All resolved output repositories
+        /// </summary>
+        public List<Repository> Repositories { get; }
+
+        /// <summary>
+        /// Namespace names corresponding to the input gir files
+        /// </summary>
+        public List<string> InputNamespaceNames { get; }
     }
 }
