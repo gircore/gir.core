@@ -2,16 +2,23 @@
 Common questions which can come up during development.
 
 ## DLL not found Exception
-If the binaries are installed on the system but are not found during runtime a `DllNotFoundException` is raised. In this case the names of the installed libraries probably don't match the expected names.
 
-The gir.core nuget packages are build against 3 different package sources:
+The `System.DllNotFoundException` can be thrown in the following cases:
+
+- required DLLs or shared objects (the Unix equivalent of DLLs) are not installed in the operating system.
+- `Module.Initialize()` was not called before instantiating an object in a namespace like `Gtk`, `Gdk` or `GtkSource`.
+- required DLLs or shared objects are installed, but still `DllNotFoundException` is thrown. In this case, the names of the installed libraries probably don't match the names expected by `gir.core`. This can happen when [using a custom build binary](#how-can-i-use-gircore-with-a-custom-build-native-binary).
+
+## How can I use gir.core with a custom build native binary?
+
+The `gir.core` nuget packages are built against 3 different package sources:
 1. Gnome SDK (Linux)
 2. MSYS2 (Windows)
 3. Homebrew (MacOS)
 
-Each of those sources defines the names of the binaries which must be available to call into them. If a custom build binary is used, the resulting name of the binary can differ from the one specified by the package source, thus resulting in a `DllNotFoundException`.
+Each of those sources defines the names of the binaries which must be available to call into them. If a custom build binary is used, the resulting binary name may be different from the one specified by the package source, resulting in a `System.DllNotFoundException`.
 
-In case of a custom build C binary it is recommended to use a custom gir.core build, too. Please follow the [build instructions](build.md) to get started. It is important to update the gir-files with the corresponding custom build gir-files.
+In case of a custom build C binary it is recommended to use a custom `gir.core` build, too. Please follow the [build instructions](build.md) to get started. It is important to update the gir-files with the corresponding custom build gir-files.
 
 This allows projects with custom build C binaries to create matching C# binaries without being dependent on one of the package sources.
 
