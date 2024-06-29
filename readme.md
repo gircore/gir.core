@@ -99,3 +99,8 @@ The code in the library folder is not complete because most of the code is gener
 Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.
 
 The [Gir.Core logo](img/logo.svg) is built upon the [original GTK logo](https://wiki.gnome.org/Projects/GTK/Logo) by Andreas Nilsson which is licensed under the [GNU Free Documentation License](https://www.gnu.org/licenses/fdl-1.3.txt) and was relicensed under CC BY-SA 3.0. Therefore the Gir.Core logo is licensed under the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.en), too.
+
+## Special Thanks
+Special thanks go to the people and ogranizations who make this project possible:
+- All [contributors](https://github.com/gircore/gir.core/graphs/contributors) for donating their time in form of code, feedback and bug reports.
+- [JetBrains](https://www.jetbrains.com/) for providing open source licenses of their products.
