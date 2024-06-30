@@ -104,3 +104,4 @@ The [Gir.Core logo](img/logo.svg) is built upon the [original GTK logo](https://
 Special thanks go to the people and ogranizations who make this project possible:
 - All [contributors](https://github.com/gircore/gir.core/graphs/contributors) for donating their time in form of code, feedback and bug reports.
 - [JetBrains](https://www.jetbrains.com/) for providing open source licenses of their products.
+- [GitHub](https://github.com) for providing an open source friendly code hosting platform.
