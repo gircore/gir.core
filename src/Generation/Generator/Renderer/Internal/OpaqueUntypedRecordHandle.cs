@@ -112,6 +112,69 @@ public class {ownedHandleTypeName} : {typeName}
 }}";
     }
 
+    private static string RenderCopyFunctions(GirModel.Record record)
+    {
+        var unownedHandleTypeName = Model.OpaqueUntypedRecord.GetInternalUnownedHandle(record);
+        var ownedHandleTypeName = Model.OpaqueUntypedRecord.GetInternalOwnedHandle(record);
+
+        return record.CopyFunction is null || !Method.IsValidCopyFunction(record.CopyFunction)
+            ? $"""
+                public partial {ownedHandleTypeName} OwnedCopy();
+                public partial {unownedHandleTypeName} UnownedCopy();
+            """
+            : $$"""
+                [DllImport(ImportResolver.Library, EntryPoint = "{{record.CopyFunction}}")]
+                protected static extern IntPtr Copy(IntPtr handle);
+
+                public {{ownedHandleTypeName}} OwnedCopy()
+                {
+                  return new {{ownedHandleTypeName}}(Copy(handle));
+                }
+
+                public {{unownedHandleTypeName}} UnownedCopy()
+                {
+                  return new {{unownedHandleTypeName}}(Copy(handle));
+                }
+            """;
+    }
+
+    private static string RenderFromUnowned(GirModel.Record record)
+    {
+        var ownedHandleTypeName = Model.OpaqueUntypedRecord.GetInternalOwnedHandle(record);
+
+        return record.CopyFunction is null || !Method.IsValidCopyFunction(record.CopyFunction)
+            ? $"""
+                   /// <summary>
+                   /// Create a {ownedHandleTypeName} from a pointer that is assumed unowned.
+                   /// </summary>
+                   /// <param name="ptr">A pointer to a {record.Name} which is not owned by the runtime.</param>
+                   /// <returns>A {ownedHandleTypeName}</returns>
+                   public static partial {ownedHandleTypeName} FromUnowned(IntPtr ptr);
+               """
+            : $$"""
+                    public static {{ownedHandleTypeName}} FromUnowned(IntPtr ptr)
+                    {
+                        return new {{ownedHandleTypeName}}(Copy(ptr));
+                    }
+                """;
+    }
+
+    private static string RenderReleaseHandle(GirModel.Record record)
+    {
+        return record.FreeFunction is null || !Method.IsValidFreeFunction(record.FreeFunction)
+            ? "protected override partial bool ReleaseHandle();"
+            : $$"""
+                    [DllImport(ImportResolver.Library, EntryPoint = "{{record.FreeFunction}}")]
+                    private static extern void Free(IntPtr handle);
+                    
+                    protected override bool ReleaseHandle()
+                    {
+                        Free(handle);
+                        return true;
+                    }
+                """;
+    }
+
     private static string StandardHandle(GirModel.Record record)
     {
         var typeName = Model.OpaqueUntypedRecord.GetInternalHandle(record);
@@ -136,8 +199,7 @@ public abstract partial class {typeName} : SafeHandle
 
     protected {typeName}(bool ownsHandle) : base(IntPtr.Zero, ownsHandle) {{ }}
 
-    public partial {ownedHandleTypeName} OwnedCopy();
-    public partial {unownedHandleTypeName} UnownedCopy();
+    {RenderCopyFunctions(record)}
 }}
 
 public class {unownedHandleTypeName} : {typeName}
@@ -178,15 +240,8 @@ public partial class {ownedHandleTypeName} : {typeName}
     {{
         SetHandle(ptr);
     }}
-
-    /// <summary>
-    /// Create a {ownedHandleTypeName} from a pointer that is assumed unowned.
-    /// </summary>
-    /// <param name=""ptr"">A pointer to a {record.Name} which is not owned by the runtime.</param>
-    /// <returns>A {ownedHandleTypeName}</returns>
-    public static partial {ownedHandleTypeName} FromUnowned(IntPtr ptr);
-
-    protected override partial bool ReleaseHandle();
+    {RenderFromUnowned(record)}
+    {RenderReleaseHandle(record)}
 }}";
     }
 }

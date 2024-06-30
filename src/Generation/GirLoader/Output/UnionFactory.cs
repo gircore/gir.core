@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using OneOf.Types;
 
 namespace GirLoader.Output;
@@ -29,17 +30,21 @@ internal class UnionFactory
             _ => null
         };
 
+        var methods = _methodFactory.Create(union.Methods);
+
         var newUnion = new Union(
             repository: repository,
             cType: union.CType,
             name: union.Name,
-            methods: _methodFactory.Create(union.Methods),
+            methods: methods,
             functions: _functionFactory.Create(union.Functions, repository),
             getTypeFunction: getTypeFunction,
             fields: _fieldFactory.Create(union.Fields, repository),
             disguised: union.Disguised,
             constructors: _constructorFactory.Create(union.Constructors),
-            introspectable: union.Introspectable
+            introspectable: union.Introspectable,
+            copyFunction: methods.FirstOrDefault(x => x.Identifier == union.CopyFunction),
+            freeFunction: methods.FirstOrDefault(x => x.Identifier == union.FreeFunction)
         );
 
         if (getTypeFunction is not null)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace GirLoader.Output;
 
@@ -30,12 +31,14 @@ internal class RecordFactory
             _ => null
         };
 
+        var methods = _methodFactory.Create(record.Methods);
+
         var newRecord = new Record(
             repository: repository,
             cType: record.CType,
             name: record.Name,
             gLibClassStructFor: GetGLibClassStructFor(record.GLibIsGTypeStructFor, repository.Namespace),
-            methods: _methodFactory.Create(record.Methods),
+            methods: methods,
             functions: _functionFactory.Create(record.Functions, repository),
             getTypeFunction: getTypeFunction,
             fields: _fieldFactory.Create(record.Fields, repository),
@@ -44,7 +47,9 @@ internal class RecordFactory
             introspectable: record.Introspectable,
             foreign: record.Foreign,
             opaque: record.Opaque,
-            pointer: record.Pointer
+            pointer: record.Pointer,
+            copyFunction: methods.FirstOrDefault(x => x.Identifier == record.CopyFunction),
+            freeFunction: methods.FirstOrDefault(x => x.Identifier == record.FreeFunction)
         );
 
         if (getTypeFunction is not null)

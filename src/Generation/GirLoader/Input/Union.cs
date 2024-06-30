@@ -37,4 +37,10 @@ public class Union
 
     [XmlAttribute("introspectable")]
     public bool Introspectable = true;
+
+    [XmlAttribute("copy-function")]
+    public string? CopyFunction { get; set; }
+
+    [XmlAttribute("free-function")]
+    public string? FreeFunction { get; set; }
 }
