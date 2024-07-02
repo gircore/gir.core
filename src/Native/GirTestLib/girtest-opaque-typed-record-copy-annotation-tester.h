@@ -1,0 +1,51 @@
+#pragma once
+
+#include <glib-object.h>
+
+G_BEGIN_DECLS
+
+typedef struct _GirTestOpaqueTypedRecordCopyAnnotationTester GirTestOpaqueTypedRecordCopyAnnotationTester;
+#define GIRTEST_TYPE_OPAQUE_TYPED_RECORD_COPY_ANNOTATION_TESTER (girtest_opaque_typed_record_copy_annotation_tester_get_type())
+
+GType girtest_opaque_typed_record_copy_annotation_tester_get_type (void) G_GNUC_CONST;
+
+/**
+ * GirTestCreateOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransfer:
+ *
+ * Returns: (transfer none): a new OpaqueRecordTester.
+ */
+typedef GirTestOpaqueTypedRecordCopyAnnotationTester* (*GirTestCreateOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransfer) ();
+
+/**
+ * GirTestCreateOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransferNullable:
+ *
+ * Returns: (transfer none) (nullable): a new OpaqueRecordTester or NULL.
+ */
+typedef GirTestOpaqueTypedRecordCopyAnnotationTester* (*GirTestCreateOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransferNullable) ();
+
+/**
+ * GirTestGetOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransfer:
+ * @data: (transfer none): An OpaqueTypedRecordTester
+ */
+typedef void (*GirTestGetOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransfer) (GirTestOpaqueTypedRecordCopyAnnotationTester *data);
+
+/**
+ * GirTestGetOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransferNullable:
+ * @data: (transfer none) (nullable): An OpaqueTypedRecordTester
+ */
+typedef void (*GirTestGetOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransferNullable) (GirTestOpaqueTypedRecordCopyAnnotationTester *data);
+
+GirTestOpaqueTypedRecordCopyAnnotationTester * girtest_opaque_typed_record_copy_annotation_tester_new ();
+GirTestOpaqueTypedRecordCopyAnnotationTester * girtest_opaque_typed_record_copy_annotation_tester_ref (GirTestOpaqueTypedRecordCopyAnnotationTester *self);
+void girtest_opaque_typed_record_copy_annotation_tester_unref (GirTestOpaqueTypedRecordCopyAnnotationTester *self);
+GirTestOpaqueTypedRecordCopyAnnotationTester * girtest_opaque_typed_record_copy_annotation_tester_mirror(GirTestOpaqueTypedRecordCopyAnnotationTester *data);
+GirTestOpaqueTypedRecordCopyAnnotationTester * girtest_opaque_typed_record_copy_annotation_tester_nullable_mirror(GirTestOpaqueTypedRecordCopyAnnotationTester *data, gboolean mirror);
+int girtest_opaque_typed_record_copy_annotation_tester_get_ref_count(GirTestOpaqueTypedRecordCopyAnnotationTester *self);
+void girtest_opaque_typed_record_copy_annotation_tester_take_and_unref(GirTestOpaqueTypedRecordCopyAnnotationTester *self);
+void girtest_opaque_typed_record_copy_annotation_tester_take_and_unref_func(int dummy, GirTestOpaqueTypedRecordCopyAnnotationTester *data);
+void girtest_opaque_typed_record_copy_annotation_tester_take_and_unref_func_nullable(int dummy, GirTestOpaqueTypedRecordCopyAnnotationTester *data);
+GirTestOpaqueTypedRecordCopyAnnotationTester * girtest_opaque_typed_record_copy_annotation_tester_run_callback_return_no_ownership_transfer(GirTestCreateOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransfer callback);
+GirTestOpaqueTypedRecordCopyAnnotationTester * girtest_opaque_typed_record_copy_annotation_tester_run_callback_return_no_ownership_transfer_nullable(GirTestCreateOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransferNullable callback);
+void girtest_opaque_typed_record_copy_annotation_tester_run_callback_parameter_no_ownership_transfer(GirTestGetOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransfer callback, GirTestOpaqueTypedRecordCopyAnnotationTester *data);
+void girtest_opaque_typed_record_copy_annotation_tester_run_callback_parameter_no_ownership_transfer_nullable(GirTestGetOpaqueTypedRecordCopyAnnotationTesterNoOwnershipTransferNullable callback, GirTestOpaqueTypedRecordCopyAnnotationTester *data);
+G_END_DECLS

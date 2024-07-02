@@ -11,6 +11,7 @@
 #include "girtest-error-tester.h"
 #include "girtest-integer-array-tester.h"
 #include "girtest-long-tester.h"
+#include "girtest-opaque-typed-record-copy-annotation-tester.h"
 #include "girtest-opaque-typed-record-tester.h"
 #include "girtest-opaque-untyped-record-tester.h"
 #include "girtest-platform-string-array-null-terminated-tester.h"
