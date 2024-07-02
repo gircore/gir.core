@@ -9,7 +9,6 @@ internal static class OpaqueTypedRecordHandle
         var typeName = Model.OpaqueTypedRecord.GetInternalHandle(record);
         var unownedHandleTypeName = Model.OpaqueTypedRecord.GetInternalUnownedHandle(record);
         var ownedHandleTypeName = Model.OpaqueTypedRecord.GetInternalOwnedHandle(record);
-        var getGType = $"{Model.OpaqueTypedRecord.GetFullyQualifiedInternalClassName(record)}.{Function.GetGType}()";
 
         return $@"using System;
 using GObject;
@@ -29,15 +28,17 @@ public abstract class {typeName} : SafeHandle, IEquatable<{typeName}>
 
     protected {typeName}(bool ownsHandle) : base(IntPtr.Zero, ownsHandle) {{ }}
 
+    {RenderCopyFunction(record)}
+
     public {ownedHandleTypeName} OwnedCopy()
     {{
-        var ptr = GObject.Internal.Functions.BoxedCopy({getGType}, handle);
+        {RenderCopyStatement(record, "ptr", "handle")}
         return new {ownedHandleTypeName}(ptr);
     }}
-    
+
     public {unownedHandleTypeName} UnownedCopy()
     {{
-        var ptr = GObject.Internal.Functions.BoxedCopy({getGType}, handle);
+        {RenderCopyStatement(record, "ptr", "handle")}
         return new {unownedHandleTypeName}(ptr);
     }}
 
@@ -102,6 +103,8 @@ public class {ownedHandleTypeName} : {typeName}
         SetHandle(ptr);
     }}
 
+   {RenderFreeFunction(record)}
+
     /// <summary>
     /// Create a {ownedHandleTypeName} from a pointer that is assumed unowned. To do so a
     /// boxed copy is created of the given pointer to be used as the handle.
@@ -110,15 +113,53 @@ public class {ownedHandleTypeName} : {typeName}
     /// <returns>A {ownedHandleTypeName}</returns>
     public static {ownedHandleTypeName} FromUnowned(IntPtr ptr)
     {{
-        var ownedPtr = GObject.Internal.Functions.BoxedCopy({getGType}, ptr);
-        return new {ownedHandleTypeName}(ownedPtr);
+       {RenderCopyStatement(record, "ownedPtr", "ptr")}
+       return new {ownedHandleTypeName}(ownedPtr);
     }}
 
     protected override bool ReleaseHandle()
     {{
-        GObject.Internal.Functions.BoxedFree({getGType}, handle);
-        return true;
+       {RenderFreeStatement(record, "handle")}
+       return true;
     }}
 }}";
+    }
+
+    private static string RenderCopyFunction(GirModel.Record record)
+    {
+        return record.CopyFunction is null || !Method.IsValidCopyFunction(record.CopyFunction)
+            ? string.Empty
+            : $"""
+                  [DllImport(ImportResolver.Library, EntryPoint = "{record.CopyFunction}")]
+                  protected static extern IntPtr Copy(IntPtr handle);
+               """;
+    }
+
+    private static string RenderFreeFunction(GirModel.Record record)
+    {
+        return record.FreeFunction is null || !Method.IsValidFreeFunction(record.FreeFunction)
+            ? string.Empty
+            : $"""
+                   [DllImport(ImportResolver.Library, EntryPoint = "{record.FreeFunction}")]
+                   private static extern void Free(IntPtr handle);
+               """;
+    }
+
+    private static string RenderCopyStatement(GirModel.Record record, string resultVariable, string parameterVariable)
+    {
+        var getGType = $"{Model.OpaqueTypedRecord.GetFullyQualifiedInternalClassName(record)}.{Function.GetGType}()";
+
+        return record.CopyFunction is null || !Method.IsValidCopyFunction(record.CopyFunction)
+            ? $"var {resultVariable} = GObject.Internal.Functions.BoxedCopy({getGType}, {parameterVariable});"
+            : $"var {resultVariable} = Copy({parameterVariable});";
+    }
+
+    private static string RenderFreeStatement(GirModel.Record record, string parameterVariable)
+    {
+        var getGType = $"{Model.OpaqueTypedRecord.GetFullyQualifiedInternalClassName(record)}.{Function.GetGType}()";
+
+        return record.FreeFunction is null || !Method.IsValidFreeFunction(record.FreeFunction)
+            ? $"GObject.Internal.Functions.BoxedFree({getGType}, {parameterVariable});"
+            : $"Free({parameterVariable});";
     }
 }

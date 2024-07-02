@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 namespace GLib;
 
-public sealed partial class Bytes : IDisposable
+public sealed partial class Bytes
 {
     private long _size;
 
@@ -13,9 +12,8 @@ public sealed partial class Bytes : IDisposable
         GC.AddMemoryPressure(_size);
     }
 
-    public void Dispose()
+    partial void OnDispose()
     {
-        Handle.Dispose();
         GC.RemoveMemoryPressure(_size);
     }
 }
