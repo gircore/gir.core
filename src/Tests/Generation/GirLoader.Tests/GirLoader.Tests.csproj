@@ -5,4 +5,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Generation\GirLoader\GirLoader.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\..\ext\gir-files\linux\GObject-2.0.gir" LogicalName="GirLoader.Tests.linux.GObject-2.0.gir" />
+  </ItemGroup>
 </Project>

@@ -9,4 +9,8 @@
     <ProjectReference Include="../Generator/Generator.csproj" />
     <ProjectReference Include="../GirLoader/GirLoader.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\ext\gir-files\*\*.gir" />
+  </ItemGroup>
 </Project>

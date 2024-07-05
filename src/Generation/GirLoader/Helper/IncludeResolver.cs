@@ -1,23 +1,18 @@
-﻿using System.IO;
-
-namespace GirLoader;
+﻿namespace GirLoader;
 
 public class IncludeResolver
 {
-    private readonly string _inputDirectory;
+    private readonly IRepositoryResolver _repositoryResolver;
 
-    public IncludeResolver(string inputDirectory)
+    public IncludeResolver(IRepositoryResolver repositoryResolver)
     {
-        _inputDirectory = inputDirectory;
+        _repositoryResolver = repositoryResolver;
     }
 
     public Input.Repository? ResolveInclude(Output.Include include)
     {
         var fileName = $"{include.Name}-{include.Version}.gir";
 
-        var path = Path.Combine(_inputDirectory, fileName);
-        return File.Exists(path)
-            ? new FileInfo(path).OpenRead().DeserializeGirInputModel()
-            : null;
+        return _repositoryResolver.ResolveRepository(fileName);
     }
 }

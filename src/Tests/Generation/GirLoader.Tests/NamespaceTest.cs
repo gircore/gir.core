@@ -12,7 +12,7 @@ public class NamespaceTest
     {
         var namespaceName = "MyNamespace";
         var version = "1.0";
-        var inputRepository = Helper.GetInputRepository(namespaceName, version);
+        var inputRepository = InputRepositoryHelper.CreateRepository(namespaceName, version);
 
         var repository = new Loader(DummyResolver.Resolve).Load(new[] { inputRepository }).First();
         repository.Namespace.Name.Value.Should().Be(namespaceName);
