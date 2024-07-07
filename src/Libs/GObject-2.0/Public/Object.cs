@@ -65,12 +65,12 @@ public partial class Object : IObject, IDisposable, IHandle
     /// </summary>
     protected virtual void Initialize()
     {
-        Debug.WriteLine($"Initialising Object: Address {_handle.Handle}, Type {GetType()}.");
+        Debug.WriteLine($"Handle {_handle.Handle}: Initialising object of type {GetType()}.");
     }
 
     public virtual void Dispose()
     {
-        Debug.WriteLine($"Disposing Object: Address {_handle.Handle}, Type {GetType()}.");
+        Debug.WriteLine($"Handle {_handle.Handle}: Disposing object of type {GetType()}.");
         DisposeClosures();
         _handle.Dispose();
     }

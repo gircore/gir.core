@@ -34,7 +34,7 @@ public static partial class ObjectMapper
             WrapperObjects[handle] = new ToggleRef(handle, obj, ownedRef);
         }
 
-        Debug.WriteLine($"Mapped Object: Handle '{handle}' Object '{obj.GetType()}' OwnedRef '{ownedRef}'.");
+        Debug.WriteLine($"Handle {handle}: Mapped object of type '{obj.GetType()}' as owned ref '{ownedRef}'.");
     }
 
     public static void Unmap(IntPtr handle)
@@ -45,6 +45,6 @@ public static partial class ObjectMapper
                 toggleRef.Dispose();
         }
 
-        Debug.WriteLine($"Unmapped Object: Handle '{handle}'.");
+        Debug.WriteLine($"Handle {handle}: Unmapped object.");
     }
 }
