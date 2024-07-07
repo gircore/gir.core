@@ -50,17 +50,15 @@ public static class TypeDictionary
     /// <exception cref="TypeNotFoundException">The given type is not registered in the type dictionary. The caller should register it themselves.</exception>
     internal static Type GetGType(System.Type type)
     {
-        // Check we are a GObject
         Debug.Assert(
             condition: type.IsAssignableTo(typeof(GObject.Object)),
             message: $"Parameter {type} is not a GObject or subclass of GObject"
         );
 
-        // Throw if type is not registered
-        if (!_systemTypeDict.ContainsKey(type))
+        if (!_systemTypeDict.TryGetValue(type, out Type gType))
             throw new TypeNotFoundException(type);
 
-        return _systemTypeDict[type];
+        return gType;
     }
 
     /// <summary>

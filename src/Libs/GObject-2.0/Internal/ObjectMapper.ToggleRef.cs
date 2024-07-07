@@ -68,7 +68,7 @@ public partial class ObjectMapper
                 //In case we own the ref because the ownership was fully transfered to us we
                 //do not need to ref the object at all.
 
-                Debug.Assert(!Internal.Object.IsFloating(_handle), "Owned floating references are not possible.");
+                Debug.Assert(!Internal.Object.IsFloating(_handle), $"Handle {_handle}: Owned floating references are not possible.");
             }
         }
 
@@ -79,7 +79,7 @@ public partial class ObjectMapper
                 if (weakRef.Target is { } weakObj)
                     _reference = weakObj;
                 else
-                    throw new Exception("Could not toggle reference to strong. It is garbage collected.");
+                    throw new Exception($"Handle {_handle}: Could not toggle reference to strong. It got garbage collected.");
             }
             else if (isLastRef && _reference is not WeakReference)
             {
