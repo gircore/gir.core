@@ -16,25 +16,40 @@ This project aims to provide a complete set of APIs for writing rich cross-platf
 * **Extensibility:** Allows 3rd party developers to write bindings for other GObject-based libraries, achieving full interoperability between them.
 
 ## Status
-The code is under development and not ready for production use. There are nuget packages available. The API is subject to change as long as version 1.0 is not released. Feel free to visit the [nuget organization][GirCoreNuget] to get an overview.
+The code is under active development and certain features may not be available. The API is subject to change as long as version 1.0 is not released. There are nuget packages available. Feel free to visit the [nuget organization][GirCoreNuget] to get an overview.
+
+In general, you can expect the following features to be available:
+- Creation of native structs / records.
+- Creation of native `GObject` based classes.
+- Creation of native enumerations.
+- Usage of native `GObject` based interfaces.
+- Reading / writing properties of native `GObject` based classes.
+- Receiving signals of native `GObject` based classes.
+- Retaining state of purely managed `GObject.Object` based subclasses.
+
+Missing features of the generator:
+- Overriding of native virtual methods.
+- Custom implementations of native `GObject` interfaces.
+- Fundamental types like `GObject.Paramspec` or `Gtk.Expression` are only available in parts.
+
+Please be aware that the list of unsupported features should not be considered complete as certain corner cases may not yet be listed. If such a case is encountered a bug report is welcome.
 
 The upcoming features and releases can be checked out in the [milestones](https://github.com/gircore/gir.core/milestones).
 
-## Supported Libraries
+## Generated Libraries
 
-| Library                                 | Description                                            | Level of Support |
-|-----------------------------------------|--------------------------------------------------------|------------------|
-| [GTK-4.0][Gtk4Nuget]                    | UI-Toolkit                                             | Partial          |
-| [Libadwaita-1][LibadwaitaNuget]         | Building blocks for modern GNOME applications          | Partial          |
-| [GStreamer-1.0][GstNuget]               | Multimedia Framework                                   | Partial          |
-| [Cairo-1.0][CairoNuget]                 | Graphics Library                                       | Partial          |
-| [Pango-1.0][PangoNuget]                 | Font/Text Library                                      | Partial          |
-| [Gio-2.0][GioNuget]                     | Library for high level application functionality       | Partial          |
-| [GdkPixbuf-2.0][GdkPixbufNuget]         | Image loading in various formats                       | Partial          |
-| libshumate                              | Library to display maps                                | Planned          |
-| [WebKit-6.0][WebKitNuget]               | Browser engine (Linux only)                            | Partial          |
-| [JavaScriptCore-6.0][JavaScriptCoreNuget] | JavaScript engine for WebKit (Linux only)              | Partial          |
-| [GtkSource-5][GtkSourceNuget]      | Extends a Gtk.TextView to be like a source code editor | Partial          |
+| Library                                   | Description                                            |
+|-------------------------------------------|--------------------------------------------------------|
+| [GTK-4.0][Gtk4Nuget]                      | UI-Toolkit                                             |
+| [Libadwaita-1][LibadwaitaNuget]           | Building blocks for modern GNOME applications          |
+| [GStreamer-1.0][GstNuget]                 | Multimedia Framework                                   |
+| [Cairo-1.0][CairoNuget]                   | Graphics Library                                       |
+| [Pango-1.0][PangoNuget]                   | Font/Text Library                                      |
+| [Gio-2.0][GioNuget]                       | Library for high level application functionality       |
+| [GdkPixbuf-2.0][GdkPixbufNuget]           | Image loading in various formats                       |
+| [WebKit-6.0][WebKitNuget]                 | Browser engine (Linux only)                            |
+| [JavaScriptCore-6.0][JavaScriptCoreNuget] | JavaScript engine for WebKit (Linux only)              |
+| [GtkSource-5][GtkSourceNuget]             | Extends a Gtk.TextView to be like a source code editor |
 
 
 ## Get Involved
