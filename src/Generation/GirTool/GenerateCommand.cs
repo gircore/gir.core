@@ -115,9 +115,9 @@ public partial class GenerateCommand : Command
         DeserializedInput? macosRepositories = null;
         DeserializedInput? windowsRepositories = null;
 
-        void SetLinuxRepositories() => linuxRepositories = DeserializeInput(searchPathLinux, input);
-        void SetMacosRepositories() => macosRepositories = DeserializeInput(searchPathMacos, input);
-        void SetWindowsRepositories() => windowsRepositories = DeserializeInput(searchPathWindows, input);
+        void SetLinuxRepositories() => linuxRepositories = DeserializeInput("linux", searchPathLinux, input);
+        void SetMacosRepositories() => macosRepositories = DeserializeInput("macos", searchPathMacos, input);
+        void SetWindowsRepositories() => windowsRepositories = DeserializeInput("windows", searchPathWindows, input);
 
         if (disableAsync)
         {
@@ -137,15 +137,14 @@ public partial class GenerateCommand : Command
         return (linuxRepositories!, macosRepositories!, windowsRepositories!);
     }
 
-    private static DeserializedInput DeserializeInput(string? searchPath, string[] input)
+    private static DeserializedInput DeserializeInput(string platformName, string? searchPath, string[] input)
     {
-        if (searchPath is null)
-            return DeserializedInput.Empty();
+        var repositoryResolver = new RepositoryResolverFactory(
+            platformName, searchPath, typeof(GenerateCommand).Assembly).Create();
 
         var inputRepositories = input
-            .Select(x => Path.Join(searchPath, x))
-            .Where(File.Exists)
-            .Select(x => new FileInfo(x).OpenRead().DeserializeGirInputModel())
+            .Select(fileName => repositoryResolver.ResolveRepository(fileName))
+            .OfType<GirLoader.Input.Repository>()
             .ToList();
 
         // Get the namespaces corresponding to the input gir files.
@@ -154,7 +153,7 @@ public partial class GenerateCommand : Command
             .Select(repository => repository.Namespace == null ? "" : GetNamespaceName(repository.Namespace))
             .ToList();
 
-        var includeResolver = new IncludeResolver(searchPath);
+        var includeResolver = new IncludeResolver(repositoryResolver);
         var loader = new GirLoader.Loader(includeResolver.ResolveInclude);
         var outputRepositories = loader.Load(inputRepositories).ToList();
 

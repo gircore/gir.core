@@ -9,7 +9,7 @@ public class ClassPropertyTest
 {
     private static Input.Repository GetRepositoryWithStubClass()
     {
-        var repository = Helper.GetInputRepository("ns", "1.0");
+        var repository = InputRepositoryHelper.CreateRepository("ns", "1.0");
         repository.Namespace!.Classes.Add(new()
         {
             Name = "ClassName",
