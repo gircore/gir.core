@@ -33,10 +33,21 @@ internal static partial class Function
 
     public static bool HidesFunction(GirModel.Function function)
     {
-        if (function.Parent is not GirModel.Class cls)
-            return false;
-
-        return HidesFunction(cls.Parent, function);
+        switch (function.Parent)
+        {
+            case GirModel.Class cls:
+                return HidesFunction(cls.Parent, function);
+            case GirModel.Interface @interface:
+            {
+                // Rendering a function for an interface helper class,
+                // which inherits from GObject.Object so hides GetType.
+                // This workaround could be replaced by using a static interface method
+                // for GetType when dotnet 6 support is dropped.
+                return function == @interface.TypeFunction;
+            }
+            default:
+                return false;
+        }
     }
 
     private static bool HidesFunction(GirModel.Class? cls, GirModel.Function function)

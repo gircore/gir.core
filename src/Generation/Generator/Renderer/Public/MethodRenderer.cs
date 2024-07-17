@@ -13,6 +13,11 @@ internal static class MethodRenderer
         try
         {
             var modifier = "public ";
+            if (Method.HidesMethod(method))
+            {
+                modifier += "new ";
+            }
+
             var explicitImplementation = string.Empty;
             if (Method.GetImplemnetExplicitly(method))
             {

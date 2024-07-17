@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Generator.Model;
 
@@ -83,5 +84,81 @@ internal static partial class Method
     public static bool IsValidFreeFunction(GirModel.Method method)
     {
         return !method.Parameters.Any() && method.ReturnType.AnyType.TryPickT0(out var type, out _) && type is GirModel.Void;
+    }
+
+    /// <summary>
+    /// Whether this method hides a method with the same name and parameters from a parent class
+    /// </summary>
+    public static bool HidesMethod(GirModel.Method method)
+    {
+        if (method.Parent is not GirModel.Class cls)
+        {
+            return false;
+        }
+
+        var publicName = GetPublicName(method);
+        return HidesMethod(cls.Parent, method, publicName);
+    }
+
+    private static bool HidesMethod(GirModel.Class? cls, GirModel.Method method, string publicName)
+    {
+        if (cls is null)
+        {
+            return HidesObjectMethod(method, publicName);
+        }
+
+        var matchingMethod = cls.Methods.FirstOrDefault(m => GetPublicName(m) == publicName);
+
+        if (matchingMethod is null)
+        {
+            return HidesMethod(cls.Parent, method, publicName);
+        }
+
+        GirModel.Parameter[] parameters = method.Parameters.ToArray();
+        GirModel.Parameter[] foundParameters = matchingMethod.Parameters.ToArray();
+
+        if (parameters.Length != foundParameters.Length)
+        {
+            return HidesMethod(cls.Parent, method, publicName);
+        }
+
+        for (var i = 0; i < parameters.Length; i++)
+        {
+            if (!parameters[i].AnyTypeOrVarArgs.Equals(foundParameters[i].AnyTypeOrVarArgs))
+            {
+                return HidesMethod(cls.Parent, method, publicName);
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Whether this method hides a method from System.Object
+    /// </summary>
+    private static bool HidesObjectMethod(GirModel.Method method, string publicName)
+    {
+        if (method.Parameters.Any())
+        {
+            // We do not currently support detecting overrides of object methods that accept parameters
+            return false;
+        }
+
+        var objectType = typeof(object);
+        var matchingMembers = objectType.GetMember(
+            publicName, BindingFlags.Instance | BindingFlags.Public);
+        foreach (var matchingMember in matchingMembers)
+        {
+            if (matchingMember is MethodBase matchingMethod)
+            {
+                var parameters = matchingMethod.GetParameters();
+                if (parameters.Length == 0)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

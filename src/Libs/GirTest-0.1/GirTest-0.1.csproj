@@ -5,6 +5,7 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
+    <WarningsAsErrors>CS0108,CS0114</WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
