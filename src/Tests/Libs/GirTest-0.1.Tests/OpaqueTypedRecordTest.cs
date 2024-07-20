@@ -8,6 +8,13 @@ namespace GirTest.Tests;
 public class OpaqueTypedRecordTest : Test
 {
     [TestMethod]
+    public void ImplementsIDisposable()
+    {
+        var recordTester = OpaqueTypedRecordCopyAnnotationTester.New();
+        recordTester.Dispose();
+    }
+
+    [TestMethod]
     public void SupportsConstructorTransferFull()
     {
         var recordTester = OpaqueTypedRecordTester.New();
