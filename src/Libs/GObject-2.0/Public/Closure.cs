@@ -54,9 +54,8 @@ public partial class Closure : IDisposable
         }
     }
 
-    public void Dispose()
+    partial void OnDispose()
     {
         Debug.WriteLine($"Disposing Closure: Address {Handle.DangerousGetHandle()}.");
-        Handle.Dispose();
     }
 }
