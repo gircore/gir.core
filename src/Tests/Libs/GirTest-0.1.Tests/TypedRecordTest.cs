@@ -8,6 +8,13 @@ namespace GirTest.Tests;
 public class TypedRecordTest : Test
 {
     [TestMethod]
+    public void ImplementsIDisposable()
+    {
+        var recordTester = TypedRecordTester.New();
+        recordTester.Dispose();
+    }
+
+    [TestMethod]
     public void SupportsConstructorTransferFull()
     {
         var recordTester = TypedRecordTester.New();

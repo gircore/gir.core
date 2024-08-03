@@ -201,9 +201,4 @@ public partial class Value : IDisposable
                 throw new NotSupportedException($"Type {value.GetType()} is not supported as a value type");
         }
     }
-
-    public void Dispose()
-    {
-        Handle.Dispose();
-    }
 }
