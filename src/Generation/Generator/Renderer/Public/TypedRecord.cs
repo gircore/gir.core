@@ -9,6 +9,12 @@ internal static class TypedRecord
 {
     public static string Render(GirModel.Record record)
     {
+        if (record.FreeFunction is null)
+            Log.Information($"Record {Model.Type.GetPublicNameFullyQuallified(record)}: Has no free-func annotation. Define it upstream to improve performance for this type.");
+
+        if (record.CopyFunction is null)
+            Log.Information($"Record {Model.Type.GetPublicNameFullyQuallified(record)}: Has no copy-func annotation. Define it upstream to improve performance for this type.");
+
         var name = Model.TypedRecord.GetPublicClassName(record);
         var internalHandleName = Model.TypedRecord.GetFullyQuallifiedOwnedHandle(record);
 
