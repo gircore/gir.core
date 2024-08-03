@@ -9,10 +9,10 @@ internal static class OpaqueTypedRecord
     public static string Render(GirModel.Record record)
     {
         if (record.FreeFunction is null)
-            Log.Information($"Record {record.Name}: Has no free-func annotation. Define it upstream to improve performance for this type.");
+            Log.Information($"Record {Model.Type.GetPublicNameFullyQuallified(record)}: Has no free-func annotation. Define it upstream to improve performance for this type.");
 
         if (record.CopyFunction is null)
-            Log.Information($"Record {record.Name}: Has no copy-func annotation. Define it upstream to improve performance for this type.");
+            Log.Information($"Record {Model.Type.GetPublicNameFullyQuallified(record)}: Has no copy-func annotation. Define it upstream to improve performance for this type.");
 
         var name = Model.OpaqueTypedRecord.GetPublicClassName(record);
         var internalHandleName = Model.OpaqueTypedRecord.GetFullyQuallifiedOwnedHandle(record);
