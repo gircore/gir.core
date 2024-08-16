@@ -34,7 +34,7 @@
       "Samples\\Adw-1\\Window\\Window.csproj",
       "Samples\\GdkPixbuf-2.0\\TestLoading\\TestLoading.csproj",
       "Samples\\GdkPixbuf-2.0\\TestMemoryLeaks\\TestMemoryLeaks.csproj",
-      "Samples\\Gio-2.0\\DBusNotification\\DBusNotification.csproj",
+      "Samples\\Gio-2.0\\DBus\\DBus.csproj",
       "Samples\\Gst-1.0\\VideoPlayback\\VideoPlayback.csproj",
       "Samples\\Gtk-4.0\\AboutDialog\\AboutDialog.csproj",
       "Samples\\Gtk-4.0\\Builder\\Builder.csproj",
