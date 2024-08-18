@@ -66,7 +66,7 @@ public class {unownedHandleTypeName} : {typeName}
     }}
 }}
 
-public class {ownedHandleTypeName} : {typeName}
+public partial class {ownedHandleTypeName} : {typeName}
 {{
     /// <summary>
     /// Creates a new instance of {ownedHandleTypeName}. Used automatically by PInvoke.
@@ -91,12 +91,6 @@ public class {ownedHandleTypeName} : {typeName}
     {{
         var ownedPtr = GObject.Internal.Functions.BoxedCopy({getGType}, ptr);
         return new {ownedHandleTypeName}(ownedPtr);
-    }}
-
-    protected override bool ReleaseHandle()
-    {{
-        GObject.Internal.Functions.BoxedFree({getGType}, handle);
-        return true;
     }}
 }}";
     }
