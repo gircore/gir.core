@@ -88,7 +88,7 @@ public class {unownedHandleTypeName} : {typeName}
     }}
 }}
 
-public class {ownedHandleTypeName} : {typeName}
+public partial class {ownedHandleTypeName} : {typeName}
 {{
     /// <summary>
     /// Creates a new instance of {ownedHandleTypeName}. Used automatically by PInvoke.
@@ -113,14 +113,23 @@ public class {ownedHandleTypeName} : {typeName}
     /// <returns>A {ownedHandleTypeName}</returns>
     public static {ownedHandleTypeName} FromUnowned(IntPtr ptr)
     {{
-       {RenderCopyStatement(record, "ownedPtr", "ptr")}
-       return new {ownedHandleTypeName}(ownedPtr);
+        {RenderCopyStatement(record, "ownedPtr", "ptr")}
+        return new {ownedHandleTypeName}(ownedPtr);
     }}
+
+    internal void SetMemoryPressure()
+    {{
+        AddMemoryPressure();
+    }}
+
+    partial void AddMemoryPressure();
+    partial void RemoveMemoryPressure();
 
     protected override bool ReleaseHandle()
     {{
-       {RenderFreeStatement(record, "handle")}
-       return true;
+        RemoveMemoryPressure();
+        {RenderFreeStatement(record, "handle")}
+        return true;
     }}
 }}";
     }

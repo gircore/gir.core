@@ -37,6 +37,7 @@ public sealed partial class {name} : GLib.BoxedRecord, IEquatable<{name}>, IDisp
     public {name}({internalHandleName} handle)
     {{
         Handle = handle;
+        Handle.SetMemoryPressure();
         Initialize();
     }}
 
