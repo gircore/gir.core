@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cairo.Tests;
@@ -6,6 +7,12 @@ namespace Cairo.Tests;
 [TestClass, TestCategory("UnitTest")]
 public class FontFaceTest : Test
 {
+    [TestMethod]
+    public void ImplementsIDisposable()
+    {
+        typeof(FontFace).Should().Implement<IDisposable>();
+    }
+
     [TestMethod]
     public void BindingsShouldSucceed()
     {
