@@ -47,7 +47,24 @@ public partial class Surface
         => new Surface(Internal.Surface.CreateSimilar(Handle, content, width, height));
 
     public Surface CreateSimilarImage(Format format, int width, int height)
-        => new Surface(Internal.Surface.CreateSimilarImage(Handle, format, width, height));
+    {
+        var handle = Internal.Surface.CreateSimilarImage(Handle, format, width, height);
+
+        //See: https://www.cairographics.org/manual/cairo-Image-Surfaces.html#cairo-format-t
+        var bytesPerPixel = format switch
+        {
+            Format.A1 => 1 / 8d,
+            Format.A8 => 1,
+            Format.Argb32 => 4,
+            Format.Rgb24 => 4,
+            Format.Rgb30 => 4,
+            Format.Rgb16565 => 2,
+            _ => 0 //No memory pressure is applied
+        };
+        handle.AddMemoryPressure((long) (width * height * bytesPerPixel));
+
+        return new Surface(handle);
+    }
 
     public Surface CreateForRectangle(double x, double y, double width, double height)
         => new Surface(Internal.Surface.CreateForRectangle(Handle, x, y, width, height));
