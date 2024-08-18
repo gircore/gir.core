@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cairo.Tests;
@@ -6,6 +7,12 @@ namespace Cairo.Tests;
 [TestClass, TestCategory("UnitTest")]
 public class ContextTest : Test
 {
+    [TestMethod]
+    public void ImplementsIDisposable()
+    {
+        typeof(Context).Should().Implement<IDisposable>();
+    }
+
     [TestMethod]
     public void BindingsShouldSucceed()
     {
