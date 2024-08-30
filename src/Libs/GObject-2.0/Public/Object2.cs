@@ -16,6 +16,7 @@ namespace GObject
         public Object2(Object2Handle handle)
         {
             _handle = handle;
+            _handle.Map(this);
             _handle.AddMemoryPressure();
         }
 
@@ -250,11 +251,16 @@ public static class InstanceFactory
                 Debug.Assert(!Internal.Object.IsFloating(handle), $"Handle {handle}: Owned floating references are not possible.");
             }
         }
+
+        internal void Map(Object2 obj)
+        {
+            ObjectMapper2.Map(handle, obj);
+        }
         
         protected override bool ReleaseHandle()
         {
             RemoveMemoryPressure();
-            Object.Unref(handle);
+            ObjectMapper2.Unmap(handle);
             return true;
         }
 

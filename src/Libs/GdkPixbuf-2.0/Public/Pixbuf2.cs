@@ -11,11 +11,17 @@ namespace GdkPixbuf
     {
         internal Pixbuf2(Pixbuf2Handle handle) : base(handle) { }
     
+        internal static Pixbuf2 New(IntPtr handle, bool ownsHandle)
+        {
+            var h = new Pixbuf2Handle(handle, ownsHandle);
+            return new Pixbuf2(h);
+        }
+        
         public static Pixbuf2 New(Colorspace colorspace, bool hasAlpha, int bitsPerSample, int width, int height)
         {
             //TODO: How is the instance kept alive in case C# does not need it anymore, but C does?
             var handle = Internal.Pixbuf.New(colorspace, hasAlpha, bitsPerSample, width, height);
-            return Pixbuf2InstanceFactory.Create(handle, true);
+            return New(handle, true);
         }
     
     
@@ -31,15 +37,6 @@ namespace GdkPixbuf
 
 namespace GdkPixbuf.Internal
 {
-    public static class Pixbuf2InstanceFactory
-    {
-        public static Pixbuf2 Create(IntPtr handle, bool ownsHandle)
-        {
-            var h = new Pixbuf2Handle(handle, ownsHandle);
-            return new Pixbuf2(h);
-        }
-    }
-    
     public class Pixbuf2Handle : GObject.Internal.Object2Handle
     {
         private long _size;
