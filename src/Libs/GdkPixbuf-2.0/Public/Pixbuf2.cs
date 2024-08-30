@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using GdkPixbuf.Internal;
 using GObject;
 using GObject.Internal;
@@ -10,18 +13,11 @@ namespace GdkPixbuf
     public class Pixbuf2 : GObject.Object2
     {
         internal Pixbuf2(Pixbuf2Handle handle) : base(handle) { }
-    
-        internal static Pixbuf2 New(IntPtr handle, bool ownsHandle)
-        {
-            var h = new Pixbuf2Handle(handle, ownsHandle);
-            return new Pixbuf2(h);
-        }
         
         public static Pixbuf2 New(Colorspace colorspace, bool hasAlpha, int bitsPerSample, int width, int height)
         {
-            //TODO: How is the instance kept alive in case C# does not need it anymore, but C does?
             var handle = Internal.Pixbuf.New(colorspace, hasAlpha, bitsPerSample, width, height);
-            return New(handle, true);
+            return Pixbuf2InstanceFactory.Create(handle, true);
         }
     
     
@@ -37,6 +33,37 @@ namespace GdkPixbuf
 
 namespace GdkPixbuf.Internal
 {
+    internal class Pixbuf2InstanceFactory : CanCreateInstance
+    {
+        public static Pixbuf2 Create(IntPtr handle, bool ownsHandle)
+        {
+            var h = new Pixbuf2Handle(handle, ownsHandle);
+            return new Pixbuf2(h);
+        }
+    }
+    internal class TypeRegistration2
+    {
+        internal static void RegisterTypes()
+        {
+            Register<GdkPixbuf.Pixbuf2>(Pixbuf.GetGType, OSPlatform.Linux, OSPlatform.OSX, OSPlatform.Windows);
+
+        
+        }
+
+        private static void Register<T>(Func<nuint> getType, params OSPlatform[] supportedPlatforms) where T : CanCreateInstance
+        {
+            try
+            {
+                if(supportedPlatforms.Any(RuntimeInformation.IsOSPlatform))
+                    GObject.Internal.InstanceFactory.Register(new Type(getType()), T.Create);
+            }
+            catch(System.Exception e)
+            {
+                Debug.WriteLine($"Could not register type '{nameof(T)}': {e.Message}");
+            }
+        }
+    }
+    
     public class Pixbuf2Handle : GObject.Internal.Object2Handle
     {
         private long _size;
