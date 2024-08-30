@@ -1,18 +1,21 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using GdkPixbuf.Internal;
+using GObject;
 using GObject.Internal;
+using Type = GObject.Type;
 
 namespace GdkPixbuf
 {
     public class Pixbuf2 : GObject.Object2
     {
-        public Pixbuf2(Pixbuf2Handle handle) : base(handle) { }
+        internal Pixbuf2(Pixbuf2Handle handle) : base(handle) { }
     
         public static Pixbuf2 New(Colorspace colorspace, bool hasAlpha, int bitsPerSample, int width, int height)
         {
             //TODO: How is the instance kept alive in case C# does not need it anymore, but C does?
             var handle = Internal.Pixbuf.New(colorspace, hasAlpha, bitsPerSample, width, height);
-            return new Pixbuf2(new Pixbuf2Handle(handle, true));
+            return Pixbuf2InstanceFactory.Create(handle, true);
         }
     
     
@@ -21,8 +24,6 @@ namespace GdkPixbuf
         {
             var resultApplyEmbeddedOrientation = GdkPixbuf.Internal.Pixbuf.ApplyEmbeddedOrientation(GetHandle());
             
-            
-            
             return ObjectWrapper2.WrapNullableHandle<Pixbuf2>(resultApplyEmbeddedOrientation, true);
         }
     }
@@ -30,11 +31,20 @@ namespace GdkPixbuf
 
 namespace GdkPixbuf.Internal
 {
+    public static class Pixbuf2InstanceFactory
+    {
+        public static Pixbuf2 Create(IntPtr handle, bool ownsHandle)
+        {
+            var h = new Pixbuf2Handle(handle, ownsHandle);
+            return new Pixbuf2(h);
+        }
+    }
+    
     public class Pixbuf2Handle : GObject.Internal.Object2Handle
     {
         private long _size;
     
-        public Pixbuf2Handle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
+        internal Pixbuf2Handle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle)
         {
         }
 

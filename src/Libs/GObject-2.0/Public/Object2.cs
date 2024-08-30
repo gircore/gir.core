@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using GLib;
 using GObject.Internal;
@@ -30,6 +31,60 @@ namespace GObject
 
 namespace GObject.Internal
 {
+    public delegate Object2 InstanceFactoryForType(IntPtr handle, bool ownsHandle);
+    
+public static class InstanceFactory
+{
+    private static readonly Dictionary<Type, InstanceFactoryForType> _reverseTypeDict = new();
+
+    internal static Object2 Create(IntPtr handle, bool ownsHandle)
+    {
+        var type = GetType(handle);
+        var instanceFactory = GetInstanceFactory(type);
+        return instanceFactory(handle, ownsHandle);
+    }
+
+    public static void Register(Type type, InstanceFactoryForType handleWrapper)
+    {
+        _reverseTypeDict.Add(type, handleWrapper);
+    }
+    
+    private static InstanceFactoryForType GetInstanceFactory(Type gtype)
+    {
+        if (_reverseTypeDict.TryGetValue(gtype, out InstanceFactoryForType? factory))
+            return factory;
+
+        // If gtype is not in the type dictionary, walk up the
+        // tree until we find a type that is. As all objects are
+        // descended from GObject, we will eventually find a parent
+        // type that is registered.
+
+        while (!_reverseTypeDict.TryGetValue(gtype, out factory))
+        {
+            gtype = new Type(Functions.TypeParent(gtype.Value));
+            if (gtype.Value == (nuint) BasicType.Invalid ||
+                gtype.Value == (nuint) BasicType.None)
+                throw new Exception("Could not retrieve parent type - is the typeid valid?");
+        }
+
+        // Store for future lookups
+        _reverseTypeDict[gtype] = factory;
+
+        return factory;
+    }
+    
+    private static unsafe Type GetType(IntPtr handle)
+    {
+        var gclass = Unsafe.AsRef<TypeInstanceData>((void*) handle).GClass;
+        var gtype = Unsafe.AsRef<TypeClassData>((void*) gclass).GType;
+
+        if (gtype == 0)
+            throw new Exception("Could not retrieve type from class struct - is the struct valid?");
+
+        return new Type(gtype);
+    }
+}
+    
     public class ToggleRef2 : IDisposable
     {
         private readonly IntPtr _handle;
@@ -120,6 +175,27 @@ namespace GObject.Internal
             obj = null;
             return false;
         }
+        
+        public static void Map(IntPtr handle, Object2 obj)
+        {
+            lock (WrapperObjects)
+            {
+                WrapperObjects[handle] = new ToggleRef2(obj);
+            }
+
+            Debug.WriteLine($"Handle {handle}: Mapped object of type '{obj.GetType()}'");
+        }
+
+        public static void Unmap(IntPtr handle)
+        {
+            lock (WrapperObjects)
+            {
+                if (WrapperObjects.Remove(handle, out var toggleRef))
+                    toggleRef.Dispose();
+            }
+
+            Debug.WriteLine($"Handle {handle}: Unmapped object.");
+        }
     }
     
     public class ObjectWrapper2
@@ -138,7 +214,12 @@ namespace GObject.Internal
             
             if (ObjectMapper2.TryGetObject(handle, out T? obj))
                 return obj;
+
+            return (T) InstanceFactory.Create(handle, ownedRef);
         }
+        
+
+        
     }
     
     public class Object2Handle : SafeHandle
