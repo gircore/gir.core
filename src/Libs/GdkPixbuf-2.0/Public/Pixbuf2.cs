@@ -33,7 +33,7 @@ namespace GdkPixbuf
 
 namespace GdkPixbuf.Internal
 {
-    internal class Pixbuf2InstanceFactory : CanCreateInstance
+    internal class Pixbuf2InstanceFactory
     {
         public static Pixbuf2 Create(IntPtr handle, bool ownsHandle)
         {
@@ -45,17 +45,17 @@ namespace GdkPixbuf.Internal
     {
         internal static void RegisterTypes()
         {
-            Register<GdkPixbuf.Pixbuf2>(Pixbuf.GetGType, OSPlatform.Linux, OSPlatform.OSX, OSPlatform.Windows);
+            Register(Pixbuf.GetGType, Pixbuf2InstanceFactory.Create, OSPlatform.Linux, OSPlatform.OSX, OSPlatform.Windows);
 
         
         }
 
-        private static void Register<T>(Func<nuint> getType, params OSPlatform[] supportedPlatforms) where T : CanCreateInstance
+        private static void Register(Func<nuint> getType, InstanceFactoryForType factory, params OSPlatform[] supportedPlatforms)
         {
             try
             {
                 if(supportedPlatforms.Any(RuntimeInformation.IsOSPlatform))
-                    GObject.Internal.InstanceFactory.Register(new Type(getType()), T.Create);
+                    GObject.Internal.InstanceFactory.Register(new Type(getType()), factory);
             }
             catch(System.Exception e)
             {

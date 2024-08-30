@@ -32,11 +32,6 @@ namespace GObject
 
 namespace GObject.Internal
 {
-    public interface CanCreateInstance
-    {
-        static abstract Object2 Create(IntPtr handle, bool ownsHandle);
-    }
-    
     public delegate Object2 InstanceFactoryForType(IntPtr handle, bool ownsHandle);
     
 public static class InstanceFactory
