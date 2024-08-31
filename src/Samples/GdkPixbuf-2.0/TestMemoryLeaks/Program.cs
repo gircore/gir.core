@@ -17,6 +17,9 @@ public static class Program
     {
         GdkPixbuf.Module.Initialize();
 
+        var pb = Pixbuf2.New(Colorspace.Rgb, false, 1, 10, 10);
+        var bla = new MyPixbuf();
+
         var cycles = 10000;
         var fileName = "test.bmp";
 

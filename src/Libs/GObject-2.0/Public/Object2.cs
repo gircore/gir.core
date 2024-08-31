@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using GLib;
@@ -16,9 +17,33 @@ namespace GObject
         public Object2(Object2Handle handle)
         {
             _handle = handle;
-            _handle.Map(this);
+            _handle.Cache(this);
             _handle.AddMemoryPressure();
         }
+
+        protected Object2(Type type, bool owned, ConstructArgument[] constructArguments)
+        {
+            // We can't check if a reference is floating via "g_object_is_floating" here
+            // as the function could be "lying" depending on the intent of framework writers.
+            // E.g. A Gtk.Window created via "g_object_new_with_properties" returns an unowned
+            // reference which is not marked as floating as the gtk toolkit "owns" it.
+            // For this reason we just delegate the problem to the caller and require a
+            // definition whether the ownership of the new object will be transferred to us or not.
+
+            var ptr = Internal.Object.NewWithProperties(
+                objectType: type,
+                nProperties: (uint) constructArguments.Length,
+                names: GetNames(constructArguments),
+                values: ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
+            );
+
+            _handle = new Object2Handle(ptr, owned);;
+            _handle.Cache(this);
+            _handle.AddMemoryPressure();
+        }
+        
+        private static string[] GetNames(ConstructArgument[] constructParameters)
+            => constructParameters.Select(x => x.Name).ToArray();
 
         public IntPtr GetHandle() => _handle.DangerousGetHandle();
         
@@ -33,6 +58,82 @@ namespace GObject
 namespace GObject.Internal
 {
     public delegate Object2 InstanceFactoryForType(IntPtr handle, bool ownsHandle);
+
+    public interface RegisteredGType
+    {
+        static abstract Type GetGType();
+        static abstract Object2 Create(IntPtr handle, bool ownsHandle);
+    }
+/// <summary>
+/// A set of utility functions to register new types with the
+/// GType dynamic type system.
+/// </summary>
+public static class TypeRegistrar2
+{
+    public static Type Register<T>(Type parentType) where T : Object2, RegisteredGType
+    {
+        var newType = RegisterNewGType<T>(parentType);
+        InstanceFactory.Register(newType, T.Create);
+        
+        return newType;
+    }
+
+    private static Type RegisterNewGType<T>(Type parentType) where T : Object2
+    {
+        var parentTypeInfo = TypeQueryOwnedHandle.Create();
+        Functions.TypeQuery(parentType, parentTypeInfo);
+
+        if (parentTypeInfo.GetType() == 0)
+            throw new TypeRegistrationException("Could not query parent type");
+        
+        Debug.WriteLine($"Registering new type {typeof(T).FullName} with parent {parentType.ToString()}");
+
+        // Create TypeInfo
+        //TODO: Callbacks for "ClassInit" and "InstanceInit" are disabled because if multiple instances
+        //of the same type are created, the typeInfo object can get garbagec collected in the mean time
+        //and with it the instances of "DoClassInit" and "DoInstanceInit". If the callback occurs the
+        //runtime can't do the call anymore and crashes with:
+        //A callback was made on a garbage collected delegate of type 'GObject-2.0!GObject.Internal.InstanceInitFunc::Invoke'
+        //Fix this by caching the garbage collected instances somehow
+        var handle = TypeInfoOwnedHandle.Create();
+        handle.SetClassSize((ushort) parentTypeInfo.GetClassSize());
+        handle.SetInstanceSize((ushort) parentTypeInfo.GetInstanceSize());
+        //handle.SetClassInit();
+        //handle.SetInstanceInit();
+
+        var qualifiedName = QualifyName(typeof(T));
+        var typeid = Functions.TypeRegisterStatic(parentType, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(qualifiedName), handle, 0);
+
+        if (typeid == 0)
+            throw new TypeRegistrationException("Type Registration Failed!");
+
+        return new Type(typeid);
+    }
+
+    private static string QualifyName(System.Type type)
+        => type.ToString()
+            .Replace(".", string.Empty)
+            .Replace("+", string.Empty)
+            .Replace("`", string.Empty)
+            .Replace("[", "_")
+            .Replace("]", string.Empty)
+            .Replace(" ", string.Empty)
+            .Replace(",", "_");
+    
+    /* TODO: Enable if init functions are supported again
+    // Default Handler for class initialisation.
+    private static void DoClassInit(IntPtr gClass, IntPtr classData)
+    {
+        Console.WriteLine("Subclass type class initialised!");
+    }
+
+    // Default Handler for instance initialisation.
+    private static void DoInstanceInit(IntPtr gClass, IntPtr classData)
+    {
+        Console.WriteLine("Subclass instance initialised!");
+    }
+    */
+}
     
 public static class InstanceFactory
 {
@@ -158,7 +259,7 @@ public static class InstanceFactory
         }
     }
     
-    public class ObjectMapper2
+    public class InstanceCache2
     {
         private static readonly Dictionary<IntPtr, ToggleRef2> WrapperObjects = new();
         
@@ -177,7 +278,7 @@ public static class InstanceFactory
             return false;
         }
         
-        public static void Map(IntPtr handle, Object2 obj)
+        public static void Add(IntPtr handle, Object2 obj)
         {
             lock (WrapperObjects)
             {
@@ -187,7 +288,7 @@ public static class InstanceFactory
             Debug.WriteLine($"Handle {handle}: Mapped object of type '{obj.GetType()}'");
         }
 
-        public static void Unmap(IntPtr handle)
+        public static void Remove(IntPtr handle)
         {
             lock (WrapperObjects)
             {
@@ -199,7 +300,7 @@ public static class InstanceFactory
         }
     }
     
-    public class ObjectWrapper2
+    public class InstanceWrapper
     {
         public static T? WrapNullableHandle<T>(IntPtr handle, bool ownedRef) where T : Object2
         {
@@ -213,14 +314,11 @@ public static class InstanceFactory
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException($"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
             
-            if (ObjectMapper2.TryGetObject(handle, out T? obj))
+            if (InstanceCache2.TryGetObject(handle, out T? obj))
                 return obj;
 
             return (T) InstanceFactory.Create(handle, ownedRef);
         }
-        
-
-        
     }
     
     public class Object2Handle : SafeHandle
@@ -252,15 +350,15 @@ public static class InstanceFactory
             }
         }
 
-        internal void Map(Object2 obj)
+        internal void Cache(Object2 obj)
         {
-            ObjectMapper2.Map(handle, obj);
+            InstanceCache2.Add(handle, obj);
         }
         
         protected override bool ReleaseHandle()
         {
             RemoveMemoryPressure();
-            ObjectMapper2.Unmap(handle);
+            InstanceCache2.Remove(handle);
             return true;
         }
 
