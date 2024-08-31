@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using GdkPixbuf;
+using GObject.Internal;
 
 namespace TestMemoryLeaks;
 
@@ -17,9 +18,11 @@ public static class Program
     {
         GdkPixbuf.Module.Initialize();
 
-        var pb = Pixbuf2.New(Colorspace.Rgb, false, 1, 10, 10);
+        var pb = Pixbuf2.New(Colorspace.Rgb, false, 8, 10, 10);
         var bla = new MyPixbuf();
 
+        var ii = InstanceWrapper.WrapHandle<MyPixbuf>(bla.GetHandle(), false);
+        
         var cycles = 10000;
         var fileName = "test.bmp";
 

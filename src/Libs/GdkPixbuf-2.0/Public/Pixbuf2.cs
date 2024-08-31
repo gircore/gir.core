@@ -18,7 +18,7 @@ namespace GdkPixbuf
             gType = TypeRegistrar2.Register<MyPixbuf>(Pixbuf2.GetGType());
         }
 
-        public MyPixbuf() : base(gType, true, Array.Empty<ConstructArgument>())
+        public MyPixbuf() : base(Pixbuf2.NewWithProperties(gType, true, []))
         {
         }
 
@@ -34,7 +34,25 @@ namespace GdkPixbuf
     public class Pixbuf2 : GObject.Object2, RegisteredGType
     {
         protected internal Pixbuf2(Pixbuf2Handle handle) : base(handle) { }
-        protected Pixbuf2(Type type, bool owned, ConstructArgument[] constructArguments) : base(type, owned, constructArguments) { }
+
+        protected static Pixbuf2Handle NewWithProperties(GObject.Type type, bool owned, ConstructArgument[] constructArguments)
+        {
+            // We can't check if a reference is floating via "g_object_is_floating" here
+            // as the function could be "lying" depending on the intent of framework writers.
+            // E.g. A Gtk.Window created via "g_object_new_with_properties" returns an unowned
+            // reference which is not marked as floating as the gtk toolkit "owns" it.
+            // For this reason we just delegate the problem to the caller and require a
+            // definition whether the ownership of the new object will be transferred to us or not.
+
+            var ptr = GObject.Internal.Object.NewWithProperties(
+                objectType: type,
+                nProperties: (uint) constructArguments.Length,
+                names: constructArguments.Select(x => x.Name).ToArray(),
+                values: ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
+            );
+            
+            return new Pixbuf2Handle(ptr, owned);
+        }
         
         public static Pixbuf2 New(Colorspace colorspace, bool hasAlpha, int bitsPerSample, int width, int height)
         {

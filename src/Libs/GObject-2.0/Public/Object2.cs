@@ -21,7 +21,7 @@ namespace GObject
             _handle.AddMemoryPressure();
         }
 
-        protected Object2(Type type, bool owned, ConstructArgument[] constructArguments)
+       /* protected Object2(Type type, bool owned, ConstructArgument[] constructArguments)
         {
             // We can't check if a reference is floating via "g_object_is_floating" here
             // as the function could be "lying" depending on the intent of framework writers.
@@ -40,7 +40,7 @@ namespace GObject
             _handle = new Object2Handle(ptr, owned);;
             _handle.Cache(this);
             _handle.AddMemoryPressure();
-        }
+        }*/
         
         private static string[] GetNames(ConstructArgument[] constructParameters)
             => constructParameters.Select(x => x.Name).ToArray();
