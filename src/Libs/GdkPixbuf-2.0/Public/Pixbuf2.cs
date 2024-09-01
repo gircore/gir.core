@@ -12,26 +12,26 @@ namespace GdkPixbuf
 {
     public class MyPixbuf : Pixbuf2, RegisteredGType
     {
-        private static readonly Type gType;
+        private static readonly Type GType;
         static MyPixbuf()
         {
-            gType = TypeRegistrar2.Register<MyPixbuf>(Pixbuf2.GetGType());
+            GType = SubclassRegistrar2.Register<MyPixbuf, Pixbuf2>();
         }
 
         public MyPixbuf() : base(Pixbuf2Handle.For<MyPixbuf>(true, []))
         {
         }
 
-        protected MyPixbuf(IntPtr handle, bool ownsHandle) : base(new Pixbuf2Handle(handle, ownsHandle)) { }
+        private MyPixbuf(IntPtr handle, bool ownsHandle) : base(new Pixbuf2Handle(handle, ownsHandle)) { }
 
-        public new static Type GetGType() => gType;
+        static Type RegisteredGType.GetGType() => GType;
 
-        public new static Object2 Create(IntPtr handle, bool ownsHandle)
+        static Object2 RegisteredGType.Create(IntPtr handle, bool ownsHandle)
         {
             return new MyPixbuf(handle, ownsHandle);
         }
     }
-    public class Pixbuf2 : GObject.Object2, RegisteredGType
+    public class Pixbuf2 : GObject.Object2, NativeRegisteredGType
     {
         protected internal Pixbuf2(Pixbuf2Handle handle) : base(handle) { }
         
@@ -41,16 +41,21 @@ namespace GdkPixbuf
             return (Pixbuf2) Create(handle, true);
         }
         
-        public static Type GetGType()
+        private static Object2 Create(IntPtr handle, bool ownsHandle)
+        {
+            var safeHandle = new Pixbuf2Handle(handle, ownsHandle);
+            return new Pixbuf2(safeHandle);
+        }
+        
+        static Type NativeRegisteredGType.GetGType()
         {
             var resultGetGType = GdkPixbuf.Internal.Pixbuf.GetGType();
             return resultGetGType;
         }
 
-        public static Object2 Create(IntPtr handle, bool ownsHandle)
+        static Object2 NativeRegisteredGType.Create(IntPtr handle, bool ownsHandle)
         {
-            var safeHandle = new Pixbuf2Handle(handle, ownsHandle);
-            return new Pixbuf2(safeHandle);
+            return Create(handle, ownsHandle);
         }
 
 
@@ -73,7 +78,7 @@ namespace GdkPixbuf.Internal
             Register<Pixbuf2>(OSPlatform.Linux, OSPlatform.OSX, OSPlatform.Windows);
         }
 
-        private static void Register<T>(params OSPlatform[] supportedPlatforms) where T : RegisteredGType
+        private static void Register<T>(params OSPlatform[] supportedPlatforms) where T : NativeRegisteredGType
         {
             try
             {

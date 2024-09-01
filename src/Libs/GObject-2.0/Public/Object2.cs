@@ -21,30 +21,6 @@ namespace GObject
             _handle.AddMemoryPressure();
         }
 
-       /* protected Object2(Type type, bool owned, ConstructArgument[] constructArguments)
-        {
-            // We can't check if a reference is floating via "g_object_is_floating" here
-            // as the function could be "lying" depending on the intent of framework writers.
-            // E.g. A Gtk.Window created via "g_object_new_with_properties" returns an unowned
-            // reference which is not marked as floating as the gtk toolkit "owns" it.
-            // For this reason we just delegate the problem to the caller and require a
-            // definition whether the ownership of the new object will be transferred to us or not.
-
-            var ptr = Internal.Object.NewWithProperties(
-                objectType: type,
-                nProperties: (uint) constructArguments.Length,
-                names: GetNames(constructArguments),
-                values: ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
-            );
-
-            _handle = new Object2Handle(ptr, owned);;
-            _handle.Cache(this);
-            _handle.AddMemoryPressure();
-        }*/
-        
-        private static string[] GetNames(ConstructArgument[] constructParameters)
-            => constructParameters.Select(x => x.Name).ToArray();
-
         public IntPtr GetHandle() => _handle.DangerousGetHandle();
         
         public void Dispose()
@@ -64,29 +40,39 @@ namespace GObject.Internal
         static abstract Type GetGType();
         static abstract Object2 Create(IntPtr handle, bool ownsHandle);
     }
-/// <summary>
-/// A set of utility functions to register new types with the
-/// GType dynamic type system.
-/// </summary>
-public static class TypeRegistrar2
-{
-    public static Type Register<T>(Type parentType) where T : Object2, RegisteredGType
+    
+    public interface NativeRegisteredGType
     {
-        var newType = RegisterNewGType<T>(parentType);
-        InstanceFactory.Register(newType, T.Create);
+        static abstract Type GetGType();
+        static abstract Object2 Create(IntPtr handle, bool ownsHandle);
+    }
+/// <summary>
+/// Registers a custom subclass with the GObject type system.
+/// </summary>
+public static class SubclassRegistrar2
+{
+    public static Type Register<TSubclass, TParent>() 
+        where TSubclass : RegisteredGType 
+        where TParent : NativeRegisteredGType
+    {
+        var newType = RegisterNewGType<TSubclass, TParent>();
+        InstanceFactory.Register(newType, TSubclass.Create);
         
         return newType;
     }
 
-    private static Type RegisterNewGType<T>(Type parentType) where T : Object2
+    private static Type RegisterNewGType<TSubclass, TParent>() 
+        where TSubclass : RegisteredGType 
+        where TParent : NativeRegisteredGType
     {
+        var parentType = TParent.GetGType();
         var parentTypeInfo = TypeQueryOwnedHandle.Create();
         Functions.TypeQuery(parentType, parentTypeInfo);
 
         if (parentTypeInfo.GetType() == 0)
             throw new TypeRegistrationException("Could not query parent type");
         
-        Debug.WriteLine($"Registering new type {typeof(T).FullName} with parent {parentType.ToString()}");
+        Debug.WriteLine($"Registering new type {typeof(TSubclass).FullName} with parent {typeof(TParent).FullName}");
 
         // Create TypeInfo
         //TODO: Callbacks for "ClassInit" and "InstanceInit" are disabled because if multiple instances
@@ -101,7 +87,7 @@ public static class TypeRegistrar2
         //handle.SetClassInit();
         //handle.SetInstanceInit();
 
-        var qualifiedName = QualifyName(typeof(T));
+        var qualifiedName = QualifyName(typeof(TSubclass));
         var typeid = Functions.TypeRegisterStatic(parentType, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(qualifiedName), handle, 0);
 
         if (typeid == 0)
@@ -137,7 +123,7 @@ public static class TypeRegistrar2
     
 public static class InstanceFactory
 {
-    private static readonly Dictionary<Type, InstanceFactoryForType> _reverseTypeDict = new();
+    private static readonly Dictionary<Type, InstanceFactoryForType> TypeFactories = new();
 
     internal static Object2 Create(IntPtr handle, bool ownsHandle)
     {
@@ -148,12 +134,12 @@ public static class InstanceFactory
 
     public static void Register(Type type, InstanceFactoryForType handleWrapper)
     {
-        _reverseTypeDict.Add(type, handleWrapper);
+        TypeFactories.Add(type, handleWrapper);
     }
     
     private static InstanceFactoryForType GetInstanceFactory(Type gtype)
     {
-        if (_reverseTypeDict.TryGetValue(gtype, out InstanceFactoryForType? factory))
+        if (TypeFactories.TryGetValue(gtype, out InstanceFactoryForType? factory))
             return factory;
 
         // If gtype is not in the type dictionary, walk up the
@@ -161,16 +147,13 @@ public static class InstanceFactory
         // descended from GObject, we will eventually find a parent
         // type that is registered.
 
-        while (!_reverseTypeDict.TryGetValue(gtype, out factory))
+        while (!TypeFactories.TryGetValue(gtype, out factory))
         {
             gtype = new Type(Functions.TypeParent(gtype.Value));
             if (gtype.Value == (nuint) BasicType.Invalid ||
                 gtype.Value == (nuint) BasicType.None)
                 throw new Exception("Could not retrieve parent type - is the typeid valid?");
         }
-
-        // Store for future lookups
-        _reverseTypeDict[gtype] = factory;
 
         return factory;
     }
@@ -187,7 +170,7 @@ public static class InstanceFactory
     }
 }
     
-    public class ToggleRef2 : IDisposable
+    internal class ToggleRef2 : IDisposable
     {
         private readonly IntPtr _handle;
         private readonly ToggleNotify _callback;
@@ -259,13 +242,13 @@ public static class InstanceFactory
         }
     }
     
-    public class InstanceCache2
+    internal static class InstanceCache2
     {
-        private static readonly Dictionary<IntPtr, ToggleRef2> WrapperObjects = new();
+        private static readonly Dictionary<IntPtr, ToggleRef2> Cache = new();
         
         public static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : Object2
         {
-            if (WrapperObjects.TryGetValue(handle, out ToggleRef2? toggleRef))
+            if (Cache.TryGetValue(handle, out ToggleRef2? toggleRef))
             {
                 if (toggleRef.Object is not null)
                 {
@@ -280,27 +263,27 @@ public static class InstanceFactory
         
         public static void Add(IntPtr handle, Object2 obj)
         {
-            lock (WrapperObjects)
+            lock (Cache)
             {
-                WrapperObjects[handle] = new ToggleRef2(obj);
+                Cache[handle] = new ToggleRef2(obj);
             }
 
-            Debug.WriteLine($"Handle {handle}: Mapped object of type '{obj.GetType()}'");
+            Debug.WriteLine($"Handle {handle}: Added object of type '{obj.GetType()}' to {nameof(InstanceCache2)}");
         }
 
         public static void Remove(IntPtr handle)
         {
-            lock (WrapperObjects)
+            lock (Cache)
             {
-                if (WrapperObjects.Remove(handle, out var toggleRef))
+                if (Cache.Remove(handle, out var toggleRef))
                     toggleRef.Dispose();
             }
 
-            Debug.WriteLine($"Handle {handle}: Unmapped object.");
+            Debug.WriteLine($"Handle {handle}: Removed object from {nameof(InstanceCache2)}.");
         }
     }
     
-    public class InstanceWrapper
+    public static class InstanceWrapper
     {
         public static T? WrapNullableHandle<T>(IntPtr handle, bool ownedRef) where T : Object2
         {
