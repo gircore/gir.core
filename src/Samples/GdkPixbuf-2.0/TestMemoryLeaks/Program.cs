@@ -2,7 +2,10 @@
 using System.IO;
 using System.Threading.Tasks;
 using GdkPixbuf;
+using GdkPixbuf.Internal;
 using GObject.Internal;
+using Pixbuf = GdkPixbuf.Pixbuf;
+using PixbufLoader = GdkPixbuf.PixbufLoader;
 
 namespace TestMemoryLeaks;
 
@@ -18,6 +21,7 @@ public static class Program
     {
         GdkPixbuf.Module.Initialize();
 
+        TypeRegistration2.RegisterTypes();
         var pb = Pixbuf2.New(Colorspace.Rgb, false, 8, 10, 10);
         var bla = new MyPixbuf();
 

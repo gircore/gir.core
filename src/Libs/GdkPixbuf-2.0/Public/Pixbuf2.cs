@@ -31,7 +31,7 @@ namespace GdkPixbuf
             return new MyPixbuf(handle, ownsHandle);
         }
     }
-    public class Pixbuf2 : GObject.Object2, NativeRegisteredGType
+    public class Pixbuf2 : GObject.Object2, RegisteredGType
     {
         protected internal Pixbuf2(Pixbuf2Handle handle) : base(handle) { }
         
@@ -47,13 +47,13 @@ namespace GdkPixbuf
             return new Pixbuf2(safeHandle);
         }
         
-        static Type NativeRegisteredGType.GetGType()
+        static Type RegisteredGType.GetGType()
         {
             var resultGetGType = GdkPixbuf.Internal.Pixbuf.GetGType();
             return resultGetGType;
         }
 
-        static Object2 NativeRegisteredGType.Create(IntPtr handle, bool ownsHandle)
+        static Object2 RegisteredGType.Create(IntPtr handle, bool ownsHandle)
         {
             return Create(handle, ownsHandle);
         }
@@ -71,14 +71,14 @@ namespace GdkPixbuf
 
 namespace GdkPixbuf.Internal
 {
-    internal class TypeRegistration2
+    public class TypeRegistration2
     {
-        internal static void RegisterTypes()
+        public static void RegisterTypes()
         {
             Register<Pixbuf2>(OSPlatform.Linux, OSPlatform.OSX, OSPlatform.Windows);
         }
 
-        private static void Register<T>(params OSPlatform[] supportedPlatforms) where T : NativeRegisteredGType
+        private static void Register<T>(params OSPlatform[] supportedPlatforms) where T : RegisteredGType
         {
             try
             {

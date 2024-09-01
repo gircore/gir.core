@@ -40,12 +40,6 @@ namespace GObject.Internal
         static abstract Type GetGType();
         static abstract Object2 Create(IntPtr handle, bool ownsHandle);
     }
-    
-    public interface NativeRegisteredGType
-    {
-        static abstract Type GetGType();
-        static abstract Object2 Create(IntPtr handle, bool ownsHandle);
-    }
 /// <summary>
 /// Registers a custom subclass with the GObject type system.
 /// </summary>
@@ -53,7 +47,7 @@ public static class SubclassRegistrar2
 {
     public static Type Register<TSubclass, TParent>() 
         where TSubclass : RegisteredGType 
-        where TParent : NativeRegisteredGType
+        where TParent : RegisteredGType
     {
         var newType = RegisterNewGType<TSubclass, TParent>();
         InstanceFactory.Register(newType, TSubclass.Create);
@@ -63,7 +57,7 @@ public static class SubclassRegistrar2
 
     private static Type RegisterNewGType<TSubclass, TParent>() 
         where TSubclass : RegisteredGType 
-        where TParent : NativeRegisteredGType
+        where TParent : RegisteredGType
     {
         var parentType = TParent.GetGType();
         var parentTypeInfo = TypeQueryOwnedHandle.Create();
