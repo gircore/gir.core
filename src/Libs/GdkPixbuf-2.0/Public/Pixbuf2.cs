@@ -7,6 +7,7 @@ using GdkPixbuf.Internal;
 using GObject;
 using GObject.Internal;
 using Type = GObject.Type;
+using TypePlugin = GObject.TypePlugin;
 
 namespace GdkPixbuf
 {
@@ -89,7 +90,7 @@ namespace GdkPixbuf
         public Pixbuf2? ApplyEmbeddedOrientation()
         {
             var resultApplyEmbeddedOrientation = GdkPixbuf.Internal.Pixbuf.ApplyEmbeddedOrientation(GetHandle());
-            
+            //return InterfaceWrapper.WrapNullableHandle<TestInterfaceHelper>(resultApplyEmbeddedOrientation, true);
             return (Pixbuf2?) InstanceWrapper.WrapNullableHandle(resultApplyEmbeddedOrientation, true);
         }
     }
