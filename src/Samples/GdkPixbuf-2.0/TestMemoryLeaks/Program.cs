@@ -21,7 +21,7 @@ public static class Program
     {
         GdkPixbuf.Module.Initialize();
 
-        TypeRegistration2.RegisterTypes();
+        //TypeRegistration2.RegisterTypes();
         var pb = Pixbuf2.New(Colorspace.Rgb, false, 8, 10, 10);
         var bla = new MyPixbuf();
 

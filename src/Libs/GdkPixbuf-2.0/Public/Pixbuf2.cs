@@ -10,7 +10,33 @@ using Type = GObject.Type;
 
 namespace GdkPixbuf
 {
-    public class MyPixbuf : Pixbuf2, RegisteredGType
+    public interface TestInterface
+    {
+        void Bla();
+    }
+
+    public class TestInterfaceHelper : Object2, TestInterface, InterfaceFactory, GTypeProvider
+    {
+        public TestInterfaceHelper(Object2Handle handle) : base(handle)
+        {
+        }
+
+        public void Bla()
+        {
+        }
+
+        static Object2 InterfaceFactory.Create(IntPtr handle, bool ownsHandle)
+        {
+            return new TestInterfaceHelper(new Object2Handle(handle, ownsHandle));
+        }
+
+        static Type GTypeProvider.GetGType()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public class MyPixbuf : Pixbuf2, ClassFactory, GTypeProvider
     {
         private static readonly Type GType;
         static MyPixbuf()
@@ -24,14 +50,14 @@ namespace GdkPixbuf
 
         private MyPixbuf(IntPtr handle, bool ownsHandle) : base(new Pixbuf2Handle(handle, ownsHandle)) { }
 
-        static Type RegisteredGType.GetGType() => GType;
+        static Type GTypeProvider.GetGType() => GType;
 
-        static Object2 RegisteredGType.Create(IntPtr handle, bool ownsHandle)
+        static Object2 ClassFactory.Create(IntPtr handle, bool ownsHandle)
         {
             return new MyPixbuf(handle, ownsHandle);
         }
     }
-    public class Pixbuf2 : GObject.Object2, RegisteredGType
+    public class Pixbuf2 : GObject.Object2, ClassFactory, GTypeProvider
     {
         protected internal Pixbuf2(Pixbuf2Handle handle) : base(handle) { }
         
@@ -47,13 +73,13 @@ namespace GdkPixbuf
             return new Pixbuf2(safeHandle);
         }
         
-        static Type RegisteredGType.GetGType()
+        static Type GTypeProvider.GetGType()
         {
             var resultGetGType = GdkPixbuf.Internal.Pixbuf.GetGType();
             return resultGetGType;
         }
 
-        static Object2 RegisteredGType.Create(IntPtr handle, bool ownsHandle)
+        static Object2 ClassFactory.Create(IntPtr handle, bool ownsHandle)
         {
             return Create(handle, ownsHandle);
         }
@@ -64,21 +90,21 @@ namespace GdkPixbuf
         {
             var resultApplyEmbeddedOrientation = GdkPixbuf.Internal.Pixbuf.ApplyEmbeddedOrientation(GetHandle());
             
-            return InstanceWrapper.WrapNullableHandle<Pixbuf2>(resultApplyEmbeddedOrientation, true);
+            return (Pixbuf2?) InstanceWrapper.WrapNullableHandle(resultApplyEmbeddedOrientation, true);
         }
     }
 }
 
 namespace GdkPixbuf.Internal
 {
-    public class TypeRegistration2
+    internal static class TypeRegistration2
     {
         public static void RegisterTypes()
         {
             Register<Pixbuf2>(OSPlatform.Linux, OSPlatform.OSX, OSPlatform.Windows);
         }
 
-        private static void Register<T>(params OSPlatform[] supportedPlatforms) where T : RegisteredGType
+        private static void Register<T>(params OSPlatform[] supportedPlatforms) where T : ClassFactory, GTypeProvider
         {
             try
             {
@@ -100,7 +126,7 @@ namespace GdkPixbuf.Internal
         {
         }
         
-        public static Pixbuf2Handle For<T>(bool owned, ConstructArgument[] constructArguments) where T : Pixbuf2, RegisteredGType
+        public static Pixbuf2Handle For<T>(bool owned, ConstructArgument[] constructArguments) where T : Pixbuf2, GTypeProvider
         {
             // We can't check if a reference is floating via "g_object_is_floating" here
             // as the function could be "lying" depending on the intent of framework writers.

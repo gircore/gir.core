@@ -35,9 +35,13 @@ namespace GObject.Internal
 {
     public delegate Object2 InstanceFactoryForType(IntPtr handle, bool ownsHandle);
 
-    public interface RegisteredGType
+    public interface InterfaceFactory
     {
-        static abstract Type GetGType();
+        static abstract Object2 Create(IntPtr handle, bool ownsHandle);
+    }
+    
+    public interface ClassFactory
+    {
         static abstract Object2 Create(IntPtr handle, bool ownsHandle);
     }
 /// <summary>
@@ -46,8 +50,8 @@ namespace GObject.Internal
 public static class SubclassRegistrar2
 {
     public static Type Register<TSubclass, TParent>() 
-        where TSubclass : RegisteredGType 
-        where TParent : RegisteredGType
+        where TSubclass : ClassFactory 
+        where TParent : GTypeProvider
     {
         var newType = RegisterNewGType<TSubclass, TParent>();
         InstanceFactory.Register(newType, TSubclass.Create);
@@ -56,8 +60,8 @@ public static class SubclassRegistrar2
     }
 
     private static Type RegisterNewGType<TSubclass, TParent>() 
-        where TSubclass : RegisteredGType 
-        where TParent : RegisteredGType
+        where TSubclass : ClassFactory 
+        where TParent : GTypeProvider
     {
         var parentType = TParent.GetGType();
         var parentTypeInfo = TypeQueryOwnedHandle.Create();
@@ -114,7 +118,7 @@ public static class SubclassRegistrar2
     }
     */
 }
-    
+
 public static class InstanceFactory
 {
     private static readonly Dictionary<Type, InstanceFactoryForType> TypeFactories = new();
@@ -171,14 +175,14 @@ public static class InstanceFactory
 
         private object _reference;
         
-        public object? Object
+        public Object2? Object
         {
             get
             {
                 if(_reference is WeakReference weakRef)
-                    return weakRef.Target;
+                    return (Object2?) weakRef.Target;
                 
-                return _reference;
+                return (Object2) _reference;
             }
         }
 
@@ -240,13 +244,13 @@ public static class InstanceFactory
     {
         private static readonly Dictionary<IntPtr, ToggleRef2> Cache = new();
         
-        public static bool TryGetObject<T>(IntPtr handle, [NotNullWhen(true)] out T? obj) where T : Object2
+        public static bool TryGetObject(IntPtr handle, [NotNullWhen(true)] out Object2? obj)
         {
             if (Cache.TryGetValue(handle, out ToggleRef2? toggleRef))
             {
                 if (toggleRef.Object is not null)
                 {
-                    obj = (T) toggleRef.Object;
+                    obj = toggleRef.Object;
                     return true;
                 }
             }
@@ -276,25 +280,50 @@ public static class InstanceFactory
             Debug.WriteLine($"Handle {handle}: Removed object from {nameof(InstanceCache2)}.");
         }
     }
-    
-    public static class InstanceWrapper
+
+    public static class InterfaceWrapper
     {
-        public static T? WrapNullableHandle<T>(IntPtr handle, bool ownedRef) where T : Object2
+        public static T? WrapNullableHandle<T>(IntPtr handle, bool ownedRef) where T : Object2, InterfaceFactory
         {
             return handle == IntPtr.Zero
                 ? null
                 : WrapHandle<T>(handle, ownedRef);
         }
-        
-        public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : Object2
+
+        public static T WrapHandle<T>(IntPtr handle, bool ownedRef) where T : Object2, InterfaceFactory
         {
             if (handle == IntPtr.Zero)
                 throw new NullReferenceException($"Failed to wrap handle as type <{typeof(T).FullName}>. Null handle passed to WrapHandle.");
+
+            if (InstanceCache2.TryGetObject(handle, out var obj))
+                return (T) obj;
+
+            //In case of interfaces prefer the given type over the type reported by the gobject
+            //type system as the reported type is probably not part of the public API. Otherwise the
+            //class itself would be returned and not an interface.
             
-            if (InstanceCache2.TryGetObject(handle, out T? obj))
+            return (T) T.Create(handle, ownedRef);
+        }
+    }
+    
+    public static class InstanceWrapper
+    {
+        public static Object2? WrapNullableHandle(IntPtr handle, bool ownedRef)
+        {
+            return handle == IntPtr.Zero
+                ? null
+                : WrapHandle(handle, ownedRef);
+        }
+        
+        public static Object2 WrapHandle(IntPtr handle, bool ownedRef)
+        {
+            if (handle == IntPtr.Zero)
+                throw new NullReferenceException("Failed to wrap handle: Null handle passed to WrapHandle.");
+            
+            if (InstanceCache2.TryGetObject(handle, out var obj))
                 return obj;
 
-            return (T) InstanceFactory.Create(handle, ownedRef);
+            return InstanceFactory.Create(handle, ownedRef);
         }
     }
     
