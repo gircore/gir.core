@@ -3,7 +3,7 @@
 namespace GObject;
 
 [StructLayout(LayoutKind.Explicit)]
-public struct Type
+public record struct Type
 {
 
     //This is a manual implementation of GObject.Type inside GLib project inside the GObject namespace.
@@ -42,7 +42,8 @@ public struct Type
 
     //Offsets see: https://gitlab.gnome.org/GNOME/glib/blob/master/gobject/gtype.h
 
-    [FieldOffset(0)] private readonly nuint _value;
+    [FieldOffset(0)]
+    private readonly nuint _value;
 
     public Type(nuint value)
     {
