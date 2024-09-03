@@ -3,7 +3,7 @@
 namespace GObject;
 
 [StructLayout(LayoutKind.Explicit)]
-public struct Type
+public readonly record struct Type
 {
 
     //This is a manual implementation of GObject.Type inside GLib project inside the GObject namespace.
