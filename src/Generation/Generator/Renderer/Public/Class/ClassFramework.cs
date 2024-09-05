@@ -13,7 +13,6 @@ internal static class ClassFramework
 
         return $@"
 using System;
-using GObject;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
@@ -26,7 +25,8 @@ namespace {Namespace.GetPublicName(cls.Namespace)};
 {PlatformSupportAttribute.Render(cls as GirModel.PlatformDependent)}
 public {@sealed}partial class {cls.Name} {RenderInheritance(cls)}
 {{
-    {RenderParentConstructors(cls)}
+    {$"protected internal { cls.Name }({Class.GetFullyQualifiedInternalHandleName(cls)} handle) : base(handle) {{ }}"}
+    {RenderPublicConstructor(cls)}
 }}";
     }
 
@@ -36,7 +36,7 @@ public {@sealed}partial class {cls.Name} {RenderInheritance(cls)}
         var interfaces = cls.Implements.Select(ComplexType.GetFullyQualified);
 
         var elements = new List<string>(interfaces);
-
+        
         if (parentClass is not null)
             elements.Insert(0, parentClass);
 
@@ -45,46 +45,10 @@ public {@sealed}partial class {cls.Name} {RenderInheritance(cls)}
             : $": {string.Join(", ", elements)}";
     }
 
-    private static string RenderParentConstructors(GirModel.Class cls)
+    private static string RenderPublicConstructor(GirModel.Class cls)
     {
-        if (cls.Parent is null)
-            return string.Empty;
-
-        var constructors = new List<string>()
-        {
-            $@"protected internal { cls.Name }(IntPtr ptr, bool ownedRef) : base(ptr, ownedRef) {{}}",
-        };
-
-        if (IsInitiallyUnowned(cls))
-        {
-            constructors.Add($@"
-// As initially unowned objects always start with a floating reference
-// we can safely set the ""owned"" parameter to false.
-protected internal {cls.Name}(params ConstructArgument[] constructArguments) : base(owned: false, constructArguments) {{}}");
-            constructors.Add($"public {cls.Name}() : this(Array.Empty<ConstructArgument>()) {{}}");
-        }
-        else if (InheritsInitiallyUnowned(cls))
-        {
-            constructors.Add($"protected internal {cls.Name}(params ConstructArgument[] constructArguments) : base(constructArguments) {{}}");
-            constructors.Add($"public {cls.Name}() : this(Array.Empty<ConstructArgument>()) {{}}");
-        }
-        else
-        {
-            constructors.Add($"protected internal {cls.Name}(bool owned, params ConstructArgument[] constructArguments) : base(owned, constructArguments) {{}}");
-        }
-
-        return constructors.Join(Environment.NewLine);
+        return Class.IsInitiallyUnowned(cls) 
+            ? $"   public {cls.Name}() : this({Class.GetFullyQualifiedInternalHandleName(cls)}.For<{cls.Name}>(false, Array.Empty<GObject.ConstructArgument>())) {{ }}" 
+            : $"   public {cls.Name}() : this({Class.GetFullyQualifiedInternalHandleName(cls)}.For<{cls.Name}>(true, Array.Empty<GObject.ConstructArgument>())) {{ }}";
     }
-
-    private static bool IsInitiallyUnowned(GirModel.Class cls) => IsNamedInitiallyUnowned(cls.Name);
-
-    private static bool InheritsInitiallyUnowned(GirModel.Class @class)
-    {
-        if (@class.Parent is null)
-            return false;
-
-        return IsNamedInitiallyUnowned(@class.Parent.Name) || InheritsInitiallyUnowned(@class.Parent);
-    }
-
-    private static bool IsNamedInitiallyUnowned(string name) => name == "InitiallyUnowned";
 }
