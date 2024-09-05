@@ -20,6 +20,7 @@ public static class Classes
             //Standard generators
             new Generator.Internal.ClassMethods(publisher),
             new Generator.Internal.ClassStruct(publisher),
+            new Generator.Internal.ClassHandle(publisher),
             new Generator.Public.ClassConstructors(publisher),
             new Generator.Public.ClassMethods(publisher),
             new Generator.Public.ClassFunctions(publisher),

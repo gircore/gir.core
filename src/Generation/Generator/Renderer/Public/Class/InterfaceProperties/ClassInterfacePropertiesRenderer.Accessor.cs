@@ -36,14 +36,14 @@ public static partial class ClassInterfaceProperties
     private static string GetGetter(GirModel.Interface @interface, GirModel.Property property)
     {
         return Property.SupportsAccessorGetMethod(property, out var getter)
-            ? $"{Namespace.GetInternalName(@interface.Namespace)}.{@interface.Name}.{Method.GetInternalName(getter)}(Handle)"
+            ? $"{Namespace.GetInternalName(@interface.Namespace)}.{@interface.Name}.{Method.GetInternalName(getter)}(Handle.DangerousGetHandle())"
             : $"{ComplexType.GetFullyQualified(@interface)}.{Property.GetDescriptorName(property)}.Get(this)";
     }
 
     private static string GetSetter(GirModel.Interface @interface, GirModel.Property property)
     {
         return Property.SupportsAccessorSetMethod(property, out var setter)
-            ? $"{Namespace.GetInternalName(@interface.Namespace)}.{@interface.Name}.{Method.GetInternalName(setter)}(Handle, value)"
+            ? $"{Namespace.GetInternalName(@interface.Namespace)}.{@interface.Name}.{Method.GetInternalName(setter)}(Handle.DangerousGetHandle(), value)"
             : $"{ComplexType.GetFullyQualified(@interface)}.{Property.GetDescriptorName(property)}.Set(this, value)";
     }
 }
