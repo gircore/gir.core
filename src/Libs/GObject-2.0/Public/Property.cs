@@ -56,7 +56,7 @@ public sealed class Property<T, K> : PropertyDefinition<T>
         if (obj is not Object o)
             throw new ArgumentException($"Can't set property {ManagedName} for object of type {typeof(K).Name} as it is not derived from {nameof(Object)}.");
 
-        var type = GetPropertyType(o.Handle);
+        var type = GetPropertyType(o.Handle.DangerousGetHandle());
         using var gvalue = new Value(type);
         gvalue.Set(value);
 
