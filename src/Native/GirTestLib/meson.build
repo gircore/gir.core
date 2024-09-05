@@ -34,8 +34,12 @@ header_files = [
   'girtest-untyped-record-tester.h',
   'girtest-utf8-string-array-null-terminated-tester.h',
   'data/girtest-executor.h',
-  'data/girtest-executor-impl.h',
+  'data/girtest-executor-impl.h'
 ]
+
+header_files_private = [
+  'data/girtest-executor-private-impl.h'
+] 
 
 source_files = [
   'girtest-alias-tester.c',
@@ -67,12 +71,16 @@ source_files = [
   'girtest-untyped-record-tester.c',
   'girtest-utf8-string-array-null-terminated-tester.c',
   'data/girtest-executor.c',
-  'data/girtest-executor-impl.c',
+  'data/girtest-executor-impl.c'
+]
+
+soruce_files_private = [
+  'data/girtest-executor-private-impl.c'
 ]
 
 # Build a shared library that depends on gobject.
 lib = library('girtest',
-  source_files,
+  source_files + soruce_files_private,
   dependencies: [gobject_dep],
   install: true
 )

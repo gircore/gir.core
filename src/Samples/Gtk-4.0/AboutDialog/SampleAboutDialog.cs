@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using GdkPixbuf;
+using GLib;
 using GObject;
 
 namespace AboutDialog;
@@ -24,8 +25,13 @@ public class SampleAboutDialog : Gtk.AboutDialog
     {
         try
         {
-            var bytes = Assembly.GetExecutingAssembly().ReadResourceAsByteArray(resourceName);
-            var pixbuf = PixbufLoader.FromBytes(bytes);
+            var data = Assembly.GetExecutingAssembly().ReadResourceAsByteArray(resourceName);
+            using var bytes = Bytes.New(data);
+            var pixbufLoader = PixbufLoader.New();
+            pixbufLoader.WriteBytes(bytes);
+            pixbufLoader.Close();
+
+            var pixbuf = pixbufLoader.GetPixbuf() ?? throw new Exception("No pixbuf loaded");
             return Gdk.Texture.NewForPixbuf(pixbuf);
         }
         catch (Exception e)

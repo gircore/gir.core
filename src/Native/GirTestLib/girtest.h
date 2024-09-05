@@ -31,3 +31,4 @@
 #include "girtest-utf8-string-array-null-terminated-tester.h"
 #include "data/girtest-executor.h"
 #include "data/girtest-executor-impl.h"
+#include "data/girtest-executor-private-impl.h"

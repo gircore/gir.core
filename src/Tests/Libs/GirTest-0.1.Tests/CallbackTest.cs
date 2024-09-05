@@ -140,7 +140,7 @@ public class CallbackTest : Test
     [TestMethod]
     public void SupportsCallbackWithObjectReturn()
     {
-        var testObject = new TestClass();
+        var testObject = ExecutorImpl.New();
         GObject.Object Callback()
         {
             return testObject;
@@ -148,11 +148,6 @@ public class CallbackTest : Test
 
         var obj = CallbackTester.RunCallbackWithObjectReturn(Callback);
         obj.Should().Be(testObject);
-    }
-
-    private class TestClass : GObject.Object
-    {
-        public TestClass() : base(true, System.Array.Empty<GObject.ConstructArgument>()) { }
     }
 
     [TestMethod]

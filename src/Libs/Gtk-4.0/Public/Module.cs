@@ -32,6 +32,11 @@ public static class Module
         if (IsInitialized)
             return;
 
+        // Set immediately as initialized as static constructors like from Gio.Application 
+        // which get called during "TypeRegistration.RegisterTypes" will call this method again
+        // resulting in a double execution. A second try would probably make no difference.
+        IsInitialized = true;
+
         Gdk.Module.Initialize();
         Gsk.Module.Initialize();
 

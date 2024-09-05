@@ -76,14 +76,14 @@ public partial class {Interface.GetImplementationName(@interface)}
     private static string GetGetter(GirModel.ComplexType complexType, GirModel.Property property)
     {
         return Property.SupportsAccessorGetMethod(property, out var getter)
-            ? $"{Namespace.GetInternalName(complexType.Namespace)}.{complexType.Name}.{Method.GetInternalName(getter)}(Handle)"
+            ? $"{Namespace.GetInternalName(complexType.Namespace)}.{complexType.Name}.{Method.GetInternalName(getter)}(Handle.DangerousGetHandle())"
             : $"{ComplexType.GetFullyQualified(complexType)}.{Property.GetDescriptorName(property)}.Get(this)";
     }
 
     private static string GetSetter(GirModel.ComplexType complexType, GirModel.Property property)
     {
         return Property.SupportsAccessorSetMethod(property, out var setter)
-            ? $"{Namespace.GetInternalName(complexType.Namespace)}.{complexType.Name}.{Method.GetInternalName(setter)}(Handle, value)"
+            ? $"{Namespace.GetInternalName(complexType.Namespace)}.{complexType.Name}.{Method.GetInternalName(setter)}(Handle.DangerousGetHandle(), value)"
             : $"{ComplexType.GetFullyQualified(complexType)}.{Property.GetDescriptorName(property)}.Set(this, value)";
     }
 }

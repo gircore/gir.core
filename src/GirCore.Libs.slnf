@@ -32,7 +32,6 @@
       "Libs\\WebKitWebProcessExtension-6.0\\WebKitWebProcessExtension-6.0.csproj",
       "Libs\\JavaScriptCore-6.0\\JavaScriptCore-6.0.csproj",
       "Samples\\Adw-1\\Window\\Window.csproj",
-      "Samples\\GdkPixbuf-2.0\\TestLoading\\TestLoading.csproj",
       "Samples\\GdkPixbuf-2.0\\TestMemoryLeaks\\TestMemoryLeaks.csproj",
       "Samples\\Gio-2.0\\DBus\\DBus.csproj",
       "Samples\\Gst-1.0\\VideoPlayback\\VideoPlayback.csproj",

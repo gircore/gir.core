@@ -18,21 +18,20 @@ public partial class FontDialog
                 return;
             }
 
-            var chooseFontFaceResult = Internal.FontDialog.ChooseFaceFinish(sourceObject.Handle, res.Handle, out var error);
+            var chooseFontFaceResult = Internal.FontDialog.ChooseFaceFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
+            if (chooseFontFaceResult == IntPtr.Zero)
+                tcs.SetResult(null);
             else
-            {
-                var result = GObject.Internal.ObjectWrapper.WrapNullableHandle<Pango.FontFace>(chooseFontFaceResult, false);
-                tcs.SetResult(result);
-            }
+                tcs.SetResult((Pango.FontFace) GObject.Internal.InstanceWrapper.WrapHandle<Pango.FontFace>(chooseFontFaceResult, true));
         });
 
         Internal.FontDialog.ChooseFace(
-            Handle,
-            parent.Handle,
-            fontFace?.Handle ?? IntPtr.Zero,
+            Handle.DangerousGetHandle(),
+            parent.Handle.DangerousGetHandle(),
+            fontFace?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             IntPtr.Zero,
             callbackHandler.NativeCallback,
             IntPtr.Zero
@@ -54,21 +53,20 @@ public partial class FontDialog
                 return;
             }
 
-            var chooseFontFamilyResult = Internal.FontDialog.ChooseFamilyFinish(sourceObject.Handle, res.Handle, out var error);
+            var chooseFontFamilyResult = Internal.FontDialog.ChooseFamilyFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
+            else if (chooseFontFamilyResult == IntPtr.Zero)
+                tcs.SetResult(null);
             else
-            {
-                var result = GObject.Internal.ObjectWrapper.WrapNullableHandle<Pango.FontFamily>(chooseFontFamilyResult, false);
-                tcs.SetResult(result);
-            }
+                tcs.SetResult((Pango.FontFamily) GObject.Internal.InstanceWrapper.WrapHandle<Pango.FontFamily>(chooseFontFamilyResult, true));
         });
 
         Internal.FontDialog.ChooseFamily(
-            Handle,
-            parent.Handle,
-            fontFamily?.Handle ?? IntPtr.Zero,
+            Handle.DangerousGetHandle(),
+            parent.Handle.DangerousGetHandle(),
+            fontFamily?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             IntPtr.Zero,
             callbackHandler.NativeCallback,
             IntPtr.Zero
@@ -90,26 +88,20 @@ public partial class FontDialog
                 return;
             }
 
-            var fontDescriptionOwnedHandle = Internal.FontDialog.ChooseFontFinish(sourceObject.Handle, res.Handle, out var error);
+            var fontDescriptionOwnedHandle = Internal.FontDialog.ChooseFontFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
+            else if (fontDescriptionOwnedHandle.IsInvalid)
+                tcs.SetResult(null);
             else
-            {
-                if (fontDescriptionOwnedHandle.IsInvalid)
-                    tcs.SetResult(null);
-                else
-                {
-                    var result = new Pango.FontDescription(fontDescriptionOwnedHandle);
-                    tcs.SetResult(result);
-                }
-            }
+                tcs.SetResult(new Pango.FontDescription(fontDescriptionOwnedHandle));
         });
 
         var initialValue = (Pango.Internal.FontDescriptionHandle?) fontDescription?.Handle ?? Pango.Internal.FontDescriptionUnownedHandle.NullHandle;
         Internal.FontDialog.ChooseFont(
-            Handle,
-            parent.Handle,
+            Handle.DangerousGetHandle(),
+            parent.Handle.DangerousGetHandle(),
             initialValue,
             IntPtr.Zero,
             callbackHandler.NativeCallback,

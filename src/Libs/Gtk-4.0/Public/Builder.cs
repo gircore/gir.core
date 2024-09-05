@@ -3,13 +3,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using GObject.Internal;
+using Gtk.Internal;
 
 namespace Gtk;
 
 public partial class Builder
 {
     #region Constructors
-    private Builder(string templateXml, bool owned) : this(Internal.Builder.NewFromString(GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(templateXml), Encoding.UTF8.GetByteCount(templateXml)), owned)
+    private Builder(string templateXml, bool owned) : this(new BuilderHandle(Internal.Builder.NewFromString(GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(templateXml), Encoding.UTF8.GetByteCount(templateXml)), owned))
     {
     }
     public Builder(string embeddedTemplateName) : this(GetTemplate(Assembly.GetCallingAssembly(), embeddedTemplateName), true)
@@ -32,7 +34,7 @@ public partial class Builder
 
     public IntPtr GetPointer(string name)
     {
-        return Internal.Builder.GetObject(this.Handle, GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(name));
+        return Internal.Builder.GetObject(this.Handle.DangerousGetHandle(), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(name));
     }
 
     /*
@@ -85,37 +87,14 @@ public partial class Builder
             if (!typeof(Widget).IsAssignableFrom(field.FieldType))
                 throw new Exception($"{field.FieldType.Name} must be a {nameof(Widget)}");
 
-            var constructor = field.FieldType.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-                .Where(CheckConstructor)
-                .FirstOrDefault();
-
-            if (constructor is null)
-                throw new Exception($"{field.ReflectedType?.FullName} Field {field.Name}: Could not find a constructor with one parameter of {nameof(IntPtr)} to create a {field.FieldType.FullName}");
-
             var ptr = GetPointer(element);
 
             if (ptr == IntPtr.Zero)
                 throw new Exception($"{field.ReflectedType?.FullName} Field {field.Name}: Could not find an element in the template with the name {element}");
 
-            var newElement = constructor.Invoke(new object[] { ptr, false });
+            var newElement = InstanceWrapper.WrapHandle<Widget>(ptr, false);
             field.SetValue(obj, newElement);
         }
-    }
-
-    private bool CheckConstructor(ConstructorInfo constructorInfo)
-    {
-        var parameters = constructorInfo.GetParameters();
-
-        if (parameters.Length != 2)
-            return false;
-
-        if (parameters[0].ParameterType != typeof(IntPtr))
-            return false;
-
-        if (parameters[1].ParameterType != typeof(bool))
-            return false;
-
-        return true;
     }
 
     private static string GetTemplate(Assembly assembly, string template)

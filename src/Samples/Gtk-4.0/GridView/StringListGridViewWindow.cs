@@ -10,7 +10,7 @@ public class StringListGridViewWindow : Window
         Title = "Gtk::GridView (Gio::ListStore)";
         SetDefaultSize(400, 400);
 
-        var stringList = StringList.New(new string[] { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten" });
+        var stringList = StringList.New(["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]);
         var selectionModel = NoSelection.New(stringList);
         var listItemFactory = SignalListItemFactory.New();
         listItemFactory.OnSetup += SetupSignalHandler;

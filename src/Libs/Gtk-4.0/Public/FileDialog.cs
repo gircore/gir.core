@@ -18,19 +18,19 @@ public partial class FileDialog
                 return;
             }
 
-            var fileValue = Internal.FileDialog.OpenFinish(sourceObject.Handle, res.Handle, out var error);
+            var fileValue = Internal.FileDialog.OpenFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
             else if (fileValue == IntPtr.Zero)
                 tcs.SetResult(null);
             else
-                tcs.SetResult(new Gio.FileHelper(fileValue, true));
+                tcs.SetResult((Gio.File) GObject.Internal.InstanceWrapper.WrapHandle<Gio.FileHelper>(fileValue, true));
         });
 
         Internal.FileDialog.Open(
-            self: Handle,
-            parent: parent.Handle,
+            self: Handle.DangerousGetHandle(),
+            parent: parent.Handle.DangerousGetHandle(),
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
@@ -52,17 +52,19 @@ public partial class FileDialog
                 return;
             }
 
-            var listValue = Internal.FileDialog.OpenMultipleFinish(sourceObject.Handle, res.Handle, out var error);
+            var listValue = Internal.FileDialog.OpenMultipleFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
+            else if (listValue == IntPtr.Zero)
+                tcs.SetResult(null);
             else
-                tcs.SetResult(GObject.Internal.ObjectWrapper.WrapNullableInterfaceHandle<Gio.ListModelHelper>(listValue, true));
+                tcs.SetResult((Gio.ListModel) GObject.Internal.InstanceWrapper.WrapHandle<Gio.ListModelHelper>(listValue, true));
         });
 
         Internal.FileDialog.OpenMultiple(
-            self: Handle,
-            parent: parent.Handle,
+            self: Handle.DangerousGetHandle(),
+            parent: parent.Handle.DangerousGetHandle(),
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
@@ -84,19 +86,19 @@ public partial class FileDialog
                 return;
             }
 
-            var fileValue = Internal.FileDialog.SaveFinish(sourceObject.Handle, res.Handle, out var error);
+            var fileValue = Internal.FileDialog.SaveFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
             else if (fileValue == IntPtr.Zero)
                 tcs.SetResult(null);
             else
-                tcs.SetResult(new Gio.FileHelper(fileValue, true));
+                tcs.SetResult((Gio.File) GObject.Internal.InstanceWrapper.WrapHandle<Gio.FileHelper>(fileValue, true));
         });
 
         Internal.FileDialog.Save(
-            self: Handle,
-            parent: parent.Handle,
+            self: Handle.DangerousGetHandle(),
+            parent: parent.Handle.DangerousGetHandle(),
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
@@ -119,19 +121,19 @@ public partial class FileDialog
                 return;
             }
 
-            var fileValue = Internal.FileDialog.SelectFolderFinish(sourceObject.Handle, res.Handle, out var error);
+            var fileValue = Internal.FileDialog.SelectFolderFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
             else if (fileValue == IntPtr.Zero)
                 tcs.SetResult(null);
             else
-                tcs.SetResult(new Gio.FileHelper(fileValue, true));
+                tcs.SetResult((Gio.File) GObject.Internal.InstanceWrapper.WrapHandle<Gio.FileHelper>(fileValue, true));
         });
 
         Internal.FileDialog.SelectFolder(
-            self: Handle,
-            parent: parent.Handle,
+            self: Handle.DangerousGetHandle(),
+            parent: parent.Handle.DangerousGetHandle(),
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
@@ -153,17 +155,19 @@ public partial class FileDialog
                 return;
             }
 
-            var listValue = Internal.FileDialog.SelectMultipleFoldersFinish(sourceObject.Handle, res.Handle, out var error);
+            var listValue = Internal.FileDialog.SelectMultipleFoldersFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
+            else if (listValue == IntPtr.Zero)
+                tcs.SetResult(null);
             else
-                tcs.SetResult(GObject.Internal.ObjectWrapper.WrapNullableInterfaceHandle<Gio.ListModelHelper>(listValue, true));
+                tcs.SetResult((Gio.ListModel) GObject.Internal.InstanceWrapper.WrapHandle<Gio.ListModelHelper>(listValue, true));
         });
 
         Internal.FileDialog.SelectMultipleFolders(
-            self: Handle,
-            parent: parent.Handle,
+            self: Handle.DangerousGetHandle(),
+            parent: parent.Handle.DangerousGetHandle(),
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero

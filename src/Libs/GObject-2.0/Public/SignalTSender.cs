@@ -20,11 +20,7 @@ public class Signal<TSender> : SignalDefinition
 
     private uint GetId()
     {
-#if NET7_0_OR_GREATER
         var gType = TSender.GetGType();
-#else
-        var gType = Internal.GTypeProviderHelper.GetGType<TSender>();
-#endif
 
         return Internal.Functions.SignalLookup(GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(UnmanagedName), gType);
     }

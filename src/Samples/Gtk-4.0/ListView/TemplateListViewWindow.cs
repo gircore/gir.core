@@ -12,7 +12,7 @@ public class TemplateListViewWindow : Window
         Title = "Template ListView";
         SetDefaultSize(300, 300);
 
-        var stringList = StringList.New(new string[] { "One", "Two", "Three", "Four" });
+        var stringList = StringList.New(["One", "Two", "Three", "Four"]);
         var selectionModel = SingleSelection.New(stringList);
         var bytes = Assembly.GetExecutingAssembly()
             .ReadResourceAsByteArray("ListItemTemplate.ui");

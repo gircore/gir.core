@@ -18,7 +18,7 @@ public partial class AlertDialog
                 return;
             }
 
-            var chooseValue = Internal.AlertDialog.ChooseFinish(sourceObject.Handle, res.Handle, out var error);
+            var chooseValue = Internal.AlertDialog.ChooseFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
@@ -27,8 +27,8 @@ public partial class AlertDialog
         });
 
         Internal.AlertDialog.Choose(
-            self: Handle,
-            parent: parent.Handle,
+            self: Handle.DangerousGetHandle(),
+            parent: parent.Handle.DangerousGetHandle(),
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero

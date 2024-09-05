@@ -1,5 +1,7 @@
 #include "girtest-property-tester.h"
 #include "girtest-typed-record-tester.h"
+#include "data/girtest-executor-impl.h"
+#include "data/girtest-executor-private-impl.h"
 
 /**
  * GirTestPropertyTester:
@@ -14,6 +16,9 @@ typedef enum
     PROP_TYPED_RECORD_VALUE = 3,
     PROP_INT_VALUE = 4,
     PROP_BOOLEAN_VALUE = 5,
+    PROP_OBJECT_VALUE = 6,
+    PROP_EXECUTOR_VALUE = 7,
+    PROP_EXECUTOR_ANONYMOUS_VALUE = 8,
     N_PROPERTIES
 } PropertyTesterProperty;
 
@@ -21,11 +26,15 @@ struct _GirTestPropertyTester
 {
     GObject parent_instance;
 
-    gchar *string_value;
-    gchar *property_tester;
+    gchar* string_value;
+    gchar* property_tester;
     GirTestTypedRecordTester* record;
+    GObject* object_value;
+    GirTestExecutor* executor_value;
+    GirTestExecutor* executor_anonymous_value;
     gint int_value;
     gboolean boolean_value;
+
 };
 
 G_DEFINE_TYPE(GirTestPropertyTester, girtest_property_tester, G_TYPE_OBJECT)
@@ -58,6 +67,15 @@ girtest_property_tester_get_property (GObject    *object,
     case PROP_BOOLEAN_VALUE:
         g_value_set_boolean (value, self->boolean_value);
         break;
+    case PROP_OBJECT_VALUE:
+        g_value_set_object (value, self->object_value);
+        break;
+    case PROP_EXECUTOR_VALUE:
+        g_value_set_object (value, self->executor_value);
+        break;
+    case PROP_EXECUTOR_ANONYMOUS_VALUE:
+        g_value_set_object (value, self->executor_anonymous_value);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -88,6 +106,9 @@ girtest_property_tester_set_property (GObject      *object,
     case PROP_BOOLEAN_VALUE:
         self->boolean_value = g_value_get_boolean (value);
         break;
+    case PROP_OBJECT_VALUE:
+        self->object_value = g_value_get_object (value);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -96,6 +117,8 @@ girtest_property_tester_set_property (GObject      *object,
 static void
 girtest_property_tester_init(GirTestPropertyTester *value)
 {
+    value->executor_value = GIRTEST_EXECUTOR(girtest_executor_impl_new());
+    value->executor_anonymous_value = GIRTEST_EXECUTOR(girtest_executor_private_impl_new());
 }
 
 static void
@@ -127,6 +150,26 @@ girtest_property_tester_class_init(GirTestPropertyTesterClass *class)
     properties[PROP_TYPED_RECORD_VALUE] =
       g_param_spec_boxed ("record-value", NULL, NULL, GIRTEST_TYPE_TYPED_RECORD_TESTER, G_PARAM_READWRITE);
 
+    properties[PROP_OBJECT_VALUE] =
+      g_param_spec_object ("object-value",
+                           "Object Value",
+                           "An object value",
+                           G_TYPE_OBJECT,
+                           G_PARAM_READWRITE);
+
+    properties[PROP_EXECUTOR_VALUE] =
+        g_param_spec_object ("executor-value",
+                             "Executor Value",
+                             "An executor value",
+                             GIRTEST_TYPE_EXECUTOR,
+                             G_PARAM_READABLE);
+
+    properties[PROP_EXECUTOR_ANONYMOUS_VALUE] =
+        g_param_spec_object ("executor-anonymous-value",
+                            "Executor Anonymous Value",
+                            "An executor value",
+                            GIRTEST_TYPE_EXECUTOR,
+                            G_PARAM_READABLE);
 
     properties[PROP_INT_VALUE] =
           g_param_spec_int ("int-value",
