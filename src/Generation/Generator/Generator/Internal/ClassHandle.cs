@@ -1,12 +1,12 @@
 ﻿using Generator.Model;
 
-namespace Generator.Generator.Public;
+namespace Generator.Generator.Internal;
 
-internal class ClassFramework : Generator<GirModel.Class>
+internal class ClassHandle : Generator<GirModel.Class>
 {
     private readonly Publisher _publisher;
 
-    public ClassFramework(Publisher publisher)
+    public ClassHandle(Publisher publisher)
     {
         _publisher = publisher;
     }
@@ -15,16 +15,16 @@ internal class ClassFramework : Generator<GirModel.Class>
     {
         if (obj.Fundamental)
             return;
-
-        if (obj.Parent is null)
-            return; //Do not generate Framework for GObject.Object itsel
         
-        var source = Renderer.Public.ClassFramework.Render(obj);
+        if (obj.Parent is null)
+            return; //Do not generate a handle for GObject.Object itself
+        
+        var source = Renderer.Internal.ClassHandle.Render(obj);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),
-            Name: $"{obj.Name}.Framework",
+            Name: Class.GetInternalHandleName(obj),
             Source: source,
-            IsInternal: false
+            IsInternal: true
         );
 
         _publisher.Publish(codeUnit);

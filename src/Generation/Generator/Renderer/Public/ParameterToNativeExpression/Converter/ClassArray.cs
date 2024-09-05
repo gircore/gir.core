@@ -21,6 +21,6 @@ internal class ClassArray : ToNativeParameterConverter
 
         parameter.SetSignatureName(() => parameterName);
         parameter.SetCallName(() => nativeVariableName);
-        parameter.SetExpression(() => $"var {nativeVariableName} = {parameterName}.Select(cls => cls.Handle).ToArray();");
+        parameter.SetExpression(() => $"var {nativeVariableName} = {parameterName}.Select(cls => cls.Handle.DangerousGetHandle()).ToArray();");
     }
 }

@@ -15,6 +15,6 @@ internal class InterfaceArray : ToNativeParameterConverter
 
         parameter.SetSignatureName(() => parameterName);
         parameter.SetCallName(() => nativevariableName);
-        parameter.SetExpression(() => $"var {nativevariableName} = {parameterName}.Select(iface => (iface as GObject.Object).Handle).ToArray();");
+        parameter.SetExpression(() => $"var {nativevariableName} = {parameterName}.Select(iface => (iface as GObject.Object).Handle.DangerousGetHandle()).ToArray();");
     }
 }
