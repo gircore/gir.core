@@ -2,7 +2,7 @@
 
 namespace Generator.Renderer.Public;
 
-public class ParameterToNativeData
+public class ParameterToNativeData(GirModel.Parameter parameter)
 {
     private Func<string>? _getCallName;
     private Func<string>? _getSignatureName;
@@ -14,18 +14,13 @@ public class ParameterToNativeData
     private string? _expression;
     private string? _postCallExpression;
 
-    public GirModel.Parameter Parameter { get; }
+    public GirModel.Parameter Parameter { get; } = parameter;
 
     public bool IsCallbackUserData { get; internal set; }
     public bool IsDestroyNotify { get; internal set; }
     public bool IsArrayLengthParameter { get; internal set; }
     public bool IsInOutArrayLengthParameter { get; internal set; }
     public bool IsGLibErrorParameter { get; internal set; }
-
-    public ParameterToNativeData(GirModel.Parameter parameter)
-    {
-        Parameter = parameter;
-    }
 
     public void SetExpression(Func<string> getExpression)
     {

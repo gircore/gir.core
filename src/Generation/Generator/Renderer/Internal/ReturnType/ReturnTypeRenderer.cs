@@ -23,6 +23,7 @@ internal static class ReturnTypeRenderer
         new ReturnType.UnsignedLong(), //Must be before primitive value type
         new ReturnType.PrimitiveValueType(),
         new ReturnType.PrimitiveValueTypeAlias(),
+        new ReturnType.PrimitiveValueTypeAliasArray(),
         new ReturnType.PrimitiveValueTypeArray(),
         new ReturnType.TypedRecord(),
         new ReturnType.TypedRecordArray(),

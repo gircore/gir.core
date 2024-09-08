@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Generator.Model;
 
 namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
@@ -8,15 +9,20 @@ internal class Interface : ReturnTypeConverter
     public bool Supports(GirModel.AnyType type)
         => type.Is<GirModel.Interface>();
 
-    public string GetString(GirModel.ReturnType returnType, string fromVariableName)
+    public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {
-        if (!returnType.IsPointer)
-            throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
+        data.SetExpression(fromVariableName =>
+        {
+            var returnType = data.ReturnType;
 
-        var @interface = (GirModel.Interface) returnType.AnyType.AsT0;
+            if (!returnType.IsPointer)
+                throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
 
-        return returnType.Nullable
-            ? $"GObject.Internal.ObjectWrapper.WrapNullableInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"
-            : $"GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
+            var @interface = (GirModel.Interface) returnType.AnyType.AsT0;
+
+            return returnType.Nullable
+                ? $"GObject.Internal.ObjectWrapper.WrapNullableInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"
+                : $"GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
+        });
     }
 }

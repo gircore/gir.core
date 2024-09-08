@@ -104,4 +104,14 @@ public class AliasTest : Test
     {
         AliasTester.ToPointerAlias((IntPtr) 42).Should().Be(new PointerAlias((IntPtr) 42));
     }
+
+    [TestMethod]
+    public void CanReadArrayTransferFull()
+    {
+        var array = AliasTester.GetArrayTransferFull();
+        array.Length.Should().Be(3);
+        array[0].Should().Be(new IntAlias(1));
+        array[1].Should().Be(new IntAlias(2));
+        array[2].Should().Be(new IntAlias(3));
+    }
 }

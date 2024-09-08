@@ -51,6 +51,8 @@ internal class PrimitiveValueType : ToNativeParameterConverter
     {
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         parameter.SetSignatureName(() => parameterName);
-        parameter.SetCallName(() => $"out {parameterName}");
+        parameter.SetCallName(() => parameter.IsArrayLengthParameter
+            ? $"out var {parameterName}"
+            : $"out {parameterName}");
     }
 }

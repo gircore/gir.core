@@ -4,8 +4,8 @@ namespace Generator.Renderer.Public;
 
 internal static class ReturnTypeToManagedExpression
 {
-    private static readonly List<ReturnTypeToManagedExpressions.ReturnTypeConverter> Converter = new()
-    {
+    private static readonly List<ReturnTypeToManagedExpressions.ReturnTypeConverter> Converter =
+    [
         new ReturnTypeToManagedExpressions.Bitfield(),
         new ReturnTypeToManagedExpressions.Class(),
         new ReturnTypeToManagedExpressions.Enumeration(),
@@ -21,19 +21,28 @@ internal static class ReturnTypeToManagedExpression
         new ReturnTypeToManagedExpressions.UnsignedLong(), //Must be before primitive value type
         new ReturnTypeToManagedExpressions.PrimitiveValueType(),
         new ReturnTypeToManagedExpressions.PrimitiveValueTypeAlias(),
+        new ReturnTypeToManagedExpressions.PrimitiveValueTypeAliasArray(),
         new ReturnTypeToManagedExpressions.PrimitiveValueTypeArray(),
         new ReturnTypeToManagedExpressions.TypedRecord(),
         new ReturnTypeToManagedExpressions.UntypedRecord(),
         new ReturnTypeToManagedExpressions.Utf8String(),
         new ReturnTypeToManagedExpressions.Utf8StringArray(),
-    };
+        new ReturnTypeToManagedExpressions.Void()
+    ];
 
-    public static string Render(GirModel.ReturnType from, string fromVariableName)
+    public static ReturnTypeToManagedData Initialize(GirModel.ReturnType returnType, IEnumerable<ParameterToNativeData> parameters)
     {
-        foreach (var converter in Converter)
-            if (converter.Supports(from.AnyType))
-                return converter.GetString(from, fromVariableName);
+        var data = new ReturnTypeToManagedData(returnType);
 
-        throw new System.NotImplementedException($"Missing converter to convert from internal return type {from} to public.");
+        foreach (var converter in Converter)
+        {
+            if (!converter.Supports(returnType.AnyType))
+                continue;
+
+            converter.Initialize(data, parameters);
+            return data;
+        }
+
+        throw new System.NotImplementedException($"Missing converter to convert from internal return type {returnType} to public.");
     }
 }

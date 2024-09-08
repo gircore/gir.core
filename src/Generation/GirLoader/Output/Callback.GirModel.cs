@@ -6,7 +6,7 @@ namespace GirLoader.Output;
 
 public partial class Callback : GirModel.Callback
 {
-    ReturnType GirModel.Callback.ReturnType => ReturnValue;
+    ReturnType GirModel.Callable.ReturnType => ReturnValue;
     bool GirModel.Callable.Throws => Throws;
     IEnumerable<GirModel.Parameter> GirModel.Callable.Parameters => ParameterList.GetParameters().Cast<GirModel.Parameter>();
     GirModel.InstanceParameter? GirModel.Callable.InstanceParameter => null;

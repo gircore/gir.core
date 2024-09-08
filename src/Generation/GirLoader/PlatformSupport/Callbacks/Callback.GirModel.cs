@@ -9,7 +9,7 @@ public partial class Callback : GirModel.Callback
     string GirModel.ComplexType.Name => _callback.Name;
     string GirModel.Callable.Name => _callback.Name;
     bool GirModel.Callable.Throws => _callback.Throws;
-    GirModel.ReturnType GirModel.Callback.ReturnType => _callback.ReturnType;
+    GirModel.ReturnType GirModel.Callable.ReturnType => _callback.ReturnType;
     IEnumerable<GirModel.Parameter> GirModel.Callable.Parameters => _callback.Parameters;
     bool GirModel.Callback.Introspectable => _callback.Introspectable;
     GirModel.InstanceParameter? GirModel.Callable.InstanceParameter => null;

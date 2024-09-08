@@ -1,4 +1,5 @@
-﻿using GirModel;
+﻿using System.Collections.Generic;
+using GirModel;
 
 namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
@@ -7,6 +8,6 @@ internal class PrimitiveValueTypeArray : ReturnTypeConverter
     public bool Supports(AnyType type)
         => type.IsArray<GirModel.PrimitiveValueType>();
 
-    public string GetString(GirModel.ReturnType returnType, string fromVariableName)
-        => fromVariableName;
+    public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
+        => data.SetExpression(fromVariableName => fromVariableName);
 }

@@ -18,16 +18,17 @@ internal static class FunctionRenderer
 
         try
         {
-            var parameters = ParameterToNativeExpression.Initialize(function.Parameters);
+            var callableData = CallableExpressions.Initialize(function);
             var newModifier = Function.HidesFunction(function) ? "new " : string.Empty;
             return @$"
 {VersionAttribute.Render(function.Version)}
-public static {newModifier}{ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName(function)}({RenderParameters(parameters)})
+public static {newModifier}{ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName(function)}({RenderParameters(callableData.ParameterToNativeDatas)})
 {{
-    {RenderFunctionContent(parameters)}
-    {RenderCallStatement(function, parameters, out var resultVariableName)}
-    {RenderPostCallContent(parameters)}
-    {RenderReturnStatement(function, resultVariableName)}
+    {RenderFunctionContent(callableData.ParameterToNativeDatas)}
+    {RenderCallStatement(function, callableData.ParameterToNativeDatas, out var resultVariableName)}
+    {RenderPostCallContent(callableData.ParameterToNativeDatas)}
+    {callableData.ReturnTypeToManagedData.GetPostReturnStatement(resultVariableName)}
+    {RenderReturnStatement(callableData.ReturnTypeToManagedData, resultVariableName)}
 }}";
         }
         catch (Exception e)
@@ -89,7 +90,7 @@ public static {newModifier}{ReturnTypeRenderer.Render(function.ReturnType)} {Fun
         return result.Join(", ");
     }
 
-    private static string RenderCallStatement(GirModel.Function function, IReadOnlyList<ParameterToNativeData> parameters, out string resultVariableName)
+    private static string RenderCallStatement(GirModel.Function function, IEnumerable<ParameterToNativeData> parameters, out string resultVariableName)
     {
         resultVariableName = $"result{Function.GetName(function)}";
         var call = new StringBuilder();
@@ -113,11 +114,11 @@ public static {newModifier}{ReturnTypeRenderer.Render(function.ReturnType)} {Fun
         return call.ToString();
     }
 
-    private static string RenderReturnStatement(GirModel.Function function, string returnVariable)
+    private static string RenderReturnStatement(ReturnTypeToManagedData data, string returnVariable)
     {
-        return function.ReturnType.AnyType.Is<GirModel.Void>()
+        return data.ReturnType.AnyType.Is<GirModel.Void>()
             ? string.Empty
-            : $"return {ReturnTypeToManagedExpression.Render(function.ReturnType, returnVariable)};";
+            : $"return {data.GetExpression(returnVariable)};";
     }
 
     private static bool IsSupported(GirModel.Function function)

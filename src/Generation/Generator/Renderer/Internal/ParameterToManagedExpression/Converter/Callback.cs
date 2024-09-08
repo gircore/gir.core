@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Generator.Renderer.Public;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
@@ -21,15 +22,14 @@ internal class Callback : ToManagedParameterConverter
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
         var callName = signatureName + "Managed";
 
-        var parameterToNativeDatas = Public.ParameterToNativeExpression.Initialize(callback.Parameters);
-
+        var callableData = Public.CallableExpressions.Initialize(callback);
         parameterData.SetSignatureName(() => signatureName);
-        parameterData.SetExpression(() => @$"var {callName} = new {ns}.{type}(({GetManagedParameters(parameterToNativeDatas)}) => 
+        parameterData.SetExpression(() => @$"var {callName} = new {ns}.{type}(({GetManagedParameters(callableData.ParameterToNativeDatas)}) => 
 {{ 
-    {RenderContent(parameterToNativeDatas)}
-    {RenderCallStatement(signatureName, callback, parameterToNativeDatas, out var resultVariableName)}
-    {RenderThrowOnError(callback, parameterToNativeDatas)}
-    {RenderReturnStatement(callback, resultVariableName)}
+    {RenderContent(callableData.ParameterToNativeDatas)}
+    {RenderCallStatement(signatureName, callback, callableData.ParameterToNativeDatas, out var resultVariableName)}
+    {RenderThrowOnError(callback, callableData.ParameterToNativeDatas)}
+    {RenderReturnStatement(callableData.ReturnTypeToManagedData, resultVariableName)}
 }});");
         parameterData.SetCallName(() => callName);
     }
@@ -67,7 +67,7 @@ internal class Callback : ToManagedParameterConverter
             .Join(Environment.NewLine);
     }
 
-    private static string RenderCallStatement(string signatureName, GirModel.Callback callback, IReadOnlyList<Public.ParameterToNativeData> parameters, out string resultVariableName)
+    private static string RenderCallStatement(string signatureName, GirModel.Callback callback, IReadOnlyCollection<Public.ParameterToNativeData> parameters, out string resultVariableName)
     {
         resultVariableName = $"result{callback.Name}";
         var call = new StringBuilder();
@@ -91,10 +91,10 @@ internal class Callback : ToManagedParameterConverter
             : string.Empty;
     }
 
-    private static string RenderReturnStatement(GirModel.Callback callback, string returnVariable)
+    private static string RenderReturnStatement(ReturnTypeToManagedData data, string returnVariable)
     {
-        return callback.ReturnType.AnyType.Is<GirModel.Void>()
+        return data.ReturnType.AnyType.Is<GirModel.Void>()
             ? string.Empty
-            : $"return {Public.ReturnTypeToManagedExpression.Render(callback.ReturnType, returnVariable)};";
+            : $"return {data.GetExpression(returnVariable)};";
     }
 }

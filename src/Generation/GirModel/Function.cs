@@ -9,7 +9,6 @@ public interface Function : Callable
     /// </summary>
     ComplexType? Parent { get; }
     string CIdentifier { get; }
-    public ReturnType ReturnType { get; }
     public bool Introspectable { get; }
     string? Version { get; }
 }
