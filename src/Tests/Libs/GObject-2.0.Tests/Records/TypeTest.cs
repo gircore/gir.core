@@ -14,4 +14,17 @@ public class TypeTest
             sizeof(Type).Should().Be(8);
         }
     }
+
+    [TestMethod]
+    public void FundamentalTypesCanBeDetected()
+    {
+        //(255 << 2) => G_TYPE_FUNDAMENTAL_MAX
+        Internal.Functions.IsFundamental(255 << 2).Should().BeTrue();
+
+        //Fundamental types
+        Internal.Functions.IsFundamental(Object.GetGType().Value).Should().BeTrue();
+
+        //Non fundamental types
+        Internal.Functions.IsFundamental(Binding.GetGType().Value).Should().BeFalse();
+    }
 }
