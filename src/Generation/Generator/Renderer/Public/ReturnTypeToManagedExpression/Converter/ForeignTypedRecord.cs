@@ -1,28 +1,32 @@
 ﻿using System;
-using GirModel;
+using System.Collections.Generic;
 
 namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class ForeignTypedRecord : ReturnTypeConverter
 {
-    public bool Supports(AnyType type)
+    public bool Supports(GirModel.AnyType type)
         => type.Is<GirModel.Record>(out var record) && Model.Record.IsForeignTyped(record);
 
-    public string GetString(GirModel.ReturnType returnType, string fromVariableName)
+    public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {
-        var record = (GirModel.Record) returnType.AnyType.AsT0;
-
-        var handleExpression = returnType switch
+        data.SetExpression(fromVariableName =>
         {
-            { Transfer: Transfer.Full } => fromVariableName,
-            { Transfer: Transfer.None } => $"{fromVariableName}.OwnedCopy()",
-            _ => throw new NotImplementedException("Unknown transfer type")
-        };
+            var returnType = data.ReturnType;
+            var record = (GirModel.Record) returnType.AnyType.AsT0;
 
-        var createNewInstance = $"new {Model.ComplexType.GetFullyQualified(record)}({handleExpression})";
+            var handleExpression = returnType switch
+            {
+                { Transfer: GirModel.Transfer.Full } => fromVariableName,
+                { Transfer: GirModel.Transfer.None } => $"{fromVariableName}.OwnedCopy()",
+                _ => throw new NotImplementedException("Unknown transfer type")
+            };
 
-        return returnType.Nullable
-            ? $"{fromVariableName}.IsInvalid ? null : {createNewInstance}"
-            : createNewInstance;
+            var createNewInstance = $"new {Model.ComplexType.GetFullyQualified(record)}({handleExpression})";
+
+            return returnType.Nullable
+                ? $"{fromVariableName}.IsInvalid ? null : {createNewInstance}"
+                : createNewInstance;
+        });
     }
 }

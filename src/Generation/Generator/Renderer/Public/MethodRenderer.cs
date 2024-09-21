@@ -25,16 +25,16 @@ internal static class MethodRenderer
                 explicitImplementation = $"{Namespace.GetPublicName(method.Parent.Namespace)}.{method.Parent.Name}.";
             }
 
-            var parameters = ParameterToNativeExpression.Initialize(method.Parameters);
-
+            var callableData = CallableExpressions.Initialize(method);
             return @$"
 {VersionAttribute.Render(method.Version)}
-{modifier}{ReturnTypeRenderer.Render(method.ReturnType)} {explicitImplementation}{Method.GetPublicName(method)}({RenderParameters(parameters)})
+{modifier}{ReturnTypeRenderer.Render(method.ReturnType)} {explicitImplementation}{Method.GetPublicName(method)}({RenderParameters(callableData.ParameterToNativeDatas)})
 {{
-    {RenderMethodContent(parameters)}
-    {RenderCallStatement(method, parameters, out var resultVariableName)}
-    {RenderPostCallContent(parameters)}
-    {RenderReturnStatement(method, resultVariableName)}
+    {RenderMethodContent(callableData.ParameterToNativeDatas)}
+    {RenderCallStatement(method, callableData.ParameterToNativeDatas, out var resultVariableName)}
+    {RenderPostCallContent(callableData.ParameterToNativeDatas)}
+    {callableData.ReturnTypeToManagedData.GetPostReturnStatement(resultVariableName)}
+    {RenderReturnStatement(callableData.ReturnTypeToManagedData, resultVariableName)}
 }}";
         }
         catch (Exception e)
@@ -96,7 +96,7 @@ internal static class MethodRenderer
         return result.Join(", ");
     }
 
-    private static string RenderCallStatement(GirModel.Method method, IReadOnlyList<ParameterToNativeData> parameters, out string resultVariableName)
+    private static string RenderCallStatement(GirModel.Method method, IReadOnlyCollection<ParameterToNativeData> parameters, out string resultVariableName)
     {
         resultVariableName = $"result{Method.GetPublicName(method)}";
         var call = new StringBuilder();
@@ -115,10 +115,10 @@ internal static class MethodRenderer
         return call.ToString();
     }
 
-    private static string RenderReturnStatement(GirModel.Method method, string returnVariable)
+    private static string RenderReturnStatement(ReturnTypeToManagedData data, string returnVariable)
     {
-        return method.ReturnType.AnyType.Is<GirModel.Void>()
+        return data.ReturnType.AnyType.Is<GirModel.Void>()
             ? string.Empty
-            : $"return {ReturnTypeToManagedExpression.Render(method.ReturnType, returnVariable)};";
+            : $"return {data.GetExpression(returnVariable)};";
     }
 }

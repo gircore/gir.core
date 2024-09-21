@@ -1,4 +1,5 @@
-﻿using GirModel;
+﻿using System.Collections.Generic;
+using GirModel;
 
 namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
@@ -7,9 +8,9 @@ internal class PlatformString : ReturnTypeConverter
     public bool Supports(AnyType type)
         => type.Is<GirModel.PlatformString>();
 
-    public string GetString(GirModel.ReturnType returnType, string fromVariableName)
+    public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {
         // Convert the PlatformStringHandle return type to a string.
-        return $"{fromVariableName}.ConvertToString()";
+        data.SetExpression(fromVariableName => $"{fromVariableName}.ConvertToString()");
     }
 }

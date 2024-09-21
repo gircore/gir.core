@@ -3,14 +3,13 @@ using GirModel;
 
 namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
-internal class Utf8String : ReturnTypeConverter
+internal class Void : ReturnTypeConverter
 {
     public bool Supports(AnyType type)
-        => type.Is<GirModel.Utf8String>();
+        => type.Is<GirModel.Void>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {
-        // Convert the Utf8StringHandle return type to a string.
-        data.SetExpression(fromVariableName => $"{fromVariableName}.ConvertToString()");
+        //Do nothing in case of void. There is no expression to create
     }
 }

@@ -26,7 +26,7 @@ namespace {Namespace.GetPublicName(alias.Namespace)};
 
 {PlatformSupportAttribute.Render(alias as GirModel.PlatformDependent)}
 [StructLayout(LayoutKind.Explicit)]
-public readonly partial struct {alias.Name} 
+public readonly partial record struct {alias.Name} 
 {{
     [FieldOffset(0)]
     private readonly {type} _value;

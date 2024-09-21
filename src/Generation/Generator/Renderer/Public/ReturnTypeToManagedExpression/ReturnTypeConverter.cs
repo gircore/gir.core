@@ -1,9 +1,9 @@
-﻿using GirModel;
+﻿using System.Collections.Generic;
 
 namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal interface ReturnTypeConverter
 {
-    bool Supports(AnyType type);
-    string GetString(GirModel.ReturnType returnType, string fromVariableName);
+    bool Supports(GirModel.AnyType type);
+    void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> parameters);
 }

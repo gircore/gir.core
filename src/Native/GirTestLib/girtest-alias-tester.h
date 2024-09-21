@@ -47,4 +47,7 @@ girtest_alias_tester_to_pointer(GirTestPointerAlias alias);
 GirTestPointerAlias
 girtest_alias_tester_to_pointer_alias(gpointer pointer);
 
+GirTestIntAlias*
+girtest_alias_tester_get_array_transfer_full (guint *n_elements);
+
 G_END_DECLS

@@ -1,4 +1,5 @@
-﻿using GirModel;
+﻿using System.Collections.Generic;
+using GirModel;
 
 namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
@@ -7,8 +8,10 @@ internal class UnsignedLong : ReturnTypeConverter
     public bool Supports(AnyType type)
         => type.Is<GirModel.UnsignedLong>();
 
-    public string GetString(GirModel.ReturnType returnType, string fromVariableName)
-        => returnType.IsPointer
+    public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
+    {
+        data.SetExpression(fromVariableName => data.ReturnType.IsPointer
             ? fromVariableName
-            : $"{fromVariableName}.Value";
+            : $"{fromVariableName}.Value");
+    }
 }

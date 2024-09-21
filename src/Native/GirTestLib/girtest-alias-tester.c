@@ -94,3 +94,29 @@ girtest_alias_tester_to_pointer_alias(gpointer pointer)
 {
     return (GirTestPointerAlias) pointer;
 }
+
+/**
+ * girtest_alias_tester_get_array_transfer_full:
+ * @n_elements: (out) (optional): location for the length of the array or %NULL
+ *
+ * Always returns 3 IntAlias values from 1 to 3;
+ *
+ * Returns: (array length=n_elements) (transfer full): The array
+ */
+GirTestIntAlias*
+girtest_alias_tester_get_array_transfer_full (guint *n_elements)
+{
+    if(n_elements)
+        *n_elements = 3;
+
+    GirTestIntAlias* array = g_new(GirTestIntAlias, 4);
+    
+    for(int i = 0; i <3; i++)
+    {
+        array[i] = i+1;
+    }
+
+    array[3] = 0;
+
+    return array;
+}

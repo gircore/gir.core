@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Generator.Model;
 
 namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
@@ -8,15 +9,20 @@ internal class Class : ReturnTypeConverter
     public bool Supports(GirModel.AnyType type)
         => type.Is<GirModel.Class>();
 
-    public string GetString(GirModel.ReturnType returnType, string fromVariableName)
+    public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {
-        if (!returnType.IsPointer)
-            throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
+        data.SetExpression(fromVariableName =>
+        {
+            var returnType = data.ReturnType;
 
-        var cls = (GirModel.Class) returnType.AnyType.AsT0;
-        return cls.Fundamental
-            ? Fundamental(cls, returnType, fromVariableName)
-            : Standard(cls, returnType, fromVariableName);
+            if (!returnType.IsPointer)
+                throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
+
+            var cls = (GirModel.Class) returnType.AnyType.AsT0;
+            return cls.Fundamental
+                ? Fundamental(cls, returnType, fromVariableName)
+                : Standard(cls, returnType, fromVariableName);
+        });
     }
 
     private static string Fundamental(GirModel.Class cls, GirModel.ReturnType returnType, string fromVariableName)

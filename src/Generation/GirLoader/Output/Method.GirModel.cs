@@ -7,7 +7,7 @@ public partial class Method : GirModel.Method
 {
     GirModel.ComplexType GirModel.Method.Parent => _parent ?? throw new Exception($"{Identifier}: Unknown parent");
     string GirModel.Callable.Name => Name;
-    GirModel.ReturnType GirModel.Method.ReturnType => ReturnValue;
+    GirModel.ReturnType GirModel.Callable.ReturnType => ReturnValue;
     string GirModel.Method.CIdentifier => Identifier;
     GirModel.InstanceParameter GirModel.Method.InstanceParameter => ParameterList.InstanceParameter ?? throw new Exception("Instance parameter mis missing");
     GirModel.InstanceParameter? GirModel.Callable.InstanceParameter => ParameterList.InstanceParameter;
