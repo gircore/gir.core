@@ -3,7 +3,7 @@
 /**
  * GirTestLongTester:
  *
- * Test records with long fields
+ * Test records with long (64 bit) fields
  */
 
 gsize girtest_long_tester_get_sizeof_l(GirTestLongTester* record)
@@ -11,27 +11,27 @@ gsize girtest_long_tester_get_sizeof_l(GirTestLongTester* record)
     return sizeof(record->l);
 }
 
-glong girtest_long_tester_get_max_long_value()
+gint64 girtest_long_tester_get_max_long_value()
 {
-    return LONG_MAX;
+    return G_MAXINT64;
 }
 
-gboolean girtest_long_tester_is_max_long_value(glong value)
+gboolean girtest_long_tester_is_max_long_value(gint64 value)
 {
-    if(value == LONG_MAX)
+    if(value == G_MAXINT64)
         return TRUE;
 
     return FALSE;
 }
 
-glong girtest_long_tester_get_min_long_value()
+gint64 girtest_long_tester_get_min_long_value()
 {
-   return LONG_MIN;
+   return G_MININT64;
 }
 
-gboolean girtest_long_tester_is_min_long_value(glong value)
+gboolean girtest_long_tester_is_min_long_value(gint64 value)
 {
-    if(value == LONG_MIN)
+    if(value == G_MININT64)
         return TRUE;
 
     return FALSE;
@@ -46,7 +46,7 @@ gboolean girtest_long_tester_is_min_long_value(glong value)
  * 
  * Returns: The result of the callback.
  **/
-glong girtest_long_tester_run_callback(glong value, GirTestLongCallback callback)
+gint64 girtest_long_tester_run_callback(gint64 value, GirTestLongCallback callback)
 {
 	return callback(value);
 }

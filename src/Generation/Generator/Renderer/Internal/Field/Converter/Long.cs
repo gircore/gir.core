@@ -20,6 +20,6 @@ internal class Long : FieldConverter
     {
         return field.IsPointer
             ? Model.Type.Pointer
-            : "CLong";
+            : Model.Type.GetName(field.AnyTypeOrCallback.AsT0.AsT0);
     }
 }

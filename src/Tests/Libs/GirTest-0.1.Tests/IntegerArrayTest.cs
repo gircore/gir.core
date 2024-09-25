@@ -101,6 +101,13 @@ public class IntegerArrayTest : Test
     }
 
     [TestMethod]
+    public void IntegerArrayWithGint64Size()
+    {
+        var data = new int[] { 5, 6 };
+        IntegerArrayTester.GetDataWithGint64Size(data).Should().Be(6);
+    }
+
+    [TestMethod]
     public void SupportsInOutIntegerArray()
     {
         var data = new int[] { 1, 2, 3 };

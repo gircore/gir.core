@@ -9,9 +9,5 @@ internal class UnsignedLong : ReturnTypeConverter
         => type.Is<GirModel.UnsignedLong>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
-    {
-        data.SetExpression(fromVariableName => data.ReturnType.IsPointer
-            ? fromVariableName
-            : $"{fromVariableName}.Value");
-    }
+        => data.SetExpression(fromVariableName => fromVariableName); //Valid for IsPointer = true && IsPointer = false
 }

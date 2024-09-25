@@ -34,6 +34,7 @@ gsize girtest_integer_array_tester_get_data_count();
 void girtest_integer_array_tester_invoke_callback(GirTestIntegerArrayTesterCallback callback);
 void girtest_integer_array_tester_invoke_callback_no_length(GirTestIntegerArrayTesterCallbackNoLength callback);
 gint girtest_integer_array_tester_get_data_from_const_pointer(gconstpointer data, gsize size);
+gint girtest_integer_array_tester_get_data_with_gint64_size(gconstpointer data, gint64 size);
 void girtest_integer_array_tester_clear_data(void *data, gsize count);
 G_END_DECLS
 

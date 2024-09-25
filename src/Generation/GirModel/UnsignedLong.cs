@@ -1,6 +1,3 @@
 ﻿namespace GirModel;
 
-public interface UnsignedLong : PrimitiveValueType
-{
-
-}
+public interface UnsignedLong : PrimitiveValueType { }

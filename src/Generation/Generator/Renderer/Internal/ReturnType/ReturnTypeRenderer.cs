@@ -21,6 +21,8 @@ internal static class ReturnTypeRenderer
         new ReturnType.PointerAlias(),
         new ReturnType.Long(), //Must be before primitive value type
         new ReturnType.UnsignedLong(), //Must be before primitive value type
+        new ReturnType.CLong(), //Must be before primitive value type
+        new ReturnType.UnsignedCLong(), //Must be before primitive value type
         new ReturnType.PrimitiveValueType(),
         new ReturnType.PrimitiveValueTypeAlias(),
         new ReturnType.PrimitiveValueTypeAliasArray(),

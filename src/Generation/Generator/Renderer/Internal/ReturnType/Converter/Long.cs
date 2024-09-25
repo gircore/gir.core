@@ -11,7 +11,7 @@ internal class Long : ReturnTypeConverter
     {
         var nullableTypeName = returnType.IsPointer
             ? Model.Type.Pointer
-            : "CLong";
+            : Model.Type.GetName(returnType.AnyType.AsT0);
 
         return new RenderableReturnType(nullableTypeName);
     }

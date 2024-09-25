@@ -21,6 +21,8 @@ internal static class ParameterToManagedExpression
         new ParameterToManagedExpressions.PointerAlias(),
         new ParameterToManagedExpressions.Long(), //Must be before primitive value type
         new ParameterToManagedExpressions.UnsignedLong(), //Must be before primitive value type
+        new ParameterToManagedExpressions.CLong(), //Must be before primitive value type
+        new ParameterToManagedExpressions.UnsignedCLong(), //Must be before primitive value type
         new ParameterToManagedExpressions.PrimitiveValueType(),
         new ParameterToManagedExpressions.PrimitiveValueTypeAlias(),
         new ParameterToManagedExpressions.PrimitiveValueTypeArray(),
