@@ -3,22 +3,22 @@
 /**
  * GirTestULongTester:
  *
- * Test records with unsigned long fields
+ * Test records with unsigned long (64 bit) fields
  */
 
-gsize girtest_ulong_tester_get_sizeof_ul(GirTestULongTester* record)
+gsize girtest_ulong_tester_get_sizeof_l(GirTestULongTester* record)
 {
-    return sizeof(record->ul);
+    return sizeof(record->l);
 }
 
-gulong girtest_ulong_tester_get_max_unsigned_long_value()
+guint64 girtest_ulong_tester_get_max_ulong_value()
 {
-    return ULONG_MAX;
+    return G_MAXUINT64;
 }
 
-gboolean girtest_ulong_tester_is_max_unsigned_long_value(gulong value)
+gboolean girtest_ulong_tester_is_max_ulong_value(guint64 value)
 {
-    if(value == ULONG_MAX)
+    if(value == G_MAXUINT64)
         return TRUE;
 
     return FALSE;
@@ -27,13 +27,13 @@ gboolean girtest_ulong_tester_is_max_unsigned_long_value(gulong value)
 /**
  * girtest_ulong_tester_run_callback:
  * @value: The long value which should be passed to the callback
- * @callback: (scope call): a function that is called receives a ulong and should return a ulong
+ * @callback: (scope call): a function that is called receives a long and should return a long
  *
  * Calls the callback and returns the data from the callback.
  * 
  * Returns: The result of the callback.
  **/
-gulong girtest_ulong_tester_run_callback(gulong value, GirTestULongCallback callback)
+guint64 girtest_ulong_tester_run_callback(guint64 value, GirTestULongCallback callback)
 {
-    return callback(value);
+	return callback(value);
 }

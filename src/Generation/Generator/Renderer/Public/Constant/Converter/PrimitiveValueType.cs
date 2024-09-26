@@ -31,6 +31,7 @@ internal class PrimitiveValueType : ConstantsConverter
             GirModel.Byte => byte.TryParse(constant.Value, out _),
             GirModel.Double => double.TryParse(constant.Value, out _),
             GirModel.Integer => int.TryParse(constant.Value, out _),
+            GirModel.CLong => long.TryParse(constant.Value, out _),
             GirModel.Long => long.TryParse(constant.Value, out _),
             GirModel.NativeInteger => nint.TryParse(constant.Value, out _),
             GirModel.NativeUnsignedInteger => nuint.TryParse(constant.Value, out _),
@@ -38,6 +39,7 @@ internal class PrimitiveValueType : ConstantsConverter
             GirModel.SignedByte => sbyte.TryParse(constant.Value, out _),
             GirModel.UnsignedInteger => uint.TryParse(constant.Value, out _),
             GirModel.UnsignedLong => ulong.TryParse(constant.Value, out _),
+            GirModel.UnsignedCLong => ulong.TryParse(constant.Value, out _),
             GirModel.UnsignedShort => ushort.TryParse(constant.Value, out _),
             _ => false
         };

@@ -125,6 +125,21 @@ girtest_integer_array_tester_get_data_from_const_pointer(gconstpointer data, gsi
 }
 
 /**
+ * girtest_integer_array_tester_get_data_with_gint64_size:
+ * @data: (transfer none) (array length=size) (element-type gint):
+ *        the data to be used
+ * @size: the size of @data
+ *
+ * Returns: The last integer of the given data.
+ */
+gint
+girtest_integer_array_tester_get_data_with_gint64_size(gconstpointer data, gint64 size)
+{
+    gint* p = (gint*) data;
+    return *(p + (size -1));
+}
+
+/**
  * girtest_integer_array_tester_clear_data:
  * @data: (array length=count) (element-type gint) (inout):
  *     data which will be set to 0

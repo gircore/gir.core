@@ -20,6 +20,6 @@ internal class UnsignedLong : FieldConverter
     {
         return field.IsPointer
             ? Model.Type.Pointer
-            : "CULong";
+            : Model.Type.GetName(field.AnyTypeOrCallback.AsT0.AsT0);
     }
 }

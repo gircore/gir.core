@@ -57,7 +57,7 @@ internal partial class TypeReferenceResolver
             Add(new Output.UnpointedSignedByte("char"));
             Add(new Output.SignedByte("gint8"));
 
-            Add(new Output.Long("glong"));
+            Add(new Output.CLong("glong"));
             Add(new Output.NativeInteger("gssize"));
             Add(new Output.Long("gint64"));
             Add(new Output.Long("goffset"));
@@ -65,7 +65,7 @@ internal partial class TypeReferenceResolver
 
             Add(new Output.NativeUnsignedInteger("gsize"));
             Add(new Output.UnsignedLong("guint64"));
-            Add(new Output.UnsignedLong("gulong"));
+            Add(new Output.UnsignedCLong("gulong"));
 
             Add(new Output.Utf8String());
             Add(new Output.PlatformString());

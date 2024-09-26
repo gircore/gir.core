@@ -26,7 +26,9 @@ internal static class ParameterToNativeExpression
         new ParameterToNativeExpressions.Pointer(),
         new ParameterToNativeExpressions.PointerAlias(),
         new ParameterToNativeExpressions.Long(), //Must be before primitive value type
+        new ParameterToNativeExpressions.CLong(), //Must be before primitive value type
         new ParameterToNativeExpressions.UnsignedLong(), //Must be before primitive value type
+        new ParameterToNativeExpressions.UnsignedCLong(), //Must be before primitive value type
         new ParameterToNativeExpressions.PrimitiveValueType(),
         new ParameterToNativeExpressions.PrimitiveValueTypeAlias(),
         new ParameterToNativeExpressions.PrimitiveValueTypeArray(),

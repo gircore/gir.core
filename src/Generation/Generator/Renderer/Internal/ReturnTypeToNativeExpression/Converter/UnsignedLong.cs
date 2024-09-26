@@ -1,10 +1,12 @@
-﻿namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
+﻿using GirModel;
 
-internal class UnsigendLong : ReturnTypeConverter
+namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
+
+internal class UnsignedLong : ReturnTypeConverter
 {
-    public bool Supports(GirModel.AnyType type)
+    public bool Supports(AnyType type)
         => type.Is<GirModel.UnsignedLong>();
 
     public string GetString(GirModel.ReturnType returnType, string fromVariableName)
-        => $"new CULong(checked((nuint){fromVariableName}))";
+        => fromVariableName;
 }

@@ -9,18 +9,17 @@ namespace GirTest.Tests;
 public class LongTest : Test
 {
     [TestMethod]
-    public void ShouldUseCLongInInternalStructData()
+    public void ShouldUseLongInInternalStructData()
     {
         var data = new GirTest.Internal.LongTesterData();
-        data.L.Should().BeOfType<CLong>();
+        data.L.Should().BeOfType(typeof(long));
     }
 
     [TestMethod]
-    public unsafe void GetSizeOfLShouldBeSizeOfCLong()
+    public void GetSizeOfLShouldBeSizeOfLong()
     {
-        var sizeOfCLong = sizeof(CLong);
         var obj = new LongTester();
-        obj.GetSizeofL().Should().Be((nuint) sizeOfCLong);
+        obj.GetSizeofL().Should().Be(sizeof(long));
     }
 
     [DataTestMethod]
@@ -28,154 +27,39 @@ public class LongTest : Test
     [DataRow(long.MinValue)]
     public void ShouldHandleMaxMinLongValue(long value)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
         var obj = new LongTester { L = value };
         obj.L.Should().Be(value);
-    }
-
-    [DataTestMethod]
-    [DataRow(int.MaxValue)]
-    [DataRow(int.MinValue)]
-    public void ShouldHandleMaxMinIntValue(int value)
-    {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
-        var obj = new LongTester { L = value };
-        obj.L.Should().Be(value);
-    }
-
-    [DataTestMethod]
-    [DataRow(long.MaxValue)]
-    [DataRow(long.MinValue)]
-    public void ShouldThrowIfValueExceedsIntegerSize(long value)
-    {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
-        var obj = new LongTester();
-        var act = () => obj.L = value;
-        act.Should().Throw<OverflowException>();
     }
 
     [TestMethod]
-    public void ReturnsMaxLongValueOn64BitUnix()
+    public void ReturnsMaxLongValue()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
         LongTester.GetMaxLongValue().Should().Be(long.MaxValue);
     }
 
     [TestMethod]
-    public void ReturnsMaxLongValueOnWindows()
+    public void ReturnsMinLongValue()
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
-        LongTester.GetMaxLongValue().Should().Be(int.MaxValue);
-    }
-
-    [TestMethod]
-    public void ReturnsMinLongValueOn64BitUnix()
-    {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
         LongTester.GetMinLongValue().Should().Be(long.MinValue);
     }
 
     [TestMethod]
-    public void ReturnsMinLongValueOnWindows()
+    public void SetsMaxLongValue()
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
-        LongTester.GetMinLongValue().Should().Be(int.MinValue);
-    }
-
-    [TestMethod]
-    public void SetsMaxLongValueOn64BitUnix()
-    {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
         LongTester.IsMaxLongValue(long.MaxValue).Should().BeTrue();
     }
 
     [TestMethod]
-    public void SetsMaxLongValueOnWindows()
+    public void SetsMinLongValue()
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
-        LongTester.IsMaxLongValue(int.MaxValue).Should().BeTrue();
-    }
-
-    [TestMethod]
-    public void SetsMinLongValueOn64BitUnix()
-    {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
         LongTester.IsMinLongValue(long.MinValue).Should().BeTrue();
-    }
-
-    [TestMethod]
-    public void SetsMinLongValueOnWindows()
-    {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
-        LongTester.IsMinLongValue(int.MinValue).Should().BeTrue();
-    }
-
-    [TestMethod]
-    public void ThrowsOverflowExceptionIfLongMinValueIsPassedOnWindows()
-    {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
-        var action = () => LongTester.IsMinLongValue(long.MinValue).Should().BeTrue();
-        action.Should().Throw<OverflowException>();
-    }
-
-    [TestMethod]
-    public void ThrowsOverflowExceptionIfLongMaxValueIsPassedOnWindows()
-    {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
-        var action = () => LongTester.IsMaxLongValue(long.MaxValue).Should().BeTrue();
-        action.Should().Throw<OverflowException>();
     }
 
     [DataTestMethod]
     [DataRow(long.MaxValue)]
     [DataRow(long.MinValue)]
-    public void CanPassLongValueThroughCallbackOn64BitUnix(long value)
+    public void CanPassLongValueThroughCallback(long value)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
-        long Callback(long val)
-        {
-            return val;
-        }
-
-        LongTester.RunCallback(value, Callback).Should().Be(value);
-    }
-
-    [DataTestMethod]
-    [DataRow(int.MaxValue)]
-    [DataRow(int.MinValue)]
-    public void CanPassIntValueThroughCallbackOnWindows(int value)
-    {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
         long Callback(long val)
         {
             return val;

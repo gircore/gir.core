@@ -88,14 +88,14 @@ public class ClassPropertyTest
     [DataRow("gchar", false, typeof(Output.SignedByte))]
     [DataRow("char", false, typeof(Output.SignedByte))]
     [DataRow("gint8", false, typeof(Output.SignedByte))]
-    [DataRow("glong", false, typeof(Output.Long))]
+    [DataRow("glong", false, typeof(Output.CLong))]
     [DataRow("gssize", false, typeof(Output.NativeInteger))]
     [DataRow("gint64", false, typeof(Output.Long))]
     [DataRow("goffset", false, typeof(Output.Long))]
     [DataRow("time_t", false, typeof(Output.Long))]
     [DataRow("gsize", false, typeof(Output.NativeUnsignedInteger))]
     [DataRow("guint64", false, typeof(Output.UnsignedLong))]
-    [DataRow("gulong", false, typeof(Output.UnsignedLong))]
+    [DataRow("gulong", false, typeof(Output.UnsignedCLong))]
     [DataRow("gboolean*", true, typeof(Output.Boolean))]
     [DataRow("gfloat*", true, typeof(Output.Float))]
     [DataRow("float*", true, typeof(Output.Float))]
@@ -124,14 +124,14 @@ public class ClassPropertyTest
     //[DataRow("gchar*", true, typeof(Output.Model.String))] -> Ambigous between UTF8 and platform strings
     //[DataRow("char*", true, typeof(Output.Model.String))] -> Ambigous between UTF8 and platform strings
     [DataRow("gint8*", true, typeof(Output.SignedByte))]
-    [DataRow("glong*", true, typeof(Output.Long))]
+    [DataRow("glong*", true, typeof(Output.CLong))]
     [DataRow("gssize*", true, typeof(Output.NativeInteger))]
     [DataRow("gint64*", true, typeof(Output.Long))]
     [DataRow("goffset*", true, typeof(Output.Long))]
     [DataRow("time_t*", true, typeof(Output.Long))]
     [DataRow("gsize*", true, typeof(Output.NativeUnsignedInteger))]
     [DataRow("guint64*", true, typeof(Output.UnsignedLong))]
-    [DataRow("gulong*", true, typeof(Output.UnsignedLong))]
+    [DataRow("gulong*", true, typeof(Output.UnsignedCLong))]
     public void PropertyTypeShouldMatchCType(string ctype, bool isPointer, System.Type resultType)
     {
         var property = GetLoadedProperty(ctype, null);
