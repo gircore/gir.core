@@ -5,10 +5,9 @@ namespace GObject.Internal;
 
 public partial class ObjectMapper
 {
-    private class ToggleRef : IDisposable
+    private class ToggleRef
     {
         private object _reference;
-        private readonly ToggleNotify _callback;
         private readonly IntPtr _handle;
 
         public object? Object
@@ -40,17 +39,9 @@ public partial class ObjectMapper
         public ToggleRef(IntPtr handle, object obj, bool ownedRef)
         {
             _reference = obj;
-            _callback = ToggleReference;
             _handle = handle;
 
             OwnReference(ownedRef);
-            RegisterToggleRef();
-        }
-
-        private void RegisterToggleRef()
-        {
-            Internal.Object.AddToggleRef(_handle, _callback, IntPtr.Zero);
-            Internal.Object.Unref(_handle);
         }
 
         private void OwnReference(bool ownedRef)
@@ -72,7 +63,7 @@ public partial class ObjectMapper
             }
         }
 
-        private void ToggleReference(IntPtr data, IntPtr @object, bool isLastRef)
+        internal void ToggleReference(bool isLastRef)
         {
             if (!isLastRef && _reference is WeakReference weakRef)
             {
@@ -85,16 +76,6 @@ public partial class ObjectMapper
             {
                 _reference = new WeakReference(_reference);
             }
-        }
-
-        public void Dispose()
-        {
-            var sourceFunc = new GLib.Internal.SourceFuncAsyncHandler(() =>
-            {
-                Internal.Object.RemoveToggleRef(_handle, _callback, IntPtr.Zero);
-                return false;
-            });
-            GLib.Internal.MainContext.Invoke(GLib.Internal.MainContextUnownedHandle.NullHandle, sourceFunc.NativeCallback, IntPtr.Zero);
         }
     }
 }
