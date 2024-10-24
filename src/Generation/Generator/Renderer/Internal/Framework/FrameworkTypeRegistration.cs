@@ -15,6 +15,8 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using GObject;
+using GObject.Internal;
 
 namespace {Namespace.GetInternalName(ns)};
 
@@ -40,24 +42,29 @@ internal class TypeRegistration
             .Join(Environment.NewLine)}
     }}
 
-    private static void Register<T>(Func<nuint> getType, params OSPlatform[] supportedPlatforms) where T : class
+    private static void Register<T>(params OSPlatform[] supportedPlatforms) where T : InstanceFactory, GTypeProvider
     {{
-        try
-        {{
+         try
+         {{
+#if NET7_0_OR_GREATER
             if(supportedPlatforms.Any(RuntimeInformation.IsOSPlatform))
-                GObject.Internal.TypeDictionary.Add(typeof(T), new GObject.Type(getType()));
-        }}
-        catch(System.Exception e)
-        {{
-            Debug.WriteLine($""Could not register type '{{nameof(T)}}': {{e.Message}}"");
-        }}
-    }}
+                GObject.Internal.DynamicInstanceFactory.Register(T.GetGType(), T.Create);
+#else
+            if (supportedPlatforms.Any(RuntimeInformation.IsOSPlatform))
+                GObject.Internal.DynamicInstanceFactory.Register(GTypeProviderHelper.GetGType<T>(), InstanceFactoryHelper.Create<T>);
+#endif
+         }}
+         catch(System.Exception e)
+         {{
+             Debug.WriteLine($""Could not register type: {{e.Message}}"");
+         }}
+     }}
 }}";
     }
 
     private static string RenderRegistration(GirModel.ComplexType type)
     {
-        return @$"Register<{ComplexType.GetFullyQualified(type)}>(Internal.{type.Name}.{Function.GetGType}{RenderPlatforms(type as GirModel.PlatformDependent)});";
+        return $"Register<{ComplexType.GetFullyQualified(type)}>({RenderPlatforms(type as GirModel.PlatformDependent)});";
     }
 
     private static string RenderPlatforms(GirModel.PlatformDependent? platformDependent)
@@ -76,6 +83,6 @@ internal class TypeRegistration
         if (platformDependent.SupportsWindows)
             statements.Add("OSPlatform.Windows");
 
-        return ", " + string.Join(", ", statements);
+        return string.Join(", ", statements);
     }
 }

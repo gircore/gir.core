@@ -9,6 +9,10 @@ public class Class : InstanceParameterConverter
 
     public string GetExpression(GirModel.InstanceParameter instanceParameter)
     {
-        return "this.Handle";
+        var cls = (GirModel.Class) instanceParameter.Type;
+
+        return cls.Fundamental 
+            ? "this.Handle" 
+            : "this.Handle.DangerousGetHandle()";
     }
 }
