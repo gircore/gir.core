@@ -2,18 +2,14 @@
 
 namespace Generator.Generator.Public;
 
-internal class TypedRecord : Generator<GirModel.Record>
+internal class TypedRecord(Publisher publisher) : Generator<GirModel.Record>
 {
-    private readonly Publisher _publisher;
-
-    public TypedRecord(Publisher publisher)
-    {
-        _publisher = publisher;
-    }
-
     public void Generate(GirModel.Record record)
     {
         if (!Record.IsTyped(record))
+            return;
+
+        if (!Type.IsEnabled(record))
             return;
 
         var source = Renderer.Public.TypedRecord.Render(record);
@@ -24,6 +20,6 @@ internal class TypedRecord : Generator<GirModel.Record>
             IsInternal: false
         );
 
-        _publisher.Publish(codeUnit);
+        publisher.Publish(codeUnit);
     }
 }
