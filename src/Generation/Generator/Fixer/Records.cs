@@ -5,13 +5,14 @@ namespace Generator.Fixer;
 
 public static class Records
 {
-    private static readonly List<Fixer<GirModel.Record>> Fixers = new()
-    {
+    private static readonly List<Fixer<GirModel.Record>> Fixers =
+    [
+        new DisableBrokenTypes(),
         new InternalMethodsNamedLikeRecordFixer(),
         new MethodWithInOutInstanceParameterFixer(),
         new PublicMethodsColldingWithFieldFixer(),
         new RecordEqualsMethodCollidesWithGeneratedCode()
-    };
+    ];
 
     public static void Fixup(IEnumerable<GirModel.Record> records)
     {

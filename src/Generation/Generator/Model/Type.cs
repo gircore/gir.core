@@ -2,7 +2,7 @@
 
 namespace Generator.Model;
 
-internal static class Type
+internal static partial class Type
 {
     public const string Pointer = "IntPtr";
     public const string PointerArray = "IntPtr[]";

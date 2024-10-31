@@ -94,7 +94,7 @@ public static {newKeyWord}{constructor.Parent.Name}{Nullable.Render(constructor.
 
     private static string RenderCallStatement(GirModel.Constructor constructor, IEnumerable<ParameterToNativeData> parameters, Constructor.ConstructorData data)
     {
-        var variableName = "handle";
+        var variableName = $"{constructor.Parent.Name.ToLower()}Handle";
         var call = new StringBuilder();
         call.Append($"var {variableName} = Internal.{constructor.Parent.Name}.{Model.Constructor.GetName(constructor)}(");
         call.Append(string.Join(", ", parameters.Select(x => x.GetCallName())));
