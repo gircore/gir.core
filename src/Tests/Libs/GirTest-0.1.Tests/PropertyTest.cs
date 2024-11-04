@@ -75,4 +75,27 @@ public class PropertyTest : Test
         PropertyTester.RecordValuePropertyDefinition.UnmanagedName.Should().Be("record-value");
         PropertyTester.RecordValuePropertyDefinition.ManagedName.Should().Be(nameof(PropertyTester.RecordValue));
     }
+
+    [DataTestMethod]
+    [DataRow(10)]
+    [DataRow(-10)]
+    [DataRow(0)]
+    public void TestIntProperty(int i)
+    {
+        var obj = PropertyTester.New();
+        obj.IntValue = i;
+
+        obj.IntValue.Should().Be(i);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public void TestBooleanProperty(bool b)
+    {
+        var obj = PropertyTester.New();
+        obj.BooleanValue = b;
+
+        obj.BooleanValue.Should().Be(b);
+    }
 }

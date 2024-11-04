@@ -12,6 +12,8 @@ typedef enum
     PROP_STRING_VALUE = 1,
     PROP_PROPERTY_TESTER = 2,
     PROP_TYPED_RECORD_VALUE = 3,
+    PROP_INT_VALUE = 4,
+    PROP_BOOLEAN_VALUE = 5,
     N_PROPERTIES
 } PropertyTesterProperty;
 
@@ -22,6 +24,8 @@ struct _GirTestPropertyTester
     gchar *string_value;
     gchar *property_tester;
     GirTestTypedRecordTester* record;
+    gint int_value;
+    gboolean boolean_value;
 };
 
 G_DEFINE_TYPE(GirTestPropertyTester, girtest_property_tester, G_TYPE_OBJECT)
@@ -48,6 +52,12 @@ girtest_property_tester_get_property (GObject    *object,
     case PROP_TYPED_RECORD_VALUE:
         g_value_set_boxed (value, self->record);
         break;
+    case PROP_INT_VALUE:
+        g_value_set_int (value, self->int_value);
+        break;
+    case PROP_BOOLEAN_VALUE:
+        g_value_set_boolean (value, self->boolean_value);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -71,6 +81,12 @@ girtest_property_tester_set_property (GObject      *object,
         break;
     case PROP_TYPED_RECORD_VALUE:
         self->record = g_value_get_boxed (value);
+        break;
+    case PROP_INT_VALUE:
+        self->int_value = g_value_get_int (value);
+        break;
+    case PROP_BOOLEAN_VALUE:
+        self->boolean_value = g_value_get_boolean (value);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -110,6 +126,23 @@ girtest_property_tester_class_init(GirTestPropertyTesterClass *class)
    */
     properties[PROP_TYPED_RECORD_VALUE] =
       g_param_spec_boxed ("record-value", NULL, NULL, GIRTEST_TYPE_TYPED_RECORD_TESTER, G_PARAM_READWRITE);
+
+
+    properties[PROP_INT_VALUE] =
+          g_param_spec_int ("int-value",
+                               "Integer Value",
+                               "An int value",
+                               G_MININT,
+                               G_MAXINT,
+                               0  /* default value */,
+                               G_PARAM_READWRITE);
+
+    properties[PROP_BOOLEAN_VALUE] =
+              g_param_spec_boolean ("boolean-value",
+                                   "Boolean Value",
+                                   "A boolean value",
+                                   FALSE  /* default value */,
+                                   G_PARAM_READWRITE);
 
     g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 }

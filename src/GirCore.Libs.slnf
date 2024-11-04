@@ -48,7 +48,6 @@
       "Samples\\WebKit-6.0\\JavascriptCallback\\JavascriptCallback.csproj",
       "Tests\\Generation\\GirLoader.Tests\\GirLoader.Tests.csproj",
       "Tests\\Libs\\Cairo-1.0.Tests\\Cairo-1.0.Tests.csproj",
-      "Tests\\Libs\\GdkPixbuf-2.0.Tests\\GdkPixbuf-2.0.Tests.csproj",
       "Tests\\Libs\\Gio-2.0.Tests\\Gio-2.0.Tests.csproj",
       "Tests\\Libs\\GLib-2.0.Tests\\GLib-2.0.Tests.csproj",
       "Tests\\Libs\\GObject-2.0.Tests\\GObject-2.0.Tests.csproj",
