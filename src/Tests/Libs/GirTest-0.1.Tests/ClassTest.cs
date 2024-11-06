@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using FluentAssertions;
 using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -59,5 +60,44 @@ public class ClassTest : Test
         obj.FreeExecutor();
         instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle);
         instanceData.RefCount.Should().Be(1);
+    }
+
+    [TestMethod]
+    public void TestManualGObjectDisposal()
+    {
+        var obj = ClassTester.New();
+        GObject.Internal.ObjectMapper.ObjectCount.Should().Be(1);
+        obj.Dispose();
+        GObject.Internal.ObjectMapper.ObjectCount.Should().Be(0);
+    }
+
+    [TestMethod]
+    public void TestAutomaticGObjectDisposal()
+    {
+        WeakReference weakReference = new(null);
+        IDisposable? strongReference = null;
+
+        CollectAfter(() =>
+        {
+            var obj = ClassTester.New();
+            GObject.Internal.ObjectMapper.ObjectCount.Should().Be(1);
+            weakReference.Target = obj;
+        });
+
+        GObject.Internal.ObjectMapper.ObjectCount.Should().Be(0);
+        weakReference.IsAlive.Should().BeFalse();
+
+        CollectAfter(() =>
+        {
+            var obj = ClassTester.New();
+
+            GObject.Internal.ObjectMapper.ObjectCount.Should().Be(1);
+
+            strongReference = obj;
+            weakReference.Target = obj;
+        });
+
+        weakReference.IsAlive.Should().BeTrue();
+        strongReference.Should().NotBeNull();
     }
 }
