@@ -8,7 +8,7 @@ internal class Interface : ReturnTypeConverter
     public string GetString(GirModel.ReturnType returnType, string fromVariableName)
     {
         return returnType.Nullable
-            ? fromVariableName + "?.Handle ?? IntPtr.Zero"
-            : fromVariableName + ".Handle";
+            ? fromVariableName + "?.Handle.DangerousGetHandle() ?? IntPtr.Zero"
+            : fromVariableName + ".Handle.DangerousGetHandle()";
     }
 }

@@ -21,8 +21,8 @@ internal class Interface : ReturnTypeConverter
             var @interface = (GirModel.Interface) returnType.AnyType.AsT0;
 
             return returnType.Nullable
-                ? $"GObject.Internal.ObjectWrapper.WrapNullableInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"
-                : $"GObject.Internal.ObjectWrapper.WrapInterfaceHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
+                ? $"({Model.Type.GetPublicNameFullyQuallified(@interface)}?) GObject.Internal.InstanceWrapper.WrapNullableHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"
+                : $"({Model.Type.GetPublicNameFullyQuallified(@interface)}) GObject.Internal.InstanceWrapper.WrapHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
         });
     }
 }

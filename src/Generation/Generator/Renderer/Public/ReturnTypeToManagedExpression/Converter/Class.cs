@@ -36,8 +36,9 @@ internal class Class : ReturnTypeConverter
 
     private static string Standard(GirModel.Class cls, GirModel.ReturnType returnType, string fromVariableName)
     {
+        var type = ComplexType.GetFullyQualified(cls);
         return returnType.Nullable
-            ? $"GObject.Internal.ObjectWrapper.WrapNullableHandle<{ComplexType.GetFullyQualified(cls)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"
-            : $"GObject.Internal.ObjectWrapper.WrapHandle<{ComplexType.GetFullyQualified(cls)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
+            ? $"({type}?) GObject.Internal.InstanceWrapper.WrapNullableHandle<{type}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"
+            : $"({type}) GObject.Internal.InstanceWrapper.WrapHandle<{type}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})";
     }
 }
