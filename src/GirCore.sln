@@ -228,6 +228,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{23ED17AC-703
 		..\docs\api\index.md = ..\docs\api\index.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tutorial", "tutorial", "{80DEAC07-26EE-41A8-A5C3-E737AA72FCE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gtk", "gtk", "{515D6BAD-EE35-4EBB-AE4C-43F813C2E54A}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\docs\tutorial\gtk\hello_world.md = ..\docs\docs\tutorial\gtk\hello_world.md
+		..\docs\docs\tutorial\gtk\index.md = ..\docs\docs\tutorial\gtk\index.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{C6411C41-C911-4942-A108-0EFBE55082D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D14CDE9E-BE14-47DC-B231-7770A40FE716}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HelloWorld", "HelloWorld", "{D81EA30F-E60A-4EA3-9F24-CCBAA782EAD5}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\docs\tutorial\gtk\img\HelloWorld\Linux.png = ..\docs\docs\tutorial\gtk\img\HelloWorld\Linux.png
+		..\docs\docs\tutorial\gtk\img\HelloWorld\MacOS.png = ..\docs\docs\tutorial\gtk\img\HelloWorld\MacOS.png
+		..\docs\docs\tutorial\gtk\img\HelloWorld\Windows.png = ..\docs\docs\tutorial\gtk\img\HelloWorld\Windows.png
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "..\docs\docs\tutorial\gtk\src\HelloWorld\HelloWorld.csproj", "{0A902770-C2A3-440B-86BD-5E4A9DC92F88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -865,6 +886,18 @@ Global
 		{EE13D29A-42BC-4694-9980-D0498AA15115}.Release|x64.Build.0 = Release|Any CPU
 		{EE13D29A-42BC-4694-9980-D0498AA15115}.Release|x86.ActiveCfg = Release|Any CPU
 		{EE13D29A-42BC-4694-9980-D0498AA15115}.Release|x86.Build.0 = Release|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Debug|x64.Build.0 = Debug|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Debug|x86.Build.0 = Debug|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Release|x64.ActiveCfg = Release|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Release|x64.Build.0 = Release|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Release|x86.ActiveCfg = Release|Any CPU
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BF7F9B0B-CB43-4161-BFAD-C6EE479FC86B} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
@@ -939,5 +972,11 @@ Global
 		{3F6B722F-5192-46BC-A389-5E40ABA9041B} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
 		{EE13D29A-42BC-4694-9980-D0498AA15115} = {7B70E5ED-C5E7-4F32-A458-E5A10F39DA00}
 		{23ED17AC-703E-40D6-8B4C-0DAE232E1E33} = {0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}
+		{80DEAC07-26EE-41A8-A5C3-E737AA72FCE1} = {4EE9860B-6684-4369-A7F3-E0975E34F249}
+		{515D6BAD-EE35-4EBB-AE4C-43F813C2E54A} = {80DEAC07-26EE-41A8-A5C3-E737AA72FCE1}
+		{C6411C41-C911-4942-A108-0EFBE55082D7} = {515D6BAD-EE35-4EBB-AE4C-43F813C2E54A}
+		{D14CDE9E-BE14-47DC-B231-7770A40FE716} = {515D6BAD-EE35-4EBB-AE4C-43F813C2E54A}
+		{D81EA30F-E60A-4EA3-9F24-CCBAA782EAD5} = {C6411C41-C911-4942-A108-0EFBE55082D7}
+		{0A902770-C2A3-440B-86BD-5E4A9DC92F88} = {D14CDE9E-BE14-47DC-B231-7770A40FE716}
 	EndGlobalSection
 EndGlobal
