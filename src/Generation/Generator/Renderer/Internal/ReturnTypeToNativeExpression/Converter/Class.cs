@@ -14,7 +14,7 @@ internal class Class : ReturnTypeConverter
             throw new NotImplementedException($"{returnType.AnyType}: class return type which is no pointer can not be converted to native");
 
         return returnType.Nullable
-            ? fromVariableName + "?.Handle ?? IntPtr.Zero"
-            : fromVariableName + ".Handle";
+            ? fromVariableName + "?.Handle.DangerousGetHandle() ?? IntPtr.Zero"
+            : fromVariableName + ".Handle.DangerousGetHandle()";
     }
 }

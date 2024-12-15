@@ -13,7 +13,7 @@ public partial class DBusConnection
         if (!error.IsInvalid)
             throw new GException(error);
 
-        return GObject.Internal.ObjectWrapper.WrapHandle<DBusConnection>(handle, true);
+        return (DBusConnection) GObject.Internal.InstanceWrapper.WrapHandle<DBusConnection>(handle, true);
     }
 
     public Task<Variant> CallAsync(string busName, string objectPath, string interfaceName, string methodName,
@@ -29,7 +29,7 @@ public partial class DBusConnection
                 return;
             }
 
-            var ret = Internal.DBusConnection.CallFinish(sourceObject.Handle, res.Handle, out var error);
+            var ret = Internal.DBusConnection.CallFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GException(error));
@@ -37,7 +37,7 @@ public partial class DBusConnection
                 tcs.SetResult(new Variant(ret));
         });
 
-        Internal.DBusConnection.Call(Handle,
+        Internal.DBusConnection.Call(Handle.DangerousGetHandle(),
             GLib.Internal.NullableUtf8StringOwnedHandle.Create(busName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(objectPath),
             GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(interfaceName), GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(methodName),
             (GLib.Internal.VariantHandle?) parameters?.Handle ?? GLib.Internal.VariantUnownedHandle.NullHandle, GLib.Internal.VariantTypeUnownedHandle.NullHandle, DBusCallFlags.None, -1, IntPtr.Zero, callbackHandler.NativeCallback, IntPtr.Zero);

@@ -18,7 +18,7 @@ public partial class Clipboard
                 return;
             }
 
-            var readValue = Internal.Clipboard.ReadTextFinish(sourceObject.Handle, res.Handle, out var error);
+            var readValue = Internal.Clipboard.ReadTextFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
@@ -27,7 +27,7 @@ public partial class Clipboard
         });
 
         Internal.Clipboard.ReadTextAsync(
-            clipboard: Handle,
+            clipboard: Handle.DangerousGetHandle(),
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
