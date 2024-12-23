@@ -16,8 +16,8 @@ internal class Interface : ToNativeParameterConverter
 
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var callParameter = parameter.Parameter.Nullable
-            ? parameterName + "?.Handle ?? IntPtr.Zero"
-            : parameterName + ".Handle";
+            ? $"((GObject.Object?){parameterName})?.Handle.DangerousGetHandle() ?? IntPtr.Zero"
+            : $"((GObject.Object){parameterName}).Handle.DangerousGetHandle()";
 
         parameter.SetSignatureName(() => parameterName);
         parameter.SetCallName(() => callParameter);
@@ -29,8 +29,8 @@ internal class Interface : ToNativeParameterConverter
         if (Transfer.IsOwnedRef(parameter.Parameter.Transfer))
         {
             var addRefExpression = parameter.Parameter.Nullable
-                ? $"if({parameterName}?.Handle is not null) GObject.Internal.Object.Ref({parameterName}.Handle);"
-                : $"GObject.Internal.Object.Ref({parameterName}.Handle);";
+                ? $"if(((GObject.Object?){parameterName})?.Handle.DangerousGetHandle() is System.IntPtr ptr) GObject.Internal.Object.Ref(ptr);"
+                : $"GObject.Internal.Object.Ref(((GObject.Object){parameterName}).Handle.DangerousGetHandle());";
             parameter.SetExpression(() => addRefExpression);
         }
     }

@@ -9,6 +9,6 @@ public class Pointer : InstanceParameterConverter
 
     public string GetExpression(GirModel.InstanceParameter instanceParameter)
     {
-        return "this.Handle";
+        return "this.Handle.DangerousGetHandle()";
     }
 }
