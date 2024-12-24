@@ -25,3 +25,6 @@ installdir
 # Visual Studio
 .vs/
 *.DotSettings.user
+
+# Documentation generated with fxdoc
+_site/
