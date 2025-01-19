@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Gtk;
 
-public partial class FileDialog
+public partial class AlertDialog
 {
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
     public Task<int> ChooseAsync(Window parent)
