@@ -22,9 +22,9 @@ public class TypeTest
         Internal.Functions.IsFundamental(255 << 2).Should().BeTrue();
 
         //Fundamental types
-        Internal.Functions.IsFundamental(Object.GetGType().Value).Should().BeTrue();
+        Internal.Functions.IsFundamental(Internal.Object.GetGType()).Should().BeTrue();
 
         //Non fundamental types
-        Internal.Functions.IsFundamental(Binding.GetGType().Value).Should().BeFalse();
+        Internal.Functions.IsFundamental(Internal.Binding.GetGType()).Should().BeFalse();
     }
 }

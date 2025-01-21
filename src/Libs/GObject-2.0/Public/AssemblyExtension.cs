@@ -16,7 +16,7 @@ public static class AssemblyExtension
 
         var size = (int) stream.Length;
         var buffer = new byte[size];
-        stream.Read(buffer, 0, size);
+        stream.ReadExactly(buffer, 0, size);
         stream.Close();
 
         return buffer;

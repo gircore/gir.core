@@ -24,6 +24,6 @@ public class Class : ConstructorConverter
 
         return cls.Fundamental
             ? $"new {cls.Name}({fromVariableName})"
-            : $"new {cls.Name}({fromVariableName}, {ownedRef.ToString().ToLower()})";
+            : $"{cls.Namespace.Name}.{cls.Name}.CreateIntern({fromVariableName}, {ownedRef.ToString().ToLower()})";
     }
 }

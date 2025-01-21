@@ -11,6 +11,18 @@ internal static class Class
     public static string GetInternalStructName(GirModel.Class @class)
         => @class.Name + "Data";
 
+    public static string GetInternalHandleName(GirModel.Class @class)
+        => @class.Name + "Handle";
+
+    public static string GetFullyQualifiedInternalHandleName(GirModel.Class @class)
+        => Namespace.GetInternalName(@class.Namespace) + "." + GetInternalHandleName(@class);
+
+    public static string GetFullyQualifiedPublicName(GirModel.Class @class)
+        => Namespace.GetPublicName(@class.Namespace) + "." + @class.Name;
+
+    public static string GetFullyQualifiedInternalName(GirModel.Class @class)
+        => Namespace.GetInternalName(@class.Namespace) + "." + @class.Name;
+
     public static bool HidesConstructor(GirModel.Class? cls, GirModel.Constructor constructor)
     {
         if (cls is null)
@@ -84,4 +96,16 @@ internal static class Class
 
         return true;
     }
+
+    public static bool IsInitiallyUnowned(GirModel.Class cls) => IsNamedInitiallyUnowned(cls.Name) || InheritsInitiallyUnowned(cls);
+
+    private static bool InheritsInitiallyUnowned(GirModel.Class @class)
+    {
+        if (@class.Parent is null)
+            return false;
+
+        return IsNamedInitiallyUnowned(@class.Parent.Name) || InheritsInitiallyUnowned(@class.Parent);
+    }
+
+    private static bool IsNamedInitiallyUnowned(string name) => name == "InitiallyUnowned";
 }

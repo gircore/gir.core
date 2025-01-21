@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Reflection;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
@@ -97,5 +98,46 @@ public class PropertyTest : Test
         obj.BooleanValue = b;
 
         obj.BooleanValue.Should().Be(b);
+    }
+
+    [TestMethod]
+    public void TestObjectProperty()
+    {
+        var o = new PropertyTester();
+
+        var obj = PropertyTester.New();
+        obj.ObjectValue.Should().BeNull();
+        obj.ObjectValue = o;
+        obj.ObjectValue.Should().Be(o);
+        obj.ObjectValue = null;
+        obj.ObjectValue.Should().BeNull();
+    }
+
+    [TestMethod]
+    public void SupportsReadOnlyProperty()
+    {
+        var property = typeof(PropertyTester).GetProperty(nameof(PropertyTester.ExecutorValue));
+        property.Should().BeReadable();
+        property.Should().NotBeWritable();
+    }
+
+    [TestMethod]
+    public void PrefersKnownTypeForInterfaceReturnInsteadOfHelper()
+    {
+        var property = typeof(PropertyTester).GetProperty(nameof(PropertyTester.ExecutorValue));
+        property.Should().Return(typeof(Executor));
+
+        var obj = PropertyTester.New();
+        obj.ExecutorValue.Should().BeOfType<ExecutorImpl>();
+    }
+
+    [TestMethod]
+    public void FallsBackToInterfaceHelperForUnknownTypesWhichImplementAnInterface()
+    {
+        var property = typeof(PropertyTester).GetProperty(nameof(PropertyTester.ExecutorAnonymousValue));
+        property.Should().Return(typeof(Executor));
+
+        var obj = PropertyTester.New();
+        obj.ExecutorAnonymousValue.Should().BeOfType<ExecutorHelper>();
     }
 }

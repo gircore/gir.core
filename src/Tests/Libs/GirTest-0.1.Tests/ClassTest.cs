@@ -50,15 +50,15 @@ public class ClassTest : Test
         var obj = ClassTester.New();
 
         var executor = GirTest.ExecutorImpl.New();
-        var instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle);
+        var instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle.DangerousGetHandle());
         instanceData.RefCount.Should().Be(1);
 
         obj.TakeExecutor(executor);
-        instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle);
+        instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle.DangerousGetHandle());
         instanceData.RefCount.Should().Be(2);
 
         obj.FreeExecutor();
-        instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle);
+        instanceData = Marshal.PtrToStructure<GObject.Internal.ObjectData>(executor.Handle.DangerousGetHandle());
         instanceData.RefCount.Should().Be(1);
     }
 
@@ -66,9 +66,9 @@ public class ClassTest : Test
     public void TestManualGObjectDisposal()
     {
         var obj = ClassTester.New();
-        GObject.Internal.ObjectMapper.ObjectCount.Should().Be(1);
+        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
         obj.Dispose();
-        GObject.Internal.ObjectMapper.ObjectCount.Should().Be(0);
+        GObject.Internal.InstanceCache.ObjectCount.Should().Be(0);
     }
 
     [TestMethod]
@@ -80,18 +80,18 @@ public class ClassTest : Test
         CollectAfter(() =>
         {
             var obj = ClassTester.New();
-            GObject.Internal.ObjectMapper.ObjectCount.Should().Be(1);
+            GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
             weakReference.Target = obj;
         });
 
-        GObject.Internal.ObjectMapper.ObjectCount.Should().Be(0);
+        GObject.Internal.InstanceCache.ObjectCount.Should().Be(0);
         weakReference.IsAlive.Should().BeFalse();
 
         CollectAfter(() =>
         {
             var obj = ClassTester.New();
 
-            GObject.Internal.ObjectMapper.ObjectCount.Should().Be(1);
+            GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
 
             strongReference = obj;
             weakReference.Target = obj;

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using GdkPixbuf;
+using GLib;
 
 namespace TestMemoryLeaks;
 
@@ -28,7 +29,7 @@ public static class Program
         {
             tasks[i] = Task.Run(() =>
             {
-                PixbufLoader.FromBytes(imageBytes);
+                FromBytes(imageBytes);
             });
         }
         Task.WaitAll(tasks);
@@ -55,7 +56,7 @@ public static class Program
         Console.WriteLine("Bytes finalizer: Memory can go up. GC.Collect() is called in the end which must free everything up.");
         for (int i = 0; i < cycles; i++)
         {
-            var p = PixbufLoader.FromBytes(imageBytes);
+            var p = FromBytes(imageBytes);
         }
         Done();
 
@@ -72,10 +73,21 @@ public static class Program
 
         for (int i = 0; i < cycles; i++)
         {
-            var p = PixbufLoader.FromBytes(imageBytes);
+            var p = FromBytes(imageBytes);
             p.Dispose();
         }
         Done();
+    }
+
+    private static Pixbuf FromBytes(byte[] data)
+    {
+        using var bytes = Bytes.New(data);
+        var loader = PixbufLoader.New();
+        loader.WriteBytes(bytes);
+        loader.Close();
+
+        return loader.GetPixbuf() ?? throw new Exception("No Pixbuf created.");
+
     }
 
     private static void Done()

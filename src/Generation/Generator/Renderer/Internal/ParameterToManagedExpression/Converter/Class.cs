@@ -38,12 +38,14 @@ internal class Class : ToManagedParameterConverter
         var parameterName = Model.Parameter.GetName(parameterData.Parameter);
         var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
+        var type = Model.ComplexType.GetFullyQualified(cls);
+
         var wrapHandle = parameterData.Parameter.Nullable
-            ? "GObject.Internal.ObjectWrapper.WrapNullableHandle"
-            : "GObject.Internal.ObjectWrapper.WrapHandle";
+            ? $"({type}?) GObject.Internal.InstanceWrapper.WrapNullableHandle"
+            : $"({type}) GObject.Internal.InstanceWrapper.WrapHandle";
 
         parameterData.SetSignatureName(() => parameterName);
-        parameterData.SetExpression(() => $"var {callName} = {wrapHandle}<{Model.ComplexType.GetFullyQualified(cls)}>({parameterName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
+        parameterData.SetExpression(() => $"var {callName} = {wrapHandle}<{type}>({parameterName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
         parameterData.SetCallName(() => callName);
     }
 }

@@ -16,6 +16,9 @@ internal class ClassFramework : Generator<GirModel.Class>
         if (obj.Fundamental)
             return;
 
+        if (obj.Parent is null)
+            return; //Do not generate Framework for GObject.Object itself
+
         var source = Renderer.Public.ClassFramework.Render(obj);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),

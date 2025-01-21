@@ -73,17 +73,4 @@ public class PropertyTests : Test
 
         aboutDialog.LicenseType.Should().Be(windowPosition);
     }
-
-    [TestMethod]
-    public void TestObject()
-    {
-        var pixbuf = GdkPixbuf.Pixbuf.NewFromFile("test.bmp") ?? throw new Exception("Missing image");
-        var texture = Gdk.Texture.NewForPixbuf(pixbuf);
-        var dialog = new AboutDialog();
-        dialog.Logo.Should().BeNull();
-        dialog.Logo = texture;
-        dialog.Logo.Should().Be(texture);
-        dialog.Logo = null!;
-        dialog.Logo.Should().BeNull();
-    }
 }

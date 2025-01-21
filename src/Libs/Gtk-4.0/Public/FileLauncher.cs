@@ -18,7 +18,7 @@ public partial class FileLauncher
                 return;
             }
 
-            var launchValue = Internal.FileLauncher.LaunchFinish(sourceObject.Handle, res.Handle, out var error);
+            var launchValue = Internal.FileLauncher.LaunchFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
@@ -27,8 +27,8 @@ public partial class FileLauncher
         });
 
         Internal.FileLauncher.Launch(
-            self: Handle,
-            parent: parent.Handle,
+            self: Handle.DangerousGetHandle(),
+            parent: parent.Handle.DangerousGetHandle(),
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
@@ -50,7 +50,7 @@ public partial class FileLauncher
                 return;
             }
 
-            var launchValue = Internal.FileLauncher.OpenContainingFolderFinish(sourceObject.Handle, res.Handle, out var error);
+            var launchValue = Internal.FileLauncher.OpenContainingFolderFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
@@ -59,8 +59,8 @@ public partial class FileLauncher
         });
 
         Internal.FileLauncher.OpenContainingFolder(
-            self: Handle,
-            parent: parent.Handle,
+            self: Handle.DangerousGetHandle(),
+            parent: parent.Handle.DangerousGetHandle(),
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero

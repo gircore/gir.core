@@ -303,7 +303,7 @@ public class TypedRecordTest : Test
         var wrapped = (TypedRecordTester) GObject.Internal.BoxedWrapper.WrapHandle(
             handle: recordTester.Handle.DangerousGetHandle(),
             ownsHandle: false,
-            gtype: TypedRecordTester.GetGType()
+            gtype: Internal.TypedRecordTester.GetGType()
         );
 
         wrapped.Handle.DangerousGetHandle().Should().Be(recordTester.Handle.DangerousGetHandle());

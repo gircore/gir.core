@@ -14,9 +14,9 @@ public partial class Functions
     /// Returns whether the given type is a fundamental type.
     /// </summary>
     /// <returns>True if the type is fundamental otherwise false.</returns>
-    public static bool IsFundamental(nuint type)
+    public static bool IsFundamental(Type type)
     {
         //255 << 2 corresponds to G_TYPE_FUNDAMENTAL_MAX
-        return type <= (255 << 2);
+        return type.Value <= (255 << 2);
     }
 }

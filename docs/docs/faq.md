@@ -52,3 +52,28 @@ Gtk.Button.LabelPropertyDefinition.Notify(
     signalHandler: OnButtonLabelChanged
 );
 ```
+
+## How to create subclasses of a GObject based class?
+Creating a subclass for a GObject based class is a bit more complex than for a regular C# class. The reason for this is that the GObject type system is working in parallel to the C# type system. For a subclass to be known to the GObject type system it must be registered first. To be able to create an instance of a GObject based class every type must not only be registered but also implement some interfaces to allow seamless integration into the GObject type system:
+
+1. Implement GTypeProvider interface. This allows to get the GObject Type of the class during runtime.
+2. Implement InstanceFactory interface. This allows to create an instance of the class during runtime for a given pointer.
+
+```csharp
+public class Data : GObject.Object, GTypeProvider, InstanceFactory
+{
+    private static readonly Type GType = SubclassRegistrar.Register<Data, GObject.Object>();
+    public static new Type GetGType() => GType;
+    static object InstanceFactory.Create(IntPtr handle, bool ownsHandle)
+    {
+        return new Data(handle, ownsHandle);
+    }
+
+
+    public Data() : base(ObjectHandle.For<Data>(true, []))
+    {
+    }
+
+    private Data(IntPtr ptr, bool ownsHandle) : base(new ObjectHandle(ptr, ownsHandle)) { }
+}
+```

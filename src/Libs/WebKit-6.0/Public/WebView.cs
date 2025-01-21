@@ -18,16 +18,16 @@ public partial class WebView
                 return;
             }
 
-            var jsValue = Internal.WebView.EvaluateJavascriptFinish(sourceObject.Handle, res.Handle, out var error);
+            var jsValue = Internal.WebView.EvaluateJavascriptFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
             else
-                tcs.SetResult(GObject.Internal.ObjectWrapper.WrapHandle<JavaScriptCore.Value>(jsValue, true));
+                tcs.SetResult((JavaScriptCore.Value) GObject.Internal.InstanceWrapper.WrapHandle<JavaScriptCore.Value>(jsValue, true));
         });
 
         Internal.WebView.EvaluateJavascript(
-            webView: Handle,
+            webView: Handle.DangerousGetHandle(),
             script: GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(script),
             length: -1,
             worldName: GLib.Internal.NullableUtf8StringOwnedHandle.Create(null),
