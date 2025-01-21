@@ -6,7 +6,7 @@
       "Generation\\GirLoader\\GirLoader.csproj",
       "Generation\\GirModel\\GirModel.csproj",
       "Generation\\GirTool\\GirTool.csproj",
-      "Extensions\\Integration\\Integration.csproj",
+      "Extensions\\GObject-2.0.Integration\\GObject-2.0.Integration.csproj",
       "Libs\\Adw-1\\Adw-1.csproj",
       "Libs\\cairo-1.0\\cairo-1.0.csproj",
       "Libs\\freetype2-2.0\\freetype2-2.0.csproj",

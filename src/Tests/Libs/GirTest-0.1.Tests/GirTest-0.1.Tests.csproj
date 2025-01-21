@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\..\Libs\GirTest-0.1\GirTest-0.1.csproj" />
   </ItemGroup>
 </Project>

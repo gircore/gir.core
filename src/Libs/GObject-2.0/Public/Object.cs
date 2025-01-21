@@ -4,6 +4,7 @@ using GObject.Internal;
 
 namespace GObject;
 
+[GObject.Handle<ObjectHandle>]
 public partial class Object : IDisposable
 {
     public ObjectHandle Handle { get; }

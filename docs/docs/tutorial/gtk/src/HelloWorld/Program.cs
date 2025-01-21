@@ -12,11 +12,11 @@ application.OnActivate += (sender, args) =>
 {
     // Create a new instance of the main application window.
     var window = new HelloWorld.HelloWorld();
-    
+
     // Set the "Application" property of the window to the current application instance.
     // This links the window to the application, allowing them to work together.
     window.Application = (Gtk.Application) sender;
-    
+
     // Show the window on the screen.
     // This makes the window visible to the user.
     window.Show();
