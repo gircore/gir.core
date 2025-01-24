@@ -50,7 +50,7 @@ public {@sealed}partial class {cls.Name} {RenderInheritance(cls)}
         var owned = Class.IsInitiallyUnowned(cls) ? "false" : "true";
 
         return cls.Final
-            ? $"   public {cls.Name}() : this({Class.GetFullyQualifiedInternalHandleName(cls)}.Create({owned}, Array.Empty<GObject.ConstructArgument>())) {{ }}"
-            : $"   public {cls.Name}() : this({Class.GetFullyQualifiedInternalHandleName(cls)}.For<{cls.Name}>({owned}, Array.Empty<GObject.ConstructArgument>())) {{ }}";
+            ? $"   public {cls.Name}(params GObject.ConstructArgument[] constructArguments) : this({Class.GetFullyQualifiedInternalHandleName(cls)}.Create({owned}, constructArguments)) {{ }}"
+            : $"   public {cls.Name}(params GObject.ConstructArgument[] constructArguments) : this({Class.GetFullyQualifiedInternalHandleName(cls)}.For<{cls.Name}>({owned}, constructArguments)) {{ }}";
     }
 }
