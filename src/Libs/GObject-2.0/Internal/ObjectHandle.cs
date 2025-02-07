@@ -51,7 +51,7 @@ public class ObjectHandle : SafeHandle
     protected internal virtual void AddMemoryPressure() { }
     protected virtual void RemoveMemoryPressure() { }
 
-    public static ObjectHandle For<T>(bool owned, ConstructArgument[] constructArguments) where T : GObject.Object, GTypeProvider
+    public static ObjectHandle For<T>(ConstructArgument[] constructArguments) where T : GObject.Object, GTypeProvider
     {
         // We can't check if a reference is floating via "g_object_is_floating" here
         // as the function could be "lying" depending on the intent of framework writers.
@@ -67,6 +67,6 @@ public class ObjectHandle : SafeHandle
             values: GObject.Internal.ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
         );
 
-        return new ObjectHandle(ptr, owned);
+        return new ObjectHandle(ptr, true);
     }
 }

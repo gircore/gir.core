@@ -54,26 +54,19 @@ Gtk.Button.LabelPropertyDefinition.Notify(
 ```
 
 ## How to create subclasses of a GObject based class?
-Creating a subclass for a GObject based class is a bit more complex than for a regular C# class. The reason for this is that the GObject type system is working in parallel to the C# type system. For a subclass to be known to the GObject type system it must be registered first. To be able to create an instance of a GObject based class every type must not only be registered but also implement some interfaces to allow seamless integration into the GObject type system:
+Creating a subclass for a GObject based class requires creating a partial class with no parent class defined. An attribute is added which defines the parent class. Using the attribute results in a source generator generating the needed code to integrate a custom class with the GObject type system. The source generator is part of the [GObject-2.0.Integration nuget package](https://www.nuget.org/packages/GirCore.GObject-2.0.Integration/) which must be referenced from the project.
 
-1. Implement GTypeProvider interface. This allows to get the GObject Type of the class during runtime.
-2. Implement InstanceFactory interface. This allows to create an instance of the class during runtime for a given pointer.
+Be aware that the GObject type system requires a class to always have a parameterless constructor. This is the reason why such a constructor is generated. Please ensure that your class uses sensible defaults or that there are ways which allow to initialize your instance after its creation. This gets relevant if instances of your classes get created by some GObject library as those would use the parameterless constructor.  
 
 ```csharp
-public class Data : GObject.Object, GTypeProvider, InstanceFactory
+[Subclass<GObject.Object>]
+public partial class Data
 {
-    private static readonly Type GType = SubclassRegistrar.Register<Data, GObject.Object>();
-    public static new Type GetGType() => GType;
-    static object InstanceFactory.Create(IntPtr handle, bool ownsHandle)
+    public string? MyString { get; set; }
+
+    public Data(string myString) : this()
     {
-        return new Data(handle, ownsHandle);
+        MyString = myString;
     }
-
-
-    public Data() : base(ObjectHandle.For<Data>(true, []))
-    {
-    }
-
-    private Data(IntPtr ptr, bool ownsHandle) : base(new ObjectHandle(ptr, ownsHandle)) { }
 }
 ```

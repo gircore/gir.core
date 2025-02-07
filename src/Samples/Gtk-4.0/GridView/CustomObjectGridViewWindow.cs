@@ -1,35 +1,25 @@
 ﻿using System;
 using GObject;
-using GObject.Internal;
 using Gtk;
 using static Gtk.GridView;
 using static Gtk.SignalListItemFactory;
 using ListStore = Gio.ListStore;
-using Type = GObject.Type;
 
 namespace GridViewSample;
 
-public class ItemData : GObject.Object, GTypeProvider, InstanceFactory
+[Subclass<GObject.Object>]
+public partial class ItemData
 {
-    private static readonly Type GType = SubclassRegistrar.Register<ItemData, GObject.Object>();
-    public static new Type GetGType() => GType;
-    static object InstanceFactory.Create(IntPtr handle, bool ownsHandle)
-    {
-        return new ItemData(handle, ownsHandle);
-    }
-
     public string? ImagePath { get; set; }
     public string? Text { get; set; }
     public string? Description { get; set; }
 
-    public ItemData(string imagePath, string text, string description) : base(ObjectHandle.For<ItemData>(true, []))
+    public ItemData(string imagePath, string text, string description) : this()
     {
         ImagePath = imagePath;
         Text = text;
         Description = description;
     }
-
-    private ItemData(IntPtr ptr, bool ownsHandle) : base(new ObjectHandle(ptr, ownsHandle)) { }
 }
 
 public class CustomObjectGridViewWindow : Window
