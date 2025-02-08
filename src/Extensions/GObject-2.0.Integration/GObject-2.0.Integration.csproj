@@ -13,6 +13,13 @@
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
         <NoWarn>$(NoWarn);NU5128</NoWarn>
+      
+        <!-- 
+        Disable snupk generation as there are no symbols which results in an error
+        if the empty snupkg file is uploaded to nuget.
+        -->
+        <IncludeSymbols>false</IncludeSymbols>
+        <IncludeSource>false</IncludeSource>
     </PropertyGroup>
 
     <ItemGroup>
