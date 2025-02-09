@@ -12,7 +12,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
 
-    <VersionPrefix>0.6.1</VersionPrefix>
+    <VersionPrefix>0.6.2</VersionPrefix>
     <PackageReadmeFile>NugetReadme.md</PackageReadmeFile>
     <PackageTags>gobject;gir;binding;gnome;</PackageTags>
     <PackageIcon>logo-128.png</PackageIcon>
