@@ -77,7 +77,6 @@ The folder structure in this repository is organized as follows:
 * **[src/Generation/GirLoader](src/Generation/GirLoader):** A library for reading and resolving GObject Introspection repositories.
 * **[src/Generation/GirModel](src/Generation/GirModel):** An interface based definition of the GObject data model. Used by the loader and generator to have a common understanding of the GObject data model.
 * **[src/Generation/Generator](src/Generation/Generator):** Code generator generates C# code from GObject Introspection data.
-* **[src/Extensions/Integration](src/Extensions/Integration):** Optional source generators to reduce boilerplate code in your projects.
 * **[src/Libs](src/Libs):** Contains manually written code for libraries. The generator outputs code here.
 * **[src/Samples](src/Samples):** Example programs using GTK, GStreamer, and others.
 * **[src/Extensions](src/Extensions):** Auxilary libraries which extend the core libraries.
