@@ -16,7 +16,7 @@ public partial class Object : IDisposable
         Handle.AddMemoryPressure();
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         Debug.WriteLine($"Handle {Handle.DangerousGetHandle()}: Disposing object of type {GetType()}.");
         DisposeClosures();

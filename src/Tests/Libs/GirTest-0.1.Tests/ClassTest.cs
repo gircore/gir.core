@@ -63,6 +63,12 @@ public class ClassTest : Test
     }
 
     [TestMethod]
+    public void GObjectDisposeMethodIsVirtual()
+    {
+        typeof(GObject.Object).GetMethod(nameof(GObject.Object.Dispose)).Should().BeVirtual();
+    }
+
+    [TestMethod]
     public void TestManualGObjectDisposal()
     {
         var obj = ClassTester.New();
