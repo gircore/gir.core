@@ -49,6 +49,7 @@ internal static class SubclassValuesProvider
             Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
             ParentHandle: parentHandle,
             Namespace: context.TargetSymbol.ContainingNamespace.ToDisplayString(),
+            IsGlobalNamespace: context.TargetSymbol.ContainingNamespace.IsGlobalNamespace,
             Accessibility: accessibility,
             FileName: GetFileName(subclass),
             UpperNestedClasses: upperNestedClasses

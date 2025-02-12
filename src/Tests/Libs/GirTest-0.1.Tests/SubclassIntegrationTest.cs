@@ -46,26 +46,34 @@ public class SubclassIntegrationTest : Test
         var type4 = SomeGenericSubclass<SomeGenericSubclass<string>>.GetGType();
         var type5 = SomeSubSubClass.GetGType();
         var type6 = SomeContainingClass.SomeNestedGenericSubSubSubClass.GetGType();
+        var type7 = SomeGlobalSubClass.GetGType();
 
         type1.Should().NotBe(type2);
         type1.Should().NotBe(type3);
         type1.Should().NotBe(type4);
         type1.Should().NotBe(type5);
         type1.Should().NotBe(type6);
+        type1.Should().NotBe(type7);
 
         type2.Should().NotBe(type3);
         type2.Should().NotBe(type4);
         type2.Should().NotBe(type5);
         type2.Should().NotBe(type6);
+        type2.Should().NotBe(type7);
 
         type3.Should().NotBe(type4);
         type3.Should().NotBe(type5);
         type3.Should().NotBe(type6);
+        type3.Should().NotBe(type7);
 
         type4.Should().NotBe(type5);
         type4.Should().NotBe(type6);
+        type4.Should().NotBe(type7);
 
         type5.Should().NotBe(type6);
+        type5.Should().NotBe(type7);
+
+        type6.Should().NotBe(type7);
     }
 }
 
