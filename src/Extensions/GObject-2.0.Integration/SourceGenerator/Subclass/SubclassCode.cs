@@ -15,11 +15,12 @@ internal static class SubclassCode
     }
     private static string ToCode(SubclassData subclassData)
     {
-        return $$"""
-               namespace {{subclassData.Namespace}};
-               
-               {{RenderClassHierarchy(subclassData)}}
-               """;
+        return subclassData.IsGlobalNamespace
+            ? RenderClassHierarchy(subclassData)
+            : $"""
+                namespace {subclassData.Namespace};
+                {RenderClassHierarchy(subclassData)}
+                """;
     }
 
     private static string RenderClassHierarchy(SubclassData subclassData)

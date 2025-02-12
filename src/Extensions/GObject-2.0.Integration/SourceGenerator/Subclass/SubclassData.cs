@@ -8,6 +8,7 @@ internal sealed record SubclassData(
     string Parent,
     string ParentHandle,
     string Namespace,
+    bool IsGlobalNamespace,
     string Accessibility,
     string FileName,
     Stack<TypeData> UpperNestedClasses
