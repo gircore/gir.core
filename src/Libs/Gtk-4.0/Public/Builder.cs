@@ -27,10 +27,12 @@ public partial class Builder
         //ConnectSignals(connector);
     }
 
-    private void ConnectSignals(object obj)
+    /*
+     private void ConnectSignals(object obj)
     {
         //Native.connect_signals_full(Handle, OnConnectEvent, IntPtr.Zero);
     }
+    */
 
     public IntPtr GetPointer(string name)
     {

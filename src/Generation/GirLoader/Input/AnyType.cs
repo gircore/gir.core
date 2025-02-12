@@ -2,6 +2,6 @@
 
 public interface AnyType
 {
-    public Type? Type { get; set; }
-    public ArrayType? Array { get; set; }
+    Type? Type { get; set; }
+    ArrayType? Array { get; set; }
 }
