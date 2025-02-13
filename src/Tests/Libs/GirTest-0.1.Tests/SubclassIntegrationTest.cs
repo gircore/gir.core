@@ -1,3 +1,4 @@
+using System.CodeDom.Compiler;
 using FluentAssertions;
 using GObject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,6 +32,24 @@ public class SubclassIntegrationTest : Test
         typeof(SomeSubClass).Should().HaveConstructor([typeof(GObject.ConstructArgument[])]);
     }
 
+    [TestMethod]
+    public void ConstructArgumentConstructorShoudBeDecoratedWithGeneratedCodeAttribute()
+    {
+        typeof(SomeSubClass)
+            .GetConstructor([typeof(GObject.ConstructArgument[])])
+            .Should()
+            .BeDecoratedWith<GeneratedCodeAttribute>();
+    }
+    
+    [TestMethod]
+    public void ObjectHandleConstructorShoudBeDecoratedWithGeneratedCodeAttribute()
+    {
+        typeof(SomeSubClass)
+            .GetConstructor([typeof(GObject.Internal.ObjectHandle)])
+            .Should()
+            .BeDecoratedWith<GeneratedCodeAttribute>();
+    }
+    
     [TestMethod]
     public void ShoudHaveAGtype()
     {
