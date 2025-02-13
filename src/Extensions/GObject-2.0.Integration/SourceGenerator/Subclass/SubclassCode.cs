@@ -16,8 +16,22 @@ internal static class SubclassCode
     private static string ToCode(SubclassData subclassData)
     {
         return subclassData.IsGlobalNamespace
-            ? RenderClassHierarchy(subclassData)
-            : $"""
+            ? RenderGlobalNamespace(subclassData)
+            : RenderNamespace(subclassData);
+    }
+
+    private static string RenderGlobalNamespace(SubclassData subclassData)
+    {
+        return $"""
+               #nullable enable
+               {RenderClassHierarchy(subclassData)}
+               """;
+    }
+    
+    private static string RenderNamespace(SubclassData subclassData)
+    {
+        return $"""
+                #nullable enable
                 namespace {subclassData.Namespace};
                 {RenderClassHierarchy(subclassData)}
                 """;
@@ -51,10 +65,24 @@ internal static class SubclassCode
                       }
                       
                       {{GeneratedCodeAttribute.Render()}}
-                      public {{subclassData.Name}}({{subclassData.ParentHandle}} handle) : base(handle) { }
+                      public {{subclassData.Name}}({{subclassData.ParentHandle}} handle) : base(handle) 
+                      {
+                          Initialize();
+                      }
                       
                       {{GeneratedCodeAttribute.Render()}}
-                      public {{subclassData.Name}}(params GObject.ConstructArgument[] constructArguments) : this({{subclassData.ParentHandle}}.For<{{subclassData.NameGenericArguments}}>(constructArguments)) { }
+                      public {{subclassData.Name}}(params GObject.ConstructArgument[] constructArguments) : this({{subclassData.ParentHandle}}.For<{{subclassData.NameGenericArguments}}>(constructArguments)) 
+                      {
+                          Initialize();
+                      }
+                      
+                      /// <summary>
+                      /// This method is called by all generated constructors.
+                      /// Implement this partial method to initialize all members.
+                      /// Decorating this method with "MemberNotNullAttribute" for
+                      /// the appropriate members can remove nullable warnings.
+                      /// </summary>
+                      partial void Initialize();
                  }
                  """;
     }

@@ -1,4 +1,5 @@
 using System.CodeDom.Compiler;
+using System.Diagnostics.CodeAnalysis;
 using FluentAssertions;
 using GObject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -48,6 +49,13 @@ public class SubclassIntegrationTest : Test
             .GetConstructor([typeof(GObject.Internal.ObjectHandle)])
             .Should()
             .BeDecoratedWith<GeneratedCodeAttribute>();
+    }
+
+    [TestMethod]
+    public void PartialInitializeMethodShouldBeCalled()
+    {
+        var obj = new SomeInitializedSubClass();
+        obj.Should().NotBeNull();
     }
     
     [TestMethod]
@@ -112,4 +120,16 @@ internal partial class SomeContainingClass
 {
     [Subclass<SomeSubSubClass>]
     internal partial class SomeNestedGenericSubSubSubClass;
+}
+
+[Subclass<GObject.Object>]
+internal partial class SomeInitializedSubClass
+{
+    public string Text { get; set; } //null by default
+    
+    [MemberNotNull(nameof(Text))]
+    partial void Initialize()
+    {
+        Text = string.Empty; //ensure that property is not null. No warning is raised.
+    }
 }
