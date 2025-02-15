@@ -12,22 +12,22 @@ internal static class GeneratedCodeAttribute
     {
         return $"""[System.CodeDom.Compiler.GeneratedCode("{Name}", "{Version}")]""";
     }
-    
+
     private static string GetName()
     {
         var name = Assembly.GetExecutingAssembly().GetName().Name;
-        if(name is null)
+        if (name is null)
             throw new NotSupportedException("Could not get assembly version");
 
         return $"GirCore.{name}";
     }
-    
+
     private static string GetVersion()
     {
         var version = Assembly.GetExecutingAssembly().GetName().Version;
-        if(version is null)
+        if (version is null)
             throw new NotSupportedException("Could not get assembly version");
-        
+
         return $"{version.Major}.{version.Minor}.{version.Build}";
     }
 }

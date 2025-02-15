@@ -27,7 +27,7 @@ internal static class SubclassCode
                {RenderClassHierarchy(subclassData)}
                """;
     }
-    
+
     private static string RenderNamespace(SubclassData subclassData)
     {
         return $"""
@@ -54,6 +54,7 @@ internal static class SubclassCode
     private static string RenderClassContent(SubclassData subclassData)
     {
         return $$"""
+                 {{GeneratedCodeAttribute.Render()}}
                  {{subclassData.Accessibility}} partial class {{subclassData.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider, GObject.InstanceFactory
                  {
                       private static readonly GObject.Type GType = GObject.Internal.SubclassRegistrar.Register<{{subclassData.NameGenericArguments}}, {{subclassData.Parent}}>();
@@ -64,13 +65,11 @@ internal static class SubclassCode
                           return new {{subclassData.NameGenericArguments}}(new {{subclassData.ParentHandle}}(handle, ownsHandle));
                       }
                       
-                      {{GeneratedCodeAttribute.Render()}}
                       public {{subclassData.Name}}({{subclassData.ParentHandle}} handle) : base(handle) 
                       {
                           Initialize();
                       }
                       
-                      {{GeneratedCodeAttribute.Render()}}
                       public {{subclassData.Name}}(params GObject.ConstructArgument[] constructArguments) : this({{subclassData.ParentHandle}}.For<{{subclassData.NameGenericArguments}}>(constructArguments)) 
                       {
                           Initialize();

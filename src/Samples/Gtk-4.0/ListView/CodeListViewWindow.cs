@@ -1,16 +1,18 @@
+using GObject;
 using Gtk;
 using static Gtk.SignalListItemFactory;
 
 namespace ListViewSample;
 
-public class CodeListViewWindow : Window
+[Subclass<Window>]
+public partial class CodeListViewWindow
 {
-    public CodeListViewWindow()
+    partial void Initialize()
     {
         Title = "Code ListView";
         SetDefaultSize(300, 300);
 
-        var stringList = StringList.New(new string[] { "One", "Two", "Three", "Four" });
+        var stringList = StringList.New(["One", "Two", "Three", "Four"]);
         var selectionModel = NoSelection.New(stringList);
         var listItemFactory = SignalListItemFactory.New();
         listItemFactory.OnSetup += SetupSignalHandler;
