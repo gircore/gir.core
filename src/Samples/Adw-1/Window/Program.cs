@@ -1,4 +1,4 @@
-﻿var application = Adw.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
+var application = Adw.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
 application.OnActivate += (sender, args) =>
 {
     var label = Gtk.Label.New("Hello world");

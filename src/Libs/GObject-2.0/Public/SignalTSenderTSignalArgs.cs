@@ -1,4 +1,4 @@
-﻿namespace GObject;
+namespace GObject;
 
 /// <summary>
 /// Describes a GSignal.

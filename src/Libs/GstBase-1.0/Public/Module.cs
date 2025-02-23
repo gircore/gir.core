@@ -1,4 +1,4 @@
-﻿namespace GstBase;
+namespace GstBase;
 
 public static class Module
 {

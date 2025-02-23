@@ -1,4 +1,4 @@
-﻿namespace GObject.Internal;
+namespace GObject.Internal;
 
 public enum BasicType
 {

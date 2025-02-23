@@ -1,4 +1,4 @@
-﻿namespace GirModel;
+namespace GirModel;
 
 public interface Nullable
 {

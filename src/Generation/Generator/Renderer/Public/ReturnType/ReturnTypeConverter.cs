@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Public.ReturnType;
+namespace Generator.Renderer.Public.ReturnType;
 
 internal interface ReturnTypeConverter
 {

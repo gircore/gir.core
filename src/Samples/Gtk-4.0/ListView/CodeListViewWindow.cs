@@ -1,4 +1,4 @@
-﻿using Gtk;
+using Gtk;
 using static Gtk.SignalListItemFactory;
 
 namespace ListViewSample;

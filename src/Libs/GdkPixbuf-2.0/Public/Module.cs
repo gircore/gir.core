@@ -1,4 +1,4 @@
-﻿namespace GdkPixbuf;
+namespace GdkPixbuf;
 
 public static class Module
 {

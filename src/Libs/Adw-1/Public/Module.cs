@@ -1,4 +1,4 @@
-﻿namespace Adw;
+namespace Adw;
 
 public static class Module
 {

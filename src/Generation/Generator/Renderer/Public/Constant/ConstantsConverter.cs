@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Public.Constant;
+namespace Generator.Renderer.Public.Constant;
 
 internal interface ConstantsConverter
 {

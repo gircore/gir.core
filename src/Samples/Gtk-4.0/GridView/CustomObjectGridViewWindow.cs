@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GObject;
 using Gtk;
 using static Gtk.GridView;

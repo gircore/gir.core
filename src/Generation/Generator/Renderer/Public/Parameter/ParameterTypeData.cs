@@ -1,3 +1,3 @@
-﻿namespace Generator.Renderer.Public;
+namespace Generator.Renderer.Public;
 
 public record ParameterTypeData(string Direction, string NullableTypeName);

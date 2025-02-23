@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Generator.Model;
 
 namespace Generator.Renderer.Public;

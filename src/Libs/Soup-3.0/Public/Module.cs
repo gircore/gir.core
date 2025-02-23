@@ -1,4 +1,4 @@
-﻿namespace Soup;
+namespace Soup;
 
 public static class Module
 {

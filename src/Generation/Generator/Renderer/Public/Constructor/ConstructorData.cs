@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Public.Constructor;
+namespace Generator.Renderer.Public.Constructor;
 
 public delegate string CreateExpression(GirModel.Constructor constructor, string fromVariableName);
 

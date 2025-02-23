@@ -1,4 +1,4 @@
-﻿namespace Gio;
+namespace Gio;
 
 public static class Module
 {

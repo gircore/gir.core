@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Internal.ReturnType;
+namespace Generator.Renderer.Internal.ReturnType;
 
 internal class Utf8StringArrayInCallback : ReturnTypeConverter
 {

@@ -1,4 +1,4 @@
-﻿using Generator.Generator;
+using Generator.Generator;
 
 namespace Generator;
 

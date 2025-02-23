@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GirModel;
 
 namespace Generator.Renderer.Internal.ReturnType;

@@ -1,4 +1,4 @@
-﻿namespace GirLoader.PlatformSupport;
+namespace GirLoader.PlatformSupport;
 
 public partial class Alias : GirModel.Alias
 {

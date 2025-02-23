@@ -1,4 +1,4 @@
-﻿namespace Adw;
+namespace Adw;
 
 public partial class Application
 {

@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Internal.Field;
+namespace Generator.Renderer.Internal.Field;
 
 internal class OpaqueTypedRecord : FieldConverter
 {

@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Internal.InstanceParameter;
+namespace Generator.Renderer.Internal.InstanceParameter;
 
 internal class Pointer : InstanceParameterConverter
 {

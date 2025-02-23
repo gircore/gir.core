@@ -1,4 +1,4 @@
-﻿namespace GirModel;
+namespace GirModel;
 
 /// <summary>
 /// Represents a GLib.ByteArray

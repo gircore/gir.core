@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
+namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
 
 internal class UnsignedCLong : ReturnTypeConverter
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Generator.Model;
 namespace Generator.Renderer.Public.ReturnType;
 

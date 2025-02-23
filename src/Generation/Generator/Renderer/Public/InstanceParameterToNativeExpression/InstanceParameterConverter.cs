@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Public.InstanceParameterToNativeExpressions;
+namespace Generator.Renderer.Public.InstanceParameterToNativeExpressions;
 
 internal interface InstanceParameterConverter
 {

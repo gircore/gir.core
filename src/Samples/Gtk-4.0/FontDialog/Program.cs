@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 var application = Gtk.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
 application.OnActivate += (sender, args) =>

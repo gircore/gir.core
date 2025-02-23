@@ -1,4 +1,4 @@
-﻿namespace GirLoader;
+namespace GirLoader;
 
 public class NullRepositoryResolver : IRepositoryResolver
 {

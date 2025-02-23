@@ -1,4 +1,4 @@
-﻿namespace Generator.Generator;
+namespace Generator.Generator;
 
 internal interface Generator<T>
 {

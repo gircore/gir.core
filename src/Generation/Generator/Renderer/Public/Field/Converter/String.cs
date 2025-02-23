@@ -1,4 +1,4 @@
-﻿using Generator.Model;
+using Generator.Model;
 
 namespace Generator.Renderer.Public.Field;
 

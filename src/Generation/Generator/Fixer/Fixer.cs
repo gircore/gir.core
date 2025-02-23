@@ -1,4 +1,4 @@
-﻿namespace Generator.Fixer;
+namespace Generator.Fixer;
 
 public interface Fixer<in T>
 {

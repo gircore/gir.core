@@ -1,4 +1,4 @@
-﻿namespace Cairo.Internal;
+namespace Cairo.Internal;
 
 // The gir file does not contain the fields for Cairo.Matrix
 public partial struct MatrixData

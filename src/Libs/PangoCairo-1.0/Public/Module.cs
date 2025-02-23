@@ -1,4 +1,4 @@
-﻿namespace PangoCairo;
+namespace PangoCairo;
 
 public static class Module
 {

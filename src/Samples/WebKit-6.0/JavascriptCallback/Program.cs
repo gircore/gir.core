@@ -1,4 +1,4 @@
-﻿#pragma warning disable CA1416
+#pragma warning disable CA1416
 
 WebKit.Module.Initialize();
 

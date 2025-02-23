@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using GLib;
 using GObject;
 using Gtk;

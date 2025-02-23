@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer;
+namespace Generator.Renderer;
 
 internal static class MarshalAs
 {

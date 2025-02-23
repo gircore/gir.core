@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Internal.InstanceParameter;
+namespace Generator.Renderer.Internal.InstanceParameter;
 
 public interface InstanceParameterConverter
 {

@@ -1,4 +1,4 @@
-﻿namespace JavaScriptCore;
+namespace JavaScriptCore;
 
 public static class Module
 {

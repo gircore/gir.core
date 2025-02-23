@@ -1,4 +1,4 @@
-﻿namespace GirLoader.Output;
+namespace GirLoader.Output;
 
 /// <summary>
 /// Unicode string using UTF-8 encoding

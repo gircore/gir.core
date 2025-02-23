@@ -1,4 +1,4 @@
-﻿using OneOf;
+using OneOf;
 
 namespace GirModel;
 

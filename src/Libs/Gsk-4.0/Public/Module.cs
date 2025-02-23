@@ -1,4 +1,4 @@
-﻿namespace Gsk;
+namespace Gsk;
 
 public static class Module
 {

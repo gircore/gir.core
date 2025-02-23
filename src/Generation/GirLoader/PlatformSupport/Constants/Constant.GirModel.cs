@@ -1,4 +1,4 @@
-﻿using GirModel;
+using GirModel;
 
 namespace GirLoader.PlatformSupport;
 

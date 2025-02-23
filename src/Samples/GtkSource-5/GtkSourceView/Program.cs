@@ -1,4 +1,4 @@
-﻿GtkSource.Module.Initialize();
+GtkSource.Module.Initialize();
 var application = Gtk.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
 application.OnActivate += (sender, args) =>
 {

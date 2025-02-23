@@ -1,3 +1,3 @@
-﻿namespace Generator.Renderer.Internal.ReturnType;
+namespace Generator.Renderer.Internal.ReturnType;
 
 public record RenderableReturnType(string NullableTypeName);

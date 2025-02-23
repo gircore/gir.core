@@ -1,4 +1,4 @@
-﻿using Generator.Model;
+using Generator.Model;
 using static System.FormattableString;
 
 namespace Generator.Renderer.Public;

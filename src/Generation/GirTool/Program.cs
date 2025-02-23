@@ -1,4 +1,4 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using GirTool;
 
 var rootCommand = new RootCommand("GirTool generates C# bindings from GIR files.")

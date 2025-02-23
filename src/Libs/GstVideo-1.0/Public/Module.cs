@@ -1,4 +1,4 @@
-﻿namespace GstVideo;
+namespace GstVideo;
 
 public static class Module
 {

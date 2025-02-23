@@ -1,4 +1,4 @@
-﻿namespace GstPbutils;
+namespace GstPbutils;
 
 public static class Module
 {

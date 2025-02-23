@@ -1,4 +1,4 @@
-﻿namespace GirTest;
+namespace GirTest;
 
 public static class Module
 {

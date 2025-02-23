@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Public;
+namespace Generator.Renderer.Public;
 
 public class CallableExpressions
 {

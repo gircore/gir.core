@@ -1,4 +1,4 @@
-﻿namespace Generator.Model;
+namespace Generator.Model;
 
 internal static class ComplexType
 {

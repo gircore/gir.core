@@ -1,4 +1,4 @@
-﻿namespace GirLoader.Test;
+namespace GirLoader.Test;
 
 public static class DummyResolver
 {

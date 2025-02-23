@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Internal.Parameter;
+namespace Generator.Renderer.Internal.Parameter;
 
 internal class InterfaceArray : ParameterConverter
 {
