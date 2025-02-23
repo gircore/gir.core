@@ -5,9 +5,10 @@ using Gtk;
 
 namespace ListViewSample;
 
-public class TemplateListViewWindow : Window
+[Subclass<Window>]
+public partial class TemplateListViewWindow
 {
-    public TemplateListViewWindow()
+    partial void Initialize()
     {
         Title = "Template ListView";
         SetDefaultSize(300, 300);
