@@ -1,4 +1,4 @@
-﻿namespace Cairo.Internal;
+namespace Cairo.Internal;
 
 public partial class PatternOwnedHandle
 {

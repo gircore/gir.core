@@ -1,4 +1,4 @@
-﻿namespace GirTool;
+namespace GirTool;
 
 public enum LogLevel
 {

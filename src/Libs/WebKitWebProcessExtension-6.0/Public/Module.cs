@@ -1,4 +1,4 @@
-﻿namespace WebKitWebProcessExtension;
+namespace WebKitWebProcessExtension;
 
 public static class Module
 {

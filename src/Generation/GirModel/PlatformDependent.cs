@@ -1,4 +1,4 @@
-﻿namespace GirModel;
+namespace GirModel;
 
 /// <summary>
 /// Optional interface which allows types to express that they are platform dependent.

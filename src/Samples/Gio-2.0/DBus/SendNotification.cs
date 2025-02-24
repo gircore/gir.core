@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Gio;
 using GLib;
 using Array = System.Array;

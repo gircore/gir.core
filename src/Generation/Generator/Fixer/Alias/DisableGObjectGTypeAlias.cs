@@ -1,4 +1,4 @@
-﻿namespace Generator.Fixer.Record;
+namespace Generator.Fixer.Record;
 
 /// <summary>
 /// The alias is added manually in GLib (as GObject.Type) as GLib needs a GType.

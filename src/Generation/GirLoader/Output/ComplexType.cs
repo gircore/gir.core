@@ -1,4 +1,4 @@
-﻿namespace GirLoader.Output;
+namespace GirLoader.Output;
 
 public abstract partial class ComplexType : Type
 {

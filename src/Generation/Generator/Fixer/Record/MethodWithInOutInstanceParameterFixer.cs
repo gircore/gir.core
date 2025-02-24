@@ -1,4 +1,4 @@
-﻿using GirModel;
+using GirModel;
 using Method = Generator.Model.Method;
 
 namespace Generator.Fixer.Record;

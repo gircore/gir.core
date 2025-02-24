@@ -1,4 +1,4 @@
-﻿namespace Samples;
+namespace Samples;
 
 internal static class Program
 {

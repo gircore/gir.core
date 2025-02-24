@@ -1,4 +1,4 @@
-﻿namespace Pango;
+namespace Pango;
 
 public static class Module
 {

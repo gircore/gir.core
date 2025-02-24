@@ -1,4 +1,4 @@
-﻿using GirLoader.PlatformSupport;
+using GirLoader.PlatformSupport;
 
 namespace GirTool;
 

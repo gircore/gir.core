@@ -1,4 +1,4 @@
-﻿namespace GirLoader;
+namespace GirLoader;
 
 internal partial class TypeReferenceResolver
 {

@@ -1,3 +1,3 @@
-﻿namespace GirLoader.Output;
+namespace GirLoader.Output;
 
 public record VarArgs : GirModel.VarArgs;

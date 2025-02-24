@@ -1,4 +1,4 @@
-﻿namespace GirLoader.Input;
+namespace GirLoader.Input;
 
 public class VarArgs
 {

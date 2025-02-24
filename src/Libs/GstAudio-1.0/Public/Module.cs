@@ -1,4 +1,4 @@
-﻿namespace GstAudio;
+namespace GstAudio;
 
 public static class Module
 {

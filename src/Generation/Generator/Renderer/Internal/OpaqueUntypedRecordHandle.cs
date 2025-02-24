@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Generator.Model;
 
 namespace Generator.Renderer.Internal;

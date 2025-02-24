@@ -1,4 +1,4 @@
-﻿using Cairo.Internal;
+using Cairo.Internal;
 
 namespace Cairo;
 

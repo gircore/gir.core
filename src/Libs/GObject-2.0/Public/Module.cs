@@ -1,4 +1,4 @@
-﻿namespace GObject;
+namespace GObject;
 
 public static class Module
 {

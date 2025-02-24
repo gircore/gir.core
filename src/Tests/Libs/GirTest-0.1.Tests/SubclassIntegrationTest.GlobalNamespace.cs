@@ -1,2 +1,2 @@
-﻿[GObject.Subclass<GObject.Object>]
+[GObject.Subclass<GObject.Object>]
 internal partial class SomeGlobalSubClass;

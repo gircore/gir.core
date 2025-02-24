@@ -1,4 +1,4 @@
-﻿namespace Graphene;
+namespace Graphene;
 
 public static class Module
 {

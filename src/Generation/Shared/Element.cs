@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This class is shared among different projects to provide an
  * convenience functions
  *

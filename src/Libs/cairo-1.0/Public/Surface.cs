@@ -1,4 +1,4 @@
-﻿namespace Cairo;
+namespace Cairo;
 
 public partial class Surface
 {

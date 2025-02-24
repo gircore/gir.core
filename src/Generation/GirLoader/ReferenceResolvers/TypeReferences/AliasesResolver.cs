@@ -1,4 +1,4 @@
-﻿using GirLoader.Output;
+using GirLoader.Output;
 
 namespace GirLoader;
 

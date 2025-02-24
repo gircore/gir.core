@@ -1,4 +1,4 @@
-﻿namespace GtkSource;
+namespace GtkSource;
 
 public static class Module
 {

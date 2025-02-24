@@ -1,4 +1,4 @@
-﻿namespace Samples;
+namespace Samples;
 
 public static class Program
 {

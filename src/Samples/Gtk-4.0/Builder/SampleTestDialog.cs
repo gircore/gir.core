@@ -1,4 +1,4 @@
-﻿namespace BuilderSample;
+namespace BuilderSample;
 
 public class SampleTestDialog : Gtk.Dialog
 {

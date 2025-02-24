@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Public.Field;
+namespace Generator.Renderer.Public.Field;
 
 internal class UnsignedLong : FieldConverter
 {

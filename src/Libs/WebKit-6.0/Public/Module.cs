@@ -1,4 +1,4 @@
-﻿namespace WebKit;
+namespace WebKit;
 
 public static class Module
 {

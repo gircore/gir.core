@@ -1,3 +1,3 @@
-﻿namespace Generator.Renderer.Internal.Field;
+namespace Generator.Renderer.Internal.Field;
 
 public record RenderableField(string Name, string? Attribute, string NullableTypeName);

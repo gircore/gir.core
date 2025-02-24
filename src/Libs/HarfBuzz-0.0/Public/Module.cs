@@ -1,4 +1,4 @@
-﻿namespace HarfBuzz;
+namespace HarfBuzz;
 
 public static class Module
 {

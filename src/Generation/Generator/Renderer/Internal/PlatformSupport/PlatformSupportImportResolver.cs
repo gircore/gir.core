@@ -1,4 +1,4 @@
-﻿namespace Generator.Renderer.Internal;
+namespace Generator.Renderer.Internal;
 
 internal static class PlatformSupportImportResolver
 {
