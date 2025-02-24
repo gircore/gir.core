@@ -6,7 +6,7 @@ namespace Gtk;
 public partial class UriLauncher
 {
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<bool> LaunchAsync(Window parent)
+    public Task<bool> LaunchAsync(Window? parent)
     {
         var tcs = new TaskCompletionSource<bool>();
 
@@ -28,7 +28,7 @@ public partial class UriLauncher
 
         Internal.UriLauncher.Launch(
             self: Handle.DangerousGetHandle(),
-            parent: parent.Handle.DangerousGetHandle(),
+            parent: parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
