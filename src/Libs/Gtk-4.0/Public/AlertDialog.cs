@@ -6,7 +6,7 @@ namespace Gtk;
 public partial class AlertDialog
 {
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<int> ChooseAsync(Window parent)
+    public Task<int> ChooseAsync(Window? parent)
     {
         var tcs = new TaskCompletionSource<int>();
 
@@ -28,7 +28,7 @@ public partial class AlertDialog
 
         Internal.AlertDialog.Choose(
             self: Handle.DangerousGetHandle(),
-            parent: parent.Handle.DangerousGetHandle(),
+            parent: parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero

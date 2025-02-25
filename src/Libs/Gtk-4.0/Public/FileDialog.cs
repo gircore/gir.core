@@ -6,7 +6,7 @@ namespace Gtk;
 public partial class FileDialog
 {
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<Gio.File?> OpenAsync(Window parent)
+    public Task<Gio.File?> OpenAsync(Window? parent)
     {
         var tcs = new TaskCompletionSource<Gio.File?>();
 
@@ -30,7 +30,7 @@ public partial class FileDialog
 
         Internal.FileDialog.Open(
             self: Handle.DangerousGetHandle(),
-            parent: parent.Handle.DangerousGetHandle(),
+            parent: parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
@@ -40,7 +40,7 @@ public partial class FileDialog
     }
 
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<Gio.ListModel?> OpenMultipleAsync(Window parent)
+    public Task<Gio.ListModel?> OpenMultipleAsync(Window? parent)
     {
         var tcs = new TaskCompletionSource<Gio.ListModel?>();
 
@@ -64,7 +64,7 @@ public partial class FileDialog
 
         Internal.FileDialog.OpenMultiple(
             self: Handle.DangerousGetHandle(),
-            parent: parent.Handle.DangerousGetHandle(),
+            parent: parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
@@ -74,7 +74,7 @@ public partial class FileDialog
     }
 
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<Gio.File?> SaveAsync(Window parent)
+    public Task<Gio.File?> SaveAsync(Window? parent)
     {
         var tcs = new TaskCompletionSource<Gio.File?>();
 
@@ -98,7 +98,7 @@ public partial class FileDialog
 
         Internal.FileDialog.Save(
             self: Handle.DangerousGetHandle(),
-            parent: parent.Handle.DangerousGetHandle(),
+            parent: parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
@@ -109,7 +109,7 @@ public partial class FileDialog
 
 
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<Gio.File?> SelectFolderAsync(Window parent)
+    public Task<Gio.File?> SelectFolderAsync(Window? parent)
     {
         var tcs = new TaskCompletionSource<Gio.File?>();
 
@@ -133,7 +133,7 @@ public partial class FileDialog
 
         Internal.FileDialog.SelectFolder(
             self: Handle.DangerousGetHandle(),
-            parent: parent.Handle.DangerousGetHandle(),
+            parent: parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero
@@ -143,7 +143,7 @@ public partial class FileDialog
     }
 
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<Gio.ListModel?> SelectMultipleFoldersAsync(Window parent)
+    public Task<Gio.ListModel?> SelectMultipleFoldersAsync(Window? parent)
     {
         var tcs = new TaskCompletionSource<Gio.ListModel?>();
 
@@ -167,7 +167,7 @@ public partial class FileDialog
 
         Internal.FileDialog.SelectMultipleFolders(
             self: Handle.DangerousGetHandle(),
-            parent: parent.Handle.DangerousGetHandle(),
+            parent: parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             cancellable: IntPtr.Zero,
             callback: callbackHandler.NativeCallback,
             userData: IntPtr.Zero

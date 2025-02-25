@@ -6,7 +6,7 @@ namespace Gtk;
 public partial class FontDialog
 {
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<Pango.FontFace?> ChooseFaceAsync(Window parent, Pango.FontFace? fontFace)
+    public Task<Pango.FontFace?> ChooseFaceAsync(Window? parent, Pango.FontFace? fontFace)
     {
         var tcs = new TaskCompletionSource<Pango.FontFace?>();
 
@@ -30,7 +30,7 @@ public partial class FontDialog
 
         Internal.FontDialog.ChooseFace(
             Handle.DangerousGetHandle(),
-            parent.Handle.DangerousGetHandle(),
+            parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             fontFace?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             IntPtr.Zero,
             callbackHandler.NativeCallback,
@@ -41,7 +41,7 @@ public partial class FontDialog
     }
 
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<Pango.FontFamily?> ChooseFamilyAsync(Window parent, Pango.FontFamily? fontFamily)
+    public Task<Pango.FontFamily?> ChooseFamilyAsync(Window? parent, Pango.FontFamily? fontFamily)
     {
         var tcs = new TaskCompletionSource<Pango.FontFamily?>();
 
@@ -65,7 +65,7 @@ public partial class FontDialog
 
         Internal.FontDialog.ChooseFamily(
             Handle.DangerousGetHandle(),
-            parent.Handle.DangerousGetHandle(),
+            parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             fontFamily?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             IntPtr.Zero,
             callbackHandler.NativeCallback,
@@ -76,7 +76,7 @@ public partial class FontDialog
     }
 
     //TODO: Async methods should be generated automatically (https://github.com/gircore/gir.core/issues/893)
-    public Task<Pango.FontDescription?> ChooseFontAsync(Window parent, Pango.FontDescription? fontDescription)
+    public Task<Pango.FontDescription?> ChooseFontAsync(Window? parent, Pango.FontDescription? fontDescription)
     {
         var tcs = new TaskCompletionSource<Pango.FontDescription?>();
 
@@ -101,7 +101,7 @@ public partial class FontDialog
         var initialValue = (Pango.Internal.FontDescriptionHandle?) fontDescription?.Handle ?? Pango.Internal.FontDescriptionUnownedHandle.NullHandle;
         Internal.FontDialog.ChooseFont(
             Handle.DangerousGetHandle(),
-            parent.Handle.DangerousGetHandle(),
+            parent?.Handle.DangerousGetHandle() ?? IntPtr.Zero,
             initialValue,
             IntPtr.Zero,
             callbackHandler.NativeCallback,
