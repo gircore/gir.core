@@ -10,9 +10,9 @@ namespace GridViewSample;
 [Subclass<GObject.Object>]
 public partial class ItemData
 {
-    public string? ImagePath { get; set; }
-    public string? Text { get; set; }
-    public string? Description { get; set; }
+    public string? ImagePath { get; }
+    public string? Text { get; }
+    public string? Description { get; }
 
     public ItemData(string imagePath, string text, string description) : this()
     {
@@ -22,16 +22,16 @@ public partial class ItemData
     }
 }
 
-public class CustomObjectGridViewWindow : Window
+[Subclass<Window>]
+public partial class CustomObjectGridViewWindow
 {
-    private readonly ListStore _model;
+    private readonly ListStore _model = ListStore.New(ItemData.GetGType());
 
-    public CustomObjectGridViewWindow()
+    partial void Initialize()
     {
         Title = "Gtk::GridView (Gio::ListStore)";
         SetDefaultSize(400, 400);
 
-        _model = ListStore.New(ItemData.GetGType());
         _model.Append(new ItemData("Resources/number-1.svg", "One", "One"));
         _model.Append(new ItemData("Resources/number-2.svg", "Two", "Two"));
         _model.Append(new ItemData("Resources/number-3.svg", "Three", "Three"));

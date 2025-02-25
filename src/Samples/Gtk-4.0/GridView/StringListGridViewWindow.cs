@@ -1,11 +1,13 @@
+using GObject;
 using Gtk;
 using static Gtk.SignalListItemFactory;
 
 namespace GridViewSample;
 
-public class StringListGridViewWindow : Window
+[Subclass<Window>]
+public partial class StringListGridViewWindow
 {
-    public StringListGridViewWindow()
+    partial void Initialize()
     {
         Title = "Gtk::GridView (Gio::ListStore)";
         SetDefaultSize(400, 400);

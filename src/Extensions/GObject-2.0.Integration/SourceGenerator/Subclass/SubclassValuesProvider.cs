@@ -8,13 +8,12 @@ namespace GObject.Integration.SourceGenerator;
 
 internal static class SubclassValuesProvider
 {
-    private const string SubclassAtributeName = "GObject.SubclassAttribute`1";
 
     public static IncrementalValuesProvider<SubclassData> GetSubclassValuesProvider(this IncrementalGeneratorInitializationContext context)
     {
         return context.SyntaxProvider
             .ForAttributeWithMetadataName(
-                fullyQualifiedMetadataName: SubclassAtributeName,
+                fullyQualifiedMetadataName: SubclassAttribute.MetadataName,
                 predicate: static (_, _) => true,
                 transform: GetSubclassData)
             .Where(data => data is not null)!;
@@ -149,7 +148,7 @@ internal static class SubclassValuesProvider
     {
         var attributeData = type
             .GetAttributes()
-            .FirstOrDefault(x => x.AttributeClass?.OriginalDefinition.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::GObject.HandleAttribute<T>");
+            .FirstOrDefault(x => x.IsHandleAttribute());
 
         return attributeData?.AttributeClass;
     }
@@ -158,7 +157,7 @@ internal static class SubclassValuesProvider
     {
         var subclassAttribute = type
             .GetAttributes()
-            .FirstOrDefault(x => x.AttributeClass?.ConstructedFrom.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::GObject.SubclassAttribute<T>");
+            .FirstOrDefault(x => x.AttributeClass?.ConstructedFrom.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == SubclassAttribute.FullyQualifiedDisplayName);
 
         if (subclassAttribute is null)
             return null;
