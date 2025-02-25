@@ -16,8 +16,22 @@ internal static class SubclassCode
     private static string ToCode(SubclassData subclassData)
     {
         return subclassData.IsGlobalNamespace
-            ? RenderClassHierarchy(subclassData)
-            : $"""
+            ? RenderGlobalNamespace(subclassData)
+            : RenderNamespace(subclassData);
+    }
+
+    private static string RenderGlobalNamespace(SubclassData subclassData)
+    {
+        return $"""
+               #nullable enable
+               {RenderClassHierarchy(subclassData)}
+               """;
+    }
+
+    private static string RenderNamespace(SubclassData subclassData)
+    {
+        return $"""
+                #nullable enable
                 namespace {subclassData.Namespace};
                 {RenderClassHierarchy(subclassData)}
                 """;
@@ -40,7 +54,8 @@ internal static class SubclassCode
     private static string RenderClassContent(SubclassData subclassData)
     {
         return $$"""
-                 {{subclassData.Accessibility}} partial class {{subclassData.NameGenericArguments}}({{subclassData.ParentHandle}} handle) : {{subclassData.Parent}}(handle), GObject.GTypeProvider, GObject.InstanceFactory
+                 {{GeneratedCodeAttribute.Render()}}
+                 {{subclassData.Accessibility}} partial class {{subclassData.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider, GObject.InstanceFactory
                  {
                       private static readonly GObject.Type GType = GObject.Internal.SubclassRegistrar.Register<{{subclassData.NameGenericArguments}}, {{subclassData.Parent}}>();
                       public static new GObject.Type GetGType() => GType;
@@ -50,7 +65,23 @@ internal static class SubclassCode
                           return new {{subclassData.NameGenericArguments}}(new {{subclassData.ParentHandle}}(handle, ownsHandle));
                       }
                       
-                      public {{subclassData.Name}}(params GObject.ConstructArgument[] constructArguments) : this({{subclassData.ParentHandle}}.For<{{subclassData.NameGenericArguments}}>(constructArguments)) { }
+                      public {{subclassData.Name}}({{subclassData.ParentHandle}} handle) : base(handle) 
+                      {
+                          Initialize();
+                      }
+                      
+                      public {{subclassData.Name}}(params GObject.ConstructArgument[] constructArguments) : this({{subclassData.ParentHandle}}.For<{{subclassData.NameGenericArguments}}>(constructArguments)) 
+                      {
+                          Initialize();
+                      }
+                      
+                      /// <summary>
+                      /// This method is called by all generated constructors.
+                      /// Implement this partial method to initialize all members.
+                      /// Decorating this method with "MemberNotNullAttribute" for
+                      /// the appropriate members can remove nullable warnings.
+                      /// </summary>
+                      partial void Initialize();
                  }
                  """;
     }

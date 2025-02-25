@@ -127,7 +127,7 @@ jobs:
           shell: bash
 
       - name: Verify code format
-        run: dotnet format GirCore.sln --no-restore --verify-no-changes --exclude *.Generated.cs
+        run: dotnet format GirCore.sln --no-restore --verify-no-changes --exclude *.Generated.cs --exclude-diagnostics GirCore1001 GirCore1002 GirCore1003
         working-directory: './src'
 
       - name: Run integration tests

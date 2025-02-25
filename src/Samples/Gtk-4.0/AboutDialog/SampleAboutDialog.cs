@@ -6,11 +6,12 @@ using GObject;
 
 namespace AboutDialog;
 
-public class SampleAboutDialog : Gtk.AboutDialog
+[Subclass<Gtk.AboutDialog>]
+public partial class SampleAboutDialog
 {
-    public SampleAboutDialog(string sampleName)
+    public SampleAboutDialog(string sampleName) : this()
     {
-        Authors = new[] { "Gir.Core Developers", "badcel", "mjakeman" };
+        Authors = ["Gir.Core Developers", "badcel", "mjakeman"];
         Comments = "Gir.Core is a C# wrapper for GObject based libraries providing a C# friendly API surface.";
         Copyright = "© Gir.Core Developers 2021-present";
         License = "MIT License";

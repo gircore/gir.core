@@ -1,8 +1,9 @@
+using System.CodeDom.Compiler;
+using DiagnosticAnalyzerTestProject;
 using FluentAssertions;
-using GObject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GirTest.Tests;
+namespace GObject.Integration.Tests;
 
 [TestClass, TestCategory("BindingTest")]
 public class SubclassIntegrationTest : Test
@@ -32,6 +33,21 @@ public class SubclassIntegrationTest : Test
     }
 
     [TestMethod]
+    public void GeneratedClassShouldBeDecoratedWithGeneratedCodeAttribute()
+    {
+        typeof(SomeSubClass)
+            .Should()
+            .BeDecoratedWith<GeneratedCodeAttribute>();
+    }
+
+    [TestMethod]
+    public void PartialInitializeMethodShouldBeCalled()
+    {
+        var obj = new SomeInitializedSubClass();
+        obj.Text.Should().NotBeNull();
+    }
+
+    [TestMethod]
     public void ShoudHaveAGtype()
     {
         SomeSubClass.GetGType().Value.Should().NotBe(0);
@@ -41,11 +57,11 @@ public class SubclassIntegrationTest : Test
     public void GenericSubclassesShouldBePossible()
     {
         var type1 = SomeGenericSubclass<int>.GetGType();
-        var type2 = SomeGenericSubclass<int, int>.GetGType();
-        var type3 = SomeGenericSubclass<SomeSubClass, string>.GetGType();
+        var type2 = SomeGenericSubclass2<int, int>.GetGType();
+        var type3 = SomeGenericSubclass2<SomeSubClass, string>.GetGType();
         var type4 = SomeGenericSubclass<SomeGenericSubclass<string>>.GetGType();
         var type5 = SomeSubSubClass.GetGType();
-        var type6 = SomeContainingClass.SomeNestedGenericSubSubSubClass.GetGType();
+        var type6 = SomeClassContainingNestedSubSubSubClass.SomeNestedSubSubSubClass.GetGType();
         var type7 = SomeGlobalSubClass.GetGType();
 
         type1.Should().NotBe(type2);
@@ -75,22 +91,4 @@ public class SubclassIntegrationTest : Test
 
         type6.Should().NotBe(type7);
     }
-}
-
-[Subclass<GObject.Object>]
-internal partial class SomeSubClass;
-
-[Subclass<GObject.Object>]
-internal partial class SomeGenericSubclass<T>;
-
-[Subclass<GObject.Object>]
-internal partial class SomeGenericSubclass<T1, T2>;
-
-[Subclass<SomeSubClass>]
-internal partial class SomeSubSubClass;
-
-internal partial class SomeContainingClass
-{
-    [Subclass<SomeSubSubClass>]
-    internal partial class SomeNestedGenericSubSubSubClass;
 }
