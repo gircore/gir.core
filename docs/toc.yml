@@ -10,6 +10,8 @@ items:
     href: docs/use.md
   - name: Gtk Tutorial
     href: docs/tutorial/gtk/index.md
+  - name: Integration packages
+    href: docs/integration/index.md
   - name: Apps
     href: docs/apps.md
   - name: Libraries
