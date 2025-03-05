@@ -278,6 +278,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticAnalyzerTestProje
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GObject-2.0.Integration.Tests", "Tests\Libs\GObject-2.0.Integration.Tests\GObject-2.0.Integration.Tests.csproj", "{871C0013-F1C0-429F-A8DF-FB737DFA287E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{FF81E529-6B9E-4A31-9C4C-F664FCE2FEE1}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\GetVersion.fsx = ..\build\GetVersion.fsx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1037,5 +1042,6 @@ Global
 		{C3A7EEEC-DB5D-4DC1-AF21-1FBBB16CB430} = {8BC11A63-D52B-40CB-9DDD-CD7C6DC21059}
 		{B620196D-68EC-43F2-AC72-7DBE32BB5BE7} = {C3A7EEEC-DB5D-4DC1-AF21-1FBBB16CB430}
 		{871C0013-F1C0-429F-A8DF-FB737DFA287E} = {46D66262-FC61-43B9-8E76-A361FA3D6C81}
+		{FF81E529-6B9E-4A31-9C4C-F664FCE2FEE1} = {B670D679-3B2C-43E8-9F87-5E4E17628011}
 	EndGlobalSection
 EndGlobal
