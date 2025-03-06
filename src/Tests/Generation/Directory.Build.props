@@ -1,6 +1,6 @@
 <Project>
-  <Import Project="../../Properties/GirCore.Tooling.props" />
-  <Import Project="../../Properties/GirCore.Testing.props" />
+  <Import Project="../../../properties/GirCore.Tooling.props" />
+  <Import Project="../../../properties/GirCore.Testing.props" />
   
   <PropertyGroup>
     <IsPackable>false</IsPackable>
