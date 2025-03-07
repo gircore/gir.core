@@ -8,6 +8,9 @@ inputs:
   source_directory:
     description: "Directory containing the source code (e.g. ./src)"
     required: true
+  script_directory:
+    description: "Directory containing the script code (e.g. ./scripts)"
+    required: true
   shell:
     description: "Shell to use"
     required: true
@@ -24,12 +27,12 @@ runs:
 
     - name: Compile native library
       run: dotnet fsi GenerateGirTestLib.fsx
-      working-directory: ${{ inputs.source_directory }}
+      working-directory: ${{ inputs.script_directory }}
       shell: ${{ inputs.shell }}
 
     - name: Call generator
       run: dotnet fsi GenerateLibs.fsx GirTest-0.1.gir
-      working-directory: ${{ inputs.source_directory }}
+      working-directory: ${{ inputs.script_directory }}
       shell: ${{ inputs.shell }}
 
     - name: Build complete solution

@@ -2,7 +2,7 @@
 open SimpleExec
 
 let libSrcDir = System.IO.Path.Combine(
-    System.IO.Directory.GetCurrentDirectory(),  "Native", "GirTestLib")
+    System.IO.Directory.GetCurrentDirectory(), "..", "src",  "Native", "GirTestLib")
 let libBuildDir = System.IO.Path.Combine(libSrcDir, "builddir")
 let libInstallDir = System.IO.Path.Combine(libSrcDir, "installdir")
 

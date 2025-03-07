@@ -68,11 +68,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
 		..\.gitignore = ..\.gitignore
-		CleanLibs.fsx = CleanLibs.fsx
-		GenerateLibs.fsx = GenerateLibs.fsx
 		NugetReadme.md = NugetReadme.md
 		..\readme.md = ..\readme.md
-		GenerateGirTestLib.fsx = GenerateGirTestLib.fsx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0D9C5C7E-F81B-4E0E-B203-22D558E6D7F1}"
@@ -278,9 +275,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticAnalyzerTestProje
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GObject-2.0.Integration.Tests", "Tests\Libs\GObject-2.0.Integration.Tests\GObject-2.0.Integration.Tests.csproj", "{871C0013-F1C0-429F-A8DF-FB737DFA287E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{FF81E529-6B9E-4A31-9C4C-F664FCE2FEE1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{FF81E529-6B9E-4A31-9C4C-F664FCE2FEE1}"
 	ProjectSection(SolutionItems) = preProject
-		..\build\GetVersion.fsx = ..\build\GetVersion.fsx
+		..\scripts\GetVersion.fsx = ..\scripts\GetVersion.fsx
+		..\scripts\CleanLibs.fsx = ..\scripts\CleanLibs.fsx
+		..\scripts\GenerateGirTestLib.fsx = ..\scripts\GenerateGirTestLib.fsx
+		..\scripts\GenerateLibs.fsx = ..\scripts\GenerateLibs.fsx
 	EndProjectSection
 EndProject
 Global
