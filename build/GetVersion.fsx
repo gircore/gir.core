@@ -2,7 +2,7 @@
 
 open FSharp.Data
 
-type publishingProperties = XmlProvider<"../src/Properties/GirCore.Publishing.props">
+type publishingProperties = XmlProvider<"../properties/GirCore.Publishing.props">
 
 let versionPrefix = publishingProperties.GetSample().PropertyGroups
                     |> Seq.tryFind(fun p -> p.VersionPrefix.IsSome)     

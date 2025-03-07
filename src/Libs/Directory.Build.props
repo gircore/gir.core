@@ -1,6 +1,6 @@
 <Project>
-  <Import Project="../Properties/GirCore.Libraries.props" />
-  <Import Project="../Properties/GirCore.Publishing.props" />
+  <Import Project="../../properties/GirCore.Libraries.props" />
+  <Import Project="../../properties/GirCore.Publishing.props" />
   
   <PropertyGroup Condition="$(GenerateDocumentationFile) == 'True'">
     <NoWarn>1591</NoWarn>

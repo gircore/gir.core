@@ -205,13 +205,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "create", "create", "{C095C4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GirTool", "Generation\GirTool\GirTool.csproj", "{03CEAA82-AEEC-4A6D-B5D9-BF149C0CA0D7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", "{BE2159DE-B264-4C71-9B52-94C5C956F76A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "properties", "properties", "{BE2159DE-B264-4C71-9B52-94C5C956F76A}"
 	ProjectSection(SolutionItems) = preProject
-		Properties\GirCore.Libraries.props = Properties\GirCore.Libraries.props
-		Properties\GirCore.Logging.props = Properties\GirCore.Logging.props
-		Properties\GirCore.Publishing.props = Properties\GirCore.Publishing.props
-		Properties\GirCore.Testing.props = Properties\GirCore.Testing.props
-		Properties\GirCore.Tooling.props = Properties\GirCore.Tooling.props
+		properties\GirCore.Libraries.props = ..\properties\GirCore.Libraries.props
+		properties\GirCore.Logging.props = ..\properties\GirCore.Logging.props
+		properties\GirCore.Publishing.props = ..\properties\GirCore.Publishing.props
+		properties\GirCore.Testing.props = ..\properties\GirCore.Testing.props
+		properties\GirCore.Tooling.props = ..\properties\GirCore.Tooling.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontDialog", "Samples\Gtk-4.0\FontDialog\FontDialog.csproj", "{B75DC27B-C90A-47E6-909F-C55D6204F35D}"
