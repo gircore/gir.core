@@ -54,6 +54,7 @@ jobs:
         with:
           configuration: ${{ env.configuration }}
           source_directory: './src'
+          script_directory: './scripts'
           shell: bash
   
   build_windows:
@@ -92,6 +93,7 @@ jobs:
         with:
           configuration: ${{ env.configuration }}
           source_directory: './src'
+          script_directory: './scripts'
           shell: msys2 {0}
 
   build_linux:
@@ -124,6 +126,7 @@ jobs:
         with:
           configuration: ${{ env.configuration }}
           source_directory: './src'
+          script_directory: './scripts'
           shell: bash
 
       - name: Verify code format

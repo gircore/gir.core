@@ -60,12 +60,13 @@ To generate the bindings locally execute the following commands in a terminal. M
 
 ```sh
 $ git clone --recursive https://github.com/gircore/gir.core.git
-$ cd gir.core/src
+$ cd gir.core/scripts
 $ dotnet fsi GenerateLibs.fsx
+$ cd ../src
 $ dotnet build GirCore.Libs.slnf
 ```
 
-If you want to clean the [Libs folder](src/Libs) of all generated files run:
+If you want to clean the [Libs folder](src/Libs) of all generated files run in the scripts folder:
 
     $ dotnet fsi CleanLibs.fsx
 
