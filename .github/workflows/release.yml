@@ -59,4 +59,4 @@ jobs:
             prerelease_flag="--prerelease"
           fi
           version=$(dotnet fsi ./scripts/GetVersion.fsx "$version_suffix")
-          gh release create "$version" --draft --generate-notes --title "$version" $prerelease_flag $(ls ../Nuget/)
+          gh release create "$version" --draft --generate-notes --title "$version" $prerelease_flag $(ls Nuget/)
