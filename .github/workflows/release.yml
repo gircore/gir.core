@@ -59,4 +59,5 @@ jobs:
             prerelease_flag="--prerelease"
           fi
           version=$(dotnet fsi ./scripts/GetVersion.fsx "$version_suffix")
+          git config --global --add safe.directory /__w/gir.core/gir.core
           gh release create "$version" --draft --generate-notes --title "$version" $prerelease_flag $(find ./Nuget/ -type f -print0 | xargs -0 echo)
