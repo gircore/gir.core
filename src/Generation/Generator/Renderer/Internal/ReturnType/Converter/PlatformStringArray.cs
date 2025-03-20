@@ -11,15 +11,15 @@ internal class PlatformStringArray : ReturnTypeConverter
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var arrayType = returnType.AnyType.AsT1;
+        // var arrayType = returnType.AnyType.AsT1;
 
-        if (arrayType.IsZeroTerminated)
+        // if (arrayType.IsZeroTerminated)
             return NullTerminatedArray(returnType);
 
-        if (arrayType.Length is not null)
-            return SizeBasedArray();
+        // if (arrayType.Length is not null)
+        //     return SizeBasedArray();
 
-        throw new Exception("Unknown kind of array");
+        // throw new Exception("Unknown kind of array");
     }
 
     private static RenderableReturnType NullTerminatedArray(GirModel.ReturnType returnType)
