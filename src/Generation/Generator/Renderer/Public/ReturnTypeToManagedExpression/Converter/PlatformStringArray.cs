@@ -13,15 +13,15 @@ internal class PlatformStringArray : ReturnTypeConverter
         data.SetExpression(fromVariableName =>
         {
             var returnType = data.ReturnType;
-            var arrayType = returnType.AnyType.AsT1;
+            // var arrayType = returnType.AnyType.AsT1;
 
-            if (arrayType.IsZeroTerminated)
+            // if (arrayType.IsZeroTerminated)
                 return NullTerminatedArray(returnType, fromVariableName);
 
-            if (arrayType.Length is not null)
-                return SizeBasedArray(returnType, fromVariableName);
+            // if (arrayType.Length is not null)
+            //     return SizeBasedArray(returnType, fromVariableName);
 
-            throw new Exception("Unknown kind of array");
+            // throw new Exception("Unknown kind of array");
         });
     }
 
