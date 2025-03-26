@@ -101,8 +101,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: fedora:latest
-      env:
-        DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     
     defaults:
       run:
@@ -110,16 +108,24 @@ jobs:
     
     steps:
       - name: Install dependencies
-        run: sudo dnf -y upgrade && sudo dnf -y install meson gobject-introspection-devel git gcc glib2-devel gdk-pixbuf2 gdk-pixbuf2-modules cairo-gobject
+        run: sudo dnf -y upgrade && sudo dnf -y install meson gobject-introspection-devel git gcc glib2-devel gdk-pixbuf2 gdk-pixbuf2-modules cairo-gobject libicu
 
       - name: Prepare git
-        run: git config --global core.autocrlf false
-        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global --add safe.directory /__w/gir.core/gir.core
 
       - name: Checkout with submodules
         uses: actions/checkout@v4
         with:
           submodules: 'true'
+
+      - name: Create source archives
+        if: env.publish_release == 'true'
+        run: |
+          git archive --format=zip --output=source.zip HEAD
+          cd ./ext/gir-files
+          git archive --format=zip --output=../../girfiles.zip HEAD
 
       - name: Create Gir.Core
         uses: ./.github/actions/create
@@ -141,6 +147,21 @@ jobs:
         if: env.publish_release == 'true'
         run: dotnet pack --no-build --nologo -c $configuration --version-suffix "$version_suffix" -o ../Nuget
         working-directory: './src'
+
+      - name: "Create GitHub release"
+        if: env.publish_release == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          prerelease_flag=""
+          if [ -n "$version_suffix" ]; then
+            prerelease_flag="--prerelease"
+          fi
+          version=$(dotnet fsi ./scripts/GetVersion.fsx "$version_suffix")
+          
+          gh release create "$version" --draft --generate-notes --title "$version" $prerelease_flag ./Nuget/*
+          gh release upload "$version" ./source.zip
+          gh release upload "$version" ./girfiles.zip
 
       - name: Publish to nuget org
         if: env.publish_release == 'true'
