@@ -9,18 +9,12 @@ public sealed class MainLoopSynchronizationContext : SynchronizationContext
         => new MainLoopSynchronizationContext();
 
     public override void Post(SendOrPostCallback d, object? state)
-        => ScheduleAction(() => d(state));
-
-    public override void Send(SendOrPostCallback d, object? state)
-        => throw new NotImplementedException();
-
-    private static void ScheduleAction(Action action)
     {
         var proxy = new SourceFuncNotifiedHandler(() =>
         {
             try
             {
-                action();
+                d(state);
             }
             catch (Exception ex)
             {
@@ -31,5 +25,24 @@ public sealed class MainLoopSynchronizationContext : SynchronizationContext
         });
 
         Functions.IdleAdd(Constants.PRIORITY_DEFAULT_IDLE, proxy.NativeCallback, IntPtr.Zero, proxy.DestroyNotify);
+    }
+
+    public override void Send(SendOrPostCallback d, object? state)
+    {
+        var proxy = new SourceFuncAsyncHandler(() =>
+        {
+            try
+            {
+                d(state);
+            }
+            catch (Exception ex)
+            {
+                UnhandledException.Raise(ex);
+            }
+
+            return false;
+        });
+
+        MainContext.Invoke(MainContextUnownedHandle.NullHandle, proxy.NativeCallback, IntPtr.Zero);
     }
 }
