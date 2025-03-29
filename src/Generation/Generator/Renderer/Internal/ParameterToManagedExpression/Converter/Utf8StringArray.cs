@@ -27,8 +27,8 @@ internal class Utf8StringArray : ToManagedParameterConverter
 
         var handleExpression = parameterData.Parameter switch
         {
-            { Transfer: GirModel.Transfer.None } => $"new {Model.Utf8StringArray.GetInternalUnownedHandleName()}({signatureName}).ConvertToStringArray()",
-            { Transfer: GirModel.Transfer.Full } => $"new {Model.Utf8StringArray.GetInternalOwnedHandleName()}({signatureName}).ConvertToStringArray()",
+            { Transfer: GirModel.Transfer.None } => $"new {Model.Utf8StringArray.NullTerminated.GetInternalUnownedHandleName()}({signatureName}).ConvertToStringArray()",
+            { Transfer: GirModel.Transfer.Full } => $"new {Model.Utf8StringArray.NullTerminated.GetInternalOwnedHandleName()}({signatureName}).ConvertToStringArray()",
             _ => throw new Exception("Unknown transfer type for utf8 string array to managed expression")
         };
 

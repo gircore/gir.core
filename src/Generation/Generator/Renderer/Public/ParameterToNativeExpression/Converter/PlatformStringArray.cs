@@ -42,18 +42,18 @@ internal class PlatformStringArray : ToNativeParameterConverter
 
         var createExpression = parameter.Parameter switch
         {
-            { Transfer: GirModel.Transfer.Full } => $"{Model.PlatformStringArray.GetInternalUnownedHandleName()}.Create({signatureName})",
-            { Transfer: GirModel.Transfer.None } => $"{Model.PlatformStringArray.GetInternalOwnedHandleName()}.Create({signatureName})",
+            { Transfer: GirModel.Transfer.Full } => $"{Model.PlatformStringArray.NullTerminated.GetInternalUnownedHandleName()}.Create({signatureName})",
+            { Transfer: GirModel.Transfer.None } => $"{Model.PlatformStringArray.NullTerminated.GetInternalOwnedHandleName()}.Create({signatureName})",
             _ => throw new Exception("Unknown transfer type for parameter with a null terminated platform string array")
         };
 
         if (parameter.Parameter.Nullable)
-            createExpression = $"{signatureName}  is null ? {Model.PlatformStringArray.GetInternalUnownedHandleName()}.NullHandle : {createExpression}";
+            createExpression = $"{signatureName}  is null ? {Model.PlatformStringArray.NullTerminated.GetInternalUnownedHandleName()}.NullHandle : {createExpression}";
 
         var expressionType = parameter.Parameter switch
         {
-            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.GetInternalUnownedHandleName(),
-            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.GetInternalHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.NullTerminated.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.NullTerminated.GetInternalHandleName(),
             _ => throw new Exception("Unknown transfer type for parameter with a null terminated input platform string array")
         };
 

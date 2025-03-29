@@ -26,9 +26,9 @@ internal class Utf8StringArray : ReturnTypeConverter
     {
         var typeName = returnType switch
         {
-            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.GetInternalOwnedHandleName(),
-            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.GetInternalUnownedHandleName(),
-            { Transfer: GirModel.Transfer.Container } => Model.Utf8StringArray.GetInternalContainerHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.NullTerminated.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.NullTerminated.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => Model.Utf8StringArray.NullTerminated.GetInternalContainerHandleName(),
             _ => throw new Exception("Unknown transfer type for utf8 string array return value")
         };
 
