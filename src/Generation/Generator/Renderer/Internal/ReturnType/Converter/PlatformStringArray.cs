@@ -26,9 +26,9 @@ internal class PlatformStringArray : ReturnTypeConverter
     {
         var typeName = returnType switch
         {
-            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.GetInternalOwnedHandleName(),
-            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.GetInternalUnownedHandleName(),
-            { Transfer: GirModel.Transfer.Container } => Model.PlatformStringArray.GetInternalContainerHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.NullTerminated.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.NullTerminated.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => Model.PlatformStringArray.NullTerminated.GetInternalContainerHandleName(),
             _ => throw new Exception("Unknown transfer type for platform string array return value")
         };
 
