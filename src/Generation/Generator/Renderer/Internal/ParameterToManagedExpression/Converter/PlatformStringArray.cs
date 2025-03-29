@@ -27,8 +27,8 @@ internal class PlatformStringArray : ToManagedParameterConverter
 
         var handleExpression = parameterData.Parameter switch
         {
-            { Transfer: GirModel.Transfer.None } => $"new {Model.PlatformStringArray.GetInternalUnownedHandleName()}({signatureName}).ConvertToStringArray()",
-            { Transfer: GirModel.Transfer.Full } => $"new {Model.PlatformStringArray.GetInternalOwnedHandleName()}({signatureName}).ConvertToStringArray()",
+            { Transfer: GirModel.Transfer.None } => $"new {Model.PlatformStringArray.NullTerminated.GetInternalUnownedHandleName()}({signatureName}).ConvertToStringArray()",
+            { Transfer: GirModel.Transfer.Full } => $"new {Model.PlatformStringArray.NullTerminated.GetInternalOwnedHandleName()}({signatureName}).ConvertToStringArray()",
             _ => throw new Exception("Unknown transfer type for platform string array to managed expression")
         };
 
