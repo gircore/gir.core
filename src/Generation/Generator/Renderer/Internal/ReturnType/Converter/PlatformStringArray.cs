@@ -17,7 +17,7 @@ internal class PlatformStringArray : ReturnTypeConverter
             return NullTerminatedArray(returnType);
 
         if (arrayType.Length is not null)
-            return SizeBasedArray();
+            return SizeBasedArray(returnType);
 
         throw new Exception("Unknown kind of array");
     }
@@ -29,14 +29,22 @@ internal class PlatformStringArray : ReturnTypeConverter
             { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.NullTerminated.GetInternalOwnedHandleName(),
             { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.NullTerminated.GetInternalUnownedHandleName(),
             { Transfer: GirModel.Transfer.Container } => Model.PlatformStringArray.NullTerminated.GetInternalContainerHandleName(),
-            _ => throw new Exception("Unknown transfer type for platform string array return value")
+            _ => throw new Exception("Unknown transfer type for null terminated platform string array return value")
         };
 
         return new RenderableReturnType(typeName);
     }
 
-    private static RenderableReturnType SizeBasedArray()
+    private static RenderableReturnType SizeBasedArray(GirModel.ReturnType returnType)
     {
-        return new RenderableReturnType("string[]");
+        var typeName = returnType switch
+        {
+            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.Sized.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.Sized.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => Model.PlatformStringArray.Sized.GetInternalContainerHandleName(),
+            _ => throw new Exception("Unknown transfer type for size based platform string array return value")
+        };
+
+        return new RenderableReturnType(typeName);
     }
 }
