@@ -197,6 +197,74 @@ girtest_utf8_string_array_null_terminated_tester_return_transfer_container_nulla
 }
 
 /**
+ * girtest_utf8_string_array_null_terminated_tester_optional_size_out_transfer_full:
+ * @data: (transfer none) (array zero-terminated=1): data
+ * @size: (out) (optional): the length of the array or %NULL
+ *
+ * The returned array is implicitly NULL terminated.
+ *
+ * Returns: (array length=size) (transfer full): the array
+ */
+gchar** 
+girtest_utf8_string_array_null_terminated_tester_optional_size_out_transfer_full(gchar** data, int *size)
+{
+    if(size)
+        *size = g_strv_length(data);
+
+    return g_strdupv(data);
+}
+
+/**
+ * girtest_utf8_string_array_null_terminated_tester_size_out_transfer_full:
+ * @data: (transfer none) (array zero-terminated=1): data
+ * @size: (out): the length of the array
+ *
+ * The returned array is implicitly NULL terminated.
+ *
+ * Returns: (array length=size) (transfer full): the array
+ */
+gchar** 
+girtest_utf8_string_array_null_terminated_tester_size_out_transfer_full(gchar** data, int *size)
+{
+    *size = g_strv_length(data);
+    return g_strdupv(data);
+}
+
+/**
+ * girtest_utf8_string_array_null_terminated_tester_optional_gsize_parameter_out_transfer_full:
+ * @data: (transfer none) (array zero-terminated=1): data
+ * @size: (out) (optional): the length of the array
+ *
+ * The returned array is implicitly NULL terminated.
+ *
+ * Returns: (array length=size) (transfer full): the array
+ */
+gchar **
+girtest_utf8_string_array_null_terminated_tester_optional_gsize_parameter_out_transfer_full(gchar** data, gsize *size)
+{
+    if(size)
+        *size = g_strv_length(data);
+
+    return g_strdupv(data);
+}
+
+/**
+ * girtest_utf8_string_array_null_terminated_tester_gsize_parameter_out_transfer_full:
+ * @data: (transfer none) (array zero-terminated=1): data
+ * @size: (out): the length of the array
+ *
+ * The returned array is implicitly NULL terminated.
+ *
+ * Returns: (array length=size) (transfer full): the array
+ */
+gchar **
+girtest_utf8_string_array_null_terminated_tester_gsize_parameter_out_transfer_full(gchar** data, gsize *size)
+{
+    *size = g_strv_length(data);
+    return g_strdupv(data);
+}
+
+/**
  * girtest_utf8_string_array_null_terminated_tester_parameter_out_transfer_full:
  * @data: (transfer none) (array zero-terminated=1): data buffer
  * @output: (transfer full) (array zero-terminated=1) (out): output buffer
