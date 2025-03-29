@@ -22,7 +22,7 @@ public abstract class Utf8StringArrayNullTerminatedHandle(bool ownsHandle) : Saf
     /// <summary>
     /// Converts the data of this handle into a managed string array.
     /// </summary>
-    /// <returns>A string array containing the handle data .</returns>
+    /// <returns>A string array containing the handle data.</returns>
     public string[]? ConvertToStringArray()
     {
         if (handle == IntPtr.Zero)

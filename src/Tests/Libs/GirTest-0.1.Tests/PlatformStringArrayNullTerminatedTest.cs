@@ -187,4 +187,45 @@ public class PlatformStringArrayNullTerminated : Test
         PlatformStringArrayNullTerminatedTester.ParameterOutTransferContainerNullable(null, null, out var result2);
         result2.Should().BeNull();
     }
+
+    [TestMethod]
+    public void SupportsReturningArrayTransferFullWithOptionalSizeParameter()
+    {
+        var result = PlatformStringArrayNullTerminatedTester.OptionalSizeOutTransferFull(["a", "b"], out var a);
+
+        a.Should().Be(2);
+        result[0].Should().Be("a");
+        result[1].Should().Be("b");
+    }
+
+    [TestMethod]
+    public void SupportsReturningArrayTransferFullWithSizeParameter()
+    {
+        var result = PlatformStringArrayNullTerminatedTester.SizeOutTransferFull(["a", "b"], out var a);
+
+        a.Should().Be(2);
+        result[0].Should().Be("a");
+        result[1].Should().Be("b");
+    }
+
+
+    [TestMethod]
+    public void SupportsReturningArrayTransferFullWithOptionalGSizeParameter()
+    {
+        var result = PlatformStringArrayNullTerminatedTester.OptionalGsizeParameterOutTransferFull(["a", "b"], out var a);
+
+        a.Should().Be(2);
+        result[0].Should().Be("a");
+        result[1].Should().Be("b");
+    }
+
+    [TestMethod]
+    public void SupportsReturningArrayTransferFullWithGSizeParameter()
+    {
+        var result = PlatformStringArrayNullTerminatedTester.GsizeParameterOutTransferFull(["a", "b"], out var a);
+
+        a.Should().Be(2);
+        result[0].Should().Be("a");
+        result[1].Should().Be("b");
+    }
 }
