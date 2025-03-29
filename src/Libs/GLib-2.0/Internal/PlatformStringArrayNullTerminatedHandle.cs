@@ -6,17 +6,13 @@ using GObject.Internal;
 
 namespace GLib.Internal;
 
-public abstract class PlatformStringArrayNullTerminatedHandle : SafeHandle
+public abstract class PlatformStringArrayNullTerminatedHandle(bool ownsHandle) : SafeHandle(IntPtr.Zero, ownsHandle)
 {
     [DllImport(ImportResolver.Library, EntryPoint = "g_filename_to_utf8")]
     internal static extern IntPtr FilenameToUtf8(IntPtr opsysstring, long len, out nuint bytesRead, out nuint bytesWritten, out ErrorOwnedHandle error);
 
     [DllImport(ImportResolver.Library, EntryPoint = "g_filename_from_utf8")]
     internal static extern IntPtr FilenameFromUtf8(IntPtr utf8string, long len, out nuint bytesRead, out nuint bytesWritten, out ErrorOwnedHandle error);
-
-    protected PlatformStringArrayNullTerminatedHandle(bool ownsHandle) : base(IntPtr.Zero, ownsHandle)
-    {
-    }
 
     protected static IntPtr ToIntPtr(string[] array)
     {
