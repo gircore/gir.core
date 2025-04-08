@@ -52,8 +52,8 @@ internal class Utf8StringArray : ParameterConverter
 
         var nullableTypeName = parameter switch
         {
-            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.GetInternalHandleName(),
-            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.NullTerminated.GetInternalHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.NullTerminated.GetInternalUnownedHandleName(),
             { Transfer: GirModel.Transfer.Container } => throw new Exception("Transfer container not supported for utf8 string arrays"),
             _ => throw new Exception("Can't detect typename for utf8 string array")
         };
@@ -73,9 +73,9 @@ internal class Utf8StringArray : ParameterConverter
 
         var nullableTypeName = parameter switch
         {
-            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.GetInternalUnownedHandleName(),
-            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.GetInternalOwnedHandleName(),
-            { Transfer: GirModel.Transfer.Container } => Model.Utf8StringArray.GetInternalContainerHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.NullTerminated.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.NullTerminated.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => Model.Utf8StringArray.NullTerminated.GetInternalContainerHandleName(),
             _ => throw new Exception("Can't detect typename for utf8 string array")
         };
 
