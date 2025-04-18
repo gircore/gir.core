@@ -39,6 +39,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstBase-1.0", "Libs\GstBase-1.0\GstBase-1.0.csproj", "{8678914B-C262-4EFB-BCC0-96A15D969C2B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8BC11A63-D52B-40CB-9DDD-CD7C6DC21059}"
+	ProjectSection(SolutionItems) = preProject
+		Tests\Shared\PlatformConditionAttribute.cs = Tests\Shared\PlatformConditionAttribute.cs
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{46D66262-FC61-43B9-8E76-A361FA3D6C81}"
 	ProjectSection(SolutionItems) = preProject

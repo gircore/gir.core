@@ -5,4 +5,9 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="../../Shared/PlatformConditionAttribute.cs"  Link="Shared/PlatformConditionAttribute.cs"/>
+  </ItemGroup>
+
 </Project>
