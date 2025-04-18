@@ -117,13 +117,11 @@ public class ValueTest : Test
     }
 
     [TestMethod]
+    // This test relies on the memory being zeroed out after it is freed, which is not guaranteed.
+    // This does not happen on Windows, but seems reliable on other platforms.
+    [PlatformCondition(Platform.Unix)]
     public void DisposeShouldFreeUnmanagedMemory()
     {
-        // This test relies on the memory being zeroed out after it is freed, which is not guaranteed.
-        // This does not happen on Windows, but seems reliable on other platforms.
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            Assert.Inconclusive();
-
         var value = 1;
         var v = new Value(value);
         var ptr = v.Handle.DangerousGetHandle();

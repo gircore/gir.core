@@ -26,11 +26,9 @@ public class CULongTest : Test
     [DataTestMethod]
     [DataRow(ulong.MaxValue)]
     [DataRow(ulong.MinValue)]
+    [PlatformCondition(Platform.Unix64)]
     public void ShouldHandleMaxULongValue(ulong value)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
         var obj = new CULongTester { Ul = value };
         obj.Ul.Should().Be(value);
     }
@@ -38,68 +36,54 @@ public class CULongTest : Test
     [DataTestMethod]
     [DataRow(uint.MaxValue)]
     [DataRow(uint.MinValue)]
+    [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void ShouldHandleMaxMinUIntValue(uint value)
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
         var obj = new CULongTester { Ul = value };
         obj.Ul.Should().Be(value);
     }
 
     [TestMethod]
+    [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void ShouldThrowIfValueExceedsUIntegerSize()
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
         var obj = new CULongTester();
         var act = () => obj.Ul = ulong.MaxValue;
         act.Should().Throw<OverflowException>();
     }
 
     [TestMethod]
+    [PlatformCondition(Platform.Unix64)]
     public void ReturnsMaxULongValueOn64BitUnix()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
         CULongTester.GetMaxUnsignedLongValue().Should().Be(ulong.MaxValue);
     }
 
     [TestMethod]
+    [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void ReturnsMaxULongValueOnWindows()
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
         CULongTester.GetMaxUnsignedLongValue().Should().Be(uint.MaxValue);
     }
 
     [TestMethod]
+    [PlatformCondition(Platform.Unix64)]
     public void SetsMaxULongValueOn64BitUnix()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
         CULongTester.IsMaxUnsignedLongValue(ulong.MaxValue).Should().BeTrue();
     }
 
     [TestMethod]
+    [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void SetsMaxULongValueOnWindows()
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
         CULongTester.IsMaxUnsignedLongValue(uint.MaxValue).Should().BeTrue();
     }
 
     [TestMethod]
+    [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void ThrowsOverflowExceptionIfULongMaxValueIsPassedOnWindows()
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
         var action = () => CULongTester.IsMaxUnsignedLongValue(ulong.MaxValue).Should().BeTrue();
         action.Should().Throw<OverflowException>();
     }
@@ -107,11 +91,9 @@ public class CULongTest : Test
     [DataTestMethod]
     [DataRow(ulong.MaxValue)]
     [DataRow(ulong.MinValue)]
+    [PlatformCondition(Platform.Unix64)]
     public void CanPassULongValueThroughCallbackOn64BitUnix(ulong value)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || !Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on 64 Bit Unix operating Systems");
-
         ulong Callback(ulong val)
         {
             return val;
@@ -123,11 +105,9 @@ public class CULongTest : Test
     [DataTestMethod]
     [DataRow(uint.MaxValue)]
     [DataRow(uint.MinValue)]
+    [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void CanPassIntValueThroughCallbackOnWindows(uint value)
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.Is64BitOperatingSystem)
-            Assert.Inconclusive("Only supported on windows or 32 bit unix operating Systems");
-
         ulong Callback(ulong val)
         {
             return val;
