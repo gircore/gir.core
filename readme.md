@@ -10,12 +10,14 @@ Gir.Core provides C# bindings for several [GObject] based libraries like [GTK] f
 This project aims to provide a complete set of APIs for writing rich cross-platform user interfaces and multimedia programs. It is built upon the well-established [GObject Introspection][gi] framework for language bindings.
 
 ## Features
+
 * **Idiomatic C#:** An API which feels natural to C# developers (including the async/await feature).
 * **Simplicity:** Memory management is handled automatically, greatly simplifying the C-API.
 * **Complete API:** Support for the entire GTK and GStreamer stack, enabling feature-rich applications which deeply integrate with the OS.
 * **Extensibility:** Allows 3rd party developers to write bindings for other GObject-based libraries, achieving full interoperability between them.
 
 ## Status
+
 The code is under active development and certain features may not be available. The API is subject to change as long as version 1.0 is not released. There are nuget packages available. Feel free to visit the [nuget organization][GirCoreNuget] to get an overview.
 
 In general, you can expect the following features to be available:
@@ -50,12 +52,14 @@ The upcoming features and releases can be checked out in the [milestones](https:
 | [WebKit-6.0][WebKitNuget]                 | Browser engine (Linux only)                            |
 | [JavaScriptCore-6.0][JavaScriptCoreNuget] | JavaScript engine for WebKit (Linux only)              |
 | [GtkSource-5][GtkSourceNuget]             | Extends a Gtk.TextView to be like a source code editor |
-
+| [Secret-1][SecretNuget]                   | Access to the system keyring via libsecret             |
 
 ## Get Involved
+
 Anyone who wants to help is very welcome. If you want to get in contact feel free to chat with us via matrix ([#gircore:matrix.org](https://matrix.to/#/#gircore:matrix.org?via=matrix.org)) or open a [discussion](https://github.com/gircore/gir.core/discussions) and don't forget to check out our [contribution guidelines](docs/docs/contributing.md).
 
 ## Build
+
 To generate the bindings locally execute the following commands in a terminal. Make sure to initialise submodules with `--recursive` otherwise the `gir-files` directory will not be loaded properly.
 
 ```sh
@@ -73,7 +77,9 @@ If you want to clean the [Libs folder](src/Libs) of all generated files run in t
 For more advanced build options, see the [documentation](docs/docs/build.md).
 
 ## Code structure
+
 The folder structure in this repository is organized as follows:
+
 * **[src/Generation/GirTool](src/Generation/GirTool):** The tool to generate the bindings.
 * **[src/Generation/GirLoader](src/Generation/GirLoader):** A library for reading and resolving GObject Introspection repositories.
 * **[src/Generation/GirModel](src/Generation/GirModel):** An interface based definition of the GObject data model. Used by the loader and generator to have a common understanding of the GObject data model.
@@ -109,13 +115,16 @@ The code in the library folder is not complete because most of the code is gener
 [WebKitNuget]: https://www.nuget.org/packages/GirCore.WebKit-6.0/
 [JavaScriptCoreNuget]: https://www.nuget.org/packages/GirCore.JavaScriptCore-6.0/
 [GtkSourceNuget]: https://www.nuget.org/packages/GirCore.GtkSource-5/
+[SecretNuget]: https://www.nuget.org/packages/GirCore.Secret-1
 
 ## Licensing terms
+
 Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.
 
 The [Gir.Core logo](img/logo.svg) is built upon the [original GTK logo](https://wiki.gnome.org/Projects/GTK/Logo) by Andreas Nilsson which is licensed under the [GNU Free Documentation License](https://www.gnu.org/licenses/fdl-1.3.txt) and was relicensed under CC BY-SA 3.0. Therefore the Gir.Core logo is licensed under the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/deed.en), too.
 
 ## Special Thanks
+
 Special thanks go to the people and ogranizations who make this project possible:
 - All [contributors](https://github.com/gircore/gir.core/graphs/contributors) for donating their time in form of code, feedback and bug reports.
 - [JetBrains](https://www.jetbrains.com/) for providing open source licenses of their products.
