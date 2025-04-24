@@ -35,17 +35,20 @@ public class ReturningSignal<TSender, TSignalArgs, TReturn> : SignalDefinition
     /// <param name="detail">Define for which signal detail the connection should be made.</param>
     public void Connect(TSender sender, ReturningSignalHandler<TSender, TSignalArgs, TReturn> signalHandler, bool after = false, string? detail = null)
     {
-        var closure = new Closure((returnValue, parameters) =>
-        {
-            if (returnValue is null)
-                throw new System.Exception($"{nameof(TSender)}.{ManagedName}: C did not provide a value pointer to return the signal result");
+        var closure = new Closure(
+            callback: (returnValue, parameters) =>
+            {
+                if (returnValue is null)
+                    throw new System.Exception($"{nameof(TSender)}.{ManagedName}: C did not provide a value pointer to return the signal result");
 
-            var args = new TSignalArgs();
-            args.SetArgs(parameters);
+                var args = new TSignalArgs();
+                args.SetArgs(parameters);
 
-            var result = signalHandler(sender, args);
-            returnValue.Set(result);
-        });
+                var result = signalHandler(sender, args);
+                returnValue.Set(result);
+            },
+            handle: sender.Handle
+        );
 
         sender.SignalConnectClosure(this, signalHandler, closure, after, detail);
     }
