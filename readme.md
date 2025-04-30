@@ -50,6 +50,7 @@ The upcoming features and releases can be checked out in the [milestones](https:
 | [WebKit-6.0][WebKitNuget]                 | Browser engine (Linux only)                            |
 | [JavaScriptCore-6.0][JavaScriptCoreNuget] | JavaScript engine for WebKit (Linux only)              |
 | [GtkSource-5][GtkSourceNuget]             | Extends a Gtk.TextView to be like a source code editor |
+| [Secret-1][SecretNuget]                   | Access to the system keyring via libsecret             |
 
 
 ## Get Involved
@@ -109,6 +110,7 @@ The code in the library folder is not complete because most of the code is gener
 [WebKitNuget]: https://www.nuget.org/packages/GirCore.WebKit-6.0/
 [JavaScriptCoreNuget]: https://www.nuget.org/packages/GirCore.JavaScriptCore-6.0/
 [GtkSourceNuget]: https://www.nuget.org/packages/GirCore.GtkSource-5/
+[SecretNuget]: https://www.nuget.org/packages/GirCore.Secret-1/
 
 ## Licensing terms
 Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.
