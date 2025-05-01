@@ -30,6 +30,7 @@ let girFiles =
         "JavaScriptCore-6.0.gir"
         "Pango-1.0.gir"
         "PangoCairo-1.0.gir"
+        "Secret-1.gir"
         "Soup-3.0.gir"
         "WebKit-6.0.gir"
         "WebKitWebProcessExtension-6.0.gir"

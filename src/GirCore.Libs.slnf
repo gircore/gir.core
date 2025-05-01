@@ -27,6 +27,7 @@
       "Libs\\HarfBuzz-0.0\\HarfBuzz-0.0.csproj",
       "Libs\\Pango-1.0\\Pango-1.0.csproj",
       "Libs\\PangoCairo-1.0\\PangoCairo-1.0.csproj",
+      "Libs\\Secret-1\\Secret-1.csproj",
       "Libs\\Soup-3.0\\Soup-3.0.csproj",
       "Libs\\WebKit-6.0\\WebKit-6.0.csproj",
       "Libs\\WebKitWebProcessExtension-6.0\\WebKitWebProcessExtension-6.0.csproj",
