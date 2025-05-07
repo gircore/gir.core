@@ -22,3 +22,9 @@ Applications using gir.core. To add a new application to the list [edit this pag
 [Cavalier](https://github.com/NickvisionApps/Cavalier) is an audio visualizer based on CAVA.
 
 ![Cavalier screenshot](https://raw.githubusercontent.com/NickvisionApps/Cavalier/main/NickvisionCavalier.GNOME/Screenshots/Bars.png)
+
+## Pinta
+
+[Pinta](https://www.pinta-project.com/) is a image editing, drawing and painting application with a simple yet powerful interface.
+
+![Pinta screenshot](https://github.com/user-attachments/assets/05afe053-1105-4665-b285-6c769a70c1a1)
