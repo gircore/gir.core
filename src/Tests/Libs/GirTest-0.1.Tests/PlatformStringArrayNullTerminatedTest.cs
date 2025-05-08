@@ -187,4 +187,14 @@ public class PlatformStringArrayNullTerminated : Test
         PlatformStringArrayNullTerminatedTester.ParameterOutTransferContainerNullable(null, null, out var result2);
         result2.Should().BeNull();
     }
+
+    [TestMethod]
+    public void SupportsReturningArrayTransferFullWithOptionalSizeParameter()
+    {
+        var result = PlatformStringArrayNullTerminatedTester.OptionalSizeOutTransferFull(["a", "b"], out var a);
+
+        a.Should().Be(2);
+        result[0].Should().Be("a");
+        result[1].Should().Be("b");
+    }
 }
