@@ -44,6 +44,7 @@
       "Samples\\Gtk-4.0\\GridView\\GridView.csproj",
       "Samples\\Gtk-4.0\\Window\\Window.csproj",
       "Samples\\GtkSource-5\\GtkSourceView\\GtkSourceView.csproj",
+      "Samples\\Secret-1\\ListSecretCollections\\ListSecretCollections.csproj",
       "Samples\\WebKit-6.0\\JavascriptCall\\JavascriptCall.csproj",
       "Samples\\WebKit-6.0\\JavascriptCallback\\JavascriptCallback.csproj",
       "Tests\\Generation\\GirLoader.Tests\\GirLoader.Tests.csproj",
