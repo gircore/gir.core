@@ -34,7 +34,10 @@ public class Signal<TSender> : SignalDefinition
     /// <param name="detail">Define for which signal detail the connection should be made.</param>
     public void Connect(TSender sender, SignalHandler<TSender> signalHandler, bool after = false, string? detail = null)
     {
-        var closure = new Closure((returnValue, parameters) => signalHandler(sender, System.EventArgs.Empty));
+        var closure = new Closure(
+            callback: (returnValue, parameters) => signalHandler(sender, System.EventArgs.Empty),
+            handle: sender.Handle
+        );
 
         sender.SignalConnectClosure(this, signalHandler, closure, after, detail);
     }

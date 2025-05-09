@@ -6,12 +6,12 @@ namespace GObject;
 
 public delegate void ClosureCallback(Value? returnValue, Value[] paramValues);
 
-public partial class Closure : IDisposable
+public partial class Closure
 {
     private readonly ClosureCallback _callback;
     private readonly Internal.ClosureMarshal _closureMarshal; //Needed to keep delegate alive
 
-    internal Closure(ClosureCallback callback)
+    internal Closure(ClosureCallback callback, Internal.ObjectHandle handle)
     {
         _callback = callback;
         //The initial state is floating (meaning there is already a ref which is unowned).
@@ -19,7 +19,7 @@ public partial class Closure : IDisposable
         //Afterward sink is called, which might decrement the reference count again by 1 if the instance
         //is not yet sunk. See: https://docs.gtk.org/gobject/method.Closure.sink.html
         Handle = Internal.Closure
-            .NewSimple((uint) Marshal.SizeOf<Internal.ClosureData>(), IntPtr.Zero)
+            .NewObject((uint) Marshal.SizeOf<Internal.ClosureData>(), handle.DangerousGetHandle())
             .OwnedCopy();
 
         Debug.WriteLine($"Instantiating Closure: Address {Handle.DangerousGetHandle()}.");

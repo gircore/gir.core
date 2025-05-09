@@ -35,12 +35,15 @@ public class Signal<TSender, TSignalArgs> : SignalDefinition
     /// <param name="detail">Define for which signal detail the connection should be made.</param>
     public void Connect(TSender sender, SignalHandler<TSender, TSignalArgs> signalHandler, bool after = false, string? detail = null)
     {
-        var closure = new Closure((returnValue, parameters) =>
-        {
-            var args = new TSignalArgs();
-            args.SetArgs(parameters);
-            signalHandler(sender, args);
-        });
+        var closure = new Closure(
+            callback: (returnValue, parameters) =>
+            {
+                var args = new TSignalArgs();
+                args.SetArgs(parameters);
+                signalHandler(sender, args);
+            },
+            handle: sender.Handle
+        );
 
         sender.SignalConnectClosure(this, signalHandler, closure, after, detail);
     }
