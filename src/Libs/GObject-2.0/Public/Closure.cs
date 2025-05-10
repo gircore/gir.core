@@ -14,7 +14,7 @@ public partial class Closure
     internal Closure(ClosureCallback callback, Internal.ObjectHandle handle)
     {
         _callback = callback;
-        //The initial state is floating (meaning there is already a ref which is unowned).
+        //The initial state is floating (meaning there is already a ref that is unowned).
         //So we first create an owned copy (to ref the instance), which increases the count to 2.
         //Afterward sink is called, which might decrement the reference count again by 1 if the instance
         //is not yet sunk. See: https://docs.gtk.org/gobject/method.Closure.sink.html
@@ -22,7 +22,7 @@ public partial class Closure
             .NewObject((uint) Marshal.SizeOf<Internal.ClosureData>(), handle.DangerousGetHandle())
             .OwnedCopy();
 
-        Debug.WriteLine($"Instantiating Closure: Address {Handle.DangerousGetHandle()}.");
+        Debug.WriteLine($"Handle {handle.DangerousGetHandle()}: Instantiating Closure {Handle.DangerousGetHandle()}.");
 
         _closureMarshal = InternalCallback; //Save delegate to keep instance alive
 
@@ -51,10 +51,5 @@ public partial class Closure
         {
             GLib.UnhandledException.Raise(e);
         }
-    }
-
-    partial void OnDispose()
-    {
-        Debug.WriteLine($"Disposing Closure: Address {Handle.DangerousGetHandle()}.");
     }
 }
