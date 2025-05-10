@@ -102,7 +102,7 @@ public class {unownedHandleTypeName} : {typeName}
     }}
 }}
 
-public class {ownedHandleTypeName} : {typeName}
+public partial class {ownedHandleTypeName} : {typeName}
 {{
     /// <summary>
     /// Creates a new instance of {ownedHandleTypeName}. Used automatically by PInvoke.
@@ -131,8 +131,11 @@ public class {ownedHandleTypeName} : {typeName}
         return new {ownedHandleTypeName}(ownedPtr);
     }}
 
+    partial void OnReleaseHandle();
+
     protected override bool ReleaseHandle()
     {{
+        OnReleaseHandle();
         {RenderFreeStatement(record, "handle")}
         return true;
     }}

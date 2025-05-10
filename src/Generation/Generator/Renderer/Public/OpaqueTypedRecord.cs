@@ -93,11 +93,8 @@ public sealed partial class {name} : GLib.BoxedRecord, GObject.GTypeProvider, GO
         return Handle.GetHashCode();
     }}
 
-    partial void OnDispose();
-
     public void Dispose()
     {{
-        OnDispose();
         Handle.Dispose();
     }}
 }}";
