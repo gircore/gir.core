@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -8,7 +9,7 @@ namespace GObject.Internal;
 
 public class ObjectHandle : SafeHandle
 {
-    private readonly Dictionary<(uint, Delegate), (CULong, GObject.Closure)> _signalStore = new();
+    private readonly Dictionary<Delegate, GObject.Closure> closures = [];
 
     public override bool IsInvalid => handle == IntPtr.Zero;
 
@@ -44,42 +45,25 @@ public class ObjectHandle : SafeHandle
         InstanceCache.Add(handle, obj);
     }
 
-    internal void Connect(SignalDefinition signalDefinition, Delegate callback, GObject.Closure closure, bool after, string? detail)
+    internal GObject.Closure GetClosure(Delegate signalHandler, Func<GObject.Closure> createClosure)
     {
-        var detailQuark = GLib.Functions.QuarkFromString(detail);
-        var handlerId = Functions.SignalConnectClosureById(DangerousGetHandle(), signalDefinition.Id, detailQuark, closure.Handle, after);
+        if (closures.TryGetValue(signalHandler, out var closure))
+            return closure;
 
-        if (handlerId.Value == 0)
-            throw new Exception($"Could not connect to event {signalDefinition.ManagedName}");
+        closure = createClosure();
+        closures.Add(signalHandler, closure);
 
-        _signalStore[(signalDefinition.Id, callback)] = (handlerId, closure);
+        return closure;
     }
 
-    internal void Disconnect(SignalDefinition signalDefinition, Delegate callback)
+    internal bool TryGetClosure(Delegate signalHandler, [NotNullWhen(true)] out GObject.Closure? closure)
     {
-        if (!_signalStore.TryGetValue((signalDefinition.Id, callback), out var tuple))
-            return;
-
-        Functions.SignalHandlerDisconnect(DangerousGetHandle(), tuple.Item1);
-        tuple.Item2.Dispose();
-        _signalStore.Remove((signalDefinition.Id, callback));
-    }
-
-    private void DisconnectSignals()
-    {
-        foreach (var item in _signalStore.Values)
-        {
-            Functions.SignalHandlerDisconnect(DangerousGetHandle(), item.Item1);
-            item.Item2.Dispose();
-        }
-
-        _signalStore.Clear();
+        return closures.TryGetValue(signalHandler, out closure);
     }
 
     protected override bool ReleaseHandle()
     {
         RemoveMemoryPressure();
-        DisconnectSignals();
         InstanceCache.Remove(handle);
         return true;
     }
