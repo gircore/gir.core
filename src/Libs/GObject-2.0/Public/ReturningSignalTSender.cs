@@ -46,7 +46,7 @@ public class ReturningSignal<TSender, TReturn> : SignalDefinition
             handle: sender.Handle
         );
 
-        sender.SignalConnectClosure(this, signalHandler, closure, after, detail);
+        sender.Handle.Connect(this, signalHandler, closure, after, detail);
     }
 
     /// <summary>
@@ -56,6 +56,6 @@ public class ReturningSignal<TSender, TReturn> : SignalDefinition
     /// <param name="signalHandler">The signal handler function.</param>
     public void Disconnect(TSender sender, ReturningSignalHandler<TSender, TReturn> signalHandler)
     {
-        sender.Disconnect(this, signalHandler);
+        sender.Handle.Disconnect(this, signalHandler);
     }
 }
