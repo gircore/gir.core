@@ -8,6 +8,7 @@ public static class Records
     private static readonly List<Fixer<GirModel.Record>> Fixers =
     [
         new DisableBrokenTypes(),
+        new PropertyNamedLikeRecordFixer(),
         new InternalMethodsNamedLikeRecordFixer(),
         new MethodWithInOutInstanceParameterFixer(),
         new PublicMethodsColldingWithFieldFixer(),
