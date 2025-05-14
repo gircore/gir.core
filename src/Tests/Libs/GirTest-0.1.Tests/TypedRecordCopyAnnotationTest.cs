@@ -1,3 +1,4 @@
+using Combinatorial.MSTest;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -87,8 +88,7 @@ public class TypedRecordCopyAnnotationTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsCallbackReturnNoOwnershipTransferNullable(bool useNull)
     {
         TypedRecordCopyAnnotationTester? Create()
@@ -122,8 +122,7 @@ public class TypedRecordCopyAnnotationTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsCallbackParameterNoOwnershipTransferNullable(bool useNull)
     {
         var recordTester = useNull ? null : TypedRecordCopyAnnotationTester.New();

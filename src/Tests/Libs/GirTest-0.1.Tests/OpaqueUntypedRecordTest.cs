@@ -1,4 +1,5 @@
 using System;
+using Combinatorial.MSTest;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -170,8 +171,7 @@ public class OpaqueUntypedRecordTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsCallbackReturnNoOwnershipTransferNullable(bool useNull)
     {
         OpaqueUntypedRecordTester? Create()
@@ -204,8 +204,7 @@ public class OpaqueUntypedRecordTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsCallbackReturnFullOwnershipTransferNullable(bool useNull)
     {
         OpaqueUntypedRecordTester? Create()
@@ -238,8 +237,7 @@ public class OpaqueUntypedRecordTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsCallbackParameterFullOwnershipTransferNullable(bool useNull)
     {
         var called = false;
@@ -273,8 +271,7 @@ public class OpaqueUntypedRecordTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsCallbackParameterNoOwnershipTransferNullable(bool useNull)
     {
         var recordTester = useNull ? null : OpaqueUntypedRecordTester.New();

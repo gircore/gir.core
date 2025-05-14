@@ -1,4 +1,5 @@
 using System.Reflection;
+using Combinatorial.MSTest;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -90,8 +91,7 @@ public class PropertyTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void TestBooleanProperty(bool b)
     {
         var obj = PropertyTester.New();

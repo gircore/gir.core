@@ -1,4 +1,5 @@
 using System;
+using Combinatorial.MSTest;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,8 +9,7 @@ namespace Gtk.Tests;
 public class PropertyTests : Test
 {
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void TestBoolProperty(bool value)
     {
         var window = new Window();

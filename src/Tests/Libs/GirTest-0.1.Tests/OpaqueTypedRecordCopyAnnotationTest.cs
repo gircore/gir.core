@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Combinatorial.MSTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
@@ -87,8 +88,7 @@ public class OpaqueTypedRecordCopyAnnotationTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsCallbackReturnNoOwnershipTransferNullable(bool useNull)
     {
         OpaqueTypedRecordCopyAnnotationTester? Create()
@@ -122,8 +122,7 @@ public class OpaqueTypedRecordCopyAnnotationTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsCallbackParameterNoOwnershipTransferNullable(bool useNull)
     {
         var recordTester = useNull ? null : OpaqueTypedRecordCopyAnnotationTester.New();
