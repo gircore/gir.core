@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using Combinatorial.MSTest;
 using FluentAssertions;
 using GObject.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,8 +33,7 @@ public class ValueTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsBool(bool value)
     {
         var v = new Value(value);

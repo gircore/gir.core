@@ -1,3 +1,4 @@
+using Combinatorial.MSTest;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -37,8 +38,7 @@ public class SignalTest : Test
     }
 
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsNamedSignals(bool valid)
     {
         var tester = SignalTester.New();

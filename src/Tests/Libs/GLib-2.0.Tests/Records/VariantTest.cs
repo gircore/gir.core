@@ -1,3 +1,4 @@
+using Combinatorial.MSTest;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,8 +8,7 @@ namespace GLib.Tests;
 public class VariantTest : Test
 {
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void CanCreateBool(bool value)
     {
         var variant = Variant.NewBoolean(value);

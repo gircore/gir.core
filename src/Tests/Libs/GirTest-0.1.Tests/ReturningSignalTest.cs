@@ -1,3 +1,4 @@
+using Combinatorial.MSTest;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,8 +8,7 @@ namespace GirTest.Tests;
 public class ReturningSignalTest : Test
 {
     [DataTestMethod]
-    [DataRow(true)]
-    [DataRow(false)]
+    [CombinatorialData]
     public void SupportsReturningBool(bool returnValue)
     {
         var tester = ReturningSignalTester.New();
