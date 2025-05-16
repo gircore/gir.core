@@ -7,11 +7,6 @@ Applications using gir.core. To add a new application to the list [edit this pag
 
 ![Denaro screenshot](https://raw.githubusercontent.com/NickvisionApps/Denaro/main/NickvisionMoney.GNOME/Screenshots/OpenAccount.png)
 
-## Parabolic
-[Parabolic](https://github.com/NickvisionApps/Parabolic) is a video and audio downloader.
-
-![Parabolic screenshot](https://raw.githubusercontent.com/NickvisionApps/Parabolic/main/NickvisionTubeConverter.GNOME/Screenshots/Light.png)
-
 ## Tagger
 [Tagger](https://github.com/NickvisionApps/Tagger) is a music tag editor.
 
