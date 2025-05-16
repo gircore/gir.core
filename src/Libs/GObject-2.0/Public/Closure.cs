@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace GObject;
@@ -10,8 +12,9 @@ public partial class Closure
 {
     private readonly ClosureCallback _callback;
     private readonly Internal.ClosureMarshal _closureMarshal; //Needed to keep delegate alive
+    private readonly Dictionary<(IntPtr, uint), Queue<CULong>> _signalHandlers = new();
 
-    internal Closure(ClosureCallback callback, Internal.ObjectHandle handle)
+    internal Closure(ClosureCallback callback)
     {
         _callback = callback;
         //The initial state is floating (meaning there is already a ref that is unowned).
@@ -19,12 +22,12 @@ public partial class Closure
         //Afterward sink is called, which might decrement the reference count again by 1 if the instance
         //is not yet sunk. See: https://docs.gtk.org/gobject/method.Closure.sink.html
         Handle = Internal.Closure
-            .NewObject((uint) Marshal.SizeOf<Internal.ClosureData>(), handle.DangerousGetHandle())
+            .NewSimple((uint) Marshal.SizeOf<Internal.ClosureData>(), IntPtr.Zero)
             .OwnedCopy();
 
-        Debug.WriteLine($"Handle {handle.DangerousGetHandle()}: Instantiating Closure {Handle.DangerousGetHandle()}.");
+        Debug.WriteLine($"Closure {Handle.DangerousGetHandle()}: Created");
 
-        _closureMarshal = InternalCallback; //Save delegate to keep instance alive
+        _closureMarshal = InternalCallback; //Save delegate to keep the instance alive
 
         Internal.Closure.Sink(Handle);
         Internal.Closure.SetMarshal(Handle, _closureMarshal);
@@ -51,5 +54,40 @@ public partial class Closure
         {
             GLib.UnhandledException.Raise(e);
         }
+    }
+
+    public void Connect(Internal.ObjectHandle handle, SignalDefinition signalDefinition, bool after, string? detail)
+    {
+        var detailQuark = GLib.Functions.QuarkFromString(detail);
+        var handlerId = Internal.Functions.SignalConnectClosureById(handle.DangerousGetHandle(), signalDefinition.Id, detailQuark, Handle, after);
+
+        if (handlerId.Value == 0)
+            throw new Exception($"Could not connect to event {signalDefinition.ManagedName}");
+
+        var key = (handle.DangerousGetHandle(), signalDefinition.Id);
+
+        if (!_signalHandlers.ContainsKey(key))
+            _signalHandlers[key] = [];
+
+        _signalHandlers[key].Enqueue(handlerId);
+        Debug.WriteLine($"Closure {Handle.DangerousGetHandle()}: Connected to {handle.DangerousGetHandle()} Signal '{signalDefinition.UnmanagedName}' with handlerId {handlerId.Value}");
+    }
+
+    public void Disconnect(Internal.ObjectHandle handle, SignalDefinition signalDefinition)
+    {
+        if (!_signalHandlers.TryGetValue((handle.DangerousGetHandle(), signalDefinition.Id), out var handlerIds))
+        {
+            Debug.Fail($"Closure {Handle.DangerousGetHandle()}: Could not disconnect from {handle.DangerousGetHandle()} Signal '{signalDefinition.UnmanagedName}' as no handlers got connected.");
+            return;
+        }
+
+        if (!handlerIds.TryDequeue(out var handlerId))
+        {
+            Debug.Fail($"Closure {Handle.DangerousGetHandle()}: Could not disconnect from {handle.DangerousGetHandle()} Signal '{signalDefinition.UnmanagedName}' as no handlerId is left to disconnect.");
+            return;
+        }
+
+        Internal.Functions.SignalHandlerDisconnect(handle.DangerousGetHandle(), handlerId);
+        Debug.WriteLine($"Closure {Handle.DangerousGetHandle()} : Disconnected from {handle.DangerousGetHandle()} Signal '{signalDefinition.UnmanagedName}' with handlerId {handlerId.Value}");
     }
 }

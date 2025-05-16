@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace GObject;
 
 /// <summary>
@@ -35,22 +37,18 @@ public class ReturningSignal<TSender, TSignalArgs, TReturn> : SignalDefinition
     /// <param name="detail">Define for which signal detail the connection should be made.</param>
     public void Connect(TSender sender, ReturningSignalHandler<TSender, TSignalArgs, TReturn> signalHandler, bool after = false, string? detail = null)
     {
-        var closure = new Closure(
-            callback: (returnValue, parameters) =>
-            {
-                if (returnValue is null)
-                    throw new System.Exception($"{nameof(TSender)}.{ManagedName}: C did not provide a value pointer to return the signal result");
+        var closure = sender.Handle.GetClosure(signalHandler, () => new Closure((returnValue, parameters) =>
+        {
+            if (returnValue is null)
+                throw new System.Exception($"{nameof(TSender)}.{ManagedName}: C did not provide a value pointer to return the signal result");
 
-                var args = new TSignalArgs();
-                args.SetArgs(parameters);
+            var args = new TSignalArgs();
+            args.SetArgs(parameters);
 
-                var result = signalHandler(sender, args);
-                returnValue.Set(result);
-            },
-            handle: sender.Handle
-        );
-
-        sender.Handle.Connect(this, signalHandler, closure, after, detail);
+            var result = signalHandler(sender, args);
+            returnValue.Set(result);
+        }));
+        closure.Connect(sender.Handle, this, after, detail);
     }
 
     /// <summary>
@@ -60,6 +58,12 @@ public class ReturningSignal<TSender, TSignalArgs, TReturn> : SignalDefinition
     /// <param name="signalHandler">The signal handler function.</param>
     public void Disconnect(TSender sender, ReturningSignalHandler<TSender, TSignalArgs, TReturn> signalHandler)
     {
-        sender.Handle.Disconnect(this, signalHandler);
+        if (!sender.Handle.TryGetClosure(signalHandler, out var closure))
+        {
+            Debug.Fail($"Handle {sender.Handle.DangerousGetHandle()}: Could not disconnect from signal {ManagedName}. No matching closure found for signal handler.");
+            return;
+        }
+
+        closure.Disconnect(sender.Handle, this);
     }
 }

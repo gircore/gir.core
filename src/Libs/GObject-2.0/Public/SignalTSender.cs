@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace GObject;
 
 /// <summary>
@@ -34,12 +36,8 @@ public class Signal<TSender> : SignalDefinition
     /// <param name="detail">Define for which signal detail the connection should be made.</param>
     public void Connect(TSender sender, SignalHandler<TSender> signalHandler, bool after = false, string? detail = null)
     {
-        var closure = new Closure(
-            callback: (returnValue, parameters) => signalHandler(sender, System.EventArgs.Empty),
-            handle: sender.Handle
-        );
-
-        sender.Handle.Connect(this, signalHandler, closure, after, detail);
+        var closure = sender.Handle.GetClosure(signalHandler, () => new Closure((_, _) => signalHandler(sender, System.EventArgs.Empty)));
+        closure.Connect(sender.Handle, this, after, detail);
     }
 
     /// <summary>
@@ -49,6 +47,12 @@ public class Signal<TSender> : SignalDefinition
     /// <param name="signalHandler">The signal handler function.</param>
     public void Disconnect(TSender sender, SignalHandler<TSender> signalHandler)
     {
-        sender.Handle.Disconnect(this, signalHandler);
+        if (!sender.Handle.TryGetClosure(signalHandler, out var closure))
+        {
+            Debug.Fail($"Handle {sender.Handle.DangerousGetHandle()}: Could not disconnect from signal {ManagedName}. No matching closure found for signal handler.");
+            return;
+        }
+
+        closure.Disconnect(sender.Handle, this);
     }
 }
