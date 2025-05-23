@@ -22,6 +22,7 @@ public partial class Value : IDisposable
     public Value(int value) : this(Type.Int) => SetInt(value);
     public Value(uint value) : this(Type.UInt) => SetUint(value);
     public Value(long value) : this(Type.Long) => SetLong(value);
+    public Value(ulong value) : this(Type.UInt64) => SetUint64(value);
     public Value(double value) : this(Type.Double) => SetDouble(value);
     public Value(float value) : this(Type.Float) => SetFloat(value);
     public Value(string value) : this(Type.String) => SetString(value);
@@ -59,6 +60,7 @@ public partial class Value : IDisposable
             (nuint) BasicType.UInt => GetUint(),
             (nuint) BasicType.Int => GetInt(),
             (nuint) BasicType.Long => GetLong(),
+            (nuint) BasicType.UInt64 => GetUint64(),
             (nuint) BasicType.Double => GetDouble(),
             (nuint) BasicType.Float => GetFloat(),
             (nuint) BasicType.String => GetString(),
@@ -174,6 +176,9 @@ public partial class Value : IDisposable
                 break;
             case long l:
                 SetLong(l);
+                break;
+            case ulong l:
+                SetUint64(l);
                 break;
             case float f:
                 SetFloat(f);

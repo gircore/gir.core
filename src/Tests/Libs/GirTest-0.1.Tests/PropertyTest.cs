@@ -100,6 +100,18 @@ public class PropertyTest : Test
         obj.BooleanValue.Should().Be(b);
     }
 
+    [DataTestMethod]
+    [DataRow(42ul)]
+    [DataRow(ulong.MinValue)]
+    [DataRow(ulong.MaxValue)]
+    public void TestUInt64Property(ulong val)
+    {
+        var obj = PropertyTester.New();
+        obj.Uint64Value = val;
+
+        obj.Uint64Value.Should().Be(val);
+    }
+
     [TestMethod]
     public void TestObjectProperty()
     {

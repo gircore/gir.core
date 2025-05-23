@@ -19,6 +19,7 @@ typedef enum
     PROP_OBJECT_VALUE = 6,
     PROP_EXECUTOR_VALUE = 7,
     PROP_EXECUTOR_ANONYMOUS_VALUE = 8,
+    PROP_UINT64_VALUE = 9,
     N_PROPERTIES
 } PropertyTesterProperty;
 
@@ -34,6 +35,7 @@ struct _GirTestPropertyTester
     GirTestExecutor* executor_anonymous_value;
     gint int_value;
     gboolean boolean_value;
+    guint64 uint64_value;
 
 };
 
@@ -76,6 +78,9 @@ girtest_property_tester_get_property (GObject    *object,
     case PROP_EXECUTOR_ANONYMOUS_VALUE:
         g_value_set_object (value, self->executor_anonymous_value);
         break;
+    case PROP_UINT64_VALUE:
+        g_value_set_uint64 (value, self->uint64_value);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -108,6 +113,9 @@ girtest_property_tester_set_property (GObject      *object,
         break;
     case PROP_OBJECT_VALUE:
         self->object_value = g_value_get_object (value);
+        break;
+    case PROP_UINT64_VALUE:
+        self->uint64_value = g_value_get_uint64 (value);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -186,6 +194,15 @@ girtest_property_tester_class_init(GirTestPropertyTesterClass *class)
                                    "A boolean value",
                                    FALSE  /* default value */,
                                    G_PARAM_READWRITE);
+
+    properties[PROP_UINT64_VALUE] =
+          g_param_spec_uint64 ("uint64-value",
+                               "UInt64 Value",
+                               "A uint64 value",
+                               0,
+                               G_MAXUINT64,
+                               0  /* default value */,
+                               G_PARAM_READWRITE);
 
     g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 }
