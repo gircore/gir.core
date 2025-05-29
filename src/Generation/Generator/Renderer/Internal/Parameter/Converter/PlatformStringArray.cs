@@ -51,8 +51,8 @@ internal class PlatformStringArray : ParameterConverter
 
         var nullableTypeName = parameter switch
         {
-            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.GetInternalHandleName(),
-            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.NullTerminated.GetInternalHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.NullTerminated.GetInternalUnownedHandleName(),
             { Transfer: GirModel.Transfer.Container } => throw new Exception("Transfer container not supported for platform string arrays"),
             _ => throw new Exception("Can't detect typename for platform string array")
         };
@@ -72,9 +72,9 @@ internal class PlatformStringArray : ParameterConverter
 
         var nullableTypeName = parameter switch
         {
-            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.GetInternalUnownedHandleName(),
-            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.GetInternalOwnedHandleName(),
-            { Transfer: GirModel.Transfer.Container } => Model.PlatformStringArray.GetInternalContainerHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.NullTerminated.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.NullTerminated.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => Model.PlatformStringArray.NullTerminated.GetInternalContainerHandleName(),
             _ => throw new Exception("Can't detect typename for platform string array")
         };
 

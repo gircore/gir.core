@@ -4,12 +4,8 @@ using System.Runtime.InteropServices;
 
 namespace GLib.Internal;
 
-public abstract class Utf8StringArrayNullTerminatedHandle : SafeHandle
+public abstract class Utf8StringArrayNullTerminatedHandle(bool ownsHandle) : SafeHandle(IntPtr.Zero, ownsHandle)
 {
-    protected Utf8StringArrayNullTerminatedHandle(bool ownsHandle) : base(IntPtr.Zero, ownsHandle)
-    {
-    }
-
     protected static IntPtr ToIntPtr(string[] array)
     {
         var data = Functions.Malloc((uint) ((array.Length + 1) * IntPtr.Size));
