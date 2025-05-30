@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>GirCore.Rsvg-2.0</PackageId>
+    <RootNamespace>Rsvg</RootNamespace>
+    <Description>C# bindings for librsvg.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../cairo-1.0/cairo-1.0.csproj" />
+    <ProjectReference Include="../GdkPixbuf-2.0/GdkPixbuf-2.0.csproj" />
+    <ProjectReference Include="../GLib-2.0/GLib-2.0.csproj" />
+    <ProjectReference Include="../Gio-2.0/Gio-2.0.csproj" />
+    <ProjectReference Include="../GObject-2.0/GObject-2.0.csproj" />
+  </ItemGroup>
+</Project>
