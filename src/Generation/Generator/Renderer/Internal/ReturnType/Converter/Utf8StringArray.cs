@@ -17,7 +17,7 @@ internal class Utf8StringArray : ReturnTypeConverter
             return NullTerminatedArray(returnType);
 
         if (arrayType.Length is not null)
-            return SizeBasedArray();
+            return SizeBasedArray(returnType);
 
         throw new Exception("Unknown kind of array");
     }
@@ -26,17 +26,25 @@ internal class Utf8StringArray : ReturnTypeConverter
     {
         var typeName = returnType switch
         {
-            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.GetInternalOwnedHandleName(),
-            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.GetInternalUnownedHandleName(),
-            { Transfer: GirModel.Transfer.Container } => Model.Utf8StringArray.GetInternalContainerHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.NullTerminated.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.NullTerminated.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => Model.Utf8StringArray.NullTerminated.GetInternalContainerHandleName(),
             _ => throw new Exception("Unknown transfer type for utf8 string array return value")
         };
 
         return new RenderableReturnType(typeName);
     }
 
-    private static RenderableReturnType SizeBasedArray()
+    private static RenderableReturnType SizeBasedArray(GirModel.ReturnType returnType)
     {
-        return new RenderableReturnType("string[]");
+        var typeName = returnType switch
+        {
+            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.Sized.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.Sized.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => Model.Utf8StringArray.Sized.GetInternalContainerHandleName(),
+            _ => throw new Exception("Unknown transfer type for size based utf8 string array return value")
+        };
+
+        return new RenderableReturnType(typeName);
     }
 }
