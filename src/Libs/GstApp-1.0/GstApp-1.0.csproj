@@ -4,25 +4,11 @@
     <RootNamespace>GstApp</RootNamespace>
     <Description>C# bindings for GStreamer.</Description>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\img\logo-128.png" Link="logo-128.png">
-      <PackagePath>/</PackagePath>
-      <Pack>true</Pack>
-    </None>
-    <None Include="..\NugetReadme.md" Link="NugetReadme.md">
-      <PackagePath>/</PackagePath>
-      <Pack>true</Pack>
-    </None>
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GObject-2.0\GObject-2.0.csproj" />
     <ProjectReference Include="..\GLib-2.0\GLib-2.0.csproj" />
     <ProjectReference Include="..\Gst-1.0\Gst-1.0.csproj" />
     <ProjectReference Include="..\GstBase-1.0\GstBase-1.0.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Internal\" />
   </ItemGroup>
 </Project>

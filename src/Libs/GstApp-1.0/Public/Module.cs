@@ -1,11 +1,11 @@
-namespace GstAudio;
+namespace GstApp;
 
 public static class Module
 {
     private static bool IsInitialized;
 
     /// <summary>
-    /// Initialize the <c>GstAudio</c> module.
+    /// Initialize the <c>GstApp</c> module.
     /// </summary>
     /// <remarks>
     /// <para>
