@@ -6,17 +6,24 @@ using GObject.Internal;
 
 namespace GLib.Internal;
 
-public abstract class PlatformStringArrayNullTerminatedHandle(bool ownsHandle) : SafeHandle(IntPtr.Zero, ownsHandle)
+public abstract class PlatformStringArraySizedHandle(bool ownsHandle) : SafeHandle(IntPtr.Zero, ownsHandle)
 {
     [DllImport(ImportResolver.Library, EntryPoint = "g_filename_to_utf8")]
-    internal static extern IntPtr FilenameToUtf8(IntPtr opsysstring, long len, out nuint bytesRead, out nuint bytesWritten, out ErrorOwnedHandle error);
+    private static extern IntPtr FilenameToUtf8(IntPtr opsysstring, long len, out nuint bytesRead, out nuint bytesWritten, out ErrorOwnedHandle error);
 
     [DllImport(ImportResolver.Library, EntryPoint = "g_filename_from_utf8")]
-    internal static extern IntPtr FilenameFromUtf8(IntPtr utf8String, long len, out nuint bytesRead, out nuint bytesWritten, out ErrorOwnedHandle error);
+    private static extern IntPtr FilenameFromUtf8(IntPtr utf8String, long len, out nuint bytesRead, out nuint bytesWritten, out ErrorOwnedHandle error);
+
+    private int _size = -1;
+    public int Size
+    {
+        get => _size == -1 ? throw new NullReferenceException("Size is not set") : _size;
+        set => _size = value;
+    }
 
     protected static IntPtr ToIntPtr(string[] array)
     {
-        var data = Functions.Malloc((uint) ((array.Length + 1) * IntPtr.Size));
+        var data = Functions.Malloc((uint) (array.Length * IntPtr.Size));
 
         for (var i = 0; i < array.Length; i++)
         {
@@ -38,9 +45,6 @@ public abstract class PlatformStringArrayNullTerminatedHandle(bool ownsHandle) :
             }
         }
 
-        //Null terminate array
-        Marshal.WriteIntPtr(data, array.Length * IntPtr.Size, IntPtr.Zero);
-
         return data;
     }
 
@@ -53,16 +57,11 @@ public abstract class PlatformStringArrayNullTerminatedHandle(bool ownsHandle) :
         if (handle == IntPtr.Zero)
             return null;
 
-        List<string> strArray = new();
-        var offset = 0;
+        List<string> strArray = [];
 
-        while (true)
+        for (var offset = 0; offset < Size; offset++)
         {
-            var strAddress = Marshal.ReadIntPtr(handle, offset++ * IntPtr.Size);
-
-            if (strAddress == IntPtr.Zero)
-                break;
-
+            var strAddress = Marshal.ReadIntPtr(handle, offset * IntPtr.Size);
             var utf8Ptr = FilenameToUtf8(strAddress, -1, out _, out _, out var error);
 
             if (!error.IsInvalid)
@@ -78,38 +77,37 @@ public abstract class PlatformStringArrayNullTerminatedHandle(bool ownsHandle) :
 /// <summary>
 /// A handle of a string array which is completely owned by the dotnet runtime
 /// </summary>
-public class PlatformStringArrayNullTerminatedOwnedHandle : PlatformStringArrayNullTerminatedHandle
+public class PlatformStringArraySizedOwnedHandle : PlatformStringArraySizedHandle
 {
     public override bool IsInvalid => handle == IntPtr.Zero;
 
     /// <summary>
     /// Used by PInvoke
     /// </summary>
-    private PlatformStringArrayNullTerminatedOwnedHandle() : base(true)
+    private PlatformStringArraySizedOwnedHandle() : base(true)
     {
     }
 
-    public PlatformStringArrayNullTerminatedOwnedHandle(IntPtr ptr) : base(true)
+    public PlatformStringArraySizedOwnedHandle(IntPtr ptr) : base(true)
     {
         SetHandle(ptr);
     }
 
-    public static PlatformStringArrayNullTerminatedOwnedHandle Create(string[] array)
+    public static PlatformStringArraySizedOwnedHandle Create(string[] array)
     {
-        return new PlatformStringArrayNullTerminatedOwnedHandle(ToIntPtr(array));
+        return new PlatformStringArraySizedOwnedHandle(ToIntPtr(array))
+        {
+            Size = array.Length
+        };
     }
 
     protected override bool ReleaseHandle()
     {
-        var offset = 0;
-        while (true)
+        for (var offset = 0; offset < Size; offset++)
         {
-            var strAddress = Marshal.ReadIntPtr(handle, offset++ * IntPtr.Size);
+            var ptr = Marshal.ReadIntPtr(handle, offset * IntPtr.Size);
 
-            if (strAddress == IntPtr.Zero)
-                break;
-
-            Functions.Free(strAddress);
+            Functions.Free(ptr);
         }
 
         Functions.Free(handle);
@@ -120,18 +118,18 @@ public class PlatformStringArrayNullTerminatedOwnedHandle : PlatformStringArrayN
 /// <summary>
 /// A handle of a string array. The dotnet runtime only owns the list of pointers to the string. Not the strings itself.
 /// </summary>
-public class PlatformStringArrayNullTerminatedContainerHandle : PlatformStringArrayNullTerminatedHandle
+public class PlatformStringArraySizedContainerHandle : PlatformStringArraySizedHandle
 {
     public override bool IsInvalid => handle == IntPtr.Zero;
 
     /// <summary>
     /// Used by PInvoke
     /// </summary>
-    private PlatformStringArrayNullTerminatedContainerHandle() : base(true)
+    private PlatformStringArraySizedContainerHandle() : base(true)
     {
     }
 
-    public PlatformStringArrayNullTerminatedContainerHandle(IntPtr ptr) : base(true)
+    public PlatformStringArraySizedContainerHandle(IntPtr ptr) : base(true)
     {
         SetHandle(ptr);
     }
@@ -147,28 +145,31 @@ public class PlatformStringArrayNullTerminatedContainerHandle : PlatformStringAr
 /// <summary>
 /// A handle of a string array which is not owned by the dotnet runtime.
 /// </summary>
-public class PlatformStringArrayNullTerminatedUnownedHandle : PlatformStringArrayNullTerminatedHandle
+public class PlatformStringArraySizedUnownedHandle : PlatformStringArraySizedHandle
 {
     public override bool IsInvalid => handle == IntPtr.Zero;
 
-    private static PlatformStringArrayNullTerminatedUnownedHandle? _nullHandle;
-    public static PlatformStringArrayNullTerminatedUnownedHandle NullHandle => _nullHandle ??= new PlatformStringArrayNullTerminatedUnownedHandle(IntPtr.Zero);
+    private static PlatformStringArraySizedUnownedHandle? _nullHandle;
+    public static PlatformStringArraySizedUnownedHandle NullHandle => _nullHandle ??= new PlatformStringArraySizedUnownedHandle(IntPtr.Zero);
 
     /// <summary>
     /// Used by PInvoke
     /// </summary>
-    private PlatformStringArrayNullTerminatedUnownedHandle() : base(false)
+    private PlatformStringArraySizedUnownedHandle() : base(false)
     {
     }
 
-    public PlatformStringArrayNullTerminatedUnownedHandle(IntPtr ptr) : base(false)
+    public PlatformStringArraySizedUnownedHandle(IntPtr ptr) : base(false)
     {
         SetHandle(ptr);
     }
 
-    public static PlatformStringArrayNullTerminatedUnownedHandle Create(string[] array)
+    public static PlatformStringArraySizedUnownedHandle Create(string[] array)
     {
-        return new PlatformStringArrayNullTerminatedUnownedHandle(ToIntPtr(array));
+        return new PlatformStringArraySizedUnownedHandle(ToIntPtr(array))
+        {
+            Size = array.Length
+        };
     }
 
     protected override bool ReleaseHandle()

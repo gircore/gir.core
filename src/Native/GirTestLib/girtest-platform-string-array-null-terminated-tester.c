@@ -197,6 +197,75 @@ girtest_platform_string_array_null_terminated_tester_return_transfer_container_n
 }
 
 /**
+ * girtest_platform_string_array_null_terminated_tester_optional_size_out_transfer_full:
+ * @data: (transfer none) (array zero-terminated=1) (element-type filename): data
+ * @size: (out) (optional): the length of the array or %NULL
+ *
+ * The returned array is implicitly NULL terminated. The API definition corresponds to
+ * g_application_command_line_get_arguments in the GIO project.
+ *
+ * Returns: (array length=size) (element-type filename) (transfer full): the array
+ */
+gchar** 
+girtest_platform_string_array_null_terminated_tester_optional_size_out_transfer_full(gchar** data, int *size)
+{
+    if(size)
+        *size = g_strv_length(data);
+
+    return g_strdupv(data);
+}
+
+/**
+ * girtest_platform_string_array_null_terminated_tester_size_out_transfer_full:
+ * @data: (transfer none) (array zero-terminated=1) (element-type filename): data
+ * @size: (out): the length of the array
+ *
+ * The returned array is implicitly NULL terminated.
+ *
+ * Returns: (array length=size) (element-type filename) (transfer full): the array
+ */
+gchar** 
+girtest_platform_string_array_null_terminated_tester_size_out_transfer_full(gchar** data, int *size)
+{
+    *size = g_strv_length(data);
+    return g_strdupv(data);
+}
+
+/**
+ * girtest_platform_string_array_null_terminated_tester_optional_gsize_parameter_out_transfer_full:
+ * @data: (transfer none) (array zero-terminated=1) (element-type filename): data
+ * @size: (out) (optional): the length of the array
+ *
+ * The returned array is implicitly NULL terminated.
+ *
+ * Returns: (array length=size) (transfer full) (element-type filename): the array
+ */
+gchar **
+girtest_platform_string_array_null_terminated_tester_optional_gsize_parameter_out_transfer_full(gchar** data, gsize *size)
+{
+    if(size)
+        *size = g_strv_length(data);
+
+    return g_strdupv(data);
+}
+
+/**
+ * girtest_platform_string_array_null_terminated_tester_gsize_parameter_out_transfer_full:
+ * @data: (transfer none) (array zero-terminated=1) (element-type filename): data
+ * @size: (out): the length of the array
+ *
+ * The returned array is implicitly NULL terminated.
+ *
+ * Returns: (array length=size) (transfer full) (element-type filename): the array
+ */
+gchar **
+girtest_platform_string_array_null_terminated_tester_gsize_parameter_out_transfer_full(gchar** data, gsize *size)
+{
+    *size = g_strv_length(data);
+    return g_strdupv(data);
+}
+
+/**
  * girtest_platform_string_array_null_terminated_tester_parameter_out_transfer_full:
  * @data: (transfer none) (array zero-terminated=1) (element-type filename): data buffer
  * @output: (transfer full) (array zero-terminated=1) (out) (element-type filename): output buffer

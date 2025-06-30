@@ -42,18 +42,18 @@ internal class Utf8StringArray : ToNativeParameterConverter
 
         var createExpression = parameter.Parameter switch
         {
-            { Transfer: GirModel.Transfer.Full } => $"{Model.Utf8StringArray.GetInternalUnownedHandleName()}.Create({signatureName})",
-            { Transfer: GirModel.Transfer.None } => $"{Model.Utf8StringArray.GetInternalOwnedHandleName()}.Create({signatureName})",
+            { Transfer: GirModel.Transfer.Full } => $"{Model.Utf8StringArray.NullTerminated.GetInternalUnownedHandleName()}.Create({signatureName})",
+            { Transfer: GirModel.Transfer.None } => $"{Model.Utf8StringArray.NullTerminated.GetInternalOwnedHandleName()}.Create({signatureName})",
             _ => throw new Exception("Unknown transfer type for parameter with a null terminated input utf8 string array")
         };
 
         if (parameter.Parameter.Nullable)
-            createExpression = $"{signatureName}  is null ? {Model.Utf8StringArray.GetInternalUnownedHandleName()}.NullHandle : {createExpression}";
+            createExpression = $"{signatureName}  is null ? {Model.Utf8StringArray.NullTerminated.GetInternalUnownedHandleName()}.NullHandle : {createExpression}";
 
         var expressionType = parameter.Parameter switch
         {
-            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.GetInternalUnownedHandleName(),
-            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.GetInternalHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.NullTerminated.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.NullTerminated.GetInternalHandleName(),
             _ => throw new Exception("Unknown transfer type for parameter with a null terminated input utf8 string array")
         };
 
