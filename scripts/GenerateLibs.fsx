@@ -20,6 +20,7 @@ let girFiles =
         "Graphene-1.0.gir"
         "Gsk-4.0.gir"
         "Gst-1.0.gir"
+        "GstApp-1.0.gir"
         "GstAudio-1.0.gir"
         "GstBase-1.0.gir"
         "GstPbutils-1.0.gir"
