@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>GirCore.GstApp-1.0</PackageId>
+    <RootNamespace>GstApp</RootNamespace>
+    <Description>C# bindings for GStreamer.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GstBase-1.0\GstBase-1.0.csproj" />
+  </ItemGroup>
+</Project>
