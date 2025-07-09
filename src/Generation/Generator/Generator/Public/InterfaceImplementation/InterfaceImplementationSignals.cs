@@ -3,20 +3,17 @@ using Generator.Model;
 
 namespace Generator.Generator.Public;
 
-internal class ClassSignals(Publisher publisher) : Generator<GirModel.Class>
+internal class InterfaceImplementationSignals(Publisher publisher) : Generator<GirModel.Interface>
 {
-    public void Generate(GirModel.Class obj)
+    public void Generate(GirModel.Interface obj)
     {
-        if (obj.Fundamental)
-            return;
-
         if (!obj.Signals.Any())
             return;
 
-        var source = Renderer.Public.ClassSignals.Render(obj);
+        var source = Renderer.Public.InterfaceImplementationSignals.Render(obj);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),
-            Name: $"{obj.Name}.Signals",
+            Name: $"{Model.Interface.GetImplementationName(obj)}.Signals",
             Source: source,
             IsInternal: false
         );

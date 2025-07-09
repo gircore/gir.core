@@ -4,23 +4,22 @@ using Generator.Model;
 
 namespace Generator.Renderer.Public;
 
-public static class ClassSignal
+public static class InterfaceImplementationSignal
 {
-    public static string Render(GirModel.ComplexType type, GirModel.Signal signal)
+    public static string Render(GirModel.Interface iface, GirModel.Signal signal)
     {
         try
         {
             return $@"
 #region {Signal.GetName(signal)}
-{SignalDescriptor.Render(type, signal)}
-{SignalEvent.Render(type, signal)}
-{SignalArgs.Render(signal)}
+{SignalDescriptor.Render(iface, signal)}
+{SignalEvent.Render(iface, signal)}
 #endregion
 ";
         }
         catch (Exception ex)
         {
-            var message = $"Did not generate signal '{type.Name}.{Signal.GetName(signal)}': {ex.Message}";
+            var message = $"Did not generate signal '{iface.Name}.{Signal.GetName(signal)}': {ex.Message}";
 
             if (ex is NotImplementedException)
                 Log.Debug(message);

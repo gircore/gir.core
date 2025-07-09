@@ -20,7 +20,7 @@ internal class InterfaceImplementationProperties : Generator<GirModel.Interface>
         var source = Renderer.Public.InterfaceImplementationProperties.Render(obj);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),
-            Name: $"{Interface.GetImplementationName(obj)}.Properties",
+            Name: $"{Model.Interface.GetImplementationName(obj)}.Properties",
             Source: source,
             IsInternal: false
         );

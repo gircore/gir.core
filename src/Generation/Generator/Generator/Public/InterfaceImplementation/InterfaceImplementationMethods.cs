@@ -3,15 +3,8 @@ using Generator.Model;
 
 namespace Generator.Generator.Public;
 
-internal class InterfaceImplementationMethods : Generator<GirModel.Interface>
+internal class InterfaceImplementationMethods(Publisher publisher) : Generator<GirModel.Interface>
 {
-    private readonly Publisher _publisher;
-
-    public InterfaceImplementationMethods(Publisher publisher)
-    {
-        _publisher = publisher;
-    }
-
     public void Generate(GirModel.Interface obj)
     {
         if (!obj.Methods.Where(Method.IsEnabled).Any())
@@ -20,11 +13,11 @@ internal class InterfaceImplementationMethods : Generator<GirModel.Interface>
         var source = Renderer.Public.InterfaceImplementationMethods.Render(obj);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),
-            Name: $"{Interface.GetImplementationName(obj)}.Methods",
+            Name: $"{Model.Interface.GetImplementationName(obj)}.Methods",
             Source: source,
             IsInternal: false
         );
 
-        _publisher.Publish(codeUnit);
+        publisher.Publish(codeUnit);
     }
 }

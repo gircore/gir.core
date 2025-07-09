@@ -31,6 +31,7 @@ public static class Classes
             new Generator.Public.ClassFramework(publisher),
             new Generator.Public.ClassSignals(publisher),
             new Generator.Public.ClassCallbacks(publisher),
+            new Generator.Public.ClassInterfaceSignals(publisher),
         };
 
         foreach (var cls in classes)

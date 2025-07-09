@@ -3,9 +3,9 @@ using Generator.Model;
 
 namespace Generator.Renderer.Public;
 
-public static partial class ClassSignal
+public static partial class SignalArgs
 {
-    private static string RenderArgs(GirModel.Signal signal)
+    public static string Render(GirModel.Signal signal)
     {
         return !signal.Parameters.Any()
             ? string.Empty

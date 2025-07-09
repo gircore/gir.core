@@ -8,13 +8,15 @@ internal class InterfaceFactory
     private readonly MethodFactory _methodFactory;
     private readonly PropertyFactory _propertyFactory;
     private readonly FunctionFactory _functionFactory;
+    private readonly SignalFactory _signalFactory;
 
-    public InterfaceFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory, FunctionFactory functionFactory)
+    public InterfaceFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory, FunctionFactory functionFactory, SignalFactory signalFactory)
     {
         _typeReferenceFactory = typeReferenceFactory;
         _methodFactory = methodFactory;
         _propertyFactory = propertyFactory;
         _functionFactory = functionFactory;
+        _signalFactory = signalFactory;
     }
 
     public Interface Create(Input.Interface @interface, Repository repository)
@@ -37,6 +39,7 @@ internal class InterfaceFactory
             functions: _functionFactory.Create(@interface.Functions, repository),
             getTypeFunction: _functionFactory.CreateGetTypeFunction(@interface.GetTypeFunction, repository),
             properties: _propertyFactory.Create(@interface.Properties),
+            signals: _signalFactory.Create(@interface.Signals),
             introspectable: @interface.Introspectable
         );
 
