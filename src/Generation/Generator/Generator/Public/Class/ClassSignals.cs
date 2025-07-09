@@ -3,21 +3,14 @@ using Generator.Model;
 
 namespace Generator.Generator.Public;
 
-internal class ClassSignals : Generator<GirModel.Class>
+internal class ClassSignals(Publisher publisher) : Generator<GirModel.Class>
 {
-    private readonly Publisher _publisher;
-
-    public ClassSignals(Publisher publisher)
-    {
-        _publisher = publisher;
-    }
-
     public void Generate(GirModel.Class obj)
     {
         if (obj.Fundamental)
             return;
 
-        if (!obj.Signals.Any())
+        if (!obj.Signals.Any() && !obj.Implements.SelectMany(x => x.Signals).Any())
             return;
 
         var source = Renderer.Public.ClassSignals.Render(obj);
@@ -28,6 +21,6 @@ internal class ClassSignals : Generator<GirModel.Class>
             IsInternal: false
         );
 
-        _publisher.Publish(codeUnit);
+        publisher.Publish(codeUnit);
     }
 }

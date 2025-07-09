@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Generator.Generator;
 
@@ -13,6 +14,7 @@ public static class Interfaces
             new Generator.Internal.InterfaceMethods(publisher),
             new Generator.Public.InterfaceMethods(publisher),
             new Generator.Public.InterfaceProperties(publisher),
+            new Generator.Public.InterfaceEvents(publisher),
 
             new Generator.Public.InterfaceImplementationFramework(publisher),
             new Generator.Public.InterfaceImplementationMethods(publisher),
@@ -21,7 +23,19 @@ public static class Interfaces
         };
 
         foreach (var iface in interfaces)
+        {
             foreach (var generator in generators)
-                generator.Generate(iface);
+            {
+                try
+                {
+                    generator.Generate(iface);
+                }
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                    Log.Error($"Could not render interface with generator {generator.GetType().Name}: {iface.Namespace}.{iface.Name} - {ex.Message}");
+                }
+            }
+        }
     }
 }
