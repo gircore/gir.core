@@ -11,5 +11,6 @@ public partial class Interface : GirModel.Interface
     IEnumerable<GirModel.Function> GirModel.Interface.Functions => _interface.Functions;
     IEnumerable<GirModel.Method> GirModel.Interface.Methods => _interface.Methods;
     IEnumerable<GirModel.Property> GirModel.Interface.Properties => _interface.Properties;
+    IEnumerable<GirModel.Signal> GirModel.Interface.Signals => _interface.Signals;
     bool GirModel.Interface.Introspectable => _interface.Introspectable;
 }

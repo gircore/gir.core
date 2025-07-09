@@ -29,6 +29,7 @@ public static class Classes
             new Generator.Public.ClassInterfaceProperties(publisher),
             new Generator.Public.ClassFramework(publisher),
             new Generator.Public.ClassSignals(publisher),
+            new Generator.Public.ClassInterfaceSignals(publisher),
         };
 
         foreach (var cls in classes)
