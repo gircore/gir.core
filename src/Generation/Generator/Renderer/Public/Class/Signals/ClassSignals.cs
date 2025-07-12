@@ -8,6 +8,11 @@ internal static class ClassSignals
 {
     public static string Render(GirModel.Class cls)
     {
+        if (cls.Implements.SelectMany(x => x.Signals).Any())
+        {
+            
+        }
+
         return $@"
 using System;
 using GObject;
@@ -23,6 +28,10 @@ namespace {Namespace.GetPublicName(cls.Namespace)}
     {{
         {cls.Signals
             .Select(x => ClassSignal.Render(cls, x))
+            .Join(Environment.NewLine)}
+
+        {cls.Implements
+            .SelectMany(iface => iface.Signals.Select(signal => ClassSignal.Render(iface, signal)))
             .Join(Environment.NewLine)}
     }}
 }}";
