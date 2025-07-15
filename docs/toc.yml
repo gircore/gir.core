@@ -8,6 +8,8 @@ items:
   items:
   - name: Use
     href: docs/use.md
+  - name: Ecosystem
+    href: docs/ecosystem.md
   - name: Gtk Tutorial
     href: docs/tutorial/gtk/index.md
   - name: Integration packages
