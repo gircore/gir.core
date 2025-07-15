@@ -153,6 +153,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{4EE9860B-6
 		..\docs\docs\apps.md = ..\docs\docs\apps.md
 		..\docs\docs\build.md = ..\docs\docs\build.md
 		..\docs\docs\faq.md = ..\docs\docs\faq.md
+		..\docs\docs\ecosystem.md = ..\docs\docs\ecosystem.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adw-1", "Libs\Adw-1\Adw-1.csproj", "{CC67D284-6ADE-4F4D-9EE0-544143A7FF40}"
