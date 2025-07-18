@@ -80,7 +80,7 @@ public sealed class Property<T, K> : PropertyDefinition<T>
     /// <param name="signalHandler">The handler which should be invoked if the property changes.</param>
     /// <param name="after">Define if the signal handler action must be called before or after the default handler.</param>
     /// <exception cref="ArgumentException">If the sender is not a GObject.Object.</exception>
-    public void Notify(K sender, SignalHandler<Object, Object.NotifySignalArgs> signalHandler, bool after = false)
+    public void Notify(K sender, SignalHandler<Object, NotifySignalArgs> signalHandler, bool after = false)
     {
         if (sender is not Object obj)
             throw new ArgumentException("The sender must be a GObject.Object", nameof(sender));
@@ -99,7 +99,7 @@ public sealed class Property<T, K> : PropertyDefinition<T>
     /// <param name="sender">The instance providing the property which should be deregistered.</param>
     /// <param name="signalHandler">The signal handler which should be deregistered.</param>
     /// <exception cref="ArgumentException">If the sender is not a GObject.Object.</exception>
-    public void Unnotify(K sender, SignalHandler<Object, Object.NotifySignalArgs> signalHandler)
+    public void Unnotify(K sender, SignalHandler<Object, NotifySignalArgs> signalHandler)
     {
         if (sender is not Object obj)
             throw new ArgumentException("The sender must be a GObject.Object", nameof(sender));

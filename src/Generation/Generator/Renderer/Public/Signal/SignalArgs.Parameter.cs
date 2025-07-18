@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Generator.Renderer.Public;
 
-public static partial class ClassSignal
+public static partial class SignalArgs
 {
     private static string RenderAsSignalParammeters(IEnumerable<GirModel.Parameter> parameters)
     {

@@ -25,6 +25,30 @@ namespace {Namespace.GetPublicName(cls.Namespace)}
             .Select(x => ClassSignal.Render(cls, x))
             .Join(Environment.NewLine)}
     }}
-}}";
+
+    {cls.Signals
+        .Select(RenderArgs)
+        .Join(Environment.NewLine)}  
+
+}}"; 
+    }
+
+    private static string RenderArgs(GirModel.Signal signal)
+    {
+        try
+        {
+            return SignalArgs.Render(signal);   
+        }
+        catch (Exception ex)
+        {
+            var message = $"Did not generate signal args '{Signal.GetName(signal)}': {ex.Message}";
+
+            if (ex is NotImplementedException)
+                Log.Debug(message);
+            else
+                Log.Warning(message);
+
+            return string.Empty;
+        }
     }
 }
