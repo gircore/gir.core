@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
     <Authors>Marcel Tiede</Authors>
@@ -23,8 +23,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="../../NugetReadme.md" Pack="true" PackagePath="/"/>
-    <None Include="../../../img/logo-128.png" Pack="true" PackagePath="/"/>
+    <None Include="../../NugetReadme.md" Pack="true" PackagePath="/" />
+    <None Include="../../../img/logo-128.png" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
