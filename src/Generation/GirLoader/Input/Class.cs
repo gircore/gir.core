@@ -41,6 +41,9 @@ public class Class
     [XmlElement("field")]
     public List<Field> Fields { get; set; } = new();
 
+    [XmlElement("callback")]
+    public List<Callback> Callbacks { get; set; } = new();
+
     [XmlAttribute("parent")]
     public string? Parent { get; set; }
 

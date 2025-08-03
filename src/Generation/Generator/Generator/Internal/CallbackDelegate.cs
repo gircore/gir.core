@@ -13,7 +13,7 @@ internal class CallbackDelegate : Generator<GirModel.Callback>
 
     public void Generate(GirModel.Callback callback)
     {
-        var source = Renderer.Internal.CallbackDelegate.Render(callback);
+        var source = Renderer.Internal.CallbackDelegate.RenderFile(callback);
 
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(callback.Namespace),

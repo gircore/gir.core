@@ -16,5 +16,6 @@ public interface Class : ComplexType
     IEnumerable<Constructor> Constructors { get; }
     IEnumerable<Property> Properties { get; }
     IEnumerable<Signal> Signals { get; }
+    IEnumerable<Callback> Callbacks { get; }
     bool Introspectable { get; }
 }

@@ -17,6 +17,7 @@ public partial class Class : GirModel.Class
     IEnumerable<Constructor> GirModel.Class.Constructors => _class.Constructors;
     IEnumerable<Property> GirModel.Class.Properties => _class.Properties;
     IEnumerable<Signal> GirModel.Class.Signals => _class.Signals;
+    IEnumerable<GirModel.Callback> GirModel.Class.Callbacks => _class.Callbacks;
     bool GirModel.Class.Introspectable => _class.Introspectable;
     bool GirModel.Class.Abstract => _class.Abstract;
     bool GirModel.Class.Final => _class.Final;

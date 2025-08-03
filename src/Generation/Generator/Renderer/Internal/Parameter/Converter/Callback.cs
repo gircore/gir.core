@@ -21,6 +21,6 @@ internal class Callback : ParameterConverter
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
         var type = (GirModel.Callback) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
-        return Model.Namespace.GetInternalName(type.Namespace) + "." + Model.Type.GetName((GirModel.Type) type);
+        return Model.Namespace.GetInternalName(type.Namespace) + "." + Model.Callback.GetName(type);
     }
 }

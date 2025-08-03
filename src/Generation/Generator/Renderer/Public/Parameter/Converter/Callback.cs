@@ -18,7 +18,7 @@ internal class Callback : ParameterConverter
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
         var type = (GirModel.Callback) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
-        return Model.ComplexType.GetFullyQualified(type) + Nullable.Render(parameter);
+        return Model.Namespace.GetPublicName(type.Namespace) + "." + Model.Callback.GetName(type) + Nullable.Render(parameter);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

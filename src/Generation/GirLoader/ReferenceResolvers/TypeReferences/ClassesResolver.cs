@@ -33,6 +33,9 @@ internal static class ClassesResolver
 
             resolver.ResolveTypeReferences(cls.Signals.Select(x => x.ReturnValue.TypeReference), repository);
             resolver.ResolveParameterLists(cls.Signals.Select(x => x.ParameterList), repository);
+
+            resolver.ResolveTypeReferences(cls.Callbacks.Select(x => x.ReturnValue.TypeReference), repository);
+            resolver.ResolveParameterLists(cls.Callbacks.Select(x => x.ParameterList), repository);
         }
     }
 }

@@ -13,7 +13,7 @@ internal class CallbackAsyncHandler : Generator<GirModel.Callback>
 
     public void Generate(GirModel.Callback callback)
     {
-        var source = Renderer.Internal.CallbackAsyncHandler.Render(callback);
+        var source = Renderer.Internal.CallbackAsyncHandler.RenderFile(callback);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(callback.Namespace),
             Name: $"{callback.Name}.AsyncHandler",

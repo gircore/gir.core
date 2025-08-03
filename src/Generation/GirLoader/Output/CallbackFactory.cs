@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GirLoader.Output;
 
@@ -31,4 +33,7 @@ internal class CallbackFactory
             throws: callback.Throws
         );
     }
+
+    public IEnumerable<Callback> Create(IEnumerable<Input.Callback> callbacks, Repository repository)
+        => callbacks.Select(x => Create(x, repository)).ToList();
 }

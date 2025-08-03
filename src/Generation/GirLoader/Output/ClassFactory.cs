@@ -11,8 +11,9 @@ internal class ClassFactory
     private readonly SignalFactory _signalFactory;
     private readonly ConstructorFactory _constructorFactory;
     private readonly FunctionFactory _functionFactory;
+    private readonly CallbackFactory _callbackFactory;
 
-    public ClassFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory, FieldFactory fieldFactory, SignalFactory signalFactory, ConstructorFactory constructorFactory, FunctionFactory functionFactory)
+    public ClassFactory(TypeReferenceFactory typeReferenceFactory, MethodFactory methodFactory, PropertyFactory propertyFactory, FieldFactory fieldFactory, SignalFactory signalFactory, ConstructorFactory constructorFactory, FunctionFactory functionFactory, CallbackFactory callbackFactory)
     {
         _typeReferenceFactory = typeReferenceFactory;
         _methodFactory = methodFactory;
@@ -21,6 +22,7 @@ internal class ClassFactory
         _signalFactory = signalFactory;
         _constructorFactory = constructorFactory;
         _functionFactory = functionFactory;
+        _callbackFactory = callbackFactory;
     }
 
     public Class Create(Input.Class cls, Repository repository)
@@ -45,6 +47,7 @@ internal class ClassFactory
             fields: _fieldFactory.Create(cls.Fields, repository),
             signals: _signalFactory.Create(cls.Signals),
             constructors: _constructorFactory.Create(cls.Constructors),
+            callbacks: _callbackFactory.Create(cls.Callbacks, repository),
             fundamental: cls.Fundamental,
             @abstract: cls.Abstract,
             final: cls.Final,
@@ -61,6 +64,9 @@ internal class ClassFactory
 
         foreach (var method in @class.Methods)
             method.SetParent(@class);
+
+        foreach (var callback in @class.Callbacks)
+            callback.SetParent(@class);
 
         return @class;
     }

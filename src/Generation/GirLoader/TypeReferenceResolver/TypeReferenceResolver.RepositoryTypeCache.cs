@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GirLoader;
 
@@ -12,6 +13,7 @@ internal partial class TypeReferenceResolver
         {
             _repository = repository;
             Add(repository.Namespace.Classes);
+            Add(repository.Namespace.Classes.SelectMany(x => x.Callbacks));
             Add(repository.Namespace.Interfaces);
             Add(repository.Namespace.Callbacks);
             Add(repository.Namespace.Enumerations);

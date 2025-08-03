@@ -2,6 +2,8 @@ namespace GirLoader.Output;
 
 public partial class Callback : ComplexType
 {
+    private ComplexType? _parent;
+
     public ReturnValue ReturnValue { get; }
     public ParameterList ParameterList { get; }
     public bool Introspectable { get; }
@@ -13,6 +15,11 @@ public partial class Callback : ComplexType
         ParameterList = parameterList;
         Introspectable = introspectable;
         Throws = throws;
+    }
+
+    internal void SetParent(ComplexType parent)
+    {
+        this._parent = parent;
     }
 
     internal override bool Matches(TypeReference typeReference)
