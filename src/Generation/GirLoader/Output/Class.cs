@@ -11,6 +11,7 @@ public partial class Class : ComplexType, AccessorProvider, ShadowableProvider
     private readonly List<Property> _properties;
     private readonly List<Field> _fields;
     private readonly List<Signal> _signals;
+    private readonly List<Callback> _callbacks;
     public bool Fundamental { get; }
     public Function GetTypeFunction { get; }
     public IEnumerable<TypeReference> Implements { get; }
@@ -21,12 +22,13 @@ public partial class Class : ComplexType, AccessorProvider, ShadowableProvider
     public IEnumerable<Field> Fields => _fields;
     public IEnumerable<Signal> Signals => _signals;
     public IEnumerable<Constructor> Constructors => _constructors;
+    public IEnumerable<Callback> Callbacks => _callbacks;
     public bool Introspectable { get; }
     public bool Abstract { get; }
     public bool Final { get; }
     public string? GlibTypeName { get; }
 
-    public Class(Repository repository, string? cType, string name, string? typeName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, bool fundamental, bool @abstract, bool final, bool introspectable) : base(repository, cType, name)
+    public Class(Repository repository, string? cType, string name, string? typeName, TypeReference? parent, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Field> fields, IEnumerable<Signal> signals, IEnumerable<Constructor> constructors, IEnumerable<Callback> callbacks, bool fundamental, bool @abstract, bool final, bool introspectable) : base(repository, cType, name)
     {
         Parent = parent;
         Implements = implements;
@@ -40,6 +42,7 @@ public partial class Class : ComplexType, AccessorProvider, ShadowableProvider
         this._properties = properties.ToList();
         this._fields = fields.ToList();
         this._signals = signals.ToList();
+        this._callbacks = callbacks.ToList();
 
         Fundamental = fundamental;
         Abstract = @abstract;

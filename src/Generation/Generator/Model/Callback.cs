@@ -26,4 +26,9 @@ internal static class Callback
     {
         return callback.Name + "ForeverHandler";
     }
+
+    public static string GetName(GirModel.Callback callback)
+    {
+        return callback.Parent != null ? $"{callback.Parent.Name}.{callback.Name}" : callback.Name;
+    }
 }

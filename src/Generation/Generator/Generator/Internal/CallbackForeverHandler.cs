@@ -13,7 +13,7 @@ internal class CallbackForeverHandler : Generator<GirModel.Callback>
 
     public void Generate(GirModel.Callback callback)
     {
-        var source = Renderer.Internal.CallbackForeverHandler.Render(callback);
+        var source = Renderer.Internal.CallbackForeverHandler.RenderFile(callback);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(callback.Namespace),
             Name: $"{callback.Name}.ForeverHandler",

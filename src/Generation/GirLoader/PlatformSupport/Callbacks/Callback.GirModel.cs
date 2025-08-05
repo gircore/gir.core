@@ -4,6 +4,7 @@ namespace GirLoader.PlatformSupport;
 
 public partial class Callback : GirModel.Callback
 {
+    GirModel.ComplexType? GirModel.Callback.Parent => _callback.Parent;
     GirModel.Namespace GirModel.ComplexType.Namespace => _callback.Namespace;
     string GirModel.Callback.Name => _callback.Name;
     string GirModel.ComplexType.Name => _callback.Name;

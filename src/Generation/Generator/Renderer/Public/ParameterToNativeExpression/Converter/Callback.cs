@@ -67,9 +67,12 @@ internal class Callback : ToNativeParameterConverter
         var callback = (GirModel.Callback) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var handlerNameVariable = parameterName + "Handler";
+        var handlerReference = callback.Parent != null
+            ? $"{Namespace.GetInternalName(callback.Namespace)}.{callback.Parent.Name}.{Model.Callback.GetCallHandlerName(callback)}"
+            : $"{Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetCallHandlerName(callback)}";
 
         parameter.SetSignatureName(() => parameterName);
         parameter.SetCallName(() => handlerNameVariable + ".NativeCallback");
-        parameter.SetExpression(() => $"var {handlerNameVariable} = new {Namespace.GetInternalName(callback.Namespace)}.{Model.Callback.GetCallHandlerName(callback)}({parameterName});");
+        parameter.SetExpression(() => $"var {handlerNameVariable} = new {handlerReference}({parameterName});");
     }
 }
