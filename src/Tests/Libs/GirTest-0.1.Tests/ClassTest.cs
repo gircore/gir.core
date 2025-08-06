@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

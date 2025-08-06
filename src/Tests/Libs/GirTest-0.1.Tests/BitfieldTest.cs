@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using GObject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

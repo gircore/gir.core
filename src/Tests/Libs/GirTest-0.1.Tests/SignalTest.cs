@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using FluentAssertions;
+using AwesomeAssertions;
 using GLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

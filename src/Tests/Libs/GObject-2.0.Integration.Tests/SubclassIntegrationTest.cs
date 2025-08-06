@@ -1,6 +1,6 @@
 using System.CodeDom.Compiler;
+using AwesomeAssertions;
 using DiagnosticAnalyzerTestProject;
-using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GObject.Integration.Tests;
