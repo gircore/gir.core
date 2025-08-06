@@ -1,6 +1,6 @@
 {
   "solution": {
-    "path": "GirCore.sln",
+    "path": "GirCore.slnx",
     "projects": [
       "Generation\\Generator\\Generator.csproj",
       "Generation\\GirLoader\\GirLoader.csproj",
