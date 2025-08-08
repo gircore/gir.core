@@ -76,7 +76,7 @@ public sealed class PlatformConditionAttribute : ConditionBaseAttribute
         }
     }
 
-    public override string IgnoreMessage { get; }
+    public override string? IgnoreMessage { get; set; }
 
     public override string GroupName => nameof(PlatformConditionAttribute);
 }
