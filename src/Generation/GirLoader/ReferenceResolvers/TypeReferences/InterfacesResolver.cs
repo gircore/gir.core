@@ -20,6 +20,9 @@ internal static class InterfacesResolver
 
             resolver.ResolveTypeReferences(iface.Functions.Select(x => x.ReturnValue.TypeReference), repository);
             resolver.ResolveParameterLists(iface.Functions.Select(x => x.ParameterList), repository);
+
+            resolver.ResolveTypeReferences(iface.Signals.Select(x => x.ReturnValue.TypeReference), repository);
+            resolver.ResolveParameterLists(iface.Signals.Select(x => x.ParameterList), repository);
         }
 
     }

@@ -12,6 +12,7 @@
 #include "girtest-enum-tester.h"
 #include "girtest-error-tester.h"
 #include "girtest-integer-array-tester.h"
+#include "girtest-interface-signal-tester.h"
 #include "girtest-long-tester.h"
 #include "girtest-opaque-typed-record-copy-annotation-tester.h"
 #include "girtest-opaque-typed-record-tester.h"
@@ -32,3 +33,4 @@
 #include "data/girtest-executor.h"
 #include "data/girtest-executor-impl.h"
 #include "data/girtest-executor-private-impl.h"
+#include "data/girtest-signaler.h"

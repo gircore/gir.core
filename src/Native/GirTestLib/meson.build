@@ -15,6 +15,7 @@ header_files = [
   'girtest-enum-tester.h',
   'girtest-error-tester.h',
   'girtest-integer-array-tester.h',
+  'girtest-interface-signal-tester.h',
   'girtest-long-tester.h',
   'girtest-method-hiding.h',
   'girtest-opaque-typed-record-copy-annotation-tester.h',
@@ -34,7 +35,8 @@ header_files = [
   'girtest-untyped-record-tester.h',
   'girtest-utf8-string-array-null-terminated-tester.h',
   'data/girtest-executor.h',
-  'data/girtest-executor-impl.h'
+  'data/girtest-executor-impl.h',
+  'data/girtest-signaler.h'
 ]
 
 header_files_private = [
@@ -52,6 +54,7 @@ source_files = [
   'girtest-enum-tester.c',
   'girtest-error-tester.c',
   'girtest-integer-array-tester.c',
+  'girtest-interface-signal-tester.c',
   'girtest-long-tester.c',
   'girtest-method-hiding.c',
   'girtest-opaque-typed-record-copy-annotation-tester.c',
@@ -71,7 +74,8 @@ source_files = [
   'girtest-untyped-record-tester.c',
   'girtest-utf8-string-array-null-terminated-tester.c',
   'data/girtest-executor.c',
-  'data/girtest-executor-impl.c'
+  'data/girtest-executor-impl.c',
+  'data/girtest-signaler.c'
 ]
 
 soruce_files_private = [

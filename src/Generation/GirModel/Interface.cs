@@ -9,5 +9,6 @@ public interface Interface : ComplexType
     IEnumerable<Function> Functions { get; }
     IEnumerable<Method> Methods { get; }
     IEnumerable<Property> Properties { get; }
+    IEnumerable<Signal> Signals { get; }
     bool Introspectable { get; }
 }

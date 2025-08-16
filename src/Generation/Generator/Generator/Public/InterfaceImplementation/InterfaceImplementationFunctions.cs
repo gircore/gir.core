@@ -16,7 +16,7 @@ internal class InterfaceImplementationFunctions : Generator<GirModel.Interface>
         var source = Renderer.Public.InterfaceImplementationFunctions.Render(obj);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),
-            Name: $"{Interface.GetImplementationName(obj)}.Functions",
+            Name: $"{Model.Interface.GetImplementationName(obj)}.Functions",
             Source: source,
             IsInternal: false
         );

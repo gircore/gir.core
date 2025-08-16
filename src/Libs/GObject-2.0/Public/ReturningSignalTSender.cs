@@ -6,7 +6,7 @@ namespace GObject;
 /// Describes a GSignal.
 /// </summary>
 public class ReturningSignal<TSender, TReturn> : SignalDefinition
-    where TSender : Object, GTypeProvider
+    where TSender : NativeObject, GTypeProvider
 {
     private uint? _id;
 

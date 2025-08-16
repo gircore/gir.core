@@ -26,6 +26,9 @@ public class Interface
     [XmlElement("function")]
     public List<Method> Functions { get; set; } = default!;
 
+    [XmlElement("signal", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
+    public List<Signal> Signals { get; set; } = new();
+
     [XmlAttribute("get-type", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
     public string? GetTypeFunction { get; set; }
 

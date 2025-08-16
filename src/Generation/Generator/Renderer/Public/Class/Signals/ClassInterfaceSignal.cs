@@ -4,7 +4,7 @@ using Generator.Model;
 
 namespace Generator.Renderer.Public;
 
-public static class ClassSignal
+public static class ClassInterfaceSignal
 {
     public static string Render(GirModel.ComplexType type, GirModel.Signal signal)
     {
@@ -14,7 +14,6 @@ public static class ClassSignal
 #region {Signal.GetName(signal)}
 {SignalDescriptor.Render(type, signal)}
 {SignalEvent.Render(type, signal)}
-{SignalArgs.Render(signal)}
 #endregion
 ";
         }
