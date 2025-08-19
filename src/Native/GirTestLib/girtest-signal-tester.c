@@ -8,6 +8,7 @@
 
 enum {
     MY_SIGNAL,
+    GBYTES_SIGNAL,
     N_SIGNALS
 };
 
@@ -30,6 +31,9 @@ girtest_signal_tester_class_init(GirTestSignalTesterClass *class)
 {
     tester_signals[MY_SIGNAL] =
       g_signal_new ("my-signal", G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED, 0, NULL, NULL, NULL, G_TYPE_NONE, 0);
+
+	tester_signals[GBYTES_SIGNAL] =
+      g_signal_new ("gbytes-signal", G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED, 0, NULL, NULL, NULL, G_TYPE_NONE, 1, G_TYPE_BYTES);
 }
 
 
@@ -59,3 +63,16 @@ girtest_signal_tester_emit_my_signal_fubar(GirTestSignalTester *tester)
     g_signal_emit (tester, tester_signals[MY_SIGNAL], quark);
 }
 
+/**
+ * girtest_signal_tester_emit_gbytes_signal:
+ * @tester: a `SignalTester`
+ *
+ * Emits the `gbytes-signal` signal
+ */
+void
+girtest_signal_tester_emit_gbytes_signal (GirTestSignalTester *tester)
+{
+    GBytes *bytes = g_bytes_new("0", 1);
+    g_signal_emit (tester, tester_signals[GBYTES_SIGNAL], 0, bytes);
+    g_bytes_unref(bytes);
+}
