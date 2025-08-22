@@ -14,7 +14,7 @@ internal class FrameworkTypeRegistration : Generator<GirModel.Namespace>
     public void Generate(GirModel.Namespace ns)
     {
         if (ns.Name == "GLib")
-            return;//We can not register any type of GLib as GLib is not using the GObject type system
+            return;//We can not register any type of GLib as the type system is defined inside GObject
 
         var source = Renderer.Internal.FrameworkTypeRegistration.Render(ns);
         var codeUnit = new CodeUnit(

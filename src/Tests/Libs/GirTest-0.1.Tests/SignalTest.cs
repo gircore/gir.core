@@ -101,4 +101,21 @@ public class SignalTest : Test
 
         reference.IsAlive.Should().BeFalse();
     }
+
+    [TestMethod]
+    public void SupportsSignalsWithGLibBasedParameters()
+    {
+        var tester = SignalTester.New();
+        var result = false;
+
+        tester.OnGbytesSignal += (sender, args) =>
+        {
+            var bytes = args.Object;
+            bytes.Should().NotBeNull();
+            result = true;
+        };
+
+        tester.EmitGbytesSignal();
+        result.Should().BeTrue();
+    }
 }
