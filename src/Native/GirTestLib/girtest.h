@@ -4,6 +4,7 @@
 #include "girtest-alias-tester.h"
 #include "girtest-bitfield-tester.h"
 #include "girtest-byte-array-tester.h"
+#include "girtest-bytes-tester.h"
 #include "girtest-callback-tester.h"
 #include "girtest-class-tester.h"
 #include "girtest-clong-tester.h"
