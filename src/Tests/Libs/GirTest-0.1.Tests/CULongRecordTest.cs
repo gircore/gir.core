@@ -6,12 +6,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GirTest.Tests;
 
 [TestClass, TestCategory("BindingTest")]
-public class CULongTest : Test
+public class CULongRecordTest : Test
 {
     [TestMethod]
     public void ShouldUseCULongInInternalStructData()
     {
-        var data = new GirTest.Internal.CULongTesterData();
+        var data = new GirTest.Internal.CULongRecordTesterData();
         data.Ul.Should().BeOfType<CULong>();
     }
 
@@ -19,7 +19,7 @@ public class CULongTest : Test
     public unsafe void GetSizeOfLShouldBeSizeOfCULong()
     {
         var sizeOfCULong = sizeof(CULong);
-        var obj = new CULongTester();
+        var obj = new CULongRecordTester();
         obj.GetSizeofUl().Should().Be((nuint) sizeOfCULong);
     }
 
@@ -29,7 +29,7 @@ public class CULongTest : Test
     [PlatformCondition(Platform.Unix64)]
     public void ShouldHandleMaxULongValue(ulong value)
     {
-        var obj = new CULongTester { Ul = value };
+        var obj = new CULongRecordTester { Ul = value };
         obj.Ul.Should().Be(value);
     }
 
@@ -39,7 +39,7 @@ public class CULongTest : Test
     [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void ShouldHandleMaxMinUIntValue(uint value)
     {
-        var obj = new CULongTester { Ul = value };
+        var obj = new CULongRecordTester { Ul = value };
         obj.Ul.Should().Be(value);
     }
 
@@ -47,7 +47,7 @@ public class CULongTest : Test
     [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void ShouldThrowIfValueExceedsUIntegerSize()
     {
-        var obj = new CULongTester();
+        var obj = new CULongRecordTester();
         var act = () => obj.Ul = ulong.MaxValue;
         act.Should().Throw<OverflowException>();
     }
@@ -56,35 +56,35 @@ public class CULongTest : Test
     [PlatformCondition(Platform.Unix64)]
     public void ReturnsMaxULongValueOn64BitUnix()
     {
-        CULongTester.GetMaxUnsignedLongValue().Should().Be(ulong.MaxValue);
+        CULongRecordTester.GetMaxUnsignedLongValue().Should().Be(ulong.MaxValue);
     }
 
     [TestMethod]
     [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void ReturnsMaxULongValueOnWindows()
     {
-        CULongTester.GetMaxUnsignedLongValue().Should().Be(uint.MaxValue);
+        CULongRecordTester.GetMaxUnsignedLongValue().Should().Be(uint.MaxValue);
     }
 
     [TestMethod]
     [PlatformCondition(Platform.Unix64)]
     public void SetsMaxULongValueOn64BitUnix()
     {
-        CULongTester.IsMaxUnsignedLongValue(ulong.MaxValue).Should().BeTrue();
+        CULongRecordTester.IsMaxUnsignedLongValue(ulong.MaxValue).Should().BeTrue();
     }
 
     [TestMethod]
     [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void SetsMaxULongValueOnWindows()
     {
-        CULongTester.IsMaxUnsignedLongValue(uint.MaxValue).Should().BeTrue();
+        CULongRecordTester.IsMaxUnsignedLongValue(uint.MaxValue).Should().BeTrue();
     }
 
     [TestMethod]
     [PlatformCondition(Platform.Windows | Platform.Unix32)]
     public void ThrowsOverflowExceptionIfULongMaxValueIsPassedOnWindows()
     {
-        var action = () => CULongTester.IsMaxUnsignedLongValue(ulong.MaxValue).Should().BeTrue();
+        var action = () => CULongRecordTester.IsMaxUnsignedLongValue(ulong.MaxValue).Should().BeTrue();
         action.Should().Throw<OverflowException>();
     }
 
@@ -99,7 +99,7 @@ public class CULongTest : Test
             return val;
         }
 
-        CULongTester.RunCallback(value, Callback).Should().Be(value);
+        CULongRecordTester.RunCallback(value, Callback).Should().Be(value);
     }
 
     [DataTestMethod]
@@ -113,6 +113,6 @@ public class CULongTest : Test
             return val;
         }
 
-        CULongTester.RunCallback(value, Callback).Should().Be(value);
+        CULongRecordTester.RunCallback(value, Callback).Should().Be(value);
     }
 }
