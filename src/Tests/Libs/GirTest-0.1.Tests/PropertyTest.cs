@@ -1,4 +1,3 @@
-using System.Reflection;
 using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -110,6 +109,76 @@ public class PropertyTest : Test
         obj.Uint64Value = val;
 
         obj.Uint64Value.Should().Be(val);
+        obj.Uint64Value.Should().BeOfType(typeof(ulong));
+    }
+
+    [DataTestMethod]
+    [DataRow(42)]
+    [DataRow(long.MinValue)]
+    [DataRow(long.MaxValue)]
+    public void TestInt64Property(long val)
+    {
+        var obj = PropertyTester.New();
+        obj.Int64Value = val;
+
+        obj.Int64Value.Should().Be(val);
+        obj.Int64Value.Should().BeOfType(typeof(long));
+    }
+
+    [DataTestMethod]
+    [DataRow(42)]
+    [DataRow(long.MinValue)]
+    [DataRow(long.MaxValue)]
+    [PlatformCondition(Platform.Unix64)]
+    public void TestLongProperty64BitWideSystems(long val)
+    {
+        var obj = PropertyTester.New();
+        obj.LongValue = val;
+
+        obj.LongValue.Should().Be(val);
+        obj.LongValue.Should().BeOfType(typeof(long));
+    }
+
+    [DataTestMethod]
+    [DataRow(42)]
+    [DataRow(int.MinValue)]
+    [DataRow(int.MaxValue)]
+    [PlatformCondition(Platform.Windows | Platform.Unix32)]
+    public void TestLongProperty32BitWideSystems(int val)
+    {
+        var obj = PropertyTester.New();
+        obj.LongValue = val;
+
+        obj.LongValue.Should().Be(val);
+        obj.LongValue.Should().BeOfType(typeof(long));
+    }
+
+    [DataTestMethod]
+    [DataRow(42ul)]
+    [DataRow(ulong.MinValue)]
+    [DataRow(ulong.MaxValue)]
+    [PlatformCondition(Platform.Unix64)]
+    public void TestULongProperty64BitWideSystems(ulong val)
+    {
+        var obj = PropertyTester.New();
+        obj.UlongValue = val;
+
+        obj.UlongValue.Should().Be(val);
+        obj.UlongValue.Should().BeOfType(typeof(ulong));
+    }
+
+    [DataTestMethod]
+    [DataRow(42u)]
+    [DataRow(uint.MinValue)]
+    [DataRow(uint.MaxValue)]
+    [PlatformCondition(Platform.Windows | Platform.Unix32)]
+    public void TestULongProperty32BitWideSystems(uint val)
+    {
+        var obj = PropertyTester.New();
+        obj.UlongValue = val;
+
+        obj.UlongValue.Should().Be(val);
+        obj.UlongValue.Should().BeOfType(typeof(ulong));
     }
 
     [TestMethod]

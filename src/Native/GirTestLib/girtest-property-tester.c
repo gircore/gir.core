@@ -20,6 +20,9 @@ typedef enum
     PROP_EXECUTOR_VALUE = 7,
     PROP_EXECUTOR_ANONYMOUS_VALUE = 8,
     PROP_UINT64_VALUE = 9,
+    PROP_INT64_VALUE = 10,
+    PROP_LONG_VALUE = 11,
+    PROP_ULONG_VALUE = 12,
     N_PROPERTIES
 } PropertyTesterProperty;
 
@@ -36,7 +39,9 @@ struct _GirTestPropertyTester
     gint int_value;
     gboolean boolean_value;
     guint64 uint64_value;
-
+    gint64 int64_value;
+    glong long_value;
+    gulong ulong_value;
 };
 
 G_DEFINE_TYPE(GirTestPropertyTester, girtest_property_tester, G_TYPE_OBJECT)
@@ -81,6 +86,15 @@ girtest_property_tester_get_property (GObject    *object,
     case PROP_UINT64_VALUE:
         g_value_set_uint64 (value, self->uint64_value);
         break;
+    case PROP_INT64_VALUE:
+        g_value_set_int64 (value, self->int64_value);
+        break;
+    case PROP_LONG_VALUE:
+        g_value_set_long (value, self->long_value);
+        break;
+    case PROP_ULONG_VALUE:
+        g_value_set_ulong (value, self->ulong_value);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -116,6 +130,15 @@ girtest_property_tester_set_property (GObject      *object,
         break;
     case PROP_UINT64_VALUE:
         self->uint64_value = g_value_get_uint64 (value);
+        break;
+    case PROP_INT64_VALUE:
+        self->int64_value = g_value_get_int64 (value);
+        break;
+    case PROP_LONG_VALUE:
+        self->long_value = g_value_get_long (value);
+        break;
+    case PROP_ULONG_VALUE:
+        self->ulong_value = g_value_get_ulong (value);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -203,6 +226,33 @@ girtest_property_tester_class_init(GirTestPropertyTesterClass *class)
                                G_MAXUINT64,
                                0  /* default value */,
                                G_PARAM_READWRITE);
+
+    properties[PROP_INT64_VALUE] =
+            g_param_spec_int64 ("int64-value",
+                                "Int64 Value",
+                                "An int64 value",
+                                G_MININT64,
+                                G_MAXINT64,
+                                0  /* default value */,
+                                G_PARAM_READWRITE);
+
+    properties[PROP_LONG_VALUE] =
+          g_param_spec_long ("long-value",
+                             "Long Value",
+                             "A glong value",
+                             G_MINLONG,
+                             G_MAXLONG,
+                             0  /* default value */,
+                             G_PARAM_READWRITE);
+
+    properties[PROP_ULONG_VALUE] =
+          g_param_spec_ulong ("ulong-value",
+                              "ULong Value",
+                              "A gulong value",
+                              0,
+                              G_MAXULONG,
+                              0  /* default value */,
+                              G_PARAM_READWRITE);
 
     g_object_class_install_properties (object_class, N_PROPERTIES, properties);
 }

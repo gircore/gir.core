@@ -70,9 +70,10 @@ public class ValueTest : Test
     public void SupportsLong(long value)
     {
         var v = new Value(value);
-        v.GetLong().Should().Be(value);
+        v.GetInt64().Should().Be(value);
 
-        EnsureBasicType(v, BasicType.Long);
+        //BasicType.Int64 because Int64 is 64bit wide on all systems (which long is not)
+        EnsureBasicType(v, BasicType.Int64);
     }
 
     [DataTestMethod]
