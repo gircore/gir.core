@@ -5,6 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
 
+/// <summary>
+/// This tests correspond to GLib uint64 in the C code.
+/// The C type is an usigned 64 bit integer which maps to C# ulong.
+/// </summary>
 [TestClass, TestCategory("BindingTest")]
 public class ULongRecordTest : Test
 {
