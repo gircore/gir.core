@@ -6,19 +6,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GirTest.Tests;
 
 [TestClass, TestCategory("BindingTest")]
-public class ULongTest : Test
+public class ULongRecordTest : Test
 {
     [TestMethod]
     public void ShouldUseLongInInternalStructData()
     {
-        var data = new GirTest.Internal.ULongTesterData();
+        var data = new GirTest.Internal.ULongRecordTesterData();
         data.L.Should().BeOfType(typeof(ulong));
     }
 
     [TestMethod]
     public void GetSizeOfLShouldBeSizeOfLong()
     {
-        var obj = new ULongTester();
+        var obj = new ULongRecordTester();
         obj.GetSizeofL().Should().Be(sizeof(ulong));
     }
 
@@ -27,20 +27,20 @@ public class ULongTest : Test
     [DataRow(ulong.MinValue)]
     public void ShouldHandleMaxMinLongValue(ulong value)
     {
-        var obj = new ULongTester { L = value };
+        var obj = new ULongRecordTester { L = value };
         obj.L.Should().Be(value);
     }
 
     [TestMethod]
     public void ReturnsMaxLongValue()
     {
-        ULongTester.GetMaxUlongValue().Should().Be(ulong.MaxValue);
+        ULongRecordTester.GetMaxUlongValue().Should().Be(ulong.MaxValue);
     }
 
     [TestMethod]
     public void SetsMaxLongValue()
     {
-        ULongTester.IsMaxUlongValue(ulong.MaxValue).Should().BeTrue();
+        ULongRecordTester.IsMaxUlongValue(ulong.MaxValue).Should().BeTrue();
     }
 
     [DataTestMethod]
@@ -53,6 +53,6 @@ public class ULongTest : Test
             return val;
         }
 
-        ULongTester.RunCallback(value, Callback).Should().Be(value);
+        ULongRecordTester.RunCallback(value, Callback).Should().Be(value);
     }
 }
