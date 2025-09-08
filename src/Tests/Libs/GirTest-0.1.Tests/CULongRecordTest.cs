@@ -5,6 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
 
+/// <summary>
+/// This tests correspond to GLib gulong in the C code.
+/// The C type is an unsigned 64/32 bit integer depending on the platform which maps to C# CULong.
+/// </summary>
 [TestClass, TestCategory("BindingTest")]
 public class CULongRecordTest : Test
 {

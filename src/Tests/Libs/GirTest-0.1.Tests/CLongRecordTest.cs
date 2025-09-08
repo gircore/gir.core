@@ -5,6 +5,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
 
+/// <summary>
+/// This tests correspond to GLib glong in the C code.
+/// The C type is a signed 64/32 bit integer depending on the platform which maps to C# CLong.
+/// </summary>
 [TestClass, TestCategory("BindingTest")]
 public class CLongRecordTest : Test
 {
