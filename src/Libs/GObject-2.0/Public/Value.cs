@@ -21,7 +21,7 @@ public partial class Value : IDisposable
     public Value(bool value) : this(Type.Boolean) => SetBoolean(value);
     public Value(int value) : this(Type.Int) => SetInt(value);
     public Value(uint value) : this(Type.UInt) => SetUint(value);
-    public Value(long value) : this(Type.Long) => SetLong(value);
+    public Value(long value) : this(Type.Int64) => SetInt64(value);
     public Value(ulong value) : this(Type.UInt64) => SetUint64(value);
     public Value(double value) : this(Type.Double) => SetDouble(value);
     public Value(float value) : this(Type.Float) => SetFloat(value);
@@ -49,7 +49,7 @@ public partial class Value : IDisposable
     /// </summary>
     /// <returns>The content of this wrapped in an object</returns>
     /// <exception cref="NotSupportedException">
-    /// The value cannot be casted to the given type.
+    /// The value cannot be cast to the given type.
     /// </exception>
     internal object? Extract()
     {
@@ -59,8 +59,10 @@ public partial class Value : IDisposable
             (nuint) BasicType.Boolean => GetBoolean(),
             (nuint) BasicType.UInt => GetUint(),
             (nuint) BasicType.Int => GetInt(),
+            (nuint) BasicType.ULong => GetUlong(),
             (nuint) BasicType.Long => GetLong(),
             (nuint) BasicType.UInt64 => GetUint64(),
+            (nuint) BasicType.Int64 => GetInt64(),
             (nuint) BasicType.Double => GetDouble(),
             (nuint) BasicType.Float => GetFloat(),
             (nuint) BasicType.String => GetString(),
@@ -175,10 +177,10 @@ public partial class Value : IDisposable
                     SetEnum(e);
                 break;
             case long l:
-                SetLong(l);
+                SetLongDependingOnType(l);
                 break;
             case ulong l:
-                SetUint64(l);
+                SetUlongDependingOnType(l);
                 break;
             case float f:
                 SetFloat(f);
@@ -203,6 +205,38 @@ public partial class Value : IDisposable
                 break;
             default:
                 throw new NotSupportedException($"Type {value.GetType()} is not supported as a value type");
+        }
+    }
+
+    private void SetLongDependingOnType(long value)
+    {
+        var type = GetTypeValue();
+        switch (type)
+        {
+            case (nuint) BasicType.Long:
+                SetLong(value);
+                return;
+            case (nuint) BasicType.Int64:
+                SetInt64(value);
+                return;
+            default:
+                throw new Exception($"Type {type} is not a supported long type");
+        }
+    }
+
+    private void SetUlongDependingOnType(ulong value)
+    {
+        var type = GetTypeValue();
+        switch (type)
+        {
+            case (nuint) BasicType.ULong:
+                SetUlong(value);
+                return;
+            case (nuint) BasicType.UInt64:
+                SetUint64(value);
+                return;
+            default:
+                throw new Exception($"Type {type} is not a supported long type");
         }
     }
 }
