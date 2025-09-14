@@ -13,7 +13,7 @@ public static class DynamicInstanceFactory
         InstanceFactories.Add(type, handleWrapper);
     }
 
-    internal static object Create<TFallback>(IntPtr handle, bool ownsHandle) where TFallback : InstanceFactory, GTypeProvider
+    internal static object Create<TFallback>(IntPtr handle, bool ownsHandle) where TFallback : GObject.Object, InstanceFactory, GTypeProvider
     {
         var type = GetType(handle);
         var createInstance = GetInstanceFactory<TFallback>(type);
