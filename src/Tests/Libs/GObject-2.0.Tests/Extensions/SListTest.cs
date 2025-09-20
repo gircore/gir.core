@@ -19,6 +19,8 @@ public class SListTest : Test
             new BindingGroup()
         };
 
+        // Create zeroed SList handle to pass to "Append"
+        // TODO: Change to "new SList(null)" once https://github.com/gircore/gir.core/issues/1318 is merged
         var index = 0;
         var slist = new SList(new GLib.Internal.SListOwnedHandle(IntPtr.Zero));
         foreach (var value in valueArr)
@@ -49,6 +51,8 @@ public class SListTest : Test
             new Value("Hello World"),
         };
 
+        // Create zeroed SList handle to pass to "Append"
+        // TODO: Change to "new SList(null)" once https://github.com/gircore/gir.core/issues/1318 is merged
         var index = 0;
         var slist = new SList(new GLib.Internal.SListOwnedHandle(IntPtr.Zero));
         foreach (var value in valueArr)

@@ -13,6 +13,7 @@ public class SListTest : Test
         var valueArr = new IntPtr[] { 1234, -1234, 0 };
 
         // Create zeroed SList handle to pass to "Append"
+        // TODO: Change to "new SList(null)" once https://github.com/gircore/gir.core/issues/1318 is merged
         var slist = new SList(new Internal.SListOwnedHandle(IntPtr.Zero));
         foreach (var value in valueArr)
         {
@@ -43,6 +44,8 @@ public class SListTest : Test
             Internal.NullableUtf8StringOwnedHandle.Create(null)
         };
 
+        // Create zeroed SList handle to pass to "Append"
+        // TODO: Change to "new SList(null)" once https://github.com/gircore/gir.core/issues/1318 is merged
         var slist = new SList(new Internal.SListOwnedHandle(IntPtr.Zero));
         foreach (var value in valueArr)
         {
