@@ -12,7 +12,7 @@ public partial class Surface
     public static extern SurfaceOwnedHandle CreateSimilar(SurfaceHandle handle, Content content, int width, int height);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_create_similar_image")]
-    public static extern SurfaceOwnedHandle CreateSimilarImage(SurfaceHandle handle, Format format, int width, int height);
+    public static extern SurfaceOwnedHandle CreateSimilarImage(SurfaceHandle handle, Cairo.Format format, int width, int height);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_create_for_rectangle")]
     public static extern SurfaceOwnedHandle CreateForRectangle(SurfaceHandle handle, double x, double y, double width, double height);
@@ -58,6 +58,9 @@ public partial class Surface
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_set_fallback_resolution")]
     public static extern void SetFallbackResolution(SurfaceHandle handle, double xPixelsPerInch, double yPixelsPerInch);
+
+    [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_set_user_data")]
+    public static extern Status SetUserData(SurfaceHandle handle, IntPtr key, IntPtr userData, GLib.Internal.DestroyNotify destroy);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_status")]
     public static extern Status Status(SurfaceHandle handle);
