@@ -8,6 +8,12 @@ namespace Cairo.Tests;
 public class ImageSurfaceTest : Test
 {
     [TestMethod]
+    public void B()
+    {
+        var image = new ImageSurface()
+    }
+    
+    [TestMethod]
     public void BindingsShouldSucceed()
     {
         var surf = new Cairo.ImageSurface(Cairo.Format.Argb32, 800, 600);

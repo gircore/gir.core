@@ -59,6 +59,9 @@ public partial class Surface
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_set_fallback_resolution")]
     public static extern void SetFallbackResolution(SurfaceHandle handle, double xPixelsPerInch, double yPixelsPerInch);
 
+    [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_set_user_data")]
+    public static extern Status SetUserData(SurfaceHandle handle, IntPtr key, IntPtr userData, GLib.Internal.DestroyNotify destroy);
+
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_status")]
     public static extern Status Status(SurfaceHandle handle);
 }

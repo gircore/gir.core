@@ -10,6 +10,19 @@ public class ImageSurface : Surface
         Handle.AddMemoryPressure(GetSizeInBytes());
     }
 
+    public ImageSurface(GLib.Bytes data, Format format, int width, int height, int stride)
+        : base(Internal.ImageSurface.CreateForData(data.Handle.DangerousGetHandle(), format, width, height, stride))
+    {
+        Handle.AddMemoryPressure(GetSizeInBytes());
+        SetUserData(data);
+    }
+
+    private void SetUserData(GLib.Bytes data)
+    {
+        var userDataHandler = new Internal.UserDataHandler(data.Handle);
+        Internal.Surface.SetUserData(Handle, userDataHandler.Key, data.Handle.DangerousGetHandle(), userDataHandler.DestroyNotify);
+    }
+    
     public Format Format => Internal.ImageSurface.GetFormat(Handle);
     public int Height => Internal.ImageSurface.GetHeight(Handle);
     public int Width => Internal.ImageSurface.GetWidth(Handle);
