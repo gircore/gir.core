@@ -27,6 +27,6 @@ internal class TypedRecord : ParameterConverter
     {
         { Direction: GirModel.Direction.In } => ParameterDirection.In(),
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
-        _ => throw new Exception($"records with direction '{parameter.Direction}' not yet supported")
+        _ => throw new Exception($"Typed records with direction '{parameter.Direction}' not yet supported")
     };
 }

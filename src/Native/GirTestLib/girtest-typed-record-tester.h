@@ -51,14 +51,14 @@ GType girtest_typed_record_tester_get_type (void) G_GNUC_CONST;
 /**
  * GirTestCreateTypedRecordTesterNoOwnershipTransfer:
  *
- * Returns: (transfer none): a new OpaqueRecordTester.
+ * Returns: (transfer none): a new TypedRecordTester.
  */
 typedef GirTestTypedRecordTester* (*GirTestCreateTypedRecordTesterNoOwnershipTransfer) ();
 
 /**
  * GirTestCreateTypedRecordTesterNoOwnershipTransferNullable:
  *
- * Returns: (transfer none) (nullable): a new OpaqueRecordTester or NULL.
+ * Returns: (transfer none) (nullable): a new TypedRecordTester or NULL.
  */
 typedef GirTestTypedRecordTester* (*GirTestCreateTypedRecordTesterNoOwnershipTransferNullable) ();
 
@@ -120,6 +120,7 @@ void girtest_typed_record_tester_take_and_unref_func(int dummy, GirTestTypedReco
 void girtest_typed_record_tester_take_and_unref_func_nullable(int dummy, GirTestTypedRecordTester *data);
 int girtest_typed_record_tester_get_ref_count_sum(GirTestTypedRecordTester * const *data, gsize size);
 int girtest_typed_record_tester_get_ref_count_sum_nullable(GirTestTypedRecordTester * const *data, gsize size);
+void girtest_typed_record_tester_out_no_ownership_transfer_non_nullable_caller_allocates(GirTestTypedRecordTester *data);
 GirTestTypedRecordTester * girtest_typed_record_tester_run_callback_return_no_ownership_transfer(GirTestCreateTypedRecordTesterNoOwnershipTransfer callback);
 GirTestTypedRecordTester * girtest_typed_record_tester_run_callback_return_no_ownership_transfer_nullable(GirTestCreateTypedRecordTesterNoOwnershipTransferNullable callback);
 GirTestTypedRecordTester * girtest_typed_record_tester_run_callback_return_full_ownership_transfer(GirTestCreateTypedRecordTesterFullOwnershipTransfer callback);

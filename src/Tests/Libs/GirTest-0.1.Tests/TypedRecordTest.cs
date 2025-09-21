@@ -128,6 +128,13 @@ public class TypedRecordTest : Test
     }
 
     [TestMethod]
+    public void SupportsOutParameterNonNullableTransferNoneCallerAllocates()
+    {
+        TypedRecordTester.OutNoOwnershipTransferNonNullableCallerAllocates(out TypedRecordTester recordTester);
+        recordTester.CustomString.Should().Be("OutParameter");
+    }
+
+    [TestMethod]
     public void SupportsParameterArrayWithLengthParameter()
     {
         var recordTester1 = TypedRecordTester.New();

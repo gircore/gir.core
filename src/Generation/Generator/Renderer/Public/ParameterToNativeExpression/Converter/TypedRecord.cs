@@ -27,9 +27,21 @@ internal class TypedRecord : ToNativeParameterConverter
 
     private static void RegularRecord(ParameterToNativeData parameter)
     {
-        if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: record parameter '{parameter.Parameter.Name}' with direction != in not yet supported");
+        switch (parameter.Parameter.Direction)
+        {
+            case GirModel.Direction.In:
+                In(parameter);
+                break;
+            case GirModel.Direction.Out:
+                Out(parameter);
+                break;
+            default:
+                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: record parameter '{parameter.Parameter.Name}' with direction = {parameter.Parameter.Direction} not yet supported");
+        }
+    }
 
+    private static void In(ParameterToNativeData parameter)
+    {
         var record = (GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         var typeHandle = Model.TypedRecord.GetFullyQuallifiedHandle(record);
         var nullHandle = Model.TypedRecord.GetFullyQuallifiedNullHandle(record);
@@ -45,6 +57,23 @@ internal class TypedRecord : ToNativeParameterConverter
         };
 
         parameter.SetSignatureName(() => signatureName);
+        parameter.SetCallName(() => callName);
+    }
+
+    private static void Out(ParameterToNativeData parameter)
+    {
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var signatureName = Model.Parameter.GetName(parameter.Parameter);
+        var className = Model.TypedRecord.GetFullyQualifiedPublicClassName(record);
+
+        var callName = parameter.Parameter switch
+        {
+            { Nullable: false, Transfer: GirModel.Transfer.None, CallerAllocates: true } => $"{signatureName}.Handle",
+            _ => throw new Exception($"Can't detect call name for parameter record parameter {parameter.Parameter.Name}")
+        };
+
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetExpression(() => @$"{signatureName} = new {className}();");
         parameter.SetCallName(() => callName);
     }
 }

@@ -99,7 +99,7 @@ girtest_typed_record_tester_nullable_mirror(GirTestTypedRecordTester *data, gboo
 }
 
 /**
- * girtrest_typed_record_tester_unref:
+ * girtest_typed_record_tester_unref:
  * @self: (transfer full): a `GirTestTypedRecordTester`
  *
  * Decrements the reference count on `data` and frees the
@@ -222,6 +222,18 @@ int girtest_typed_record_tester_get_ref_count_sum_nullable(GirTestTypedRecordTes
         return -1;
 
     return girtest_typed_record_tester_get_ref_count_sum(data, size);
+}
+
+/**
+ * girtest_typed_record_tester_out_no_ownership_transfer_non_nullable_caller_allocates:
+ * @data: (not nullable) (out caller-allocates) (transfer none): a `GirTestTypedRecordTester`
+ **/
+void
+girtest_typed_record_tester_out_no_ownership_transfer_non_nullable_caller_allocates (GirTestTypedRecordTester *data)
+{
+    g_return_if_fail (data != NULL);
+
+    data->custom_string = g_strdup("OutParameter");
 }
 
 /**
