@@ -36,6 +36,6 @@ internal class TypedRecord : ParameterConverter
     {
         { Direction: GirModel.Direction.In } => ParameterDirection.In(),
         { Direction: GirModel.Direction.InOut } => ParameterDirection.In(),
-        _ => throw new Exception($"Unknown parameter direction for opaque typed record parameter {parameter.Name}")
+        _ => throw new Exception($"Unknown parameter direction for typed record parameter {parameter.Name}")
     };
 }
