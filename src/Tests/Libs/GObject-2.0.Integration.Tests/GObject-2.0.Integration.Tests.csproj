@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSTest.Sdk">
   <PropertyGroup>
     <RootNamespace>GObject.Integration.Tests</RootNamespace>
   </PropertyGroup>
@@ -6,7 +6,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" />
     <ProjectReference Include="..\..\Data\DiagnosticAnalyzerTestProject\DiagnosticAnalyzerTestProject.csproj" />
-    
+
     <PackageReference Include="Buildalyzer" Version="7.1.0" />
     <PackageReference Include="Buildalyzer.Workspaces" Version="7.1.0" />
   </ItemGroup>
