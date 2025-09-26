@@ -8,8 +8,8 @@ public class ImageSurface
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_image_surface_create")]
     public static extern SurfaceOwnedHandle Create(Format format, int width, int height);
 
-    // Skip cairo_image_surface_create_for_data for now, as it has some
-    // additional lifetime requirements for the input buffer.
+    [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_image_surface_create_for_data")]
+    public static extern SurfaceOwnedHandle CreateForData(IntPtr data, Format format, int width, int height, int stride);
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_image_surface_get_data")]
     public static extern IntPtr GetData(SurfaceHandle handle);
