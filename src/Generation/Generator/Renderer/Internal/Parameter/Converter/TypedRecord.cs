@@ -28,6 +28,7 @@ internal class TypedRecord : ParameterConverter
         {
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.None } => Model.TypedRecord.GetFullyQuallifiedHandle(type),
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.Full } => Model.TypedRecord.GetFullyQuallifiedUnownedHandle(type),
+            { Direction: GirModel.Direction.Out, Transfer: GirModel.Transfer.None } => Model.TypedRecord.GetFullyQuallifiedHandle(type),
             _ => throw new Exception($"Can't detect record parameter type {parameter.Name}: CallerAllocates={parameter.CallerAllocates} Direction={parameter.Direction} Transfer={parameter.Transfer}")
         };
     }
@@ -36,6 +37,7 @@ internal class TypedRecord : ParameterConverter
     {
         { Direction: GirModel.Direction.In } => ParameterDirection.In(),
         { Direction: GirModel.Direction.InOut } => ParameterDirection.In(),
+        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.In(), //We can use "in" here because caller allocates the memory
         _ => throw new Exception($"Unknown parameter direction for typed record parameter {parameter.Name}")
     };
 }
