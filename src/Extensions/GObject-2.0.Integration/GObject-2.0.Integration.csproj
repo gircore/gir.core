@@ -24,8 +24,8 @@
 
     <ItemGroup>
         <!-- Reference 4.8 as it is the first version which supports net8.0 -->
-        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.8.0"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.14.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0"/>
     </ItemGroup>
 
     <ItemGroup>
