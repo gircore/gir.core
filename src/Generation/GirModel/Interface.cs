@@ -11,4 +11,5 @@ public interface Interface : ComplexType
     IEnumerable<Property> Properties { get; }
     IEnumerable<Signal> Signals { get; }
     bool Introspectable { get; }
+    IEnumerable<ComplexType> Prerequisites { get; }
 }

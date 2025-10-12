@@ -10,6 +10,7 @@ internal static class InterfacesResolver
         foreach (var iface in repository.Namespace.Interfaces)
         {
             resolver.ResolveTypeReferences(iface.Implements, repository);
+            resolver.ResolveTypeReferences(iface.Prerequisites, repository);
             resolver.ResolveTypeReferences(iface.Properties.Select(x => x.TypeReference), repository);
 
             resolver.ResolveTypeReference(iface.GetTypeFunction.ReturnValue.TypeReference, repository);

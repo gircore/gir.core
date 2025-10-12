@@ -35,6 +35,7 @@ internal class InterfaceFactory
             cType: @interface.Type,
             name: @interface.Name,
             implements: _typeReferenceFactory.Create(@interface.Implements),
+            prerequisites: _typeReferenceFactory.Create(@interface.Prerequisites),
             methods: _methodFactory.Create(@interface.Methods),
             functions: _functionFactory.Create(@interface.Functions, repository),
             getTypeFunction: _functionFactory.CreateGetTypeFunction(@interface.GetTypeFunction, repository),

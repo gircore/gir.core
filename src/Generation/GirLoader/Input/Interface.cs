@@ -38,6 +38,9 @@ public class Interface
     [XmlElement("implements")]
     public List<Implement> Implements { get; set; } = default!;
 
+    [XmlElement("prerequisite")]
+    public List<Prerequisite> Prerequisites { get; set; } = default!;
+
     [XmlAttribute("introspectable")]
     public bool Introspectable = true;
 }
