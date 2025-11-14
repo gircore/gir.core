@@ -9,7 +9,6 @@
 **/Generated/*
 
 #.vscode/
-global.json
 coverage.*
 *.Generated.cs
 

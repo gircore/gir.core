@@ -6,7 +6,7 @@ namespace GirTest.Tests;
 [TestClass, TestCategory("BindingTest")]
 public class PropertyTest : Test
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("NewTitle")]
     [DataRow("Some Text With Unicode ☀🌙🌧")]
     public void TestStringProperty(string str)
@@ -76,7 +76,7 @@ public class PropertyTest : Test
         PropertyTester.RecordValuePropertyDefinition.ManagedName.Should().Be(nameof(PropertyTester.RecordValue));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(10)]
     [DataRow(-10)]
     [DataRow(0)]
@@ -88,7 +88,7 @@ public class PropertyTest : Test
         obj.IntValue.Should().Be(i);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void TestBooleanProperty(bool b)
@@ -99,7 +99,7 @@ public class PropertyTest : Test
         obj.BooleanValue.Should().Be(b);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(42ul)]
     [DataRow(ulong.MinValue)]
     [DataRow(ulong.MaxValue)]
@@ -112,7 +112,7 @@ public class PropertyTest : Test
         obj.Uint64Value.Should().BeOfType(typeof(ulong));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(42)]
     [DataRow(long.MinValue)]
     [DataRow(long.MaxValue)]
@@ -125,7 +125,7 @@ public class PropertyTest : Test
         obj.Int64Value.Should().BeOfType(typeof(long));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(42)]
     [DataRow(long.MinValue)]
     [DataRow(long.MaxValue)]
@@ -139,7 +139,7 @@ public class PropertyTest : Test
         obj.LongValue.Should().BeOfType(typeof(long));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(42)]
     [DataRow(int.MinValue)]
     [DataRow(int.MaxValue)]
@@ -153,7 +153,7 @@ public class PropertyTest : Test
         obj.LongValue.Should().BeOfType(typeof(long));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(42ul)]
     [DataRow(ulong.MinValue)]
     [DataRow(ulong.MaxValue)]
@@ -167,7 +167,7 @@ public class PropertyTest : Test
         obj.UlongValue.Should().BeOfType(typeof(ulong));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(42u)]
     [DataRow(uint.MinValue)]
     [DataRow(uint.MaxValue)]

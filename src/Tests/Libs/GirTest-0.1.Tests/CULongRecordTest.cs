@@ -27,7 +27,7 @@ public class CULongRecordTest : Test
         obj.GetSizeofUl().Should().Be((nuint) sizeOfCULong);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(ulong.MaxValue)]
     [DataRow(ulong.MinValue)]
     [PlatformCondition(Platform.Unix64)]
@@ -37,7 +37,7 @@ public class CULongRecordTest : Test
         obj.Ul.Should().Be(value);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(uint.MaxValue)]
     [DataRow(uint.MinValue)]
     [PlatformCondition(Platform.Windows | Platform.Unix32)]
@@ -92,7 +92,7 @@ public class CULongRecordTest : Test
         action.Should().Throw<OverflowException>();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(ulong.MaxValue)]
     [DataRow(ulong.MinValue)]
     [PlatformCondition(Platform.Unix64)]
@@ -106,7 +106,7 @@ public class CULongRecordTest : Test
         CULongRecordTester.RunCallback(value, Callback).Should().Be(value);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(uint.MaxValue)]
     [DataRow(uint.MinValue)]
     [PlatformCondition(Platform.Windows | Platform.Unix32)]

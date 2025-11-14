@@ -37,7 +37,7 @@ public class InterfaceSignalTest : Test
         result.Should().BeTrue();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsNamedSignals(bool valid)

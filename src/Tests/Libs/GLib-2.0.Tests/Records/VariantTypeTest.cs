@@ -6,7 +6,7 @@ namespace GLib.Tests;
 [TestClass, TestCategory("UnitTest")]
 public class VariantTypeTest : Test
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("s")]
     [DataRow("b")]
     [DataRow("y")]
@@ -17,7 +17,6 @@ public class VariantTypeTest : Test
     [DataRow("x")]
     [DataRow("t")]
     [DataRow("h")]
-    [DataRow("t")]
     [DataRow("v")]
     public void CanCreateTypeFromString(string type)
     {

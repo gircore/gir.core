@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSTest.Sdk">
   <PropertyGroup>
     <RootNamespace>GObject.Integration.Tests</RootNamespace>
   </PropertyGroup>

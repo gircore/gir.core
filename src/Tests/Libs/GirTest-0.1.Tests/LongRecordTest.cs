@@ -26,7 +26,7 @@ public class LongRecordTest : Test
         obj.GetSizeofL().Should().Be(sizeof(long));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(long.MaxValue)]
     [DataRow(long.MinValue)]
     public void ShouldHandleMaxMinLongValue(long value)
@@ -59,7 +59,7 @@ public class LongRecordTest : Test
         LongRecordTester.IsMinLongValue(long.MinValue).Should().BeTrue();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(long.MaxValue)]
     [DataRow(long.MinValue)]
     public void CanPassLongValueThroughCallback(long value)
