@@ -140,7 +140,7 @@ jobs:
         working-directory: './src'
 
       - name: Run integration tests
-        run: dotnet test --no-restore -c $configuration --filter TestCategory=IntegrationTest
+        run: dotnet test --no-restore -c $configuration -- --filter TestCategory=IntegrationTest
         working-directory: './src'
 
       - name: Pack release version
