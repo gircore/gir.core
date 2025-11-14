@@ -6,7 +6,7 @@ namespace GirTest.Tests;
 [TestClass, TestCategory("BindingTest")]
 public class ReturningSignalTest : Test
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsReturningBool(bool returnValue)

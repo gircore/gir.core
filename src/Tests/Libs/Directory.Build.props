@@ -3,7 +3,7 @@
   <Import Project="../../../properties/GirCore.Testing.props" />
   
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
+    <UseVsTest>true</UseVsTest>
   </PropertyGroup>
   
   <ItemGroup>

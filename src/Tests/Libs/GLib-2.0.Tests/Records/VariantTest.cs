@@ -6,7 +6,7 @@ namespace GLib.Tests;
 [TestClass, TestCategory("UnitTest")]
 public class VariantTest : Test
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void CanCreateBool(bool value)

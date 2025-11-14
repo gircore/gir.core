@@ -46,6 +46,6 @@ runs:
       shell: ${{ inputs.shell }}
 
     - name: Run unit tests
-      run: dotnet test --no-restore -c ${{ inputs.configuration }} --filter "TestCategory=UnitTest | TestCategory=BindingTest"
+      run: dotnet test --no-restore -c ${{ inputs.configuration }} -- --filter "TestCategory=UnitTest|TestCategory=BindingTest" --ignore-exit-code 8
       working-directory: ${{ inputs.source_directory }}
       shell: ${{ inputs.shell }}
