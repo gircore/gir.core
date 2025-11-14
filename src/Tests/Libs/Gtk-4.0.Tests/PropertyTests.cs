@@ -7,7 +7,7 @@ namespace Gtk.Tests;
 [TestClass, TestCategory("SystemTest")]
 public class PropertyTests : Test
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void TestBoolProperty(bool value)
@@ -18,7 +18,7 @@ public class PropertyTests : Test
         window.Resizable.Should().Be(value);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(500)]
     public void TestIntegerProperty(int value)
     {
@@ -28,7 +28,7 @@ public class PropertyTests : Test
         window.DefaultWidth.Should().Be(value);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(7u)]
     public void TestUnsignedIntegerProperty(uint value)
     {
@@ -38,7 +38,7 @@ public class PropertyTests : Test
         spinButton.Digits.Should().Be(value);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(0.5)]
     [DataRow(0.1)]
     [DataRow(0.9)]
@@ -51,7 +51,7 @@ public class PropertyTests : Test
         Math.Round(window.Opacity, 2).Should().Be(value);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("abc", "def")]
     [DataRow("öö", "ß")]
     public void TestStringArray(string value1, string value2)
@@ -63,7 +63,7 @@ public class PropertyTests : Test
         aboutDialog.Artists[1].Should().Be(value2);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(License.MitX11)]
     [DataRow(License.Agpl30)]
     public void TestEnum(License windowPosition)
