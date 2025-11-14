@@ -59,7 +59,7 @@ public class ClassPropertyTest
         property.Name.Should().Be(propertyName);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("gboolean", false, typeof(Output.Boolean))]
     [DataRow("gfloat", false, typeof(Output.Float))]
     [DataRow("float", false, typeof(Output.Float))]
@@ -143,7 +143,7 @@ public class ClassPropertyTest
         type.Should().BeAssignableTo<Output.PrimitiveValueType>();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("gchar*", "utf8", typeof(Output.Utf8String))]
     [DataRow("gchar*", "filename", typeof(Output.PlatformString))]
     [DataRow("char*", "utf8", typeof(Output.Utf8String))]

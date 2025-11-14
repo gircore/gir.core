@@ -26,7 +26,7 @@ public class ULongRecordTest : Test
         obj.GetSizeofL().Should().Be(sizeof(ulong));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(ulong.MaxValue)]
     [DataRow(ulong.MinValue)]
     public void ShouldHandleMaxMinLongValue(ulong value)
@@ -47,7 +47,7 @@ public class ULongRecordTest : Test
         ULongRecordTester.IsMaxUlongValue(ulong.MaxValue).Should().BeTrue();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(ulong.MaxValue)]
     [DataRow(ulong.MinValue)]
     public void CanPassLongValueThroughCallback(ulong value)
