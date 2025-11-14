@@ -26,4 +26,6 @@ Applications using gir.core. To add a new application to the list [edit this pag
 
 ## WebCamControl
 
-[WebCamControl](https://d.sb/wcc) is a Linux GUI app that can be used to control properties of your webcam such as pan, tilt, zoom, etc. It contains examples of [Blueprint](https://gnome.pages.gitlab.gnome.org/blueprint-compiler/), Flatpak packaging, dependency injection during window creation, loading icons from GLib resources, subclassed components, and localization using gettext.
+[WebCamControl](https://d.sb/wcc) is a Linux GUI app that can be used to control properties of your webcam such as pan, tilt, zoom, etc. It contains examples of [Blueprint](https://gnome.pages.gitlab.gnome.org/blueprint-compiler/), [Flatpak packaging](https://flathub.org/apps/com.daniel15.wcc), dependency injection during window creation, loading icons from GLib resources, subclassed components, and localization using gettext.
+
+![](https://d.sb/projects/wcc/screenshot1.png)
