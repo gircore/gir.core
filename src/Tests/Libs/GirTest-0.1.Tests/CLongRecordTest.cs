@@ -27,7 +27,7 @@ public class CLongRecordTest : Test
         obj.GetSizeofL().Should().Be((nuint) sizeOfCLong);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(long.MaxValue)]
     [DataRow(long.MinValue)]
     [PlatformCondition(Platform.Unix64)]
@@ -37,7 +37,7 @@ public class CLongRecordTest : Test
         obj.L.Should().Be(value);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(int.MaxValue)]
     [DataRow(int.MinValue)]
     [PlatformCondition(Platform.Windows | Platform.Unix32)]
@@ -47,7 +47,7 @@ public class CLongRecordTest : Test
         obj.L.Should().Be(value);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(long.MaxValue)]
     [DataRow(long.MinValue)]
     [PlatformCondition(Platform.Windows | Platform.Unix32)]
@@ -130,7 +130,7 @@ public class CLongRecordTest : Test
         action.Should().Throw<OverflowException>();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(long.MaxValue)]
     [DataRow(long.MinValue)]
     [PlatformCondition(Platform.Unix64)]
@@ -144,7 +144,7 @@ public class CLongRecordTest : Test
         CLongRecordTester.RunCallback(value, Callback).Should().Be(value);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(int.MaxValue)]
     [DataRow(int.MinValue)]
     [PlatformCondition(Platform.Windows | Platform.Unix32)]

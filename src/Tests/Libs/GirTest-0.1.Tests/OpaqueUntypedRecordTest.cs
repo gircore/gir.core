@@ -169,7 +169,7 @@ public class OpaqueUntypedRecordTest : Test
         recordTester.Handle.DangerousGetHandle().Should().Be(recordTester2.Handle.DangerousGetHandle());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsCallbackReturnNoOwnershipTransferNullable(bool useNull)
@@ -203,7 +203,7 @@ public class OpaqueUntypedRecordTest : Test
         recordTester.Handle.DangerousGetHandle().Should().Be(recordTester2.Handle.DangerousGetHandle());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsCallbackReturnFullOwnershipTransferNullable(bool useNull)
@@ -237,7 +237,7 @@ public class OpaqueUntypedRecordTest : Test
         called.Should().BeTrue();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsCallbackParameterFullOwnershipTransferNullable(bool useNull)
@@ -272,7 +272,7 @@ public class OpaqueUntypedRecordTest : Test
         called.Should().BeTrue();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsCallbackParameterNoOwnershipTransferNullable(bool useNull)

@@ -18,7 +18,7 @@ public class ValueTest : Test
         Internal.Functions.TypeCheckValueHolds(v.Handle, (nuint) basicType).Should().BeTrue();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(0)]
     [DataRow(1)]
     [DataRow(10)]
@@ -31,7 +31,7 @@ public class ValueTest : Test
         EnsureBasicType(v, BasicType.Int);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsBool(bool value)
@@ -42,7 +42,7 @@ public class ValueTest : Test
         EnsureBasicType(v, BasicType.Boolean);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(2.0)]
     [DataRow(-2.0)]
     public void SupportsDouble(double value)
@@ -53,7 +53,7 @@ public class ValueTest : Test
         EnsureBasicType(v, BasicType.Double);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(2.0f)]
     [DataRow(-2.0f)]
     public void SupportsFloat(float value)
@@ -64,7 +64,7 @@ public class ValueTest : Test
         EnsureBasicType(v, BasicType.Float);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(7u)]
     [DataRow(1000u)]
     public void SupportsLong(long value)
@@ -76,7 +76,7 @@ public class ValueTest : Test
         EnsureBasicType(v, BasicType.Int64);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ABC")]
     [DataRow("")]
     public void SupportsString(string value)
