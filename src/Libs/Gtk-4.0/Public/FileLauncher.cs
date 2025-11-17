@@ -14,16 +14,16 @@ public partial class FileLauncher
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var launchValue = Internal.FileLauncher.LaunchFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else
-                tcs.SetResult(launchValue);
+                tcs.TrySetResult(launchValue);
         });
 
         Internal.FileLauncher.Launch(
@@ -46,16 +46,16 @@ public partial class FileLauncher
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var launchValue = Internal.FileLauncher.OpenContainingFolderFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else
-                tcs.SetResult(launchValue);
+                tcs.TrySetResult(launchValue);
         });
 
         Internal.FileLauncher.OpenContainingFolder(

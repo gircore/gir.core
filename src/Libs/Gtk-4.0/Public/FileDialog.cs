@@ -14,18 +14,18 @@ public partial class FileDialog
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var fileValue = Internal.FileDialog.OpenFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else if (fileValue == IntPtr.Zero)
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             else
-                tcs.SetResult((Gio.File) GObject.Internal.InstanceWrapper.WrapHandle<Gio.FileHelper>(fileValue, true));
+                tcs.TrySetResult((Gio.File) GObject.Internal.InstanceWrapper.WrapHandle<Gio.FileHelper>(fileValue, true));
         });
 
         Internal.FileDialog.Open(
@@ -48,18 +48,18 @@ public partial class FileDialog
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var listValue = Internal.FileDialog.OpenMultipleFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else if (listValue == IntPtr.Zero)
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             else
-                tcs.SetResult((Gio.ListModel) GObject.Internal.InstanceWrapper.WrapHandle<Gio.ListModelHelper>(listValue, true));
+                tcs.TrySetResult((Gio.ListModel) GObject.Internal.InstanceWrapper.WrapHandle<Gio.ListModelHelper>(listValue, true));
         });
 
         Internal.FileDialog.OpenMultiple(
@@ -82,18 +82,18 @@ public partial class FileDialog
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var fileValue = Internal.FileDialog.SaveFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else if (fileValue == IntPtr.Zero)
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             else
-                tcs.SetResult((Gio.File) GObject.Internal.InstanceWrapper.WrapHandle<Gio.FileHelper>(fileValue, true));
+                tcs.TrySetResult((Gio.File) GObject.Internal.InstanceWrapper.WrapHandle<Gio.FileHelper>(fileValue, true));
         });
 
         Internal.FileDialog.Save(
@@ -117,18 +117,18 @@ public partial class FileDialog
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var fileValue = Internal.FileDialog.SelectFolderFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else if (fileValue == IntPtr.Zero)
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             else
-                tcs.SetResult((Gio.File) GObject.Internal.InstanceWrapper.WrapHandle<Gio.FileHelper>(fileValue, true));
+                tcs.TrySetResult((Gio.File) GObject.Internal.InstanceWrapper.WrapHandle<Gio.FileHelper>(fileValue, true));
         });
 
         Internal.FileDialog.SelectFolder(
@@ -151,18 +151,18 @@ public partial class FileDialog
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var listValue = Internal.FileDialog.SelectMultipleFoldersFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else if (listValue == IntPtr.Zero)
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             else
-                tcs.SetResult((Gio.ListModel) GObject.Internal.InstanceWrapper.WrapHandle<Gio.ListModelHelper>(listValue, true));
+                tcs.TrySetResult((Gio.ListModel) GObject.Internal.InstanceWrapper.WrapHandle<Gio.ListModelHelper>(listValue, true));
         });
 
         Internal.FileDialog.SelectMultipleFolders(

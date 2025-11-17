@@ -14,16 +14,16 @@ public partial class Clipboard
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var readValue = Internal.Clipboard.ReadTextFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else
-                tcs.SetResult(readValue.ConvertToString());
+                tcs.TrySetResult(readValue.ConvertToString());
         });
 
         Internal.Clipboard.ReadTextAsync(

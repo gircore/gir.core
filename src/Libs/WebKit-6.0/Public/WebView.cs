@@ -14,16 +14,16 @@ public partial class WebView
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var jsValue = Internal.WebView.EvaluateJavascriptFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else
-                tcs.SetResult((JavaScriptCore.Value) GObject.Internal.InstanceWrapper.WrapHandle<JavaScriptCore.Value>(jsValue, true));
+                tcs.TrySetResult((JavaScriptCore.Value) GObject.Internal.InstanceWrapper.WrapHandle<JavaScriptCore.Value>(jsValue, true));
         });
 
         Internal.WebView.EvaluateJavascript(

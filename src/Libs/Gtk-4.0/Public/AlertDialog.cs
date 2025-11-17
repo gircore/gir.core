@@ -14,16 +14,16 @@ public partial class AlertDialog
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var chooseValue = Internal.AlertDialog.ChooseFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else
-                tcs.SetResult(chooseValue);
+                tcs.TrySetResult(chooseValue);
         });
 
         Internal.AlertDialog.Choose(

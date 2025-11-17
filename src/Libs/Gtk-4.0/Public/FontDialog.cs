@@ -14,18 +14,18 @@ public partial class FontDialog
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var chooseFontFaceResult = Internal.FontDialog.ChooseFaceFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             if (chooseFontFaceResult == IntPtr.Zero)
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             else
-                tcs.SetResult((Pango.FontFace) GObject.Internal.InstanceWrapper.WrapHandle<Pango.FontFace>(chooseFontFaceResult, true));
+                tcs.TrySetResult((Pango.FontFace) GObject.Internal.InstanceWrapper.WrapHandle<Pango.FontFace>(chooseFontFaceResult, true));
         });
 
         Internal.FontDialog.ChooseFace(
@@ -49,18 +49,18 @@ public partial class FontDialog
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var chooseFontFamilyResult = Internal.FontDialog.ChooseFamilyFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else if (chooseFontFamilyResult == IntPtr.Zero)
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             else
-                tcs.SetResult((Pango.FontFamily) GObject.Internal.InstanceWrapper.WrapHandle<Pango.FontFamily>(chooseFontFamilyResult, true));
+                tcs.TrySetResult((Pango.FontFamily) GObject.Internal.InstanceWrapper.WrapHandle<Pango.FontFamily>(chooseFontFamilyResult, true));
         });
 
         Internal.FontDialog.ChooseFamily(
@@ -84,18 +84,18 @@ public partial class FontDialog
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var fontDescriptionOwnedHandle = Internal.FontDialog.ChooseFontFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else if (fontDescriptionOwnedHandle.IsInvalid)
-                tcs.SetResult(null);
+                tcs.TrySetResult(null);
             else
-                tcs.SetResult(new Pango.FontDescription(fontDescriptionOwnedHandle));
+                tcs.TrySetResult(new Pango.FontDescription(fontDescriptionOwnedHandle));
         });
 
         var initialValue = (Pango.Internal.FontDescriptionHandle?) fontDescription?.Handle ?? Pango.Internal.FontDescriptionUnownedHandle.NullHandle;

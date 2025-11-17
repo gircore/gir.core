@@ -25,16 +25,16 @@ public partial class DBusConnection
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var ret = Internal.DBusConnection.CallFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GException(error));
+                tcs.TrySetException(new GException(error));
             else
-                tcs.SetResult(new Variant(ret));
+                tcs.TrySetResult(new Variant(ret));
         });
 
         Internal.DBusConnection.Call(Handle.DangerousGetHandle(),

@@ -14,16 +14,16 @@ public partial class UriLauncher
         {
             if (sourceObject is null)
             {
-                tcs.SetException(new Exception("Missing source object"));
+                tcs.TrySetException(new Exception("Missing source object"));
                 return;
             }
 
             var launchValue = Internal.UriLauncher.LaunchFinish(sourceObject.Handle.DangerousGetHandle(), res.Handle.DangerousGetHandle(), out var error);
 
             if (!error.IsInvalid)
-                tcs.SetException(new GLib.GException(error));
+                tcs.TrySetException(new GLib.GException(error));
             else
-                tcs.SetResult(launchValue);
+                tcs.TrySetResult(launchValue);
         });
 
         Internal.UriLauncher.Launch(
