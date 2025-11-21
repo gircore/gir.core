@@ -22,7 +22,7 @@ public partial class FontDialog
 
             if (!error.IsInvalid)
                 tcs.SetException(new GLib.GException(error));
-            if (chooseFontFaceResult == IntPtr.Zero)
+            else if (chooseFontFaceResult == IntPtr.Zero)
                 tcs.SetResult(null);
             else
                 tcs.SetResult((Pango.FontFace) GObject.Internal.InstanceWrapper.WrapHandle<Pango.FontFace>(chooseFontFaceResult, true));
