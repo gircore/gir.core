@@ -43,7 +43,7 @@ jobs:
         run: git config --global core.autocrlf false
         shell: bash
       - name: Checkout with submodules
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: 'true'
 
@@ -88,7 +88,7 @@ jobs:
         run: git config --global core.autocrlf false
         shell: bash      
       - name: Checkout with submodules
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: 'true'
 
@@ -126,7 +126,7 @@ jobs:
           git config --global core.autocrlf false
           git config --global --add safe.directory /__w/gir.core/gir.core
       - name: Checkout with submodules
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: 'true'
 
