@@ -1,0 +1,31 @@
+name: "Run Tests"
+description: "Runs dotnet test with a configurable filter (e.g. test categories)."
+
+inputs:
+  configuration:
+    description: "Build configuration to use (e.g. Release)"
+    required: true
+  source_directory:
+    description: "Directory containing the source code (e.g. ./src)"
+    required: true
+  shell:
+    description: "Shell to use for the run step (e.g. bash)"
+    required: false
+    default: bash
+  test_categories:
+    description: 'Filter expression for dotnet test --filter (e.g. "TestCategory=UnitTest | TestCategory=BindingTest")'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run unit tests
+      run: dotnet test --no-build -c ${{ inputs.configuration }} --filter "${{ inputs.test_categories }}" --logger trx
+      working-directory: ${{ inputs.source_directory }}
+      shell: ${{ inputs.shell }}
+
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-${{ runner.os }}
+        path: '**/TestResults/*.trx'

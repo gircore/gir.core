@@ -44,8 +44,3 @@ runs:
       run: dotnet build --nologo -c ${{ inputs.configuration }} GirCore.Libs.slnf
       working-directory: ${{ inputs.source_directory }}
       shell: ${{ inputs.shell }}
-
-    - name: Run unit tests
-      run: dotnet test --no-restore -c ${{ inputs.configuration }} --filter "TestCategory=UnitTest | TestCategory=BindingTest"
-      working-directory: ${{ inputs.source_directory }}
-      shell: ${{ inputs.shell }}

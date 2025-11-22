@@ -295,6 +295,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rsvg-2.0", "Libs\Rsvg-2.0\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GstApp-1.0", "Libs\GstApp-1.0\GstApp-1.0.csproj", "{40C48CDD-C1BF-DC33-F0B5-4E54FA0BFD05}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F8C719BB-B889-4477-9AB6-E597C4A496BF}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\actions\test\action.yml = ..\.github\actions\test\action.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1108,6 +1113,7 @@ Global
 		{12028A1C-3B7B-4E8F-9995-8DB2CCA4669F} = {D02E87CA-BB57-48BB-8284-57D1EF2C5EE5}
 		{6C1BE0E8-6A69-42B8-A597-EEB8BCA7F2BB} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
 		{40C48CDD-C1BF-DC33-F0B5-4E54FA0BFD05} = {386AE10F-B7AC-4C97-AC5C-202D3662A868}
+		{F8C719BB-B889-4477-9AB6-E597C4A496BF} = {A8607D28-5605-4833-803F-AB6DC85E8BBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5FCD601-AE0E-4577-9025-1CB7B6C9A3FF}
