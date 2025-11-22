@@ -24,7 +24,7 @@ internal static class CallbackParameters
         new Parameter.PointerAlias(),
         new Parameter.PointerArray(),
         new Parameter.PointerGLibArray(),
-        new Parameter.PointerGLibPtrArray(),
+        new Parameter.GLibPointerArray(),
         new Parameter.Long(), //Must be before primitive value type
         new Parameter.UnsignedLong(), //Must be before primitive value type
         new Parameter.CLong(), //Must be before primitive value type
@@ -35,7 +35,7 @@ internal static class CallbackParameters
         new Parameter.PrimitiveValueTypeArrayAlias(),
         new Parameter.PrimitiveValueTypeGLibArray(),
         new Parameter.PrimitiveValueTypeGLibArrayAlias(),
-        new Parameter.PrimitiveValueTypeGLibPtrArray(),
+        new Parameter.PrimitiveValueTypeGLibPointerArray(),
         new Parameter.String(),
         new Parameter.TypedRecordCallback(),
         new Parameter.TypedRecordCallbackAlias(),
