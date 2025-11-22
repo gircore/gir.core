@@ -15,6 +15,7 @@ internal static class ParameterToNativeExpression
         new ParameterToNativeExpressions.Enumeration(),
         new ParameterToNativeExpressions.ForeignTypedRecord(),
         new ParameterToNativeExpressions.ForeignTypedRecordArray(),
+        new ParameterToNativeExpressions.GLibPointerArray(),
         new ParameterToNativeExpressions.Interface(),
         new ParameterToNativeExpressions.InterfaceArray(),
         new ParameterToNativeExpressions.OpaqueTypedRecord(),
