@@ -24,7 +24,7 @@ internal class GLibPointerArray : ReturnTypeConverter
                 _ => throw new NotImplementedException("Unknown transfer type")
             };
 
-            var createNewInstance = $"new GLib.PtrArray({handleExpression})";
+            var createNewInstance = $"new {Model.PointerArrayType.GetFullyQualifiedPublicClassName()}({handleExpression})";
 
             return returnType.Nullable
                  ? $"{fromVariableName}.IsInvalid ? null : {createNewInstance}"

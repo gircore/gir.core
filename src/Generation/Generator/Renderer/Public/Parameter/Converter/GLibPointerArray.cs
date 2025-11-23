@@ -17,7 +17,7 @@ internal class GLibPointerArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return "GLib" + "." + Model.PointerArrayType.GetName() + Nullable.Render(parameter);
+        return Model.PointerArrayType.GetFullyQualifiedPublicClassName() + Nullable.Render(parameter);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
