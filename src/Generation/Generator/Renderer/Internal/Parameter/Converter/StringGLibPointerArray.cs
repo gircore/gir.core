@@ -2,21 +2,30 @@ using System;
 
 namespace Generator.Renderer.Internal.Parameter;
 
-public class ClassGLibPtrArray : ParameterConverter
+internal class StringGLibPointerArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsGLibPtrArray<GirModel.Class>();
+        return anyType.IsGLibPtrArray<GirModel.String>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
         return new RenderableParameter(
-            Attribute: string.Empty,
+            Attribute: GetAttribute(parameter),
             Direction: GetDirection(parameter),
             NullableTypeName: GetNullableTypeName(parameter),
             Name: Model.Parameter.GetName(parameter)
         );
+    }
+
+    private static string GetAttribute(GirModel.Parameter parameter)
+    {
+        return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length switch
+        {
+            null => string.Empty,
+            { } l => MarshalAs.UnmanagedLpArray(sizeParamIndex: l)
+        };
     }
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
@@ -38,4 +47,3 @@ public class ClassGLibPtrArray : ParameterConverter
         _ => ParameterDirection.In()
     };
 }
-

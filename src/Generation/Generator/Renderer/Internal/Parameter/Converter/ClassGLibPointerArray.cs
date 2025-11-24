@@ -2,11 +2,11 @@ using System;
 
 namespace Generator.Renderer.Internal.Parameter;
 
-public class PrimitiveValueTypeGLibPtrArray : ParameterConverter
+public class ClassGLibPointerArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsGLibPtrArray<GirModel.PrimitiveValueType>();
+        return anyType.IsGLibPtrArray<GirModel.Class>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

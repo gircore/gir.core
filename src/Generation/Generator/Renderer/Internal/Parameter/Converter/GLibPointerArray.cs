@@ -2,7 +2,7 @@ using System;
 
 namespace Generator.Renderer.Internal.Parameter;
 
-public class PointerGLibPtrArray : ParameterConverter
+public class GLibPointerArray : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
