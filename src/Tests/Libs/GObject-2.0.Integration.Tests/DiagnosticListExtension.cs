@@ -18,4 +18,12 @@ public static class DiagnosticListExtension
         if (sourceFile != expectedFile)
             throw new Exception($"Diagnostic {diagnosticId} not raised in {expectedFile}");
     }
+
+    public static void ContainsNoDiagnosticForFile(this IEnumerable<Diagnostic> diagnostics, string diagnosticId, string expectedFile)
+    {
+        var relevantDiagnostics = diagnostics.Where(x => x.Id == diagnosticId);
+        var containedInFile = relevantDiagnostics.Any(x => x.Location.SourceTree!.FilePath == expectedFile);
+        if (containedInFile)
+            throw new Exception($"Diagnostic {diagnosticId} raised in {expectedFile}");
+    }
 }
