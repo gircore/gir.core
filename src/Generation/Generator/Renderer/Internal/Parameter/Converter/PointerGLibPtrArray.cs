@@ -25,14 +25,17 @@ public class PointerGLibPtrArray : ParameterConverter
         {
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.None } => Model.PointerArrayType.GetFullyQuallifiedHandle(),
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.Full } => Model.PointerArrayType.GetFullyQuallifiedUnownedHandle(),
-            _ => throw new Exception($"Can't detect ptrarray parameter type {parameter.Name}: CallerAllocates={parameter.CallerAllocates} Direction={parameter.Direction} Transfer={parameter.Transfer}")
+            { Direction: GirModel.Direction.Out, Transfer: GirModel.Transfer.None } => Model.PointerArrayType.GetFullyQuallifiedHandle(),
+            _ => throw new Exception($"ptrarray parameter type {parameter.Name}: CallerAllocates={parameter.CallerAllocates} Direction={parameter.Direction} Transfer={parameter.Transfer} not yet supported")
         };
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
-        { Direction: GirModel.Direction.In } => ParameterDirection.In(),
-        _ => throw new Exception($"Unknown parameter direction for ptrarray parameter {parameter.Name}")
+        { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
+        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.Ref(),
+        { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
+        _ => ParameterDirection.In()
     };
 }
 
