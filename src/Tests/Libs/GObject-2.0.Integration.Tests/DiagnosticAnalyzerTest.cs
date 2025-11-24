@@ -27,5 +27,7 @@ public class DiagnosticAnalyzerTest : Test
         diagnostics.ContainsDiagnosticForFile("GirCore1001", "RaiseGirCore1001.cs");
         diagnostics.ContainsDiagnosticForFile("GirCore1002", "RaiseGirCore1002.cs");
         diagnostics.ContainsDiagnosticForFile("GirCore1003", "RaiseGirCore1003.cs");
+
+        diagnostics.ContainsNoDiagnosticForFile("GirCore1002", "NotRaiseGirCore1002.cs");
     }
 }
