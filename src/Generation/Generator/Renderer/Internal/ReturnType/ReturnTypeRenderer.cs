@@ -13,7 +13,6 @@ internal static class ReturnTypeRenderer
         new ReturnType.ForeignTypedRecord(),
         new ReturnType.GLibPointerArray(),
         new ReturnType.Interface(),
-        new ReturnType.InterfaceGLibPtrArray(),
         new ReturnType.OpaqueTypedRecord(),
         new ReturnType.OpaqueUntypedRecord(),
         new ReturnType.PlatformString(),

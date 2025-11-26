@@ -32,10 +32,10 @@ public class GLibPointerArray : ParameterConverter
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
-        { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
-        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.Ref(),
-        { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
-        _ => ParameterDirection.In()
+        { Direction: GirModel.Direction.In } => ParameterDirection.In(),
+        { Direction: GirModel.Direction.InOut } => ParameterDirection.In(),
+        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.In(), //We can use "in" here because caller allocates the memory
+        _ => throw new Exception($"Unknown parameter direction for ptrarray parameter {parameter.Name}")
     };
 }
 

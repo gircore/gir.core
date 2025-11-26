@@ -4,24 +4,24 @@ namespace Generator.Renderer.Internal;
 
 internal static class ReturnTypeRendererCallback
 {
-    private static readonly List<ReturnType.ReturnTypeConverter> converters = new()
-    {
+    private static readonly List<ReturnType.ReturnTypeConverter> converters =
+    [
         new ReturnType.Bitfield(),
         new ReturnType.Class(),
         new ReturnType.ClassArray(),
         new ReturnType.Enumeration(),
         new ReturnType.ForeignTypedRecordCallback(),
+        new ReturnType.GLibPointerArrayCallback(),
         new ReturnType.Interface(),
-        new ReturnType.InterfaceGLibPtrArray(),
         new ReturnType.OpaqueTypedRecordCallback(),
         new ReturnType.OpaqueUntypedRecordCallback(),
         new ReturnType.PlatformStringInCallback(),
         new ReturnType.PlatformStringArrayInCallback(),
         new ReturnType.Pointer(),
-        new ReturnType.Long(),  //Must be before primitive value type
-        new ReturnType.UnsignedLong(),  //Must be before primitive value type
-        new ReturnType.CLong(),  //Must be before primitive value type
-        new ReturnType.UnsignedCLong(),  //Must be before primitive value type
+        new ReturnType.Long(), //Must be before primitive value type
+        new ReturnType.UnsignedLong(), //Must be before primitive value type
+        new ReturnType.CLong(), //Must be before primitive value type
+        new ReturnType.UnsignedCLong(), //Must be before primitive value type
         new ReturnType.PrimitiveValueType(),
         new ReturnType.PrimitiveValueTypeAlias(),
         new ReturnType.PrimitiveValueTypeArray(),
@@ -31,8 +31,8 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.UntypedRecordCallback(),
         new ReturnType.Utf8StringInCallback(),
         new ReturnType.Utf8StringArrayInCallback(),
-        new ReturnType.Void(),
-    };
+        new ReturnType.Void()
+    ];
 
     public static string Render(GirModel.ReturnType returnType)
     {

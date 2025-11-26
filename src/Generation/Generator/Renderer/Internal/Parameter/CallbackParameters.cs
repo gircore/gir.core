@@ -14,6 +14,7 @@ internal static class CallbackParameters
         new Parameter.EnumerationArray(),
         new Parameter.ForeignTypedRecordCallback(),
         new Parameter.GLibByteArray(),
+        new Parameter.GLibPointerArrayCallback(),
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
         new Parameter.NativeUnsignedIntegerArray(),
@@ -24,7 +25,6 @@ internal static class CallbackParameters
         new Parameter.PointerAlias(),
         new Parameter.PointerArray(),
         new Parameter.PointerGLibArray(),
-        new Parameter.GLibPointerArray(),
         new Parameter.Long(), //Must be before primitive value type
         new Parameter.UnsignedLong(), //Must be before primitive value type
         new Parameter.CLong(), //Must be before primitive value type
@@ -35,7 +35,6 @@ internal static class CallbackParameters
         new Parameter.PrimitiveValueTypeArrayAlias(),
         new Parameter.PrimitiveValueTypeGLibArray(),
         new Parameter.PrimitiveValueTypeGLibArrayAlias(),
-        new Parameter.PrimitiveValueTypeGLibPointerArray(),
         new Parameter.String(),
         new Parameter.TypedRecordCallback(),
         new Parameter.TypedRecordCallbackAlias(),
