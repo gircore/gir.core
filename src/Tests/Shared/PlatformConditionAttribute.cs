@@ -38,7 +38,7 @@ public sealed class PlatformConditionAttribute : ConditionBaseAttribute
         IgnoreMessage = $"Test is supported only on {platform}";
     }
 
-    public override bool ShouldRun
+    public override bool IsConditionMet
     {
         get
         {
@@ -75,8 +75,6 @@ public sealed class PlatformConditionAttribute : ConditionBaseAttribute
             return false;
         }
     }
-
-    public override string IgnoreMessage { get; }
 
     public override string GroupName => nameof(PlatformConditionAttribute);
 }
