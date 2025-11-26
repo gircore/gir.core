@@ -1,7 +1,4 @@
-using System.Linq;
 using System.Threading.Tasks;
-using Buildalyzer;
-using Buildalyzer.Workspaces;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,14 +7,11 @@ namespace GObject.Integration.Tests;
 [TestClass, TestCategory("BindingTest")]
 public class DiagnosticAnalyzerTest : Test
 {
-
     [TestMethod]
     public async Task ExpectedDiagnosticsAreRaised()
     {
-        var manager = new AnalyzerManager();
-        var analyzer = manager.GetProject("../../../../../Data/DiagnosticAnalyzerTestProject/DiagnosticAnalyzerTestProject.csproj");
-        using var workspace = analyzer.GetWorkspace();
-        var project = workspace.CurrentSolution.Projects.Single();
+        using var compiler = new Compiler("../../../../../Data/DiagnosticAnalyzerTestProject/DiagnosticAnalyzerTestProject.csproj");
+        var project = await compiler.GetProjectAsync();
         var compilation = await project.GetCompilationAsync();
 
         var diagnostics = await compilation!
