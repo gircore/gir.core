@@ -17,10 +17,6 @@
     <PackageTags>gobject;gir;binding;gnome;</PackageTags>
     <PackageIcon>logo-128.png</PackageIcon>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-  </ItemGroup>
   
   <ItemGroup>
     <None Include="../../NugetReadme.md" Pack="true" PackagePath="/"/>

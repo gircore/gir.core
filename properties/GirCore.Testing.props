@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project>
+  <PropertyGroup>
+    <!-- To enable MTP Mode
+    Problem: For dotnet test the filters must be defined differently based on the target framework: 
+    https://learn.microsoft.com/en-us/dotnet/core/testing/migrating-vstest-microsoft-testing-platform#dotnet-test
+    If dotnet 10 is the minimum target, this can be enabled
+    
+    Alternate way of enabling is via the SDK (this is currently not completely working for rider):
+    https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-mstest-runner-intro
+    
+    <OutputType>Exe</OutputType>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>-->
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AwesomeAssertions" Version="9.2.1" />
-    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="AwesomeAssertions" Version="9.3.0" />
+    <PackageReference Include="MSTest" Version="4.0.2" />
   </ItemGroup>
 </Project>

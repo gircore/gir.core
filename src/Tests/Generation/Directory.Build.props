@@ -1,8 +1,4 @@
 <Project>
-  <PropertyGroup>
-    <UseVsTest>true</UseVsTest>
-  </PropertyGroup>
-  
   <Import Project="../../../properties/GirCore.Tooling.props" />
   <Import Project="../../../properties/GirCore.Testing.props" />
 </Project>

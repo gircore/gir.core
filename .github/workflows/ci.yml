@@ -39,23 +39,29 @@ jobs:
     steps:
       - name: Install dependencies
         run: brew install cairo gdk-pixbuf gobject-introspection meson
-
       - name: Prepare git
         run: git config --global core.autocrlf false
         shell: bash
-
       - name: Checkout with submodules
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: 'true'
 
-      - name: Create Gir.Core
+      - name: Create
         uses: ./.github/actions/create
         with:
           configuration: ${{ env.configuration }}
           source_directory: './src'
           script_directory: './scripts'
           shell: bash
+
+      - name: Test
+        uses: ./.github/actions/test
+        with:
+          configuration: ${{ env.configuration }}
+          source_directory: './src'
+          shell: bash
+          test_categories: 'TestCategory=UnitTest | TestCategory=BindingTest'
   
   build_windows:
     name: Build (Windows)
@@ -78,23 +84,29 @@ jobs:
             mingw-w64-x86_64-gdk-pixbuf2
             mingw-w64-x86_64-gobject-introspection
             mingw-w64-x86_64-meson
-
       - name: Prepare git
         run: git config --global core.autocrlf false
         shell: bash
-
       - name: Checkout with submodules
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: 'true'
 
-      - name: Create Gir.Core
+      - name: Create
         uses: ./.github/actions/create
         with:
           configuration: ${{ env.configuration }}
           source_directory: './src'
           script_directory: './scripts'
           shell: msys2 {0}
+
+      - name: Test
+        uses: ./.github/actions/test
+        with:
+          configuration: ${{ env.configuration }}
+          source_directory: './src'
+          shell: msys2 {0}
+          test_categories: 'TestCategory=UnitTest | TestCategory=BindingTest'
 
   build_linux:
     name: Build (Linux)
@@ -109,14 +121,12 @@ jobs:
     steps:
       - name: Install dependencies
         run: sudo dnf -y upgrade && sudo dnf -y install meson gobject-introspection-devel git gcc glib2-devel gdk-pixbuf2 gdk-pixbuf2-modules cairo-gobject libicu gh
-
       - name: Prepare git
         run: |
           git config --global core.autocrlf false
           git config --global --add safe.directory /__w/gir.core/gir.core
-
       - name: Checkout with submodules
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: 'true'
 
@@ -135,12 +145,16 @@ jobs:
           script_directory: './scripts'
           shell: bash
 
+      - name: Test
+        uses: ./.github/actions/test
+        with:
+          configuration: ${{ env.configuration }}
+          source_directory: './src'
+          shell: bash
+          test_categories: 'TestCategory=UnitTest | TestCategory=BindingTest | TestCategory=IntegrationTest'
+
       - name: Verify code format
         run: dotnet format GirCore.sln --no-restore --verify-no-changes --exclude *.Generated.cs --exclude-diagnostics GirCore1001 GirCore1002 GirCore1003
-        working-directory: './src'
-
-      - name: Run integration tests
-        run: dotnet test --no-restore -c $configuration -- --filter TestCategory=IntegrationTest --ignore-exit-code 8
         working-directory: './src'
 
       - name: Pack release version
@@ -167,3 +181,23 @@ jobs:
         if: env.publish_release == 'true'
         run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s nuget.org
         working-directory: './Nuget'
+
+  publish_test_results:
+    name: Publish Test Results
+    if: github.event.inputs.publish_release != 'true'
+    needs: [build_linux, build_macos, build_windows]
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v6
+        with:
+          path: artifacts
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: "artifacts/**/*.trx"
+          comment_mode: 'off'

@@ -2,10 +2,6 @@
   <Import Project="../../../properties/GirCore.Libraries.props" />
   <Import Project="../../../properties/GirCore.Testing.props" />
   
-  <PropertyGroup>
-    <UseVsTest>true</UseVsTest>
-  </PropertyGroup>
-  
   <ItemGroup>
     <Compile Include="../../Shared/PlatformConditionAttribute.cs"  Link="Shared/PlatformConditionAttribute.cs"/>
   </ItemGroup>

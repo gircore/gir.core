@@ -1,4 +1,4 @@
-<Project Sdk="MSTest.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>GObject.Tests</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
