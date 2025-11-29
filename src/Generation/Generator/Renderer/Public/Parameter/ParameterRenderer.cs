@@ -13,6 +13,7 @@ internal static class ParameterRenderer
         new Parameter.Enumeration(),
         new Parameter.ForeignTypedRecord(),
         new Parameter.ForeignTypedRecordArray(),
+        new Parameter.GLibPointerArray(),
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
         new Parameter.OpaqueTypedRecord(),

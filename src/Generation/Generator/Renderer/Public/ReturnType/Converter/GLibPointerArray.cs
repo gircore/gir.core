@@ -11,6 +11,6 @@ internal class GLibPointerArray : ReturnTypeConverter
 
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        return new RenderableReturnType("GLib.PtrArray" + Nullable.Render(returnType));
+        return new RenderableReturnType(Model.PointerArrayType.GetFullyQualifiedPublicClassName() + Nullable.Render(returnType));
     }
 }

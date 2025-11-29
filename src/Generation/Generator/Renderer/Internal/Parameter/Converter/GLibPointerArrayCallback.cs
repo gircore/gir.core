@@ -1,10 +1,12 @@
+using System;
+
 namespace Generator.Renderer.Internal.Parameter;
 
-public class PrimitiveValueTypeGLibPtrArray : ParameterConverter
+public class GLibPointerArrayCallback : ParameterConverter
 {
     public bool Supports(GirModel.AnyType anyType)
     {
-        return anyType.IsGLibPtrArray<GirModel.PrimitiveValueType>();
+        return anyType.IsGLibPtrArray();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -19,10 +21,11 @@ public class PrimitiveValueTypeGLibPtrArray : ParameterConverter
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
-        { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
-        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.Ref(),
+        { Direction: GirModel.Direction.In } => ParameterDirection.In(),
+        { Direction: GirModel.Direction.InOut } => ParameterDirection.In(),
+        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.In(),
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
-        _ => ParameterDirection.In()
+        _ => throw new Exception("Unknown direction for ptrarray parameter in callback")
     };
 }
 
