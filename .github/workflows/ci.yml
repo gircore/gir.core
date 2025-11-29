@@ -54,7 +54,7 @@ jobs:
           source_directory: './src'
           script_directory: './scripts'
           shell: bash
-          
+
       - name: Test
         uses: ./.github/actions/test
         with:
@@ -86,7 +86,7 @@ jobs:
             mingw-w64-x86_64-meson
       - name: Prepare git
         run: git config --global core.autocrlf false
-        shell: bash      
+        shell: bash
       - name: Checkout with submodules
         uses: actions/checkout@v6
         with:
@@ -99,7 +99,7 @@ jobs:
           source_directory: './src'
           script_directory: './scripts'
           shell: msys2 {0}
-          
+
       - name: Test
         uses: ./.github/actions/test
         with:
@@ -144,7 +144,7 @@ jobs:
           source_directory: './src'
           script_directory: './scripts'
           shell: bash
-          
+
       - name: Test
         uses: ./.github/actions/test
         with:
