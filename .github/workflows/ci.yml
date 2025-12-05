@@ -120,7 +120,7 @@ jobs:
     
     steps:
       - name: Install dependencies
-        run: sudo dnf -y upgrade && sudo dnf -y install meson gobject-introspection-devel git gcc glib2-devel gdk-pixbuf2 gdk-pixbuf2-modules cairo-gobject libicu gh
+        run: sudo dnf -y upgrade && sudo dnf -y install meson gobject-introspection-devel git gcc glib2-devel gdk-pixbuf2 cairo-gobject libicu gh
       - name: Prepare git
         run: |
           git config --global core.autocrlf false
