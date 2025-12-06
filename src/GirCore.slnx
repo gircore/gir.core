@@ -70,6 +70,7 @@
     <Project Path="Samples/Gtk-4.0/GridView/GridView.csproj" />
     <Project Path="Samples/Gtk-4.0/ListView/ListView.csproj" />
     <Project Path="Samples/Gtk-4.0/Window/Window.csproj" />
+    <Project Path="Samples/Gtk-4.0/ColumnViewSorted/ColumnViewSorted.csproj" />
   </Folder>
   <Folder Name="/Samples/GtkSource-5/">
     <Project Path="Samples/GtkSource-5/GtkSourceView/GtkSourceView.csproj" />
