@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>GirCore.GdkWin32-4.0</PackageId>
+    <RootNamespace>GdkWin32</RootNamespace>
+    <Description>C# bindings for GdkWin32.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
+  </ItemGroup>
+</Project>
