@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GirTest.Tests;
 
 [TestClass, TestCategory("BindingTest")]
-public class Utf8StringArrayNullTerminated : Test
+public class Utf8StringArrayNullTerminatedTest : Test
 {
     [TestMethod]
     public void SupportsParameterTransferNone()

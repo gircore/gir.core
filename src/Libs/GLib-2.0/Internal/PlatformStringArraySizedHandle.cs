@@ -150,7 +150,7 @@ public class PlatformStringArraySizedUnownedHandle : PlatformStringArraySizedHan
     public override bool IsInvalid => handle == IntPtr.Zero;
 
     private static PlatformStringArraySizedUnownedHandle? _nullHandle;
-    public static PlatformStringArraySizedUnownedHandle NullHandle => _nullHandle ??= new PlatformStringArraySizedUnownedHandle(IntPtr.Zero);
+    public static PlatformStringArraySizedUnownedHandle NullHandle => _nullHandle ??= new PlatformStringArraySizedUnownedHandle(IntPtr.Zero) { Size = 0 };
 
     /// <summary>
     /// Used by PInvoke

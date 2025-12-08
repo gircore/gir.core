@@ -83,7 +83,7 @@ public class ObjectHandle : SafeHandle
         var ptr = Object.NewWithProperties(
             objectType: T.GetGType(),
             nProperties: (uint) constructArguments.Length,
-            names: constructArguments.Select(x => x.Name).ToArray(),
+            names: GLib.Internal.Utf8StringArraySizedOwnedHandle.Create(constructArguments.Select(x => x.Name).ToArray()),
             values: GObject.Internal.ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
         );
 

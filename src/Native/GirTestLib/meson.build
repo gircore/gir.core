@@ -23,6 +23,7 @@ header_files = [
   'girtest-opaque-typed-record-tester.h',
   'girtest-opaque-untyped-record-tester.h',
   'girtest-platform-string-array-null-terminated-tester.h',
+  'girtest-platform-string-array-sized-tester.h',
   'girtest-primitive-value-type-tester.h',
   'girtest-property-tester.h',
   'girtest-rename-to-tester.h',
@@ -35,6 +36,7 @@ header_files = [
   'girtest-ulong-record-tester.h',
   'girtest-untyped-record-tester.h',
   'girtest-utf8-string-array-null-terminated-tester.h',
+  'girtest-utf8-string-array-sized-tester.h',
   'data/girtest-executor.h',
   'data/girtest-executor-impl.h',
   'data/girtest-signaler.h'
@@ -63,6 +65,7 @@ source_files = [
   'girtest-opaque-typed-record-tester.c',
   'girtest-opaque-untyped-record-tester.c',
   'girtest-platform-string-array-null-terminated-tester.c',
+  'girtest-platform-string-array-sized-tester.c',
   'girtest-primitive-value-type-tester.c',
   'girtest-property-tester.c',
   'girtest-rename-to-tester.c',
@@ -75,6 +78,7 @@ source_files = [
   'girtest-ulong-record-tester.c',
   'girtest-untyped-record-tester.c',
   'girtest-utf8-string-array-null-terminated-tester.c',
+  'girtest-utf8-string-array-sized-tester.c',
   'data/girtest-executor.c',
   'data/girtest-executor-impl.c',
   'data/girtest-signaler.c'
