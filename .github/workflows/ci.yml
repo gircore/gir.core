@@ -78,12 +78,14 @@ jobs:
         with:
           path-type: inherit # Inherit the path so that dotnet can be found
           update: true
+          msystem: UCRT64
           install: >-
-            mingw-w64-x86_64-cairo
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-gdk-pixbuf2
-            mingw-w64-x86_64-gobject-introspection
-            mingw-w64-x86_64-meson
+            mingw-w64-ucrt-x86_64-cairo
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-gdk-pixbuf2
+            mingw-w64-ucrt-x86_64-gobject-introspection
+            mingw-w64-ucrt-x86_64-meson
+            mingw-w64-ucrt-x86_64-sccache
       - name: Prepare git
         run: git config --global core.autocrlf false
         shell: bash

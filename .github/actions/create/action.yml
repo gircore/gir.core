@@ -30,6 +30,9 @@ runs:
       run: dotnet fsi GenerateGirTestLib.fsx
       working-directory: ${{ inputs.script_directory }}
       shell: ${{ inputs.shell }}
+      env:
+        CC: gcc
+        CXX: g++
 
     - name: Call generator
       run: dotnet fsi GenerateLibs.fsx GirTest-0.1.gir
