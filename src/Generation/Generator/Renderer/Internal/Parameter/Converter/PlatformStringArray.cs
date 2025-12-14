@@ -24,12 +24,65 @@ internal class PlatformStringArray : ParameterConverter
 
     private static RenderableParameter SizeBasedArray(GirModel.Parameter parameter)
     {
-        var length = parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length must not be null");
+        return parameter.Direction switch
+        {
+            GirModel.Direction.In => SizeBasedArrayIn(parameter),
+            GirModel.Direction.Out => SizeBasedArrayOut(parameter),
+            GirModel.Direction.InOut => SizeBasedArrayInOut(parameter),
+            _ => throw new Exception("Unknown direction for parameter of a size based platform string array")
+        };
+    }
+
+    private static RenderableParameter SizeBasedArrayIn(GirModel.Parameter parameter)
+    {
+        var nullableTypeName = parameter switch
+        {
+            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.Sized.GetInternalHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.Sized.GetInternalHandleName(),
+            { Transfer: GirModel.Transfer.Container } => throw new Exception("Transfer container not supported for platform string arrays"),
+            _ => throw new Exception("Can't detect typename for sized platform string array")
+        };
 
         return new RenderableParameter(
-            Attribute: MarshalAs.UnmanagedLpArray(sizeParamIndex: length),
-            Direction: string.Empty,
-            NullableTypeName: Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1),
+            Attribute: string.Empty,
+            Direction: ParameterDirection.In(),
+            NullableTypeName: nullableTypeName,
+            Name: Model.Parameter.GetName(parameter)
+        );
+    }
+
+    private static RenderableParameter SizeBasedArrayOut(GirModel.Parameter parameter)
+    {
+        var nullableTypeName = parameter switch
+        {
+            { Transfer: GirModel.Transfer.None } => Model.PlatformStringArray.Sized.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.Sized.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => throw new Exception("Transfer container not supported for platform string arrays"),
+            _ => throw new Exception("Can't detect typename for sized platform string array")
+        };
+
+        return new RenderableParameter(
+            Attribute: string.Empty,
+            Direction: ParameterDirection.Out(),
+            NullableTypeName: nullableTypeName,
+            Name: Model.Parameter.GetName(parameter)
+        );
+    }
+
+    private static RenderableParameter SizeBasedArrayInOut(GirModel.Parameter parameter)
+    {
+        var nullableTypeName = parameter switch
+        {
+            { Transfer: GirModel.Transfer.None } => throw new Exception("Transfer none not supported for inout platform string arrays"),
+            { Transfer: GirModel.Transfer.Full } => Model.PlatformStringArray.Sized.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => throw new Exception("Transfer container not supported for platform string arrays"),
+            _ => throw new Exception("Can't detect typename for sized platform string array")
+        };
+
+        return new RenderableParameter(
+            Attribute: string.Empty,
+            Direction: ParameterDirection.Ref(),
+            NullableTypeName: nullableTypeName,
             Name: Model.Parameter.GetName(parameter)
         );
     }

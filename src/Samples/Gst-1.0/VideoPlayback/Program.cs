@@ -10,7 +10,8 @@ public static class Program
 
         Console.WriteLine("Starting to play tears of steal. Please wait while file is beeing loaded...");
 
-        Gst.Application.Init();
+        var a = Array.Empty<string>();
+        Gst.Functions.Init(ref a);
         Gst.Element ret = Gst.Functions.ParseLaunch("playbin uri=playbin uri=http://ftp.halifax.rwth-aachen.de/blender/demo/movies/ToS/tears_of_steel_720p.mov");
         ret.SetState(Gst.State.Playing);
         var bus = ret.GetBus();

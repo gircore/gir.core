@@ -21,7 +21,7 @@ public static partial class DBus
             Variant.NewString(""), //Icon
             Variant.NewString("Summary"),
             Variant.NewString("Body"),
-            Variant.NewStrv(Array.Empty<string>(), 0),
+            Variant.NewStrv(Array.Empty<string>()),
             Variant.NewArray(VariantType.NewDictEntry(VariantType.New("s"), VariantType.New("v")), null), //hints
             Variant.NewInt32(999)
         });

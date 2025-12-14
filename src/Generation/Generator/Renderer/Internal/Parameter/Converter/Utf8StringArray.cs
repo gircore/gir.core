@@ -24,13 +24,65 @@ internal class Utf8StringArray : ParameterConverter
 
     private static RenderableParameter SizeBasedArray(GirModel.Parameter parameter)
     {
-        var length = parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length must not be null");
-        var typeName = Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1) + Nullable.Render(parameter);
+        return parameter.Direction switch
+        {
+            GirModel.Direction.In => SizeBasedArrayIn(parameter),
+            GirModel.Direction.Out => SizeBasedArrayOut(parameter),
+            GirModel.Direction.InOut => SizeBasedArrayInOut(parameter),
+            _ => throw new Exception("Unknown direction for parameter of a size based utf8 string array")
+        };
+    }
+
+    private static RenderableParameter SizeBasedArrayIn(GirModel.Parameter parameter)
+    {
+        var nullableTypeName = parameter switch
+        {
+            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.Sized.GetInternalHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.Sized.GetInternalHandleName(),
+            { Transfer: GirModel.Transfer.Container } => throw new Exception("Transfer container not supported for utf8 string arrays"),
+            _ => throw new Exception("Can't detect typename for sized utf8 string array")
+        };
 
         return new RenderableParameter(
-            Attribute: MarshalAs.UnmanagedLpArray(sizeParamIndex: length),
-            Direction: string.Empty,
-            NullableTypeName: typeName,
+            Attribute: string.Empty,
+            Direction: ParameterDirection.In(),
+            NullableTypeName: nullableTypeName,
+            Name: Model.Parameter.GetName(parameter)
+        );
+    }
+
+    private static RenderableParameter SizeBasedArrayOut(GirModel.Parameter parameter)
+    {
+        var nullableTypeName = parameter switch
+        {
+            { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.Sized.GetInternalUnownedHandleName(),
+            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.Sized.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => throw new Exception("Transfer container not supported for utf8 string arrays"),
+            _ => throw new Exception("Can't detect typename for sized utf8 string array")
+        };
+
+        return new RenderableParameter(
+            Attribute: string.Empty,
+            Direction: ParameterDirection.Out(),
+            NullableTypeName: nullableTypeName,
+            Name: Model.Parameter.GetName(parameter)
+        );
+    }
+
+    private static RenderableParameter SizeBasedArrayInOut(GirModel.Parameter parameter)
+    {
+        var nullableTypeName = parameter switch
+        {
+            { Transfer: GirModel.Transfer.None } => throw new Exception("Transfer none not supported for inout utf8 string arrays"),
+            { Transfer: GirModel.Transfer.Full } => Model.Utf8StringArray.Sized.GetInternalOwnedHandleName(),
+            { Transfer: GirModel.Transfer.Container } => throw new Exception("Transfer container not supported for utf8 string arrays"),
+            _ => throw new Exception("Can't detect typename for sized utf8 string array")
+        };
+
+        return new RenderableParameter(
+            Attribute: string.Empty,
+            Direction: ParameterDirection.Ref(),
+            NullableTypeName: nullableTypeName,
             Name: Model.Parameter.GetName(parameter)
         );
     }
@@ -47,9 +99,6 @@ internal class Utf8StringArray : ParameterConverter
 
     private static RenderableParameter NullTerminatedArrayIn(GirModel.Parameter parameter)
     {
-        if (parameter.Direction != GirModel.Direction.In)
-            throw new Exception("Direction must be in");
-
         var nullableTypeName = parameter switch
         {
             { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.NullTerminated.GetInternalHandleName(),
@@ -68,9 +117,6 @@ internal class Utf8StringArray : ParameterConverter
 
     private static RenderableParameter NullTerminatedArrayOut(GirModel.Parameter parameter)
     {
-        if (parameter.Direction != GirModel.Direction.Out)
-            throw new Exception("Direction must be out");
-
         var nullableTypeName = parameter switch
         {
             { Transfer: GirModel.Transfer.None } => Model.Utf8StringArray.NullTerminated.GetInternalUnownedHandleName(),

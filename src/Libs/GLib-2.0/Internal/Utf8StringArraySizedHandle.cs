@@ -90,7 +90,7 @@ public class Utf8StringArraySizedOwnedHandle : Utf8StringArraySizedHandle
 /// <summary>
 /// A handle of a string array. The dotnet runtime only owns the list of pointers to the string. Not the strings itself.
 /// </summary>
-public class Utf8StringArraySizedContainerHandle : PlatformStringArraySizedHandle
+public class Utf8StringArraySizedContainerHandle : Utf8StringArraySizedHandle
 {
     public override bool IsInvalid => handle == IntPtr.Zero;
 
@@ -117,12 +117,12 @@ public class Utf8StringArraySizedContainerHandle : PlatformStringArraySizedHandl
 /// <summary>
 /// A handle of a string array which is not owned by the dotnet runtime.
 /// </summary>
-public class Utf8StringArraySizedUnownedHandle : PlatformStringArraySizedHandle
+public class Utf8StringArraySizedUnownedHandle : Utf8StringArraySizedHandle
 {
     public override bool IsInvalid => handle == IntPtr.Zero;
 
     private static Utf8StringArraySizedUnownedHandle? _nullHandle;
-    public static Utf8StringArraySizedUnownedHandle NullHandle => _nullHandle ??= new Utf8StringArraySizedUnownedHandle(IntPtr.Zero);
+    public static Utf8StringArraySizedUnownedHandle NullHandle => _nullHandle ??= new Utf8StringArraySizedUnownedHandle(IntPtr.Zero) { Size = 0 };
 
     /// <summary>
     /// Used by PInvoke
@@ -136,9 +136,9 @@ public class Utf8StringArraySizedUnownedHandle : PlatformStringArraySizedHandle
         SetHandle(ptr);
     }
 
-    public static PlatformStringArraySizedUnownedHandle Create(string[] array)
+    public static Utf8StringArraySizedUnownedHandle Create(string[] array)
     {
-        return new PlatformStringArraySizedUnownedHandle(ToIntPtr(array))
+        return new Utf8StringArraySizedUnownedHandle(ToIntPtr(array))
         {
             Size = array.Length
         };

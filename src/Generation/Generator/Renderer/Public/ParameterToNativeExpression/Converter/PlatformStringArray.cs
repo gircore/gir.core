@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
@@ -8,14 +9,14 @@ internal class PlatformStringArray : ToNativeParameterConverter
     public bool Supports(GirModel.AnyType type)
         => type.IsArray<GirModel.PlatformString>();
 
-    public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
+    public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
     {
         var arrayType = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
 
         if (arrayType.IsZeroTerminated)
             NullTerminatedArray(parameter);
         else if (arrayType.Length is not null)
-            SizeBasedArray(parameter);
+            SizeBasedArray(parameter, allParameters);
         else
             throw new Exception("Unknown kind of array");
     }
@@ -83,14 +84,103 @@ internal class PlatformStringArray : ToNativeParameterConverter
         parameter.SetPostCallExpression(() => $"{signatureName} = {createExpression};");
     }
 
-    private static void SizeBasedArray(ParameterToNativeData parameter)
+    private static void SizeBasedArray(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
     {
-        if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Platform string array type with direction != in not yet supported");
+        switch (parameter.Parameter.Direction)
+        {
+            case GirModel.Direction.In:
+                SizeBasedArrayIn(parameter, allParameters);
+                break;
+            case GirModel.Direction.Out:
+                SizeBasedArrayOut(parameter, allParameters);
+                break;
+            case GirModel.Direction.InOut:
+                SizeBasedArrayInOut(parameter, allParameters);
+                break;
+            default:
+                throw new Exception($"Unsupported direction {parameter.Parameter.Direction} for platform string array.");
+        }
+    }
 
-        //We don't need any conversion for string[]
-        var variableName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(() => variableName);
-        parameter.SetCallName(() => variableName);
+    private static void SizeBasedArrayIn(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
+    {
+        var signatureName = Model.Parameter.GetName(parameter.Parameter);
+        var nativeVariableName = signatureName + "Native";
+
+        var createExpression = parameter.Parameter switch
+        {
+            { Transfer: GirModel.Transfer.Full } => $"{Model.PlatformStringArray.Sized.GetInternalUnownedHandleName()}.Create({signatureName})",
+            { Transfer: GirModel.Transfer.None } => $"{Model.PlatformStringArray.Sized.GetInternalOwnedHandleName()}.Create({signatureName})",
+            _ => throw new Exception("Unknown transfer type for parameter with sized in platform string array")
+        };
+
+        if (parameter.Parameter.Nullable)
+            createExpression = $"{signatureName}  is null ? (({Model.PlatformStringArray.Sized.GetInternalHandleName()}){Model.PlatformStringArray.Sized.GetInternalUnownedHandleName()}.NullHandle) : {createExpression}";
+
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetCallName(() => nativeVariableName);
+        parameter.SetExpression(() => $"var {nativeVariableName} = {createExpression};");
+
+        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthParameter = allParameters.ElementAt(lengthIndex);
+        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0);
+        lengthParameter.IsArrayLengthParameter = true;
+        lengthParameter.SetCallName(() => $"({lengthParameterType}) {nativeVariableName}.Size");
+    }
+
+    private static void SizeBasedArrayOut(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
+    {
+        var signatureName = Model.Parameter.GetName(parameter.Parameter);
+        var nativeVariableName = signatureName + "Native";
+
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetCallName(() => $"out var {nativeVariableName}");
+        parameter.SetPostCallExpression(() => parameter.Parameter.Nullable switch
+        {
+            true => $"{signatureName} = {nativeVariableName}.ConvertToStringArray();",
+            false => $"""{signatureName} = {nativeVariableName}.ConvertToStringArray() ?? throw new NullReferenceException("Unexpected null value");"""
+        });
+
+        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthParameter = allParameters.ElementAt(lengthIndex);
+
+        lengthParameter.IsArrayLengthParameter = true;
+        lengthParameter.SetCallName(() => $"out var {lengthParameter.Parameter.Name}");
+        lengthParameter.SetPostCallExpression(() => $"{nativeVariableName}.Size = (int) {lengthParameter.Parameter.Name};");
+    }
+
+    private static void SizeBasedArrayInOut(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
+    {
+        if (parameter.Parameter.Transfer != GirModel.Transfer.Full)
+            throw new Exception("Only full transfer supported for inout sized platform string arrays");
+
+        var signatureName = Model.Parameter.GetName(parameter.Parameter);
+        var nativeVariableName = signatureName + "Native";
+
+        parameter.SetSignatureName(() => signatureName);
+        parameter.SetCallName(() => $"ref {nativeVariableName}");
+        parameter.SetExpression(() => parameter.Parameter.Nullable switch
+        {
+            false => $"var {nativeVariableName} = {Model.PlatformStringArray.Sized.GetInternalOwnedHandleName()}.Create({signatureName});",
+            true => $"var {nativeVariableName} = {Model.PlatformStringArray.Sized.GetInternalOwnedHandleName()}.Create({signatureName} ?? Array.Empty<string>());"
+        });
+        parameter.SetPostCallExpression(() => parameter.Parameter.Nullable switch
+        {
+            false => $"{signatureName} = {nativeVariableName}.ConvertToStringArray() ?? throw new NullReferenceException(\"Unexpected null value\");",
+            true => $"""{signatureName} = {nativeVariableName}.ConvertToStringArray();"""
+        });
+
+        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthParameter = allParameters.ElementAt(lengthIndex);
+
+        lengthParameter.IsArrayLengthParameter = true;
+        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0);
+        lengthParameter.SetExpression(() => parameter.Parameter.Nullable switch
+        {
+            false => $"{lengthParameterType} counterNative = ({lengthParameterType}){signatureName}.Length;",
+            true => $"{lengthParameterType} counterNative = ({lengthParameterType}?){signatureName}?.Length ?? 0;"
+        });
+        lengthParameter.SetCallName(() => "ref counterNative");
+        lengthParameter.SetPostCallExpression(() => $"{nativeVariableName}.Size = counterNative;");
     }
 }
