@@ -182,6 +182,7 @@ jobs:
           gh release upload "$version" ./girfiles.zip
 
       - name: NuGet login
+        if: env.publish_release == 'true'
         uses: NuGet/login@v1
         id: login
         with:
