@@ -23,3 +23,9 @@ Applications using gir.core. To add a new application to the list [edit this pag
 [Pinta](https://www.pinta-project.com/) is a image editing, drawing and painting application with a simple yet powerful interface.
 
 ![Pinta screenshot](https://github.com/user-attachments/assets/05afe053-1105-4665-b285-6c769a70c1a1)
+
+## WebCamControl
+
+[WebCamControl](https://d.sb/wcc) is a Linux GUI app that can be used to control properties of your webcam such as pan, tilt, zoom, etc. It contains examples of [Blueprint](https://gnome.pages.gitlab.gnome.org/blueprint-compiler/), [Flatpak packaging](https://flathub.org/apps/com.daniel15.wcc), dependency injection during window creation, loading icons from GLib resources, subclassed components, and localization using gettext.
+
+![WebCamControl screenshot](https://d.sb/projects/wcc/screenshot1.png)
