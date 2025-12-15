@@ -30,7 +30,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git commit -m "update submodules" -a
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: update-gir-files
           commit-message: Update gir files
