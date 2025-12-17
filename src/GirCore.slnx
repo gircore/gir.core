@@ -162,11 +162,11 @@
     <File Path="../img/logo.svg" />
   </Folder>
   <Folder Name="/SolutionItems/properties/">
-    <File Path="properties/GirCore.Libraries.props" />
-    <File Path="properties/GirCore.Logging.props" />
-    <File Path="properties/GirCore.Publishing.props" />
-    <File Path="properties/GirCore.Testing.props" />
-    <File Path="properties/GirCore.Tooling.props" />
+    <File Path="../properties/GirCore.Libraries.props" />
+    <File Path="../properties/GirCore.Logging.props" />
+    <File Path="../properties/GirCore.Publishing.props" />
+    <File Path="../properties/GirCore.Testing.props" />
+    <File Path="../properties/GirCore.Tooling.props" />
   </Folder>
   <Folder Name="/SolutionItems/scripts/">
     <File Path="../scripts/CleanLibs.fsx" />
