@@ -30,8 +30,8 @@
   <ItemGroup>
     <Compile Include="../Shared/GeneratedCodeAttribute.cs" Link="Shared/GeneratedCodeAttribute.cs" />
     <Compile Include="../Shared/DiagnosticLink.cs" Link="Shared/DiagnosticLink.cs" />
-    <Compile Include="../Shared/SymbolExtensions.cs" Link="Shared/SymbolExtensions.cs" />
-    <Compile Include="../Shared/TypeSymbolExtensions.cs" Link="Shared/TypeSymbolExtensions.cs" />
-    <Compile Include="../Shared/NamedTypeSymbolExtensions.cs" Link="Shared/NamedTypeSymbolExtensions.cs" />
+    <Compile Include="../Shared/Type/TypeDataHelper.cs" Link="Shared/Type/TypeDataHelper.cs" />
+    <Compile Include="../Shared/Type/TypeData.cs" Link="Shared/Type/TypeData.cs" />
+    <Compile Include="../Shared/Type/TypeProperties.cs" Link="Shared/Type/TypeProperties.cs" />
   </ItemGroup>
 </Project>

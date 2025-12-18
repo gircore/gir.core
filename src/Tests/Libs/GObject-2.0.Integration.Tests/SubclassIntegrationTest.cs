@@ -45,7 +45,7 @@ public class SubclassIntegrationTest : Test
     }
 
     [TestMethod]
-    public void GenericSubclassesShouldBePossible()
+    public void ShouldAllowNestedTypes()
     {
         var type1 = SomeSubSubClass.GetGType();
         var type2 = SomeClassContainingNestedSubSubSubClass.SomeNestedSubSubSubClass.GetGType();

@@ -7,6 +7,7 @@
   <Folder Name="/Extensions/">
     <File Path="Extensions/Directory.Build.props" />
     <Project Path="Extensions/GObject-2.0.Integration/GObject-2.0.Integration.csproj" />
+    <Project Path="Extensions/Gtk-4.0.Integration/Gtk-4.0.Integration.csproj" />
   </Folder>
   <Folder Name="/Generation/">
     <File Path="Generation/Directory.Build.props" />
@@ -65,6 +66,7 @@
   <Folder Name="/Samples/Gtk-4.0/">
     <Project Path="Samples/Gtk-4.0/AboutDialog/AboutDialog.csproj" />
     <Project Path="Samples/Gtk-4.0/Builder/Builder.csproj" />
+    <Project Path="Samples/Gtk-4.0/CompositeTemplate/CompositeTemplate.csproj" />
     <Project Path="Samples/Gtk-4.0/DrawingArea/DrawingArea.csproj" />
     <Project Path="Samples/Gtk-4.0/FontDialog/FontDialog.csproj" />
     <Project Path="Samples/Gtk-4.0/GridView/GridView.csproj" />
@@ -178,7 +180,7 @@
   </Folder>
   <Folder Name="/Tests/" />
   <Folder Name="/Tests/Data/">
-    <Project Path="Tests/Data/DiagnosticAnalyzerTestProject/DiagnosticAnalyzerTestProject.csproj" />
+    <Project Path="Tests/Data/GObject-2.0.Integration.Tests.Data/GObject-2.0.Integration.Tests.Data.csproj" />
   </Folder>
   <Folder Name="/Tests/Generation/">
     <File Path="Tests/Generation/Directory.Build.props" />

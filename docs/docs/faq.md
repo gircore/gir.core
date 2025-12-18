@@ -56,7 +56,7 @@ Gtk.Button.LabelPropertyDefinition.Notify(
 ## How to create subclasses of a GObject based class?
 Creating a subclass for a GObject based class requires creating a partial class with no parent class defined. An attribute is added which defines the parent class. Using the attribute results in a source generator generating the needed code to integrate a custom class with the GObject type system. The source generator is part of the [GObject-2.0.Integration nuget package](https://www.nuget.org/packages/GirCore.GObject-2.0.Integration/) which must be referenced from the project.
 
-Be aware that the GObject type system requires a class to always have a parameterless constructor. This is the reason why such a constructor is generated. Please ensure that your class uses sensible defaults or that there are ways which allow to initialize your instance after its creation. This gets relevant if instances of your classes get created by some GObject library as those would use the parameterless constructor.  
+Be aware that the GObject type system requires a class to always have a parameterless constructor. This is the reason why such a constructor is generated. Please ensure that your class uses sensible defaults or that there are ways which allow initializing your instance after its creation. This gets relevant if instances of your classes get created by some GObject library as those would use the parameterless constructor.  
 
 ```csharp
 [Subclass<GObject.Object>]
@@ -70,6 +70,11 @@ public partial class Data
     }
 }
 ```
+
+## How to use GTK composite templates?
+GTK composite templates allow creating a subclass from a `Gtk.Widget` and associate it with a `*.ui` file. There is a [sample](https://github.com/gircore/gir.core/tree/main/src/Samples/Gtk-4.0/CompositeTemplate) available.
+
+[!code-csharp[](../../src/Samples/Gtk-4.0/CompositeTemplate/CompositeBoxWidget.cs)]
 
 ## How to distribute desktop applications on Linux?
 A good option is [Flatpak](https://flatpak.org/) - a framework for distributing desktop applications across various Linux distributions. Refer to the [Dotnet](https://github.com/gircore/gir.core/edit/main/docs/docs/faq.md) page for .Net specific guide.
