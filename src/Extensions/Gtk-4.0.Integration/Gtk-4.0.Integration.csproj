@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <PackageId>GirCore.Gtk-4.0.Integration</PackageId>
+        <RootNamespace>Gtk.Integration</RootNamespace>
+        <Description>Source Generator to make it easy to integrate C# with Gtk.</Description>
+    </PropertyGroup>
+</Project>
