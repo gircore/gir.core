@@ -115,6 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write #Nuget trusted publishing
+      contents: write #Create gh release
     container:
       image: fedora:latest
     
