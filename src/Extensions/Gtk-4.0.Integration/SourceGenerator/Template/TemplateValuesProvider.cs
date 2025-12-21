@@ -1,37 +1,27 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 
-namespace GObject.Integration.SourceGenerator;
+namespace Gtk.Integration.SourceGenerator;
 
-internal static class SubclassValuesProvider
+internal static class TemplateValuesProvider
 {
-
-    public static IncrementalValuesProvider<SubclassData> GetSubclassValuesProvider(this IncrementalGeneratorInitializationContext context)
+    public static IncrementalValuesProvider<TemplateData> GetTemplateValuesProvider(this IncrementalGeneratorInitializationContext context)
     {
         return context.SyntaxProvider
             .ForAttributeWithMetadataName(
-                fullyQualifiedMetadataName: SubclassAttribute.MetadataName,
+                fullyQualifiedMetadataName: TemplateAttribute.MetadataName,
                 predicate: static (_, _) => true,
-                transform: GetSubclassData)
+                transform: GetData)
             .Where(data => data is not null)!;
     }
 
-    private static SubclassData? GetSubclassData(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
+    private static TemplateData? GetData(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
     {
-        if (context.TargetSymbol is not INamedTypeSymbol subclass)
-            return null;
-
-        var subclassAttribute = context.Attributes.First().AttributeClass;
-        if (subclassAttribute is null)
-            return null;
-
-        var parentType = subclassAttribute.TypeArguments.First();
-
-        var parentHandle = GetParentHandle(parentType);
-        if (parentHandle is null)
+        if (context.TargetSymbol is not INamedTypeSymbol template)
             return null;
 
         var accessibility = GetAccessibility(context.TargetSymbol);
@@ -42,17 +32,41 @@ internal static class SubclassValuesProvider
         if (upperNestedClasses is null)
             return null;
 
-        return new SubclassData(
-            Name: subclass.Name,
-            NameGenericArguments: subclass.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
-            Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-            ParentHandle: parentHandle,
+        var bla = GetBla(context);
+        if (bla is null)
+            return null;
+
+        return new TemplateData(
+            NameGenericArguments: template.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
             Namespace: context.TargetSymbol.ContainingNamespace.ToDisplayString(),
             IsGlobalNamespace: context.TargetSymbol.ContainingNamespace.IsGlobalNamespace,
             Accessibility: accessibility,
-            FileName: GetFileName(subclass),
+            FileName: GetFileName(template),
+            RessourceName: bla,
             UpperNestedClasses: upperNestedClasses
         );
+    }
+
+    private static string? GetBla(GeneratorAttributeSyntaxContext context)
+    {
+        var attribute = context
+            .Attributes
+            .FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == TemplateAttribute.MetadataName);
+
+        if (attribute is null)
+            return null;
+
+        if (attribute.NamedArguments.IsDefaultOrEmpty)
+            return null;
+        
+        string? ressourceName = null;
+        var argument = attribute.NamedArguments.FirstOrDefault(kvp => kvp.Key == "RessourceName");
+        if (argument.Value.Value is string value)
+        {
+            ressourceName = value;
+        }
+        
+        return ressourceName;
     }
 
     private static Stack<TypeData>? GetUpperNestedClasses(ISymbol symbol)
@@ -126,42 +140,5 @@ internal static class SubclassValuesProvider
             _ => null
         };
         return accessibility;
-    }
-
-    private static string? GetParentHandle(ITypeSymbol type)
-    {
-        ITypeSymbol? currentType = type;
-        INamedTypeSymbol? parentHandleAttribute;
-        do
-        {
-            parentHandleAttribute = GetHandleAttribute(currentType);
-
-            if (parentHandleAttribute is null)
-                currentType = GetTypeInSubclassAttribute(currentType);
-
-        } while (parentHandleAttribute is null && currentType is not null);
-
-        return parentHandleAttribute?.TypeArguments.First().ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-    }
-
-    private static INamedTypeSymbol? GetHandleAttribute(ITypeSymbol type)
-    {
-        var attributeData = type
-            .GetAttributes()
-            .FirstOrDefault(x => x.IsHandleAttribute());
-
-        return attributeData?.AttributeClass;
-    }
-
-    private static ITypeSymbol? GetTypeInSubclassAttribute(ITypeSymbol type)
-    {
-        var subclassAttribute = type
-            .GetAttributes()
-            .FirstOrDefault(x => x.AttributeClass?.ConstructedFrom.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == SubclassAttribute.FullyQualifiedDisplayName);
-
-        if (subclassAttribute is null)
-            return null;
-
-        return subclassAttribute.AttributeClass?.TypeArguments.First();
     }
 }

@@ -1,12 +1,12 @@
 using Microsoft.CodeAnalysis;
 
-namespace GObject.Integration.SourceGenerator;
+namespace Gtk.Integration.SourceGenerator;
 
 [Generator]
 public class Generator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        context.EnableSubclassSupport();
+        context.EnableTemplateSupport();
     }
 }

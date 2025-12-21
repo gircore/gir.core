@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 
-namespace GObject.Integration.SourceGenerator;
+namespace Gtk.Integration.SourceGenerator;
 
-internal sealed record SubclassData(
-    string Name,
+internal sealed record TemplateData(
     string NameGenericArguments,
-    string Parent,
-    string ParentHandle,
     string Namespace,
     bool IsGlobalNamespace,
     string Accessibility,
     string FileName,
+    string RessourceName,
     Stack<TypeData> UpperNestedClasses
 );

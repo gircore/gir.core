@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../Shared/GeneratedCodeAttribute.cs" Link="Shared/GeneratedCodeAttribute.cs" />
+    <Compile Include="../Shared/GeneratedCodeComment.cs" Link="Shared/GeneratedCodeComment.cs" />
     <Compile Include="../Shared/DiagnosticLink.cs" Link="Shared/DiagnosticLink.cs" />
   </ItemGroup>
 </Project>

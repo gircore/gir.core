@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\Extensions\Gtk-4.0.Integration\Gtk-4.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\..\Libs\Gtk-4.0\Gtk-4.0.csproj" />
   </ItemGroup>
 

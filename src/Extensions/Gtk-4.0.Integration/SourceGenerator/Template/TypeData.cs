@@ -1,4 +1,4 @@
-namespace GObject.Integration.SourceGenerator;
+namespace Gtk.Integration.SourceGenerator;
 
 internal sealed record TypeData(
     string NameGenericArguments,
