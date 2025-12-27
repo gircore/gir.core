@@ -1,16 +1,15 @@
 using System;
 using System.Reflection;
 
-namespace GObject.Integration;
-
-internal static class GeneratedCodeAttribute
+internal static class GeneratedCodeComment
 {
     private static string Version { get; } = GetVersion();
     private static string Name { get; } = GetName();
 
     public static string Render()
     {
-        return $"""[System.CodeDom.Compiler.GeneratedCode("{Name}", "{Version}")]""";
+        //TODO: Use GeneratedCodeAttribute in case https://github.com/dotnet/runtime/issues/122718 is fixed.
+        return $"//GeneratedCode by {Name} Version: {Version}";
     }
 
     private static string GetName()
