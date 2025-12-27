@@ -193,6 +193,7 @@
     <Project Path="Tests/Libs/GLib-2.0.Tests/GLib-2.0.Tests.csproj" />
     <Project Path="Tests/Libs/GObject-2.0.Integration.Tests/GObject-2.0.Integration.Tests.csproj" />
     <Project Path="Tests/Libs/GObject-2.0.Tests/GObject-2.0.Tests.csproj" />
+    <Project Path="Tests/Libs/Gtk-4.0.Integration.Tests/Gtk-4.0.Integration.Tests.csproj" />
     <Project Path="Tests/Libs/Gtk-4.0.Tests/Gtk-4.0.Tests.csproj" />
   </Folder>
 </Solution>

@@ -33,9 +33,10 @@ internal static class TemplateValuesProvider
             return null;
 
         var bla = GetBla(context);
-        if (bla is null)
-            return null;
+        //if (bla is null)
+        //    return null;
 
+        bla = "CompositeDialogWidget.ui";
         return new TemplateData(
             NameGenericArguments: template.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
             Namespace: context.TargetSymbol.ContainingNamespace.ToDisplayString(),
