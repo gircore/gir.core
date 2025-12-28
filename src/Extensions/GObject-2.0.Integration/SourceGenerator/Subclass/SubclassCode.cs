@@ -54,22 +54,27 @@ internal static class SubclassCode
     private static string RenderClassContent(SubclassData subclassData)
     {
         return $$"""
-                 {{GeneratedCodeAttribute.Render()}}
                  {{subclassData.Accessibility}} partial class {{subclassData.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider, GObject.InstanceFactory
                  {
+                      {{GeneratedCodeAttribute.Render()}}
                       private static readonly GObject.Type GType = GObject.Internal.SubclassRegistrar.Register<{{subclassData.NameGenericArguments}}, {{subclassData.Parent}}>();
+                      
+                      {{GeneratedCodeAttribute.Render()}}
                       public static new GObject.Type GetGType() => GType;
                  
+                      {{GeneratedCodeAttribute.Render()}}
                       static object GObject.InstanceFactory.Create(System.IntPtr handle, bool ownsHandle)
                       {
                           return new {{subclassData.NameGenericArguments}}(new {{subclassData.ParentHandle}}(handle, ownsHandle));
                       }
                       
+                      {{GeneratedCodeAttribute.Render()}}
                       public {{subclassData.Name}}({{subclassData.ParentHandle}} handle) : base(handle) 
                       {
                           Initialize();
                       }
                       
+                      {{GeneratedCodeAttribute.Render()}}
                       public {{subclassData.Name}}(params GObject.ConstructArgument[] constructArguments) : this({{subclassData.ParentHandle}}.For<{{subclassData.NameGenericArguments}}>(constructArguments)) 
                       {
                           Initialize();
@@ -81,6 +86,7 @@ internal static class SubclassCode
                       /// Decorating this method with "MemberNotNullAttribute" for
                       /// the appropriate members can remove nullable warnings.
                       /// </summary>
+                      {{GeneratedCodeAttribute.Render()}}
                       partial void Initialize();
                  }
                  """;

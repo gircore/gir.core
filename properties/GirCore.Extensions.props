@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+
+    <AnalysisMode>Recommended</AnalysisMode>
+    <Nullable>enable</Nullable>
+    <TreatWarningsErrors>true</TreatWarningsErrors>
+
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+
+    <!-- 
+    Disable snupk generation as there are no symbols which results in an error
+    if the empty snupkg file is uploaded to nuget.
+    -->
+    <IncludeSymbols>false</IncludeSymbols>
+    <IncludeSource>false</IncludeSource>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference 4.8 as it is the first version which supports net8.0 -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../Shared/GeneratedCodeAttribute.cs" Link="Shared/GeneratedCodeAttribute.cs" />
+    <Compile Include="../Shared/DiagnosticLink.cs" Link="Shared/DiagnosticLink.cs" />
+    <Compile Include="../Shared/SymbolExtensions.cs" Link="Shared/SymbolExtensions.cs" />
+    <Compile Include="../Shared/TypeSymbolExtensions.cs" Link="Shared/TypeSymbolExtensions.cs" />
+    <Compile Include="../Shared/NamedTypeSymbolExtensions.cs" Link="Shared/NamedTypeSymbolExtensions.cs" />
+  </ItemGroup>
+</Project>

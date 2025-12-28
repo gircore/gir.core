@@ -1,4 +1,5 @@
 using System.CodeDom.Compiler;
+using System.Linq;
 using AwesomeAssertions;
 using DiagnosticAnalyzerTestProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,14 +31,6 @@ public class SubclassIntegrationTest : Test
     public void ShouldHaveConstructArgumentConstructor()
     {
         typeof(SomeSubClass).Should().HaveConstructor([typeof(GObject.ConstructArgument[])]);
-    }
-
-    [TestMethod]
-    public void GeneratedClassShouldBeDecoratedWithGeneratedCodeAttribute()
-    {
-        typeof(SomeSubClass)
-            .Should()
-            .BeDecoratedWith<GeneratedCodeAttribute>();
     }
 
     [TestMethod]

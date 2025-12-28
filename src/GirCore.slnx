@@ -167,6 +167,7 @@
     <File Path="../properties/GirCore.Publishing.props" />
     <File Path="../properties/GirCore.Testing.props" />
     <File Path="../properties/GirCore.Tooling.props" />
+    <File Path="../properties/GirCore.Extensions.props" />
   </Folder>
   <Folder Name="/SolutionItems/scripts/">
     <File Path="../scripts/CleanLibs.fsx" />

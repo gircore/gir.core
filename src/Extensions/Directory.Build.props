@@ -1,3 +1,4 @@
 <Project>
   <Import Project="../../properties/GirCore.Publishing.props" />
+  <Import Project="../../properties/GirCore.Extensions.props" />
 </Project>

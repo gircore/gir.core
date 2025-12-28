@@ -1,8 +1,6 @@
 using System;
 using System.Reflection;
 
-namespace GObject.Integration;
-
 internal static class GeneratedCodeAttribute
 {
     private static string Version { get; } = GetVersion();
