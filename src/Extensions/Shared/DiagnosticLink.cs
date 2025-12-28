@@ -1,5 +1,3 @@
-namespace GObject.Integration.SourceAnalyzer;
-
 internal static class DiagnosticLink
 {
     public static string Create(int id)
