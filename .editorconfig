@@ -237,3 +237,6 @@ dotnet_diagnostic.IDE0051.severity = warning
 
 # IDE0052: Remove unread private member
 dotnet_diagnostic.IDE0052.severity = warning
+
+#Convert GirCore1004 from error to warning to detect it inside a unit test
+dotnet_diagnostic.GirCore1004.severity = warning

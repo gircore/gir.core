@@ -11,7 +11,8 @@ public class Analyzer : DiagnosticAnalyzer
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = [
         GirCore1001.DiagnosticDescriptor,
         GirCore1002.DiagnosticDescriptor,
-        GirCore1003.DiagnosticDescriptor
+        GirCore1003.DiagnosticDescriptor,
+        GirCore1004.DiagnosticDescriptor
     ];
 
     public override void Initialize(AnalysisContext context)
@@ -22,6 +23,7 @@ public class Analyzer : DiagnosticAnalyzer
         RegisterDiagnosticRule<GirCore1001>(context);
         RegisterDiagnosticRule<GirCore1002>(context);
         RegisterDiagnosticRule<GirCore1003>(context);
+        RegisterDiagnosticRule<GirCore1004>(context);
     }
 
     private static void RegisterDiagnosticRule<T>(AnalysisContext context) where T : Rule

@@ -159,7 +159,7 @@ jobs:
           test_categories: 'TestCategory=UnitTest | TestCategory=BindingTest | TestCategory=IntegrationTest'
 
       - name: Verify code format
-        run: dotnet format GirCore.slnx --no-restore --verify-no-changes --exclude *.Generated.cs --exclude-diagnostics GirCore1001 GirCore1002 GirCore1003
+        run: dotnet format GirCore.slnx --no-restore --verify-no-changes --exclude *.Generated.cs --exclude-diagnostics GirCore1001 GirCore1002 GirCore1003 GirCore1004
         working-directory: './src'
 
       - name: Pack release version
