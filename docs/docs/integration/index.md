@@ -9,3 +9,4 @@ The following nuget packages are available:
 - [GirCore1001](diagnostic/1001.md)
 - [GirCore1002](diagnostic/1002.md)
 - [GirCore1003](diagnostic/1003.md)
+- [GirCore1004](diagnostic/1004.md)
