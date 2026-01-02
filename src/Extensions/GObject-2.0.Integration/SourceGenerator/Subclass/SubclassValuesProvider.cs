@@ -6,7 +6,6 @@ namespace GObject.Integration.SourceGenerator;
 
 internal static class SubclassValuesProvider
 {
-
     public static IncrementalValuesProvider<SubclassData> GetSubclassValuesProvider(this IncrementalGeneratorInitializationContext context)
     {
         return context.SyntaxProvider
@@ -22,7 +21,7 @@ internal static class SubclassValuesProvider
         if (context.TargetSymbol is not INamedTypeSymbol subclass)
             return null;
 
-        var subclassAttribute = context.Attributes.First().AttributeClass;
+        var subclassAttribute = context.Attributes.First(a => a.IsSubclassAttribute()).AttributeClass;
         if (subclassAttribute is null)
             return null;
 
@@ -32,24 +31,14 @@ internal static class SubclassValuesProvider
         if (parentHandle is null)
             return null;
 
-        var accessibility = subclass.GetDeclaredAccessibilityAsString();
-        if (accessibility is null)
-            return null;
-
-        var upperNestedClasses = subclass.GetUpperNestedClasses();
-        if (upperNestedClasses is null)
+        var typeData = TypeDataHelper.GetTypeData(subclass);
+        if (typeData is null)
             return null;
 
         return new SubclassData(
-            Name: subclass.Name,
-            NameGenericArguments: subclass.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
+            TypeData: typeData,
             Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-            ParentHandle: parentHandle,
-            Namespace: context.TargetSymbol.ContainingNamespace.ToDisplayString(),
-            IsGlobalNamespace: context.TargetSymbol.ContainingNamespace.IsGlobalNamespace,
-            Accessibility: accessibility,
-            FileName: subclass.GetFileName(),
-            UpperNestedClasses: upperNestedClasses
+            ParentHandle: parentHandle
         );
     }
 

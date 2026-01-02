@@ -10,6 +10,7 @@
         <IsPackable>false</IsPackable>
         
         <RootNamespace>DiagnosticAnalyzerTestProject</RootNamespace>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
 </Project>
