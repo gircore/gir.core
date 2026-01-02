@@ -5,10 +5,17 @@
 G_BEGIN_DECLS
 
 typedef struct _GirTestUntypedRecordTester GirTestUntypedRecordTester;
+typedef struct _GirTestUntypedRecordContainerTester GirTestUntypedRecordContainerTester;
 
 struct _GirTestUntypedRecordTester
 {
     int a;
+};
+
+struct _GirTestUntypedRecordContainerTester
+{
+    GirTestUntypedRecordTester* data;
+    GirTestUntypedRecordContainerTester *next;
 };
 
 /**
@@ -30,6 +37,8 @@ GirTestUntypedRecordTester * girtest_untyped_record_tester_nullable_mirror(GirTe
 int girtest_untyped_record_tester_get_a(GirTestUntypedRecordTester* record);
 int girtest_untyped_record_tester_get_a_nullable(int fallback, GirTestUntypedRecordTester* record);
 void girtest_untyped_record_tester_out_parameter_caller_allocates(int v, GirTestUntypedRecordTester *record);
+GirTestUntypedRecordContainerTester* girtest_untyped_record_tester_returns_transfer_container();
+GirTestUntypedRecordTester* girtest_untyped_record_tester_get_nth_container_data(GirTestUntypedRecordContainerTester* container, guint n);
 GirTestUntypedRecordTester* girtest_untyped_record_tester_callback_out_parameter_caller_allocates(GirTestUntypedRecordCallbackOutParameterCallerAllocates callback);
 GirTestUntypedRecordTester* girtest_untyped_record_tester_callback_out_parameter_callee_allocates(GirTestUntypedRecordCallbackOutParameterCalleeAllocates callback);
 int girtest_untyped_record_tester_get_a_from_last_element(GirTestUntypedRecordTester* array, int length);
