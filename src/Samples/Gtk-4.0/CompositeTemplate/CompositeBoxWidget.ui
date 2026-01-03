@@ -4,7 +4,12 @@
         <property name="orientation">1</property>
         <child>
             <object class="GtkLabel">
-                <property name="label">Welcome to CompositeTemplates</property>
+                <property name="label">Welcome to CompositeTemplates!</property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkLabel" id="my_label">
+                <property name="label">Nothing to see here.</property>
             </object>
         </child>
     </template>

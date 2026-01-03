@@ -60,7 +60,7 @@ internal static class TemplateCode
                     {{GeneratedCodeAttribute.Render()}}
                     static partial void CompositeTemplateClassInit(System.IntPtr cls, System.IntPtr clsData)
                     {
-                        var bytes = {{data.Loader}}.Load("{{data.RessourceName}}");
+                        var bytes = {{data.Loader}}.Load("{{data.ResourceName}}");
 
                         var classHandle = new Gtk.Internal.WidgetClassUnownedHandle(cls);
                         Gtk.Internal.WidgetClass.SetTemplate(
@@ -68,12 +68,9 @@ internal static class TemplateCode
                             templateBytes: bytes.Handle
                         );
                     
-                        /*Gtk.Internal.WidgetClass.BindTemplateChildFull(
-                            widgetClass: classHandle,
-                            name: GLib.Internal.NonNullableUtf8StringOwnedHandle.Create("Button"),
-                            internalChild: false,
-                            structOffset: 0
-                        );
+                        {{RenderChildBindings(data)}}
+
+                        /*
 
                         Gtk.Internal.WidgetClass.BindTemplateCallbackFull(
                             widgetClass: classHandle,
@@ -93,7 +90,50 @@ internal static class TemplateCode
                     {
                         Gtk.Internal.Widget.DisposeTemplate(instance, GType);
                     }
+                    
+                    {{GeneratedCodeAttribute.Render()}}
+                    partial void CompositeTemplateInitialize()
+                    {
+                        {{RenderMemberMapping(data)}}
+                    }
                 }
                 """;
+    }
+
+    private static string RenderChildBindings(TemplateData data)
+    {
+        var sb = new StringBuilder();
+
+        foreach (var connection in data.Connections)
+        {
+            sb.AppendLine(
+                provider: CultureInfo.InvariantCulture, 
+                handler: $"""
+                          Gtk.Internal.WidgetClass.BindTemplateChildFull(
+                              widgetClass: classHandle,
+                              name: GLib.Internal.NonNullableUtf8StringOwnedHandle.Create("{connection.ObjectId}"),
+                              internalChild: false,
+                              structOffset: 0
+                          );
+                          """
+            );
+        }
+        
+        return sb.ToString();
+    }
+
+    private static string RenderMemberMapping(TemplateData data)
+    {
+        var sb = new StringBuilder();
+
+        foreach (var connection in data.Connections)
+        {
+            sb.AppendLine(
+                provider: CultureInfo.InvariantCulture,
+                handler: $"""{connection.MemberName} = ({connection.Type}) GetTemplateChild(GetGType(), "{connection.ObjectId}");"""
+            );
+        }
+
+        return sb.ToString();
     }
 }
