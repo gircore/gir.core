@@ -56,4 +56,17 @@ public class SubclassIntegrationTest : Test
 
         type2.Should().NotBe(type3);
     }
+
+    [TestMethod]    
+    public void ShouldCallInitializeOnce()
+    {
+        // Test for https://github.com/gircore/gir.core/issues/1421
+        const bool SomeRandomArgument = true;
+        
+        var obj = new SomeInitializedSubClass();
+        var objWithUserConstructor = new SomeInitializedSubClassWithUserConstructor(SomeRandomArgument);
+        
+        obj.InitializedCount.Should().Be(1);
+        objWithUserConstructor.InitializedCount.Should().Be(1);
+    }
 }
