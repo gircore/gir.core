@@ -40,6 +40,19 @@ public class DiagnosticAnalyzerTest : Test
                                             public partial class RaiseGirCore1004<T>;
                                             """;
 
+    private const string RaiseGirCore1005 = """
+                                            public partial class Wrapper<T>
+                                            {
+                                                [GObject.Subclass<GObject.Object>]
+                                                public partial class RaiseGirCore1004Wrapped
+                                                {
+                                                    public RaiseGirCore1004Wrapped() : this()
+                                                    {
+                                                    }
+                                                }
+                                            }
+                                            """;
+
     private const string NotRaiseGirCore1002 = """
                                                [GObject.Subclass<GObject.Object>]
                                                public partial class NotRaiseGirCore1002
@@ -60,8 +73,11 @@ public class DiagnosticAnalyzerTest : Test
     [DataRow(RaiseGirCore1002, "GirCore1002", true)]
     [DataRow(RaiseGirCore1003, "GirCore1003", true)]
     [DataRow(RaiseGirCore1004, "GirCore1004", true)]
+    [DataRow(RaiseGirCore1005, "GirCore1005", true)]
     [DataRow(NotRaiseGirCore1002, "GirCore1002", false)]
     [DataRow(NotRaiseGirCore1004, "GirCore1004", false)]
+    [DataRow(RaiseGirCore1005, "GirCore1004", false)]
+    [DataRow(RaiseGirCore1004, "GirCore1005", false)]
     public async Task ShouldRaiseExpectedDiagnosticIds(string code, string diagnosticId, bool diagnosticIdExpected)
     {
         var compilation = CSharpCompilation.Create(

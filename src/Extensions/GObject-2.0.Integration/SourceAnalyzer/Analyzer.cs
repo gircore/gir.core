@@ -12,7 +12,8 @@ public class Analyzer : DiagnosticAnalyzer
         GirCore1001.DiagnosticDescriptor,
         GirCore1002.DiagnosticDescriptor,
         GirCore1003.DiagnosticDescriptor,
-        GirCore1004.DiagnosticDescriptor
+        GirCore1004.DiagnosticDescriptor,
+        GirCore1005.DiagnosticDescriptor,
     ];
 
     public override void Initialize(AnalysisContext context)
@@ -24,6 +25,7 @@ public class Analyzer : DiagnosticAnalyzer
         RegisterDiagnosticRule<GirCore1002>(context);
         RegisterDiagnosticRule<GirCore1003>(context);
         RegisterDiagnosticRule<GirCore1004>(context);
+        RegisterDiagnosticRule<GirCore1005>(context);
     }
 
     private static void RegisterDiagnosticRule<T>(AnalysisContext context) where T : Rule
