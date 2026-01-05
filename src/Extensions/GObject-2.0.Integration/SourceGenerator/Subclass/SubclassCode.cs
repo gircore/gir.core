@@ -77,7 +77,7 @@ internal static class SubclassCode
                       {{GeneratedCodeAttribute.Render()}}
                       public {{subclassData.TypeData.Properties.Name}}(params GObject.ConstructArgument[] constructArguments) : this({{subclassData.ParentHandle}}.For<{{subclassData.TypeData.Properties.NameGenericArguments}}>(constructArguments)) 
                       {
-                          Initialize();
+                          //Do not call 'Initialize();' here. It will be called by 'this(...)'.
                       }
                       
                       {{GeneratedCodeAttribute.Render()}}
