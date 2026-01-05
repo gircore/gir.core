@@ -84,7 +84,7 @@ public partial class Builder
                 continue;
 
             var connectAttribute = (ConnectAttribute) attributes[0];
-            var element = connectAttribute.WidgetName ?? field.Name;
+            var element = connectAttribute.ObjectId ?? field.Name;
 
             if (!typeof(Widget).IsAssignableFrom(field.FieldType))
                 throw new Exception($"{field.FieldType.Name} must be a {nameof(Widget)}");

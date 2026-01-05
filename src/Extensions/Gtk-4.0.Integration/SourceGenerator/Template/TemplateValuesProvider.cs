@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -42,9 +43,59 @@ internal static class TemplateValuesProvider
 
         return new TemplateData(
             TypeData: typeData,
-            RessourceName: resourceName,
-            Loader: loader.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)
+            ResourceName: resourceName,
+            Loader: loader.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+            Connections: GetConnections(subclass)
         );
+    }
+
+    private static HashSet<TemplateData.Connect> GetConnections(INamedTypeSymbol subclass)
+    {
+        var connections = new HashSet<TemplateData.Connect>();
+
+        foreach (var member in subclass.GetMembers())
+        {
+            var attribute = member.GetAttributes().FirstOrDefault(IsConnectAttribute);
+            if (attribute is null)
+                continue;
+
+            var objectId = GetObjectId(attribute) ?? member.Name;
+            var type = GetMemberType(member);
+
+            if (type is null)
+                continue;
+
+            connections.Add(new TemplateData.Connect(
+                ObjectId: objectId,
+                Type: type,
+                MemberName: member.Name
+            ));
+        }
+
+        return connections;
+    }
+
+    private static bool IsConnectAttribute(AttributeData attributeData)
+    {
+        return attributeData.AttributeClass?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::Gtk.ConnectAttribute";
+    }
+
+    private static string? GetObjectId(AttributeData attributeData)
+    {
+        if (attributeData.ConstructorArguments.Length > 0 && attributeData.ConstructorArguments[0].Value is string value)
+            return value;
+
+        return null;
+    }
+
+    private static string? GetMemberType(ISymbol symbol)
+    {
+        return symbol switch
+        {
+            IFieldSymbol fieldSymbol => fieldSymbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+            IPropertySymbol propertySymbol => propertySymbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+            _ => null
+        };
     }
 
     private static string? GetResourceName(AttributeData templateAttribute)
