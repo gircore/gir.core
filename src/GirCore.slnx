@@ -69,6 +69,7 @@
     <Project Path="Samples/Gtk-4.0/Builder/Builder.csproj" />
     <Project Path="Samples/Gtk-4.0/CompositeTemplate/CompositeTemplate.csproj" />
     <Project Path="Samples/Gtk-4.0/DrawingArea/DrawingArea.csproj" />
+    <Project Path="Samples/Gtk-4.0/DropDown/DropDown.csproj" />
     <Project Path="Samples/Gtk-4.0/FontDialog/FontDialog.csproj" />
     <Project Path="Samples/Gtk-4.0/GridView/GridView.csproj" />
     <Project Path="Samples/Gtk-4.0/ListView/ListView.csproj" />
