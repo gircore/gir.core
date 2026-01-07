@@ -13,7 +13,7 @@ internal sealed class GirCore1005 : Rule
     public static DiagnosticDescriptor DiagnosticDescriptor { get; } = new(
         id: "GirCore1005",
         title: "GObject subclass may not be nested inside a generic type",
-        messageFormat: "GObject subclass must not be declared inside a generic type. Use a regular subclass (without SubclassAttribute) or extension blocks to allow type safe access to data.",
+        messageFormat: "GObject subclass must not be declared inside a generic type. Use a regular non-generic outer class instead.",
         category: "Usage",
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
@@ -40,6 +40,5 @@ internal sealed class GirCore1005 : Rule
 
             syntax = syntax.Parent as ClassDeclarationSyntax;
         }
-
     }
 }
