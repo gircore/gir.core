@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace GObject.Internal;
 
-internal static class InstanceCache
+public static class InstanceCache
 {
     private static readonly object Lock = new();
     private static readonly Dictionary<IntPtr, ToggleRef> Cache = new();
@@ -41,6 +41,8 @@ internal static class InstanceCache
 
     public static unsafe void Add(IntPtr handle, GObject.Object obj)
     {
+        Debug.Assert(handle == obj.Handle.DangerousGetHandle(), "Must cache the instance of this handle.");
+        
         lock (Cache)
         {
             Cache[handle] = new ToggleRef(obj);

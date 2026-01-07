@@ -53,6 +53,8 @@ internal static class SubclassCode
 
     private static string RenderClassContent(SubclassData subclassData)
     {
+        var owned = subclassData.InitiallyUnowned ? "false" : "true";
+        
         return $$"""
                  {{subclassData.TypeData.Properties.Accessibility}} unsafe partial class {{subclassData.TypeData.Properties.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider, GObject.InstanceFactory
                  {
@@ -96,6 +98,11 @@ internal static class SubclassCode
                       private static void InstanceInit(System.IntPtr instance, System.IntPtr cls)
                       {
                           CompositeTemplateInstanceInit(instance, cls);
+                          
+                          //After C initialization create a C# instance to ensure
+                          //dotnet initialization code runs. Instance is added to
+                          //instance cache automatically.
+                          _ = new {{subclassData.TypeData.Properties.NameGenericArguments}}(new {{subclassData.ParentHandle}}(instance, {{owned}}));
                       }
                      
                       {{GeneratedCodeAttribute.Render()}}

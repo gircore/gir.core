@@ -11,4 +11,8 @@ public partial class CompositeBoxWidget
     {
         _label.Label_ = "With support for connected members!";
     }
+    
+    //TODO: Ensure instance is only created once in both cases:
+    //- Manual call of "new CompositeBoxWidget()"
+    //-Automatic creation of an instance via "InstanceInit" only
 }
