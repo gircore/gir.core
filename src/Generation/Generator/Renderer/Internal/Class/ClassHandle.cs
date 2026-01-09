@@ -15,7 +15,7 @@ internal static class ClassHandle
     private static string RenderFinalClassHandle(GirModel.Class cls)
     {
         var handleName = Class.GetInternalHandleName(cls);
-        var owned = Class.IsInitiallyUnowned(cls) ? "false" : "true";
+        var owned = Class.IsInitiallyUnowned(cls) ? "false" : "true"; //TODO Remove? Consider rmeoving the whole method
 
         return $$"""
                  using System;
@@ -27,27 +27,14 @@ internal static class ClassHandle
 
                  namespace {{Namespace.GetInternalName(cls.Namespace)}};
 
-                 public partial class {{handleName}}(IntPtr handle, bool ownsHandle) : {{RenderParent(cls)}}(handle, ownsHandle)
-                 {
-                     public static {{handleName}} Create(GObject.ConstructArgument[] constructArguments)
-                     {
-                         var ptr = GObject.Internal.Object.NewWithProperties(
-                             objectType: {{Class.GetFullyQualifiedInternalName(cls)}}.GetGType(),
-                             nProperties: (uint) constructArguments.Length,
-                             names: GLib.Internal.Utf8StringArraySizedOwnedHandle.Create(constructArguments.Select(x => x.Name).ToArray()),
-                             values: GObject.Internal.ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
-                         );
-                     
-                         return new {{handleName}}(ptr, {{owned}});
-                     }
-                 }
+                 public partial class {{handleName}}(IntPtr handle) : {{RenderParent(cls)}}(handle);
                  """;
     }
 
     private static string RenderStandardClassHandle(GirModel.Class cls)
     {
         var handleName = Class.GetInternalHandleName(cls);
-        var owned = Class.IsInitiallyUnowned(cls) ? "false" : "true";
+        var owned = Class.IsInitiallyUnowned(cls) ? "false" : "true"; //TODO Remove?
 
         return $$"""
                  using System;
@@ -59,20 +46,7 @@ internal static class ClassHandle
 
                  namespace {{Namespace.GetInternalName(cls.Namespace)}};
 
-                 public partial class {{handleName}}(IntPtr handle, bool ownsHandle) : {{RenderParent(cls)}}(handle, ownsHandle)
-                 {
-                     public static new {{handleName}} For<T>(GObject.ConstructArgument[] constructArguments) where T : {{Class.GetFullyQualifiedPublicName(cls)}}, GObject.GTypeProvider
-                     {
-                         var ptr = GObject.Internal.Object.NewWithProperties(
-                             objectType: T.GetGType(),
-                             nProperties: (uint) constructArguments.Length,
-                             names: GLib.Internal.Utf8StringArraySizedOwnedHandle.Create(constructArguments.Select(x => x.Name).ToArray()),
-                             values: GObject.Internal.ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
-                         );
-                     
-                         return new {{handleName}}(ptr, {{owned}});
-                     }
-                 }
+                 public partial class {{handleName}}(IntPtr handle) : {{RenderParent(cls)}}(handle);
                  """;
     }
 

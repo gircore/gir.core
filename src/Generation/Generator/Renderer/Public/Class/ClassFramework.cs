@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Generator.Model;
@@ -24,10 +23,7 @@ namespace {Namespace.GetPublicName(cls.Namespace)};
 
 {PlatformSupportAttribute.Render(cls as GirModel.PlatformDependent)}
 [GObject.Handle<{Class.GetFullyQualifiedInternalHandleName(cls)}>]
-public {@sealed}partial class {cls.Name}({Class.GetFullyQualifiedInternalHandleName(cls)} handle) {RenderInheritance(cls)}
-{{
-    {RenderPublicConstructor(cls)}
-}}";
+public {@sealed}partial class {cls.Name}({Class.GetFullyQualifiedInternalHandleName(cls)} handle) {RenderInheritance(cls)};";
     }
 
     private static string RenderInheritance(GirModel.Class cls)
@@ -43,12 +39,5 @@ public {@sealed}partial class {cls.Name}({Class.GetFullyQualifiedInternalHandleN
         return elements.Count == 0
             ? string.Empty
             : $": {string.Join(", ", elements)}";
-    }
-
-    private static string RenderPublicConstructor(GirModel.Class cls)
-    {
-        return cls.Final
-            ? $"   public {cls.Name}(params GObject.ConstructArgument[] constructArguments) : this({Class.GetFullyQualifiedInternalHandleName(cls)}.Create(constructArguments)) {{ }}"
-            : $"   public {cls.Name}(params GObject.ConstructArgument[] constructArguments) : this({Class.GetFullyQualifiedInternalHandleName(cls)}.For<{cls.Name}>(constructArguments)) {{ }}";
     }
 }

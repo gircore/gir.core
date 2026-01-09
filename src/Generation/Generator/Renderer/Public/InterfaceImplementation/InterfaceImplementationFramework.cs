@@ -25,9 +25,15 @@ public sealed partial class {Model.Interface.GetImplementationName(@interface)} 
     {{
     }}
 
-    static object GObject.InstanceFactory.Create(IntPtr handle, bool ownsHandle)
+    static object GObject.InstanceFactory.Create(IntPtr ptr, bool ownsHandle)
     {{
-        return new {Model.Interface.GetImplementationName(@interface)}(new {GetParentHandle(@interface)}(handle, ownsHandle));
+        var handle = new {GetParentHandle(@interface)}(ptr);
+        var obj = new {Model.Interface.GetImplementationName(@interface)}(handle);
+        
+//TODO!!
+        GObject.Internal.InstanceCache.AddToggleRef(obj);
+
+        return obj;
     }}
 }}";
     }

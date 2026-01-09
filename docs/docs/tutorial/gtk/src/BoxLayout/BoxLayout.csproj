@@ -6,9 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\src\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"  />
     <ProjectReference Include="..\..\..\..\..\..\src\Libs\Gtk-4.0\Gtk-4.0.csproj" />
   </ItemGroup>
 

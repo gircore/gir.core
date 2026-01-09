@@ -20,10 +20,9 @@ public class Class : ConstructorConverter
     private static string CreateExpression(GirModel.Constructor constructor, string fromVariableName)
     {
         var cls = (GirModel.Class) constructor.Parent;
-        var ownedRef = Model.Transfer.IsOwnedRef(constructor.ReturnType.Transfer);
 
         return cls.Fundamental
             ? $"new {cls.Name}({fromVariableName})"
-            : $"{cls.Namespace.Name}.{cls.Name}.CreateIntern({fromVariableName}, {ownedRef.ToString().ToLower()})";
+            : $"CreateInstance({fromVariableName})";
     }
 }

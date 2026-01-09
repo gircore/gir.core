@@ -11,7 +11,8 @@ namespace Gtk;
 public partial class Builder
 {
     #region Constructors
-    private Builder(string templateXml, bool owned) : this(new BuilderHandle(Internal.Builder.NewFromString(GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(templateXml), Encoding.UTF8.GetByteCount(templateXml)), owned))
+    //TODO
+    private Builder(string templateXml, bool owned) : this(new BuilderHandle(Internal.Builder.NewFromString(GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(templateXml), Encoding.UTF8.GetByteCount(templateXml))))
     {
     }
     public Builder(string embeddedTemplateName) : this(GetTemplate(Assembly.GetCallingAssembly(), embeddedTemplateName), true)
