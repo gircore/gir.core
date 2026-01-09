@@ -2,13 +2,21 @@
 {
     // Define a class named BoxLayout that extends Gtk.Window.
     // Gtk.Window represents a top-level window in a GTK application.
-    public class BoxLayout : Gtk.Window
+    // Subclassing requires a source generator to integrate deeply with
+    // the GObject type system.
+    [GObject.Subclass<Gtk.Window>]
+    public partial class BoxLayout
     {
-        // Constructor for the BoxLayout class.
+        public static new BoxLayout New()
+        {
+            return NewWithProperties([]);
+        }
+
+        // Initializer for the BoxLayout class.
         // This method sets up the window and its contents.
         // Gtk.Application is passed in so we can access the application in this app
         // we will use the reference to the Gtk.Application to quit from a button.
-        public BoxLayout(Gtk.Application app)
+        partial void Initialize()
         {
             Title = "Box Layout App";
             SetDefaultSize(300, 30);
@@ -138,7 +146,7 @@
 
             quitButton.OnClicked += (_, _) =>
             {
-                app.Quit();
+                Application?.Quit();
             };
         }
     }

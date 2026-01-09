@@ -7,6 +7,11 @@ namespace GridViewSample;
 [Subclass<Window>]
 public partial class StringListGridViewWindow
 {
+    public static new StringListGridViewWindow New()
+    {
+        return NewWithProperties([]);
+    }
+
     partial void Initialize()
     {
         Title = "Gtk::GridView (Gio::ListStore)";

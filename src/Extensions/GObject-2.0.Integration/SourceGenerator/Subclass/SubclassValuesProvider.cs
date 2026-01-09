@@ -38,7 +38,8 @@ internal static class SubclassValuesProvider
         return new SubclassData(
             TypeData: typeData,
             Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-            ParentHandle: parentHandle
+            ParentHandle: parentHandle,
+            IsInitiallyUnowned: IsInitiallyUnowned(parentType)
         );
     }
 
@@ -77,5 +78,19 @@ internal static class SubclassValuesProvider
             return null;
 
         return subclassAttribute.AttributeClass?.TypeArguments.First();
+    }
+
+    private static bool IsInitiallyUnowned(ITypeSymbol? type)
+    {
+        while (true)
+        {
+            if (type is null)
+                return false;
+
+            if (type.Name == "InitiallyUnowned" && type.ContainingNamespace?.ToDisplayString() == "GObject")
+                return true;
+
+            type = type.BaseType;
+        }
     }
 }

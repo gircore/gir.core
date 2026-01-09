@@ -14,9 +14,9 @@ public class SListTest : Test
         // Test enumerable for GLib.SList with GObject.Object stored as a pointer
         var valueArr = new[]
         {
-            new BindingGroup(),
-            new BindingGroup(),
-            new BindingGroup()
+            BindingGroup.New(),
+            BindingGroup.New(),
+            BindingGroup.New()
         };
 
         // Create zeroed SList handle to pass to "Append"

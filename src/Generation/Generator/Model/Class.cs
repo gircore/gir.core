@@ -108,4 +108,6 @@ internal static class Class
     }
 
     private static bool IsNamedInitiallyUnowned(string name) => name == "InitiallyUnowned";
+
+    public static bool IsGObjectObject(GirModel.Class cls) => cls is { Name: "Object", Namespace.Name: "GObject" };
 }
