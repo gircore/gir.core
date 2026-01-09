@@ -12,7 +12,7 @@ public class SignalTest : Test
         var senderOk = false;
         var parameterNameOk = false;
 
-        var window = new Window();
+        var window = Window.New();
         window.OnNotify += (sender, args) =>
         {
             senderOk = sender == window;
@@ -31,10 +31,10 @@ public class SignalTest : Test
         var notify1Called = false;
         var notify2Called = false;
 
-        var window1 = new Window();
+        var window1 = Window.New();
         window1.OnNotify += (sender, args) => notify1Called = true;
 
-        var window2 = new Window();
+        var window2 = Window.New();
         window2.OnNotify += (sender, args) => notify2Called = true;
 
         notify1Called.Should().BeFalse();

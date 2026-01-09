@@ -18,8 +18,8 @@ application.OnActivate += (sender, args) =>
     columnView.AppendColumn(column);
 
     var data = Gio.ListStore.New(Data.GetGType());
-    data.Append(new Data { Number = "One" });
-    data.Append(new Data { Number = "Two" });
+    data.Append(Data.New("One"));
+    data.Append(Data.New("Two"));
 
     columnView.SetModel(
         model: Gtk.SingleSelection.New(
@@ -57,5 +57,13 @@ void Setup(Gtk.SignalListItemFactory signalListItemFactory, Gtk.SignalListItemFa
 [GObject.Subclass<GObject.Object>]
 public partial class Data
 {
-    public string? Number { get; set; }
+    public string? Number { get; private set; }
+
+    public static Data New(string number)
+    {
+        var obj = NewWithProperties([]);
+        obj.Number = number;
+
+        return obj;
+    }
 }

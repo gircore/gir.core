@@ -70,14 +70,6 @@ internal static class TemplateCode
                         );
                     
                         {{RenderChildBindings(data)}}
-
-                        /*
-
-                        Gtk.Internal.WidgetClass.BindTemplateCallbackFull(
-                            widgetClass: classHandle,
-                            callbackName: GLib.Internal.NonNullableUtf8StringOwnedHandle.Create("Button"),
-                            callbackSymbol: null! //TODO
-                        );*/
                     }
                 
                     {{GeneratedCodeAttribute.Render()}}

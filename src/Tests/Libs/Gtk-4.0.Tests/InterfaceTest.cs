@@ -9,7 +9,7 @@ public class InterfaceTest : Test
     [TestMethod]
     public void CanSetInterfaceProperty()
     {
-        var entry = new Entry();
+        var entry = Entry.New();
         entry.Editable.Should().BeTrue();
         entry.Editable = false;
         entry.Editable.Should().BeFalse();
@@ -21,7 +21,7 @@ public class InterfaceTest : Test
     public void CanCallInterfaceMethod()
     {
         const string Text = "test";
-        var entry = new Entry();
+        var entry = Entry.New();
         entry.SetText(Text);
         entry.GetText().Should().Be(Text);
     }

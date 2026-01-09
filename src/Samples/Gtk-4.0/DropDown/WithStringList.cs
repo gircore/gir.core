@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 
 namespace DropDown;
 
@@ -7,6 +8,7 @@ public partial class WithStringList
     private Gtk.Label _labelSelected;
     private Gtk.DropDown _dropDown;
 
+    [MemberNotNull(nameof(_labelSelected), nameof(_dropDown))]
     partial void Initialize()
     {
         Title = "DropDown With StringList";
@@ -19,7 +21,7 @@ public partial class WithStringList
         _labelSelected.SetMarginEnd(12);
 
         var stringList = Gtk.StringList.New(["1 minute", "2 minutes", "5 minutes", "15 minutes", "30 minutes"]);
-        _dropDown = new Gtk.DropDown();
+        _dropDown = Gtk.DropDown.New(null, null);
         _dropDown.SetModel(stringList);
         _dropDown.SetSelected(0);
         _dropDown.SetMarginTop(12);

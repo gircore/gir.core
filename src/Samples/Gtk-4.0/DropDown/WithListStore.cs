@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace DropDown;
 
 [GObject.Subclass<Gtk.ApplicationWindow>]
@@ -7,6 +9,7 @@ public partial class WithListStore
     private Gtk.DropDown _dropDown;
     private Gio.ListStore _listStore;
 
+    [MemberNotNull(nameof(_labelSelected), nameof(_dropDown), nameof(_listStore))]
     partial void Initialize()
     {
         Title = "DropDown With List Store";
@@ -18,7 +21,7 @@ public partial class WithListStore
         _labelSelected.SetMarginStart(12);
         _labelSelected.SetMarginEnd(12);
 
-        _dropDown = new Gtk.DropDown();
+        _dropDown = Gtk.DropDown.New(null, null);
         _dropDown.SetMarginTop(12);
         _dropDown.SetMarginBottom(12);
         _dropDown.SetMarginStart(12);
@@ -54,16 +57,17 @@ public partial class WithListStore
         var dropDown = sender as Gtk.DropDown;
         var selectedItem = dropDown?.SelectedItem as StringHolder;
         var title = selectedItem?.Title;
-        _labelSelected.SetLabel($"Selected title:  {title}");
+        _labelSelected.SetLabel($"Selected title: {title}");
     }
 
+    [MemberNotNull(nameof(_listStore))]
     private void CreateModel()
     {
         _listStore = Gio.ListStore.New(StringHolder.GetGType());
-        _listStore.Append(new StringHolder("Deskop", "user-desktop-symbolic", "Deskop Folder"));
-        _listStore.Append(new StringHolder("Home", "user-home-symbolic", "Home Folder"));
-        _listStore.Append(new StringHolder("Trash", "user-trash-symbolic", "Trash Folder"));
-        _listStore.Append(new StringHolder("Videos", "folder-videos-symbolic", "Videos Folder"));
+        _listStore.Append(StringHolder.New("Deskop", "user-desktop-symbolic", "Deskop Folder"));
+        _listStore.Append(StringHolder.New("Home", "user-home-symbolic", "Home Folder"));
+        _listStore.Append(StringHolder.New("Trash", "user-trash-symbolic", "Trash Folder"));
+        _listStore.Append(StringHolder.New("Videos", "folder-videos-symbolic", "Videos Folder"));
     }
 
     private static void OnSetupSelectedItem(Gtk.SignalListItemFactory factory, Gtk.SignalListItemFactory.SetupSignalArgs args)
@@ -91,7 +95,7 @@ public partial class WithListStore
         var label = image.GetNextSibling() as Gtk.Label;
         if (label is null) return;
 
-        label.SetText(stringHolder.Title);
+        label.SetText(stringHolder.Title ?? string.Empty);
     }
 
     private static void OnSetupListItem(Gtk.SignalListItemFactory factory, Gtk.SignalListItemFactory.SetupSignalArgs args)
@@ -138,9 +142,9 @@ public partial class WithListStore
         if (vbox is null) return;
 
         var title = vbox.GetFirstChild() as Gtk.Label;
-        title?.SetText(stringHolder.Title);
+        title?.SetText(stringHolder.Title ?? string.Empty);
         var description = title?.GetNextSibling() as Gtk.Label;
-        description?.SetText(stringHolder.Description);
+        description?.SetText(stringHolder.Description ?? string.Empty);
 
         Gtk.DropDown.SelectedPropertyDefinition.Notify(_dropDown, (_, _) =>
         {
@@ -166,14 +170,17 @@ public partial class WithListStore
 [GObject.Subclass<GObject.Object>]
 public partial class StringHolder
 {
-    public StringHolder(string title, string icon, string description) : this()
+    public static StringHolder New(string title, string icon, string description)
     {
-        Title = title;
-        Icon = icon;
-        Description = description;
+        var obj = NewWithProperties([]);
+        obj.Title = title;
+        obj.Icon = icon;
+        obj.Description = description;
+
+        return obj;
     }
 
-    public string Title { get; }
-    public string Icon { get; }
-    public string Description { get; }
+    public string? Title { get; private set; }
+    public string? Icon { get; private set; }
+    public string? Description { get; private set; }
 }

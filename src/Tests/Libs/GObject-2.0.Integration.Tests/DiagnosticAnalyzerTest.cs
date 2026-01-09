@@ -11,27 +11,11 @@ public class DiagnosticAnalyzerTest : Test
 {
     public TestContext TestContext { get; set; }
 
-    private const string RaiseGirCore1001 = """
-                                            [GObject.Subclass<GObject.Object>]
-                                            public partial class RaiseGirCore1001
-                                            {
-                                                public RaiseGirCore1001(string a) { }
-                                            }
-                                            """;
-
     private const string RaiseGirCore1002 = """
                                             [GObject.Subclass<GObject.Object>]
                                             public partial class RaiseGirCore1002
                                             {
                                                 public RaiseGirCore1002() { }
-                                            }
-                                            """;
-
-    private const string RaiseGirCore1003 = """
-                                            [GObject.Subclass<GObject.Object>]
-                                            public partial class RaiseGirCore1003
-                                            {
-                                                public RaiseGirCore1003(string a) : base(null!) { }
                                             }
                                             """;
 
@@ -53,6 +37,14 @@ public class DiagnosticAnalyzerTest : Test
                                             }
                                             """;
 
+    private const string RaiseGirCore1006 = """
+                                            [GObject.Subclass<GObject.Object>]
+                                            public partial class RaiseGirCore1006
+                                            {
+                                                public RaiseGirCore1006(int a) { }
+                                            }
+                                            """;
+
     private const string NotRaiseGirCore1002 = """
                                                [GObject.Subclass<GObject.Object>]
                                                public partial class NotRaiseGirCore1002
@@ -69,11 +61,10 @@ public class DiagnosticAnalyzerTest : Test
                                                """;
 
     [TestMethod]
-    [DataRow(RaiseGirCore1001, "GirCore1001", true)]
     [DataRow(RaiseGirCore1002, "GirCore1002", true)]
-    [DataRow(RaiseGirCore1003, "GirCore1003", true)]
     [DataRow(RaiseGirCore1004, "GirCore1004", true)]
     [DataRow(RaiseGirCore1005, "GirCore1005", true)]
+    [DataRow(RaiseGirCore1006, "GirCore1006", true)]
     [DataRow(NotRaiseGirCore1002, "GirCore1002", false)]
     [DataRow(NotRaiseGirCore1004, "GirCore1004", false)]
     [DataRow(RaiseGirCore1005, "GirCore1004", false)]

@@ -6,7 +6,7 @@ application.OnActivate += (sender, args) =>
     var window = Gtk.ApplicationWindow.New((Gtk.Application) sender);
     window.Title = "Gtk4 Window";
     window.SetDefaultSize(300, 300);
-    window.Child = new CompositeBoxWidget();
+    window.Child = CompositeBoxWidget.NewWithProperties([]);
     window.Show();
 };
 return application.RunWithSynchronizationContext(null);

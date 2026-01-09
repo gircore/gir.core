@@ -9,7 +9,8 @@ public class Analyzer : DiagnosticAnalyzer
 {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } = [
         GirCore2001.DiagnosticDescriptor,
-        GirCore2002.DiagnosticDescriptor
+        GirCore2002.DiagnosticDescriptor,
+        GirCore2003.DiagnosticDescriptor
     ];
 
     public override void Initialize(AnalysisContext context)
@@ -19,6 +20,7 @@ public class Analyzer : DiagnosticAnalyzer
 
         RegisterDiagnosticRule<GirCore2001>(context);
         RegisterDiagnosticRule<GirCore2002>(context);
+        RegisterDiagnosticRule<GirCore2003>(context);
     }
 
     private static void RegisterDiagnosticRule<T>(AnalysisContext context) where T : Rule

@@ -34,11 +34,30 @@ public class DiagnosticAnalyzerTest : Test
                                                public partial class NotRaiseGirCore2002;
                                                """;
 
+    private const string RaiseGirCore2003 = """
+                                            public partial class RaiseGirCore2003
+                                            {
+                                                [Gtk.Connect]
+                                                private Gtk.Label label;
+                                            }
+                                            """;
+
+    private const string NotRaiseGirCore2003 = """
+                                            [Gtk.Template<Gtk.AssemblyResource>("Test.ui")]
+                                            public partial class RaiseGirCore2003
+                                            {
+                                                [Gtk.Connect]
+                                                private Gtk.Label label;
+                                            }
+                                            """;
+
     [TestMethod]
     [DataRow(RaiseGirCore2001, "GirCore2001", true)]
     [DataRow(NotRaiseGirCore2001, "GirCore2001", false)]
     [DataRow(RaiseGirCore2002, "GirCore2002", true)]
     [DataRow(NotRaiseGirCore2002, "GirCore2002", false)]
+    [DataRow(RaiseGirCore2003, "GirCore2003", true)]
+    [DataRow(NotRaiseGirCore2003, "GirCore2003", false)]
     public async Task ShouldRaiseExpectedDiagnosticIds(string code, string diagnosticId, bool diagnosticIdExpected)
     {
         var compilation = CSharpCompilation.Create(

@@ -9,17 +9,20 @@ namespace AboutDialog;
 [Subclass<Gtk.AboutDialog>]
 public partial class SampleAboutDialog
 {
-    public SampleAboutDialog(string sampleName) : this()
+    public static SampleAboutDialog New(string sampleName)
     {
-        Authors = ["Gir.Core Developers", "badcel", "mjakeman"];
-        Comments = "Gir.Core is a C# wrapper for GObject based libraries providing a C# friendly API surface.";
-        Copyright = "© Gir.Core Developers 2021-present";
-        License = "MIT License";
-        Logo = LoadFromResource("AboutDialog.logo.svg");
-        Version = "0.1.0";
-        Website = "https://gircore.github.io/";
-        LicenseType = Gtk.License.MitX11;
-        ProgramName = $"{sampleName} - GirCore";
+        var obj = NewWithProperties([]);
+        obj.Authors = ["Gir.Core Developers", "badcel", "mjakeman"];
+        obj.Comments = "Gir.Core is a C# wrapper for GObject based libraries providing a C# friendly API surface.";
+        obj.Copyright = "© Gir.Core Developers 2021-present";
+        obj.License = "MIT License";
+        obj.Logo = LoadFromResource("AboutDialog.logo.svg");
+        obj.Version = "0.1.0";
+        obj.Website = "https://gircore.github.io/";
+        obj.LicenseType = Gtk.License.MitX11;
+        obj.ProgramName = $"{sampleName} - GirCore";
+
+        return obj;
     }
 
     private static Gdk.Texture LoadFromResource(string resourceName)
