@@ -252,10 +252,13 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
 
     private static string RenderFieldGetter(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
     {
-        var typePrefix = field.AnyTypeOrCallback.IsT1 ? $"{Model.UntypedRecord.GetDataName(record)}." : string.Empty;
+        //Callback can only be called from unmanaged caller
+        if(field.AnyTypeOrCallback.IsT1)
+            return string.Empty;
+        
         var dataName = Model.UntypedRecord.GetDataName(record);
 
-        return @$"public {typePrefix}{renderableField.NullableTypeName} Get{renderableField.Name}()
+        return @$"public {renderableField.NullableTypeName} Get{renderableField.Name}()
 {{
     if (IsClosed || IsInvalid)
         throw new InvalidOperationException(""Handle is closed or invalid"");

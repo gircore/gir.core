@@ -21,7 +21,7 @@ namespace {Namespace.GetInternalName(record.Namespace)};
 
 {PlatformSupportAttribute.Render(record as GirModel.PlatformDependent)}
 [StructLayout(LayoutKind.Sequential)]
-public partial struct {Model.TypedRecord.GetDataName(record)}
+public unsafe partial struct {Model.TypedRecord.GetDataName(record)}
 {{
     {record.Fields
         .Select(x => x.AnyTypeOrCallback)
