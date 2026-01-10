@@ -38,13 +38,6 @@ public class ObjectHandle : SafeHandle
         }
     }
 
-    internal void Cache(GObject.Object obj)
-    {
-        Debug.Assert(handle == obj.Handle.DangerousGetHandle(), "Must cache the instance of this handle.");
-
-        InstanceCache.Add(handle, obj);
-    }
-
     internal GObject.Closure GetClosure(Delegate signalHandler, Func<GObject.Closure> createClosure)
     {
         if (closures.TryGetValue(signalHandler, out var closure))

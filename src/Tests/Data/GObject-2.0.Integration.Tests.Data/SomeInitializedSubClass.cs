@@ -10,6 +10,11 @@ public partial class SomeInitializedSubClass
 
     public string Text { get; set; } //null by default
 
+    public static SomeInitializedSubClass New()
+    {
+        return NewWithProperties([]);
+    }
+
     [MemberNotNull(nameof(Text))]
     partial void Initialize()
     {

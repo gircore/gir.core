@@ -8,6 +8,11 @@ namespace ListViewSample;
 [Subclass<Window>]
 public partial class TemplateListViewWindow
 {
+    public static new TemplateListViewWindow New()
+    {
+        return NewWithProperties([]);
+    }
+
     partial void Initialize()
     {
         Title = "Template ListView";
