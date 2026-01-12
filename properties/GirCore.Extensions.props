@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Compile Include="../Shared/GeneratedCodeAttribute.cs" Link="Shared/GeneratedCodeAttribute.cs" />
+    <Compile Include="../Shared/Attributes/SubclassAttribute.cs" Link="Shared/Attributes/SubclassAttribute.cs" />
     <Compile Include="../Shared/DiagnosticLink.cs" Link="Shared/DiagnosticLink.cs" />
     <Compile Include="../Shared/Type/TypeDataHelper.cs" Link="Shared/Type/TypeDataHelper.cs" />
     <Compile Include="../Shared/Type/TypeData.cs" Link="Shared/Type/TypeData.cs" />

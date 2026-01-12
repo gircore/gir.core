@@ -118,6 +118,8 @@
     <File Path="../docs/docs/integration/diagnostic/1003.md" />
     <File Path="../docs/docs/integration/diagnostic/1004.md" />
     <File Path="../docs/docs/integration/diagnostic/1005.md" />
+    <File Path="../docs/docs/integration/diagnostic/2001.md" />
+    <File Path="../docs/docs/integration/diagnostic/2002.md" />
   </Folder>
   <Folder Name="/SolutionItems/docs/docs/tutorial/" />
   <Folder Name="/SolutionItems/docs/docs/tutorial/gtk/">
@@ -197,6 +199,7 @@
     <Project Path="Tests/Libs/GLib-2.0.Tests/GLib-2.0.Tests.csproj" />
     <Project Path="Tests/Libs/GObject-2.0.Integration.Tests/GObject-2.0.Integration.Tests.csproj" />
     <Project Path="Tests/Libs/GObject-2.0.Tests/GObject-2.0.Tests.csproj" />
+    <Project Path="Tests/Libs/Gtk-4.0.Integration.Tests/Gtk-4.0.Integration.Tests.csproj" />
     <Project Path="Tests/Libs/Gtk-4.0.Tests/Gtk-4.0.Tests.csproj" />
   </Folder>
 </Solution>

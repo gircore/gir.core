@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace GObject.Integration.Tests;
-
 public static class DiagnosticListExtension
 {
     public static void ContainsDiagnostic(this IEnumerable<Diagnostic> diagnostics, string diagnosticId)
