@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>GObject.Integration.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" />
+    <ProjectReference Include="..\..\..\Extensions\Gtk-4.0.Integration\Gtk-4.0.Integration.csproj" />
+    <ProjectReference Include="..\..\..\Libs\Gtk-4.0\Gtk-4.0.csproj" />
+    <ProjectReference Include="..\..\..\Libs\GObject-2.0\GObject-2.0.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Shared\DiagnosticListExtension.cs">
+      <Link>Shared\DiagnosticListExtension.cs</Link>
+    </Compile>
+  </ItemGroup>
+</Project>
