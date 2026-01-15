@@ -65,12 +65,23 @@ internal static class InstanceCache
     [UnmanagedCallersOnly]
     private static void ToggleNotify(IntPtr data, IntPtr @object, int isLastRef)
     {
-        lock (Lock)
+        try
         {
-            if (Cache.TryGetValue(@object, out var toggleRef))
-                toggleRef.ToggleReference(isLastRef != 0);
-            else
-                Debug.WriteLine($"Handle {@object}: Could not toggle to {isLastRef} as there is no toggle reference.");
+            lock (Lock)
+            {
+                if (Cache.TryGetValue(@object, out var toggleRef))
+                    toggleRef.ToggleReference(isLastRef != 0);
+                else
+                    Debug.WriteLine($"Handle {@object}: Could not toggle to {isLastRef} as there is no toggle reference.");
+            }
+        }
+        catch
+        {
+            Debug.WriteLine($"Failed to toggle reference: Object={@object}, type={TypeNameFromInstance(@object).ConvertToString()}, isLastRef={isLastRef}.");
+            throw;
         }
     }
+
+    [DllImport(ImportResolver.Library, EntryPoint = "g_type_name_from_instance")]
+    private static extern GLib.Internal.NonNullableUtf8StringUnownedHandle TypeNameFromInstance(IntPtr instance);
 }
