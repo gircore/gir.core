@@ -6,7 +6,7 @@ internal static class Callback
     {
         try
         {
-            return $"public delegate {ReturnTypeRendererCallback.Render(callback.ReturnType)} {Model.Callback.GetInternalDelegateName(callback)}({CallbackParameters.Render(callback.Parameters)}{Error.Render(callback)});";
+            return $"//public delegate {ReturnTypeRendererCallback.Render(callback.ReturnType)} {Model.Callback.GetInternalDelegateName(callback)}({CallbackParameters.Render(callback.Parameters)}{Error.Render(callback)});";
         }
         catch (System.Exception ex)
         {
