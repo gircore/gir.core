@@ -7,17 +7,14 @@ internal static unsafe class ToggleRegistration
 {
     internal static void AddToggleRef(IntPtr handle, delegate* unmanaged<IntPtr, IntPtr, int, void> toggleNotify)
     {
+        Console.WriteLine("Adding toggle ref for {0}", handle);
         AddToggleRef(handle, toggleNotify, IntPtr.Zero);
     }
 
     internal static void RemoveToggleRef(IntPtr handle, delegate* unmanaged<IntPtr, IntPtr, int, void> toggleNotify)
     {
-        var sourceFunc = new GLib.Internal.SourceFuncAsyncHandler(() =>
-        {
-            RemoveToggleRef(handle, toggleNotify, IntPtr.Zero);
-            return false;
-        });
-        GLib.Internal.MainContext.Invoke(GLib.Internal.MainContextUnownedHandle.NullHandle, sourceFunc.NativeCallback, IntPtr.Zero);
+        Console.WriteLine("Removing toggle ref for {0}", handle);
+        RemoveToggleRef(handle, toggleNotify, IntPtr.Zero);
     }
 
     [DllImport(ImportResolver.Library, EntryPoint = "g_object_add_toggle_ref")]

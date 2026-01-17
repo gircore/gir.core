@@ -10,7 +10,9 @@ namespace GObject.Internal;
 public class ObjectHandle : SafeHandle
 {
     private readonly Dictionary<Delegate, GObject.Closure> closures = [];
-
+    
+    internal GObject.Object? Instance { get; private set; }
+    
     public override bool IsInvalid => handle == IntPtr.Zero;
 
     public ObjectHandle(IntPtr handle, bool ownsHandle) : base(IntPtr.Zero, true)
@@ -41,8 +43,9 @@ public class ObjectHandle : SafeHandle
     internal void Cache(GObject.Object obj)
     {
         Debug.Assert(handle == obj.Handle.DangerousGetHandle(), "Must cache the instance of this handle.");
+        Instance = obj;
 
-        InstanceCache.Add(handle, obj);
+        InstanceCache.Add(this);
     }
 
     internal GObject.Closure GetClosure(Delegate signalHandler, Func<GObject.Closure> createClosure)
