@@ -38,13 +38,6 @@ public class ObjectHandle : SafeHandle
         }
     }
 
-    internal void Cache(GObject.Object obj)
-    {
-        Debug.Assert(handle == obj.Handle.DangerousGetHandle(), "Must cache the instance of this handle.");
-
-        InstanceCache.Add(handle, obj);
-    }
-
     internal GObject.Closure GetClosure(Delegate signalHandler, Func<GObject.Closure> createClosure)
     {
         if (closures.TryGetValue(signalHandler, out var closure))
@@ -71,7 +64,7 @@ public class ObjectHandle : SafeHandle
     protected internal virtual void AddMemoryPressure() { }
     protected virtual void RemoveMemoryPressure() { }
 
-    public static ObjectHandle For<T>(ConstructArgument[] constructArguments) where T : GObject.Object, GTypeProvider
+    public static IntPtr For<T>(ConstructArgument[] constructArguments) where T : GObject.Object, GTypeProvider
     {
         // We can't check if a reference is floating via "g_object_is_floating" here
         // as the function could be "lying" depending on the intent of framework writers.
@@ -80,13 +73,11 @@ public class ObjectHandle : SafeHandle
         // For this reason we just delegate the problem to the caller and require a
         // definition whether the ownership of the new object will be transferred to us or not.
 
-        var ptr = Object.NewWithProperties(
+        return Object.NewWithProperties(
             objectType: T.GetGType(),
             nProperties: (uint) constructArguments.Length,
             names: GLib.Internal.Utf8StringArraySizedOwnedHandle.Create(constructArguments.Select(x => x.Name).ToArray()),
             values: GObject.Internal.ValueArray2OwnedHandle.Create(constructArguments.Select(x => x.Value).ToArray())
         );
-
-        return new ObjectHandle(ptr, true);
     }
 }
