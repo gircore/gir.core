@@ -4,7 +4,8 @@ public class SampleTestDialog : Gtk.Dialog
 {
     [Gtk.Connect] private readonly Gtk.Button okButton;
 
-    private SampleTestDialog(Gtk.Builder builder, string name) : base(new Gtk.Internal.DialogHandle(builder.GetPointer(name), false))
+    //TODO
+    private SampleTestDialog(Gtk.Builder builder, string name) : base(new Gtk.Internal.DialogHandle(builder.GetPointer(name)))
     {
         builder.Connect(this);
 

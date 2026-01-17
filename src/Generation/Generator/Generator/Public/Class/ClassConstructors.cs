@@ -1,23 +1,12 @@
-using System.Linq;
 using Generator.Model;
 
 namespace Generator.Generator.Public;
 
-internal class ClassConstructors : Generator<GirModel.Class>
+internal class ClassConstructors(Publisher publisher) : Generator<GirModel.Class>
 {
-    private readonly Publisher _publisher;
-
-    public ClassConstructors(Publisher publisher)
-    {
-        _publisher = publisher;
-    }
-
     public void Generate(GirModel.Class obj)
     {
         if (obj.Fundamental)
-            return;
-
-        if (!obj.Constructors.Any())
             return;
 
         var source = Renderer.Public.ClassConstructors.Render(obj);
@@ -28,6 +17,6 @@ internal class ClassConstructors : Generator<GirModel.Class>
             IsInternal: false
         );
 
-        _publisher.Publish(codeUnit);
+        publisher.Publish(codeUnit);
     }
 }

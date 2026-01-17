@@ -1,0 +1,17 @@
+#pragma once
+
+#include <glib-object.h>
+
+G_BEGIN_DECLS
+
+#define GIRTEST_TYPE_INITIALLY_UNOWNED_INSTANCE_CREATION_TESTER girtest_initially_unowned_instance_creation_tester_get_type()
+
+G_DECLARE_FINAL_TYPE(GirTestInitiallyUnownedInstanceCreationTester, girtest_initially_unowned_instance_creation_tester, GIRTEST, INITIALLY_UNOWNED_INSTANCE_CREATION_TESTER, GObject)
+
+GirTestInitiallyUnownedInstanceCreationTester* girtest_initially_unowned_instance_creation_tester_new();
+guint girtest_initially_unowned_instance_creation_tester_get_ref_count(GirTestInitiallyUnownedInstanceCreationTester *instance);
+void girtest_initially_unowned_instance_creation_tester_set_obj_transfer_none(GirTestInitiallyUnownedInstanceCreationTester *instance, GObject *obj);
+void girtest_initially_unowned_instance_creation_tester_set_obj_transfer_full(GirTestInitiallyUnownedInstanceCreationTester *instance, GObject *obj);
+
+G_END_DECLS
+
