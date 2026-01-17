@@ -104,6 +104,20 @@ public class UntypedRecordTest : Test
     }
 
     [TestMethod]
+    public void SupportsReturnValueTransferContainer()
+    {
+        // Container ownership is transferred to here and then released
+        UntypedRecordContainerTester container = UntypedRecordTester.ReturnsTransferContainer();
+
+        // Elements of container are not owned and copied
+        UntypedRecordTester element1 = UntypedRecordTester.GetNthContainerData(container, 0);
+        element1!.A.Should().Be(1);
+
+        UntypedRecordTester element2 = UntypedRecordTester.GetNthContainerData(container, 1);
+        element2!.A.Should().Be(2);
+    }
+
+    [TestMethod]
     public void SupportsRecordArrayAsParameter()
     {
         var array = new[] { UntypedRecordTester.NewWithA(7), UntypedRecordTester.NewWithA(6) };
