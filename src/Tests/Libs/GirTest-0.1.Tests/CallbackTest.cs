@@ -151,6 +151,48 @@ public class CallbackTest : Test
     }
 
     [TestMethod]
+    public void SupportsCallbackWithObjectReturnTransferFull()
+    {
+        //As testObject is returned with "transfer full" C takes ownership of the instance. In this case we must remove
+        //the managed instance from the instance cache to reduce the ref count to 1 again. Otherwise returning the
+        //existing instance to C# via an additional "transfer full" would result in an instance with ref count 2 which
+        //would only be freed once by C# thus leaking memory.
+
+        var testObject = ExecutorImpl.New();
+
+        //var weakRef = new GObject.WeakRef();
+        //weakRef.Init(testObject);
+
+        GObject.Object Callback()
+        {
+            return testObject;
+        }
+
+        var refCount = CallbackTester.RunCallbackWithObjectReturnTransferFull(Callback);
+        refCount.Should().Be(1); //Ref Count before C unref
+        GObject.Internal.InstanceCache.ObjectCount.Should().Be(0); //No instance of ExecutorImpl
+
+        //Enable once https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4977 is released
+        //Ensure there is no instance anymore
+        //weakRef.Get().Should().BeNull();
+        //weakRef.Clear();
+    }
+
+    [TestMethod]
+    public void SupportsCallbackWithObjectReturnTransferNone()
+    {
+        var testObject = ExecutorImpl.New();
+        GObject.Object Callback()
+        {
+            return testObject;
+        }
+
+        var refCount = CallbackTester.RunCallbackWithObjectReturnTransferNone(Callback);
+        refCount.Should().Be(1);
+        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1); //ExecutorImpl instance
+    }
+
+    [TestMethod]
     public void SupportsCallbackWithInterfaceReturn()
     {
         GirTest.Executor Callback()

@@ -18,6 +18,20 @@ typedef GObject* (*GirTestObjectReturnCallback) ();
 typedef GirTestExecutor* (*GirTestExecutorReturnCallback) ();
 
 /**
+ * GirTestTransferFullObjectReturnCallback:
+ *
+ * Returns:(transfer full): An object
+ */
+typedef GObject* (*GirTestTransferFullObjectReturnCallback) ();
+
+/**
+ * GirTestTransferNoneObjectReturnCallback:
+ *
+ * Returns:(transfer none): An object
+ */
+typedef GObject* (*GirTestTransferNoneObjectReturnCallback) ();
+
+/**
  * GirTestOutPointerCallback:
  * @result: (out): the pointer to the result
  **/
@@ -115,6 +129,12 @@ girtest_callback_tester_run_callback_with_type_return(GirTestTypeReturnCallback 
 
 GObject*
 girtest_callback_tester_run_callback_with_object_return(GirTestObjectReturnCallback callback);
+
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_full(GirTestTransferFullObjectReturnCallback callback);
+
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_none(GirTestTransferNoneObjectReturnCallback callback);
 
 gboolean
 girtest_callback_tester_run_callback_with_executor_interface_return(GirTestExecutorReturnCallback callback);
