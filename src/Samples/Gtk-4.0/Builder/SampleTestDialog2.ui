@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <object class="BuilderSampleSampleTestDialog2" id="dialog">
+    <property name="title" translatable="yes">SampleTestDialog</property>
+    <child internal-child="content_area">
+      <object class="GtkBox">
+        <property name="visible">0</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkLabel" id="label">
+            <property name="vexpand">1</property>
+            <property name="label" translatable="yes">SampleTestDialog</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child internal-child="action_area">
+      <object class="GtkBox">
+        <property name="valign">center</property>
+        <property name="can-focus">False</property>
+        <child>
+          <object class="GtkButton" id="cancelButton">
+            <property name="label" translatable="yes">Cancel</property>
+            <property name="focusable">1</property>
+            <property name="receives-default">1</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="okButton">
+            <property name="label" translatable="yes">OK</property>
+            <property name="focusable">1</property>
+            <property name="receives-default">1</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
