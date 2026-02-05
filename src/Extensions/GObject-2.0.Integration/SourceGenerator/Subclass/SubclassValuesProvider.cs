@@ -38,8 +38,23 @@ internal static class SubclassValuesProvider
         return new SubclassData(
             TypeData: typeData,
             Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-            ParentHandle: parentHandle
+            ParentHandle: parentHandle,
+            InitiallyUnowned: IsInitiallyUnowned(parentType)
         );
+    }
+    
+    private static bool IsInitiallyUnowned(ITypeSymbol type)
+    {
+        var currentType = type;
+        while (currentType is not null)
+        {
+            if (currentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::GObject.InitiallyUnowned")
+                return true;
+
+            currentType = currentType.BaseType;
+        }
+
+        return false;
     }
 
     private static string? GetParentHandle(ITypeSymbol type)

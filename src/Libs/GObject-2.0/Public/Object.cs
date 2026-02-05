@@ -12,7 +12,6 @@ public partial class Object : IDisposable, NativeObject
     protected Object(ObjectHandle handle)
     {
         Handle = handle;
-        Handle.Cache(this);
         Handle.AddMemoryPressure();
     }
 
