@@ -36,17 +36,6 @@ public sealed partial class {interfaceName} : {GetParent(@interface)}, {@interfa
         
         GObject.Internal.InstanceCache.AddToggleRef(obj);
 
-        if(ownsHandle)
-        {{
-            var instance = new GObject.Internal.TypeInstanceUnownedHandle(ptr);
-            var type = GObject.Internal.InitiallyUnowned.GetGType();
-
-            if(GObject.Internal.Functions.TypeCheckInstanceIsA(instance,type))
-                GObject.Internal.Object.TakeRef(ptr);
-
-            GObject.Internal.Object.Unref(ptr);
-        }}
-
         return obj;
     }}
 }}";

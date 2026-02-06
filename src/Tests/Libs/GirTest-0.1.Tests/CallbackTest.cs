@@ -292,4 +292,11 @@ public class CallbackTest : Test
         refCount.Should().Be(1);
         GObject.Internal.InstanceCache.ObjectCount.Should().Be(1); //ExecutorImpl instance
     }
+    
+    [TestMethod]
+    public void FullRoundTripTransferFull()
+    {
+        //Transfer C# Callback -> C -> C# callback
+        throw new NotImplementedException();
+    }
 }
