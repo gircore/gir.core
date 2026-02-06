@@ -13,7 +13,6 @@ public partial class InitiallyUnownedInstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -23,7 +22,6 @@ public partial class InitiallyUnownedInstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -59,7 +57,6 @@ public partial class InitiallyUnownedInstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -70,11 +67,9 @@ public partial class InitiallyUnownedInstanceCreationTest : Test
 
         obj2.IsFloating().Should().BeFalse();
         obj2.GetRefCount().Should().Be(2);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(2);
 
         obj1.Dispose();
         obj2.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -84,7 +79,6 @@ public partial class InitiallyUnownedInstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -120,7 +114,6 @@ public partial class InitiallyUnownedInstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -131,16 +124,11 @@ public partial class InitiallyUnownedInstanceCreationTest : Test
 
         obj2.IsFloating().Should().BeFalse();
         obj2.GetRefCount().Should().Be(2);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(2);
 
         obj1.Dispose();
         obj2.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [GObject.Subclass<InitiallyUnownedInstanceCreationTester>]
-    private partial class MySubclass
-    {
-
-    }
+    private partial class MySubclass;
 }

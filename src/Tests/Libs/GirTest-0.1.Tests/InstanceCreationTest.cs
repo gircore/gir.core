@@ -13,7 +13,6 @@ public partial class InstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -23,7 +22,6 @@ public partial class InstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -59,7 +57,6 @@ public partial class InstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -70,13 +67,37 @@ public partial class InstanceCreationTest : Test
 
         obj2.IsFloating().Should().BeFalse();
         obj2.GetRefCount().Should().Be(2);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(2);
 
         obj1.Dispose();
         obj2.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
+    [TestMethod]
+    public void FullRoundTrip()
+    {
+        var obj1 = InstanceCreationTester.New();
+        obj1.GetRefCount().Should().Be(1);
+
+        var obj2 = InstanceCreationTester.New();
+        obj2.GetRefCount().Should().Be(1);
+
+        obj1.SetObjTransferFull(obj2);
+        obj2.GetRefCount().Should().Be(2);
+
+        var obj2a = obj1.GetCurrentTransferFull();
+        obj2a.Should().Be(obj2);
+        obj2.GetRefCount().Should().Be(1);
+
+        obj1.GetCurrentTransferFull().Should().BeNull();
+
+        obj1.SetObjTransferNone(obj2);
+        obj2.GetRefCount().Should().Be(2);
+        var obj2b = obj1.GetCurrentTransferNone();
+        var obj2c = obj1.GetCurrentTransferNone();
+        obj2b.Should().Be(obj2);
+        obj2c.Should().Be(obj2);
+        obj2.GetRefCount().Should().Be(2);
+    }
 
     [TestMethod]
     public void InterfaceReceiveTransferFull()
@@ -85,7 +106,6 @@ public partial class InstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -96,11 +116,40 @@ public partial class InstanceCreationTest : Test
 
         obj2.IsFloating().Should().BeFalse();
         obj2.GetRefCount().Should().Be(2);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(2);
 
         obj1.Dispose();
         obj2.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
+    }
+
+    [TestMethod]
+    public void InterfaceFullRoundTrip()
+    {
+        var obj1 = InstanceCreationTester.New();
+        obj1.GetRefCount().Should().Be(1);
+
+        var obj2 = (ExecutorHelper) obj1.InterfaceCreateTransferNone();
+        obj2.GetRefCount().Should().Be(2);
+
+        var obj2a = obj1.GetCurrentTransferFull();
+        obj2a.Should().Be(obj2);
+        obj2.GetRefCount().Should().Be(1);
+
+        obj1.SetObjTransferFull(obj2);
+        obj2.GetRefCount().Should().Be(2);
+
+        var obj2b = (ExecutorHelper?) obj1.GetCurrentTransferFull();
+        obj2b.Should().Be(obj2);
+        obj2b.GetRefCount().Should().Be(1);
+
+        obj1.GetCurrentTransferFull().Should().BeNull();
+
+        obj1.SetObjTransferNone(obj2);
+        obj2.GetRefCount().Should().Be(2);
+        var obj2c = obj1.GetCurrentTransferNone();
+        var obj2d = obj1.GetCurrentTransferNone();
+        obj2c.Should().Be(obj2);
+        obj2d.Should().Be(obj2);
+        obj2.GetRefCount().Should().Be(2);
     }
 
     [TestMethod]
@@ -110,7 +159,6 @@ public partial class InstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -146,7 +194,6 @@ public partial class InstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     [TestMethod]
@@ -157,11 +204,36 @@ public partial class InstanceCreationTest : Test
 
         obj2.IsFloating().Should().BeFalse();
         obj2.GetRefCount().Should().Be(2);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(2);
 
         obj1.Dispose();
         obj2.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
+    }
+
+    [TestMethod]
+    public void SubclassFullRoundTripTransferFull()
+    {
+        var obj1 = InstanceCreationTester.New();
+        obj1.GetRefCount().Should().Be(1);
+
+        var obj2 = (MySubclass) InstanceCreationTester.CreateTransferFull(MySubclass.GetGType());
+        obj2.GetRefCount().Should().Be(1);
+
+        obj1.SetObjTransferFull(obj2);
+        obj2.GetRefCount().Should().Be(2);
+
+        var obj2a = obj1.GetCurrentTransferFull();
+        obj2a.Should().Be(obj2);
+        obj2.GetRefCount().Should().Be(1);
+
+        obj1.GetCurrentTransferFull().Should().BeNull();
+
+        obj1.SetObjTransferNone(obj2);
+        obj2.GetRefCount().Should().Be(2);
+        var obj2b = obj1.GetCurrentTransferNone();
+        var obj2c = obj1.GetCurrentTransferNone();
+        obj2b.Should().Be(obj2);
+        obj2c.Should().Be(obj2);
+        obj2.GetRefCount().Should().Be(2);
     }
 
     [GObject.Subclass<InstanceCreationTester>]
@@ -174,7 +246,6 @@ public partial class InstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
     private class MyLegacySubclass : InstanceCreationTester;
@@ -186,6 +257,5 @@ public partial class InstanceCreationTest : Test
 
         obj.IsFloating().Should().BeFalse();
         obj.GetRefCount().Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 }

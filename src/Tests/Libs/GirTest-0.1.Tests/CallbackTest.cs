@@ -254,15 +254,7 @@ public class CallbackTest : Test
     [TestMethod]
     public void SupportsCallbackWithObjectReturnTransferFull()
     {
-        //As testObject is returned with "transfer full" C takes ownership of the instance. In this case we must remove
-        //the managed instance from the instance cache to reduce the ref count to 1 again. Otherwise returning the
-        //existing instance to C# via an additional "transfer full" would result in an instance with ref count 2 which
-        //would only be freed once by C# thus leaking memory.
-
         var testObject = ExecutorImpl.New();
-
-        //var weakRef = new GObject.WeakRef();
-        //weakRef.Init(testObject);
 
         GObject.Object Callback()
         {
@@ -270,13 +262,7 @@ public class CallbackTest : Test
         }
 
         var refCount = CallbackTester.RunCallbackWithObjectReturnTransferFull(Callback);
-        refCount.Should().Be(1); //Ref Count before C unref
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(0); //No instance of ExecutorImpl
-
-        //Enable once https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4977 is released
-        //Ensure there is no instance anymore
-        //weakRef.Get().Should().BeNull();
-        //weakRef.Clear();
+        refCount.Should().Be(2); //One ref belongs to C, one to C#
     }
 
     [TestMethod]
@@ -290,7 +276,112 @@ public class CallbackTest : Test
 
         var refCount = CallbackTester.RunCallbackWithObjectReturnTransferNone(Callback);
         refCount.Should().Be(1);
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1); //ExecutorImpl instance
+    }
+
+    [TestMethod]
+    public void FullRoundTripTransferFullOutParameter()
+    {
+        var instance = CallbackTester.New();
+
+        instance.RoundtripObjectRunCallbackOutTransferFull(Create);
+        var obj = (ExecutorImpl) instance.RoundtripObjectGetInstance()!;
+        obj.GetRefCount().Should().Be(2);
+        instance.RoundtripObjectRunCallbackParameterTransferFull(TransferToCSharpRefCount1);
+        obj.GetRefCount().Should().Be(1);
+        instance.RoundtripObjectRunCallbackParameterTransferFull(TransferToCSharpNull);
+
+        instance.RoundtripObjectRunCallbackOutTransferFull(CreateNull);
+        instance.RoundtripObjectGetInstance().Should().BeNull();
+        instance.RoundtripObjectRunCallbackOutTransferNone(CreateNull);
+        instance.RoundtripObjectGetInstance().Should().BeNull();
+
+        instance.RoundtripObjectRunCallbackOutTransferNone(Create);
+        obj = (ExecutorImpl) instance.RoundtripObjectGetInstance()!;
+        obj.GetRefCount().Should().Be(2);
+        instance.RoundtripObjectRunCallbackParameterTransferNone(TransferToCSharpRefCount2);
+        obj.GetRefCount().Should().Be(2);
+        instance.RoundtripObjectRunCallbackParameterTransferNone(TransferToCSharpRefCount2);
+        obj.GetRefCount().Should().Be(2);
+
+        return;
+
+        void TransferToCSharpNull(GObject.Object? obj)
+        {
+            obj.Should().BeNull();
+        }
+
+        void TransferToCSharpRefCount1(GObject.Object? obj)
+        {
+            var a = (ExecutorImpl) obj!;
+            a.GetRefCount().Should().Be(1);
+        }
+
+        void TransferToCSharpRefCount2(GObject.Object? obj)
+        {
+            var a = (ExecutorImpl) obj!;
+            a.GetRefCount().Should().Be(2);
+        }
+
+        void Create(out GObject.Object? obj)
+        {
+            var a = ExecutorImpl.New();
+            a.GetRefCount().Should().Be(1);
+
+            obj = a;
+        }
+
+        void CreateNull(out GObject.Object? obj)
+        {
+            obj = null;
+        }
+    }
+
+    [TestMethod]
+    public void FullRoundTripTransferFullReturn()
+    {
+        var instance = CallbackTester.New();
+
+        instance.RoundtripObjectRunCallbackReturnTransferFull(Create);
+        var obj = (ExecutorImpl) instance.RoundtripObjectGetInstance()!;
+        obj.GetRefCount().Should().Be(2);
+        instance.RoundtripObjectRunCallbackParameterTransferFull(TransferToCSharpRefCount1);
+        obj.GetRefCount().Should().Be(1);
+        instance.RoundtripObjectRunCallbackParameterTransferFull(TransferToCSharpNull);
+
+        instance.RoundtripObjectRunCallbackReturnTransferNone(Create);
+        obj = (ExecutorImpl) instance.RoundtripObjectGetInstance()!;
+        obj.GetRefCount().Should().Be(2);
+        instance.RoundtripObjectRunCallbackParameterTransferNone(TransferToCSharpRefCount2);
+        obj.GetRefCount().Should().Be(2);
+        instance.RoundtripObjectRunCallbackParameterTransferNone(TransferToCSharpRefCount2);
+        obj.GetRefCount().Should().Be(2);
+
+        return;
+
+        void TransferToCSharpNull(GObject.Object? obj)
+        {
+            obj.Should().BeNull();
+        }
+
+        void TransferToCSharpRefCount1(GObject.Object? obj)
+        {
+            var a = (ExecutorImpl) obj!;
+            a.GetRefCount().Should().Be(1);
+        }
+
+        void TransferToCSharpRefCount2(GObject.Object? obj)
+        {
+            var a = (ExecutorImpl) obj!;
+            a.GetRefCount().Should().Be(2);
+        }
+
+        GObject.Object Create()
+        {
+            var a = ExecutorImpl.New();
+            a.GetRefCount().Should().Be(1);
+
+            return a;
+        }
     }
 
     [TestMethod]

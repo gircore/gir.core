@@ -144,11 +144,6 @@ NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(c
                  {
                      //Add ref which is transferred to C
                      GObject.Internal.Object.Ref({{returnVariableName}}.Handle.DangerousGetHandle());
-                     
-                     //Dispose managed instance because C want's to rule the instance. If C returns the instance
-                     //with "transfer full" to C# the disposed instance ensures that a new instance is created
-                     //and there is only one ref that is owned by C#.
-                     {{returnVariableName}}.Dispose();
                  }
                  """;
     }
