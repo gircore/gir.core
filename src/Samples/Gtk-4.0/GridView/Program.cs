@@ -2,10 +2,10 @@ var application = Gtk.Application.New("org.gir.core", Gio.ApplicationFlags.Flags
 application.OnActivate += (sender, args) =>
 {
     var buttonStringListGridView = CreateButton("String List GridView Window");
-    buttonStringListGridView.OnClicked += (_, _) => new GridViewSample.StringListGridViewWindow().Show();
+    buttonStringListGridView.OnClicked += (_, _) => GridViewSample.StringListGridViewWindow.NewWithProperties([]).Show();
 
     var buttonCustomObjectGridView = CreateButton("Custom Object GridView Window");
-    buttonCustomObjectGridView.OnClicked += (_, _) => new GridViewSample.CustomObjectGridViewWindow().Show();
+    buttonCustomObjectGridView.OnClicked += (_, _) => GridViewSample.CustomObjectGridViewWindow.NewWithProperties([]).Show();
 
     var gtkBox = Gtk.Box.New(Gtk.Orientation.Vertical, 0);
     gtkBox.Append(buttonStringListGridView);

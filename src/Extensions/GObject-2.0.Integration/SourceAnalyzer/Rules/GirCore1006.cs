@@ -6,18 +6,18 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace GObject.Integration.SourceAnalyzer;
 
-internal sealed class GirCore1001 : Rule
+internal sealed class GirCore1006 : Rule
 {
     public static SyntaxKind SyntaxKind => SyntaxKind.ConstructorDeclaration;
 
     public static DiagnosticDescriptor DiagnosticDescriptor { get; } = new(
-        id: "GirCore1001",
-        title: "GObject subclass constructor with parameters must call 'this()' constructor",
-        messageFormat: "GObject subclass constructor with parameters must call a generated constructor like 'this()'",
+        id: "GirCore1006",
+        title: "GObject subclass constructor with parameters must be replaced with a factory method.",
+        messageFormat: "GObject does not use constructors to create instances. A subclass must support creation through the 'NewWithProperties' method which may not provide any parameters: If you use custom factory methods the code must be written in a way that supports parameterless creation of an instance. Implement a custom factory method to supply any optional members.",
         category: "Usage",
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        helpLinkUri: DiagnosticLink.Create(1001)
+        helpLinkUri: DiagnosticLink.Create(1006)
     );
 
     public static void Analyze(SyntaxNodeAnalysisContext context)
@@ -25,11 +25,6 @@ internal sealed class GirCore1001 : Rule
         var constructorSyntax = (ConstructorDeclarationSyntax) context.Node;
 
         if (!constructorSyntax.ParameterList.Parameters.Any())
-            return;
-
-        var initializerSyntax = constructorSyntax.Initializer;
-
-        if (initializerSyntax is not null)
             return;
 
         if (constructorSyntax.Parent is not ClassDeclarationSyntax classSyntax)

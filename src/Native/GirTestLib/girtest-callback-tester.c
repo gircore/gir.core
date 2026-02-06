@@ -314,3 +314,35 @@ girtest_callback_tester_run_callback_with_nullable_class_parameter(GirTestNullab
 {
     callback(data);
 }
+
+/**
+ * girtest_callback_tester_run_callback_with_object_return_transfer_full:
+ * @callback: (scope call): a function that is called and returns a new object
+ *
+ * Calls the callback and returns the ref count of the new object
+ * 
+ * Returns: the ref count of the fully transfered instance.
+ **/
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_full(GirTestTransferFullObjectReturnCallback callback)
+{
+    GObject* obj = callback();
+    guint count = obj->ref_count;
+    g_object_unref(obj);
+    return count;
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_object_return_transfer_none:
+ * @callback: (scope call): a function that is called and returns a new object
+ *
+ * Calls the callback and returns the ref count of the new object
+ * 
+ * Returns: the ref count of transfered instance.
+ **/
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_none(GirTestTransferNoneObjectReturnCallback callback)
+{
+    GObject* obj = callback();
+    return obj->ref_count;
+}

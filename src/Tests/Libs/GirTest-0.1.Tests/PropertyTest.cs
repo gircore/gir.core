@@ -184,7 +184,7 @@ public class PropertyTest : Test
     [TestMethod]
     public void TestObjectProperty()
     {
-        var o = new PropertyTester();
+        var o = PropertyTester.New();
 
         var obj = PropertyTester.New();
         obj.ObjectValue.Should().BeNull();

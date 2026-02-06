@@ -10,15 +10,18 @@ namespace GridViewSample;
 [Subclass<GObject.Object>]
 public partial class ItemData
 {
-    public string? ImagePath { get; }
-    public string? Text { get; }
-    public string? Description { get; }
+    public string? ImagePath { get; private set; }
+    public string? Text { get; private set; }
+    public string? Description { get; private set; }
 
-    public ItemData(string imagePath, string text, string description) : this()
+    public static ItemData New(string imagePath, string text, string description)
     {
-        ImagePath = imagePath;
-        Text = text;
-        Description = description;
+        var obj = NewWithProperties([]);
+        obj.ImagePath = imagePath;
+        obj.Text = text;
+        obj.Description = description;
+
+        return obj;
     }
 }
 
@@ -32,15 +35,15 @@ public partial class CustomObjectGridViewWindow
         Title = "Gtk::GridView (Gio::ListStore)";
         SetDefaultSize(400, 400);
 
-        _model.Append(new ItemData("Resources/number-1.svg", "One", "One"));
-        _model.Append(new ItemData("Resources/number-2.svg", "Two", "Two"));
-        _model.Append(new ItemData("Resources/number-3.svg", "Three", "Three"));
-        _model.Append(new ItemData("Resources/number-4.svg", "Four", "Four"));
-        _model.Append(new ItemData("Resources/number-5.svg", "Five", "Five"));
-        _model.Append(new ItemData("Resources/number-6.svg", "Six", "Six"));
-        _model.Append(new ItemData("Resources/number-7.svg", "Seven", "Seven"));
-        _model.Append(new ItemData("Resources/number-8.svg", "Eight", "Eight"));
-        _model.Append(new ItemData("Resources/number-9.svg", "Nine", "Nine"));
+        _model.Append(ItemData.New("Resources/number-1.svg", "One", "One"));
+        _model.Append(ItemData.New("Resources/number-2.svg", "Two", "Two"));
+        _model.Append(ItemData.New("Resources/number-3.svg", "Three", "Three"));
+        _model.Append(ItemData.New("Resources/number-4.svg", "Four", "Four"));
+        _model.Append(ItemData.New("Resources/number-5.svg", "Five", "Five"));
+        _model.Append(ItemData.New("Resources/number-6.svg", "Six", "Six"));
+        _model.Append(ItemData.New("Resources/number-7.svg", "Seven", "Seven"));
+        _model.Append(ItemData.New("Resources/number-8.svg", "Eight", "Eight"));
+        _model.Append(ItemData.New("Resources/number-9.svg", "Nine", "Nine"));
 
         var selectionModel = SingleSelection.New(_model);
         var listItemFactory = SignalListItemFactory.New();
@@ -85,7 +88,7 @@ public partial class CustomObjectGridViewWindow
         if (listItem.Item is not ItemData itemData) return;
 
         image.SetFromFile(itemData.ImagePath);
-        label.SetText(itemData.Text);
+        label.SetText(itemData.Text ?? string.Empty);
     }
 
     private void OnGridViewOnActiveHandler(GridView sender, ActivateSignalArgs args)

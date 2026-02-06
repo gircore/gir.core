@@ -55,7 +55,7 @@ internal static class TemplateValuesProvider
 
         foreach (var member in subclass.GetMembers())
         {
-            var attribute = member.GetAttributes().FirstOrDefault(IsConnectAttribute);
+            var attribute = member.GetAttributes().FirstOrDefault(x => x.IsConnectAttribute());
             if (attribute is null)
                 continue;
 
@@ -73,11 +73,6 @@ internal static class TemplateValuesProvider
         }
 
         return connections;
-    }
-
-    private static bool IsConnectAttribute(AttributeData attributeData)
-    {
-        return attributeData.AttributeClass?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::Gtk.ConnectAttribute";
     }
 
     private static string? GetObjectId(AttributeData attributeData)

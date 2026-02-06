@@ -75,6 +75,20 @@ typedef const gchar* (*GirTestNullableConstStringCallback) ();
  */
 typedef const void (*GirTestNullableClassParameterCallback) (GirTestCallbackTester* data);
 
+/**
+ * GirTestTransferFullObjectReturnCallback:
+ *
+ * Returns:(transfer full): An object
+ */
+typedef GObject* (*GirTestTransferFullObjectReturnCallback) ();
+
+/**
+ * GirTestTransferNoneObjectReturnCallback:
+ *
+ * Returns:(transfer none): An object
+ */
+typedef GObject* (*GirTestTransferNoneObjectReturnCallback) ();
+
 GirTestCallbackTester*
 girtest_callback_tester_new (void);
 
@@ -133,5 +147,11 @@ girtest_callback_tester_run_callback_with_nullable_constant_string_return(GirTes
 
 void
 girtest_callback_tester_run_callback_with_nullable_class_parameter(GirTestNullableClassParameterCallback callback, GirTestCallbackTester* data); 
+
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_full(GirTestTransferFullObjectReturnCallback callback);
+
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_none(GirTestTransferNoneObjectReturnCallback callback);
 
 G_END_DECLS

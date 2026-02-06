@@ -12,6 +12,8 @@
 #include "girtest-culong-record-tester.h"
 #include "girtest-enum-tester.h"
 #include "girtest-error-tester.h"
+#include "girtest-initially-unowned-instance-creation-tester.h"
+#include "girtest-instance-creation-tester.h"
 #include "girtest-integer-array-tester.h"
 #include "girtest-interface-signal-tester.h"
 #include "girtest-long-record-tester.h"

@@ -26,15 +26,15 @@ public class SubclassIntegrationTest : Test
     }
 
     [TestMethod]
-    public void ShouldHaveConstructArgumentConstructor()
+    public void ShouldHaveMethodNewWithProperties()
     {
-        typeof(SomeSubClass).Should().HaveConstructor([typeof(GObject.ConstructArgument[])]);
+        typeof(SomeSubClass).Should().HaveMethod(nameof(SomeSubClass.NewWithProperties), [typeof(GObject.ConstructArgument[])]);
     }
 
     [TestMethod]
     public void PartialInitializeMethodShouldBeCalled()
     {
-        var obj = new SomeInitializedSubClass();
+        var obj = SomeInitializedSubClass.NewWithProperties([]);
         obj.Text.Should().NotBeNull();
     }
 
@@ -55,18 +55,5 @@ public class SubclassIntegrationTest : Test
         type1.Should().NotBe(type3);
 
         type2.Should().NotBe(type3);
-    }
-
-    [TestMethod]
-    public void ShouldCallInitializeOnce()
-    {
-        // Test for https://github.com/gircore/gir.core/issues/1421
-        const bool SomeRandomArgument = true;
-
-        var obj = new SomeInitializedSubClass();
-        var objWithUserConstructor = new SomeInitializedSubClassWithUserConstructor(SomeRandomArgument);
-
-        obj.InitializedCount.Should().Be(1);
-        objWithUserConstructor.InitializedCount.Should().Be(1);
     }
 }

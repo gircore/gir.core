@@ -54,110 +54,173 @@ internal static class SubclassCode
     private static string RenderClassContent(SubclassData subclassData)
     {
         return $$"""
-                 {{subclassData.TypeData.Properties.Accessibility}} unsafe partial class {{subclassData.TypeData.Properties.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider, GObject.InstanceFactory
-                 {
-                      {{GeneratedCodeAttribute.Render()}}
-                      private static readonly GObject.Type GType = GObject.Internal.SubclassRegistrar.Register<{{subclassData.TypeData.Properties.NameGenericArguments}}, {{subclassData.Parent}}>(&ClassInit, &InstanceInit);
+                  {{subclassData.TypeData.Properties.Accessibility}} unsafe partial class {{subclassData.TypeData.Properties.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider, GObject.InstanceFactory
+                  {
+                       {{GeneratedCodeAttribute.Render()}}
+                       private static readonly GObject.Type GType = GObject.Internal.SubclassRegistrar.Register<{{subclassData.TypeData.Properties.NameGenericArguments}}, {{subclassData.Parent}}>(&ClassInit, &InstanceInit);
+                       
+                       /// <summary>
+                       /// Return the registered GObject type for this class.
+                       /// </summary>
+                       {{GeneratedCodeAttribute.Render()}}
+                       public static new GObject.Type GetGType() => GType;
+                  
+                       /// <summary>
+                       /// Creates a new "{{subclassData.TypeData.Properties.Name}}" instance and sets the properties specified by the construct arguments.
+                       /// </summary>
+                       /// <param name="constructArguments">The properties to set.</param>
+                       /// <returns>A new instance of "{{subclassData.TypeData.Properties.Name}}".</returns>
+                       /// <remarks>Currently it is only supported to set properties which are defined in C. Any properties defined in C# are not known. This will be fixed once https://github.com/gircore/gir.core/issues/1433 is implemented.</remarks> 
+                       {{GeneratedCodeAttribute.Render()}}
+                       public static new {{subclassData.TypeData.Properties.NameGenericArguments}} NewWithProperties(GObject.ConstructArgument[] constructArguments)
+                       {
+                            var ptr = GObject.Internal.Object.NewWithProperties(GetGType(), constructArguments);
+                            var handle = new {{subclassData.ParentHandle}}(ptr);
+                            var obj = new {{subclassData.TypeData.Properties.NameGenericArguments}}(handle);
+                            
+                            GObject.Internal.InstanceCache.AddToggleRef(obj);
+                            {{RenderUnref(subclassData)}}
+
+                            return obj;
+                       }
+                       
+                       /// <summary>
+                       /// Creates a new managed {{subclassData.TypeData.Properties.NameGenericArguments}} instance for a given pointer.
+                       /// </summary>
+                       {{GeneratedCodeAttribute.Render()}}
+                       public static new {{subclassData.TypeData.Properties.NameGenericArguments}} NewFromPointer(System.IntPtr ptr, bool ownsHandle) => ({{subclassData.TypeData.Properties.NameGenericArguments}}) GObject.Internal.InstanceWrapper.WrapHandle<{{subclassData.TypeData.Properties.NameGenericArguments}}>(ptr, ownsHandle);
+                  
+                       /// <summary>
+                       /// Creates a new instance of {{subclassData.TypeData.Properties.Name}}.
+                       /// </summary>
+                       /// <param name="handle">A handle to the C instance.</param>
+                       /// <remarks> To create a new instance call <see cref="NewWithProperties" />. 
+                       /// If you want to initialize any custom dotnet properties, create a new static factory method to set those properties.
+                       /// </remarks>
+                       {{GeneratedCodeAttribute.Render()}}
+                       protected internal {{subclassData.TypeData.Properties.Name}}({{subclassData.ParentHandle}} handle) : base(handle) 
+                       {
+                           CompositeTemplateInitialize();
+                           Initialize();
+                       }
+
+                       {{GeneratedCodeAttribute.Render()}}
+                       static object GObject.InstanceFactory.Create(System.IntPtr handle, bool ownsHandle)
+                       {
+                           return CreateIntern(handle, ownsHandle);
+                       }
+
+                       {{GeneratedCodeAttribute.Render()}}
+                       private static {{subclassData.TypeData.Properties.NameGenericArguments}} CreateIntern(System.IntPtr ptr, bool ownsHandle)
+                       {
+                           var handle = new {{subclassData.ParentHandle}}(ptr);
+                           var obj = new {{subclassData.TypeData.Properties.NameGenericArguments}}(handle);
+                  
+                           GObject.Internal.InstanceCache.AddToggleRef(obj);
+                           
+                           if(ownsHandle)
+                           {
+                                // - The caller owns the handle
+                                // - The caller is C#
+                                // -> Remove the obsolete ref because C# is the only owner and a toggle ref was added
+                                {{RenderUnref(subclassData)}}
+                           }
+
+                           return obj;
+                       }
+                       
+                       {{GeneratedCodeAttribute.Render()}}
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       private static void ClassInit(System.IntPtr cls, System.IntPtr clsData)
+                       {
+                           var classDefinition = (GObject.Internal.ObjectClassUnmanaged*) cls;
+                           classDefinition->Dispose = &Dispose;
                       
-                      {{GeneratedCodeAttribute.Render()}}
-                      public static new GObject.Type GetGType() => GType;
-                 
-                      {{GeneratedCodeAttribute.Render()}}
-                      static object GObject.InstanceFactory.Create(System.IntPtr handle, bool ownsHandle)
-                      {
-                          return new {{subclassData.TypeData.Properties.NameGenericArguments}}(new {{subclassData.ParentHandle}}(handle, ownsHandle));
-                      }
+                           CompositeTemplateClassInit(cls, clsData);
+                       }
                       
-                      {{GeneratedCodeAttribute.Render()}}
-                      public {{subclassData.TypeData.Properties.Name}}({{subclassData.ParentHandle}} handle) : base(handle) 
-                      {
-                          CompositeTemplateInitialize();
-                          Initialize();
-                      }
+                       {{GeneratedCodeAttribute.Render()}}
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       private static void InstanceInit(System.IntPtr instance, System.IntPtr cls)
+                       {
+                           CompositeTemplateInstanceInit(instance, cls);
+                       }
                       
-                      {{GeneratedCodeAttribute.Render()}}
-                      public {{subclassData.TypeData.Properties.Name}}(params GObject.ConstructArgument[] constructArguments) : this({{subclassData.ParentHandle}}.For<{{subclassData.TypeData.Properties.NameGenericArguments}}>(constructArguments)) 
-                      {
-                          //Do not call 'Initialize();' here. It will be called by 'this(...)'.
-                      }
+                       {{GeneratedCodeAttribute.Render()}}
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       private static void Dispose(System.IntPtr instance)
+                       {
+                           CompositeTemplateDispose(instance);
                       
-                      {{GeneratedCodeAttribute.Render()}}
-                      [System.Runtime.InteropServices.UnmanagedCallersOnly]
-                      private static void ClassInit(System.IntPtr cls, System.IntPtr clsData)
-                      {
-                          var classDefinition = (GObject.Internal.ObjectClassUnmanaged*) cls;
-                          classDefinition->Dispose = &Dispose;
-                     
-                          CompositeTemplateClassInit(cls, clsData);
-                      }
-                     
-                      {{GeneratedCodeAttribute.Render()}}
-                      [System.Runtime.InteropServices.UnmanagedCallersOnly]
-                      private static void InstanceInit(System.IntPtr instance, System.IntPtr cls)
-                      {
-                          CompositeTemplateInstanceInit(instance, cls);
-                      }
-                     
-                      {{GeneratedCodeAttribute.Render()}}
-                      [System.Runtime.InteropServices.UnmanagedCallersOnly]
-                      private static void Dispose(System.IntPtr instance)
-                      {
-                          CompositeTemplateDispose(instance);
-                     
-                          //Call into parents dispose method
-                          var parentType = GObject.Internal.Functions.TypeParent(GType);
-                          var parentTypeClass = (GObject.Internal.ObjectClassUnmanaged*) GObject.Internal.TypeClass.Peek(parentType).DangerousGetHandle();
-                          parentTypeClass->Dispose(instance);
-                      }
+                           //Call into parents dispose method
+                           var parentType = GObject.Internal.Functions.TypeParent(GType);
+                           var parentTypeClass = (GObject.Internal.ObjectClassUnmanaged*) GObject.Internal.TypeClass.Peek(parentType).DangerousGetHandle();
+                           parentTypeClass->Dispose(instance);
+                       }
+                       
+                       /// <summary>
+                       /// This method is called by all generated constructors.
+                       /// Implement this partial method to initialize all members.
+                       /// Decorating this method with "MemberNotNullAttribute" for
+                       /// the appropriate members can remove nullable warnings.
+                       /// </summary>
+                       partial void Initialize();
+                       
+                       /// <summary>
+                       /// This method is called during GObject class initialization. It is
+                       /// meant to set up Gtk composite templates.
+                       /// </summary>
+                       /// <remarks>
+                       /// The content of this method can be generated by Gtk-4.0.Integration 
+                       /// nuget package if a class is decorated with the [Gtk.Template] attribute.
+                       /// </remarks>
+                       static partial void CompositeTemplateClassInit(System.IntPtr cls, System.IntPtr clsData);
                       
-                      /// <summary>
-                      /// This method is called by all generated constructors.
-                      /// Implement this partial method to initialize all members.
-                      /// Decorating this method with "MemberNotNullAttribute" for
-                      /// the appropriate members can remove nullable warnings.
-                      /// </summary>
-                      partial void Initialize();
+                       /// <summary>
+                       /// This method is called during GObject instance initialization. It is
+                       /// meant to set up Gtk composite templates.
+                       /// </summary>
+                       /// <remarks>
+                       /// The content of this method can be generated by Gtk-4.0.Integration 
+                       /// nuget package if a class is decorated with the [Gtk.Template] attribute.
+                       /// </remarks>
+                       static partial void CompositeTemplateInstanceInit(System.IntPtr instance, System.IntPtr cls);
                       
-                      /// <summary>
-                      /// This method is called during GObject class initialization. It is
-                      /// meant to set up Gtk composite templates.
-                      /// </summary>
-                      /// <remarks>
-                      /// The content of this method can be generated by Gtk-4.0.Integration 
-                      /// nuget package if a class is decorated with the [Gtk.Template] attribute.
-                      /// </remarks>
-                      static partial void CompositeTemplateClassInit(System.IntPtr cls, System.IntPtr clsdata);
-                     
-                      /// <summary>
-                      /// This method is called during GObject instance initialization. It is
-                      /// meant to set up Gtk composite templates.
-                      /// </summary>
-                      /// <remarks>
-                      /// The content of this method can be generated by Gtk-4.0.Integration 
-                      /// nuget package if a class is decorated with the [Gtk.Template] attribute.
-                      /// </remarks>
-                      static partial void CompositeTemplateInstanceInit(System.IntPtr instance, System.IntPtr cls);
-                     
-                      /// <summary>
-                      /// This method is called during GObject instance disposal. It is
-                      /// meant to dispose Gtk composite templates.
-                      /// </summary>
-                      /// <remarks>
-                      /// The content of this method can be generated by Gtk-4.0.Integration 
-                      /// nuget package if a class is decorated with the [TGtk.emplate] attribute.
-                      /// </remarks>
-                      static partial void CompositeTemplateDispose(System.IntPtr instance);
-                      
-                      /// <summary>
-                      /// This method is called during the dotnet constructor call. It is
-                      /// meant to initialize composite templates.
-                      /// </summary>
-                      /// <remarks>
-                      /// The content of this method can be generated by Gtk-4.0.Integration 
-                      /// nuget package if a member is decorated with the [Gtk.Connect] attribute.
-                      /// </remarks>
-                      partial void CompositeTemplateInitialize();
-                 }
-                 """;
+                       /// <summary>
+                       /// This method is called during GObject instance disposal. It is
+                       /// meant to dispose Gtk composite templates.
+                       /// </summary>
+                       /// <remarks>
+                       /// The content of this method can be generated by Gtk-4.0.Integration 
+                       /// nuget package if a class is decorated with the [TGtk.emplate] attribute.
+                       /// </remarks>
+                       static partial void CompositeTemplateDispose(System.IntPtr instance);
+                       
+                       /// <summary>
+                       /// This method is called during the dotnet constructor call. It is
+                       /// meant to initialize composite templates.
+                       /// </summary>
+                       /// <remarks>
+                       /// The content of this method can be generated by Gtk-4.0.Integration 
+                       /// nuget package if a member is decorated with the [Gtk.Connect] attribute.
+                       /// </remarks>
+                       partial void CompositeTemplateInitialize();
+                  }
+                  """;
+    }
+
+    private static string RenderUnref(SubclassData subclassData)
+    {
+        /*
+         * - Regular objects can be unrefed because there was an additional toggle ref added so one valid ref remains
+         * - Initially unowned objects have a floating reference which must be sunk and then removed
+         */
+
+        return subclassData.IsInitiallyUnowned
+            ? """
+              GObject.Internal.Object.TakeRef(ptr);
+              GObject.Internal.Object.Unref(ptr);
+              """
+            : "GObject.Internal.Object.Unref(ptr);";
     }
 }
