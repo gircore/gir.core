@@ -15,7 +15,7 @@ A library containing extensions to gir.core and helpers for working with bluepri
 [Nuget](https://www.nuget.org/packages/Nickvision.Desktop.GNOME)
 
 ## Nickvision.FlatpakGenerator
-A tool for generating a `nuget-sources.json` file to allow and bundle into your app's flatpak build.
+A tool for generating a `nuget-sources.json` file which can be included into your app's flatpak build.
 
 [GitHub](https://github.com/nickvisionapps/flatpakgenerator)
 [Nuget](https://www.nuget.org/packages/Nickvision.FlatpakGenerator)
