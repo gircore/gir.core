@@ -1,3 +1,4 @@
+using System;
 using AwesomeAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -77,6 +78,12 @@ public partial class InstanceCreationTest : Test
         GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
     }
 
+    [TestMethod]
+    public void FullRoundTripTransferFull()
+    {
+        //Transfer Full C# -> C -> C#
+        throw new NotImplementedException();
+    }
 
     [TestMethod]
     public void InterfaceReceiveTransferFull()
@@ -101,6 +108,13 @@ public partial class InstanceCreationTest : Test
         obj1.Dispose();
         obj2.GetRefCount().Should().Be(1);
         GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
+    }
+    
+    [TestMethod]
+    public void InterfaceFullRoundTripTransferFull()
+    {
+        //Transfer Full C# -> C -> C#
+        throw new NotImplementedException();
     }
 
     [TestMethod]
@@ -162,6 +176,13 @@ public partial class InstanceCreationTest : Test
         obj1.Dispose();
         obj2.GetRefCount().Should().Be(1);
         GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
+    }
+    
+    [TestMethod]
+    public void SubclassFullRoundTripTransferFull()
+    {
+        //Transfer Full C# -> C -> C#
+        throw new NotImplementedException();
     }
 
     [GObject.Subclass<InstanceCreationTester>]
