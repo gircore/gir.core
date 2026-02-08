@@ -14,6 +14,10 @@ Applications using gir.core. To add a new application to the list [edit this pag
 [Denaro](https://github.com/NickvisionApps/Denaro) is a personal finance manager.
 ![Denaro screenshot](https://raw.githubusercontent.com/NickvisionApps/Denaro/main/NickvisionMoney.GNOME/Screenshots/OpenAccount.png)
 
+## Parabolic
+[Parabolic](https://github.com/NickvisionApps/Parabolic) is a downloader for web video and audio media.
+![Parabolic screenshot](https://raw.githubusercontent.com/NickvisionApps/Parabolic/main/Nickvision.Parabolic.GNOME/Screenshots/Downloading.png)
+
 ## Pinta
 [Pinta](https://www.pinta-project.com/) is a image editing, drawing and painting application with a simple yet powerful interface.
 ![Pinta screenshot](https://github.com/user-attachments/assets/05afe053-1105-4665-b285-6c769a70c1a1)
