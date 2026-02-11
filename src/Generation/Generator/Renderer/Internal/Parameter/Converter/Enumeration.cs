@@ -17,17 +17,22 @@ internal class Enumeration : ParameterConverter
         );
     }
 
-    private static string GetNullableTypeName(GirModel.Parameter parameter) => parameter.IsPointer switch
+    private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        true => Model.Type.Pointer,
-        false => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0)
-    };
+        return parameter switch
+        {
+            { Direction: GirModel.Direction.Out, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0),
+            { Direction: GirModel.Direction.InOut, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0),
+            { IsPointer: true } => Model.Type.Pointer,
+            _ => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0)
+        };
+    }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
-        { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
-        { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.Ref(),
-        { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
+        { Direction: GirModel.Direction.InOut, IsPointer: true } => ParameterDirection.Ref(),
+        { Direction: GirModel.Direction.Out, IsPointer: true, CallerAllocates: true } => ParameterDirection.Ref(),
+        { Direction: GirModel.Direction.Out, IsPointer: true } => ParameterDirection.Out(),
         _ => ParameterDirection.In()
     };
 }

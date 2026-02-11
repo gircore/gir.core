@@ -292,4 +292,29 @@ public class CallbackTest : Test
         refCount.Should().Be(1);
         GObject.Internal.InstanceCache.ObjectCount.Should().Be(1); //ExecutorImpl instance
     }
+
+    [TestMethod]
+    public void SupportsCallbackWithEnumOutParameter()
+    {
+        void Callback(out CallbackTesterSimpleEnum e)
+        {
+            e = CallbackTesterSimpleEnum.Max;
+        }
+
+        var result = CallbackTester.RunCallbackEnumOut(Callback);
+        result.Should().Be(CallbackTesterSimpleEnum.Max);
+    }
+
+    [TestMethod]
+    public void SupportsCallbackWithEnumRefParameter()
+    {
+        void Callback(ref CallbackTesterSimpleEnum e)
+        {
+            if (e == CallbackTesterSimpleEnum.A)
+                e = CallbackTesterSimpleEnum.B;
+        }
+
+        var result = CallbackTester.RunCallbackEnumRef(Callback);
+        result.Should().Be(CallbackTesterSimpleEnum.B);
+    }
 }
