@@ -34,4 +34,20 @@ public class EnumerationTest : Test
         value.GetEnum().Should().Be(1 << 31);
         value.GetEnum<EnumTesterSimpleEnum>().Should().Be(EnumTesterSimpleEnum.Min);
     }
+
+    [TestMethod]
+    public void OutParameter()
+    {
+        EnumTester.OutParameter(out EnumTesterSimpleEnum simpleEnum);
+        simpleEnum.Should().Be(EnumTesterSimpleEnum.A);
+    }
+
+    [TestMethod]
+    public void RefParameter()
+    {
+        var simpleEnum = EnumTesterSimpleEnum.A;
+        EnumTester.RefParameter(ref simpleEnum);
+
+        simpleEnum.Should().Be(EnumTesterSimpleEnum.B);
+    }
 }

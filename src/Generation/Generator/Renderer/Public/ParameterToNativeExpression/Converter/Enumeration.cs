@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Generator.Model;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
@@ -11,15 +10,44 @@ internal class Enumeration : ToNativeParameterConverter
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
-        if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Enumeration with direction != in not yet supported");
+        switch (parameter.Parameter)
+        {
+            case { Direction: GirModel.Direction.In, IsPointer: false }:
+                Direct(parameter);
+                break;
+            case { Direction: GirModel.Direction.InOut, IsPointer: true }:
+            case { Direction: GirModel.Direction.Out, IsPointer: true, CallerAllocates: true }:
+                Ref(parameter);
+                break;
+            case { Direction: GirModel.Direction.Out, IsPointer: true }:
+                Out(parameter);
+                break;
+            default:
+                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: This kind of enumeration (pointed: {parameter.Parameter.IsPointer}, direction: {parameter.Parameter.Direction} can't be converted to managed currently.");
+        }
+    }
 
-        if (parameter.Parameter.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Enumeration pointers with direction == in not yet supported");
+    private static void Ref(ParameterToNativeData parameterData)
+    {
+        var variableName = Model.Parameter.GetName(parameterData.Parameter);
 
-        //We don't need any conversion for enumerations
-        var parameterName = Model.Parameter.GetName(parameter.Parameter);
-        parameter.SetSignatureName(() => parameterName);
-        parameter.SetCallName(() => parameterName);
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => $"ref {variableName}");
+    }
+
+    private static void Direct(ParameterToNativeData parameterData)
+    {
+        var variableName = Model.Parameter.GetName(parameterData.Parameter);
+
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => variableName);
+    }
+
+    private static void Out(ParameterToNativeData parameterData)
+    {
+        var variableName = Model.Parameter.GetName(parameterData.Parameter);
+
+        parameterData.SetSignatureName(() => variableName);
+        parameterData.SetCallName(() => $"out {variableName}");
     }
 }

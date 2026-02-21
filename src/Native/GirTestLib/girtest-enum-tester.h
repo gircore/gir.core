@@ -24,6 +24,9 @@ typedef enum {
 
 #define GIRTEST_TYPE_ENUM_TESTER girtest_enum_tester_get_type()
 
+void girtest_enum_tester_out_parameter(GirTestEnumTesterSimpleEnum *out_enum);
+void girtest_enum_tester_ref_parameter(GirTestEnumTesterSimpleEnum *ref_enum);
+
 G_DECLARE_FINAL_TYPE(GirTestEnumTester, girtest_enum_tester, GIRTEST, ENUM_TESTER, GObject)
 
 G_END_DECLS
