@@ -26,6 +26,7 @@ internal class OpaqueTypedRecord : ParameterConverter
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
         { Direction: GirModel.Direction.In } => ParameterDirection.In(),
-        _ => throw new Exception("Opaque records with direction != in not yet supported")
+        { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
+        _ => throw new Exception("Opaque records with direction != in/out not yet supported")
     };
 }

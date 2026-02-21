@@ -233,6 +233,54 @@ int girtest_opaque_typed_record_tester_get_ref_count_sum_nullable(GirTestOpaqueT
 }
 
 /**
+ * girtest_opaque_typed_record_tester_out_parameter_no_ownership_transfer:
+ * @data: (out) (transfer none): a `GirTestOpaqueTypedRecordTester`
+ **/
+void girtest_opaque_typed_record_tester_out_parameter_no_ownership_transfer(GirTestOpaqueTypedRecordTester **data)
+{
+    if(data == NULL)
+        return;
+
+    *data = girtest_opaque_typed_record_tester_new();
+}
+
+/**
+ * girtest_opaque_typed_record_tester_out_parameter_no_ownership_transfer_nullable:
+ * @data: (out) (transfer none) (nullable): a `GirTestOpaqueTypedRecordTester`
+ **/
+void girtest_opaque_typed_record_tester_out_parameter_no_ownership_transfer_nullable(GirTestOpaqueTypedRecordTester **data)
+{
+    if(data == NULL)
+        return;
+
+    *data = NULL;
+}
+
+/**
+ * girtest_opaque_typed_record_tester_out_parameter_full_ownership_transfer:
+ * @data: (out) (transfer full): a `GirTestOpaqueTypedRecordTester`
+ **/
+void girtest_opaque_typed_record_tester_out_parameter_full_ownership_transfer(GirTestOpaqueTypedRecordTester **data)
+{
+    if(data == NULL)
+        return;
+
+    *data = girtest_opaque_typed_record_tester_new();
+}
+
+/**
+ * girtest_opaque_typed_record_tester_out_parameter_full_ownership_transfer_nullable:
+ * @data: (out) (transfer full) (nullable): a `GirTestOpaqueTypedRecordTester`
+ **/
+void girtest_opaque_typed_record_tester_out_parameter_full_ownership_transfer_nullable(GirTestOpaqueTypedRecordTester **data)
+{
+    if(data == NULL)
+        return;
+
+    *data = NULL;
+}
+
+/**
  * girtest_opaque_typed_record_tester_run_callback_return_no_ownership_transfer:
  * @callback: (scope call): a callback
  *
