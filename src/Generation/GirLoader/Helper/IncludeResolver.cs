@@ -1,18 +1,14 @@
 namespace GirLoader;
 
-public class IncludeResolver
+public class IncludeResolver(IRepositoryResolver repositoryResolver)
 {
-    private readonly IRepositoryResolver _repositoryResolver;
-
-    public IncludeResolver(IRepositoryResolver repositoryResolver)
-    {
-        _repositoryResolver = repositoryResolver;
-    }
-
     public Input.Repository? ResolveInclude(Output.Include include)
     {
+        if (include.Name == "win32") //Win32 API is not a gir file
+            return Win32Repository.Get();
+
         var fileName = $"{include.Name}-{include.Version}.gir";
 
-        return _repositoryResolver.ResolveRepository(fileName);
+        return repositoryResolver.ResolveRepository(fileName);
     }
 }

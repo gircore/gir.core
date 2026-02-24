@@ -128,6 +128,34 @@ public class OpaqueTypedRecordTest : Test
     }
 
     [TestMethod]
+    public void SupportsParameterOutTransferNone()
+    {
+        OpaqueTypedRecordTester.OutParameterNoOwnershipTransfer(out OpaqueTypedRecordTester recordTester);
+        recordTester.GetRefCount().Should().Be(2); // native owner and managed both have a ref
+    }
+
+    [TestMethod]
+    public void SupportsParameterOutTransferNoneNullable()
+    {
+        OpaqueTypedRecordTester.OutParameterNoOwnershipTransferNullable(out OpaqueTypedRecordTester? recordTester);
+        recordTester.Should().BeNull();
+    }
+
+    [TestMethod]
+    public void SupportsParameterOutTransferFull()
+    {
+        OpaqueTypedRecordTester.OutParameterFullOwnershipTransfer(out OpaqueTypedRecordTester recordTester);
+        recordTester.GetRefCount().Should().Be(1); // only managed has ref
+    }
+
+    [TestMethod]
+    public void SupportsParameterOutTransferFullNullable()
+    {
+        OpaqueTypedRecordTester.OutParameterFullOwnershipTransferNullable(out OpaqueTypedRecordTester? recordTester);
+        recordTester.Should().BeNull();
+    }
+
+    [TestMethod]
     public void SupportsParameterArrayWithLengthParameter()
     {
         var recordTester1 = OpaqueTypedRecordTester.New();
@@ -169,7 +197,7 @@ public class OpaqueTypedRecordTest : Test
         recordTester.Handle.DangerousGetHandle().Should().Be(recordTester2.Handle.DangerousGetHandle());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsCallbackReturnNoOwnershipTransferNullable(bool useNull)
@@ -203,7 +231,7 @@ public class OpaqueTypedRecordTest : Test
         recordTester.Handle.DangerousGetHandle().Should().Be(recordTester2.Handle.DangerousGetHandle());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsCallbackReturnFullOwnershipTransferNullable(bool useNull)
@@ -237,7 +265,7 @@ public class OpaqueTypedRecordTest : Test
         called.Should().BeTrue();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsCallbackParameterFullOwnershipTransferNullable(bool useNull)
@@ -272,7 +300,7 @@ public class OpaqueTypedRecordTest : Test
         called.Should().BeTrue();
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void SupportsCallbackParameterNoOwnershipTransferNullable(bool useNull)

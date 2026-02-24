@@ -16,5 +16,6 @@ struct _GirTestExecutorInterface
 };
 
 void girtest_executor_exec (GirTestExecutor *self);
+guint girtest_executor_get_ref_count(GirTestExecutor *self);
 
 G_END_DECLS

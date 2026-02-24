@@ -1,23 +1,28 @@
+using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace GObject.Internal;
 
 /// <summary>
 /// Registers a custom subclass with the GObject type system.
 /// </summary>
-public static class SubclassRegistrar
+public static unsafe class SubclassRegistrar
 {
-    public static Type Register<TSubclass, TParent>()
+    [DllImport(ImportResolver.Library, EntryPoint = "g_type_register_static_simple")]
+    private static extern nuint TypeRegisterStaticSimple(Type parentType, GLib.Internal.NonNullableUtf8StringHandle typeName, uint classSize, delegate* unmanaged<IntPtr, IntPtr, void> classInit, uint instanceSize, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit, TypeFlags flags);
+
+    public static Type Register<TSubclass, TParent>(delegate* unmanaged<IntPtr, IntPtr, void> classInit, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit)
         where TSubclass : InstanceFactory
         where TParent : GTypeProvider
     {
-        var newType = RegisterNewGType<TSubclass, TParent>();
+        var newType = RegisterNewGType<TSubclass, TParent>(classInit, instanceInit);
         DynamicInstanceFactory.Register(newType, TSubclass.Create);
 
         return newType;
     }
 
-    private static Type RegisterNewGType<TSubclass, TParent>()
+    private static Type RegisterNewGType<TSubclass, TParent>(delegate* unmanaged<IntPtr, IntPtr, void> classInit, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit)
         where TParent : GTypeProvider
     {
         var parentType = TParent.GetGType();
@@ -29,22 +34,20 @@ public static class SubclassRegistrar
 
         Debug.WriteLine($"Registering new type {typeof(TSubclass).FullName} with parent {typeof(TParent).FullName}");
 
-        // Create TypeInfo
-        //TODO: Callbacks for "ClassInit" and "InstanceInit" are disabled because if multiple instances
-        //of the same type are created, the typeInfo object can get garbagec collected in the mean time
-        //and with it the instances of "DoClassInit" and "DoInstanceInit". If the callback occurs the
-        //runtime can't do the call anymore and crashes with:
-        //A callback was made on a garbage collected delegate of type 'GObject-2.0!GObject.Internal.InstanceInitFunc::Invoke'
-        //Fix this by caching the garbage collected instances somehow
-        var handle = TypeInfoOwnedHandle.Create();
-        handle.SetClassSize((ushort) parentTypeInfo.GetClassSize());
-        handle.SetInstanceSize((ushort) parentTypeInfo.GetInstanceSize());
-        //handle.SetClassInit();
-        //handle.SetInstanceInit();
-
         var qualifiedName = QualifyName(typeof(TSubclass));
-        var typeid = Functions.TypeRegisterStatic(parentType,
-            GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(qualifiedName), handle, 0);
+        var typeName = GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(qualifiedName);
+        var classSize = (ushort) parentTypeInfo.GetClassSize();
+        var instanceSize = (ushort) parentTypeInfo.GetInstanceSize();
+
+        var typeid = TypeRegisterStaticSimple(
+            parentType: parentType,
+            typeName: typeName,
+            classSize: classSize,
+            classInit: classInit,
+            instanceSize: instanceSize,
+            instanceInit: instanceInit,
+            flags: TypeFlags.None
+        );
 
         if (typeid == 0)
             throw new TypeRegistrationException("Type Registration Failed!");
@@ -61,17 +64,5 @@ public static class SubclassRegistrar
             .Replace("]", string.Empty)
             .Replace(" ", string.Empty)
             .Replace(",", "_");
-
-    /* TODO: Enable if init functions are supported again
-    // Default Handler for class initialisation.
-    private static void DoClassInit(IntPtr gClass, IntPtr classData)
-    {
-        Console.WriteLine("Subclass type class initialised!");
-    }
-    // Default Handler for instance initialisation.
-    private static void DoInstanceInit(IntPtr gClass, IntPtr classData)
-    {
-        Console.WriteLine("Subclass instance initialised!");
-    }
-    */
 }
+

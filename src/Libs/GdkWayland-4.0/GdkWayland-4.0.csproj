@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>GirCore.GdkWayland-4.0</PackageId>
+    <RootNamespace>GdkWayland</RootNamespace>
+    <Description>C# bindings for GdkWayland.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -11,12 +11,12 @@ internal static class Parameters
         new Parameter.CallbackAlias(),
         new Parameter.Class(),
         new Parameter.ClassArray(),
-        new Parameter.ClassGLibPtrArray(),
         new Parameter.Enumeration(),
         new Parameter.EnumerationArray(),
         new Parameter.ForeignTypedRecord(),
         new Parameter.ForeignTypedRecordArray(),
         new Parameter.GLibByteArray(),
+        new Parameter.GLibPointerArray(),
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
         new Parameter.NativeUnsignedIntegerArray(),
@@ -29,7 +29,6 @@ internal static class Parameters
         new Parameter.PointerAlias(),
         new Parameter.PointerArray(),
         new Parameter.PointerGLibArray(),
-        new Parameter.PointerGLibPtrArray(),
         new Parameter.Long(), //Must be before primitive value type
         new Parameter.UnsignedLong(), //Must be before primitive value type
         new Parameter.CLong(), //Must be before primitive value type
@@ -40,9 +39,7 @@ internal static class Parameters
         new Parameter.PrimitiveValueTypeArrayAlias(),
         new Parameter.PrimitiveValueTypeGLibArray(),
         new Parameter.PrimitiveValueTypeGLibArrayAlias(),
-        new Parameter.PrimitiveValueTypeGLibPtrArray(),
         new Parameter.String(),
-        new Parameter.StringGLibPtrArray(),
         new Parameter.TypedRecord(),
         new Parameter.TypedRecordArray(),
         new Parameter.Union(),

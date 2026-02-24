@@ -35,5 +35,5 @@ To compile all the generated bindings, including `GirTest`, run:
 
     $ dotnet build
 
-The `GirCore.sln` solution contains all libraries, including `GirTest`.
+The `GirCore.slnx` solution contains all libraries, including `GirTest`.
 The `GirCore.Libs.slnf` solution filter excludes the `GirTest` library's bindings and its unit tests, which can be useful if you have not built the native library.

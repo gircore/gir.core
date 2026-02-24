@@ -115,7 +115,7 @@ public class ByteArrayTest : Test
         data[1].Should().Be(0);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(1)]
     [DataRow(2)]
     [DataRow(3)]

@@ -5,9 +5,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" />
-    <ProjectReference Include="..\..\Data\DiagnosticAnalyzerTestProject\DiagnosticAnalyzerTestProject.csproj" />
-    
-    <PackageReference Include="Buildalyzer" Version="7.1.0" />
-    <PackageReference Include="Buildalyzer.Workspaces" Version="7.1.0" />
+    <ProjectReference Include="..\..\Data\GObject-2.0.Integration.Tests.Data\GObject-2.0.Integration.Tests.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Shared\DiagnosticListExtension.cs">
+      <Link>Shared\DiagnosticListExtension.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>

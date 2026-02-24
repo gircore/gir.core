@@ -16,6 +16,7 @@ NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(c
     {RenderCallStatement(callback, parameterData, out var resultVariableName)}
     {RenderPostCallStatements(parameterData)}
     {RenderFreeStatement(scope)}
+    {RenderMemoryManagementStatement(callback, resultVariableName)}
     {RenderReturnStatement(callback, resultVariableName)}
 }};";
     }
@@ -127,5 +128,28 @@ NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(c
         return callback.ReturnType.AnyType.Is<GirModel.Void>()
             ? string.Empty
             : $"return {ReturnTypeToNativeExpression.Render(callback.ReturnType, returnVariableName)};";
+    }
+
+    private static string RenderMemoryManagementStatement(GirModel.Callback callback, string returnVariableName)
+    {
+        if (callback.ReturnType.Transfer is GirModel.Transfer.None or GirModel.Transfer.Container)
+            return string.Empty;
+
+        if (!callback.ReturnType.AnyType.Is<GirModel.Class>() && !callback.ReturnType.AnyType.Is<GirModel.Interface>())
+            return string.Empty;
+
+        //GObject with transfer full
+        return $$"""
+                 if({{returnVariableName}} is not null)
+                 {
+                     //Add ref which is transferred to C
+                     GObject.Internal.Object.Ref({{returnVariableName}}.Handle.DangerousGetHandle());
+                     
+                     //Dispose managed instance because C want's to rule the instance. If C returns the instance
+                     //with "transfer full" to C# the disposed instance ensures that a new instance is created
+                     //and there is only one ref that is owned by C#.
+                     {{returnVariableName}}.Dispose();
+                 }
+                 """;
     }
 }

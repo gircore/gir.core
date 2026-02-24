@@ -34,19 +34,6 @@ public static class AnyTypeExtension
         => anyType.TryPickT1(out var arrayType, out _)
            && arrayType is GirModel.PointerArrayType;
 
-    public static bool IsGLibPtrArray<T>(this GirModel.AnyType anyType) where T : GirModel.Type
-        => anyType.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.PointerArrayType
-           && arrayType.AnyType.Is<T>();
-
-    public static bool IsGLibPtrArray<T>(this GirModel.AnyType anyType, [NotNullWhen(true)] out T? type) where T : class, GirModel.Type
-    {
-        type = null;
-        return anyType.TryPickT1(out var arrayType, out _)
-               && arrayType is GirModel.PointerArrayType
-               && arrayType.AnyType.Is(out type);
-    }
-
     public static bool IsGLibByteArray(this GirModel.AnyType anyType)
         => anyType.TryPickT1(out var arrayType, out _)
            && arrayType is GirModel.ByteArrayType;

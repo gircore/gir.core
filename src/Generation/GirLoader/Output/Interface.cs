@@ -12,6 +12,7 @@ public partial class Interface : ComplexType, AccessorProvider, ShadowableProvid
 
     public Function GetTypeFunction { get; }
     public IEnumerable<TypeReference> Implements { get; }
+    public IEnumerable<TypeReference> Prerequisites { get; }
 
     public IEnumerable<Constructor>? Constructors => null; //TODO: Not implemented yet
     public IEnumerable<Method> Methods => _methods;
@@ -20,8 +21,9 @@ public partial class Interface : ComplexType, AccessorProvider, ShadowableProvid
     public IEnumerable<Signal> Signals => _signals;
     public bool Introspectable { get; }
 
-    public Interface(Repository repository, string? cType, string name, IEnumerable<TypeReference> implements, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Signal> signals, bool introspectable) : base(repository, cType, name)
+    public Interface(Repository repository, string? cType, string name, IEnumerable<TypeReference> implements, IEnumerable<TypeReference> prerequisites, IEnumerable<Method> methods, IEnumerable<Function> functions, Function getTypeFunction, IEnumerable<Property> properties, IEnumerable<Signal> signals, bool introspectable) : base(repository, cType, name)
     {
+        Prerequisites = prerequisites;
         Implements = implements;
         this._methods = methods.ToList();
         this._functions = functions.ToList();

@@ -314,3 +314,71 @@ girtest_callback_tester_run_callback_with_nullable_class_parameter(GirTestNullab
 {
     callback(data);
 }
+
+/**
+ * girtest_callback_tester_run_callback_with_object_return_transfer_full:
+ * @callback: (scope call): a function that is called and returns a new object
+ *
+ * Calls the callback and returns the ref count of the new object
+ * 
+ * Returns: the ref count of the fully transfered instance.
+ **/
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_full(GirTestTransferFullObjectReturnCallback callback)
+{
+    GObject* obj = callback();
+    guint count = obj->ref_count;
+    g_object_unref(obj);
+    return count;
+}
+
+/**
+ * girtest_callback_tester_run_callback_with_object_return_transfer_none:
+ * @callback: (scope call): a function that is called and returns a new object
+ *
+ * Calls the callback and returns the ref count of the new object
+ * 
+ * Returns: the ref count of transfered instance.
+ **/
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_none(GirTestTransferNoneObjectReturnCallback callback)
+{
+    GObject* obj = callback();
+    return obj->ref_count;
+}
+
+/**
+ * girtest_callback_tester_run_callback_enum_out:
+ * @callback: (scope call): a function that is called and has an enum out parameter.
+ *
+ * Calls the callback. 
+ *
+ * Returns: The enum value assigned to the out parameter by the callback `GirTestEnumOutCallback`.
+ **/
+GirTestCallbackTesterSimpleEnum
+girtest_callback_tester_run_callback_enum_out(GirTestEnumOutCallback callback)
+{
+    GirTestCallbackTesterSimpleEnum e = 0;
+
+    callback(&e);
+
+    return e;
+}
+
+/**
+ * girtest_callback_tester_run_callback_enum_ref:
+ * @callback: (scope call): a function that is called and has an enum ref parameter.
+ *
+ * Calls the callback. 
+ *
+ * Returns: The enum value assigned to the ref parameter by the callback `GirTestEnumRefCallback`.
+ **/
+GirTestCallbackTesterSimpleEnum
+girtest_callback_tester_run_callback_enum_ref(GirTestEnumRefCallback callback)
+{
+    GirTestCallbackTesterSimpleEnum e = SIMPLE_ENUM_A;
+
+    callback(&e);
+
+    return e;
+}

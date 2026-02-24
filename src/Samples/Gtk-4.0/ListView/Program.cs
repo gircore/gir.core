@@ -2,10 +2,10 @@ var application = Gtk.Application.New("org.gir.core", Gio.ApplicationFlags.Flags
 application.OnActivate += (sender, args) =>
 {
     var buttonShowCodeListView = CreateButton("Show Code ListView Window");
-    buttonShowCodeListView.OnClicked += (_, _) => new ListViewSample.CodeListViewWindow().Show();
+    buttonShowCodeListView.OnClicked += (_, _) => ListViewSample.CodeListViewWindow.NewWithProperties([]).Show();
 
     var buttonShowTemplateListView = CreateButton("Show Template ListView Window");
-    buttonShowTemplateListView.OnClicked += (_, _) => new ListViewSample.TemplateListViewWindow().Show();
+    buttonShowTemplateListView.OnClicked += (_, _) => ListViewSample.TemplateListViewWindow.NewWithProperties([]).Show();
 
     var gtkBox = Gtk.Box.New(Gtk.Orientation.Vertical, 0);
     gtkBox.Append(buttonShowCodeListView);

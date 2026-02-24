@@ -75,6 +75,40 @@ typedef const gchar* (*GirTestNullableConstStringCallback) ();
  */
 typedef const void (*GirTestNullableClassParameterCallback) (GirTestCallbackTester* data);
 
+/**
+ * GirTestTransferFullObjectReturnCallback:
+ *
+ * Returns:(transfer full): An object
+ */
+typedef GObject* (*GirTestTransferFullObjectReturnCallback) ();
+
+/**
+ * GirTestTransferNoneObjectReturnCallback:
+ *
+ * Returns:(transfer none): An object
+ */
+typedef GObject* (*GirTestTransferNoneObjectReturnCallback) ();
+
+typedef enum {
+    SIMPLE_ENUM_A = 1,
+    SIMPLE_ENUM_B = 2,
+    SIMPLE_ENUM_C = 3,
+    SIMPLE_ENUM_MAX = 2147483647,
+    SIMPLE_ENUM_MIN = -2147483648
+} GirTestCallbackTesterSimpleEnum;
+
+/**
+ * GirTestEnumOutCallback:
+ * @e: (out): return location for an enum
+ */
+typedef void (*GirTestEnumOutCallback) (GirTestCallbackTesterSimpleEnum *e);
+
+/**
+ * GirTestEnumRefCallback:
+ * @e: (inout): input and return location for an enum
+ */
+typedef void (*GirTestEnumRefCallback) (GirTestCallbackTesterSimpleEnum *e);
+
 GirTestCallbackTester*
 girtest_callback_tester_new (void);
 
@@ -133,5 +167,17 @@ girtest_callback_tester_run_callback_with_nullable_constant_string_return(GirTes
 
 void
 girtest_callback_tester_run_callback_with_nullable_class_parameter(GirTestNullableClassParameterCallback callback, GirTestCallbackTester* data); 
+
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_full(GirTestTransferFullObjectReturnCallback callback);
+
+guint
+girtest_callback_tester_run_callback_with_object_return_transfer_none(GirTestTransferNoneObjectReturnCallback callback);
+
+GirTestCallbackTesterSimpleEnum
+girtest_callback_tester_run_callback_enum_out(GirTestEnumOutCallback callback);
+
+GirTestCallbackTesterSimpleEnum
+girtest_callback_tester_run_callback_enum_ref(GirTestEnumRefCallback callback);
 
 G_END_DECLS

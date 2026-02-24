@@ -80,12 +80,27 @@ internal class TypeReferenceFactory
     {
         var list = new List<TypeReference>();
 
-        foreach (Input.Implement implement in implements)
+        foreach (var implement in implements)
         {
             if (implement.Name is null)
                 throw new Exception("Implement is missing a name");
 
             list.Add(CreateResolveable(implement.Name, null));
+        }
+
+        return list;
+    }
+
+    public IEnumerable<TypeReference> Create(IEnumerable<Input.Prerequisite> prerequisites)
+    {
+        var list = new List<TypeReference>();
+
+        foreach (var prerequisite in prerequisites)
+        {
+            if (prerequisite.Name is null)
+                throw new Exception("Prerequisite is missing a name");
+
+            list.Add(CreateResolveable(prerequisite.Name, null));
         }
 
         return list;

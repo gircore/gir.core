@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "Gtk-4.0.Integration": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "../../Samples/Gtk-4.0/CompositeTemplate/CompositeTemplate.csproj"
+    }
+  }
+}

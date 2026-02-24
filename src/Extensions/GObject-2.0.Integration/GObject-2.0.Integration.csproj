@@ -1,34 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <PackageId>GirCore.GObject-2.0.Integration</PackageId>
-        <TargetFramework>net8.0</TargetFramework>
         <RootNamespace>GObject.Integration</RootNamespace>
         <Description>Source Generator to make it easy to integrate C# with the GObject type system.</Description>
-        
-        <AnalysisMode>Recommended</AnalysisMode>
-        <Nullable>enable</Nullable>
-        <TreatWarningsErrors>true</TreatWarningsErrors>
-
-        <IncludeBuildOutput>false</IncludeBuildOutput>
-        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-        <NoWarn>$(NoWarn);NU5128</NoWarn>
-      
-        <!-- 
-        Disable snupk generation as there are no symbols which results in an error
-        if the empty snupkg file is uploaded to nuget.
-        -->
-        <IncludeSymbols>false</IncludeSymbols>
-        <IncludeSource>false</IncludeSource>
     </PropertyGroup>
-
-    <ItemGroup>
-        <!-- Reference 4.8 as it is the first version which supports net8.0 -->
-        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.8.0"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿// Create a new GTK application instance.
 // "com.example.boxlayout" is the unique application ID used to identify the app.
 // The application ID should be a domain name you control.
-// If you don't own a domain name you can use a project specific domain such as github pages.
+// If you don't own a domain name, you can use a project-specific domain such as GitHub pages.
 // e.g. io.github.projectname
 // Gio.ApplicationFlags.FlagsNone indicates no special flags are being used.
 var application = Gtk.Application.New("com.example.boxlayout", Gio.ApplicationFlags.FlagsNone);
@@ -15,7 +15,7 @@ application.OnActivate += (sender, args) =>
     // the new instance of the BoxLayout window so that the window can access the
     // Gtk.Application instance, this is useful for closing the application from
     // a button.
-    var window = new BoxLayout.BoxLayout(application);
+    var window = BoxLayout.BoxLayout.New();
 
     // Set the "Application" property of the window to the current application instance.
     // This links the window to the application, allowing them to work together.

@@ -2,11 +2,19 @@
 {
     // Define a class named HelloWorld that extends Gtk.Window.
     // Gtk.Window represents a top-level window in a GTK application.
-    public class HelloWorld : Gtk.Window
+    // Subclassing requires a source generator to integrate deeply with
+    // the GObject type system.
+    [GObject.Subclass<Gtk.Window>]
+    public partial class HelloWorld
     {
-        // Constructor for the HelloWorld class.
+        public static new HelloWorld New()
+        {
+            return NewWithProperties([]);
+        }
+
+        // Initializer for the HelloWorld class.
         // This method sets up the window and its contents.
-        public HelloWorld()
+        partial void Initialize()
         {
             // Set the title of the window.
             Title = "Hello World App";

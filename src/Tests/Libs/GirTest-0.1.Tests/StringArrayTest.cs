@@ -42,9 +42,9 @@ public class StringArrayTest : Test
     public void Utf8ParameterTransferNoneNullableWithSize()
     {
         var array = new[] { "FOO", "BAR" };
-        StringArrayTester.Utf8ReturnElementParameterTransferNoneNullableWithSize(array, 2, 0).Should().Be(array[0]);
-        StringArrayTester.Utf8ReturnElementParameterTransferNoneNullableWithSize(array, 2, 1).Should().Be(array[1]);
-        StringArrayTester.Utf8ReturnElementParameterTransferNoneNullableWithSize(null, 0, 1).Should().BeNull();
+        StringArrayTester.Utf8ReturnElementParameterTransferNoneNullableWithSize(array, 0).Should().Be(array[0]);
+        StringArrayTester.Utf8ReturnElementParameterTransferNoneNullableWithSize(array, 1).Should().Be(array[1]);
+        StringArrayTester.Utf8ReturnElementParameterTransferNoneNullableWithSize(null, 1).Should().BeNull();
     }
 
     [TestMethod]

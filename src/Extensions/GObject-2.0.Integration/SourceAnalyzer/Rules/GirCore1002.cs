@@ -24,6 +24,9 @@ internal sealed class GirCore1002 : Rule
     {
         var constructorSyntax = (ConstructorDeclarationSyntax) context.Node;
 
+        if (constructorSyntax.Modifiers.Any(SyntaxKind.StaticKeyword))
+            return;
+
         if (constructorSyntax.ParameterList.Parameters.Any())
             return;
 

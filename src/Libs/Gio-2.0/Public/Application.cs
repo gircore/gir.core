@@ -18,11 +18,7 @@ public partial class Application
 
         try
         {
-            if (args == null)
-            {
-                return Run(0, Array.Empty<string>());
-            }
-            return Run(args.Length, args);
+            return Run(args);
         }
         finally
         {

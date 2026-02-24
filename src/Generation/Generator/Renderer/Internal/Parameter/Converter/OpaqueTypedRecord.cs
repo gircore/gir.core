@@ -28,6 +28,8 @@ internal class OpaqueTypedRecord : ParameterConverter
         {
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.None } => Model.OpaqueTypedRecord.GetFullyQuallifiedInternalHandle(type),
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.Full } => Model.OpaqueTypedRecord.GetFullyQuallifiedUnownedHandle(type),
+            { Direction: GirModel.Direction.Out, Transfer: GirModel.Transfer.None } => Model.OpaqueTypedRecord.GetFullyQuallifiedUnownedHandle(type),
+            { Direction: GirModel.Direction.Out, Transfer: GirModel.Transfer.Full } => Model.OpaqueTypedRecord.GetFullyQuallifiedOwnedHandle(type),
             _ => throw new Exception($"Can't detect opaque record parameter type {parameter.Name}: CallerAllocates={parameter.CallerAllocates} Direction={parameter.Direction} Transfer={parameter.Transfer}")
         };
     }
@@ -36,6 +38,7 @@ internal class OpaqueTypedRecord : ParameterConverter
     {
         { Direction: GirModel.Direction.In } => ParameterDirection.In(),
         { Direction: GirModel.Direction.InOut } => ParameterDirection.In(),
+        { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
         _ => throw new Exception($"Unknown parameter direction for opaque typed record parameter {parameter.Name}")
     };
 }

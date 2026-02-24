@@ -52,4 +52,19 @@ public class ImageSurfaceTest : Test
         surf.Finish();
         surf.Status.Should().Be(Status.Success);
     }
+
+    [TestMethod]
+    public void CanCreateImageFromData()
+    {
+        var width = 10;
+        var heigth = 10;
+        var format = Format.Rgb24;
+        var stride = format.StrideForWidth(width);
+        var data = GLib.Bytes.New(new byte[stride * heigth]);
+        var image = new ImageSurface(data, format, width, heigth, stride);
+
+        image.Height.Should().Be(heigth);
+        image.Width.Should().Be(width);
+        image.Stride.Should().Be(stride);
+    }
 }

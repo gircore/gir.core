@@ -22,7 +22,6 @@ public static class Classes
             new Generator.Internal.ClassStruct(publisher),
             new Generator.Internal.ClassHandle(publisher),
             new Generator.Internal.ClassCallbacks(publisher),
-            new Generator.Public.ClassConstructors(publisher),
             new Generator.Public.ClassMethods(publisher),
             new Generator.Public.ClassFunctions(publisher),
             new Generator.Public.ClassInterfaceMethods(publisher),

@@ -6,7 +6,7 @@ namespace GLib.Tests;
 [TestClass, TestCategory("UnitTest")]
 public class VariantTest : Test
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow(true)]
     [DataRow(false)]
     public void CanCreateBool(bool value)
@@ -47,7 +47,7 @@ public class VariantTest : Test
     public void CanCreateStringArray()
     {
         var data = new[] { "Str1", "Str2", "Str3" };
-        var variant = Variant.NewStrv(data, data.Length);
+        var variant = Variant.NewStrv(data);
         variant.Print(false).Should().Be("['Str1', 'Str2', 'Str3']");
 
         var strv = variant.GetStrv(out var length);

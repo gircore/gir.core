@@ -25,31 +25,22 @@ public partial class CodeListViewWindow
         Child = scrolledWindow;
     }
 
-    private void SetupSignalHandler(SignalListItemFactory sender, SetupSignalArgs args)
+    private static void SetupSignalHandler(SignalListItemFactory sender, SetupSignalArgs args)
     {
-        var listItem = args.Object as ListItem;
-        if (listItem is null)
-        {
+        if (args.Object is not ListItem listItem)
             return;
-        }
 
         var label = Label.New(null);
         listItem.Child = label;
     }
 
-    private void BindSignalHandler(SignalListItemFactory sender, BindSignalArgs args)
+    private static void BindSignalHandler(SignalListItemFactory sender, BindSignalArgs args)
     {
-        var listItem = args.Object as ListItem;
-        if (listItem is null)
-        {
+        if (args.Object is not ListItem listItem)
             return;
-        }
 
-        var label = listItem.Child as Label;
-        if (label is null)
-        {
+        if (listItem.Child is not Label label)
             return;
-        }
 
         var item = listItem.Item as StringObject;
         label.SetText(item?.String ?? "NOT FOUND");

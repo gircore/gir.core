@@ -1,0 +1,208 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Extensions/">
+    <File Path="Extensions/Directory.Build.props" />
+    <Project Path="Extensions/GObject-2.0.Integration/GObject-2.0.Integration.csproj" />
+    <Project Path="Extensions/Gtk-4.0.Integration/Gtk-4.0.Integration.csproj" />
+  </Folder>
+  <Folder Name="/Generation/">
+    <File Path="Generation/Directory.Build.props" />
+    <Project Path="Generation/Generator/Generator.csproj" />
+    <Project Path="Generation/GirLoader/GirLoader.csproj" />
+    <Project Path="Generation/GirModel/GirModel.csproj" />
+    <Project Path="Generation/GirTool/GirTool.csproj" />
+  </Folder>
+  <Folder Name="/Libs/">
+    <File Path="Libs/Directory.Build.props" />
+    <Project Path="Libs/Adw-1/Adw-1.csproj" />
+    <Project Path="Libs/cairo-1.0/cairo-1.0.csproj" />
+    <Project Path="Libs/freetype2-2.0/freetype2-2.0.csproj" />
+    <Project Path="Libs/Gdk-4.0/Gdk-4.0.csproj" />
+    <Project Path="Libs/GdkPixbuf-2.0/GdkPixbuf-2.0.csproj" />
+    <Project Path="Libs/GdkWayland-4.0/GdkWayland-4.0.csproj" />
+    <Project Path="Libs/GdkWin32-4.0/GdkWin32-4.0.csproj" />
+    <Project Path="Libs/Gio-2.0/Gio-2.0.csproj" />
+    <Project Path="Libs/GirTest-0.1/GirTest-0.1.csproj" />
+    <Project Path="Libs/GLib-2.0/GLib-2.0.csproj" />
+    <Project Path="Libs/GObject-2.0/GObject-2.0.csproj" />
+    <Project Path="Libs/Graphene-1.0/Graphene-1.0.csproj" />
+    <Project Path="Libs/Gsk-4.0/Gsk-4.0.csproj" />
+    <Project Path="Libs/Gst-1.0/Gst-1.0.csproj" />
+    <Project Path="Libs/GstApp-1.0/GstApp-1.0.csproj" />
+    <Project Path="Libs/GstAudio-1.0/GstAudio-1.0.csproj" />
+    <Project Path="Libs/GstBase-1.0/GstBase-1.0.csproj" />
+    <Project Path="Libs/GstPbutils-1.0/GstPbutils-1.0.csproj" />
+    <Project Path="Libs/GstVideo-1.0/GstVideo-1.0.csproj" />
+    <Project Path="Libs/Gtk-4.0/Gtk-4.0.csproj" />
+    <Project Path="Libs/GtkSource-5/GtkSource-5.csproj" />
+    <Project Path="Libs/HarfBuzz-0.0/HarfBuzz-0.0.csproj" />
+    <Project Path="Libs/JavaScriptCore-6.0/JavaScriptCore-6.0.csproj" />
+    <Project Path="Libs/Pango-1.0/Pango-1.0.csproj" />
+    <Project Path="Libs/PangoCairo-1.0/PangoCairo-1.0.csproj" />
+    <Project Path="Libs/Rsvg-2.0/Rsvg-2.0.csproj" />
+    <Project Path="Libs/Secret-1/Secret-1.csproj" />
+    <Project Path="Libs/Soup-3.0/Soup-3.0.csproj" />
+    <Project Path="Libs/WebKit-6.0/WebKit-6.0.csproj" />
+    <Project Path="Libs/WebKitWebProcessExtension-6.0/WebKitWebProcessExtension-6.0.csproj" />
+  </Folder>
+  <Folder Name="/Samples/">
+    <File Path="Samples/Directory.Build.props" />
+  </Folder>
+  <Folder Name="/Samples/Adw-1/">
+    <Project Path="Samples/Adw-1/Window/Window.csproj" />
+  </Folder>
+  <Folder Name="/Samples/GdkPixbuf-2.0/">
+    <Project Path="Samples/GdkPixbuf-2.0/TestMemoryLeaks/TestMemoryLeaks.csproj" />
+  </Folder>
+  <Folder Name="/Samples/Gio-2.0/">
+    <Project Path="Samples/Gio-2.0/DBus/DBus.csproj" />
+  </Folder>
+  <Folder Name="/Samples/Gst-1.0/">
+    <Project Path="Samples/Gst-1.0/VideoPlayback/VideoPlayback.csproj" />
+  </Folder>
+  <Folder Name="/Samples/Gtk-4.0/">
+    <Project Path="Samples/Gtk-4.0/AboutDialog/AboutDialog.csproj" />
+    <Project Path="Samples/Gtk-4.0/Builder/Builder.csproj" />
+    <Project Path="Samples/Gtk-4.0/CompositeTemplate/CompositeTemplate.csproj" />
+    <Project Path="Samples/Gtk-4.0/DrawingArea/DrawingArea.csproj" />
+    <Project Path="Samples/Gtk-4.0/DropDown/DropDown.csproj" />
+    <Project Path="Samples/Gtk-4.0/FontDialog/FontDialog.csproj" />
+    <Project Path="Samples/Gtk-4.0/GridView/GridView.csproj" />
+    <Project Path="Samples/Gtk-4.0/ListView/ListView.csproj" />
+    <Project Path="Samples/Gtk-4.0/Window/Window.csproj" />
+    <Project Path="Samples/Gtk-4.0/ColumnViewSorted/ColumnViewSorted.csproj" />
+  </Folder>
+  <Folder Name="/Samples/GtkSource-5/">
+    <Project Path="Samples/GtkSource-5/GtkSourceView/GtkSourceView.csproj" />
+  </Folder>
+  <Folder Name="/Samples/Secret-1/">
+    <Project Path="Samples/Secret-1/ListSecretCollections/ListSecretCollections.csproj" />
+  </Folder>
+  <Folder Name="/Samples/WebKit-6.0/">
+    <Project Path="Samples/WebKit-6.0/JavascriptCall/JavascriptCall.csproj" />
+    <Project Path="Samples/WebKit-6.0/JavascriptCallback/JavascriptCallback.csproj" />
+  </Folder>
+  <Folder Name="/SolutionItems/">
+    <File Path="../.editorconfig" />
+    <File Path="../.gitignore" />
+    <File Path="../readme.md" />
+    <File Path="NugetReadme.md" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/">
+    <File Path="../docs/docfx.json" />
+    <File Path="../docs/index.md" />
+    <File Path="../docs/toc.yml" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/api/">
+    <File Path="../docs/api/index.md" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/docs/">
+    <File Path="../docs/docs/apps.md" />
+    <File Path="../docs/docs/build.md" />
+    <File Path="../docs/docs/contributing.md" />
+    <File Path="../docs/docs/ecosystem.md" />
+    <File Path="../docs/docs/faq.md" />
+    <File Path="../docs/docs/libraries.md" />
+    <File Path="../docs/docs/use.md" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/docs/integration/">
+    <File Path="../docs/docs/integration/index.md" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/docs/integration/diagnostic/">
+    <File Path="../docs/docs/integration/diagnostic/1001.md" />
+    <File Path="../docs/docs/integration/diagnostic/1002.md" />
+    <File Path="../docs/docs/integration/diagnostic/1003.md" />
+    <File Path="../docs/docs/integration/diagnostic/1004.md" />
+    <File Path="../docs/docs/integration/diagnostic/1005.md" />
+    <File Path="../docs/docs/integration/diagnostic/1006.md" />
+    <File Path="../docs/docs/integration/diagnostic/1007.md" />
+    <File Path="../docs/docs/integration/diagnostic/2001.md" />
+    <File Path="../docs/docs/integration/diagnostic/2002.md" />
+    <File Path="../docs/docs/integration/diagnostic/2003.md" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/docs/tutorial/" />
+  <Folder Name="/SolutionItems/docs/docs/tutorial/gtk/">
+    <File Path="../docs/docs/tutorial/gtk/box_layout.md" />
+    <File Path="../docs/docs/tutorial/gtk/hello_world.md" />
+    <File Path="../docs/docs/tutorial/gtk/index.md" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/docs/tutorial/gtk/img/" />
+  <Folder Name="/SolutionItems/docs/docs/tutorial/gtk/img/BoxLayout/">
+    <File Path="../docs/docs/tutorial/gtk/img/BoxLayout/Linux.png" />
+    <File Path="../docs/docs/tutorial/gtk/img/BoxLayout/MacOS.png" />
+    <File Path="../docs/docs/tutorial/gtk/img/BoxLayout/Windows.png" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/docs/tutorial/gtk/img/HelloWorld/">
+    <File Path="../docs/docs/tutorial/gtk/img/HelloWorld/Linux.png" />
+    <File Path="../docs/docs/tutorial/gtk/img/HelloWorld/MacOS.png" />
+    <File Path="../docs/docs/tutorial/gtk/img/HelloWorld/Windows.png" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/docs/tutorial/gtk/src/">
+    <Project Path="../docs/docs/tutorial/gtk/src/BoxLayout/BoxLayout.csproj" />
+    <Project Path="../docs/docs/tutorial/gtk/src/HelloWorld/HelloWorld.csproj" />
+  </Folder>
+  <Folder Name="/SolutionItems/docs/img/">
+    <File Path="../docs/img/gircore-logo.svg" />
+    <File Path="../docs/img/GstSintel.png" />
+    <File Path="../docs/img/GtkApp.png" />
+  </Folder>
+  <Folder Name="/SolutionItems/github/">
+    <File Path="../.github/dependabot.yml" />
+  </Folder>
+  <Folder Name="/SolutionItems/github/actions/" />
+  <Folder Name="/SolutionItems/github/actions/create/">
+    <File Path="../.github/actions/create/action.yml" />
+  </Folder>
+  <Folder Name="/SolutionItems/github/actions/test/">
+    <File Path="../.github/actions/test/action.yml" />
+  </Folder>
+  <Folder Name="/SolutionItems/github/codeql/">
+    <File Path="../.github/codeql/codeql-config.yml" />
+    <File Path="../.github/codeql/queries.qls" />
+  </Folder>
+  <Folder Name="/SolutionItems/github/workflows/">
+    <File Path="../.github/workflows/ci.yml" />
+    <File Path="../.github/workflows/codeql-analysis.yml" />
+    <File Path="../.github/workflows/update-gir-files.yml" />
+  </Folder>
+  <Folder Name="/SolutionItems/img/">
+    <File Path="../img/logo.svg" />
+  </Folder>
+  <Folder Name="/SolutionItems/properties/">
+    <File Path="../properties/GirCore.Libraries.props" />
+    <File Path="../properties/GirCore.Logging.props" />
+    <File Path="../properties/GirCore.Publishing.props" />
+    <File Path="../properties/GirCore.Testing.props" />
+    <File Path="../properties/GirCore.Tooling.props" />
+    <File Path="../properties/GirCore.Extensions.props" />
+  </Folder>
+  <Folder Name="/SolutionItems/scripts/">
+    <File Path="../scripts/CleanLibs.fsx" />
+    <File Path="../scripts/GenerateGirTestLib.fsx" />
+    <File Path="../scripts/GenerateLibs.fsx" />
+    <File Path="../scripts/GetVersion.fsx" />
+  </Folder>
+  <Folder Name="/Tests/" />
+  <Folder Name="/Tests/Data/">
+    <Project Path="Tests/Data/GObject-2.0.Integration.Tests.Data/GObject-2.0.Integration.Tests.Data.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Generation/">
+    <File Path="Tests/Generation/Directory.Build.props" />
+    <Project Path="Tests/Generation/GirLoader.Tests/GirLoader.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Tests/Libs/">
+    <File Path="Tests/Libs/Directory.Build.props" />
+    <Project Path="Tests/Libs/Cairo-1.0.Tests/Cairo-1.0.Tests.csproj" />
+    <Project Path="Tests/Libs/Gio-2.0.Tests/Gio-2.0.Tests.csproj" />
+    <Project Path="Tests/Libs/GirTest-0.1.Tests/GirTest-0.1.Tests.csproj" />
+    <Project Path="Tests/Libs/GLib-2.0.Tests/GLib-2.0.Tests.csproj" />
+    <Project Path="Tests/Libs/GObject-2.0.Integration.Tests/GObject-2.0.Integration.Tests.csproj" />
+    <Project Path="Tests/Libs/GObject-2.0.Tests/GObject-2.0.Tests.csproj" />
+    <Project Path="Tests/Libs/Gtk-4.0.Integration.Tests/Gtk-4.0.Integration.Tests.csproj" />
+    <Project Path="Tests/Libs/Gtk-4.0.Tests/Gtk-4.0.Tests.csproj" />
+  </Folder>
+</Solution>

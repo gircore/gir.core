@@ -4,15 +4,15 @@ namespace Generator.Renderer.Internal;
 
 internal static class ReturnTypeRenderer
 {
-    private static readonly List<ReturnType.ReturnTypeConverter> converters = new()
-    {
+    private static readonly List<ReturnType.ReturnTypeConverter> converters =
+    [
         new ReturnType.Bitfield(),
         new ReturnType.Class(),
         new ReturnType.ClassArray(),
         new ReturnType.Enumeration(),
         new ReturnType.ForeignTypedRecord(),
+        new ReturnType.GLibPointerArray(),
         new ReturnType.Interface(),
-        new ReturnType.InterfaceGLibPtrArray(),
         new ReturnType.OpaqueTypedRecord(),
         new ReturnType.OpaqueUntypedRecord(),
         new ReturnType.PlatformString(),
@@ -33,8 +33,8 @@ internal static class ReturnTypeRenderer
         new ReturnType.UntypedRecord(),
         new ReturnType.Utf8String(),
         new ReturnType.Utf8StringArray(),
-        new ReturnType.Void(),
-    };
+        new ReturnType.Void()
+    ];
 
     public static string Render(GirModel.ReturnType returnType)
     {
