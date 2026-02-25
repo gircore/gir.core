@@ -73,6 +73,7 @@
     <Project Path="Samples/Gtk-4.0/FontDialog/FontDialog.csproj" />
     <Project Path="Samples/Gtk-4.0/GridView/GridView.csproj" />
     <Project Path="Samples/Gtk-4.0/ListView/ListView.csproj" />
+    <Project Path="Samples/Gtk-4.0/Async/Async.csproj" />
     <Project Path="Samples/Gtk-4.0/Window/Window.csproj" />
     <Project Path="Samples/Gtk-4.0/ColumnViewSorted/ColumnViewSorted.csproj" />
   </Folder>
