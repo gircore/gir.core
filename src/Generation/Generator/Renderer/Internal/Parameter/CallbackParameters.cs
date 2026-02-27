@@ -81,7 +81,7 @@ internal static class CallbackParameters
 
         return parameterList.Join(", ");
     }
-
+    
     private static string Render(GirModel.Parameter parameter)
     {
         if (parameter.AnyTypeOrVarArgs.IsT1)
@@ -96,4 +96,26 @@ internal static class CallbackParameters
 
     private static string Render(Parameter.RenderableParameter parameter)
         => $@"{parameter.Attribute}{parameter.Direction}{parameter.NullableTypeName} {parameter.Name}";
+    
+    public static string RenderUnmanagedCallersTypeDefinition(IEnumerable<GirModel.Parameter> parameters)
+    {
+        var parameterList = new List<string>();
+
+        foreach (var parameter in parameters)
+            parameterList.Add(RenderUnmanagedCallersTypeDefinition(parameter));
+
+        return parameterList.Join(", ");
+    }
+
+    private static string RenderUnmanagedCallersTypeDefinition(GirModel.Parameter parameter)
+    {
+        if (parameter.AnyTypeOrVarArgs.IsT1)
+            throw new System.Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered as variadic parameters are not supported");
+
+        foreach (var converter in converters)
+            if (converter.Supports(parameter.AnyTypeOrVarArgs.AsT0))
+                return converter.Convert(parameter).NullableTypeName;
+
+        throw new System.Exception($"Internal parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
+    }
 }
