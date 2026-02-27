@@ -13,6 +13,7 @@ struct _GirTestCallbackTester
     GirTestIntCallback notified_callback;
     gpointer notified_data;
     GDestroyNotify notified_destroy;
+    GObject* roundtrip_object;
 };
 
 G_DEFINE_TYPE(GirTestCallbackTester, girtest_callback_tester, G_TYPE_OBJECT)
@@ -224,7 +225,7 @@ girtest_callback_tester_run_callback_with_type_return(GirTestTypeReturnCallback 
  * Returns: (transfer full): The new object
  **/
 GObject*
-girtest_callback_tester_run_callback_with_object_return(GirTestObjectReturnCallback callback)
+girtest_callback_tester_run_callback_with_object_return(GirTestTransferFullObjectReturnCallback callback)
 {
     return callback();
 }
@@ -381,4 +382,116 @@ girtest_callback_tester_run_callback_enum_ref(GirTestEnumRefCallback callback)
     callback(&e);
 
     return e;
+}
+
+/**
+ * girtest_callback_tester_roundtrip_object_get_instance:
+ *
+ * Returns: (transfer none) (nullable): The current roundtrip instance
+ **/
+GObject*
+girtest_callback_tester_roundtrip_object_get_instance(GirTestCallbackTester* instance)
+{
+    return instance->roundtrip_object;
+}
+
+/**
+ * girtest_callback_tester_roundtrip_object_run_callback_return_transfer_full:
+ * @instance: Instance object
+ * @callback: (scope call): a function that is called.
+ *
+ * Calls the callback and stores the returned object as round trip instance.
+ **/
+void
+girtest_callback_tester_roundtrip_object_run_callback_return_transfer_full(GirTestCallbackTester* instance, GirTestTransferFullObjectReturnCallback callback)
+{
+    if (instance->roundtrip_object)
+        g_object_unref(instance->roundtrip_object);
+    
+    instance->roundtrip_object = callback();
+}
+
+/**
+ * girtest_callback_tester_roundtrip_object_run_callback_parameter_transfer_full:
+ * @instance: Instance object
+ * @callback: (scope call): a function that is called.
+ *
+ * Calls the callback and transfers the roundtrip instance if available.
+ **/
+void
+girtest_callback_tester_roundtrip_object_run_callback_parameter_transfer_full(GirTestCallbackTester* instance, GirTestTransferFullObjectParameterCallback callback)
+{
+    callback(instance->roundtrip_object);
+    instance->roundtrip_object = NULL;
+}
+
+/**
+ * girtest_callback_tester_roundtrip_object_run_callback_return_transfer_none:
+ * @instance: Instance object
+ * @callback: (scope call): a function that is called.
+ *
+ * Calls the callback and stores the returned object as round trip instance.
+ **/
+void
+girtest_callback_tester_roundtrip_object_run_callback_return_transfer_none(GirTestCallbackTester* instance, GirTestTransferNoneObjectReturnCallback callback)
+{
+    if (instance->roundtrip_object)
+        g_object_unref(instance->roundtrip_object);
+
+    instance->roundtrip_object = callback();
+    g_object_ref(instance->roundtrip_object);
+}
+
+/**
+ * girtest_callback_tester_roundtrip_object_run_callback_parameter_transfer_none:
+ * @instance: Instance object
+ * @callback: (scope call): a function that is called.
+ *
+ * Calls the callback and transfers the roundtrip instance if available.
+ **/
+void
+girtest_callback_tester_roundtrip_object_run_callback_parameter_transfer_none(GirTestCallbackTester* instance, GirTestTransferNoneObjectParameterCallback callback)
+{
+    callback(instance->roundtrip_object);
+}
+
+/**
+ * girtest_callback_tester_roundtrip_object_run_callback_out_transfer_full:
+ * @instance: Instance object
+ * @callback: (scope call): a function that is called.
+ *
+ * Calls the callback and stores the outputted object as round trip instance.
+ **/
+void
+girtest_callback_tester_roundtrip_object_run_callback_out_transfer_full(GirTestCallbackTester* instance, GirTestOutTransferFullObjectParameterCallback callback)
+{
+    if (instance->roundtrip_object)
+        g_object_unref(instance->roundtrip_object);
+
+    GObject* obj;
+    callback(&obj);    
+
+    instance->roundtrip_object = obj;
+} 
+
+/**
+ * girtest_callback_tester_roundtrip_object_run_callback_out_transfer_none:
+ * @instance: Instance object
+ * @callback: (scope call): a function that is called.
+ *
+ * Calls the callback and stores the outputted object as round trip instance.
+ **/
+void
+girtest_callback_tester_roundtrip_object_run_callback_out_transfer_none(GirTestCallbackTester* instance, GirTestOutTransferNoneObjectParameterCallback callback)
+{
+    if (instance->roundtrip_object)
+        g_object_unref(instance->roundtrip_object);
+
+    GObject* obj;
+    callback(&obj);
+
+    instance->roundtrip_object = obj;
+
+    if (instance->roundtrip_object)
+        g_object_ref(instance->roundtrip_object);
 }

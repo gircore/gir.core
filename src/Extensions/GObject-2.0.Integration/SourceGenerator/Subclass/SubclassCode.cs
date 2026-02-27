@@ -54,7 +54,7 @@ internal static class SubclassCode
     private static string RenderClassContent(SubclassData subclassData)
     {
         return $$"""
-                  {{subclassData.TypeData.Properties.Accessibility}} unsafe partial class {{subclassData.TypeData.Properties.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider, GObject.InstanceFactory
+                  {{subclassData.TypeData.Properties.Accessibility}} unsafe partial class {{subclassData.TypeData.Properties.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider
                   {
                        {{GeneratedCodeAttribute.Render()}}
                        private static readonly GObject.Type GType = GObject.Internal.SubclassRegistrar.Register<{{subclassData.TypeData.Properties.NameGenericArguments}}, {{subclassData.Parent}}>(&ClassInit, &InstanceInit);
@@ -75,13 +75,13 @@ internal static class SubclassCode
                        public static new {{subclassData.TypeData.Properties.NameGenericArguments}} NewWithProperties(GObject.ConstructArgument[] constructArguments)
                        {
                             var ptr = GObject.Internal.Object.NewWithProperties(GetGType(), constructArguments);
-                            var handle = new {{subclassData.ParentHandle}}(ptr);
-                            var obj = new {{subclassData.TypeData.Properties.NameGenericArguments}}(handle);
-                            
-                            GObject.Internal.InstanceCache.AddToggleRef(obj);
+
+                            if(!GObject.Internal.InstanceCache.TryGetObject(ptr, out var obj))
+                                throw new System.Exception($"Could not find {{subclassData.TypeData.Properties.NameGenericArguments}} instance for {ptr}.");
+
                             {{RenderUnref(subclassData)}}
 
-                            return obj;
+                            return ({{subclassData.TypeData.Properties.NameGenericArguments}}) obj;
                        }
                        
                        /// <summary>
@@ -103,31 +103,6 @@ internal static class SubclassCode
                            CompositeTemplateInitialize();
                            Initialize();
                        }
-
-                       {{GeneratedCodeAttribute.Render()}}
-                       static object GObject.InstanceFactory.Create(System.IntPtr handle, bool ownsHandle)
-                       {
-                           return CreateIntern(handle, ownsHandle);
-                       }
-
-                       {{GeneratedCodeAttribute.Render()}}
-                       private static {{subclassData.TypeData.Properties.NameGenericArguments}} CreateIntern(System.IntPtr ptr, bool ownsHandle)
-                       {
-                           var handle = new {{subclassData.ParentHandle}}(ptr);
-                           var obj = new {{subclassData.TypeData.Properties.NameGenericArguments}}(handle);
-                  
-                           GObject.Internal.InstanceCache.AddToggleRef(obj);
-                           
-                           if(ownsHandle)
-                           {
-                                // - The caller owns the handle
-                                // - The caller is C#
-                                // -> Remove the obsolete ref because C# is the only owner and a toggle ref was added
-                                {{RenderUnref(subclassData)}}
-                           }
-
-                           return obj;
-                       }
                        
                        {{GeneratedCodeAttribute.Render()}}
                        [System.Runtime.InteropServices.UnmanagedCallersOnly]
@@ -144,6 +119,10 @@ internal static class SubclassCode
                        private static void InstanceInit(System.IntPtr instance, System.IntPtr cls)
                        {
                            CompositeTemplateInstanceInit(instance, cls);
+                           
+                           var handle = new {{subclassData.ParentHandle}}(instance);
+                           var obj = new {{subclassData.TypeData.Properties.NameGenericArguments}}(handle);
+                           GObject.Internal.InstanceCache.AddToggleRef(obj);
                        }
                       
                        {{GeneratedCodeAttribute.Render()}}

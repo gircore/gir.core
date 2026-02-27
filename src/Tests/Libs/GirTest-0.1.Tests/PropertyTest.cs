@@ -192,6 +192,10 @@ public class PropertyTest : Test
         obj.ObjectValue.Should().Be(o);
         obj.ObjectValue = null;
         obj.ObjectValue.Should().BeNull();
+
+        obj.ExecutorValue.Should().NotBeNull();
+        obj.ExecutorValue.GetRefCount().Should().Be(2); //C Keeps the ref and dotnet
+        obj.ExecutorValue.GetRefCount().Should().Be(2); //A second access to be sure ref count is not changed
     }
 
     [TestMethod]
