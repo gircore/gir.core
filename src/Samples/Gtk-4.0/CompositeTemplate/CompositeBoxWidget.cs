@@ -1,6 +1,6 @@
 namespace CompositeTemplate;
 
-[GObject.Subclass<Gtk.Box>]
+[GObject.Subclass<Gtk.Box>(qualifiedName: nameof(CompositeBoxWidget))]
 [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
 public partial class CompositeBoxWidget
 {

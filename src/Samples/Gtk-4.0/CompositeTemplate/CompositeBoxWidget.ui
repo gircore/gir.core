@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-    <template class="CompositeTemplateCompositeBoxWidget" parent="GtkBox">
+    <template class="CompositeBoxWidget" parent="GtkBox">
         <property name="orientation">1</property>
         <child>
             <object class="GtkLabel">

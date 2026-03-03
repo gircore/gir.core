@@ -21,11 +21,13 @@ internal static class SubclassValuesProvider
         if (context.TargetSymbol is not INamedTypeSymbol subclass)
             return null;
 
-        var subclassAttribute = context.Attributes.First(a => a.IsSubclassAttribute()).AttributeClass;
+        var subclassAttribute = context.Attributes.FirstOrDefault(a => a.IsSubclassAttribute());
         if (subclassAttribute is null)
             return null;
 
-        var parentType = subclassAttribute.TypeArguments.First();
+        var parentType = subclassAttribute.AttributeClass?.TypeArguments.First();
+        if (parentType is null)
+            return null;
 
         var parentHandle = GetParentHandle(parentType);
         if (parentHandle is null)
@@ -37,6 +39,7 @@ internal static class SubclassValuesProvider
 
         return new SubclassData(
             TypeData: typeData,
+            QualifiedName: GetQualifiedName(subclassAttribute),
             Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
             ParentHandle: parentHandle,
             IsInitiallyUnowned: IsInitiallyUnowned(parentType)
@@ -92,5 +95,20 @@ internal static class SubclassValuesProvider
 
             type = type.BaseType;
         }
+    }
+
+    private static string? GetQualifiedName(AttributeData subclassAttribute)
+    {
+        if (subclassAttribute.ConstructorArguments.IsDefaultOrEmpty)
+            return null;
+
+        string? qualifiedName = null;
+        var constant = subclassAttribute.ConstructorArguments.First(); //QualifiedName constructor argument
+        if (constant.Value is string value)
+        {
+            qualifiedName = value;
+        }
+
+        return qualifiedName;
     }
 }
