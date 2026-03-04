@@ -53,11 +53,15 @@ internal static class SubclassCode
 
     private static string RenderClassContent(SubclassData subclassData)
     {
+        var qualifiedName = subclassData.QualifiedName is null
+            ? "null"
+            : $"\"{subclassData.QualifiedName}\"";
+
         return $$"""
                   {{subclassData.TypeData.Properties.Accessibility}} unsafe partial class {{subclassData.TypeData.Properties.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider
                   {
                        {{GeneratedCodeAttribute.Render()}}
-                       private static readonly GObject.Type GType = GObject.Internal.SubclassRegistrar.Register<{{subclassData.TypeData.Properties.NameGenericArguments}}, {{subclassData.Parent}}>(&ClassInit, &InstanceInit);
+                       private static readonly GObject.Type GType = GObject.Internal.SubclassRegistrar.Register<{{subclassData.TypeData.Properties.NameGenericArguments}}, {{subclassData.Parent}}>(&ClassInit, &InstanceInit, {{qualifiedName}});
                        
                        /// <summary>
                        /// Return the registered GObject type for this class.
