@@ -237,7 +237,7 @@ public partial class InstanceCreationTest : Test
     }
 
     [GObject.Subclass<InstanceCreationTester>]
-    private partial class MySubclass;
+    internal partial class MySubclass;
 
     [TestMethod]
     public void LegacyNewConstructorShouldHaveCorrectRefCount()
