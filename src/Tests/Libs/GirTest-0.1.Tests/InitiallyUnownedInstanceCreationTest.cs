@@ -130,5 +130,5 @@ public partial class InitiallyUnownedInstanceCreationTest : Test
     }
 
     [GObject.Subclass<InitiallyUnownedInstanceCreationTester>]
-    private partial class MySubclass;
+    internal partial class MySubclass;
 }

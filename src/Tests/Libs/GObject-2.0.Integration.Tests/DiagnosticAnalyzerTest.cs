@@ -45,6 +45,11 @@ public class DiagnosticAnalyzerTest : Test
                                             }
                                             """;
 
+    private const string RaiseGirCore1008 = """
+                                            [GObject.Subclass<GObject.Object>]
+                                            private partial class RaiseGirCore1008;
+                                            """;
+
     private const string NotRaiseGirCore1002 = """
                                                [GObject.Subclass<GObject.Object>]
                                                public partial class NotRaiseGirCore1002
@@ -65,6 +70,7 @@ public class DiagnosticAnalyzerTest : Test
     [DataRow(RaiseGirCore1004, "GirCore1004", true)]
     [DataRow(RaiseGirCore1005, "GirCore1005", true)]
     [DataRow(RaiseGirCore1006, "GirCore1006", true)]
+    [DataRow(RaiseGirCore1008, "GirCore1008", true)]
     [DataRow(NotRaiseGirCore1002, "GirCore1002", false)]
     [DataRow(NotRaiseGirCore1004, "GirCore1004", false)]
     [DataRow(RaiseGirCore1005, "GirCore1004", false)]

@@ -6,9 +6,16 @@ internal static class Subclass
 {
     public static void EnableSubclassSupport(this IncrementalGeneratorInitializationContext context)
     {
+        var subclassValuesProvider = context.GetSubclassValuesProvider();
+
         context.RegisterImplementationSourceOutput(
-            source: context.GetSubclassValuesProvider(),
+            source: subclassValuesProvider,
             action: SubclassCode.Generate
+        );
+
+        context.RegisterImplementationSourceOutput(
+            source: subclassValuesProvider.Collect(),
+            action: IntegrationCode.Generate
         );
     }
 }
