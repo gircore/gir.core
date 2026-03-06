@@ -22,7 +22,7 @@ public partial class Object : IDisposable, NativeObject
         Handle.AddMemoryPressure();
     }
 
-    [Obsolete("Regular C# constructors can't be deeply integrated with GObject. Do not use them to create new instances, but use factory methods like 'New...' instead. If you want to create a subclass and are looking for a constructor to call please use the 'GObject.Subclass' attribute instead. If you want to define a custom constructor create a custom factory method instead and set any instance members in there. Please see the 0.8.0 release notes for more details.")]
+    [Obsolete("Regular C# constructors on native classes will be removed in a future version. Please see the linked documentation for more details. It contains scenarios and possible solutions to prepare for the upcoming changes.", DiagnosticId = "GirCore1007", UrlFormat = "https://gircore.github.io/docs/integration/diagnostic/1007.html")]
     public Object(params ConstructArgument[] constructArguments) : this(CreateLegacy(constructArguments)) { { } }
     [Obsolete("This constructor is for backwards compatibility only. Do not use it in new code.")]
     protected internal Object(CreationData data) : this(data.Handle)

@@ -31,7 +31,7 @@ internal sealed class GirCore1004 : Rule
         if (classSymbol is null || !classSymbol.GetAttributes().Any(x => x.IsSubclassAttribute()))
             return;
 
-        var diagnostic = Diagnostic.Create(DiagnosticDescriptor, classDeclarationSyntax.GetLocation());
+        var diagnostic = Diagnostic.Create(DiagnosticDescriptor, classDeclarationSyntax.TypeParameterList?.GetLocation());
         context.ReportDiagnostic(diagnostic);
     }
 }

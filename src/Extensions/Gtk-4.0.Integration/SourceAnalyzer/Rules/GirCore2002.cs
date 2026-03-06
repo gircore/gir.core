@@ -45,7 +45,13 @@ internal sealed class GirCore2002 : Rule
         if (subClassType is null || InheritsFromGtkWidget(subClassType))
             return;
 
-        var diagnostic = Diagnostic.Create(DiagnosticDescriptor, classDeclarationSyntax.GetLocation());
+        var subclassAttributeLocation = classDeclarationSyntax
+            .AttributeLists
+            .SelectMany(x => x.Attributes)
+            .First(x => context.SemanticModel.GetTypeInfo(x).Type?.Name == "SubclassAttribute")
+            .GetLocation();
+
+        var diagnostic = Diagnostic.Create(DiagnosticDescriptor, subclassAttributeLocation);
         context.ReportDiagnostic(diagnostic);
     }
 

@@ -31,7 +31,8 @@ internal sealed class GirCore2003 : Rule
             if (variableSymbol is null)
                 return;
 
-            if (!variableSymbol.GetAttributes().Any(x => x.IsConnectAttribute()))
+            var connectAttribute = variableSymbol.GetAttributes().FirstOrDefault(x => x.IsConnectAttribute());
+            if (connectAttribute is null)
                 return;
 
             var containingType = variableSymbol.ContainingType;
@@ -45,7 +46,7 @@ internal sealed class GirCore2003 : Rule
             if (hasTemplateAttribute)
                 return;
 
-            context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptor, syntax.GetLocation()));
+            context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptor, connectAttribute.ApplicationSyntaxReference?.GetSyntax().GetLocation()));
         }
     }
 }
