@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+
 namespace GirTest;
 
 public static class Module
@@ -11,7 +13,7 @@ public static class Module
 
         GObject.Module.Initialize();
 
-        Internal.ImportResolver.RegisterAsDllImportResolver();
+        NativeLibrary.SetDllImportResolver(typeof(Module).Assembly, Internal.ImportResolver.Resolve);
         Internal.TypeRegistration.RegisterTypes();
 
         IsInitialized = true;

@@ -17,6 +17,8 @@ Diagnostic messages are raised by the integration packages to assist with the us
 - [GirCore1005](diagnostic/1005.md)
 - [GirCore1006](diagnostic/1006.md)
 - [GirCore1007](diagnostic/1007.md)
+- [GirCore1008](diagnostic/1008.md)
+- [GirCore1009](diagnostic/1009.md)
 
 ### Gtk-4.0.Integration diagnostics
 - [GirCore2001](diagnostic/2001.md)
