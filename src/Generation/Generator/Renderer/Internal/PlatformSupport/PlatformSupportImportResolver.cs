@@ -26,11 +26,6 @@ internal static class ImportResolver
 
     private static IntPtr TargetLibraryPointer = IntPtr.Zero;
 
-    public static void RegisterAsDllImportResolver()
-    {{
-        NativeLibrary.SetDllImportResolver(typeof(ImportResolver).Assembly, Resolve);
-    }}    
-
     public static IntPtr Resolve(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
     {{
         if(libraryName != Library)

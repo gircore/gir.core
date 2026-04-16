@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -7,6 +8,7 @@ namespace GLib;
 public static class Module
 {
     private static bool IsInitialized;
+    private static DllImportResolver? CustomDllImportResolver;
 
     /// <summary>
     /// Initialize the <c>GLib</c> module.
@@ -23,7 +25,7 @@ public static class Module
         if (IsInitialized)
             return;
 
-        NativeLibrary.SetDllImportResolver(typeof(Module).Assembly, Resolve);
+        NativeLibrary.SetDllImportResolver(typeof(Module).Assembly, CustomDllImportResolver ?? Resolve);
 
         IsInitialized = true;
     }
@@ -38,5 +40,26 @@ public static class Module
             GObject.Internal.ImportResolver.Library => GObject.Internal.ImportResolver.Resolve(libraryName, assembly, searchPath),
             _ => IntPtr.Zero
         };
+    }
+
+    /// <summary>
+    /// Set a custom DllImportResolver. This disables the automatic loading of native binaries for
+    /// GLib. If the given DllImportResolver receives the library name "GLib" or "GObject" it has to return a pointer
+    /// to the desired native GLib/GObject binary (e.g. libglib-2.0.so.0 or libgobject-2.0.so.0).
+    /// </summary>
+    /// <remarks>
+    /// Please be aware that using this API means you are out of the officially supported area
+    /// as you are able to combine GirCore with some binary the package was not build for. Please consider
+    /// to generate a custom GirCore package which exactly matches your binary.
+    /// </remarks>
+    /// <param name="customDllImportResolver">Custom DllImportResolver to use.</param>
+    /// <exception cref="Exception">Throws an exception if the method is called after module initialization.</exception>
+    [Experimental("GirCore1009", UrlFormat = "https://gircore.github.io/docs/integration/diagnostic/1009.html")]
+    public static void SetCustomDllImportResolver(DllImportResolver customDllImportResolver)
+    {
+        if (IsInitialized)
+            throw new Exception("Can't set a custom DllImportResolver after initialization is done.");
+
+        CustomDllImportResolver = customDllImportResolver;
     }
 }
