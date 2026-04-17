@@ -3,10 +3,21 @@
     <PackageId>GirCore.Gtk-4.0</PackageId>
     <RootNamespace>Gtk</RootNamespace>
     <Description>C# bindings for Gtk.</Description>
+
+    <!-- Referencing projects should include the source generators -->
+    <IncludeBuildOutput>true</IncludeBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
     <ProjectReference Include="..\Gsk-4.0\Gsk-4.0.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Include Gtk-4.0.Integration -->
+    <ProjectReference Include="..\..\Extensions\Gtk-4.0.Integration\Gtk-4.0.Integration.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+    <None Include="$(OutputPath)\Gtk-4.0.Integration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
 </Project>
