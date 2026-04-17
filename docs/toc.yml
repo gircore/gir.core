@@ -12,7 +12,7 @@ items:
     href: docs/ecosystem.md
   - name: Gtk Tutorial
     href: docs/tutorial/gtk/index.md
-  - name: Integration packages
+  - name: Integration
     href: docs/integration/index.md
   - name: Apps
     href: docs/apps.md

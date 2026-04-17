@@ -9,4 +9,10 @@
     <ProjectReference Include="..\Gdk-4.0\Gdk-4.0.csproj" />
     <ProjectReference Include="..\Gsk-4.0\Gsk-4.0.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <!-- Include Gtk-4.0.Integration -->
+    <ProjectReference Include="..\..\Integrations\Gtk-4.0.Integration\Gtk-4.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <None Include="..\..\Integrations\Gtk-4.0.Integration\bin\$(Configuration)\net8.0\Gtk-4.0.Integration.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
 </Project>

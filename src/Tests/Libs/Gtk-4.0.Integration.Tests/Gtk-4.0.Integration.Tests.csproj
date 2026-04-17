@@ -4,8 +4,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" />
-    <ProjectReference Include="..\..\..\Extensions\Gtk-4.0.Integration\Gtk-4.0.Integration.csproj" />
+    <ProjectReference Include="..\..\..\Integrations\GObject-2.0.Integration\GObject-2.0.Integration.csproj" />
+    <ProjectReference Include="..\..\..\Integrations\Gtk-4.0.Integration\Gtk-4.0.Integration.csproj" />
     <ProjectReference Include="..\..\..\Libs\Gtk-4.0\Gtk-4.0.csproj" />
     <ProjectReference Include="..\..\..\Libs\GObject-2.0\GObject-2.0.csproj" />
   </ItemGroup>

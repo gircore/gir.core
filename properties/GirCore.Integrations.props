@@ -6,10 +6,14 @@
     <AnalysisMode>Recommended</AnalysisMode>
     <Nullable>enable</Nullable>
     <TreatWarningsErrors>true</TreatWarningsErrors>
-
+    <IsRoslynComponent>true</IsRoslynComponent>
+    
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-
+    
+    <!-- Do not pack because extension are embedded into their matching package -->
+    <IsPackable>false</IsPackable>
+    
     <!-- 
     Disable snupk generation as there are no symbols which results in an error
     if the empty snupkg file is uploaded to nuget.
@@ -21,10 +25,6 @@
   <ItemGroup>
     <!-- Reference 4.8 as it is the first version which supports net8.0 -->
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>

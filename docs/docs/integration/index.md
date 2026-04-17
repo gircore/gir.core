@@ -1,15 +1,15 @@
-# Integration packages
+# Integration
 
-The GirCore project provides integration nuget packages which can generate boilerplate code to allow easy integration of dotnet with the GObject library stack.
+The GirCore project provides source generators and source analyzers which can generate boilerplate code to allow easy integration of dotnet with the GObject library stack.
 
-The following nuget packages are available:
-- [GObject-2.0.Integration](https://www.nuget.org/packages/GirCore.GObject-2.0.Integration): Makes it easy to create a subclass of a GObject. See the [FAQ](../faq.md#how-to-create-subclasses-of-a-gobject-based-class) for a sample.
-- [Gtk-4.0.Integration](https://www.nuget.org/packages/GirCore.Gtk-4.0.Integration): Makes it easy to create a composite template class of a GTK widget. See the [samples](https://github.com/gircore/gir.core/blob/main/src/Samples/Gtk-4.0/CompositeTemplate/CompositeBoxWidget.cs) on GitHub.
+The following nuget packages contain source generators or source analyzers:
+- [GObject-2.0](https://www.nuget.org/packages/GirCore.GObject-2.0): Makes it easy to create a subclass of a GObject. See the [FAQ](../faq.md#how-to-create-subclasses-of-a-gobject-based-class) for a sample.
+- [Gtk-4.0](https://www.nuget.org/packages/GirCore.Gtk-4.0): Makes it easy to create a composite template class of a GTK widget. See the [samples](https://github.com/gircore/gir.core/blob/main/src/Samples/Gtk-4.0/CompositeTemplate/CompositeBoxWidget.cs) on GitHub.
 
 ## Diagnostic messages
-Diagnostic messages are raised by the integration packages to assist with the usage of the available attributes
+Diagnostic messages are raised to assist with the usage of GirCore.
 
-### GObject-2.0.Integration diagnostics
+### GObject-2.0 diagnostics
 - [GirCore1001](diagnostic/1001.md) (Obsolete)
 - [GirCore1002](diagnostic/1002.md)
 - [GirCore1003](diagnostic/1003.md) (Obsolete)
@@ -20,7 +20,7 @@ Diagnostic messages are raised by the integration packages to assist with the us
 - [GirCore1008](diagnostic/1008.md)
 - [GirCore1009](diagnostic/1009.md)
 
-### Gtk-4.0.Integration diagnostics
+### Gtk-4.0 diagnostics
 - [GirCore2001](diagnostic/2001.md)
 - [GirCore2002](diagnostic/2002.md)
 - [GirCore2003](diagnostic/2003.md)
