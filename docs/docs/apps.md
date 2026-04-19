@@ -23,6 +23,10 @@ Applications using gir.core. To add a new application to the list [edit this pag
 
 ![Maus screenshot](https://raw.githubusercontent.com/badcel/Maus/refs/heads/main/img/app.png)
 
+## Ouch Browser
+[Ouch Browser](https://codeberg.org/shrimple/OuchBrowser.NET) is a web browser featuring vertical tabs.
+![Ouch Browser screenshot](https://codeberg.org/shrimple/OuchBrowser.NET/raw/branch/main/OuchBrowser/Data/Screenshots/Screenshot%20with%20Sidebar%20Open.png)
+
 ## Parabolic
 [Parabolic](https://github.com/NickvisionApps/Parabolic) is a downloader for web video and audio media.
 ![Parabolic screenshot](https://raw.githubusercontent.com/NickvisionApps/Parabolic/main/Nickvision.Parabolic.GNOME/Screenshots/Downloading.png)
