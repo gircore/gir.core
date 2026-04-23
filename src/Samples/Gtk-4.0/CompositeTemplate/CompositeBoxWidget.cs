@@ -9,6 +9,6 @@ public partial class CompositeBoxWidget
 
     partial void Initialize()
     {
-        _label.Label_ = "With support for connected members!";
+        _label.Label_ = "With support for connected members…";
     }
 }

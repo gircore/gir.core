@@ -12,5 +12,8 @@
                 <property name="label">Nothing to see here.</property>
             </object>
         </child>
+        <child>
+            <object class="CompositeLabelWidget"/>
+        </child>
     </template>
 </interface>

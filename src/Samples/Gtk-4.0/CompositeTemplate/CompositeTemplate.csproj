@@ -13,9 +13,17 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <Target Name="CompileGlibResourcesForBuild" BeforeTargets="CoreCompile">
+    <Message Importance="high" Text="Compiling GResources..." />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="glib-compile-resources --sourcedir &quot;.&quot; &quot;./CompositeTemplate.gresource.xml&quot; --target=&quot;$(TargetDir)CompositeTemplate.app.gresource&quot;" />
+  </Target>
+  
   <ItemGroup>
     <None Remove="**\*.ui" />
     <EmbeddedResource Include="**\*.ui">
+      <LogicalName>%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(TargetDir)CompositeTemplate.app.gresource">
       <LogicalName>%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
