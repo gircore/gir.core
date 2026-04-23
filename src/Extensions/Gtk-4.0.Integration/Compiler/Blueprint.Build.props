@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <BlueprintCompiler>blueprint-compiler</BlueprintCompiler>
+  </PropertyGroup>
+  
+  <ItemDefinitionGroup>
+    <BlueprintEmbeddedResource>
+      <Link>%(Filename).blp.ui</Link>
+      <CompiledOutput>$(IntermediateOutputPath)%(Filename).blp.ui</CompiledOutput>
+    </BlueprintEmbeddedResource>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <None Remove="**\*.blp.ui" />
+    <EmbeddedResource Include="**\*.blp.ui">
+      <LogicalName>%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

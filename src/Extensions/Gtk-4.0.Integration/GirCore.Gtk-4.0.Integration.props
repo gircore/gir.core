@@ -1,0 +1,4 @@
+<Project>
+  <Import Project="Compiler/Blueprint.Build.props" />
+  <Import Project="Compiler/Template.Build.props" />
+</Project>

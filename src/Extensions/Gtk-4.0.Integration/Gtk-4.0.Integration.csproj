@@ -4,4 +4,12 @@
         <RootNamespace>Gtk.Integration</RootNamespace>
         <Description>Source Generator to make it easy to integrate C# with Gtk.</Description>
     </PropertyGroup>
+  
+  <ItemGroup>
+    <None Update="GirCore.Gtk-4.0.Integration.props" Pack="true" PackagePath="buildTransitive" />
+    <None Update="GirCore.Gtk-4.0.Integration.targets" Pack="true" PackagePath="buildTransitive" />
+    <None Update="Compiler\Blueprint.Build.props" Pack="true" PackagePath="buildTransitive" />
+    <None Update="Compiler\Blueprint.Build.targets" Pack="true" PackagePath="buildTransitive" />
+    <None Update="Compiler\Template.Build.props" Pack="true" PackagePath="buildTransitive" />
+  </ItemGroup>
 </Project>

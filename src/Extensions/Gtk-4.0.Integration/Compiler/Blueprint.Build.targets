@@ -1,0 +1,60 @@
+<Project>
+  <UsingTask TaskName="CompileBlueprint" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <BlueprintFile ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+      <CompilerPath ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Diagnostics" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          var process = new Process();
+          process.StartInfo.FileName = CompilerPath;
+          process.StartInfo.Arguments = $"compile --output {OutputFile} \"{BlueprintFile}\"";
+          process.StartInfo.UseShellExecute = false;
+          process.StartInfo.RedirectStandardOutput = true;
+          process.StartInfo.RedirectStandardError = true;
+
+          if (!process.Start())
+          {
+            Log.LogError($"Failed to start blueprint compiler");
+            return false;
+          }
+
+          string output = process.StandardOutput.ReadToEnd();
+          string error = process.StandardError.ReadToEnd();
+          process.WaitForExit();
+
+          if (process.ExitCode != 0)
+          {
+            Log.LogError($"Blueprint compilation failed: {error}");
+            return false;
+          }
+
+          Log.LogMessage(MessageImportance.High, $"Compiled blueprint: {BlueprintFile} to {OutputFile}");
+          return true;
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="CompileBlueprints" 
+          BeforeTargets="CoreCompile" 
+          Inputs="@(BlueprintEmbeddedResource)" 
+          Outputs="@(BlueprintEmbeddedResource->'%(CompiledOutput)')">
+    <ItemGroup>
+      <_BlueprintFilesToCompile Include="@(BlueprintEmbeddedResource)" />
+    </ItemGroup>
+    
+    <Message Importance="high" Text="Compiling blueprint %(_BlueprintFilesToCompile.Identity)" />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="$(BlueprintCompiler) compile --output %(_BlueprintFilesToCompile.CompiledOutput) %(_BlueprintFilesToCompile.Identity)" />
+  </Target>
+
+  <Target Name="CleanBlueprintOutput" BeforeTargets="CoreClean">
+    <ItemGroup>
+      <_BlueprintOutputFiles Include="$(IntermediateOutputPath)*.ui" />
+    </ItemGroup>
+    <Delete Files="@(_BlueprintOutputFiles)" />
+  </Target>
+</Project>

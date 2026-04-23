@@ -51,6 +51,7 @@
   </Folder>
   <Folder Name="/Samples/">
     <File Path="Samples/Directory.Build.props" />
+    <File Path="Samples\Directory.Build.targets" />
   </Folder>
   <Folder Name="/Samples/Adw-1/">
     <Project Path="Samples/Adw-1/Window/Window.csproj" />
@@ -68,6 +69,7 @@
     <Project Path="Samples/Gtk-4.0/AboutDialog/AboutDialog.csproj" />
     <Project Path="Samples/Gtk-4.0/Builder/Builder.csproj" />
     <Project Path="Samples/Gtk-4.0/CompositeTemplate/CompositeTemplate.csproj" />
+    <Project Path="Samples/Gtk-4.0/CompositeTemplateBlueprint/CompositeTemplateBlueprint.csproj" />
     <Project Path="Samples/Gtk-4.0/DrawingArea/DrawingArea.csproj" />
     <Project Path="Samples/Gtk-4.0/DropDown/DropDown.csproj" />
     <Project Path="Samples/Gtk-4.0/FontDialog/FontDialog.csproj" />

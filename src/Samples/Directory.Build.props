@@ -1,4 +1,6 @@
 <Project>
+  <Import Project="../Extensions/Gtk-4.0.Integration/GirCore.Gtk-4.0.Integration.props" />
+  
   <PropertyGroup>
     <IsPackable>false</IsPackable>
   </PropertyGroup>

@@ -1,0 +1,3 @@
+<Project>
+  <Import Project="Compiler/Blueprint.Build.targets" />
+</Project>
