@@ -11,13 +11,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    
+    <GirCoreEmbedTemplateFiles>true</GirCoreEmbedTemplateFiles>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="**\*.ui" />
-    <EmbeddedResource Include="**\*.ui">
-      <LogicalName>%(Filename)%(Extension)</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
   
 </Project>

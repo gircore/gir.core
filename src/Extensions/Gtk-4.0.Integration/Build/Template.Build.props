@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <GirCoreEmbedTemplateFiles Condition="'$(GirCoreEmbedTemplateFiles)' == ''">false</GirCoreEmbedTemplateFiles>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(GirCoreEmbedTemplateFiles)' == 'true'">
+    <None Remove="**\*.ui" />
+    <EmbeddedResource Include="**\*.ui">
+      <LogicalName>%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

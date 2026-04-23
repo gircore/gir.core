@@ -76,5 +76,8 @@ GTK composite templates allow creating a subclass from a `Gtk.Widget` and associ
 
 [!code-csharp[](../../src/Samples/Gtk-4.0/CompositeTemplate/CompositeBoxWidget.cs)]
 
+## How to embed template files in the assemby?
+To easily embed template files in the assembly GirCore provides the MSBuild property `GirCoreEmbedTemplateFiles`. Setting it to `true` will automatically embed all files with the extension `.ui` in the assembly with the same name. The folder structure of the template file will not be taken over. Meaning a template file must have a unique name in the assembly.
+
 ## How to distribute desktop applications on Linux?
 A good option is [Flatpak](https://flatpak.org/) - a framework for distributing desktop applications across various Linux distributions. Refer to the [Dotnet](https://github.com/gircore/gir.core/edit/main/docs/docs/faq.md) page for .Net specific guide.
