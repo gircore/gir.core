@@ -4,10 +4,10 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Folder Name="/Extensions/">
-    <File Path="Extensions/Directory.Build.props" />
-    <Project Path="Extensions/GObject-2.0.Integration/GObject-2.0.Integration.csproj" />
-    <Project Path="Extensions/Gtk-4.0.Integration/Gtk-4.0.Integration.csproj" />
+  <Folder Name="/Integrations/">
+    <File Path="Integrations/Directory.Build.props" />
+    <Project Path="Integrations/GObject-2.0.Integration/GObject-2.0.Integration.csproj" />
+    <Project Path="Integrations/Gtk-4.0.Integration/Gtk-4.0.Integration.csproj" />
   </Folder>
   <Folder Name="/Generation/">
     <File Path="Generation/Directory.Build.props" />
@@ -181,7 +181,7 @@
     <File Path="../properties/GirCore.Publishing.props" />
     <File Path="../properties/GirCore.Testing.props" />
     <File Path="../properties/GirCore.Tooling.props" />
-    <File Path="../properties/GirCore.Extensions.props" />
+    <File Path="../properties/GirCore.Integrations.props" />
   </Folder>
   <Folder Name="/SolutionItems/scripts/">
     <File Path="../scripts/CleanLibs.fsx" />

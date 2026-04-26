@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"  />
+        <ProjectReference Include="..\..\..\Integrations\GObject-2.0.Integration\GObject-2.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"  />
         <ProjectReference Include="..\..\..\Libs\GObject-2.0\GObject-2.0.csproj" />
     </ItemGroup>
 
@@ -12,5 +12,4 @@
         <RootNamespace>DiagnosticAnalyzerTestProject</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
-
 </Project>
