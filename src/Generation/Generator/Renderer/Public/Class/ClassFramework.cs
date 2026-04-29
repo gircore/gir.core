@@ -99,9 +99,14 @@ public {@sealed}partial class {cls.Name} {RenderInheritance(cls)}
 
     private static string RenderUnref(GirModel.Class cls)
     {
+        /*
+         * Why RefSink?
+         * Gtk.Button: Floating after creation -> gets sunk. 
+         * Gtk.Window: Not floating after creation, because GTK owns a ref -> Ref count increased by 1 (implicit no ownership transfer)
+         */
         return Class.IsInitiallyUnowned(cls)
             ? """
-              GObject.Internal.Object.TakeRef(ptr);
+              GObject.Internal.Object.RefSink(ptr);
               GObject.Internal.Object.Unref(ptr);
               """
             : "GObject.Internal.Object.Unref(ptr);";
@@ -109,10 +114,15 @@ public {@sealed}partial class {cls.Name} {RenderInheritance(cls)}
 
     private static string RenderUnrefLegacy(GirModel.Class cls)
     {
+        /*
+         * Why RefSink?
+         * Gtk.Button: Floating after creation -> gets sunk.
+         * Gtk.Window: Not floating after creation, because GTK owns a ref -> Ref count increased by 1 (implicit no ownership transfer)
+         */
         return Class.IsInitiallyUnowned(cls)
             ? """
               var ptr = obj.Handle.DangerousGetHandle();
-              GObject.Internal.Object.TakeRef(ptr);
+              GObject.Internal.Object.RefSink(ptr);
               GObject.Internal.Object.Unref(ptr);
               """
             : "GObject.Internal.Object.Unref(obj.Handle.DangerousGetHandle());";

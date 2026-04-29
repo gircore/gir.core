@@ -199,9 +199,15 @@ internal static class SubclassCode
          * - Initially unowned objects have a floating reference which must be sunk and then removed
          */
 
+        /*
+         * Why RefSink?
+         * Gtk.Button: Floating after creation -> gets sunk.
+         * Gtk.Window: Not floating after creation, because GTK owns a ref -> Ref count increased by 1 (implicit no ownership transfer)
+         */
+
         return subclassData.IsInitiallyUnowned
             ? """
-              GObject.Internal.Object.TakeRef(ptr);
+              GObject.Internal.Object.RefSink(ptr);
               GObject.Internal.Object.Unref(ptr);
               """
             : "GObject.Internal.Object.Unref(ptr);";
