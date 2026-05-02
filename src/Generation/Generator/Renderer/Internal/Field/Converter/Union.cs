@@ -11,12 +11,12 @@ internal class Union : FieldConverter
     {
         return [new RenderableField(
             Name: Model.Field.GetName(field),
-            Attribute: null,
-            NullableTypeName: GetNullableTypeName(field)
+            TypeName: GetTypeName(field),
+            Array: null
         )];
     }
 
-    private static string GetNullableTypeName(GirModel.Field field)
+    private static string GetTypeName(GirModel.Field field)
     {
         var type = (GirModel.Union) field.AnyTypeOrCallback.AsT0.AsT0;
         return field.IsPointer

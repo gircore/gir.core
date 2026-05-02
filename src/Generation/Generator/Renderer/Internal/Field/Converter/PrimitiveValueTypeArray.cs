@@ -9,23 +9,12 @@ internal class PrimitiveValueTypeArray : FieldConverter
 
     public RenderableField[] Convert(GirModel.Field field)
     {
+        var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
+
         return [new RenderableField(
             Name: Model.Field.GetName(field),
-            Attribute: GetAttribute(field),
-            NullableTypeName: GetNullableTypeName(field)
+            TypeName: Model.ArrayType.GetTypeName(arrayType),
+            Array: new  (arrayType.FixedSize, Model.ArrayType.GetDimensions(arrayType))
         )];
-    }
-    private static string? GetAttribute(GirModel.Field field)
-    {
-        var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
-        return arrayType.FixedSize is not null
-            ? MarshalAs.UnmanagedByValArray(sizeConst: arrayType.FixedSize.Value)
-            : null;
-    }
-
-    private static string GetNullableTypeName(GirModel.Field field)
-    {
-        var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
-        return Model.ArrayType.GetName(arrayType);
     }
 }

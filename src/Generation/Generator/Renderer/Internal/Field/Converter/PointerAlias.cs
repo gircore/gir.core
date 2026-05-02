@@ -11,8 +11,8 @@ internal class PointerAlias : FieldConverter
     {
         return [new RenderableField(
             Name: Model.Field.GetName(field),
-            Attribute: null,
-            NullableTypeName: Model.Type.Pointer
+            TypeName: Model.Type.Pointer,
+            Array: null
         )];
     }
 }

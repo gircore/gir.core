@@ -128,13 +128,13 @@ public class ValueTest : Test
         var ptr = v.Handle.DangerousGetHandle();
 
         var d1 = Marshal.PtrToStructure<Internal.ValueData>(ptr);
-        d1.Data0.VInt.Should().Be(value);
+        d1.Data[0].VInt.Should().Be(value);
 
         v.Dispose();
 
         //Try to read the data again despite the fact that the value is already disposed
         //If the value changed we can assume that the memory got freed.
         var d2 = Marshal.PtrToStructure<Internal.ValueData>(ptr);
-        d2.Data0.VInt.Should().NotBe(value);
+        d2.Data[0].VInt.Should().NotBe(value);
     }
 }

@@ -55,7 +55,7 @@ public abstract class {typeName} : SafeHandle, IEquatable<{typeName}>
         return new {unownedHandleTypeName}(ptr);
     }}
 
-    {record.Fields.Select(x => RenderField(record, x)).Join(Environment.NewLine)}
+    {record.Fields.Select(x => RecordHandleHelper.RenderField(record, x)).Join(Environment.NewLine)}
 
     public bool Equals({typeName}? other)
     {{
@@ -251,55 +251,6 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
         GLib.Functions.Free(handle);
         return true;
     }}
-}}";
-    }
-
-    private static string RenderField(GirModel.Record record, GirModel.Field field)
-    {
-        if (field is { IsReadable: false, IsWritable: false } || field.IsPrivate)
-            return string.Empty;
-
-        var renderableFields = Fields.GetRenderableField(field);
-        var result = new StringBuilder();
-
-        foreach (var renderableField in renderableFields)
-        {
-            if (field.IsReadable)
-                result.AppendLine(RenderFieldGetter(record, field, renderableField));
-
-            if (field.IsWritable)
-                result.AppendLine(RenderFieldSetter(record, field, renderableField));
-        }
-
-        return result.ToString();
-    }
-
-    private static string RenderFieldGetter(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
-    {
-        var typePrefix = field.AnyTypeOrCallback.IsT1 ? $"{Model.TypedRecord.GetDataName(record)}." : string.Empty;
-        var dataName = Model.TypedRecord.GetDataName(record);
-
-        return @$"public unsafe {typePrefix}{renderableField.NullableTypeName} Get{renderableField.Name}()
-{{
-    if (IsClosed || IsInvalid)
-        throw new InvalidOperationException(""Handle is closed or invalid"");
-
-    return Marshal.PtrToStructure<{dataName}>(handle).{renderableField.Name};
-}}";
-    }
-
-    private static string RenderFieldSetter(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
-    {
-        var dataName = Model.TypedRecord.GetDataName(record);
-
-        return @$"public unsafe void Set{renderableField.Name}({renderableField.NullableTypeName} value)
-{{
-    if (IsClosed || IsInvalid)
-        throw new InvalidOperationException(""Handle is closed or invalid"");
-
-    var data = Marshal.PtrToStructure<{dataName}>(handle);
-    data.{renderableField.Name} = value;
-    Marshal.StructureToPtr(data, handle, false);
 }}";
     }
 

@@ -9,25 +9,13 @@ internal class UntypedRecordArray : FieldConverter
 
     public RenderableField[] Convert(GirModel.Field field)
     {
-        return [new RenderableField(
-            Name: Model.Field.GetName(field),
-            Attribute: GetAttribute(field),
-            NullableTypeName: GetNullableTypeName(field)
-        )];
-    }
-
-    private static string? GetAttribute(GirModel.Field field)
-    {
-        var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
-        return arrayType.FixedSize is not null
-            ? MarshalAs.UnmanagedByValArray(sizeConst: arrayType.FixedSize.Value)
-            : null;
-    }
-
-    private static string GetNullableTypeName(GirModel.Field field)
-    {
         var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
         var type = (GirModel.Record) arrayType.AnyType.AsT0;
-        return Model.UntypedRecord.GetFullyQuallifiedDataName(type) + "[]";
+
+        return [new RenderableField(
+            Name: Model.Field.GetName(field),
+            TypeName: Model.UntypedRecord.GetFullyQuallifiedDataName(type),
+            Array: new (arrayType.FixedSize, Model.ArrayType.GetDimensions(arrayType))
+        )];
     }
 }
