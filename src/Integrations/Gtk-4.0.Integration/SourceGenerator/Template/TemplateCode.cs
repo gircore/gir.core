@@ -63,8 +63,8 @@ internal static class TemplateCode
                     {
                         var bytes = {{data.Loader}}.Load("{{data.ResourceName}}");
 
-                        var classHandle = new Gtk.Internal.WidgetClassUnownedHandle(cls);
-                        Gtk.Internal.WidgetClass.SetTemplate(
+                        var classHandle = new global::Gtk.Internal.WidgetClassUnownedHandle(cls);
+                        global::Gtk.Internal.WidgetClass.SetTemplate(
                             widgetClass: classHandle,
                             templateBytes: bytes.Handle
                         );
@@ -75,13 +75,13 @@ internal static class TemplateCode
                     {{GeneratedCodeAttribute.Render()}}
                     static partial void CompositeTemplateInstanceInit(System.IntPtr instance, System.IntPtr cls)
                     {
-                        Gtk.Internal.Widget.InitTemplate(instance);
+                        global::Gtk.Internal.Widget.InitTemplate(instance);
                     }
 
                     {{GeneratedCodeAttribute.Render()}}
                     static partial void CompositeTemplateDispose(System.IntPtr instance)
                     {
-                        Gtk.Internal.Widget.DisposeTemplate(instance, GType);
+                        global::Gtk.Internal.Widget.DisposeTemplate(instance, GType);
                     }
                     
                     {{GeneratedCodeAttribute.Render()}}
@@ -103,7 +103,7 @@ internal static class TemplateCode
             sb.AppendLine(
                 provider: CultureInfo.InvariantCulture,
                 handler: $"""
-                          Gtk.Internal.WidgetClass.BindTemplateChildFull(
+                          global::Gtk.Internal.WidgetClass.BindTemplateChildFull(
                               widgetClass: classHandle,
                               name: GLib.Internal.NonNullableUtf8StringOwnedHandle.Create("{connection.ObjectId}"),
                               internalChild: false,
