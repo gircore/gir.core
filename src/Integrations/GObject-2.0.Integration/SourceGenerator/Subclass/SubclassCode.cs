@@ -58,16 +58,16 @@ internal static class SubclassCode
             : $"\"{subclassData.QualifiedName}\"";
 
         return $$"""
-                  {{subclassData.TypeData.Properties.Accessibility}} unsafe partial class {{subclassData.TypeData.Properties.NameGenericArguments}} : {{subclassData.Parent}}, GObject.GTypeProvider
+                  {{subclassData.TypeData.Properties.Accessibility}} unsafe partial class {{subclassData.TypeData.Properties.NameGenericArguments}} : {{subclassData.Parent}}, global::GObject.GTypeProvider
                   {
                        {{GeneratedCodeAttribute.Render()}}
-                       private static readonly GObject.Type GType = GObject.Internal.SubclassRegistrar.Register<{{subclassData.TypeData.Properties.NameGenericArguments}}, {{subclassData.Parent}}>(&ClassInit, &InstanceInit, {{qualifiedName}});
+                       private static readonly global::GObject.Type GType = global::GObject.Internal.SubclassRegistrar.Register<{{subclassData.TypeData.Properties.NameGenericArguments}}, {{subclassData.Parent}}>(&ClassInit, &InstanceInit, {{qualifiedName}});
                        
                        /// <summary>
                        /// Return the registered GObject type for this class.
                        /// </summary>
                        {{GeneratedCodeAttribute.Render()}}
-                       public static new GObject.Type GetGType() => GType;
+                       public static new global::GObject.Type GetGType() => GType;
                   
                        /// <summary>
                        /// Creates a new "{{subclassData.TypeData.Properties.Name}}" instance and sets the properties specified by the construct arguments.
@@ -76,11 +76,11 @@ internal static class SubclassCode
                        /// <returns>A new instance of "{{subclassData.TypeData.Properties.Name}}".</returns>
                        /// <remarks>Currently it is only supported to set properties which are defined in C. Any properties defined in C# are not known. This will be fixed once https://github.com/gircore/gir.core/issues/1433 is implemented.</remarks> 
                        {{GeneratedCodeAttribute.Render()}}
-                       public static new {{subclassData.TypeData.Properties.NameGenericArguments}} NewWithProperties(GObject.ConstructArgument[] constructArguments)
+                       public static new {{subclassData.TypeData.Properties.NameGenericArguments}} NewWithProperties(global::GObject.ConstructArgument[] constructArguments)
                        {
-                            var ptr = GObject.Internal.Object.NewWithProperties(GetGType(), constructArguments);
+                            var ptr = global::GObject.Internal.Object.NewWithProperties(GetGType(), constructArguments);
 
-                            if(!GObject.Internal.InstanceCache.TryGetObject(ptr, out var obj))
+                            if (!global::GObject.Internal.InstanceCache.TryGetObject(ptr, out var obj))
                                 throw new System.Exception($"Could not find {{subclassData.TypeData.Properties.NameGenericArguments}} instance for {ptr}.");
 
                             {{RenderUnref(subclassData)}}
@@ -92,7 +92,7 @@ internal static class SubclassCode
                        /// Creates a new managed {{subclassData.TypeData.Properties.NameGenericArguments}} instance for a given pointer.
                        /// </summary>
                        {{GeneratedCodeAttribute.Render()}}
-                       public static new {{subclassData.TypeData.Properties.NameGenericArguments}} NewFromPointer(System.IntPtr ptr, bool ownsHandle) => ({{subclassData.TypeData.Properties.NameGenericArguments}}) GObject.Internal.InstanceWrapper.WrapHandle<{{subclassData.TypeData.Properties.NameGenericArguments}}>(ptr, ownsHandle);
+                       public static new {{subclassData.TypeData.Properties.NameGenericArguments}} NewFromPointer(System.IntPtr ptr, bool ownsHandle) => ({{subclassData.TypeData.Properties.NameGenericArguments}}) global::GObject.Internal.InstanceWrapper.WrapHandle<{{subclassData.TypeData.Properties.NameGenericArguments}}>(ptr, ownsHandle);
                   
                        /// <summary>
                        /// Creates a new instance of {{subclassData.TypeData.Properties.Name}}.
@@ -112,7 +112,7 @@ internal static class SubclassCode
                        [System.Runtime.InteropServices.UnmanagedCallersOnly]
                        private static void ClassInit(System.IntPtr cls, System.IntPtr clsData)
                        {
-                           var classDefinition = (GObject.Internal.ObjectClassUnmanaged*) cls;
+                           var classDefinition = (global::GObject.Internal.ObjectClassUnmanaged*) cls;
                            classDefinition->Dispose = &Dispose;
                       
                            CompositeTemplateClassInit(cls, clsData);
@@ -126,7 +126,7 @@ internal static class SubclassCode
                            
                            var handle = new {{subclassData.ParentHandle}}(instance);
                            var obj = new {{subclassData.TypeData.Properties.NameGenericArguments}}(handle);
-                           GObject.Internal.InstanceCache.AddToggleRef(obj);
+                           global::GObject.Internal.InstanceCache.AddToggleRef(obj);
                        }
                       
                        {{GeneratedCodeAttribute.Render()}}
@@ -135,9 +135,9 @@ internal static class SubclassCode
                        {
                            CompositeTemplateDispose(instance);
                       
-                           //Call into parents dispose method
-                           var parentType = GObject.Internal.Functions.TypeParent(GType);
-                           var parentTypeClass = (GObject.Internal.ObjectClassUnmanaged*) GObject.Internal.TypeClass.Peek(parentType).DangerousGetHandle();
+                           // Call into parent's dispose method
+                           var parentType = global::GObject.Internal.Functions.TypeParent(GType);
+                           var parentTypeClass = (global::GObject.Internal.ObjectClassUnmanaged*) global::GObject.Internal.TypeClass.Peek(parentType).DangerousGetHandle();
                            parentTypeClass->Dispose(instance);
                        }
                        
@@ -207,9 +207,9 @@ internal static class SubclassCode
 
         return subclassData.IsInitiallyUnowned
             ? """
-              GObject.Internal.Object.RefSink(ptr);
-              GObject.Internal.Object.Unref(ptr);
+              global::GObject.Internal.Object.RefSink(ptr);
+              global::GObject.Internal.Object.Unref(ptr);
               """
-            : "GObject.Internal.Object.Unref(ptr);";
+            : "global::GObject.Internal.Object.Unref(ptr);";
     }
 }
