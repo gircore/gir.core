@@ -5,6 +5,39 @@ namespace Generator.Model;
 
 internal static class ArrayType
 {
+    public static int GetDimensions(GirModel.ArrayType arrayType)
+    {
+        var dimensions = 1;
+
+        while (true)
+        {
+            if (arrayType.AnyType.TryPickT1(out var array, out _))
+                dimensions++;
+            else
+                break;
+
+            arrayType = array;
+        }
+
+        return dimensions;
+    }
+
+    public static string GetTypeName(GirModel.ArrayType arrayType, bool solveAlias = false)
+    {
+        while (true)
+        {
+            if (arrayType.AnyType.TryPickT0(out var type, out var array))
+            {
+                if (type is GirModel.Alias a)
+                    return solveAlias ? Type.GetName(a.Type) : Type.GetName(a);
+
+                return Type.GetName(type);
+            }
+
+            arrayType = array;
+        }
+    }
+
     public static string GetName(GirModel.ArrayType arrayType, bool solveAlias = false)
     {
         var nameParts = new List<string>();

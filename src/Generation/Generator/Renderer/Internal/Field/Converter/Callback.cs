@@ -11,8 +11,8 @@ internal class Callback : FieldConverter
     {
         return [new RenderableField(
             Name: Model.Field.GetName(field),
-            Attribute: null,
-            NullableTypeName: Model.Callback.GetInternalDelegateName(field.AnyTypeOrCallback.AsT1)
+            TypeName: Model.Callback.GetInternalDelegateName(field.AnyTypeOrCallback.AsT1),
+            Array: null
         )];
     }
 }

@@ -13,8 +13,8 @@ internal class String : FieldConverter
     {
         return [new RenderableField(
             Name: Model.Field.GetName(field),
-            Attribute: null,
-            NullableTypeName: Type.Pointer
+            TypeName: Type.Pointer,
+            Array: null
         )];
     }
 }

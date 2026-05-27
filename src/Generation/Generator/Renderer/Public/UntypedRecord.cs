@@ -103,7 +103,7 @@ public sealed partial class {name}
         }
         catch (Exception ex)
         {
-            Log.Warning($"Did not render typed record {record.Name} field {field.Name}: {ex.Message}");
+            Log.Warning($"Did not render untyped record {record.Name} field {field.Name}: {ex.Message}");
             return string.Empty;
         }
     }
