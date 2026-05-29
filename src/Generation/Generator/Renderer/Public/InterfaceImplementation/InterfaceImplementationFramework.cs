@@ -22,7 +22,7 @@ namespace {Model.Namespace.GetPublicName(@interface.Namespace)};
 {PlatformSupportAttribute.Render(@interface as GirModel.PlatformDependent)}
 public sealed partial class {interfaceName} : {GetParent(@interface)}, {@interface.Name}, GObject.InstanceFactory
 {{
-    protected internal {interfaceName}({GetParentHandle(@interface)} handle) : base(handle) {{ }}
+    internal {interfaceName}({GetParentHandle(@interface)} handle) : base(handle) {{ }}
 
     /// <summary>
     /// Creates a new managed {interfaceName} instance for a given pointer.
