@@ -57,6 +57,10 @@ internal static class SubclassCode
             ? "null"
             : $"\"{subclassData.QualifiedName}\"";
 
+        var handleConstructorAccessModifier = subclassData.IsSealed
+            ? "internal"
+            : "protected internal";
+
         return $$"""
                   {{subclassData.TypeData.Properties.Accessibility}} unsafe partial class {{subclassData.TypeData.Properties.NameGenericArguments}} : {{subclassData.Parent}}, global::GObject.GTypeProvider
                   {
@@ -102,7 +106,7 @@ internal static class SubclassCode
                        /// If you want to initialize any custom dotnet properties, create a new static factory method to set those properties.
                        /// </remarks>
                        {{GeneratedCodeAttribute.Render()}}
-                       protected internal {{subclassData.TypeData.Properties.Name}}({{subclassData.ParentHandle}} handle) : base(handle) 
+                       {{handleConstructorAccessModifier}} {{subclassData.TypeData.Properties.Name}}({{subclassData.ParentHandle}} handle) : base(handle) 
                        {
                            CompositeTemplateInitialize();
                            Initialize();
