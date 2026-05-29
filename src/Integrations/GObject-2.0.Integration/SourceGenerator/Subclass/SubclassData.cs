@@ -5,5 +5,6 @@ internal sealed record SubclassData(
     string? QualifiedName,
     string Parent,
     string ParentHandle,
-    bool IsInitiallyUnowned
+    bool IsInitiallyUnowned,
+    bool IsSealed
 );

@@ -42,7 +42,8 @@ internal static class SubclassValuesProvider
             QualifiedName: GetQualifiedName(subclassAttribute),
             Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
             ParentHandle: parentHandle,
-            IsInitiallyUnowned: IsInitiallyUnowned(parentType)
+            IsInitiallyUnowned: IsInitiallyUnowned(parentType),
+            IsSealed: subclass.IsSealed
         );
     }
 
