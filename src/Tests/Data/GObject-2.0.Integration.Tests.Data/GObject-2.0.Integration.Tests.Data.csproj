@@ -11,5 +11,6 @@
         
         <RootNamespace>DiagnosticAnalyzerTestProject</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 </Project>
