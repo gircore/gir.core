@@ -1,6 +1,6 @@
 namespace Generator.Model;
 
-internal static class Callback
+internal static partial class Callback
 {
     public static string GetInternalDelegateName(GirModel.Callback callback)
     {
