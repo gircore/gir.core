@@ -12,12 +12,20 @@ internal static class CallbackCommonHandlerRenderUtils
 
         return $@"
 NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(callback)}) => {{
-    {RenderConvertParameterStatements(parameterData)}
-    {RenderCallStatement(callback, parameterData, out var resultVariableName)}
-    {RenderPostCallStatements(parameterData)}
-    {RenderFreeStatement(scope)}
-    {RenderMemoryManagementStatement(callback, resultVariableName)}
-    {RenderReturnStatement(callback, resultVariableName)}
+    try 
+    {{
+        {RenderConvertParameterStatements(parameterData)}
+        {RenderCallStatement(callback, parameterData, out var resultVariableName)}
+        {RenderPostCallStatements(parameterData)}
+        {RenderFreeStatement(scope)}
+        {RenderMemoryManagementStatement(callback, resultVariableName)}
+        {RenderReturnStatement(callback, resultVariableName)}
+    }}
+    catch(global::System.Exception ex) 
+    {{
+        GLib.UnhandledException.Raise(ex);
+        throw;
+    }}
 }};";
     }
 
