@@ -18,6 +18,8 @@ internal static class FunctionRenderer
             var callableData = CallableExpressions.Initialize(function);
             var newModifier = Function.HidesFunction(function) ? "new " : string.Empty;
             return @$"
+
+{DocComments.Render(callableData.ParameterToNativeDatas)}
 {VersionAttribute.Render(function.Version)}
 public static {newModifier}{ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName(function)}({RenderParameters(callableData.ParameterToNativeDatas)})
 {{
