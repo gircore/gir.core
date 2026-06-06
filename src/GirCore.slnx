@@ -103,12 +103,12 @@
   </Folder>
   <Folder Name="/SolutionItems/docs/docs/">
     <File Path="../docs/docs/apps.md" />
-    <File Path="../docs/docs/build.md" />
-    <File Path="../docs/docs/contributing.md" />
-    <File Path="../docs/docs/ecosystem.md" />
-    <File Path="../docs/docs/faq.md" />
     <File Path="../docs/docs/libraries.md" />
-    <File Path="../docs/docs/use.md" />
+    <File Path="../docs/docs/distribution.md" />
+    <File Path="../docs/docs/get-started.md" />
+    <File Path="../docs/docs/toc.yml" />
+    <File Path="../docs/docs/build-source.md" />
+    <File Path="../docs/docs/custom-library.md" />
   </Folder>
   <Folder Name="/SolutionItems/docs/docs/integration/">
     <File Path="../docs/docs/integration/index.md" />

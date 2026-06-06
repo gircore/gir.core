@@ -1,13 +1,12 @@
-# Welcome to Gir.Core
+# Welcome to GirCore
+GirCore provides C# bindings for different GObject based libraries like GTK4, Adwaita, WebKitGTK, GStreamer and more. It allows to write native dotnet linux apps which integrating deeply into the system. The [applications](docs/apps.md) page lists some projects that already use GirCore.
 
-Gir.Core is a project which aims to provide C# bindings for different [GObject] based libraries like [GTK] for user interfaces.
+## Display a GTK window
+Displaying a native GTK4 window is straightforward. Just create a new C# project, add the `GirCore.Gtk-4.0` nuget package copy the following code into your `Program.cs` file and run the project.
 
-The focus is to provide a C# friendly API and a corresponding online documentation.
+[!code-csharp[](../src/Samples/Gtk-4.0/Window/Program.cs)]
 
-What do you want to do next?
-* If you want to get more details before starting to program take a look at the [apps section](docs/apps.md), the [supported libraries](docs/libraries.md) or the [ecosystem](docs/ecosystem.md).
-* If you want to get started see the [use page](docs/use.md) or visit the [nuget organization](https://www.nuget.org/profiles/GirCore) for an overview of all available packages.
-* If you want to contribute to the project see the [github project](https://github.com/gircore/gir.core) and checkout the [contribution guidelines](docs/contributing.md).
+There are other samples for a lot of GirCore nuget packages [available](https://github.com/gircore/gir.core/tree/main/src/Samples).
 
-[GObject]: https://developer.gnome.org/gobject/stable/
-[GTK]: https://gtk.org/
+## Contributing
+If you want to contribute to GirCore please check out the [github project](https://github.com/gircore/gir.core) or visit us on [matrix](https://matrix.to/#/#gircore:matrix.org?via=matrix.org).

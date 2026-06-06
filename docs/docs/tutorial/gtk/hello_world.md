@@ -1,4 +1,4 @@
-# Hello World Gtk Tutorial
+# Hello World
 
 In this hello world tutorial you will learn how to build a basic C# Gtk Application with a single Gtk Button widget inside it.
 
@@ -17,12 +17,9 @@ The above commands will create a new console project, a gitignore file and a sol
 
 Next we will download the GirCore.Gtk-4.0 nuget package into the project.
 
-> [!TIP]
-> You can check for newer versions by visiting the nuget website at [https://www.nuget.org/packages/GirCore.Gtk-4.0/#versions-body-tab](https://www.nuget.org/packages/GirCore.Gtk-4.0/#versions-body-tab).
-
 ```
 cd HelloWorld
-dotnet add package GirCore.Gtk-4.0 --version 0.5.0
+dotnet add package GirCore.Gtk-4.0
 ```
 
 The above commands will change to the HelloWorld directory then add the `GirCore.Gtk-4.0` package to the `HelloWorld.csproj` file.
@@ -39,11 +36,11 @@ Next open the `HelloWorld` directory in your favourite code editor or ide so we 
 > The code is commented to tell you what is happening. In addition to these comments the highlighted lines will be discussed further after the code block to give you more information.
 
 **Filename: HelloWorld.cs**
-[!code-csharp[](src/HelloWorld/HelloWorld.cs?highlight=37)]
+[!code-csharp[](src/HelloWorld/HelloWorld.cs?highlight=45)]
 
-**Line 37:**
+**Line 45:**
 
-On line 37 you set the `Child` of the `HelloWorld Gtk.Window` to be the `HelloWorld Gtk.Button`. 
+On line 45 you set the `Child` of the `HelloWorld Gtk.Window` to be the `HelloWorld Gtk.Button`. 
 
 It may be easier to understand visually by looking at the diagram below.
 

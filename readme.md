@@ -82,7 +82,7 @@ The folder structure in this repository is organized as follows:
 * **[src/Generation/Generator](src/Generation/Generator):** Code generator generates C# code from GObject Introspection data.
 * **[src/Libs](src/Libs):** Contains manually written code for libraries. The generator outputs code here.
 * **[src/Samples](src/Samples):** Example programs using GTK, GStreamer, and others.
-* **[src/Extensions](src/Extensions):** Auxilary libraries which extend the core libraries.
+* **[src/Integrations](src/Integrations):** Source generators and source analyzers to simplify the GirCore usage.
 * **[src/Tests](src/Tests):** Unit and Integration tests.
 * **[ext/gir-files](https://github.com/gircore/gir-files):** Introspection data from [gircore/gir-files](https://github.com/gircore/gir-files).
 
