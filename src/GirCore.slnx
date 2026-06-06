@@ -171,7 +171,6 @@
     <File Path="../.github/workflows/ci.yml" />
     <File Path="../.github/workflows/codeql-analysis.yml" />
     <File Path="../.github/workflows/update-gir-files.yml" />
-    <File Path="../.github/workflows/deploy-homepage.yml" />
   </Folder>
   <Folder Name="/SolutionItems/img/">
     <File Path="../img/logo.svg" />
