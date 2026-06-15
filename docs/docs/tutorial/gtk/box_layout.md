@@ -1,4 +1,4 @@
-# Box Layout Gtk Tutorial
+# Box Layout
 
 In this box layout tutorial, you will learn how to build a C# Gtk Application that makes use of the box layout to display multiple widgets both vertically and horizontally.
 
@@ -12,13 +12,10 @@ Now run the following commands.
 dotnet new console -f net8.0 -o BoxLayout
 dotnet sln add BoxLayout/
 cd BoxLayout
-dotnet add package GirCore.Gtk-4.0 --version 0.5.0
+dotnet add package GirCore.Gtk-4.0
 ```
 
 With these commands you created a new BoxLayout project, added it to the sln file for people who use IDEs and added the Gir.Gtk-4.0 package to the project.
-
-> [!TIP]
-> You can check for newer versions by visiting the nuget website at [https://www.nuget.org/packages/GirCore.Gtk-4.0/#versions-body-tab](https://www.nuget.org/packages/GirCore.Gtk-4.0/#versions-body-tab).
 
 We will now create a new class file to make the BoxLayout window in Gtk. This will be loaded from the `Program.cs` file and will be the main window of the application.
 
@@ -54,23 +51,17 @@ Now that the `Program.cs` file is setup we need to build the window for the appl
 > The code is commented to tell you what is happening. In addition to these comments, the highlighted lines will be discussed further after the code block to give you more information.
 
 **Filename: BoxLayout.cs**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs?highlight=11, 24, 39, 41, 44, 46-47, 50, 88-89, 98-99, 123)]
+[!code-csharp[](src/BoxLayout/BoxLayout.cs)]
 
-**Line 11:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L11)]
+**Line 32:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L32)]
 
-On line 11 you will see that in the `BoxLayout` constructor we have a parameter for `Gtk.Application` and assign it the variable `app`. This will give us access to the running `Gtk.Application` and is useful for things like adding a quit button, adding menu item actions etc.
+On line 32 you will see that we are adding a `Gtk.Button` widget and using the `NewWithLabel()` method to create the `Gtk.Button` without having to use `goodbyeButton.SetLabel("Button Label");` or `goodbyeButton.Label = "Button Label";` after the button is declared.
 
+**Line 47:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L47)]
 
-**Line 24:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L24)]
-
-On line 24 you will see that we are adding a `Gtk.Button` widget and using the `NewWithLabel()` method to create the `Gtk.Button` without having to use `goodbyeButton.SetLabel("Button Label");` or `goodbyeButton.Label = "Button Label";` after the button is declared.
-
-**Line 39:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L39)]
-
-On line 39 we are adding a `Gtk.Box` which is used to display multiple widgets at the same time. In this instance, we are using it to show both an `Icon` and a `Label` inside the `Gtk.Button` widget that is being used as a quit button.
+On line 47 we are adding a `Gtk.Box` which is used to display multiple widgets at the same time. In this instance, we are using it to show both an `Icon` and a `Label` inside the `Gtk.Button` widget that is being used as a quit button.
 
 We are setting `Gtk.Orientation.Horizontal` which will make the widgets appear side by side with each new widget being added at the end.
 
@@ -98,15 +89,15 @@ graph TB
     end
 ```
 
-**Line 41:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L41)]
+**Line 49:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L49)]
 
-On line 41 we are creating a `Gtk.Label` to use as a label on our quit button. We are using the `NewWithMnemonic()` method to create a label that has the mnemonic `Alt+Q` which will act as the button being clicked when the user presses `Alt+Q`.
+On line 49 we are creating a `Gtk.Label` to use as a label on our quit button. We are using the `NewWithMnemonic()` method to create a label that has the mnemonic `Alt+Q` which will act as the button being clicked when the user presses `Alt+Q`.
 
-**Line 44:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L44)]
+**Line 52:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L52)]
 
-On line 44 we are creating a `Gtk.Image` to use as an icon for our quit button. We are using the `NewFromIconName()` method to assign the icon `application-exit` when declaring the `quitIcon` variable. 
+On line 52 we are creating a `Gtk.Image` to use as an icon for our quit button. We are using the `NewFromIconName()` method to assign the icon `application-exit` when declaring the `quitIcon` variable. 
 
 > [!NOTE]
 > `application-exit` is an icon name that is part of the [Free Desktop Icon Theme Specification](https://specifications.freedesktop.org/icon-naming-spec/latest/) and is used by many desktop environments. If Gtk cannot find the icon name then it will show a broken image icon to indicate it could not find the icon.
@@ -115,15 +106,15 @@ On line 44 we are creating a `Gtk.Image` to use as an icon for our quit button. 
 > 
 > Gtk Applications use the `Adwaita` icon theme by default. If you are not seeing the icons make sure that you have the theme installed. The theme package is usually called `adwaita-icon-theme` and can be installed using your package manager on Linux, [Home Brew](https://brew.sh/) on MacOS and [MSYS2](https://www.msys2.org/) on Windows.
 
-**Lines 46 and 47:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L46-L47)]
+**Lines 54 and 55:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L54-L55)]
 
-On lines 46 and 47, we are appending the `quitIcon` and `quitLabel` widgets to the `quitBox`. As this is a `Gtk.Box` with a `horizontal` orientation the widgets will be shown side by side.
+On lines 54 and 55, we are appending the `quitIcon` and `quitLabel` widgets to the `quitBox`. As this is a `Gtk.Box` with a `horizontal` orientation the widgets will be shown side by side.
 
-**Line 50:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L50)]
+**Line 58:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L58)]
 
-On line 50 we are setting the `quitButton` child to be the `quitBox` which will show the contents of the `quitBox Gtk.Box` inside the `quitButton Gtk.Button` widget.
+On line 58 we are setting the `quitButton` child to be the `quitBox` which will show the contents of the `quitBox Gtk.Box` inside the `quitButton Gtk.Button` widget.
 
 **quitButton Gtk.Button child is now the quitBox Gtk.Box widget:**
 ```mermaid
@@ -146,23 +137,23 @@ graph TB
 > quitBox.Prepend(quitLabel);
 > ```
 
-**Lines 88 and 89:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L88-L89)]
-On line 88 we are making the `vSpacer` variable be an empty `Gtk.Box` widget with vertical orientation. This will be used to create blank space between the widgets at the top of the window and the widgets at the bottom of the window. We need to do this so that the widgets at the bottom of the window remain at the bottom when the window is resized.
+**Lines 96 and 97:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L96-L97)]
+On line 96 we are making the `vSpacer` variable be an empty `Gtk.Box` widget with vertical orientation. This will be used to create blank space between the widgets at the top of the window and the widgets at the bottom of the window. We need to do this so that the widgets at the bottom of the window remain at the bottom when the window is resized.
 
-On line 89 we use `SetVexpand(true)` to make the `vSpacer Gtk.Box` widget expand to take up all available space. By doing this the `vSpacer Gtk.Box` widget will push all widgets after it to the bottom of the window. 
+On line 97 we use `SetVexpand(true)` to make the `vSpacer Gtk.Box` widget expand to take up all available space. By doing this the `vSpacer Gtk.Box` widget will push all widgets after it to the bottom of the window. 
 
 
-**Lines 98 and 99:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L98-L99)]
-On line 98 we are making the `hSpacer` variable be an empty `Gtk.Box` widget with horizontal orientation. This will be used to create blank space between the widgets at the start (left) of the window and the widgets at the end (right) of the window. We need to do this so that the widgets at the end of the window remain at the end when the window is resized.
+**Lines 106 and 107:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L106-L107)]
+On line 106 we are making the `hSpacer` variable be an empty `Gtk.Box` widget with horizontal orientation. This will be used to create blank space between the widgets at the start (left) of the window and the widgets at the end (right) of the window. We need to do this so that the widgets at the end of the window remain at the end when the window is resized.
 
-On line 99 we use `SetHexpand(true)` to make the `hSpacer Gtk.Box` widget expand to take up all available space. By doing this the `hSpacer Gtk.Box` widget will push all widgets after it to the end (right) of the window. 
+On line 107 we use `SetHexpand(true)` to make the `hSpacer Gtk.Box` widget expand to take up all available space. By doing this the `hSpacer Gtk.Box` widget will push all widgets after it to the end (right) of the window. 
 
-**Line 123:**
-[!code-csharp[](src/BoxLayout/BoxLayout.cs#L123)]
+**Line 131:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L131)]
 
-On line 123 you set the `Child` of the `BoxLayout Gtk.Window` widget to be the `vBox Gtk.Box` widget which makes the `BoxLayout Gtk.Window` have everything that is inside the `vBox Gtk.Box` widget.
+On line 131 you set the `Child` of the `BoxLayout Gtk.Window` widget to be the `vBox Gtk.Box` widget which makes the `BoxLayout Gtk.Window` have everything that is inside the `vBox Gtk.Box` widget.
 
 **The BoxLayout Gtk.Window contents after making vBox the Child:**
 ```mermaid
@@ -187,6 +178,11 @@ graph TB
     n2 ~~~ n3
     n3 ~~~ n4
 ```
+
+**Line 149:**
+[!code-csharp[](src/BoxLayout/BoxLayout.cs#L149)]
+
+On line 149 you will see that we access the `Gtk.Application` instance. This will give us access to the running `Gtk.Application` and is useful for things like adding a quit button, adding menu item actions etc.
 
 **Run The BoxLayout Application:**
 

@@ -1,5 +1,4 @@
-# Build
-
+# Build Source
 To generate the bindings locally execute the following commands in a terminal. Make sure to initialise submodules with `--recursive` otherwise the `gir-files` directory will not be loaded properly.
 
 ```sh
