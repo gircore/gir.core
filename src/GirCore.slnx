@@ -192,6 +192,7 @@
   <Folder Name="/Tests/" />
   <Folder Name="/Tests/Data/">
     <Project Path="Tests/Data/GObject-2.0.Integration.Tests.Data/GObject-2.0.Integration.Tests.Data.csproj" />
+    <Project Path="Tests/Data/Gtk-4.0.Integration.Tests.Data/Gtk-4.0.Integration.Tests.Data.csproj" />
   </Folder>
   <Folder Name="/Tests/Generation/">
     <File Path="Tests/Generation/Directory.Build.props" />
