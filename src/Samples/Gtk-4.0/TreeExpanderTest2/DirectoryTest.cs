@@ -5,7 +5,7 @@ namespace Program;
 [GObject.Subclass<Gtk.Box>]
 partial class DirectoryTest
 {
-    public Gio.ListStore Store { get; } = Gio.ListStore.New(DirectoryHierarchicalRow.GetGType());
+    public Gio.ListStore Store { get; } = Gio.ListStore.New(GObject.Object.GetGType());
     
     partial void Initialize()
     {
@@ -19,8 +19,7 @@ partial class DirectoryTest
     {
         for (int i = 0; i < 5000; i++)
         {
-            DirectoryHierarchicalRow row = DirectoryHierarchicalRow.New();
-            Store.Append(row);
+            Store.Append(GObject.Object.NewWithProperties([]));
         }
     }
 }
