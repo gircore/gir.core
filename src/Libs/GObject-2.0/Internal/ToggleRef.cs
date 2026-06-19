@@ -36,7 +36,7 @@ internal class ToggleRef
             if (weakRef.Target is { } weakObj)
                 _reference = weakObj;
             else
-                throw new Exception("Could not toggle reference to strong. It got garbage collected.");
+                throw new Exception("Could not toggle reference to strong. It got garbage collected. There is an obsolete dotnet instance still used by native code. Find it and actively call 'Dispose' on it or avoid it getting obsolete. Use the 'Handle' property to verify the pointer to a native instance.");
         }
         else if (isLastRef && _reference is not WeakReference)
         {
