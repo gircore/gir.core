@@ -76,10 +76,14 @@ public static class InstanceCache
                     Debug.WriteLine($"Handle {@object}: Could not toggle to {isLastRef} as there is no toggle reference.");
             }
         }
-        catch
+        catch (Exception ex)
         {
-            Debug.WriteLine($"Failed to toggle reference: Object={@object}, type={TypeNameFromInstance(@object).ConvertToString()}, isLastRef={isLastRef}.");
-            throw;
+            using var message = GLib.Variant.NewString($"{ex.Message} NativeInstance={@object}, Type={TypeNameFromInstance(@object).ConvertToString()}");
+            using var dict = GLib.VariantDict.New(null);
+            dict.InsertValue("MESSAGE", message);
+            using var variant = dict.End();
+
+            GLib.Functions.LogVariant("gircore", GLib.LogLevelFlags.LevelWarning, variant);
         }
     }
 
