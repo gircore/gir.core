@@ -25,10 +25,19 @@ internal static class TypeDataHelper
 
     private static string GetFileName(INamedTypeSymbol typeSymbol)
     {
+        var namespacePrefix = GetNamespacePrefix(typeSymbol);
         var prefix = GetFileNamePrefix(typeSymbol);
         var suffix = typeSymbol.Arity == 0 ? string.Empty : $"_{typeSymbol.Arity}";
 
-        return prefix + typeSymbol.Name + suffix;
+        return namespacePrefix + prefix + typeSymbol.Name + suffix;
+    }
+
+    private static string GetNamespacePrefix(INamedTypeSymbol typeSymbol)
+    {
+        if (typeSymbol.ContainingNamespace.IsGlobalNamespace)
+            return string.Empty;
+
+        return typeSymbol.ContainingNamespace.ToDisplayString() + ".";
     }
 
     private static string GetFileNamePrefix(ISymbol typeSymbol)

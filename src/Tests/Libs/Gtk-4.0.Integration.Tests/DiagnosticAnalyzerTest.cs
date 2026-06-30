@@ -51,6 +51,22 @@ public class DiagnosticAnalyzerTest : Test
                                             }
                                             """;
 
+    private const string DuplicateTemplateNameOne = """
+                                                   namespace DuplicateTemplateName.One;
+
+                                                   [GObject.Subclass<Gtk.Widget>]
+                                                   [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
+                                                   public partial class Widget;
+                                                   """;
+
+    private const string DuplicateTemplateNameTwo = """
+                                                   namespace DuplicateTemplateName.Two;
+
+                                                   [GObject.Subclass<Gtk.Widget>]
+                                                   [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
+                                                   public partial class Widget;
+                                                   """;
+
     [TestMethod]
     [DataRow(RaiseGirCore2001, "GirCore2001", true)]
     [DataRow(NotRaiseGirCore2001, "GirCore2001", false)]
@@ -83,5 +99,30 @@ public class DiagnosticAnalyzerTest : Test
             diagnostics.ContainsDiagnostic(diagnosticId);
         else
             diagnostics.ContainsNoDiagnostic(diagnosticId);
+    }
+
+    [TestMethod]
+    public void ShouldNotFailWhenTemplateNamesRepeatInDifferentNamespaces()
+    {
+        var compilation = CSharpCompilation.Create(
+            assemblyName: nameof(ShouldNotFailWhenTemplateNamesRepeatInDifferentNamespaces),
+            syntaxTrees: [
+                CSharpSyntaxTree.ParseText(DuplicateTemplateNameOne),
+                CSharpSyntaxTree.ParseText(DuplicateTemplateNameTwo)
+            ],
+            options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary),
+            references: [
+                MetadataReference.CreateFromFile(System.Reflection.Assembly.Load("System.Runtime").Location),
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(GObject.Object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Gtk.Widget).Assembly.Location)
+            ]
+        );
+
+        var driver = CSharpGeneratorDriver.Create(new SourceGenerator.Generator());
+        driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out _, TestContext.CancellationToken);
+
+        var diagnostics = outputCompilation.GetDiagnostics(TestContext.CancellationToken);
+        diagnostics.ContainsNoDiagnostic("CS8785");
     }
 }
