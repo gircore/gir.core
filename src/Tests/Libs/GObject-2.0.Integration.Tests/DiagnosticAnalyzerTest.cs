@@ -65,6 +65,24 @@ public class DiagnosticAnalyzerTest : Test
                                                public class NotRaiseGirCore1004<T> : NotRaiseGirCore1004;
                                                """;
 
+    private const string DuplicateSubclassNameOne = """
+                                                    using GObject;
+
+                                                    namespace DuplicateSubclassName.One;
+
+                                                    [Subclass<GObject.Object>]
+                                                    public partial class Widget;
+                                                    """;
+
+    private const string DuplicateSubclassNameTwo = """
+                                                    using GObject;
+
+                                                    namespace DuplicateSubclassName.Two;
+
+                                                    [Subclass<GObject.Object>]
+                                                    public partial class Widget;
+                                                    """;
+
     [TestMethod]
     [DataRow(RaiseGirCore1002, "GirCore1002", true)]
     [DataRow(RaiseGirCore1004, "GirCore1004", true)]
@@ -99,5 +117,29 @@ public class DiagnosticAnalyzerTest : Test
             diagnostics.ContainsDiagnostic(diagnosticId);
         else
             diagnostics.ContainsNoDiagnostic(diagnosticId);
+    }
+
+    [TestMethod]
+    public void ShouldNotFailWhenSubclassNamesRepeatInDifferentNamespaces()
+    {
+        var compilation = CSharpCompilation.Create(
+            assemblyName: nameof(ShouldNotFailWhenSubclassNamesRepeatInDifferentNamespaces),
+            syntaxTrees: [
+                CSharpSyntaxTree.ParseText(DuplicateSubclassNameOne),
+                CSharpSyntaxTree.ParseText(DuplicateSubclassNameTwo)
+            ],
+            options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary),
+            references: [
+                MetadataReference.CreateFromFile(System.Reflection.Assembly.Load("System.Runtime").Location),
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(GObject.Object).Assembly.Location)
+            ]
+        );
+
+        var driver = CSharpGeneratorDriver.Create(new SourceGenerator.Generator());
+        driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out _, TestContext.CancellationToken);
+
+        var diagnostics = outputCompilation.GetDiagnostics(TestContext.CancellationToken);
+        diagnostics.ContainsNoDiagnostic("CS8785");
     }
 }
