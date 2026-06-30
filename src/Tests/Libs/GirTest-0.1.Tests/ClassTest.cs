@@ -72,9 +72,8 @@ public class ClassTest : Test
     public void TestManualGObjectDisposal()
     {
         var obj = ClassTester.New();
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
         obj.Dispose();
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(0);
+        obj.Handle.IsClosed.Should().BeTrue();
     }
 
     [TestMethod]
@@ -86,18 +85,14 @@ public class ClassTest : Test
         CollectAfter(() =>
         {
             var obj = ClassTester.New();
-            GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
             weakReference.Target = obj;
         });
 
-        GObject.Internal.InstanceCache.ObjectCount.Should().Be(0);
         weakReference.IsAlive.Should().BeFalse();
 
         CollectAfter(() =>
         {
             var obj = ClassTester.New();
-
-            GObject.Internal.InstanceCache.ObjectCount.Should().Be(1);
 
             strongReference = obj;
             weakReference.Target = obj;

@@ -34,6 +34,21 @@ internal class Class : ToManagedParameterConverter
 
     private static void Default(ParameterToManagedData parameterData)
     {
+        switch (parameterData.Parameter.Direction)
+        {
+            case GirModel.Direction.In:
+                DefaultIn(parameterData);
+                break;
+            case GirModel.Direction.Out:
+                DefaultOut(parameterData);
+                break;
+            default:
+                throw new NotImplementedException($"{parameterData.Parameter.Direction}: Parameter direction not yet supported");
+        }
+    }
+
+    private static void DefaultIn(ParameterToManagedData parameterData)
+    {
         var cls = (GirModel.Class) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
         var parameterName = Model.Parameter.GetName(parameterData.Parameter);
         var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
@@ -47,5 +62,38 @@ internal class Class : ToManagedParameterConverter
         parameterData.SetSignatureName(() => parameterName);
         parameterData.SetExpression(() => $"var {callName} = {wrapHandle}<{type}>({parameterName}, {Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer).ToString().ToLower()});");
         parameterData.SetCallName(() => callName);
+    }
+
+    private static void DefaultOut(ParameterToManagedData parameterData)
+    {
+        var parameterName = Model.Parameter.GetName(parameterData.Parameter);
+        var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
+
+        var isNullable = parameterData.Parameter.Nullable;
+        var isOwnedRef = Model.Transfer.IsOwnedRef(parameterData.Parameter.Transfer);
+
+        var refString = (isNullable, isOwnedRef) switch
+        {
+            (false, true) => $"GObject.Internal.Object.Ref({callName}.Handle.DangerousGetHandle());",
+            (false, false) => string.Empty,
+            (true, true) => $"""
+                                                if({callName} is not null)
+                                                    GObject.Internal.Object.Ref({callName}.Handle.DangerousGetHandle());
+                                                """,
+            (true, false) => string.Empty
+        };
+
+        var outString = isNullable switch
+        {
+            false => $"{parameterName} = {callName}.Handle.DangerousGetHandle();",
+            true => $"{parameterName} = {callName}?.Handle.DangerousGetHandle() ?? IntPtr.Zero;"
+        };
+
+        parameterData.SetSignatureName(() => parameterName);
+        parameterData.SetPostCallExpression(() => $"""
+                                                   {refString}
+                                                   {outString}
+                                                   """);
+        parameterData.SetCallName(() => $"out var {callName}");
     }
 }

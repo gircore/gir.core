@@ -32,6 +32,8 @@ internal static class ConstructorRenderer
                 : string.Empty;
 
             return @$"
+
+{DocComments.Render(parameters)}
 {VersionAttribute.Render(constructor.Version)}
 public static {newKeyWord}{constructor.Parent.Name}{Nullable.Render(constructor.ReturnType)} {Model.Constructor.GetName(constructor)}({RenderParameters(parameters)})
 {{

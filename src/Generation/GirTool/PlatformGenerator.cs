@@ -8,6 +8,7 @@ internal static class PlatformGenerator
     {
         Generator.Fixer.Namespace.Fixup(@namespace);
         Generator.Fixer.Bitfields.Fixup(@namespace.Bitfields);
+        Generator.Fixer.Callbacks.Fixup(@namespace.Callbacks);
         Generator.Fixer.Classes.Fixup(@namespace.Classes);
         Generator.Fixer.Records.Fixup(@namespace.Records);
         Generator.Fixer.Aliases.Fixup(@namespace.Aliases);

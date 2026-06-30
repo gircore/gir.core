@@ -14,7 +14,6 @@ typedef int (*GirTestIntCallback) (int val);
 typedef void (*GirTestCallbackWithCallback) (GirTestIntCallback callback);
 typedef void (*GirTestIntPointerCallback) (int *val);
 typedef GType (*GirTestTypeReturnCallback) ();
-typedef GObject* (*GirTestObjectReturnCallback) ();
 typedef GirTestExecutor* (*GirTestExecutorReturnCallback) ();
 
 /**
@@ -78,16 +77,48 @@ typedef const void (*GirTestNullableClassParameterCallback) (GirTestCallbackTest
 /**
  * GirTestTransferFullObjectReturnCallback:
  *
- * Returns:(transfer full): An object
+ * Returns: (transfer full): An object
  */
 typedef GObject* (*GirTestTransferFullObjectReturnCallback) ();
 
 /**
  * GirTestTransferNoneObjectReturnCallback:
  *
- * Returns:(transfer none): An object
+ * Returns: (transfer none): An object
  */
 typedef GObject* (*GirTestTransferNoneObjectReturnCallback) ();
+
+/**
+ * GirTestTransferFullObjectParameterCallback:
+ * @obj: (transfer full) (nullable): An object
+ * 
+ * Transfers obj to the callback.
+ */
+typedef void (*GirTestTransferFullObjectParameterCallback) (GObject* obj);
+
+/**
+ * GirTestTransferNoneObjectParameterCallback:
+ * @obj: (transfer none) (nullable): An object
+ * 
+ * Does not transfer obj to the callback, the caller retains ownership.
+ */
+typedef void (*GirTestTransferNoneObjectParameterCallback) (GObject* obj);
+
+/**
+ * GirTestOutTransferFullObjectParameterCallback:
+ * @obj: (out) (transfer full) (nullable): An object
+ * 
+ * Transfers obj to the callback.
+ */
+typedef void (*GirTestOutTransferFullObjectParameterCallback) (GObject** obj);
+
+/**
+ * GirTestOutTransferNoneObjectParameterCallback:
+ * @obj: (out) (transfer none) (nullable): An object
+ * 
+ * Does not transfer obj to the callback, the caller retains ownership.
+ */
+typedef void (*GirTestOutTransferNoneObjectParameterCallback) (GObject** obj);
 
 typedef enum {
     SIMPLE_ENUM_A = 1,
@@ -148,7 +179,7 @@ GType
 girtest_callback_tester_run_callback_with_type_return(GirTestTypeReturnCallback callback);
 
 GObject*
-girtest_callback_tester_run_callback_with_object_return(GirTestObjectReturnCallback callback);
+girtest_callback_tester_run_callback_with_object_return(GirTestTransferFullObjectReturnCallback callback);
 
 gboolean
 girtest_callback_tester_run_callback_with_executor_interface_return(GirTestExecutorReturnCallback callback);
@@ -179,5 +210,26 @@ girtest_callback_tester_run_callback_enum_out(GirTestEnumOutCallback callback);
 
 GirTestCallbackTesterSimpleEnum
 girtest_callback_tester_run_callback_enum_ref(GirTestEnumRefCallback callback);
+
+GObject*
+girtest_callback_tester_roundtrip_object_get_instance(GirTestCallbackTester* instance); 
+
+void
+girtest_callback_tester_roundtrip_object_run_callback_return_transfer_full(GirTestCallbackTester* instance, GirTestTransferFullObjectReturnCallback callback); 
+
+void
+girtest_callback_tester_roundtrip_object_run_callback_parameter_transfer_full(GirTestCallbackTester* instance, GirTestTransferFullObjectParameterCallback callback); 
+
+void
+girtest_callback_tester_roundtrip_object_run_callback_return_transfer_none(GirTestCallbackTester* instance, GirTestTransferNoneObjectReturnCallback callback); 
+
+void
+girtest_callback_tester_roundtrip_object_run_callback_parameter_transfer_none(GirTestCallbackTester* instance, GirTestTransferNoneObjectParameterCallback callback); 
+
+void
+girtest_callback_tester_roundtrip_object_run_callback_out_transfer_full(GirTestCallbackTester* instance, GirTestOutTransferFullObjectParameterCallback callback); 
+
+void
+girtest_callback_tester_roundtrip_object_run_callback_out_transfer_none(GirTestCallbackTester* instance, GirTestOutTransferNoneObjectParameterCallback callback);
 
 G_END_DECLS

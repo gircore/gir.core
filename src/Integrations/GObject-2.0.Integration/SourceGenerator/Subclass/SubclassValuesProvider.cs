@@ -1,0 +1,115 @@
+using System.Linq;
+using System.Threading;
+using Microsoft.CodeAnalysis;
+
+namespace GObject.Integration.SourceGenerator;
+
+internal static class SubclassValuesProvider
+{
+    public static IncrementalValuesProvider<SubclassData> GetSubclassValuesProvider(this IncrementalGeneratorInitializationContext context)
+    {
+        return context.SyntaxProvider
+            .ForAttributeWithMetadataName(
+                fullyQualifiedMetadataName: SubclassAttribute.MetadataName,
+                predicate: static (_, _) => true,
+                transform: GetSubclassData)
+            .Where(data => data is not null)!;
+    }
+
+    private static SubclassData? GetSubclassData(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
+    {
+        if (context.TargetSymbol is not INamedTypeSymbol subclass)
+            return null;
+
+        var subclassAttribute = context.Attributes.FirstOrDefault(a => a.IsSubclassAttribute());
+        if (subclassAttribute is null)
+            return null;
+
+        var parentType = subclassAttribute.AttributeClass?.TypeArguments.First();
+        if (parentType is null)
+            return null;
+
+        var parentHandle = GetParentHandle(parentType);
+        if (parentHandle is null)
+            return null;
+
+        var typeData = TypeDataHelper.GetTypeData(subclass);
+        if (typeData is null)
+            return null;
+
+        return new SubclassData(
+            TypeData: typeData,
+            QualifiedName: GetQualifiedName(subclassAttribute),
+            Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+            ParentHandle: parentHandle,
+            IsInitiallyUnowned: IsInitiallyUnowned(parentType),
+            IsSealed: subclass.IsSealed
+        );
+    }
+
+    private static string? GetParentHandle(ITypeSymbol type)
+    {
+        ITypeSymbol? currentType = type;
+        INamedTypeSymbol? parentHandleAttribute;
+        do
+        {
+            parentHandleAttribute = GetHandleAttribute(currentType);
+
+            if (parentHandleAttribute is null)
+                currentType = GetTypeInSubclassAttribute(currentType);
+
+        } while (parentHandleAttribute is null && currentType is not null);
+
+        return parentHandleAttribute?.TypeArguments.First().ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+    }
+
+    private static INamedTypeSymbol? GetHandleAttribute(ITypeSymbol type)
+    {
+        var attributeData = type
+            .GetAttributes()
+            .FirstOrDefault(x => x.IsHandleAttribute());
+
+        return attributeData?.AttributeClass;
+    }
+
+    private static ITypeSymbol? GetTypeInSubclassAttribute(ITypeSymbol type)
+    {
+        var subclassAttribute = type
+            .GetAttributes()
+            .FirstOrDefault(x => x.AttributeClass?.ConstructedFrom.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == SubclassAttribute.FullyQualifiedDisplayName);
+
+        if (subclassAttribute is null)
+            return null;
+
+        return subclassAttribute.AttributeClass?.TypeArguments.First();
+    }
+
+    private static bool IsInitiallyUnowned(ITypeSymbol? type)
+    {
+        while (true)
+        {
+            if (type is null)
+                return false;
+
+            if (type.Name == "InitiallyUnowned" && type.ContainingNamespace?.ToDisplayString() == "GObject")
+                return true;
+
+            type = type.BaseType;
+        }
+    }
+
+    private static string? GetQualifiedName(AttributeData subclassAttribute)
+    {
+        if (subclassAttribute.ConstructorArguments.IsDefaultOrEmpty)
+            return null;
+
+        string? qualifiedName = null;
+        var constant = subclassAttribute.ConstructorArguments.First(); //QualifiedName constructor argument
+        if (constant.Value is string value)
+        {
+            qualifiedName = value;
+        }
+
+        return qualifiedName;
+    }
+}

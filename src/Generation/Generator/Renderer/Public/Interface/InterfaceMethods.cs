@@ -24,6 +24,7 @@ public static class InterfaceMethods
 
             return $"""
 
+                    {DocComments.Render(parameters)}
                     {VersionAttribute.Render(method.Version)}
                     {ReturnTypeRenderer.Render(method.ReturnType)} {Method.GetPublicName(method)}({RenderParameters(parameters)});
                     """;

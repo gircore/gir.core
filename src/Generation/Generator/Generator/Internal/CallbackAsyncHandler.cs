@@ -2,17 +2,13 @@ using Generator.Model;
 
 namespace Generator.Generator.Internal;
 
-internal class CallbackAsyncHandler : Generator<GirModel.Callback>
+internal class CallbackAsyncHandler(Publisher publisher) : Generator<GirModel.Callback>
 {
-    private readonly Publisher _publisher;
-
-    public CallbackAsyncHandler(Publisher publisher)
-    {
-        _publisher = publisher;
-    }
-
     public void Generate(GirModel.Callback callback)
     {
+        if (!Callback.IsEnabled(callback))
+            return;
+
         var source = Renderer.Internal.CallbackAsyncHandler.RenderFile(callback);
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(callback.Namespace),
@@ -21,6 +17,6 @@ internal class CallbackAsyncHandler : Generator<GirModel.Callback>
             IsInternal: true
         );
 
-        _publisher.Publish(codeUnit);
+        publisher.Publish(codeUnit);
     }
 }

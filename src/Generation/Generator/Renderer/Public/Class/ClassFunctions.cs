@@ -31,27 +31,14 @@ internal static class ClassFunctions
                          return {{RenderGetGType(cls.TypeFunction)}};
                      }
 
-                     static object GObject.InstanceFactory.Create(IntPtr ptr, bool ownsHandle)
-                     {
-                         return CreateIntern(ptr, ownsHandle);
-                     }
-
-                     private static {{cls.Name}} CreateIntern(IntPtr ptr, bool ownsHandle)
+                     static object GObject.InstanceFactory.Create(IntPtr ptr, bool _)
                      {
                          var handle = new {{Class.GetFullyQualifiedInternalHandleName(cls)}}(ptr);
                          var obj = new {{cls.Name}}(handle);
-                         
-                         GObject.Internal.InstanceCache.AddToggleRef(obj);
-                         
-                         if(ownsHandle) 
-                         {
-                            // - The caller owns the handle
-                            // - The caller is C#
-                            // -> Remove the obsolete ref because C# is the only owner and a toggle ref was added
-                            {{RenderUnref(cls)}}
-                         }
-                         
-                         return obj;
+                 
+                        GObject.Internal.InstanceCache.AddToggleRef(obj);
+                        
+                        return obj;
                      }
 
                      {{cls.Functions
@@ -64,15 +51,5 @@ internal static class ClassFunctions
     private static string RenderGetGType(GirModel.Function function)
     {
         return $"{Namespace.GetInternalName(function.Namespace)}.{function.Parent!.Name}.{Function.GetName(function)}()";
-    }
-
-    private static string RenderUnref(GirModel.Class cls)
-    {
-        return Class.IsInitiallyUnowned(cls)
-            ? """
-              GObject.Internal.Object.TakeRef(ptr);
-              GObject.Internal.Object.Unref(ptr);
-              """
-            : "GObject.Internal.Object.Unref(ptr);";
     }
 }

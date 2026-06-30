@@ -12,17 +12,17 @@ public static unsafe class SubclassRegistrar
     [DllImport(ImportResolver.Library, EntryPoint = "g_type_register_static_simple")]
     private static extern nuint TypeRegisterStaticSimple(Type parentType, GLib.Internal.NonNullableUtf8StringHandle typeName, uint classSize, delegate* unmanaged<IntPtr, IntPtr, void> classInit, uint instanceSize, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit, TypeFlags flags);
 
-    public static Type Register<TSubclass, TParent>(delegate* unmanaged<IntPtr, IntPtr, void> classInit, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit)
+    public static Type Register<TSubclass, TParent>(delegate* unmanaged<IntPtr, IntPtr, void> classInit, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit, string? qualifiedName)
         where TSubclass : InstanceFactory
         where TParent : GTypeProvider
     {
-        var newType = RegisterNewGType<TSubclass, TParent>(classInit, instanceInit);
+        var newType = RegisterNewGType<TSubclass, TParent>(classInit, instanceInit, qualifiedName);
         DynamicInstanceFactory.Register(newType, TSubclass.Create);
 
         return newType;
     }
 
-    private static Type RegisterNewGType<TSubclass, TParent>(delegate* unmanaged<IntPtr, IntPtr, void> classInit, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit)
+    private static Type RegisterNewGType<TSubclass, TParent>(delegate* unmanaged<IntPtr, IntPtr, void> classInit, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit, string? qualifiedName)
         where TParent : GTypeProvider
     {
         var parentType = TParent.GetGType();
@@ -34,7 +34,7 @@ public static unsafe class SubclassRegistrar
 
         Debug.WriteLine($"Registering new type {typeof(TSubclass).FullName} with parent {typeof(TParent).FullName}");
 
-        var qualifiedName = QualifyName(typeof(TSubclass));
+        qualifiedName ??= QualifyName(typeof(TSubclass));
         var typeName = GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(qualifiedName);
         var classSize = (ushort) parentTypeInfo.GetClassSize();
         var instanceSize = (ushort) parentTypeInfo.GetInstanceSize();

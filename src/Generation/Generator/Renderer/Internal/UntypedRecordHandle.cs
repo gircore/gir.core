@@ -18,6 +18,7 @@ internal static class UntypedRecordHandle
         var arrayUnownedHandleTypeName = Model.UntypedRecord.GetInternalArrayUnownedHandle(record);
         var arrayOwnedHandleTypeName = Model.UntypedRecord.GetInternalArrayOwnedHandle(record);
         var fullyQualifiedType = Model.TypedRecord.GetFullyQualifiedPublicClassName(record);
+        var fullyQuallifiedDataName = Model.UntypedRecord.GetFullyQuallifiedDataName(record);
 
         return $@"using System;
 using GObject;
@@ -38,7 +39,7 @@ public abstract class {typeName} : SafeHandle
 
     protected {typeName}(bool ownsHandle) : base(IntPtr.Zero, ownsHandle) {{ }}
 
-    {record.Fields.Select(x => RenderField(record, x)).Join(Environment.NewLine)}
+    {record.Fields.Select(x => RecordHandleHelper.RenderField(record, x)).Join(Environment.NewLine)}
 
     public bool Equals({typeName}? other)
     {{
@@ -208,76 +209,27 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
         SetHandle(ptr);
     }}
 
-    public static {arrayOwnedHandleTypeName} Create({Model.UntypedRecord.GetFullyQualifiedPublicClassName(record)}[] data)
+    public static unsafe {arrayOwnedHandleTypeName} Create({Model.UntypedRecord.GetFullyQualifiedPublicClassName(record)}[] data)
     {{
-        var size = Marshal.SizeOf<{Model.UntypedRecord.GetFullyQuallifiedDataName(record)}>();
-        var ptr = Marshal.AllocHGlobal(size * data.Length);
-        var current = ptr;
+        var size = Marshal.SizeOf<{fullyQuallifiedDataName}>();
+        var ptr = ({fullyQuallifiedDataName}*) GLib.Functions.MallocN((nuint)data.Length, (nuint)size);
+        
+        var currentDestination = ptr;
         for (int i = 0; i < data.Length; i++)
         {{
-            var structure = Marshal.PtrToStructure<{Model.UntypedRecord.GetFullyQuallifiedDataName(record)}>(data[i].Handle.DangerousGetHandle());
-            Marshal.StructureToPtr(structure, current, false);
-            current += size;
+            var source = ({fullyQuallifiedDataName}*)data[i].Handle.DangerousGetHandle();
+            System.Buffer.MemoryCopy(source, currentDestination, size, size);
+            currentDestination += 1;
         }}
         
-        return new {arrayOwnedHandleTypeName}(ptr);
+        return new {arrayOwnedHandleTypeName}((System.IntPtr)ptr);
     }}
     
     protected override bool ReleaseHandle()
     {{
-        Marshal.FreeHGlobal(handle);
+        GLib.Functions.Free(handle);
         return true;
     }}
 }}";
     }
-
-    private static string RenderField(GirModel.Record record, GirModel.Field field)
-    {
-        var renderableField = Fields.GetRenderableField(field);
-
-        if (field is { IsReadable: false, IsWritable: false } || field.IsPrivate)
-            return string.Empty;
-
-        var result = new StringBuilder();
-
-        if (field.IsReadable)
-            result.AppendLine(RenderFieldGetter(record, field, renderableField));
-
-        if (field.IsWritable)
-            result.AppendLine(RenderFieldSetter(record, field, renderableField));
-
-        return result.ToString();
-
-    }
-
-    private static string RenderFieldGetter(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
-    {
-        var typePrefix = field.AnyTypeOrCallback.IsT1 ? $"{Model.UntypedRecord.GetDataName(record)}." : string.Empty;
-        var dataName = Model.UntypedRecord.GetDataName(record);
-
-        return @$"public {typePrefix}{renderableField.NullableTypeName} Get{renderableField.Name}()
-{{
-    if (IsClosed || IsInvalid)
-        throw new InvalidOperationException(""Handle is closed or invalid"");
-
-    return Marshal.PtrToStructure<{dataName}>(handle).{renderableField.Name};
-}}";
-    }
-
-    private static string RenderFieldSetter(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
-    {
-        var dataName = Model.UntypedRecord.GetDataName(record);
-
-        return @$"public void Set{renderableField.Name}({renderableField.NullableTypeName} value)
-{{
-    if (IsClosed || IsInvalid)
-        throw new InvalidOperationException(""Handle is closed or invalid"");
-
-    var data = Marshal.PtrToStructure<{dataName}>(handle);
-    data.{renderableField.Name} = value;
-    Marshal.StructureToPtr(data, handle, false);
-}}";
-    }
-
-
 }

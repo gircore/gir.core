@@ -8,11 +8,12 @@ using System.Text;
 // please use composite templates instead (see sample) as those are
 // fully featured and cleaner to use.
 
+Gtk.Module.Initialize();
+GirCore.Integration.Initialize();
+
 var application = Gtk.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
 application.OnActivate += (sender, args) =>
 {
-    BuilderSample.SampleTestDialog.GetGType(); //TODO: Gets obsolete with automatic subclass registration
-
     var builder = CreateBuilder("SampleTestDialog.4.ui");
     var dialog = (BuilderSample.SampleTestDialog) (builder.GetObject("dialog") ?? throw new Exception("Dialog is null")); ;
     dialog.Connect(builder);

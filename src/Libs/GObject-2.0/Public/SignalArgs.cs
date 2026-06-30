@@ -19,5 +19,9 @@ public class SignalArgs : EventArgs
         Args = args;
     }
 
-    protected T Extract<T>(Value value) => value.Extract<T>();
+    protected static T Extract<T>(Value value) => value.Extract<T>();
+    protected static T[] ExtractArray<T>(Value value, int numberElements) where T : GObject.Object
+    {
+        return value.ExtractArray<T>(numberElements);
+    }
 }

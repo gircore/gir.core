@@ -7,27 +7,21 @@ internal class UnionArray : FieldConverter
         return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.IsArray<GirModel.Union>();
     }
 
-    public RenderableField Convert(GirModel.Field field)
-    {
-        return new RenderableField(
-            Name: Model.Field.GetName(field),
-            Attribute: GetAttribute(field),
-            NullableTypeName: GetNullableTypeName(field)
-        );
-    }
-
-    private static string? GetAttribute(GirModel.Field field)
+    public RenderableField[] Convert(GirModel.Field field)
     {
         var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
-        return arrayType.FixedSize is not null
-            ? MarshalAs.UnmanagedByValArray(sizeConst: arrayType.FixedSize.Value)
-            : null;
+
+        return [new RenderableField(
+            Name: Model.Field.GetName(field),
+            TypeName: GetTypeName(field),
+            Array: new (arrayType.FixedSize, Model.ArrayType.GetDimensions(arrayType))
+        )];
     }
 
-    private static string GetNullableTypeName(GirModel.Field field)
+    private static string GetTypeName(GirModel.Field field)
     {
         var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
         var type = (GirModel.Union) arrayType.AnyType.AsT0;
-        return Model.Union.GetFullyQualifiedInternalStructName(type) + "[]";
+        return Model.Union.GetFullyQualifiedInternalStructName(type);
     }
 }

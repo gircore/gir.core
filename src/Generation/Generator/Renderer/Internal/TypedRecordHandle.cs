@@ -20,6 +20,7 @@ internal static class TypedRecordHandle
         var arrayOwnedHandleTypeName = Model.TypedRecord.GetInternalArrayOwnedHandle(record);
         var fullyQualifiedType = $"{Model.TypedRecord.GetFullyQualifiedPublicClassName(record)}";
         var getGType = $"{Model.TypedRecord.GetFullyQualifiedInternalClassName(record)}.{Function.GetGType}()";
+        var fullyQuallifiedDataName = Model.TypedRecord.GetFullyQuallifiedDataName(record);
 
         return $@"using System;
 using GObject;
@@ -54,7 +55,7 @@ public abstract class {typeName} : SafeHandle, IEquatable<{typeName}>
         return new {unownedHandleTypeName}(ptr);
     }}
 
-    {record.Fields.Select(x => RenderField(record, x)).Join(Environment.NewLine)}
+    {record.Fields.Select(x => RecordHandleHelper.RenderField(record, x)).Join(Environment.NewLine)}
 
     public bool Equals({typeName}? other)
     {{
@@ -206,7 +207,7 @@ public class {arrayUnownedHandleTypeName} : {arrayHandleType}
         {{
             var ownedHandle = new {Model.TypedRecord.GetFullyQuallifiedUnownedHandle(record)}(currentHandle).OwnedCopy();
             data[i] = new {fullyQualifiedType}(ownedHandle);
-            currentHandle += Marshal.SizeOf<{Model.TypedRecord.GetFullyQuallifiedDataName(record)}>();
+            currentHandle += Marshal.SizeOf<{fullyQuallifiedDataName}>();
         }}
 
         return data;
@@ -229,73 +230,27 @@ public class {arrayOwnedHandleTypeName} : {arrayHandleType}
         SetHandle(ptr);
     }}
 
-    public static {arrayOwnedHandleTypeName} Create({Model.TypedRecord.GetFullyQualifiedPublicClassName(record)}[] data)
+    public static unsafe {arrayOwnedHandleTypeName} Create({Model.TypedRecord.GetFullyQualifiedPublicClassName(record)}[] data)
     {{
-        var size = Marshal.SizeOf<{Model.TypedRecord.GetFullyQuallifiedDataName(record)}>();
-        var ptr = Marshal.AllocHGlobal(size * data.Length);
-        var current = ptr;
+        var size = Marshal.SizeOf<{fullyQuallifiedDataName}>();
+        var ptr = ({fullyQuallifiedDataName}*) GLib.Functions.MallocN((nuint)data.Length, (nuint)size);
+        
+        var currentDestination = ptr;
         for (int i = 0; i < data.Length; i++)
         {{
-            Marshal.StructureToPtr(data[i], current, false);
-            current += size;
+            var source = ({fullyQuallifiedDataName}*)data[i].Handle.DangerousGetHandle();
+            System.Buffer.MemoryCopy(source, currentDestination, size, size);
+            currentDestination += 1;
         }}
         
-        return new {arrayOwnedHandleTypeName}(ptr);
+        return new {arrayOwnedHandleTypeName}((System.IntPtr)ptr);
     }}
     
     protected override bool ReleaseHandle()
     {{
-        Marshal.FreeHGlobal(handle);
+        GLib.Functions.Free(handle);
         return true;
     }}
-}}";
-    }
-
-    private static string RenderField(GirModel.Record record, GirModel.Field field)
-    {
-        var renderableField = Fields.GetRenderableField(field);
-
-        if (field is { IsReadable: false, IsWritable: false } || field.IsPrivate)
-            return string.Empty;
-
-        var result = new StringBuilder();
-
-        if (field.IsReadable)
-            result.AppendLine(RenderFieldGetter(record, field, renderableField));
-
-        if (field.IsWritable)
-            result.AppendLine(RenderFieldSetter(record, field, renderableField));
-
-        return result.ToString();
-
-    }
-
-    private static string RenderFieldGetter(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
-    {
-        var typePrefix = field.AnyTypeOrCallback.IsT1 ? $"{Model.TypedRecord.GetDataName(record)}." : string.Empty;
-        var dataName = Model.TypedRecord.GetDataName(record);
-
-        return @$"public unsafe {typePrefix}{renderableField.NullableTypeName} Get{renderableField.Name}()
-{{
-    if (IsClosed || IsInvalid)
-        throw new InvalidOperationException(""Handle is closed or invalid"");
-
-    return Marshal.PtrToStructure<{dataName}>(handle).{renderableField.Name};
-}}";
-    }
-
-    private static string RenderFieldSetter(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
-    {
-        var dataName = Model.TypedRecord.GetDataName(record);
-
-        return @$"public unsafe void Set{renderableField.Name}({renderableField.NullableTypeName} value)
-{{
-    if (IsClosed || IsInvalid)
-        throw new InvalidOperationException(""Handle is closed or invalid"");
-
-    var data = Marshal.PtrToStructure<{dataName}>(handle);
-    data.{renderableField.Name} = value;
-    Marshal.StructureToPtr(data, handle, false);
 }}";
     }
 

@@ -1,4 +1,5 @@
 using AwesomeAssertions;
+using GObject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
@@ -15,6 +16,22 @@ public class PropertyTest : Test
         obj.StringValue = str;
 
         obj.StringValue.Should().Be(str);
+    }
+
+    [TestMethod]
+    public void CanSetPropertiesWithConstructArguments()
+    {
+        var o = PropertyTester.New();
+
+        var stringArg = new ConstructArgument(PropertyTester.StringValuePropertyDefinition.UnmanagedName, new Value("Test"));
+        var int64Arg = new ConstructArgument(PropertyTester.Int64ValuePropertyDefinition.UnmanagedName, new Value(100L));
+        var objectArg = new ConstructArgument(PropertyTester.ObjectValuePropertyDefinition.UnmanagedName, new Value(o));
+
+        var obj = PropertyTester.NewWithProperties([stringArg, int64Arg, objectArg]);
+
+        obj.StringValue.Should().Be("Test");
+        obj.Int64Value.Should().Be(100L);
+        obj.ObjectValue.Should().Be(o);
     }
 
     [TestMethod]
@@ -192,6 +209,10 @@ public class PropertyTest : Test
         obj.ObjectValue.Should().Be(o);
         obj.ObjectValue = null;
         obj.ObjectValue.Should().BeNull();
+
+        obj.ExecutorValue.Should().NotBeNull();
+        obj.ExecutorValue.GetRefCount().Should().Be(2); //C Keeps the ref and dotnet
+        obj.ExecutorValue.GetRefCount().Should().Be(2); //A second access to be sure ref count is not changed
     }
 
     [TestMethod]

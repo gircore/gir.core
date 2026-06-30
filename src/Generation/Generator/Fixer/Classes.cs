@@ -5,8 +5,8 @@ namespace Generator.Fixer;
 
 public static class Classes
 {
-    private static readonly List<Fixer<GirModel.Class>> Fixers = new()
-    {
+    private static readonly List<Fixer<GirModel.Class>> Fixers =
+    [
         new PublicMethodsColldingWithPropertiesFixer(),
         new InternalMethodsNamedLikeClassFixer(),
         new PropertyNamedLikeClassFixer(),
@@ -14,8 +14,9 @@ public static class Classes
         new InterfaceMethodsCollidingWithClassMethodsFixer(),
         new InterfaceMethodsCollidingWithClassConstructorsFixer(),
         new PublicMethodsWithCallbackParameterWithInvalidOutRecordParameterFixer(),
-        new PublicMethodsWithInvalidOutParameterFixer()
-    };
+        new PublicMethodsWithInvalidOutParameterFixer(),
+        new PublicMethodsWithCallbackReturnWhichIsFundamental()
+    ];
 
     public static void Fixup(IEnumerable<GirModel.Class> classes)
     {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <template class="CompositeLabelWidget" parent="GtkLabel">
+        <property name="label">Nothing here…</property>
+    </template>
+</interface>

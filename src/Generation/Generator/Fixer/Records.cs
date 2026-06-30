@@ -12,7 +12,8 @@ public static class Records
         new InternalMethodsNamedLikeRecordFixer(),
         new MethodWithInOutInstanceParameterFixer(),
         new PublicMethodsColldingWithFieldFixer(),
-        new RecordEqualsMethodCollidesWithGeneratedCode()
+        new RecordEqualsMethodCollidesWithGeneratedCode(),
+        new PublicMethodsWithCallbackReturnWhichIsFundamental()
     ];
 
     public static void Fixup(IEnumerable<GirModel.Record> records)

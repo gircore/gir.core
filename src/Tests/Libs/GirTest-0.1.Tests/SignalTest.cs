@@ -1,7 +1,5 @@
 using System;
-using System.Diagnostics;
 using AwesomeAssertions;
-using GLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GirTest.Tests;
@@ -58,7 +56,7 @@ public class SignalTest : Test
     }
 
     [TestMethod]
-    public void SupportsConnectingMultipeIdenticalHandlers()
+    public void SupportsConnectingMultipleIdenticalHandlers()
     {
         var emptyQuark = GLib.Functions.QuarkFromString(null);
 
@@ -116,6 +114,22 @@ public class SignalTest : Test
         };
 
         tester.EmitGbytesSignal();
+        result.Should().BeTrue();
+    }
+
+    [TestMethod]
+    public void SupportsSignalsWithArrayOfObjects()
+    {
+        var tester = SignalTester.New();
+        var result = false;
+
+        tester.OnObjectArraySignal += (sender, args) =>
+        {
+            args.Objects.Should().HaveCount(2);
+            result = true;
+        };
+
+        tester.EmitObjectArraySignal();
         result.Should().BeTrue();
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using GLib.Internal;
-using GObject.Internal;
 
 namespace GObject;
 
@@ -9,7 +9,7 @@ public partial class Value : IDisposable
 {
     public Value(Type type)
     {
-        Handle = ValueManagedHandle.Create();
+        Handle = Internal.ValueManagedHandle.Create();
 
         // We ignore the return parameter as it is a pointer
         // to the same location like the instance parameter.
@@ -56,39 +56,39 @@ public partial class Value : IDisposable
         var type = GetTypeValue();
         return type switch
         {
-            (nuint) BasicType.Boolean => GetBoolean(),
-            (nuint) BasicType.UInt => GetUint(),
-            (nuint) BasicType.Int => GetInt(),
-            (nuint) BasicType.ULong => GetUlong(),
-            (nuint) BasicType.Long => GetLong(),
-            (nuint) BasicType.UInt64 => GetUint64(),
-            (nuint) BasicType.Int64 => GetInt64(),
-            (nuint) BasicType.Double => GetDouble(),
-            (nuint) BasicType.Float => GetFloat(),
-            (nuint) BasicType.String => GetString(),
-            (nuint) BasicType.Pointer => GetPointer(),
+            (nuint) Internal.BasicType.Boolean => GetBoolean(),
+            (nuint) Internal.BasicType.UInt => GetUint(),
+            (nuint) Internal.BasicType.Int => GetInt(),
+            (nuint) Internal.BasicType.ULong => GetUlong(),
+            (nuint) Internal.BasicType.Long => GetLong(),
+            (nuint) Internal.BasicType.UInt64 => GetUint64(),
+            (nuint) Internal.BasicType.Int64 => GetInt64(),
+            (nuint) Internal.BasicType.Double => GetDouble(),
+            (nuint) Internal.BasicType.Float => GetFloat(),
+            (nuint) Internal.BasicType.String => GetString(),
+            (nuint) Internal.BasicType.Pointer => GetPointer(),
             _ => CheckComplexTypes(type)
         };
     }
 
     private object? CheckComplexTypes(nuint gtype)
     {
-        if (Functions.TypeIsA(gtype, (nuint) BasicType.Object))
+        if (Functions.TypeIsA(gtype, (nuint) Internal.BasicType.Object))
             return GetObject();
 
-        if (Functions.TypeIsA(gtype, (nuint) BasicType.Boxed))
+        if (Functions.TypeIsA(gtype, (nuint) Internal.BasicType.Boxed))
             return GetBoxed(gtype);
 
-        if (Functions.TypeIsA(gtype, (nuint) BasicType.Enum))
+        if (Functions.TypeIsA(gtype, (nuint) Internal.BasicType.Enum))
             return GetEnum();
 
-        if (Functions.TypeIsA(gtype, (nuint) BasicType.Flags))
+        if (Functions.TypeIsA(gtype, (nuint) Internal.BasicType.Flags))
             return GetFlags();
 
-        if (Functions.TypeIsA(gtype, (nuint) BasicType.Param))
+        if (Functions.TypeIsA(gtype, (nuint) Internal.BasicType.Param))
             return GetParam();
 
-        if (Functions.TypeIsA(gtype, (nuint) BasicType.Variant))
+        if (Functions.TypeIsA(gtype, (nuint) Internal.BasicType.Variant))
             return GetVariant();
 
         var name = Internal.Functions.TypeName(gtype).ConvertToString();
@@ -97,6 +97,20 @@ public partial class Value : IDisposable
     }
 
     internal T Extract<T>() => (T) Extract()!;
+
+    internal T[] ExtractArray<T>(int numberElements) where T : GObject.Object
+    {
+        var arrayPtr = Extract<IntPtr>();
+        var result = new T[numberElements];
+
+        for (var i = 0; i < numberElements; i++)
+        {
+            var elementPtr = Marshal.ReadIntPtr(arrayPtr, i * IntPtr.Size);
+            result[i] = (T) Internal.InstanceWrapper.WrapHandle<T>(elementPtr, false);
+        }
+
+        return result;
+    }
 
     public object? GetBoxed(nuint type)
     {
@@ -115,7 +129,7 @@ public partial class Value : IDisposable
         // method which plays nice with AOT compilation.
 
         // TODO: Should this be GetBoxed/TakeBoxed/DupBoxed? 
-        return BoxedWrapper.WrapHandle(
+        return Internal.BoxedWrapper.WrapHandle(
             handle: Internal.Value.GetBoxed(Handle),
             ownsHandle: false,
             gtype: new Type(type)
@@ -213,10 +227,10 @@ public partial class Value : IDisposable
         var type = GetTypeValue();
         switch (type)
         {
-            case (nuint) BasicType.Long:
+            case (nuint) Internal.BasicType.Long:
                 SetLong(value);
                 return;
-            case (nuint) BasicType.Int64:
+            case (nuint) Internal.BasicType.Int64:
                 SetInt64(value);
                 return;
             default:
@@ -229,10 +243,10 @@ public partial class Value : IDisposable
         var type = GetTypeValue();
         switch (type)
         {
-            case (nuint) BasicType.ULong:
+            case (nuint) Internal.BasicType.ULong:
                 SetUlong(value);
                 return;
-            case (nuint) BasicType.UInt64:
+            case (nuint) Internal.BasicType.UInt64:
                 SetUint64(value);
                 return;
             default:

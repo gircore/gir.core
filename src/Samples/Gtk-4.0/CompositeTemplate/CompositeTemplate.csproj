@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="..\..\..\Extensions\Gtk-4.0.Integration\Gtk-4.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\..\Libs\Gtk-4.0\Gtk-4.0.csproj" />
   </ItemGroup>
 
@@ -13,11 +11,24 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <Target Name="CompileGlibResourcesForBuild" BeforeTargets="CoreCompile">
+    <Message Importance="high" Text="Compiling GResources..." />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="glib-compile-resources --sourcedir &quot;.&quot; &quot;./CompositeTemplate.gresource.xml&quot; --target=&quot;$(TargetDir)CompositeTemplate.app.gresource&quot;" />
+  </Target>
+  
   <ItemGroup>
     <None Remove="**\*.ui" />
     <EmbeddedResource Include="**\*.ui">
       <LogicalName>%(Filename)%(Extension)</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="$(TargetDir)CompositeTemplate.app.gresource">
+      <LogicalName>%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <!-- It is not needed to reference integration projects if the nuget packages are used. The binaries are integrated into their corresponding parent package -->
+    <ProjectReference Include="..\..\..\Integrations\GObject-2.0.Integration\GObject-2.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\Integrations\Gtk-4.0.Integration\Gtk-4.0.Integration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
 </Project>

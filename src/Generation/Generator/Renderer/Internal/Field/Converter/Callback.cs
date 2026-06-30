@@ -7,12 +7,12 @@ internal class Callback : FieldConverter
         return field.AnyTypeOrCallback.IsT1;
     }
 
-    public RenderableField Convert(GirModel.Field field)
+    public RenderableField[] Convert(GirModel.Field field)
     {
-        return new RenderableField(
+        return [new RenderableField(
             Name: Model.Field.GetName(field),
-            Attribute: null,
-            NullableTypeName: Model.Callback.GetInternalDelegateName(field.AnyTypeOrCallback.AsT1)
-        );
+            TypeName: Model.Callback.GetInternalDelegateName(field.AnyTypeOrCallback.AsT1),
+            Array: null
+        )];
     }
 }

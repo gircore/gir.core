@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 
 namespace Generator.Renderer.Internal;
 
@@ -49,16 +50,56 @@ internal static class Fields
 
     public static string Render(GirModel.Field field)
     {
-        var renderableField = GetRenderableField(field);
-        return $"{renderableField.Attribute} public {renderableField.NullableTypeName} {renderableField.Name};";
+        var renderableFields = GetRenderableField(field);
+
+        var sb = new StringBuilder();
+
+        foreach (var renderableField in renderableFields)
+            sb.AppendLine(Render(renderableField));
+
+        return sb.ToString();
     }
 
-    public static Field.RenderableField GetRenderableField(GirModel.Field field)
+    public static Field.RenderableField[] GetRenderableField(GirModel.Field field)
     {
         foreach (var converter in converters)
             if (converter.Supports(field))
                 return converter.Convert(field);
 
         throw new System.Exception($"Internal field \"{field.Name}\" of type {field.AnyTypeOrCallback} can not be rendered");
+    }
+
+    private static string Render(Field.RenderableField renderableField)
+    {
+        return renderableField switch
+        {
+            { Array.FixedSize: not null } => ArrayFixedSize(renderableField),
+            { Array: not null } => Array(renderableField),
+            _ => Single(renderableField),
+        };
+    }
+
+    private static string ArrayFixedSize(Field.RenderableField renderableField)
+    {
+        var inlineArrayName = renderableField.GetInlineArrayTypeName();
+
+        return $$"""
+                public {{inlineArrayName}} {{renderableField.Name}};
+                [System.Runtime.CompilerServices.InlineArray({{renderableField.Array!.FixedSize}})]
+                public struct {{inlineArrayName}}
+                {
+                    public {{renderableField.TypeName}} {{renderableField.Name}};
+                }
+                """;
+    }
+
+    private static string Array(Field.RenderableField renderableField)
+    {
+        return $"public {renderableField.GetArrayTypeName()} {renderableField.Name};";
+    }
+
+    private static string Single(Field.RenderableField renderableField)
+    {
+        return $"public {renderableField.TypeName} {renderableField.Name};";
     }
 }

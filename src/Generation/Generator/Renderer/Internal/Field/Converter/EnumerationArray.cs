@@ -7,25 +7,14 @@ internal class EnumerationArray : FieldConverter
         return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.IsArray<GirModel.Enumeration>();
     }
 
-    public RenderableField Convert(GirModel.Field field)
-    {
-        return new RenderableField(
-            Name: Model.Field.GetName(field),
-            Attribute: GetAttribute(field),
-            NullableTypeName: GetNullableTypeName(field)
-        );
-    }
-    private static string? GetAttribute(GirModel.Field field)
+    public RenderableField[] Convert(GirModel.Field field)
     {
         var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
-        return arrayType.FixedSize is not null
-            ? MarshalAs.UnmanagedByValArray(sizeConst: arrayType.FixedSize.Value)
-            : null;
-    }
 
-    private static string GetNullableTypeName(GirModel.Field field)
-    {
-        var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
-        return Model.ArrayType.GetName(arrayType);
+        return [new RenderableField(
+            Name: Model.Field.GetName(field),
+            TypeName: Model.ArrayType.GetTypeName(arrayType),
+            Array: new(arrayType.FixedSize, Model.ArrayType.GetDimensions(arrayType))
+        )];
     }
 }

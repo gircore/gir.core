@@ -28,7 +28,7 @@ public partial class ItemData
 [Subclass<Window>]
 public partial class CustomObjectGridViewWindow
 {
-    private readonly ListStore _model = ListStore.New(ItemData.GetGType());
+    private readonly ListStore _model = ListStore.New<ItemData>();
 
     partial void Initialize()
     {

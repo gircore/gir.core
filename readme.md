@@ -10,7 +10,7 @@ Gir.Core provides C# bindings for several [GObject] based libraries like [GTK] f
 This project aims to provide a complete set of APIs for writing rich cross-platform user interfaces and multimedia programs. It is built upon the well-established [GObject Introspection][gi] framework for language bindings.
 
 ## Features
-* **Idiomatic C#:** An API which feels natural to C# developers (including the async/await feature).
+* **Deep integration:** GirCore bridges the GObject type system with dotnet. The integration is designed to be close to the GObject concepts to allow a deep integration between both systems without using reflection.
 * **Simplicity:** Memory management is handled automatically, greatly simplifying the C-API.
 * **Complete API:** Support for the entire GTK and GStreamer stack, enabling feature-rich applications which deeply integrate with the OS.
 * **Extensibility:** Allows 3rd party developers to write bindings for other GObject-based libraries, achieving full interoperability between them.
@@ -82,7 +82,7 @@ The folder structure in this repository is organized as follows:
 * **[src/Generation/Generator](src/Generation/Generator):** Code generator generates C# code from GObject Introspection data.
 * **[src/Libs](src/Libs):** Contains manually written code for libraries. The generator outputs code here.
 * **[src/Samples](src/Samples):** Example programs using GTK, GStreamer, and others.
-* **[src/Extensions](src/Extensions):** Auxilary libraries which extend the core libraries.
+* **[src/Integrations](src/Integrations):** Source generators and source analyzers to simplify the GirCore usage.
 * **[src/Tests](src/Tests):** Unit and Integration tests.
 * **[ext/gir-files](https://github.com/gircore/gir-files):** Introspection data from [gircore/gir-files](https://github.com/gircore/gir-files).
 

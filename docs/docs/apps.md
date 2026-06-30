@@ -14,6 +14,19 @@ Applications using gir.core. To add a new application to the list [edit this pag
 [Denaro](https://github.com/NickvisionApps/Denaro) is a personal finance manager.
 ![Denaro screenshot](https://raw.githubusercontent.com/NickvisionApps/Denaro/main/NickvisionMoney.GNOME/Screenshots/OpenAccount.png)
 
+## JellyTune
+[JellyTune](https://github.com/bacmanni/jellytune) is a Gnome audio client for Jellyfin.
+![JellyTune screenshot](https://raw.githubusercontent.com/bacmanni/jellytune/main/Screenshots/Wide.png)
+
+## Maus
+[Maus](https://github.com/badcel/Maus) is an app that allows configuring a Microsoft IntelliMouse Pro. It is intended to be a technology demo to demonstrate the latest GirCore features in a small app.
+
+![Maus screenshot](https://raw.githubusercontent.com/badcel/Maus/refs/heads/main/img/app.png)
+
+## Ouch Browser
+[Ouch Browser](https://codeberg.org/shrimple/OuchBrowser.NET) is a web browser featuring vertical tabs.
+![Ouch Browser screenshot](https://codeberg.org/shrimple/OuchBrowser.NET/raw/branch/main/OuchBrowser/Data/Screenshots/Screenshot%20with%20Sidebar%20Open.png)
+
 ## Parabolic
 [Parabolic](https://github.com/NickvisionApps/Parabolic) is a downloader for web video and audio media.
 ![Parabolic screenshot](https://raw.githubusercontent.com/NickvisionApps/Parabolic/main/Nickvision.Parabolic.GNOME/Screenshots/Downloading.png)

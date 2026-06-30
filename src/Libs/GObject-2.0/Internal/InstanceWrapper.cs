@@ -16,9 +16,21 @@ public static class InstanceWrapper
         if (handle == IntPtr.Zero)
             throw new NullReferenceException("Failed to wrap handle: Null handle passed to WrapHandle.");
 
-        if (InstanceCache.TryGetObject(handle, out var obj))
-            return obj;
+        var result = InstanceCache.TryGetObject(handle, out var obj)
+            ? obj
+            : DynamicInstanceFactory.Create<TFallback>(handle, ownedRef); //owned ref information for records only
 
-        return DynamicInstanceFactory.Create<TFallback>(handle, ownedRef);
+        if (result is GObject.Object && ownedRef)
+        {
+            //For classes only:
+            //If a system boundary is crossed with transfer full to C# we remove
+            //a ref because there is always a ref for dotnet in addition to C.
+            //If we would not do this, we would leak memory because there would be
+            //2 refs and only dotnet would unref.
+            Object.TakeRef(handle);
+            Object.Unref(handle);
+        }
+
+        return result;
     }
 }

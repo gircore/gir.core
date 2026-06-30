@@ -18,5 +18,8 @@ girtest_signal_tester_emit_my_signal_fubar (GirTestSignalTester *tester);
 void
 girtest_signal_tester_emit_gbytes_signal (GirTestSignalTester *tester);
 
+void
+girtest_signal_tester_emit_object_array_signal (GirTestSignalTester *tester);
+
 G_END_DECLS
 

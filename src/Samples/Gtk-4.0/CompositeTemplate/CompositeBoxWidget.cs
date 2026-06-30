@@ -1,6 +1,6 @@
 namespace CompositeTemplate;
 
-[GObject.Subclass<Gtk.Box>]
+[GObject.Subclass<Gtk.Box>(qualifiedName: nameof(CompositeBoxWidget))]
 [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
 public partial class CompositeBoxWidget
 {
@@ -9,6 +9,6 @@ public partial class CompositeBoxWidget
 
     partial void Initialize()
     {
-        _label.Label_ = "With support for connected members!";
+        _label.Label_ = "With support for connected members…";
     }
 }

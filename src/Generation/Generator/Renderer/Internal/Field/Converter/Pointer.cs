@@ -7,12 +7,12 @@ internal class Pointer : FieldConverter
         return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.Is<GirModel.Pointer>();
     }
 
-    public RenderableField Convert(GirModel.Field field)
+    public RenderableField[] Convert(GirModel.Field field)
     {
-        return new RenderableField(
+        return [new RenderableField(
             Name: Model.Field.GetName(field),
-            Attribute: null,
-            NullableTypeName: Model.Type.Pointer
-        );
+            TypeName: Model.Type.Pointer,
+            Array: null
+        )];
     }
 }

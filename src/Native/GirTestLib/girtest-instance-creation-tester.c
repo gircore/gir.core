@@ -133,3 +133,27 @@ GirTestExecutor* girtest_instance_creation_tester_interface_create_transfer_none
 
 	return GIRTEST_EXECUTOR(obj);
 }
+
+/**
+ * girtest_instance_creation_tester_get_current_transfer_full:
+ * @instance: Instance
+ *
+ * Returns: (transfer full) (nullable): Instance of the given type.
+ */
+GObject* girtest_instance_creation_tester_get_current_transfer_full(GirTestInstanceCreationTester *instance)
+{
+    GObject* ret = instance->obj;
+    instance->obj = NULL;
+    return ret;
+}
+
+/**
+ * girtest_instance_creation_tester_get_current_transfer_none:
+ * @instance: Instance
+ *
+ * Returns: (transfer none) (nullable): Instance of the given type.
+ */
+GObject* girtest_instance_creation_tester_get_current_transfer_none(GirTestInstanceCreationTester *instance)
+{
+    return instance->obj;
+}

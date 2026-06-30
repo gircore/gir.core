@@ -9,16 +9,16 @@ internal class UntypedRecord : FieldConverter
         return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.Is<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
     }
 
-    public RenderableField Convert(GirModel.Field field)
+    public RenderableField[] Convert(GirModel.Field field)
     {
-        return new RenderableField(
+        return [new RenderableField(
             Name: Model.Field.GetName(field),
-            Attribute: null,
-            NullableTypeName: GetNullableTypeName(field)
-        );
+            TypeName: GetTypeName(field),
+            Array: null
+        )];
     }
 
-    private static string GetNullableTypeName(GirModel.Field field)
+    private static string GetTypeName(GirModel.Field field)
     {
         var type = (GirModel.Record) field.AnyTypeOrCallback.AsT0.AsT0;
         return field.IsPointer

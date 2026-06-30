@@ -7,16 +7,16 @@ internal class PrimitiveValueTypeAlias : FieldConverter
         return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.IsAlias<GirModel.PrimitiveValueType>();
     }
 
-    public RenderableField Convert(GirModel.Field field)
+    public RenderableField[] Convert(GirModel.Field field)
     {
-        return new RenderableField(
+        return [new RenderableField(
             Name: Model.Field.GetName(field),
-            Attribute: null,
-            NullableTypeName: GetNullableTypeName(field)
-        );
+            TypeName: GetTypeName(field),
+            Array: null
+        )];
     }
 
-    private static string GetNullableTypeName(GirModel.Field field)
+    private static string GetTypeName(GirModel.Field field)
     {
         return field.IsPointer
             ? Model.Type.Pointer

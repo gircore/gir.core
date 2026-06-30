@@ -4,7 +4,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Extensions\GObject-2.0.Integration\GObject-2.0.Integration.csproj" />
+    <ProjectReference Include="..\..\..\Integrations\GObject-2.0.Integration\GObject-2.0.Integration.csproj" />
     <ProjectReference Include="..\..\Data\GObject-2.0.Integration.Tests.Data\GObject-2.0.Integration.Tests.Data.csproj" />
   </ItemGroup>
 

@@ -17,7 +17,7 @@ application.OnActivate += (sender, args) =>
     var columnView = Gtk.ColumnView.New(null);
     columnView.AppendColumn(column);
 
-    var data = Gio.ListStore.New(Data.GetGType());
+    var data = Gio.ListStore.New<Data>();
     data.Append(Data.New("One"));
     data.Append(Data.New("Two"));
 
