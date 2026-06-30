@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GObject.Integration.SourceGenerator;
 
@@ -9,19 +10,21 @@ internal static class SubclassValuesProvider
     public static IncrementalValuesProvider<SubclassData> GetSubclassValuesProvider(this IncrementalGeneratorInitializationContext context)
     {
         return context.SyntaxProvider
-            .ForAttributeWithMetadataName(
-                fullyQualifiedMetadataName: SubclassAttribute.MetadataName,
-                predicate: static (_, _) => true,
+            .CreateSyntaxProvider(
+                predicate: static (node, _) => node is ClassDeclarationSyntax { AttributeLists.Count: > 0 },
                 transform: GetSubclassData)
             .Where(data => data is not null)!;
     }
 
-    private static SubclassData? GetSubclassData(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
+    private static SubclassData? GetSubclassData(GeneratorSyntaxContext context, CancellationToken cancellationToken)
     {
-        if (context.TargetSymbol is not INamedTypeSymbol subclass)
+        if (context.Node is not ClassDeclarationSyntax classSyntax)
             return null;
 
-        var subclassAttribute = context.Attributes.FirstOrDefault(a => a.IsSubclassAttribute());
+        if (context.SemanticModel.GetDeclaredSymbol(classSyntax, cancellationToken) is not INamedTypeSymbol subclass)
+            return null;
+
+        var subclassAttribute = subclass.GetAttributes().FirstOrDefault(a => a.IsSubclassAttribute());
         if (subclassAttribute is null)
             return null;
 
@@ -43,7 +46,8 @@ internal static class SubclassValuesProvider
             Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
             ParentHandle: parentHandle,
             IsInitiallyUnowned: IsInitiallyUnowned(parentType),
-            IsSealed: subclass.IsSealed
+            IsSealed: subclass.IsSealed,
+            IsAbstractSubclass: subclass.IsAbstract
         );
     }
 
@@ -76,7 +80,7 @@ internal static class SubclassValuesProvider
     {
         var subclassAttribute = type
             .GetAttributes()
-            .FirstOrDefault(x => x.AttributeClass?.ConstructedFrom.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == SubclassAttribute.FullyQualifiedDisplayName);
+            .FirstOrDefault(x => x.IsSubclassAttribute());
 
         if (subclassAttribute is null)
             return null;
