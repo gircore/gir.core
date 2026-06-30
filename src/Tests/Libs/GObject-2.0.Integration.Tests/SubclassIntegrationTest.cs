@@ -39,6 +39,22 @@ public class SubclassIntegrationTest : Test
     }
 
     [TestMethod]
+    public void AbstractSubclassShouldRegisterGTypeAndInitializeThroughConcreteSubclass()
+    {
+        SomeAbstractSubClass.GetGType().Value.Should().NotBe(0);
+
+        var obj = SomeConcreteSubClass.NewWithProperties([]);
+        obj.InitializedCount.Should().Be(1);
+    }
+
+    [TestMethod]
+    public void ShouldAllowSubclassOfAbstractSubclass()
+    {
+        var obj = SomeConcreteSubClass.NewWithProperties([]);
+        obj.InitializedCount.Should().Be(1);
+    }
+
+    [TestMethod]
     public void ShouldHaveGtype()
     {
         SomeSubClass.GetGType().Value.Should().NotBe(0);

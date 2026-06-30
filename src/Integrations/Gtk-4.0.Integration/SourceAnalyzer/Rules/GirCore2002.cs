@@ -48,7 +48,12 @@ internal sealed class GirCore2002 : Rule
         var subclassAttributeLocation = classDeclarationSyntax
             .AttributeLists
             .SelectMany(x => x.Attributes)
-            .First(x => context.SemanticModel.GetTypeInfo(x).Type?.Name == "SubclassAttribute")
+            .First(x =>
+            {
+                var attributeType = context.SemanticModel.GetTypeInfo(x).Type;
+                var displayString = attributeType?.OriginalDefinition.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                return displayString == SubclassAttribute.FullyQualifiedDisplayName;
+            })
             .GetLocation();
 
         var diagnostic = Diagnostic.Create(DiagnosticDescriptor, subclassAttributeLocation);
