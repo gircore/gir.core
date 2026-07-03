@@ -29,6 +29,7 @@
 #include "girtest-signal-tester.h"
 #include "girtest-string-array-tester.h"
 #include "girtest-string-tester.h"
+#include "girtest-subclass-tester.h"
 #include "girtest-typed-record-copy-annotation-tester.h"
 #include "girtest-typed-record-tester.h"
 #include "girtest-ulong-record-tester.h"
