@@ -64,4 +64,7 @@ public partial class Surface
 
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_status")]
     public static extern Status Status(SurfaceHandle handle);
+
+    [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_surface_write_to_png")]
+    public static extern Status WriteToPng(SurfaceHandle handle, GLib.Internal.NonNullableUtf8StringOwnedHandle filename);
 }
