@@ -23,6 +23,17 @@ public class DiagnosticAnalyzerTest : Test
                                                public partial class NotRaiseGirCore2001;
                                                """;
 
+    private const string RaiseGirCore2001ForAbstractSubclass = """
+                                                               [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
+                                                               public abstract partial class RaiseGirCore2001ForAbstractSubclass;
+                                                               """;
+
+    private const string NotRaiseGirCore2001ForAbstractSubclass = """
+                                                                  [GObject.Subclass<Gtk.Widget>]
+                                                                  [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
+                                                                  public abstract partial class NotRaiseGirCore2001ForAbstractSubclass;
+                                                                  """;
+
     private const string RaiseGirCore2002 = """
                                             [GObject.Subclass<GObject.Object>]
                                             [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
@@ -34,6 +45,18 @@ public class DiagnosticAnalyzerTest : Test
                                                [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
                                                public partial class NotRaiseGirCore2002;
                                                """;
+
+    private const string RaiseGirCore2002ForAbstractSubclass = """
+                                                               [GObject.Subclass<GObject.Object>]
+                                                               [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
+                                                               public abstract partial class RaiseGirCore2002ForAbstractSubclass;
+                                                               """;
+
+    private const string NotRaiseGirCore2002ForAbstractSubclass = """
+                                                                  [GObject.Subclass<Gtk.Widget>]
+                                                                  [Gtk.Template<Gtk.AssemblyResource>("CompositeBoxWidget.ui")]
+                                                                  public abstract partial class NotRaiseGirCore2002ForAbstractSubclass;
+                                                                  """;
 
     private const string RaiseGirCore2003 = """
                                             public partial class RaiseGirCore2003
@@ -70,9 +93,13 @@ public class DiagnosticAnalyzerTest : Test
 
     [TestMethod]
     [DataRow(RaiseGirCore2001, "GirCore2001", true)]
+    [DataRow(RaiseGirCore2001ForAbstractSubclass, "GirCore2001", true)]
     [DataRow(NotRaiseGirCore2001, "GirCore2001", false)]
+    [DataRow(NotRaiseGirCore2001ForAbstractSubclass, "GirCore2001", false)]
     [DataRow(RaiseGirCore2002, "GirCore2002", true)]
+    [DataRow(RaiseGirCore2002ForAbstractSubclass, "GirCore2002", true)]
     [DataRow(NotRaiseGirCore2002, "GirCore2002", false)]
+    [DataRow(NotRaiseGirCore2002ForAbstractSubclass, "GirCore2002", false)]
     [DataRow(RaiseGirCore2003, "GirCore2003", true)]
     [DataRow(NotRaiseGirCore2003, "GirCore2003", false)]
     public async Task ShouldRaiseExpectedDiagnosticIds(string code, string diagnosticId, bool diagnosticIdExpected)

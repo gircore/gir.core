@@ -6,5 +6,6 @@ internal sealed record SubclassData(
     string Parent,
     string ParentHandle,
     bool IsInitiallyUnowned,
-    bool IsSealed
+    bool IsSealed,
+    bool IsAbstract
 );

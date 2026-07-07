@@ -51,6 +51,32 @@ public class DiagnosticAnalyzerTest : Test
                                             private partial class RaiseGirCore1008;
                                             """;
 
+    private const string RaiseGirCore1002ForAbstractSubclass = """
+                                                               [GObject.Subclass<GObject.Object>]
+                                                               public abstract partial class RaiseGirCore1002ForAbstractSubclass
+                                                               {
+                                                                   public RaiseGirCore1002ForAbstractSubclass() { }
+                                                               }
+                                                               """;
+
+    private const string RaiseGirCore1004ForAbstractSubclass = """
+                                                               [GObject.Subclass<GObject.Object>]
+                                                               public abstract partial class RaiseGirCore1004ForAbstractSubclass<T>;
+                                                               """;
+
+    private const string RaiseGirCore1006ForAbstractSubclass = """
+                                                               [GObject.Subclass<GObject.Object>]
+                                                               public abstract partial class RaiseGirCore1006ForAbstractSubclass
+                                                               {
+                                                                   public RaiseGirCore1006ForAbstractSubclass(int a) { }
+                                                               }
+                                                               """;
+
+    private const string RaiseGirCore1008ForAbstractSubclass = """
+                                                               [GObject.Subclass<GObject.Object>]
+                                                               private abstract partial class RaiseGirCore1008ForAbstractSubclass;
+                                                               """;
+
     private const string NotRaiseGirCore1002 = """
                                                [GObject.Subclass<GObject.Object>]
                                                public partial class NotRaiseGirCore1002
@@ -65,6 +91,31 @@ public class DiagnosticAnalyzerTest : Test
                                                
                                                public class NotRaiseGirCore1004<T> : NotRaiseGirCore1004;
                                                """;
+
+    private const string NotRaiseGirCore1002ForAbstractSubclass = """
+                                                                  [GObject.Subclass<GObject.Object>]
+                                                                  public abstract partial class NotRaiseGirCore1002ForAbstractSubclass
+                                                                  {
+                                                                      static NotRaiseGirCore1002ForAbstractSubclass() { }
+                                                                  }
+                                                                  """;
+
+    private const string NotRaiseGirCore1004ForAbstractSubclass = """
+                                                                  [GObject.Subclass<GObject.Object>]
+                                                                  public abstract partial class NotRaiseGirCore1004ForAbstractSubclass;
+                                                                  
+                                                                  public class NotRaiseGirCore1004ForAbstractSubclass<T> : NotRaiseGirCore1004ForAbstractSubclass;
+                                                                  """;
+
+    private const string NotRaiseGirCore1006ForAbstractSubclass = """
+                                                                  [GObject.Subclass<GObject.Object>]
+                                                                  public abstract partial class NotRaiseGirCore1006ForAbstractSubclass;
+                                                                  """;
+
+    private const string NotRaiseGirCore1008ForAbstractSubclass = """
+                                                                  [GObject.Subclass<GObject.Object>]
+                                                                  public abstract partial class NotRaiseGirCore1008ForAbstractSubclass;
+                                                                  """;
 
     private const string DuplicateSubclassNameOne = """
                                                     using GObject;
@@ -90,8 +141,16 @@ public class DiagnosticAnalyzerTest : Test
     [DataRow(RaiseGirCore1005, "GirCore1005", true)]
     [DataRow(RaiseGirCore1006, "GirCore1006", true)]
     [DataRow(RaiseGirCore1008, "GirCore1008", true)]
+    [DataRow(RaiseGirCore1002ForAbstractSubclass, "GirCore1002", true)]
+    [DataRow(RaiseGirCore1004ForAbstractSubclass, "GirCore1004", true)]
+    [DataRow(RaiseGirCore1006ForAbstractSubclass, "GirCore1006", true)]
+    [DataRow(RaiseGirCore1008ForAbstractSubclass, "GirCore1008", true)]
     [DataRow(NotRaiseGirCore1002, "GirCore1002", false)]
     [DataRow(NotRaiseGirCore1004, "GirCore1004", false)]
+    [DataRow(NotRaiseGirCore1002ForAbstractSubclass, "GirCore1002", false)]
+    [DataRow(NotRaiseGirCore1004ForAbstractSubclass, "GirCore1004", false)]
+    [DataRow(NotRaiseGirCore1006ForAbstractSubclass, "GirCore1006", false)]
+    [DataRow(NotRaiseGirCore1008ForAbstractSubclass, "GirCore1008", false)]
     [DataRow(RaiseGirCore1005, "GirCore1004", false)]
     [DataRow(RaiseGirCore1004, "GirCore1005", false)]
     public async Task ShouldRaiseExpectedDiagnosticIds(string code, string diagnosticId, bool diagnosticIdExpected)
