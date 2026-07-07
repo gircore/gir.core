@@ -11,6 +11,9 @@ public class ImageSurface
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_image_surface_create_for_data")]
     public static extern SurfaceOwnedHandle CreateForData(IntPtr data, Cairo.Format format, int width, int height, int stride);
 
+    [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_image_surface_create_from_png")]
+    public static extern SurfaceOwnedHandle CreateFromPng(GLib.Internal.NonNullableUtf8StringOwnedHandle filename);
+
     [DllImport(CairoImportResolver.Library, EntryPoint = "cairo_image_surface_get_data")]
     public static extern IntPtr GetData(SurfaceHandle handle);
 

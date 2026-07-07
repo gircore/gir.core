@@ -19,6 +19,12 @@ public class ImageSurface : Surface
         SetUserData(data);
     }
 
+    public ImageSurface(string pngFilename) :
+        base(Internal.ImageSurface.CreateFromPng(GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(pngFilename)))
+    {
+        Handle.AddMemoryPressure(GetSizeInBytes());
+    }
+
     private void SetUserData(GLib.Bytes data)
     {
         var userDataHandler = new Internal.UserDataHandler(data.Handle);
