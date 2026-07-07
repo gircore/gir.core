@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -65,6 +66,24 @@ public class DiagnosticAnalyzerTest : Test
                                                public class NotRaiseGirCore1004<T> : NotRaiseGirCore1004;
                                                """;
 
+    private const string DuplicateSubclassNameOne = """
+                                                    using GObject;
+
+                                                    namespace DuplicateSubclassName.One;
+
+                                                    [Subclass<GObject.Object>]
+                                                    public partial class Widget;
+                                                    """;
+
+    private const string DuplicateSubclassNameTwo = """
+                                                    using GObject;
+
+                                                    namespace DuplicateSubclassName.Two;
+
+                                                    [Subclass<GObject.Object>]
+                                                    public partial class Widget;
+                                                    """;
+
     [TestMethod]
     [DataRow(RaiseGirCore1002, "GirCore1002", true)]
     [DataRow(RaiseGirCore1004, "GirCore1004", true)]
@@ -99,5 +118,39 @@ public class DiagnosticAnalyzerTest : Test
             diagnostics.ContainsDiagnostic(diagnosticId);
         else
             diagnostics.ContainsNoDiagnostic(diagnosticId);
+    }
+
+    [TestMethod]
+    public void ShouldGenerateNamespaceQualifiedHintNamesForDuplicateSubclassNames()
+    {
+        var compilation = CSharpCompilation.Create(
+            assemblyName: nameof(ShouldGenerateNamespaceQualifiedHintNamesForDuplicateSubclassNames),
+            syntaxTrees: [
+                CSharpSyntaxTree.ParseText(DuplicateSubclassNameOne),
+                CSharpSyntaxTree.ParseText(DuplicateSubclassNameTwo)
+            ],
+            options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary),
+            references: [
+                MetadataReference.CreateFromFile(System.Reflection.Assembly.Load("System.Runtime").Location),
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(GObject.Object).Assembly.Location)
+            ]
+        );
+
+        GeneratorDriver driver = CSharpGeneratorDriver.Create(new SourceGenerator.Generator());
+        driver = driver.RunGeneratorsAndUpdateCompilation(compilation, out _, out var generatorDiagnostics, TestContext.CancellationToken);
+
+        generatorDiagnostics.ContainsNoDiagnostic("CS8785");
+
+        var generatedHintNames = driver
+            .GetRunResult()
+            .Results
+            .SelectMany(x => x.GeneratedSources)
+            .Select(x => x.HintName)
+            .ToList();
+
+        CollectionAssert.Contains(generatedHintNames, "DuplicateSubclassName.One.Widget.Subclass.g.cs");
+        CollectionAssert.Contains(generatedHintNames, "DuplicateSubclassName.Two.Widget.Subclass.g.cs");
+        CollectionAssert.AllItemsAreUnique(generatedHintNames);
     }
 }
