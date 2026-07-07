@@ -86,4 +86,10 @@ public partial class Surface
             ? null
             : new Device(deviceHandle.OwnedCopy());
     }
+
+    public Status WriteToPng(string filename)
+    {
+        using var filenameNative = GLib.Internal.NonNullableUtf8StringOwnedHandle.Create(filename);
+        return Internal.Surface.WriteToPng(Handle, filenameNative);
+    }
 }
