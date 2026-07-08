@@ -125,6 +125,7 @@ internal static class SubclassCode
                        {
                            var classDefinition = (global::GObject.Internal.ObjectClassUnmanaged*) cls;
                            classDefinition->Dispose = &Dispose;
+                           classDefinition->Constructed = &Constructed;
                       
                            CompositeTemplateClassInit(cls, clsData);
                        }
@@ -134,10 +135,6 @@ internal static class SubclassCode
                        private static void InstanceInit(System.IntPtr instance, System.IntPtr cls)
                        {
                            CompositeTemplateInstanceInit(instance, cls);
-                           
-                           var handle = new {{subclassData.ParentHandle}}(instance);
-                           var obj = new {{subclassData.TypeData.Properties.NameGenericArguments}}(handle);
-                           global::GObject.Internal.InstanceCache.AddToggleRef(obj);
                        }
                       
                        {{GeneratedCodeAttribute.Render()}}
@@ -145,11 +142,32 @@ internal static class SubclassCode
                        private static void Dispose(System.IntPtr instance)
                        {
                            CompositeTemplateDispose(instance);
-                      
-                           // Call into parent's dispose method
-                           var parentType = global::GObject.Internal.Functions.TypeParent(GType);
-                           var parentTypeClass = (global::GObject.Internal.ObjectClassUnmanaged*) global::GObject.Internal.TypeClass.Peek(parentType).DangerousGetHandle();
-                           parentTypeClass->Dispose(instance);
+                           GetParentTypeClass()->Dispose(instance);
+                       }
+                       
+                       {{GeneratedCodeAttribute.Render()}}
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       private static void Constructed(System.IntPtr instance)
+                       {
+                           if(!global::GObject.Internal.InstanceCache.TryGetObject(instance, out _))
+                           {
+                                var handle = new {{subclassData.ParentHandle}}(instance);
+                                var obj = new {{subclassData.TypeData.Properties.NameGenericArguments}}(handle);
+                                global::GObject.Internal.InstanceCache.AddToggleRef(obj);
+                           }
+                           else
+                           {
+                                // If the instance is already in the cache we are somewhere up 
+                                // in the inheritance chain and don't need to create a new dotnet instance.
+                           }
+
+                           GetParentTypeClass()->Constructed(instance);
+                       }
+                       
+                       private static global::GObject.Internal.ObjectClassUnmanaged* GetParentTypeClass()
+                       {
+                            var parentType = global::GObject.Internal.Functions.TypeParent(GType);
+                            return (global::GObject.Internal.ObjectClassUnmanaged*) global::GObject.Internal.TypeClass.Peek(parentType).DangerousGetHandle();
                        }
                        
                        /// <summary>
