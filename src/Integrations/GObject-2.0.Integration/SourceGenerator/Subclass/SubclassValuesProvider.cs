@@ -43,7 +43,8 @@ internal static class SubclassValuesProvider
             Parent: parentType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
             ParentHandle: parentHandle,
             IsInitiallyUnowned: IsInitiallyUnowned(parentType),
-            IsSealed: subclass.IsSealed
+            IsSealed: subclass.IsSealed,
+            IsAbstract: subclass.IsAbstract
         );
     }
 
@@ -76,7 +77,7 @@ internal static class SubclassValuesProvider
     {
         var subclassAttribute = type
             .GetAttributes()
-            .FirstOrDefault(x => x.AttributeClass?.ConstructedFrom.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == SubclassAttribute.FullyQualifiedDisplayName);
+            .FirstOrDefault(x => x.IsSubclassAttribute());
 
         if (subclassAttribute is null)
             return null;
