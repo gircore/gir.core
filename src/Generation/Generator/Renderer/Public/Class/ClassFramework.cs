@@ -29,11 +29,6 @@ public {@sealed}partial class {cls.Name} {RenderInheritance(cls)}
 {{
     protected internal {cls.Name}({Class.GetFullyQualifiedInternalHandleName(cls)} handle) : base(handle) {{ }}
 
-    [ObsoleteAttribute(""Regular C# constructors on native classes will be removed in a future version. Please see the linked documentation for more details. It contains scenarios and possible solutions to prepare for the upcoming changes."", DiagnosticId = ""GirCore1007"", UrlFormat = ""https://gircore.github.io/docs/integration/diagnostic/1007.html"")]
-    public {cls.Name}(params GObject.ConstructArgument[] constructArguments) : this(CreateLegacy(constructArguments)) {{ }}
-    [ObsoleteAttribute(""This constructor is a workaround to keep legacy APIs alive. Do not use it."")]
-    protected {cls.Name}(GObject.CreationData data) : base(data) {{ }}
-
     /// <summary>
     /// Creates a new {cls.Name} and sets the properties specified by the construct arguments.
     /// </summary>
@@ -62,22 +57,6 @@ public {@sealed}partial class {cls.Name} {RenderInheritance(cls)}
        {RenderUnref(cls)}
 
        return obj;
-    }}
-
-    private static GObject.CreationData CreateLegacy(GObject.ConstructArgument[] arguments)
-    {{
-        var ptr = GObject.Internal.Object.NewWithProperties(GetGType(), arguments);
-        var handle = new {Class.GetFullyQualifiedInternalHandleName(cls)}(ptr);
-        
-        return new GObject.CreationData
-        {{
-            Handle = handle, 
-            Setup = (obj) => 
-            {{ 
-                GObject.Internal.InstanceCache.AddToggleRef(obj);
-                {RenderUnrefLegacy(cls)}
-            }}
-        }};
     }}
 }}";
     }
