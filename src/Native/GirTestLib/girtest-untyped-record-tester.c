@@ -6,6 +6,9 @@
  * Test untyped records
  */
 
+static GirTestUntypedRecordTester staticElement1;
+static GirTestUntypedRecordTester staticElement2;
+
 /**
  * girtest_untyped_record_tester_new_with_a: (constructor)
  *
@@ -97,6 +100,48 @@ int girtest_untyped_record_tester_get_a_nullable(int fallback, GirTestUntypedRec
 void girtest_untyped_record_tester_out_parameter_caller_allocates(int v, GirTestUntypedRecordTester *record)
 {
     record->a = v;
+}
+
+/**
+ * girtest_untyped_record_tester_returns_transfer_container:
+ * Returns: (transfer container) (element-type GirTestUntypedRecordTester)
+ */
+GirTestUntypedRecordContainerTester*
+girtest_untyped_record_tester_returns_transfer_container()
+{
+    GirTestUntypedRecordContainerTester *containerPtr1;
+    GirTestUntypedRecordContainerTester *containerPtr2;
+
+    staticElement1.a = 1;
+    staticElement2.a = 2;
+
+    containerPtr1 = g_slice_new0 (GirTestUntypedRecordContainerTester);
+    containerPtr2 = g_slice_new0 (GirTestUntypedRecordContainerTester);
+
+    containerPtr1->data = &staticElement1;
+    containerPtr1->next = containerPtr2;
+
+    containerPtr2->data = &staticElement2;
+    containerPtr2->next = NULL;
+
+    return containerPtr1;
+}
+
+/**
+ * girtest_untyped_record_tester_get_nth_container_data:
+ * @container: a #GirTestUntypedRecordContainerTester
+ * @n: the position of the element
+ *
+ * Returns: the element's data, or %NULL if the position
+ *     is off the end of the #GSList
+ */
+GirTestUntypedRecordTester*
+girtest_untyped_record_tester_get_nth_container_data(GirTestUntypedRecordContainerTester* container, guint n)
+{
+    while (n-- > 0 && container)
+        container = container->next;
+
+    return container ? container->data : NULL;
 }
 
 /**

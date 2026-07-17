@@ -18,6 +18,7 @@ internal class UntypedRecord : ReturnTypeConverter
         {
             { Transfer: Transfer.Full } => Model.TypedRecord.GetFullyQuallifiedOwnedHandle(type),
             { Transfer: Transfer.None } => Model.TypedRecord.GetFullyQuallifiedUnownedHandle(type),
+            { Transfer: Transfer.Container } => Model.TypedRecord.GetFullyQuallifiedOwnedHandle(type),
             _ => throw new Exception($"Unsupported transfer type {returnType.Transfer} for untyped record {type.Name}")
         };
 
