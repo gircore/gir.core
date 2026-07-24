@@ -52,6 +52,7 @@ The upcoming features and releases can be checked out in the [milestones](https:
 | [GtkSource-5][GtkSourceNuget]             | Extends a Gtk.TextView to be like a source code editor |
 | [Secret-1][SecretNuget]                   | Access to the system keyring via libsecret             |
 | [Rsvg-2.0][RsvgNuget]                     | SVG rendering library                                  |
+| [Geoclue-2.0][GeoclueNuget]               | Location services library                              |
 
 
 ## Get Involved
@@ -113,6 +114,7 @@ The code in the library folder is not complete because most of the code is gener
 [GtkSourceNuget]: https://www.nuget.org/packages/GirCore.GtkSource-5/
 [SecretNuget]: https://www.nuget.org/packages/GirCore.Secret-1/
 [RsvgNuget]: https://www.nuget.org/packages/GirCore.Rsvg-2.0/
+[GeoclueNuget]: https://www.nuget.org/packages/GirCore.Geoclue-2.0/
 
 ## Licensing terms
 Gir.Core is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.

@@ -16,6 +16,7 @@ let girFiles =
         "GdkPixbuf-2.0.gir"
         "GdkWayland-4.0.gir"
         "GdkWin32-4.0.gir"
+        "Geoclue-2.0.gir"
         "Gio-2.0.gir"
         "GLib-2.0.gir"
         "GObject-2.0.gir"
