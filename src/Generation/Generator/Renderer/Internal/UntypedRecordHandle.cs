@@ -17,7 +17,7 @@ internal static class UntypedRecordHandle
         var arrayHandleType = Model.UntypedRecord.GetInternalArrayHandle(record);
         var arrayUnownedHandleTypeName = Model.UntypedRecord.GetInternalArrayUnownedHandle(record);
         var arrayOwnedHandleTypeName = Model.UntypedRecord.GetInternalArrayOwnedHandle(record);
-        var fullyQualifiedType = Model.TypedRecord.GetFullyQualifiedPublicClassName(record);
+        var fullyQualifiedType = Model.UntypedRecord.GetFullyQualifiedPublicClassName(record);
         var fullyQuallifiedDataName = Model.UntypedRecord.GetFullyQuallifiedDataName(record);
 
         return $@"using System;
@@ -186,7 +186,7 @@ public class {arrayUnownedHandleTypeName} : {arrayHandleType}
         {{
             var ownedHandle = new {Model.UntypedRecord.GetFullyQuallifiedUnownedHandle(record)}(currentHandle).Copy();
             data[i] = new {fullyQualifiedType}(ownedHandle);
-            currentHandle += Marshal.SizeOf<{Model.TypedRecord.GetFullyQuallifiedDataName(record)}>();
+            currentHandle += Marshal.SizeOf<{Model.UntypedRecord.GetFullyQuallifiedDataName(record)}>();
         }}
 
         return data;
