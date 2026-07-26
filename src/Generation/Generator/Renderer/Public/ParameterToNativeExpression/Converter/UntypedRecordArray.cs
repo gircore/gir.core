@@ -89,10 +89,10 @@ internal class UntypedRecordArray : ToNativeParameterConverter
         parameter.SetCallName(() => nativeVariableName);
 
         var nullable = parameter.Parameter.Nullable
-            ? $"{parameterName} is null ? ({Model.TypedRecord.GetFullyQuallifiedArrayHandle(record)}){Model.TypedRecord.GetFullyQuallifiedArrayNullHandle(record)} : "
+            ? $"{parameterName} is null ? ({Model.UntypedRecord.GetFullyQuallifiedArrayHandle(record)}){Model.UntypedRecord.GetFullyQuallifiedArrayNullHandle(record)} : "
             : string.Empty;
 
-        parameter.SetExpression(() => $"var {nativeVariableName} = {nullable} {Model.TypedRecord.GetFullyQuallifiedArrayOwnedHandle(record)}.Create({parameterName});");
+        parameter.SetExpression(() => $"var {nativeVariableName} = {nullable} {Model.UntypedRecord.GetFullyQuallifiedArrayOwnedHandle(record)}.Create({parameterName});");
 
         var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
