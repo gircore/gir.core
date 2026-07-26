@@ -20,6 +20,7 @@ internal class UntypedRecord : ReturnTypeConverter
             {
                 { Transfer: Transfer.Full } => fromVariableName,
                 { Transfer: Transfer.None } => $"{fromVariableName}.Copy()",
+                { Transfer: Transfer.Container } => fromVariableName,
                 _ => throw new NotImplementedException($"Unsupported transfer type '{returnType.Transfer}' for untyped record {record.Name}")
             };
 

@@ -82,6 +82,25 @@ public class TypedRecordTest : Test
     }
 
     [TestMethod]
+    public void SupportsReturnValueTransferContainer()
+    {
+        // The ownership of the list is transferred, but the ownership
+        // of the static elements inside the list is not.
+        var list = TypedRecordTester.GetStaticList();
+
+        var element1 = TypedRecordTester.GetStaticListElement(list, 0);
+        element1!.CustomEnum.Should().Be(TypedRecordTesterEnum.A);
+        element1.CustomBitfield.Should().Be(TypedRecordTesterBitfield.Zero);
+
+        var element2 = TypedRecordTester.GetStaticListElement(list, 1);
+        element2!.CustomEnum.Should().Be(TypedRecordTesterEnum.B);
+        element2.CustomBitfield.Should().Be(TypedRecordTesterBitfield.One);
+
+        var element3 = TypedRecordTester.GetStaticListElement(list, 2);
+        element3.Should().BeNull();
+    }
+
+    [TestMethod]
     public void SupportsInstanceParameterTransferNone()
     {
         var recordTester = TypedRecordTester.New();

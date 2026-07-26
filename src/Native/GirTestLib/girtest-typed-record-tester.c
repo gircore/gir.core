@@ -2,6 +2,11 @@
 
 G_DEFINE_BOXED_TYPE (GirTestTypedRecordTester, girtest_typed_record_tester, girtest_typed_record_tester_ref, girtest_typed_record_tester_unref)
 
+/* Static elements for girtest_typed_record_tester_get_static_list.
+   The ref_count starts at 1 so the elements are never freed. */
+static GirTestTypedRecordTester static_list_element_1 = { 1, TYPED_RECORD_TESTER_ENUM_A, TYPED_RECORD_TESTER_ZERO, NULL, 0 };
+static GirTestTypedRecordTester static_list_element_2 = { 1, TYPED_RECORD_TESTER_ENUM_B, TYPED_RECORD_TESTER_ONE, NULL, 0 };
+
 /**
  * girtest_typed_record_tester_new: (constructor)
  *
@@ -357,6 +362,40 @@ GirTestTypedRecordTester *  girtest_typed_record_tester_run_callback_create_null
     callback(ptr);
 
     return *ptr;
+}
+
+/**
+ * girtest_typed_record_tester_get_static_list:
+ *
+ * Obtains a list of two static elements. The caller owns the
+ * container but not the elements. This mirrors the behaviour of
+ * gdk_pixbuf_get_formats().
+ *
+ * Returns: (transfer container) (element-type GirTestTypedRecordTester): A list of static elements.
+ **/
+GSList *
+girtest_typed_record_tester_get_static_list ()
+{
+    GSList *list = NULL;
+
+    list = g_slist_prepend (list, &static_list_element_2);
+    list = g_slist_prepend (list, &static_list_element_1);
+
+    return list;
+}
+
+/**
+ * girtest_typed_record_tester_get_static_list_element:
+ * @list: (element-type GirTestTypedRecordTester): a list obtained via girtest_typed_record_tester_get_static_list()
+ * @n: the position of the element
+ *
+ * Returns: (transfer none) (nullable): the element at position @n, or %NULL
+ *     if the position is off the end of @list
+ **/
+GirTestTypedRecordTester *
+girtest_typed_record_tester_get_static_list_element (GSList *list, guint n)
+{
+    return g_slist_nth_data (list, n);
 }
 
 /**
