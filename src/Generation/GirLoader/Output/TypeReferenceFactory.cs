@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace GirLoader.Output;
 
@@ -33,11 +34,17 @@ internal class TypeReferenceFactory
             return false;
         }
 
-        typeReference = new ResolveableTypeReference(
-            symbolNameReference: GetSymbolNameReference(anyType.Type.Name),
-            ctype: GetCType(anyType.Type.CType));
+        typeReference = Create(anyType.Type);
 
         return true;
+    }
+
+    private ResolveableTypeReference Create(Input.Type type)
+    {
+        return new ResolveableTypeReference(
+            symbolNameReference: GetSymbolNameReference(type.Name),
+            ctype: GetCType(type.CType),
+            elementTypeReferences: type.Types.Select(Create).ToArray());
     }
 
     private bool TryCreateArrayTypeReference(Input.AnyType anyType, [NotNullWhen(true)] out ArrayTypeReference? arrayTypeReference)

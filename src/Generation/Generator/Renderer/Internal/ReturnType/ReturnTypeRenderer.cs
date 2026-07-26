@@ -11,6 +11,7 @@ internal static class ReturnTypeRenderer
         new ReturnType.ClassArray(),
         new ReturnType.Enumeration(),
         new ReturnType.ForeignTypedRecord(),
+        new ReturnType.GLibList(), //Must be before untyped record
         new ReturnType.GLibPointerArray(),
         new ReturnType.Interface(),
         new ReturnType.OpaqueTypedRecord(),

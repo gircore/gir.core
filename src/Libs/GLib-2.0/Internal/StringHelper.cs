@@ -26,5 +26,30 @@ public static class StringHelper
 
         return alloc;
     }
+
+    /// <summary>
+    /// Creates a managed string from a null-terminated UTF-8 string in unmanaged memory
+    /// which is not owned by the runtime.
+    /// </summary>
+    /// <param name="ptr">A pointer to a null-terminated UTF-8 string.</param>
+    /// <returns>A string containing the data of the given pointer.</returns>
+    public static string ToStringUtf8(IntPtr ptr)
+    {
+        return Marshal.PtrToStringUTF8(ptr) ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Creates a managed string from a null-terminated UTF-8 string in unmanaged memory
+    /// which is owned by the runtime and frees it.
+    /// </summary>
+    /// <param name="ptr">A pointer to a null-terminated UTF-8 string.</param>
+    /// <returns>A string containing the data of the given pointer.</returns>
+    public static string ToStringUtf8AndFree(IntPtr ptr)
+    {
+        var result = ToStringUtf8(ptr);
+        Functions.Free(ptr);
+
+        return result;
+    }
 }
 

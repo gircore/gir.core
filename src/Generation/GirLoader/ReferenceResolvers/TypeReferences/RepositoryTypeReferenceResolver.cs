@@ -41,6 +41,9 @@ internal class RepositoryTypeReferenceResolver
         }
         else if (reference is Output.ResolveableTypeReference resolveableTypeReference)
         {
+            foreach (var elementTypeReference in resolveableTypeReference.ElementTypeReferences)
+                ResolveTypeReference(elementTypeReference, repository);
+
             if (_typeReferenceResolver.Resolve(resolveableTypeReference, repository, out var type))
                 resolveableTypeReference.ResolveAs(type);
             else
