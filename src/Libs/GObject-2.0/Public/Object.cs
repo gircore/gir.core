@@ -21,14 +21,6 @@ public partial class Object : IDisposable, NativeObject
         Handle.AddMemoryPressure();
     }
 
-    [Obsolete("Regular C# constructors on native classes will be removed in a future version. Please see the linked documentation for more details. It contains scenarios and possible solutions to prepare for the upcoming changes.", DiagnosticId = "GirCore1007", UrlFormat = "https://gircore.github.io/docs/integration/diagnostic/1007.html")]
-    public Object(params ConstructArgument[] constructArguments) : this(CreateLegacy(constructArguments)) { { } }
-    [Obsolete("This constructor is for backwards compatibility only. Do not use it in new code.")]
-    protected Object(CreationData data) : this(data.Handle)
-    {
-        data.Setup(this);
-    }
-
     /// <summary>
     /// Creates a new Object and sets the properties specified by the construct arguments.
     /// </summary>
@@ -54,23 +46,5 @@ public partial class Object : IDisposable, NativeObject
     {
         Debug.WriteLine($"Handle {Handle.DangerousGetHandle()}: Disposing object of type {GetType()}.");
         Handle.Dispose();
-    }
-
-    private static CreationData CreateLegacy(ConstructArgument[] arguments)
-    {
-        {
-            var ptr = Internal.Object.NewWithProperties(GetGType(), arguments);
-            var handle = new Internal.ObjectHandle(ptr);
-
-            return new CreationData
-            {
-                Handle = handle,
-                Setup = obj =>
-                {
-                    Internal.InstanceCache.AddToggleRef(obj);
-                    Internal.Object.Unref(obj.Handle.DangerousGetHandle());
-                }
-            };
-        }
     }
 }
