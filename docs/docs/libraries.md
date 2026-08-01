@@ -22,8 +22,8 @@ A library containing GirCore extensions and helpers for using Blueprint files in
 
 A library that provides GTK4 and Cairo-backed views for using SkiaSharp on Linux with GirCore.
 
-- [GitHub](https://github.com/lytico/GirCoreApps/tree/main/src/SkiaSharp.Views.GirCore)
-- [NuGet](https://www.nuget.org/packages/SkiaSharp.Views.GirCore)
+- [GitHub](https://github.com/mono/SkiaSharp/tree/main/source/SkiaSharp.Views/SkiaSharp.Views.Gtk4)
+- [NuGet](https://www.nuget.org/packages/SkiaSharp.Views.Gtk4/)
 
 ## .NET MAUI
 
@@ -33,6 +33,7 @@ The experimental Linux GTK4 backend for .NET MAUI uses GirCore bindings to rende
 
 - [GitHub](https://github.com/dotnet/maui-labs/tree/main/platforms/Linux.Gtk4)
 - [Documentation](https://learn.microsoft.com/dotnet/maui/developer-tools/platform-backends/linux-gtk4)
+- [NuGet](https://www.nuget.org/packages/Microsoft.Maui.Platforms.Linux.Gtk4/)
 
 ## Tooling
 
