@@ -33,21 +33,21 @@ internal class RepositoryTypeReferenceResolver
 
     public void ResolveTypeReference(Output.TypeReference reference, Output.Repository repository)
     {
-        if (reference is Output.ArrayTypeReference arrayTypeReference)
-        {
-            // Array type references are not resolved directly. Only their type get's resolved
-            // because arrays are no type themself. They only provide structure.
-            ResolveTypeReference(arrayTypeReference.TypeReference, repository);
-        }
-        else if (reference is Output.ResolveableTypeReference resolveableTypeReference)
+        foreach (var elementTypeReference in reference.ElementTypeReferences)
+            ResolveTypeReference(elementTypeReference, repository);
+
+        if (reference is Output.ResolveableTypeReference resolveableTypeReference)
         {
             if (_typeReferenceResolver.Resolve(resolveableTypeReference, repository, out var type))
                 resolveableTypeReference.ResolveAs(type);
             else
                 Log.Verbose($"Could not resolve type reference {reference}");
         }
-        else
+        else if (reference is not Output.ArrayTypeReference)
         {
+            // Array type references are not resolved directly. Only their element type
+            // gets resolved above because arrays are no type themself. They only provide
+            // structure.
             throw new Exception($"Unknown {nameof(Output.TypeReference)} {reference.GetType().Name}");
         }
     }

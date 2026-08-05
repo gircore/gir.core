@@ -3,7 +3,7 @@ namespace GirLoader.Output;
 public class PointerArrayTypeReference : ArrayTypeReference, GirModel.PointerArrayType
 {
     public PointerArrayTypeReference(ArrayTypeReference arrayTypeReference) : base(
-        typeReference: arrayTypeReference.TypeReference,
+        elementTypeReference: arrayTypeReference.ElementTypeReference,
         symbolNameReference: arrayTypeReference.SymbolNameReference,
         ctype: arrayTypeReference.CTypeReference)
     {

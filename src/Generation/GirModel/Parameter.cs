@@ -1,6 +1,6 @@
 namespace GirModel;
 
-public interface Parameter : Nullable
+public interface Parameter : Nullable, ElementTypeContainer
 {
     string Name { get; }
     Direction Direction { get; }

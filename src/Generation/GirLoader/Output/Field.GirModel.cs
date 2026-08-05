@@ -18,11 +18,9 @@ public partial class Field : GirModel.Field
             if (Callback is not null)
                 return Callback;
 
-            return TypeReference switch
-            {
-                ArrayTypeReference arrayTypeReference => GirModel.AnyType.From(arrayTypeReference),
-                _ => GirModel.AnyType.From(TypeReference.GetResolvedType())
-            };
+            return TypeReference.GetResolvedAnyType();
         }
     }
+
+    System.Collections.Generic.IReadOnlyList<GirModel.AnyType> GirModel.ElementTypeContainer.ElementTypes => TypeReference.GetResolvedElementTypes();
 }

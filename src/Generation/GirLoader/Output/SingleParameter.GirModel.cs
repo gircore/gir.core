@@ -19,12 +19,13 @@ public partial class SingleParameter : GirModel.Parameter
     );
 
     OneOf.OneOf<GirModel.AnyType, GirModel.VarArgs> GirModel.Parameter.AnyTypeOrVarArgs => TypeReferenceOrVarArgs.Match<OneOf.OneOf<GirModel.AnyType, GirModel.VarArgs>>(
-        typeReference => typeReference switch
-        {
-            ArrayTypeReference arrayTypeReference => GirModel.AnyType.From(arrayTypeReference),
-            _ => GirModel.AnyType.From(typeReference.GetResolvedType())
-        },
+        typeReference => typeReference.GetResolvedAnyType(),
         varargs => varargs
+    );
+
+    System.Collections.Generic.IReadOnlyList<GirModel.AnyType> GirModel.ElementTypeContainer.ElementTypes => TypeReferenceOrVarArgs.Match(
+        typeReference => typeReference.GetResolvedElementTypes(),
+        varargs => System.Array.Empty<GirModel.AnyType>()
     );
     GirModel.Direction GirModel.Parameter.Direction => Direction.ToGirModel();
     GirModel.Transfer GirModel.Parameter.Transfer => Transfer.ToGirModel();

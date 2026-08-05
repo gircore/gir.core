@@ -1,6 +1,6 @@
 namespace GirModel;
 
-public interface ReturnType : Nullable
+public interface ReturnType : Nullable, ElementTypeContainer
 {
     AnyType AnyType { get; }
     Transfer Transfer { get; }
