@@ -22,7 +22,7 @@ internal class ConstantFactory
         return new Constant(
             repository: repository,
             name: constant.Name,
-            typeReference: _typeReferenceFactory.Create(constant),
+            anyTypeReference: _typeReferenceFactory.CreateAnyTypeReference(constant),
             value: constant.Value,
             introspectable: constant.Introspectable
         );

@@ -82,6 +82,6 @@ internal class ClassFactory
     {
         var ctype = !name.Contains(".") ? @namespace.IdentifierPrefixes + name : null;
 
-        return _typeReferenceFactory.CreateResolveable(name, ctype);
+        return _typeReferenceFactory.CreateTypeReference(name, ctype);
     }
 }

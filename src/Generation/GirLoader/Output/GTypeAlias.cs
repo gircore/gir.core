@@ -30,7 +30,7 @@ public class GTypeAlias : Type, GirModel.Alias
     {
         public string Name => "GObject";
         public string Version => "2.0";
-        public string? SharedLibrary { get; }
+        public string? SharedLibrary => null;
         public IEnumerable<GirModel.Alias> Aliases => throw new Exception();
         public IEnumerable<GirModel.Enumeration> Enumerations => throw new Exception();
         public IEnumerable<GirModel.Bitfield> Bitfields => throw new Exception();

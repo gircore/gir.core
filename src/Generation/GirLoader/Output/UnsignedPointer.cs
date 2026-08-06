@@ -1,9 +1,7 @@
 namespace GirLoader.Output;
 
-public class UnsignedPointer : Type, GirModel.UnsignedPointer
+public class UnsignedPointer(string ctype) : Type(ctype), GirModel.UnsignedPointer
 {
-    public UnsignedPointer(string ctype) : base(ctype) { }
-
     internal override bool Matches(TypeReference typeReference)
     {
         if (typeReference.CTypeReference is null)

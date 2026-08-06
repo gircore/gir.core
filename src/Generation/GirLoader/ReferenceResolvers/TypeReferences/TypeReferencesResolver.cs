@@ -4,9 +4,9 @@ namespace GirLoader;
 
 internal static class TypeReferencesResolver
 {
-    public static void ResolveTypeReferences(this RepositoryTypeReferenceResolver resolver, IEnumerable<Output.TypeReference> typeReferences, Output.Repository repository)
+    public static void ResolveTypeReferences(this RepositoryTypeReferenceResolver resolver, IEnumerable<Output.AnyTypeReference> anyTypeReferences, Output.Repository repository)
     {
-        foreach (var typeReference in typeReferences)
-            resolver.ResolveTypeReference(typeReference, repository);
+        foreach (var anyTypeReference in anyTypeReferences)
+            resolver.ResolveTypeReference(anyTypeReference, repository);
     }
 }

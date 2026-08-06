@@ -9,22 +9,22 @@ internal static class RecordsResolver
     {
         foreach (var record in repository.Namespace.Records)
         {
-            resolver.ResolveTypeReferences(record.Fields.Select(x => x.TypeReference), repository);
+            resolver.ResolveTypeReferences(record.Fields.Select(x => x.AnyTypeReference), repository);
             resolver.ResolveParameterLists(record.Fields.Select(x => x.Callback?.ParameterList).OfType<ParameterList>(), repository);
-            resolver.ResolveTypeReferences(record.Fields.Select(x => x.Callback?.ReturnValue.TypeReference).OfType<TypeReference>(), repository);
+            resolver.ResolveTypeReferences(record.Fields.Select(x => x.Callback?.ReturnValue.AnyTypeReference).OfType<AnyTypeReference>(), repository);
 
-            resolver.ResolveTypeReferences(record.Constructors.Select(x => x.ReturnValue.TypeReference), repository);
+            resolver.ResolveTypeReferences(record.Constructors.Select(x => x.ReturnValue.AnyTypeReference), repository);
             resolver.ResolveParameterLists(record.Constructors.Select(x => x.ParameterList), repository);
 
-            resolver.ResolveTypeReferences(record.Methods.Select(x => x.ReturnValue.TypeReference), repository);
+            resolver.ResolveTypeReferences(record.Methods.Select(x => x.ReturnValue.AnyTypeReference), repository);
             resolver.ResolveParameterLists(record.Methods.Select(x => x.ParameterList), repository);
 
-            resolver.ResolveTypeReferences(record.Functions.Select(x => x.ReturnValue.TypeReference), repository);
+            resolver.ResolveTypeReferences(record.Functions.Select(x => x.ReturnValue.AnyTypeReference), repository);
             resolver.ResolveParameterLists(record.Functions.Select(x => x.ParameterList), repository);
 
             if (record.GetTypeFunction is not null)
             {
-                resolver.ResolveTypeReference(record.GetTypeFunction.ReturnValue.TypeReference, repository);
+                resolver.ResolveTypeReference(record.GetTypeFunction.ReturnValue.AnyTypeReference, repository);
                 resolver.ResolveParameterList(record.GetTypeFunction.ParameterList, repository);
             }
 

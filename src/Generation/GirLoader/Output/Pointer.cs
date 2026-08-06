@@ -1,9 +1,7 @@
 namespace GirLoader.Output;
 
-public class Pointer : Type, GirModel.Pointer
+public class Pointer(string ctype) : Type(ctype), GirModel.Pointer
 {
-    public Pointer(string ctype) : base(ctype) { }
-
     internal override bool Matches(TypeReference typeReference)
     {
         if (typeReference.CTypeReference is null)

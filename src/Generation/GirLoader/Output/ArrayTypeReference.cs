@@ -1,16 +1,18 @@
 namespace GirLoader.Output;
 
-public partial class ArrayTypeReference : TypeReference
+public partial class ArrayTypeReference : TypeIdentifier
 {
     public int? Length { get; init; }
     public bool IsZeroTerminated { get; init; }
     public int? FixedSize { get; init; }
-    public TypeReference TypeReference { get; }
+    public CTypeReference? CTypeReference { get; }
+    public SymbolNameReference? SymbolNameReference { get; }
+    public AnyTypeReference AnyTypeReference { get; }
 
-    public override Type? Type => TypeReference.Type;
-
-    public ArrayTypeReference(TypeReference typeReference, SymbolNameReference? symbolNameReference, CTypeReference? ctype) : base(symbolNameReference, ctype)
+    public ArrayTypeReference(AnyTypeReference anyTypeReference, SymbolNameReference? symbolNameReference, CTypeReference? ctype)
     {
-        TypeReference = typeReference;
+        CTypeReference = ctype;
+        SymbolNameReference = symbolNameReference;
+        AnyTypeReference = anyTypeReference;
     }
 }

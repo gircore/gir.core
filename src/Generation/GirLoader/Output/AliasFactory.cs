@@ -25,7 +25,7 @@ internal class AliasFactory
         return new Alias(
             cType: alias.Type,
             name: alias.Name,
-            typeReference: _typeReferenceFactory.CreateResolveable(alias.For.Name, alias.For.CType),
+            typeReference: _typeReferenceFactory.CreateTypeReference(alias.For.Name, alias.For.CType),
             repository: repository
         );
     }

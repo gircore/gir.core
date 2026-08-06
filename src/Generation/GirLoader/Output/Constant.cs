@@ -6,14 +6,14 @@ public partial class Constant
 
     public string Name { get; }
     public string Value { get; }
-    public TypeReference TypeReference { get; }
+    public AnyTypeReference AnyTypeReference { get; }
     public bool Introspectable { get; }
 
-    public Constant(Repository repository, string name, TypeReference typeReference, string value, bool introspectable)
+    public Constant(Repository repository, string name, AnyTypeReference anyTypeReference, string value, bool introspectable)
     {
         _repository = repository;
         Name = name;
-        TypeReference = typeReference;
+        AnyTypeReference = anyTypeReference;
         Value = value;
         Introspectable = introspectable;
     }

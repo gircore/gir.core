@@ -3,7 +3,7 @@ namespace GirLoader.Output;
 public partial class Field
 {
     public string Name { get; }
-    public TypeReference TypeReference { get; }
+    public AnyTypeReference AnyTypeReference { get; }
 
     public Callback? Callback { get; }
     public bool Readable { get; }
@@ -14,7 +14,7 @@ public partial class Field
     /// <summary>
     /// Creates a new field.
     /// </summary>
-    /// <param name="typeReference"></param>
+    /// <param name="anyTypeReference"></param>
     /// <param name="introspectable"></param>
     /// <param name="typeInformation"></param>
     /// <param name="callback">Optional: If set it is expected that the callback belongs to the given symbol reference.</param>
@@ -22,20 +22,20 @@ public partial class Field
     /// <param name="writable"></param>
     /// <param name="private"></param>
     /// <param name="name"></param>
-    public Field(string name, TypeReference typeReference, bool introspectable, bool readable, bool writable, bool @private)
+    public Field(string name, AnyTypeReference anyTypeReference, bool introspectable, bool readable, bool writable, bool @private)
     {
         Name = name;
-        TypeReference = typeReference;
+        AnyTypeReference = anyTypeReference;
         Readable = readable;
         Writable = writable;
         Private = @private;
         Introspectable = introspectable;
     }
 
-    public Field(string name, ResolveableTypeReference resolveableTypeReference, Callback callback, bool introspectable, bool readable, bool writable, bool @private)
-        : this(name, resolveableTypeReference, introspectable, readable, writable, @private)
+    public Field(string name, TypeReference typeReference, Callback callback, bool introspectable, bool readable, bool writable, bool @private)
+        : this(name, typeReference, introspectable, readable, writable, @private)
     {
         Callback = callback;
-        resolveableTypeReference.ResolveAs(Callback);
+        typeReference.ResolveAs(Callback);
     }
 }

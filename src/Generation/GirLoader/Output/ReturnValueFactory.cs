@@ -1,21 +1,12 @@
 namespace GirLoader.Output;
 
-internal class ReturnValueFactory
+internal class ReturnValueFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory)
 {
-    private readonly TypeReferenceFactory _typeReferenceFactory;
-    private readonly TransferFactory _transferFactory;
-
-    public ReturnValueFactory(TypeReferenceFactory typeReferenceFactory, TransferFactory transferFactory)
-    {
-        _typeReferenceFactory = typeReferenceFactory;
-        _transferFactory = transferFactory;
-    }
-
     public ReturnValue Create(Input.ReturnValue returnValue)
     {
         return new ReturnValue(
-            typeReference: _typeReferenceFactory.Create(returnValue),
-            transfer: _transferFactory.FromText(returnValue.TransferOwnership),
+            anyTypeReference: typeReferenceFactory.CreateAnyTypeReference(returnValue),
+            transfer: transferFactory.FromText(returnValue.TransferOwnership),
             nullable: returnValue.Nullable
         );
     }
@@ -23,7 +14,7 @@ internal class ReturnValueFactory
     public ReturnValue Create(string ctype, Transfer transfer, bool nullable)
     {
         return new ReturnValue(
-            typeReference: _typeReferenceFactory.CreateResolveable(ctype, ctype),
+            anyTypeReference: typeReferenceFactory.CreateTypeReference(ctype, ctype),
             transfer: transfer,
             nullable: nullable
         );

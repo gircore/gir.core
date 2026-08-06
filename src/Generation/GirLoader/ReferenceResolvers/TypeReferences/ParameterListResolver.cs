@@ -13,7 +13,7 @@ internal static class ParameterListResolver
 
         //Ignore variadic arguments as those don't need to be resolved
         var typeReferences = parameterList.SingleParameters
-            .Select(x => x.TypeReferenceOrVarArgs)
+            .Select(x => x.AnyTypeReferenceOrVarArgs)
             .Where(x => x.IsT0)
             .Select(x => x.AsT0);
 

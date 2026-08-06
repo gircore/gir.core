@@ -29,7 +29,7 @@ internal class SingleParameterFactory
 
         return new SingleParameter(
             name: parameter.Name,
-            typeReferenceOrVarArgs: parameter.VarArgs is not null ? new VarArgs() : _typeReferenceFactory.Create(parameter),
+            anyTypeReferenceOrVarArgs: parameter.VarArgs is not null ? new VarArgs() : _typeReferenceFactory.CreateAnyTypeReference(parameter),
             direction: DirectionFactory.Create(parameter.Direction),
             transfer: _transferFactory.FromText(parameter.TransferOwnership),
             nullable: parameter.Nullable,

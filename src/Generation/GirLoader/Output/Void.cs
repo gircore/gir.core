@@ -1,9 +1,7 @@
 namespace GirLoader.Output;
 
-public class Void : Type, GirModel.Void
+public class Void(string ctype) : Type(ctype), GirModel.Void
 {
-    public Void(string ctype) : base(ctype) { }
-
     internal override bool Matches(TypeReference typeReference)
     {
         if (typeReference.CTypeReference is null)
