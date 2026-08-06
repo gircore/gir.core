@@ -1,17 +1,20 @@
 using System;
+using System.Collections.Generic;
 
 namespace GirLoader.Output;
 
-public class TypeReference : TypeIdentifier
+public partial class TypeReference : TypeIdentifier
 {
     public CTypeReference? CTypeReference { get; }
     public SymbolNameReference? SymbolNameReference { get; }
     public Type? Type { get; private set; }
+    public IReadOnlyList<AnyTypeReference> ElementTypeReferences { get; internal set; }
 
-    public TypeReference(SymbolNameReference? symbolNameReference, CTypeReference? ctypeReference)
+    public TypeReference(SymbolNameReference? symbolNameReference, CTypeReference? ctypeReference, IReadOnlyList<AnyTypeReference> elementTypeReferences)
     {
         CTypeReference = ctypeReference;
         SymbolNameReference = symbolNameReference;
+        ElementTypeReferences = elementTypeReferences;
     }
 
     public void ResolveAs(Type type)
