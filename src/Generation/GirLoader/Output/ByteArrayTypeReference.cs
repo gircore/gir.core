@@ -3,7 +3,7 @@ namespace GirLoader.Output;
 public class ByteArrayTypeReference : ArrayTypeReference, GirModel.ByteArrayType
 {
     public ByteArrayTypeReference(ArrayTypeReference arrayTypeReference) : base(
-        typeReference: arrayTypeReference.TypeReference,
+        elementTypeReference: arrayTypeReference.ElementTypeReference,
         symbolNameReference: arrayTypeReference.SymbolNameReference,
         ctype: arrayTypeReference.CTypeReference)
     {

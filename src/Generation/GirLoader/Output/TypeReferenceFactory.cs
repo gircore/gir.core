@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace GirLoader.Output;
 
@@ -33,11 +34,27 @@ internal class TypeReferenceFactory
             return false;
         }
 
-        typeReference = new ResolveableTypeReference(
-            symbolNameReference: GetSymbolNameReference(anyType.Type.Name),
-            ctype: GetCType(anyType.Type.CType));
+        typeReference = Create(anyType.Type);
 
         return true;
+    }
+
+    private ResolveableTypeReference Create(Input.Type type)
+    {
+        return new ResolveableTypeReference(
+            symbolNameReference: GetSymbolNameReference(type.Name),
+            ctype: GetCType(type.CType),
+            elementTypeReferences: type.AnyTypes.Select(Create).ToArray());
+    }
+
+    private TypeReference Create(object typeOrArray)
+    {
+        return typeOrArray switch
+        {
+            Input.Type type => Create(type),
+            Input.ArrayType arrayType => Create(arrayType),
+            _ => throw new Exception($"Unknown element type {typeOrArray.GetType().Name}")
+        };
     }
 
     private bool TryCreateArrayTypeReference(Input.AnyType anyType, [NotNullWhen(true)] out ArrayTypeReference? arrayTypeReference)
@@ -48,32 +65,37 @@ internal class TypeReferenceFactory
             return false;
         }
 
-        var typeReference = Create(anyType.Array);
+        arrayTypeReference = Create(anyType.Array);
 
-        int? length = int.TryParse(anyType.Array.Length, out var l) ? l : null;
-        int? fixedSize = int.TryParse(anyType.Array.FixedSize, out var f) ? f : null;
+        return true;
+    }
+
+    private ArrayTypeReference Create(Input.ArrayType arrayType)
+    {
+        var elementTypeReference = Create((Input.AnyType) arrayType);
+
+        int? length = int.TryParse(arrayType.Length, out var l) ? l : null;
+        int? fixedSize = int.TryParse(arrayType.FixedSize, out var f) ? f : null;
 
         var reference = new ArrayTypeReference(
-            typeReference: typeReference,
+            elementTypeReference: elementTypeReference,
             symbolNameReference: null,
-            ctype: GetCType(anyType.Array.CType))
+            ctype: GetCType(arrayType.CType))
         {
             Length = length,
             FixedSize = fixedSize,
             //The fallback is required as gobject-introspection expects an array to be zero terminated,
             //if neither length nor fixedSize are given.
-            IsZeroTerminated = anyType.Array.ZeroTerminated || (length is null && fixedSize is null)
+            IsZeroTerminated = arrayType.ZeroTerminated || (length is null && fixedSize is null)
         };
 
-        arrayTypeReference = anyType.Array.Name switch
+        return arrayType.Name switch
         {
             "GLib.Array" => new GArrayTypeReference(reference),
             "GLib.ByteArray" => new ByteArrayTypeReference(reference),
             "GLib.PtrArray" => new PointerArrayTypeReference(reference),
             _ => new StandardArrayTypeReference(reference)
         };
-
-        return true;
     }
 
     public IEnumerable<TypeReference> Create(IEnumerable<Input.Implement> implements)

@@ -2,7 +2,7 @@ using OneOf;
 
 namespace GirModel;
 
-public interface Field
+public interface Field : ElementTypeContainer
 {
     string Name { get; }
     bool IsReadable { get; }
