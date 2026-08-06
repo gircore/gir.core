@@ -32,15 +32,15 @@ public static class AnyTypeExtension
 
     public static bool IsGLibPtrArray(this GirModel.AnyType anyType)
         => anyType.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.PointerArrayType;
+           && arrayType is GirModel.GLibPtrArrayType;
 
     public static bool IsGLibByteArray(this GirModel.AnyType anyType)
         => anyType.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.ByteArrayType;
+           && arrayType is GirModel.GLibByteArrayType;
 
     public static bool IsGLibArray<T>(this GirModel.AnyType anyType) where T : GirModel.Type
         => anyType.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.GArrayType
+           && arrayType is GirModel.GLibArrayType
            && arrayType.AnyType.Is<T>();
 
     public static bool IsAlias<T>(this GirModel.AnyType anyType) where T : GirModel.Type
@@ -66,7 +66,7 @@ public static class AnyTypeExtension
 
     public static bool IsGLibArrayAlias<T>(this GirModel.AnyType anyType) where T : GirModel.Type
         => anyType.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.GArrayType
+           && arrayType is GirModel.GLibArrayType
            && arrayType.AnyType.IsAlias<T>();
 }
 

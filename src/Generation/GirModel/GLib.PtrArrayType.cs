@@ -3,4 +3,4 @@ namespace GirModel;
 /// <summary>
 /// Represents a GLib.PtrArray
 /// </summary>
-public interface PointerArrayType : ArrayType { }
+public interface GLibPtrArrayType : ArrayType { }
