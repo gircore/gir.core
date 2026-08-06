@@ -55,7 +55,7 @@ The upcoming features and releases can be checked out in the [milestones](https:
 
 
 ## Get Involved
-Anyone who wants to help is very welcome. If you want to get in contact feel free to chat with us via matrix ([#gircore:matrix.org](https://matrix.to/#/#gircore:matrix.org?via=matrix.org)) or open a [discussion](https://github.com/gircore/gir.core/discussions) and don't forget to check out our [contribution guidelines](docs/docs/contributing.md).
+Anyone who wants to help is very welcome. If you want to get in contact feel free to chat with us via matrix ([#gircore:matrix.org](https://matrix.to/#/#gircore:matrix.org?via=matrix.org)) or open a [discussion](https://github.com/gircore/gir.core/discussions).
 
 ## Build
 To generate the bindings locally execute the following commands in a terminal. Make sure to initialise submodules with `--recursive` otherwise the `gir-files` directory will not be loaded properly.
@@ -72,7 +72,7 @@ If you want to clean the [Libs folder](src/Libs) of all generated files run in t
 
     $ dotnet fsi CleanLibs.fsx
 
-For more advanced build options, see the [documentation](docs/docs/build.md).
+For more advanced build options, see the [documentation](docs/docs/build-source.md).
 
 ## Code structure
 The folder structure in this repository is organized as follows:
