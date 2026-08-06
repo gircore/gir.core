@@ -11,17 +11,14 @@ public partial class Field : GirModel.Field
     bool GirModel.Field.IsPointer => AnyTypeReference.CTypeReference?.IsPointer ?? false;
     bool GirModel.Field.Introspectable => Introspectable;
 
-    OneOf<GirModel.AnyType, GirModel.Callback> GirModel.Field.AnyTypeOrCallback
+    OneOf<GirModel.AnyTypeReference, GirModel.Callback> GirModel.Field.AnyTypeReferenceOrCallback
     {
         get
         {
             if (Callback is not null)
                 return Callback;
 
-            return AnyTypeReference.Match(
-                typeReference => GirModel.AnyType.From(typeReference.GetResolvedType()),
-                arrayTypeReference => GirModel.AnyType.From(arrayTypeReference)
-            );
+            return AnyTypeReference.Match(GirModel.AnyTypeReference.From, GirModel.AnyTypeReference.From);
         }
     }
 }

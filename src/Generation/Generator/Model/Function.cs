@@ -14,7 +14,7 @@ internal static partial class Function
         if (function.Parameters.Count() != function.Shadows.Parameters.Count())
             return function.Shadows.Name.ToPascalCase().EscapeIdentifier();
 
-        if (function.Parameters.Select(x => x.AnyTypeOrVarArgs).Except(function.Shadows.Parameters.Select(x => x.AnyTypeOrVarArgs)).Any())
+        if (function.Parameters.Select(x => x.AnyTypeReferenceOrVarArgs).Except(function.Shadows.Parameters.Select(x => x.AnyTypeReferenceOrVarArgs)).Any())
             return function.Shadows.Name.ToPascalCase().EscapeIdentifier();
 
         return function.Name.ToPascalCase().EscapeIdentifier();
@@ -72,7 +72,7 @@ internal static partial class Function
 
         for (var i = 0; i < parameters.Length; i++)
         {
-            if (!parameters[i].AnyTypeOrVarArgs.Equals(foundParameters[i].AnyTypeOrVarArgs))
+            if (!parameters[i].AnyTypeReferenceOrVarArgs.Equals(foundParameters[i].AnyTypeReferenceOrVarArgs))
                 return HidesFunction(cls.Parent, function);
         }
 

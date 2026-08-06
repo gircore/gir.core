@@ -4,7 +4,7 @@ internal class Utf8String : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Utf8String>();
+        return returnType.AnyTypeReference.References<GirModel.Utf8String>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

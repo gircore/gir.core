@@ -6,12 +6,12 @@ internal class StringInCallback : ReturnTypeConverter
     {
         var type = returnType switch
         {
-            { AnyType.AsT0: GirModel.Utf8String, Transfer: GirModel.Transfer.None } => Model.Utf8String.GetPublicConstantStringName(),
+            { AnyTypeReference.AsT0.Type: GirModel.Utf8String, Transfer: GirModel.Transfer.None } => Model.Utf8String.GetPublicConstantStringName(),
             _ => "string"
         };
         return new RenderableReturnType(type + Nullable.Render(returnType));
     }
 
     public bool Supports(GirModel.ReturnType returnType)
-        => returnType.AnyType.Is<GirModel.String>();
+        => returnType.AnyTypeReference.References<GirModel.String>();
 }

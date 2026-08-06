@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class PointerAlias : ReturnTypeConverter
 {
-    public bool Supports(AnyType type)
-        => type.IsAlias<GirModel.Pointer>();
+    public bool Supports(AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesAlias<GirModel.Pointer>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
         => data.SetExpression(fromVariableName => fromVariableName);

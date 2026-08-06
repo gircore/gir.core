@@ -4,7 +4,7 @@ internal class ClassArray : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.IsArray<GirModel.Class>();
+        return returnType.AnyTypeReference.ReferencesArray<GirModel.Class>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

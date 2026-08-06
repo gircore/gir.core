@@ -1,5 +1,4 @@
 using System;
-using GirModel;
 
 namespace Generator.Renderer.Internal.ReturnType;
 
@@ -7,17 +6,17 @@ internal class UntypedRecord : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
+        return returnType.AnyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var type = (GirModel.Record) returnType.AnyType.AsT0;
+        var type = (GirModel.Record) returnType.AnyTypeReference.AsT0.Type;
 
         var typeName = returnType switch
         {
-            { Transfer: Transfer.Full } => Model.UntypedRecord.GetFullyQuallifiedOwnedHandle(type),
-            { Transfer: Transfer.None } => Model.UntypedRecord.GetFullyQuallifiedUnownedHandle(type),
+            { Transfer: GirModel.Transfer.Full } => Model.UntypedRecord.GetFullyQuallifiedOwnedHandle(type),
+            { Transfer: GirModel.Transfer.None } => Model.UntypedRecord.GetFullyQuallifiedUnownedHandle(type),
             _ => throw new Exception($"Unsupported transfer type {returnType.Transfer} for untyped record {type.Name}")
         };
 

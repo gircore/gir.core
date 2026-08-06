@@ -5,8 +5,8 @@ namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
 
 internal class Utf8String : ReturnTypeConverter
 {
-    public bool Supports(AnyType type)
-        => type.Is<GirModel.Utf8String>();
+    public bool Supports(AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Utf8String>();
 
     public string GetString(GirModel.ReturnType returnType, string fromVariableName)
     {

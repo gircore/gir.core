@@ -2,9 +2,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class Pointer : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Pointer>();
+        return anyTypeReference.References<GirModel.Pointer>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -12,7 +12,7 @@ internal class Pointer : ParameterConverter
         //IntPtr can't be nullable. They can be "nulled" via IntPtr.Zero.
         return new ParameterTypeData(
             Direction: GetDirection(parameter),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type)
         );
     }
 

@@ -2,14 +2,14 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class PrimitiveValueTypeAlias : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsAlias<GirModel.PrimitiveValueType>();
+        return anyTypeReference.ReferencesAlias<GirModel.PrimitiveValueType>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
     {
-        var alias = (GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var alias = (GirModel.Alias) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
 
         return new ParameterTypeData(
             Direction: GetDirection(parameter),

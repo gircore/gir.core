@@ -20,9 +20,9 @@ internal static class DocComments
     {
         return parameter switch
         {
-            { AnyTypeOrVarArgs.IsT1: true } => null, //varargs
-            { AnyTypeOrVarArgs.AsT0.IsT1: true } => null, //array
-            { AnyTypeOrVarArgs.AsT0.AsT0: GirModel.Callback }
+            { AnyTypeReferenceOrVarArgs.IsT1: true } => null, //varargs
+            { AnyTypeReferenceOrVarArgs.AsT0.IsT1: true } => null, //array
+            { AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type: GirModel.Callback }
                 => $"""/// <param name="{Model.Parameter.GetName(parameter)}">A callback. If it raises an exception the application will terminate. To receive this unhandled exception see <see cref="GLib.UnhandledException.SetHandler"/>.</param>""",
             _ => null
         };

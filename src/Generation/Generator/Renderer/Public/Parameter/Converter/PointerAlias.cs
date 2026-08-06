@@ -2,9 +2,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class PointerAlias : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsAlias<GirModel.Pointer>();
+        return anyTypeReference.ReferencesAlias<GirModel.Pointer>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -17,7 +17,7 @@ internal class PointerAlias : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var alias = (GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var alias = (GirModel.Alias) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         return Model.Namespace.GetPublicName(alias.Namespace) + "." + Model.Type.GetName(alias) + Nullable.Render(parameter);
     }
 

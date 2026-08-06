@@ -8,5 +8,5 @@ internal class String : ReturnTypeConverter
     }
 
     public bool Supports(GirModel.ReturnType returnType)
-        => returnType.AnyType.Is<GirModel.String>();
+        => returnType.AnyTypeReference.References<GirModel.String>();
 }

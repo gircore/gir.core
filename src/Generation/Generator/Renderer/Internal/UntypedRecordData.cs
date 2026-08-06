@@ -24,7 +24,7 @@ namespace {Namespace.GetInternalName(record.Namespace)};
 public partial struct {Model.UntypedRecord.GetDataName(record)}
 {{
     {record.Fields
-        .Select(x => x.AnyTypeOrCallback)
+        .Select(x => x.AnyTypeReferenceOrCallback)
         .Where(x => x.IsT1)
         .Select(x => x.AsT1)
         .Select(Callback.Render)

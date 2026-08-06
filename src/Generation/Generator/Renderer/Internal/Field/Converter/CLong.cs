@@ -4,7 +4,7 @@ internal class CLong : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.Is<GirModel.CLong>();
+        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.References<GirModel.CLong>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)

@@ -5,8 +5,8 @@ namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class UnsignedLong : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.UnsignedLong>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.UnsignedLong>();
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {

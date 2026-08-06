@@ -5,15 +5,15 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class GLibPointerArray : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsGLibPtrArray();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesGLibPtrArray();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
         if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: ptrarray parameter '{parameter.Parameter.Name}' with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: ptrarray parameter '{parameter.Parameter.Name}' with direction != in not yet supported");
         if (!parameter.Parameter.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: non pointer ptrarray parameter '{parameter.Parameter.Name}' not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: non pointer ptrarray parameter '{parameter.Parameter.Name}' not yet supported");
 
         var typeHandle = Model.PointerArrayType.GetFullyQuallifiedHandle();
         var nullHandle = Model.PointerArrayType.GetFullyQuallifiedNullHandle();

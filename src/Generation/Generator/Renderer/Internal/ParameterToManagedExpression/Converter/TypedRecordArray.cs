@@ -6,15 +6,15 @@ namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class TypedRecordArray : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.Record>(out var record) && Model.Record.IsTyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesArray<GirModel.Record>(out var record) && Model.Record.IsTyped(record);
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
         switch (parameterData.Parameter)
         {
             case { Direction: GirModel.Direction.In }
-                when parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null:
+                when parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null:
                 WithLength(parameterData, parameters);
                 break;
             case { Direction: GirModel.Direction.In }:
@@ -37,7 +37,7 @@ internal class TypedRecordArray : ToManagedParameterConverter
 
     private static void WithLength(ParameterToManagedData parameter, IEnumerable<ParameterToManagedData> allParameters)
     {
-        if (parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.IsPointer)
+        if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.IsPointer)
             PointerArrayWithLength(parameter, allParameters);
         else
             StructArrayWithLength(parameter, allParameters);
@@ -53,11 +53,11 @@ internal class TypedRecordArray : ToManagedParameterConverter
         if (parameter.Parameter.Transfer is GirModel.Transfer.Container or GirModel.Transfer.Full)
             throw new Exception("Can't transfer ownership to native code for typed record");
 
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";
 
-        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
         lengthParameter.IsArrayLengthParameter = true;
 

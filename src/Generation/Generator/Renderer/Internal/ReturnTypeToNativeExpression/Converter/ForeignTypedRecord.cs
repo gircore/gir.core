@@ -4,8 +4,8 @@ namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
 
 internal class ForeignTypedRecord : ReturnTypeConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && Model.Record.IsForeignTyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsForeignTyped(record);
 
     public string GetString(GirModel.ReturnType returnType, string fromVariableName)
     {
@@ -15,7 +15,7 @@ internal class ForeignTypedRecord : ReturnTypeConverter
             { Transfer: GirModel.Transfer.None, Nullable: false } => $"{fromVariableName}.Handle.DangerousGetHandle()",
             { Transfer: GirModel.Transfer.Full, Nullable: true } => $"{fromVariableName}?.Handle.UnownedCopy().DangerousGetHandle() ?? IntPtr.Zero",
             { Transfer: GirModel.Transfer.Full, Nullable: false } => $"{fromVariableName}.Handle.UnownedCopy().DangerousGetHandle()",
-            _ => throw new Exception($"Unknown transfer type for foreigen typed record return type which should be converted to native.")
+            _ => throw new Exception($"Unknown transfer type for foreign typed record return type which should be converted to native.")
         };
     }
 }

@@ -4,6 +4,6 @@ namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
 
 internal interface ReturnTypeConverter
 {
-    bool Supports(AnyType type);
+    bool Supports(AnyTypeReference anyTypeReference);
     string GetString(GirModel.ReturnType returnType, string fromVariableName);
 }

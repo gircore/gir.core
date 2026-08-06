@@ -44,7 +44,7 @@ public class ParameterToNativeData(GirModel.Parameter parameter)
     public string GetCallName()
     {
         _callName ??= _getCallName?.Invoke();
-        return _callName ?? throw new Exception($"Callname of parameter {Parameter.Name} ({Parameter.AnyTypeOrVarArgs} is not set");
+        return _callName ?? throw new Exception($"Callname of parameter {Parameter.Name} ({Parameter.AnyTypeReferenceOrVarArgs} is not set");
     }
 
     public void SetSignatureName(Func<string> getSignatureName)
@@ -55,6 +55,6 @@ public class ParameterToNativeData(GirModel.Parameter parameter)
     public string GetSignatureName()
     {
         _signatureName ??= _getSignatureName?.Invoke();
-        return _signatureName ?? throw new Exception($"Signaturename of parameter {Parameter.Name} ({Parameter.AnyTypeOrVarArgs} is not set");
+        return _signatureName ?? throw new Exception($"Signaturename of parameter {Parameter.Name} ({Parameter.AnyTypeReferenceOrVarArgs} is not set");
     }
 }

@@ -1,6 +1,6 @@
 namespace GirModel;
 
-public interface ArrayType
+public interface ArrayTypeReference
 {
     int? Length { get; }
     bool IsZeroTerminated { get; }
@@ -8,5 +8,5 @@ public interface ArrayType
     bool IsPointer { get; }
     bool IsConst { get; }
     bool IsVolatile { get; }
-    AnyType AnyType { get; }
+    AnyTypeReference AnyTypeReference { get; }
 }

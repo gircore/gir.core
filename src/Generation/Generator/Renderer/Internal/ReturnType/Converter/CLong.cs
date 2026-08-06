@@ -4,7 +4,7 @@ internal class CLong : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.CLong>();
+        return returnType.AnyTypeReference.References<GirModel.CLong>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

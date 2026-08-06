@@ -26,14 +26,14 @@ internal static class Signal
 
     public static string GetDescriptorClassName(GirModel.Signal signal, GirModel.ComplexType type)
     {
-        return signal.ReturnType.AnyType.Is<GirModel.Void>()
+        return signal.ReturnType.AnyTypeReference.References<GirModel.Void>()
             ? $"Signal<{GetGenericArgs(signal, type)}>"
             : $"ReturningSignal<{GetGenericReturningArgs(signal, type)}>";
     }
 
     public static string GetDelegateName(GirModel.Signal signal, GirModel.ComplexType type)
     {
-        return signal.ReturnType.AnyType.Is<GirModel.Void>()
+        return signal.ReturnType.AnyTypeReference.References<GirModel.Void>()
             ? $"SignalHandler<{GetGenericArgs(signal, type)}>"
             : $"ReturningSignalHandler<{GetGenericReturningArgs(signal, type)}>";
     }

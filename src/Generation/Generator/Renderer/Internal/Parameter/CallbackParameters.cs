@@ -4,8 +4,8 @@ namespace Generator.Renderer.Internal;
 
 internal static class CallbackParameters
 {
-    private static readonly List<Parameter.ParameterConverter> converters = new()
-    {
+    private static readonly List<Parameter.ParameterConverter> converters =
+    [
         new Parameter.Bitfield(),
         new Parameter.Callback(),
         new Parameter.Class(),
@@ -45,31 +45,31 @@ internal static class CallbackParameters
         new Parameter.UntypedRecordCallback(),
         new Parameter.UntypedRecordCallbackArray(),
         new Parameter.Utf8StringArrayCallback(),
-        new Parameter.Void(),
-    };
+        new Parameter.Void()
+    ];
 
     public static string GetDirection(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeOrVarArgs.IsT1)
-            throw new System.Exception($"Callback parameter direction \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered as variadic parameters are not supported");
+        if (parameter.AnyTypeReferenceOrVarArgs.IsT1)
+            throw new System.Exception($"Callback parameter direction \"{parameter.Name}\" of type {parameter.AnyTypeReferenceOrVarArgs} can not be rendered as variadic parameters are not supported");
 
         foreach (var converter in converters)
-            if (converter.Supports(parameter.AnyTypeOrVarArgs.AsT0))
+            if (converter.Supports(parameter.AnyTypeReferenceOrVarArgs.AsT0))
                 return converter.Convert(parameter).Direction;
 
-        throw new System.Exception($"Internal callback parameter direction \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
+        throw new System.Exception($"Internal callback parameter direction \"{parameter.Name}\" of type {parameter.AnyTypeReferenceOrVarArgs} can not be rendered");
     }
 
     public static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeOrVarArgs.IsT1)
-            throw new System.Exception($"Callback parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered as variadic parameters are not supported");
+        if (parameter.AnyTypeReferenceOrVarArgs.IsT1)
+            throw new System.Exception($"Callback parameter \"{parameter.Name}\" of type {parameter.AnyTypeReferenceOrVarArgs} can not be rendered as variadic parameters are not supported");
 
         foreach (var converter in converters)
-            if (converter.Supports(parameter.AnyTypeOrVarArgs.AsT0))
+            if (converter.Supports(parameter.AnyTypeReferenceOrVarArgs.AsT0))
                 return converter.Convert(parameter).NullableTypeName;
 
-        throw new System.Exception($"Internal callback parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
+        throw new System.Exception($"Internal callback parameter \"{parameter.Name}\" of type {parameter.AnyTypeReferenceOrVarArgs} can not be rendered");
     }
 
     public static string Render(IEnumerable<GirModel.Parameter> parameters)
@@ -84,14 +84,14 @@ internal static class CallbackParameters
 
     private static string Render(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeOrVarArgs.IsT1)
-            throw new System.Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered as variadic parameters are not supported");
+        if (parameter.AnyTypeReferenceOrVarArgs.IsT1)
+            throw new System.Exception($"Parameter \"{parameter.Name}\" of type {parameter.AnyTypeReferenceOrVarArgs} can not be rendered as variadic parameters are not supported");
 
         foreach (var converter in converters)
-            if (converter.Supports(parameter.AnyTypeOrVarArgs.AsT0))
+            if (converter.Supports(parameter.AnyTypeReferenceOrVarArgs.AsT0))
                 return Render(converter.Convert(parameter));
 
-        throw new System.Exception($"Internal parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
+        throw new System.Exception($"Internal parameter \"{parameter.Name}\" of type {parameter.AnyTypeReferenceOrVarArgs} can not be rendered");
     }
 
     private static string Render(Parameter.RenderableParameter parameter)

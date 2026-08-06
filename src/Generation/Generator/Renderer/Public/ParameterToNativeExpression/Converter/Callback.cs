@@ -7,13 +7,13 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class Callback : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Callback>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Callback>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> parameters)
     {
         if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Callback parameter with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: Callback parameter with direction != in not yet supported");
 
         if (parameter.IsDestroyNotify)
             return; //If this destroy notify parameter got already initialized by another parameter we can skip it as it is not part of the public api
@@ -24,12 +24,12 @@ internal class Callback : ToNativeParameterConverter
                 FillCallScope(parameter, parameters);
                 break;
             case GirModel.Scope.Async:
-                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Async scope not yet implemented");
+                throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: Async scope not yet implemented");
             case GirModel.Scope.Notified:
                 FillNotifiedScope(parameter, parameters);
                 break;
             case GirModel.Scope.Forever:
-                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Forever scope not yet implemented");
+                throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: Forever scope not yet implemented");
             default:
                 throw new Exception($"Unknown parameter scope {parameter.Parameter.Scope}");
         }
@@ -37,12 +37,12 @@ internal class Callback : ToNativeParameterConverter
 
     private static void FillNotifiedScope(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> parameters)
     {
-        var callback = (GirModel.Callback) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var callback = (GirModel.Callback) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var handlerNameVariable = parameterName + "Handler";
 
         if (parameter.Parameter.Destroy is null)
-            throw new Exception($"{parameter.Parameter.AnyTypeOrVarArgs}: Notified scope misses destroy index");
+            throw new Exception($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: Notified scope misses destroy index");
 
         if (parameter.Parameter.Closure is { } closureIndex)
             parameters.ElementAt(closureIndex).IsCallbackUserData = true;
@@ -52,7 +52,7 @@ internal class Callback : ToNativeParameterConverter
 
         var destroyParameter = parameters.ElementAt(parameter.Parameter.Destroy.Value);
 
-        if (destroyParameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0 is not GirModel.Callback { Name: "DestroyNotify" })
+        if (destroyParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type is not GirModel.Callback { Name: "DestroyNotify" })
             throw new Exception("Destroyparameter is not of type DestroyNotify");
 
         destroyParameter.IsDestroyNotify = true;
@@ -64,7 +64,7 @@ internal class Callback : ToNativeParameterConverter
 
     private static void FillCallScope(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> parameters)
     {
-        var callback = (GirModel.Callback) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var callback = (GirModel.Callback) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var handlerNameVariable = parameterName + "Handler";
         var handlerReference = callback.Parent != null

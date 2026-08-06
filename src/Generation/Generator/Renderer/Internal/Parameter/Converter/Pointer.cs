@@ -5,9 +5,9 @@ namespace Generator.Renderer.Internal.Parameter;
 internal class Pointer : ParameterConverter
 {
 
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Pointer>();
+        return anyTypeReference.References<GirModel.Pointer>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -27,7 +27,7 @@ internal class Pointer : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: string.Empty,
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }
@@ -38,7 +38,7 @@ internal class Pointer : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Out(),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }
@@ -49,7 +49,7 @@ internal class Pointer : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Ref(),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }

@@ -5,15 +5,15 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class ForeignTypedRecord : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && Model.Record.IsForeignTyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsForeignTyped(record);
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
         if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: foreign typed record parameter '{parameter.Parameter.Name}' with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: foreign typed record parameter '{parameter.Parameter.Name}' with direction != in not yet supported");
 
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var typeHandle = Model.ForeignTypedRecord.GetFullyQuallifiedInternalHandle(record);
         var nullHandle = Model.ForeignTypedRecord.GetFullyQuallifiedNullHandle(record);
         var signatureName = Model.Parameter.GetName(parameter.Parameter);

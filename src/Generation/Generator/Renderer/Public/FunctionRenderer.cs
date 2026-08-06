@@ -94,7 +94,7 @@ public static {newModifier}{ReturnTypeRenderer.Render(function.ReturnType)} {Fun
         resultVariableName = $"result{Function.GetName(function)}";
         var call = new StringBuilder();
 
-        if (!function.ReturnType.AnyType.Is<GirModel.Void>())
+        if (!function.ReturnType.AnyTypeReference.References<GirModel.Void>())
             call.Append($"var {resultVariableName} = ");
 
         var parent = function.Parent switch
@@ -115,7 +115,7 @@ public static {newModifier}{ReturnTypeRenderer.Render(function.ReturnType)} {Fun
 
     private static string RenderReturnStatement(ReturnTypeToManagedData data, string returnVariable)
     {
-        return data.ReturnType.AnyType.Is<GirModel.Void>()
+        return data.ReturnType.AnyTypeReference.References<GirModel.Void>()
             ? string.Empty
             : $"return {data.GetExpression(returnVariable)};";
     }

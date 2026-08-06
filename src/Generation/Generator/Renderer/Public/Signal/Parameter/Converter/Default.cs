@@ -5,7 +5,7 @@ namespace Generator.Renderer.Public.Signals;
 
 public class Default : SignalArgsParameterConverter
 {
-    public bool Supports(AnyType type)
+    public bool Supports(AnyTypeReference anyTypeReference)
     {
         return true;
     }

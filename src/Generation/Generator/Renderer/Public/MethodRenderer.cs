@@ -102,7 +102,7 @@ internal static class MethodRenderer
         resultVariableName = $"result{Method.GetPublicName(method)}";
         var call = new StringBuilder();
 
-        if (!method.ReturnType.AnyType.Is<GirModel.Void>())
+        if (!method.ReturnType.AnyTypeReference.References<GirModel.Void>())
             call.Append($"var {resultVariableName} = ");
 
         call.Append($"{Namespace.GetInternalName(method.Parent.Namespace)}.{method.Parent.Name}.{Method.GetInternalName(method)}(");
@@ -118,7 +118,7 @@ internal static class MethodRenderer
 
     private static string RenderReturnStatement(ReturnTypeToManagedData data, string returnVariable)
     {
-        return data.ReturnType.AnyType.Is<GirModel.Void>()
+        return data.ReturnType.AnyTypeReference.References<GirModel.Void>()
             ? string.Empty
             : $"return {data.GetExpression(returnVariable)};";
     }

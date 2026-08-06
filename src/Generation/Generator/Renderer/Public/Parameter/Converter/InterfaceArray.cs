@@ -2,9 +2,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class InterfaceArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.Interface>();
+        return anyTypeReference.ReferencesArray<GirModel.Interface>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -17,7 +17,7 @@ internal class InterfaceArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var iface = (GirModel.Interface) parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0;
+        var iface = (GirModel.Interface) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
         return Model.ComplexType.GetFullyQualified(iface) + "[]";
     }
 

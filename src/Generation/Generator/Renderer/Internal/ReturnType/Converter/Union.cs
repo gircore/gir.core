@@ -4,12 +4,12 @@ internal class Union : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Union>();
+        return returnType.AnyTypeReference.References<GirModel.Union>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var type = (GirModel.Union) returnType.AnyType.AsT0;
+        var type = (GirModel.Union) returnType.AnyTypeReference.AsT0.Type;
 
         var nullableTypeName = returnType.IsPointer
             ? Model.Type.Pointer

@@ -4,14 +4,14 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class Utf8StringArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.Utf8String>();
+        return anyTypeReference.ReferencesArray<GirModel.Utf8String>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        var arrayType = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
 
         if (arrayType.IsZeroTerminated)
             return NullTerminatedArray(parameter);

@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class UnsignedPointer : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.UnsignedPointer>();
+        return anyTypeReference.References<GirModel.UnsignedPointer>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -13,7 +13,7 @@ internal class UnsignedPointer : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: string.Empty,
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }

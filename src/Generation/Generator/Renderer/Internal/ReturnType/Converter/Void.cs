@@ -4,7 +4,7 @@ internal class Void : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Void>();
+        return returnType.AnyTypeReference.References<GirModel.Void>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

@@ -4,8 +4,8 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class CLong : ReturnTypeConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.CLong>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.CLong>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {

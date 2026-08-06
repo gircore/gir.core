@@ -4,9 +4,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class OpaqueTypedRecord : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
+        return anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -23,7 +23,7 @@ internal class OpaqueTypedRecord : ParameterConverter
     {
         //Native opaque records are represented as SafeHandles and are not nullable
 
-        var type = (GirModel.Record) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var type = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         return parameter switch
         {
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.None } => Model.OpaqueTypedRecord.GetFullyQuallifiedInternalHandle(type),

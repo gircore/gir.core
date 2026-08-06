@@ -6,8 +6,8 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class Interface : ReturnTypeConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Interface>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Interface>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {
@@ -18,7 +18,7 @@ internal class Interface : ReturnTypeConverter
             if (!returnType.IsPointer)
                 throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
 
-            var @interface = (GirModel.Interface) returnType.AnyType.AsT0;
+            var @interface = (GirModel.Interface) returnType.AnyTypeReference.AsT0.Type;
 
             return returnType.Nullable
                 ? $"({Model.Type.GetPublicNameFullyQuallified(@interface)}?) GObject.Internal.InstanceWrapper.WrapNullableHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"

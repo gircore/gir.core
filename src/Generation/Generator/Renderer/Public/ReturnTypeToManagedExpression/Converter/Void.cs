@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class Void : ReturnTypeConverter
 {
-    public bool Supports(AnyType type)
-        => type.Is<GirModel.Void>();
+    public bool Supports(AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Void>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {

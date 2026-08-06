@@ -11,11 +11,11 @@ internal class PublicMethodsWithCallbackReturnWhichIsFundamental : Fixer<GirMode
             try
             {
                 var parameter = method.Parameters.FirstOrDefault(x =>
-                    x.AnyTypeOrVarArgs.TryPickT0(out var anyType, out _)
-                    && anyType.TryPickT0(out var type, out _)
-                    && type is GirModel.Callback callback
-                    && callback.ReturnType.AnyType.TryPickT0(out var returnType, out _)
-                    && returnType is GirModel.Class { Fundamental: true }
+                    x.AnyTypeReferenceOrVarArgs.TryPickT0(out var anyTypeReference, out _)
+                    && anyTypeReference.TryPickT0(out var typeReference, out _)
+                    && typeReference.Type is GirModel.Callback callback
+                    && callback.ReturnType.AnyTypeReference.TryPickT0(out var typeReference2, out _)
+                    && typeReference2.Type is GirModel.Class { Fundamental: true }
                 );
 
                 if (parameter is null)

@@ -6,7 +6,7 @@ internal class PlatformStringInCallback : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.PlatformString>();
+        return returnType.AnyTypeReference.References<GirModel.PlatformString>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

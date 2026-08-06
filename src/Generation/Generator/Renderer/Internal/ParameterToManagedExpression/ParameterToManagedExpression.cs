@@ -6,8 +6,8 @@ namespace Generator.Renderer.Internal;
 
 internal static class ParameterToManagedExpression
 {
-    private static readonly List<ParameterToManagedExpressions.ToManagedParameterConverter> Converter = new()
-    {
+    private static readonly List<ParameterToManagedExpressions.ToManagedParameterConverter> Converter =
+    [
         new ParameterToManagedExpressions.Bitfield(),
         new ParameterToManagedExpressions.Callback(),
         new ParameterToManagedExpressions.Class(),
@@ -32,8 +32,8 @@ internal static class ParameterToManagedExpression
         new ParameterToManagedExpressions.TypedRecordArray(),
         new ParameterToManagedExpressions.UntypedRecord(),
         new ParameterToManagedExpressions.UntypedRecordArray(),
-        new ParameterToManagedExpressions.Utf8StringArray(),
-    };
+        new ParameterToManagedExpressions.Utf8StringArray()
+    ];
 
     public static IReadOnlyList<ParameterToManagedData> Initialize(IEnumerable<GirModel.Parameter> parameters)
     {
@@ -45,10 +45,10 @@ internal static class ParameterToManagedExpression
 
             foreach (var converter in Converter)
             {
-                if (parameter.Parameter.AnyTypeOrVarArgs.IsT1)
+                if (parameter.Parameter.AnyTypeReferenceOrVarArgs.IsT1)
                     throw new Exception("Can't convert to managed: Variadic parameters are not yet supported");
 
-                if (converter.Supports(parameter.Parameter.AnyTypeOrVarArgs.AsT0))
+                if (converter.Supports(parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0))
                 {
                     converter.Initialize(parameter, parameterToManagedDatas);
                     converterFound = true;
@@ -57,7 +57,7 @@ internal static class ParameterToManagedExpression
             }
 
             if (!converterFound)
-                throw new NotImplementedException($"Missing converter to convert from parameter {parameter.Parameter} ({parameter.Parameter.AnyTypeOrVarArgs}) to managed");
+                throw new NotImplementedException($"Missing converter to convert from parameter {parameter.Parameter} ({parameter.Parameter.AnyTypeReferenceOrVarArgs}) to managed");
         }
 
         return parameterToManagedDatas;

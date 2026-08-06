@@ -6,15 +6,15 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class Utf8String : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Utf8String>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Utf8String>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
         // TODO - the caller needs to pass in some kind of Span<T> as a buffer that can be filled in by the C function.
         // These functions (e.g. g_unichar_to_utf8()) expect a minimum buffer size to be provided.
         if (parameter.Parameter.CallerAllocates)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: String type with caller-allocates=1 not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: String type with caller-allocates=1 not yet supported");
 
         switch (parameter.Parameter.Direction)
         {
@@ -27,7 +27,7 @@ internal class Utf8String : ToNativeParameterConverter
             case GirModel.Direction.InOut:
                 // inout string parameters only occur for deprecated functions like pango_skip_space(), which may have incorrect ownership transfer annotations.
                 // These functions just update the char** parameter to point at a different location in the provided char*, but have transfer=full and caller-allocates=0
-                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: String type with direction=inout not yet supported");
+                throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: String type with direction=inout not yet supported");
             default:
                 throw new NotImplementedException("Unknown direction");
         }
@@ -45,7 +45,7 @@ internal class Utf8String : ToNativeParameterConverter
             { Nullable: true, Transfer: GirModel.Transfer.None } => Model.Utf8String.GetInternalNullableOwnedHandleName(),
             { Nullable: false, Transfer: GirModel.Transfer.Full } => Model.Utf8String.GetInternalNonNullableUnownedHandleName(),
             { Nullable: false, Transfer: GirModel.Transfer.None } => Model.Utf8String.GetInternalNonNullableOwnedHandleName(),
-            _ => throw new Exception($"Parameter {parameter.Parameter.Name} of type {parameter.Parameter.AnyTypeOrVarArgs} not supported")
+            _ => throw new Exception($"Parameter {parameter.Parameter.Name} of type {parameter.Parameter.AnyTypeReferenceOrVarArgs} not supported")
         };
 
         parameter.SetExpression(() => $"using var {nativeVariableName} = {ownedHandleTypeName}.Create({parameterName});");

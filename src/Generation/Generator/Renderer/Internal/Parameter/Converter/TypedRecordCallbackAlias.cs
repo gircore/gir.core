@@ -4,9 +4,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class TypedRecordCallbackAlias : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsAlias<GirModel.Record>(out var record) && Model.Record.IsTyped(record);
+        return anyTypeReference.ReferencesAlias<GirModel.Record>(out var record) && Model.Record.IsTyped(record);
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

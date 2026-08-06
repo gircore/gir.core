@@ -42,6 +42,6 @@ internal static class ReturnTypeRenderer
             if (converter.Supports(returnType))
                 return converter.Convert(returnType).NullableTypeName;
 
-        throw new System.Exception($"Internal return type of type {returnType.AnyType} can not be rendered");
+        throw new System.Exception($"Internal return type of type {returnType.AnyTypeReference} can not be rendered");
     }
 }

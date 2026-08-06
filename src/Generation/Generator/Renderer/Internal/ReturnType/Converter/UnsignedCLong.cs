@@ -4,7 +4,7 @@ internal class UnsignedCLong : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.UnsignedCLong>();
+        return returnType.AnyTypeReference.References<GirModel.UnsignedCLong>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

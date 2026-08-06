@@ -66,7 +66,7 @@ internal static class Fields
             if (converter.Supports(field))
                 return converter.Convert(field);
 
-        throw new System.Exception($"Internal field \"{field.Name}\" of type {field.AnyTypeOrCallback} can not be rendered");
+        throw new System.Exception($"Internal field \"{field.Name}\" of type {field.AnyTypeReferenceOrCallback} can not be rendered");
     }
 
     private static string Render(Field.RenderableField renderableField)

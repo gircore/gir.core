@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class Utf8String : ReturnTypeConverter
 {
-    public bool Supports(AnyType type)
-        => type.Is<GirModel.Utf8String>();
+    public bool Supports(AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Utf8String>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {

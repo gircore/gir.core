@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class Class : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Class>();
+        return anyTypeReference.References<GirModel.Class>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

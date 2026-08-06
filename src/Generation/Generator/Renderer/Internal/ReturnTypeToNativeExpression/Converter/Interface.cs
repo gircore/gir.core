@@ -2,8 +2,8 @@ namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
 
 internal class Interface : ReturnTypeConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Interface>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Interface>();
 
     public string GetString(GirModel.ReturnType returnType, string fromVariableName)
     {

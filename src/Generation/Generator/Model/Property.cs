@@ -34,11 +34,11 @@ internal static partial class Property
 
     public static string GetNullableTypeName(GirModel.Property property)
     {
-        return property.AnyType.Match(
-            type => type switch
+        return property.AnyTypeReference.Match(
+            typeReference => typeReference.Type switch
             {
                 GirModel.ComplexType c => ComplexType.GetFullyQualified(c) + GetDefaultNullable(property),
-                _ => Type.GetName(type) + GetDefaultNullable(property)
+                _ => Type.GetName(typeReference.Type) + GetDefaultNullable(property)
             },
             arrayType => ArrayType.GetName(arrayType)
         );
@@ -50,10 +50,10 @@ internal static partial class Property
     // is not present in the gir file
     private static string GetDefaultNullable(GirModel.Property property)
     {
-        if (!property.AnyType.TryPickT0(out var type, out _))
+        if (!property.AnyTypeReference.TryPickT0(out var typeReference, out _))
             return string.Empty;
 
-        switch (type)
+        switch (typeReference.Type)
         {
             case GirModel.String:
             case GirModel.Class:
@@ -120,28 +120,28 @@ internal static partial class Property
         if (property.Setter is not null && property.Setter.Throws)
             throw new System.NotImplementedException($"Property {complexType.Name}.{property.Name} setter with throws=true is not supported");
 
-        if (property.AnyType.Is<GirModel.PrimitiveType>())
+        if (property.AnyTypeReference.References<GirModel.PrimitiveType>())
             return;
 
-        if (property.AnyType.IsArray<GirModel.String>())
+        if (property.AnyTypeReference.ReferencesArray<GirModel.String>())
             return;
 
-        if (property.AnyType.IsArray<GirModel.Byte>())
+        if (property.AnyTypeReference.ReferencesArray<GirModel.Byte>())
             return;
 
-        if (property.AnyType.Is<GirModel.Enumeration>())
+        if (property.AnyTypeReference.References<GirModel.Enumeration>())
             return;
 
-        if (property.AnyType.Is<GirModel.Bitfield>())
+        if (property.AnyTypeReference.References<GirModel.Bitfield>())
             return;
 
-        if (property.AnyType.Is<GirModel.Class>())
+        if (property.AnyTypeReference.References<GirModel.Class>())
             return;
 
-        if (property.AnyType.Is<GirModel.Interface>())
+        if (property.AnyTypeReference.References<GirModel.Interface>())
             return;
 
-        if (property.AnyType.Is<GirModel.Record>(out var record) && (Record.IsTyped(record) || Record.IsForeignTyped(record) || Record.IsOpaqueTyped(record)))
+        if (property.AnyTypeReference.References<GirModel.Record>(out var record) && (Record.IsTyped(record) || Record.IsForeignTyped(record) || Record.IsOpaqueTyped(record)))
             return;
 
         throw new System.Exception($"Property {complexType.Name}.{property.Name} is not supported");

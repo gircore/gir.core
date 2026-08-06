@@ -4,9 +4,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class Long : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Long>();
+        return anyTypeReference.References<GirModel.Long>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -14,7 +14,7 @@ internal class Long : ParameterConverter
         // If the parameter is both nullable and optional this implies a parameter type like 'int **' and possibly
         // ownership transfer (this combination does not currently occur for any functions).
         if (parameter is { Nullable: true, Optional: true })
-            throw new System.NotImplementedException($"{parameter.AnyTypeOrVarArgs} - Primitive value type with nullable=true and optional=true not yet supported");
+            throw new System.NotImplementedException($"{parameter.AnyTypeReferenceOrVarArgs} - Primitive value type with nullable=true and optional=true not yet supported");
 
         // Nullable-only parameters likely have incorrect annotations and should be marked optional instead.
         if (parameter.Nullable)
@@ -27,7 +27,7 @@ internal class Long : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }

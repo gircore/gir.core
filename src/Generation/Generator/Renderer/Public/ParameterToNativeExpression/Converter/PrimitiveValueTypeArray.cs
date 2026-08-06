@@ -6,19 +6,19 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class PrimitiveValueTypeArray : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.PrimitiveValueType>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesArray<GirModel.PrimitiveValueType>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
     {
         switch (parameter.Parameter)
         {
             case { Direction: GirModel.Direction.Out, CallerAllocates: true }
-                when parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null:
+                when parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null:
             case { Direction: GirModel.Direction.In }
-                when parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null:
+                when parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null:
             case { Direction: GirModel.Direction.InOut }
-                when parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null:
+                when parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null:
                 Span(parameter, allParameters);
                 break;
             case { Direction: GirModel.Direction.In }:
@@ -45,9 +45,9 @@ internal class PrimitiveValueTypeArray : ToNativeParameterConverter
         parameter.SetSignatureName(() => parameterName);
         parameter.SetCallName(() => $"ref MemoryMarshal.GetReference({parameterName})");
 
-        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
-        var type = Model.Type.GetName(lengthParameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0);
+        var type = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type);
 
         switch (lengthParameter.Parameter.Direction)
         {

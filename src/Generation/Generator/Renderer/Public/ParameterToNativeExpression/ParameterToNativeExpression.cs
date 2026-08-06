@@ -6,8 +6,8 @@ namespace Generator.Renderer.Public;
 
 internal static class ParameterToNativeExpression
 {
-    private static readonly List<ParameterToNativeExpressions.ToNativeParameterConverter> Converter = new()
-    {
+    private static readonly List<ParameterToNativeExpressions.ToNativeParameterConverter> Converter =
+    [
         new ParameterToNativeExpressions.Bitfield(),
         new ParameterToNativeExpressions.Callback(),
         new ParameterToNativeExpressions.Class(),
@@ -38,8 +38,8 @@ internal static class ParameterToNativeExpression
         new ParameterToNativeExpressions.UntypedRecord(),
         new ParameterToNativeExpressions.UntypedRecordArray(),
         new ParameterToNativeExpressions.Utf8String(),
-        new ParameterToNativeExpressions.Utf8StringArray(),
-    };
+        new ParameterToNativeExpressions.Utf8StringArray()
+    ];
 
     public static IReadOnlyList<ParameterToNativeData> Initialize(IEnumerable<GirModel.Parameter> parameters)
     {
@@ -51,10 +51,10 @@ internal static class ParameterToNativeExpression
 
             foreach (var converter in Converter)
             {
-                if (parameter.Parameter.AnyTypeOrVarArgs.IsT1)
+                if (parameter.Parameter.AnyTypeReferenceOrVarArgs.IsT1)
                     throw new Exception("Variadic parameters are not yet supported");
 
-                if (converter.Supports(parameter.Parameter.AnyTypeOrVarArgs.AsT0))
+                if (converter.Supports(parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0))
                 {
                     converter.Initialize(parameter, parameterToNativeDatas);
                     converterFound = true;
@@ -63,7 +63,7 @@ internal static class ParameterToNativeExpression
             }
 
             if (!converterFound)
-                throw new NotImplementedException($"Missing converter to convert from parameter {parameter.Parameter} ({parameter.Parameter.AnyTypeOrVarArgs}) to native");
+                throw new NotImplementedException($"Missing converter to convert from parameter {parameter.Parameter} ({parameter.Parameter.AnyTypeReferenceOrVarArgs}) to native");
         }
 
         return parameterToNativeDatas;

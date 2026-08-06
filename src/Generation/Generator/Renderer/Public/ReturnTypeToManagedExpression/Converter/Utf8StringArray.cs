@@ -7,19 +7,19 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class Utf8StringArray : ReturnTypeConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.Utf8String>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesArray<GirModel.Utf8String>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> parametersToNativeData)
     {
         data.SetExpression(fromVariableName =>
         {
             var returnType = data.ReturnType;
-            var arrayType = returnType.AnyType.AsT1;
+            var arrayTypeReference = returnType.AnyTypeReference.AsT1;
 
-            if (arrayType.IsZeroTerminated)
+            if (arrayTypeReference.IsZeroTerminated)
                 return NullTerminatedArray(returnType, fromVariableName);
-            if (arrayType.Length is not null)
+            if (arrayTypeReference.Length is not null)
                 return SizeBasedArray(returnType, fromVariableName);
 
             throw new Exception("Unknown kind of array");
@@ -28,14 +28,14 @@ internal class Utf8StringArray : ReturnTypeConverter
         data.SetPostReturnStatement(fromVariableName =>
         {
             var returnType = data.ReturnType;
-            var arrayType = returnType.AnyType.AsT1;
+            var arrayTypeReference = returnType.AnyTypeReference.AsT1;
 
-            if (arrayType.IsZeroTerminated)
+            if (arrayTypeReference.IsZeroTerminated)
                 return null;
 
-            if (arrayType.Length is not null)
+            if (arrayTypeReference.Length is not null)
             {
-                var lengthParameter = parametersToNativeData.ElementAt(arrayType.Length.Value);
+                var lengthParameter = parametersToNativeData.ElementAt(arrayTypeReference.Length.Value);
                 return $"{fromVariableName}.Size = (int) {lengthParameter.GetSignatureName()};";
             }
 

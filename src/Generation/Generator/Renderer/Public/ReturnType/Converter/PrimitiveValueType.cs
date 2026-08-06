@@ -8,11 +8,11 @@ internal class PrimitiveValueType : ReturnTypeConverter
     {
         var nullableTypeName = returnType.IsPointer
             ? Type.Pointer
-            : Type.GetName(returnType.AnyType.AsT0);
+            : Type.GetName(returnType.AnyTypeReference.AsT0.Type);
 
         return new RenderableReturnType(nullableTypeName);
     }
 
     public bool Supports(GirModel.ReturnType returnType)
-        => returnType.AnyType.Is<GirModel.PrimitiveValueType>();
+        => returnType.AnyTypeReference.References<GirModel.PrimitiveValueType>();
 }

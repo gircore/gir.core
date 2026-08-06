@@ -5,43 +5,43 @@ namespace Generator.Model;
 
 internal static class ArrayType
 {
-    public static int GetDimensions(GirModel.ArrayType arrayType)
+    public static int GetDimensions(GirModel.ArrayTypeReference arrayTypeReference)
     {
         var dimensions = 1;
 
         while (true)
         {
-            if (arrayType.AnyType.TryPickT1(out var array, out _))
+            if (arrayTypeReference.AnyTypeReference.TryPickT1(out var array, out _))
                 dimensions++;
             else
                 break;
 
-            arrayType = array;
+            arrayTypeReference = array;
         }
 
         return dimensions;
     }
 
-    public static string GetTypeName(GirModel.ArrayType arrayType, bool solveAlias = false)
+    public static string GetTypeName(GirModel.ArrayTypeReference arrayTypeReference, bool solveAlias = false)
     {
         while (true)
         {
-            if (arrayType.AnyType.TryPickT0(out var type, out var array))
+            if (arrayTypeReference.AnyTypeReference.TryPickT0(out var typeReference, out var array))
             {
-                if (type is GirModel.Alias a)
+                if (typeReference.Type is GirModel.Alias a)
                     return solveAlias ? Type.GetName(a.Type) : Type.GetName(a);
 
-                return Type.GetName(type);
+                return Type.GetName(typeReference.Type);
             }
 
-            arrayType = array;
+            arrayTypeReference = array;
         }
     }
 
-    public static string GetName(GirModel.ArrayType arrayType, bool solveAlias = false)
+    public static string GetName(GirModel.ArrayTypeReference arrayTypeReference, bool solveAlias = false)
     {
         var nameParts = new List<string>();
-        arrayType.FillArrayNameParts(nameParts, solveAlias);
+        arrayTypeReference.FillArrayNameParts(nameParts, solveAlias);
 
         var sb = new StringBuilder(nameParts.Count + 1);
 
@@ -53,21 +53,21 @@ internal static class ArrayType
         return sb.ToString();
     }
 
-    private static void FillArrayNameParts(this GirModel.ArrayType arrayType, ICollection<string> nameParts, bool solveAlias)
+    private static void FillArrayNameParts(this GirModel.ArrayTypeReference arrayTypeReference, ICollection<string> nameParts, bool solveAlias)
     {
         while (true)
         {
-            if (arrayType.AnyType.TryPickT0(out var type, out var array))
+            if (arrayTypeReference.AnyTypeReference.TryPickT0(out var typeReference, out var array))
             {
-                if (type is GirModel.Alias a)
+                if (typeReference.Type is GirModel.Alias a)
                     nameParts.Add(solveAlias ? Type.GetName(a.Type) : Type.GetName(a));
                 else
-                    nameParts.Add(Type.GetName(type));
+                    nameParts.Add(Type.GetName(typeReference.Type));
             }
             else
             {
                 nameParts.Add("[]");
-                arrayType = array;
+                arrayTypeReference = array;
                 continue;
             }
 

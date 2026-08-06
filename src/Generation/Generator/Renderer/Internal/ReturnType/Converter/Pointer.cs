@@ -6,7 +6,7 @@ internal class Pointer : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Pointer>();
+        return returnType.AnyTypeReference.References<GirModel.Pointer>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

@@ -2,9 +2,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class Union : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Union>();
+        return anyTypeReference.References<GirModel.Union>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -17,7 +17,7 @@ internal class Union : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Union) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var type = (GirModel.Union) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         return Model.ComplexType.GetFullyQualified(type);
     }
 

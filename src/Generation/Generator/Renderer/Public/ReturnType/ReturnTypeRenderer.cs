@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Generator.Renderer.Public;
 
@@ -34,6 +33,6 @@ internal static class ReturnTypeRenderer
             if (converter.Supports(returnType))
                 return converter.Create(returnType).NullableTypeName;
 
-        throw new System.NotImplementedException($"Missing converter for public return type {returnType.AnyType}.");
+        throw new System.NotImplementedException($"Missing converter for public return type {returnType.AnyTypeReference}.");
     }
 }

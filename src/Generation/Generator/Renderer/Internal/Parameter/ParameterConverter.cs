@@ -2,6 +2,6 @@ namespace Generator.Renderer.Internal.Parameter;
 
 public interface ParameterConverter
 {
-    bool Supports(GirModel.AnyType anyType);
+    bool Supports(GirModel.AnyTypeReference anyTypeReference);
     RenderableParameter Convert(GirModel.Parameter parameter);
 }

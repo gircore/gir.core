@@ -4,9 +4,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 public class GLibPointerArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsGLibPtrArray();
+        return anyTypeReference.ReferencesGLibPtrArray();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

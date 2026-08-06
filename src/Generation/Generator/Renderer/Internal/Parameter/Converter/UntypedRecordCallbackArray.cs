@@ -4,14 +4,14 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class UntypedRecordCallbackArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
+        return anyTypeReference.ReferencesArray<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeOrVarArgs.AsT0.AsT1.IsPointer)
+        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.IsPointer)
             return PointerArray(parameter);
 
         return StructArray(parameter);

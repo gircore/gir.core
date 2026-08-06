@@ -4,14 +4,14 @@ internal class Long : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Long>();
+        return returnType.AnyTypeReference.References<GirModel.Long>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
         var nullableTypeName = returnType.IsPointer
             ? Model.Type.Pointer
-            : Model.Type.GetName(returnType.AnyType.AsT0);
+            : Model.Type.GetName(returnType.AnyTypeReference.AsT0.Type);
 
         return new RenderableReturnType(nullableTypeName);
     }

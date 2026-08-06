@@ -4,7 +4,7 @@ internal class DisableFundamentalReturnTypes : Fixer<GirModel.Callback>
 {
     public void Fixup(GirModel.Callback callback)
     {
-        if (callback.ReturnType.AnyType.TryPickT0(out var type, out _) && type is GirModel.Class { Fundamental: true })
+        if (callback.ReturnType.AnyTypeReference.TryPickT0(out var typeReference, out _) && typeReference.Type is GirModel.Class { Fundamental: true })
         {
             /*
              * This Fixer requires other fixers:

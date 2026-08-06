@@ -6,17 +6,17 @@ internal class Utf8StringArray : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.IsArray<GirModel.Utf8String>();
+        return returnType.AnyTypeReference.ReferencesArray<GirModel.Utf8String>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var arrayType = returnType.AnyType.AsT1;
+        var arrayTypeReference = returnType.AnyTypeReference.AsT1;
 
-        if (arrayType.IsZeroTerminated)
+        if (arrayTypeReference.IsZeroTerminated)
             return NullTerminatedArray(returnType);
 
-        if (arrayType.Length is not null)
+        if (arrayTypeReference.Length is not null)
             return SizeBasedArray(returnType);
 
         throw new Exception("Unknown kind of array");

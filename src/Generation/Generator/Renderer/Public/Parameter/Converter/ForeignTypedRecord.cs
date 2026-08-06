@@ -4,9 +4,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class ForeignTypedRecord : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Record>(out var record) && Model.Record.IsForeignTyped(record);
+        return anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsForeignTyped(record);
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -19,7 +19,7 @@ internal class ForeignTypedRecord : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Record) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var type = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         return Model.ForeignTypedRecord.GetFullyQualifiedPublicClassName(type) + Nullable.Render(parameter);
     }
 

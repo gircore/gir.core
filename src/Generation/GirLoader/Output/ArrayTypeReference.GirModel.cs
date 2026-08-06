@@ -1,15 +1,12 @@
 namespace GirLoader.Output;
 
-public partial class ArrayTypeReference : GirModel.ArrayType
+public partial class ArrayTypeReference : GirModel.ArrayTypeReference
 {
-    int? GirModel.ArrayType.Length => Length;
-    bool GirModel.ArrayType.IsZeroTerminated => IsZeroTerminated;
-    int? GirModel.ArrayType.FixedSize => FixedSize;
-    bool GirModel.ArrayType.IsPointer => AnyTypeReference.CTypeReference?.IsPointer ?? false;
-    bool GirModel.ArrayType.IsConst => AnyTypeReference.CTypeReference?.IsConst ?? false;
-    bool GirModel.ArrayType.IsVolatile => AnyTypeReference.CTypeReference?.IsVolatile ?? false;
-    GirModel.AnyType GirModel.ArrayType.AnyType => AnyTypeReference.Match(
-        typeReference => GirModel.AnyType.From(typeReference.GetResolvedType()),
-        arrayTypeReference => GirModel.AnyType.From(arrayTypeReference)
-    );
+    int? GirModel.ArrayTypeReference.Length => Length;
+    bool GirModel.ArrayTypeReference.IsZeroTerminated => IsZeroTerminated;
+    int? GirModel.ArrayTypeReference.FixedSize => FixedSize;
+    bool GirModel.ArrayTypeReference.IsPointer => AnyTypeReference.CTypeReference?.IsPointer ?? false;
+    bool GirModel.ArrayTypeReference.IsConst => AnyTypeReference.CTypeReference?.IsConst ?? false;
+    bool GirModel.ArrayTypeReference.IsVolatile => AnyTypeReference.CTypeReference?.IsVolatile ?? false;
+    GirModel.AnyTypeReference GirModel.ArrayTypeReference.AnyTypeReference => AnyTypeReference.Match(GirModel.AnyTypeReference.From, GirModel.AnyTypeReference.From);
 }

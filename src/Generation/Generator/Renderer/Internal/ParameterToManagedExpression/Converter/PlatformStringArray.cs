@@ -5,16 +5,16 @@ namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class PlatformStringArray : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.PlatformString>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesArray<GirModel.PlatformString>();
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
-        var arrayType = parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
 
-        if (arrayType.IsZeroTerminated)
+        if (arrayTypeReference.IsZeroTerminated)
             NullTerminatedArray(parameterData);
-        else if (arrayType.Length is not null)
+        else if (arrayTypeReference.Length is not null)
             SizeBasedArray(parameterData);
         else
             throw new Exception("Unknown kind of array");

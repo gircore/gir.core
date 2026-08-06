@@ -8,5 +8,5 @@ internal class Void : ReturnTypeConverter
     }
 
     public bool Supports(GirModel.ReturnType returnType)
-        => returnType.AnyType.Is<GirModel.Void>();
+        => returnType.AnyTypeReference.References<GirModel.Void>();
 }

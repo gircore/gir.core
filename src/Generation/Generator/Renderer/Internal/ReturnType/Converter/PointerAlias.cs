@@ -4,7 +4,7 @@ internal class PointerAlias : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.IsAlias<GirModel.Pointer>();
+        return returnType.AnyTypeReference.ReferencesAlias<GirModel.Pointer>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

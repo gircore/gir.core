@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class EnumerationArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.Enumeration>();
+        return anyTypeReference.ReferencesArray<GirModel.Enumeration>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -27,10 +27,10 @@ internal class EnumerationArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
-        var type = (GirModel.Enumeration) arrayType.AnyType.AsT0;
+        var arrayTypeReference = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        var type = (GirModel.Enumeration) arrayTypeReference.AnyTypeReference.AsT0.Type;
 
-        return arrayType.Length is null
+        return arrayTypeReference.Length is null
             ? Model.Type.Pointer
             : Model.ComplexType.GetFullyQualified(type) + "[]";
     }

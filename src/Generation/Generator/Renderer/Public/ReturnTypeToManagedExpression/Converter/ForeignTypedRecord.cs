@@ -5,15 +5,15 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class ForeignTypedRecord : ReturnTypeConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && Model.Record.IsForeignTyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsForeignTyped(record);
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {
         data.SetExpression(fromVariableName =>
         {
             var returnType = data.ReturnType;
-            var record = (GirModel.Record) returnType.AnyType.AsT0;
+            var record = (GirModel.Record) returnType.AnyTypeReference.AsT0.Type;
 
             var handleExpression = returnType switch
             {

@@ -2,9 +2,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class Class : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Class>();
+        return anyTypeReference.References<GirModel.Class>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -17,7 +17,7 @@ internal class Class : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Class) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var type = (GirModel.Class) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         return Model.ComplexType.GetFullyQualified(type) + Nullable.Render(parameter);
     }
 

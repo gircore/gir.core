@@ -4,7 +4,7 @@ internal class OpaqueTypedRecordCallback : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
+        return returnType.AnyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

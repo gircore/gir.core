@@ -4,8 +4,8 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class PrimitiveValueTypeAlias : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsAlias<GirModel.PrimitiveValueType>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesAlias<GirModel.PrimitiveValueType>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {

@@ -4,8 +4,8 @@ namespace Generator.Renderer.Public;
 
 internal static class InstanceParameterToNativeExpression
 {
-    private static readonly List<InstanceParameterToNativeExpressions.InstanceParameterConverter> Converter = new()
-    {
+    private static readonly List<InstanceParameterToNativeExpressions.InstanceParameterConverter> Converter =
+    [
         new InstanceParameterToNativeExpressions.Class(),
         new InstanceParameterToNativeExpressions.ForeignTypedRecord(),
         new InstanceParameterToNativeExpressions.Interface(),
@@ -14,7 +14,7 @@ internal static class InstanceParameterToNativeExpression
         new InstanceParameterToNativeExpressions.Pointer(),
         new InstanceParameterToNativeExpressions.TypedRecord(),
         new InstanceParameterToNativeExpressions.UntypedRecord()
-    };
+    ];
 
     public static string Render(GirModel.InstanceParameter instanceParameter)
     {

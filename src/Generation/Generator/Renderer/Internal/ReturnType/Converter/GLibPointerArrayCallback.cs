@@ -4,7 +4,7 @@ internal class GLibPointerArrayCallback : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.IsGLibPtrArray();
+        return returnType.AnyTypeReference.ReferencesGLibPtrArray();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

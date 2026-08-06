@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class Enumeration : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Enumeration>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Enumeration>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
@@ -23,7 +23,7 @@ internal class Enumeration : ToNativeParameterConverter
                 Out(parameter);
                 break;
             default:
-                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: This kind of enumeration (pointed: {parameter.Parameter.IsPointer}, direction: {parameter.Parameter.Direction} can't be converted to managed currently.");
+                throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: This kind of enumeration (pointed: {parameter.Parameter.IsPointer}, direction: {parameter.Parameter.Direction} can't be converted to managed currently.");
         }
     }
 

@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 public class PrimitiveValueTypeGLibArrayAlias : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsGLibArrayAlias<GirModel.PrimitiveValueType>();
+        return anyTypeReference.ReferencesGLibArrayAlias<GirModel.PrimitiveValueType>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -19,7 +19,7 @@ public class PrimitiveValueTypeGLibArrayAlias : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1, true);
+        return Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1, true);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
