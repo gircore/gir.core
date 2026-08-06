@@ -1,8 +1,8 @@
 namespace GirLoader.Output;
 
-public class PointerArrayTypeReference : ArrayTypeReference, GirModel.PointerArrayType
+public class GLibByteArrayTypeReference : ArrayTypeReference, GirModel.GLibByteArrayType
 {
-    public PointerArrayTypeReference(ArrayTypeReference arrayTypeReference) : base(
+    public GLibByteArrayTypeReference(ArrayTypeReference arrayTypeReference) : base(
         typeReference: arrayTypeReference.TypeReference,
         symbolNameReference: arrayTypeReference.SymbolNameReference,
         ctype: arrayTypeReference.CTypeReference)

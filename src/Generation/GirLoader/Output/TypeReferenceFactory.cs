@@ -67,9 +67,9 @@ internal class TypeReferenceFactory
 
         arrayTypeReference = anyType.Array.Name switch
         {
-            "GLib.Array" => new GArrayTypeReference(reference),
-            "GLib.ByteArray" => new ByteArrayTypeReference(reference),
-            "GLib.PtrArray" => new PointerArrayTypeReference(reference),
+            "GLib.Array" => new GLibArrayTypeReference(reference),
+            "GLib.ByteArray" => new GLibByteArrayTypeReference(reference),
+            "GLib.PtrArray" => new GLibPtrArrayTypeReference(reference),
             _ => new StandardArrayTypeReference(reference)
         };
 
