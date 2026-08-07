@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GirLoader.Output;
 
@@ -34,4 +36,13 @@ public abstract class TypeReference
 
     internal bool GetIsResolved()
         => Type is { };
+
+    internal IReadOnlyList<GirModel.AnyType> GetResolvedElementTypes() => this switch
+    {
+        ResolveableTypeReference resolveableTypeReference => resolveableTypeReference.ElementTypeReferences
+            .Where(x => x.GetIsResolved())
+            .Select(x => GirModel.AnyType.From(x.GetResolvedType()))
+            .ToArray(),
+        _ => Array.Empty<GirModel.AnyType>()
+    };
 }

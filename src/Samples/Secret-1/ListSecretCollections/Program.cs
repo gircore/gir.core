@@ -6,9 +6,8 @@ var service = Secret.Service.GetSync(Secret.ServiceFlags.LoadCollections, null);
 var collections = service.GetCollections() ?? throw new Exception("No collections found");
 
 Console.WriteLine("Secret collections:");
-GLib.List.Foreach(collections, data =>
+foreach (var collection in collections)
 {
-    var collection = (Secret.Collection) GObject.Internal.InstanceWrapper.WrapHandle<Secret.Collection>(data, false);
     Console.WriteLine($" - {collection.Label}");
-});
+}
 

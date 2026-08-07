@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace GirLoader.Output;
 
 public partial class SingleParameter : GirModel.Parameter
@@ -25,6 +28,11 @@ public partial class SingleParameter : GirModel.Parameter
             _ => GirModel.AnyType.From(typeReference.GetResolvedType())
         },
         varargs => varargs
+    );
+
+    IReadOnlyList<GirModel.AnyType> GirModel.Parameter.ElementTypes => TypeReferenceOrVarArgs.Match(
+        typeReference => typeReference.GetResolvedElementTypes(),
+        varargs => Array.Empty<GirModel.AnyType>()
     );
     GirModel.Direction GirModel.Parameter.Direction => Direction.ToGirModel();
     GirModel.Transfer GirModel.Parameter.Transfer => Transfer.ToGirModel();

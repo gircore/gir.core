@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace GirModel;
 
 public interface Parameter : Nullable
@@ -13,5 +15,12 @@ public interface Parameter : Nullable
     bool IsConst { get; }
     bool IsVolatile { get; }
     OneOf.OneOf<AnyType, VarArgs> AnyTypeOrVarArgs { get; }
+
+    /// <summary>
+    /// The resolved element types if this parameter is a container type
+    /// like GLib.List. GLib.HashTable has two element types: the key and the
+    /// value type. Empty if there are no (resolved) element types.
+    /// </summary>
+    IReadOnlyList<AnyType> ElementTypes { get; }
     Scope? Scope { get; }
 }

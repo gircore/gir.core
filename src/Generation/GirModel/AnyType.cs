@@ -34,6 +34,15 @@ public static class AnyTypeExtension
         => anyType.TryPickT1(out var arrayType, out _)
            && arrayType is GirModel.GLibPtrArrayType;
 
+    /// <summary>
+    /// Checks whether the given type is a GLib.List or a GLib.SList. Both are
+    /// container types which store their element type as a nested type.
+    /// </summary>
+    public static bool IsGLibList(this GirModel.AnyType anyType)
+        => anyType.TryPickT0(out var type, out _)
+           && type is GirModel.Record { Name: "List" or "SList" } record
+           && record.Namespace.Name == "GLib";
+
     public static bool IsGLibByteArray(this GirModel.AnyType anyType)
         => anyType.TryPickT1(out var arrayType, out _)
            && arrayType is GirModel.GLibByteArrayType;

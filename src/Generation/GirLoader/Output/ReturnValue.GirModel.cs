@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace GirLoader.Output;
 
 public partial class ReturnValue : GirModel.ReturnType
@@ -7,6 +9,8 @@ public partial class ReturnValue : GirModel.ReturnType
         ArrayTypeReference arrayTypeReference => GirModel.AnyType.From(arrayTypeReference),
         _ => GirModel.AnyType.From(TypeReference.GetResolvedType())
     };
+
+    IReadOnlyList<GirModel.AnyType> GirModel.ReturnType.ElementTypes => TypeReference.GetResolvedElementTypes();
 
     GirModel.Transfer GirModel.ReturnType.Transfer => Transfer.ToGirModel();
 
