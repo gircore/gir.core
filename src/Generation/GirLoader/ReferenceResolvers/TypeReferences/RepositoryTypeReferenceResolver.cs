@@ -31,24 +31,22 @@ internal class RepositoryTypeReferenceResolver
             Add(dependentRepository);
     }
 
-    public void ResolveTypeReference(Output.TypeReference reference, Output.Repository repository)
+    public void ResolveTypeReference(Output.AnyTypeReference anyTypeReference, Output.Repository repository)
     {
-        if (reference is Output.ArrayTypeReference arrayTypeReference)
-        {
-            // Array type references are not resolved directly. Only their type get's resolved
-            // because arrays are no type themself. They only provide structure.
-            ResolveTypeReference(arrayTypeReference.TypeReference, repository);
-        }
-        else if (reference is Output.ResolveableTypeReference resolveableTypeReference)
-        {
-            if (_typeReferenceResolver.Resolve(resolveableTypeReference, repository, out var type))
-                resolveableTypeReference.ResolveAs(type);
-            else
-                Log.Verbose($"Could not resolve type reference {reference}");
-        }
-        else
-        {
-            throw new Exception($"Unknown {nameof(Output.TypeReference)} {reference.GetType().Name}");
-        }
+        anyTypeReference.Switch(
+            typeReference =>
+            {
+                if (_typeReferenceResolver.Resolve(typeReference, repository, out var type))
+                    typeReference.ResolveAs(type);
+                else
+                    Log.Verbose($"Could not resolve type reference {anyTypeReference}");
+            },
+            arrayTypeReference =>
+            {
+                // Array type references are not resolved directly. Only their type get's resolved
+                // because arrays are no type themself. They only provide structure.
+                ResolveTypeReference(arrayTypeReference.AnyTypeReference, repository);
+            }
+        );
     }
 }

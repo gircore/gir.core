@@ -3,7 +3,7 @@ namespace GirLoader.Output;
 public class GLibArrayTypeReference : ArrayTypeReference, GirModel.GLibArrayType
 {
     public GLibArrayTypeReference(ArrayTypeReference arrayTypeReference) : base(
-            typeReference: arrayTypeReference.TypeReference,
+            anyTypeReference: arrayTypeReference.AnyTypeReference,
             symbolNameReference: arrayTypeReference.SymbolNameReference,
             ctype: arrayTypeReference.CTypeReference)
     {

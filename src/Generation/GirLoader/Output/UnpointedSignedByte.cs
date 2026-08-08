@@ -1,9 +1,7 @@
 namespace GirLoader.Output;
 
-public class UnpointedSignedByte : SignedByte
+public class UnpointedSignedByte(string ctype) : SignedByte(ctype)
 {
-    public UnpointedSignedByte(string ctype) : base(ctype) { }
-
     internal override bool Matches(TypeReference typeReference)
     {
         if (typeReference.CTypeReference?.IsPointer == true)

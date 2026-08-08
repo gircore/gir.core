@@ -76,7 +76,7 @@ internal class RecordFactory
             //We can generate the CType automatically because the class struct
             //of a class must be part of the repository of the class itself.
             var ctype = @namespace.IdentifierPrefixes + classStructForName;
-            getGLibClassStructFor = _typeReferenceFactory.CreateResolveable(classStructForName, ctype);
+            getGLibClassStructFor = _typeReferenceFactory.CreateTypeReference(classStructForName, ctype);
         }
 
         return getGLibClassStructFor;

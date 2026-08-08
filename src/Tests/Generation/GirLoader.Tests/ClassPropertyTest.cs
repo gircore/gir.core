@@ -136,9 +136,9 @@ public class ClassPropertyTest
     {
         var property = GetLoadedProperty(ctype, null);
 
-        property.TypeReference.CTypeReference!.IsPointer.Should().Be(isPointer);
+        property.AnyTypeReference.CTypeReference!.IsPointer.Should().Be(isPointer);
 
-        var type = property.TypeReference.Type;
+        var type = property.AnyTypeReference.AsT0.Type;
         type.Should().BeAssignableTo(resultType);
         type.Should().BeAssignableTo<Output.PrimitiveValueType>();
     }
@@ -151,7 +151,7 @@ public class ClassPropertyTest
     public void PropertyShouldBeString(string ctype, string name, System.Type type)
     {
         var property = GetLoadedProperty(ctype, name);
-        property.TypeReference.Type.Should().BeOfType(type);
-        property.TypeReference.Type.Should().BeAssignableTo<Output.String>();
+        property.AnyTypeReference.AsT0.Type.Should().BeOfType(type);
+        property.AnyTypeReference.AsT0.Type.Should().BeAssignableTo<Output.String>();
     }
 }

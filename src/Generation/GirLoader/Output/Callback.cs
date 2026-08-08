@@ -19,7 +19,7 @@ public partial class Callback : ComplexType
 
     internal void SetParent(ComplexType parent)
     {
-        this._parent = parent;
+        _parent = parent;
     }
 
     internal override bool Matches(TypeReference typeReference)

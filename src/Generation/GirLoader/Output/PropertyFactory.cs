@@ -22,7 +22,7 @@ internal class PropertyFactory
 
         return new Property(
             name: property.Name,
-            typeReference: _typeReferenceFactory.Create(property),
+            anyTypeReference: _typeReferenceFactory.CreateAnyTypeReference(property),
             writeable: property.Writeable,
             readable: property.Readable,
             constructOnly: property.ConstructOnly,

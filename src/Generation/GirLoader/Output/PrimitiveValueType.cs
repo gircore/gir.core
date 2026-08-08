@@ -1,13 +1,7 @@
-using System;
-
 namespace GirLoader.Output;
 
-public abstract class PrimitiveValueType : Type
+public abstract class PrimitiveValueType(string ctype) : Type(ctype)
 {
-    protected PrimitiveValueType(string ctype) : base(ctype)
-    {
-    }
-
     internal override bool Matches(TypeReference typeReference)
     {
         return typeReference switch

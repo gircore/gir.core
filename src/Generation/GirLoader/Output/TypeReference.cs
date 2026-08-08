@@ -2,19 +2,21 @@ using System;
 
 namespace GirLoader.Output;
 
-public abstract class TypeReference
+public class TypeReference : TypeIdentifier
 {
-    #region Properties
     public CTypeReference? CTypeReference { get; }
     public SymbolNameReference? SymbolNameReference { get; }
-    public abstract Type? Type { get; }
+    public Type? Type { get; private set; }
 
-    #endregion
-
-    protected TypeReference(SymbolNameReference? symbolNameReference, CTypeReference? ctypeReference)
+    public TypeReference(SymbolNameReference? symbolNameReference, CTypeReference? ctypeReference)
     {
         CTypeReference = ctypeReference;
         SymbolNameReference = symbolNameReference;
+    }
+
+    public void ResolveAs(Type type)
+    {
+        Type = type;
     }
 
     public Type GetResolvedType()

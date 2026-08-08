@@ -22,9 +22,4 @@ public class PlatformString : String, GirModel.PlatformString
     }
 }
 
-public abstract class String : Type
-{
-    protected String() : base("gchar*")
-    {
-    }
-}
+public abstract class String() : Type("gchar*");

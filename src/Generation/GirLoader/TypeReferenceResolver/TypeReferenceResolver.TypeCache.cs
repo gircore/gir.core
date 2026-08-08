@@ -8,7 +8,7 @@ internal partial class TypeReferenceResolver
 {
     private abstract class TypeCache
     {
-        private readonly HashSet<Output.Type> _types = new();
+        private readonly HashSet<Output.Type> _types = [];
 
         public void Add(Output.Type type)
         {

@@ -4,11 +4,11 @@ public partial class ReturnValue
 {
     public Transfer Transfer { get; }
     public bool Nullable { get; }
-    public TypeReference TypeReference { get; }
+    public AnyTypeReference AnyTypeReference { get; }
 
-    public ReturnValue(TypeReference typeReference, Transfer transfer, bool nullable)
+    public ReturnValue(AnyTypeReference anyTypeReference, Transfer transfer, bool nullable)
     {
-        TypeReference = typeReference;
+        AnyTypeReference = anyTypeReference;
         Transfer = transfer;
         Nullable = nullable;
     }

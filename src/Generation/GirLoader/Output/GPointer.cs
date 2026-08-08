@@ -1,9 +1,7 @@
 namespace GirLoader.Output;
 
-public class GPointer : Pointer
+public class GPointer() : Pointer("gpointer")
 {
-    public GPointer() : base("gpointer") { }
-
     internal override bool Matches(TypeReference typeReference)
     {
         if (typeReference.CTypeReference is null)

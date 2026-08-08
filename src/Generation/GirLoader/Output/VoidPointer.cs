@@ -1,9 +1,7 @@
 namespace GirLoader.Output;
 
-public class VoidPointer : Pointer
+public class VoidPointer() : Pointer("void")
 {
-    public VoidPointer() : base("void") { }
-
     internal override bool Matches(TypeReference typeReference)
     {
         if (typeReference.CTypeReference is null)

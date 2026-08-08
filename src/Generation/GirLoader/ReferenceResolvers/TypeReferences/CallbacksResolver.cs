@@ -7,7 +7,7 @@ internal static class CallbacksResolver
 {
     public static void ResolveCallbacks(this RepositoryTypeReferenceResolver resolver, Repository repository)
     {
-        resolver.ResolveTypeReferences(repository.Namespace.Callbacks.Select(x => x.ReturnValue.TypeReference), repository);
+        resolver.ResolveTypeReferences(repository.Namespace.Callbacks.Select(x => x.ReturnValue.AnyTypeReference), repository);
         resolver.ResolveParameterLists(repository.Namespace.Callbacks.Select(x => x.ParameterList), repository);
     }
 }
