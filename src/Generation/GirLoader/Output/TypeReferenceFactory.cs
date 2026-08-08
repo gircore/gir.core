@@ -10,7 +10,8 @@ internal class TypeReferenceFactory
     {
         return new TypeReference(
             symbolNameReference: GetSymbolNameReference(name),
-            ctypeReference: GetCType(ctype)
+            ctypeReference: GetCType(ctype),
+            elementTypeReferences: []
         );
     }
 
@@ -35,7 +36,9 @@ internal class TypeReferenceFactory
 
         typeReference = new TypeReference(
             symbolNameReference: GetSymbolNameReference(anyType.Type.Name),
-            ctypeReference: GetCType(anyType.Type.CType));
+            ctypeReference: GetCType(anyType.Type.CType),
+            elementTypeReferences: anyType.Type.ElementTypes
+        );
 
         return true;
     }
