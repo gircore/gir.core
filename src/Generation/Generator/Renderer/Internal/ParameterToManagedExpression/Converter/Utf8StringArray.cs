@@ -5,12 +5,12 @@ namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class Utf8StringArray : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.Utf8String>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesArray<GirModel.Utf8String>();
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
-        var arrayType = parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        var arrayType = parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
 
         if (arrayType.IsZeroTerminated)
             NullTerminatedArray(parameterData);

@@ -6,12 +6,12 @@ internal class PlatformStringArray : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.IsArray<GirModel.PlatformString>();
+        return returnType.AnyTypeReference.ReferencesArray<GirModel.PlatformString>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var arrayType = returnType.AnyType.AsT1;
+        var arrayType = returnType.AnyTypeReference.AsT1;
 
         if (arrayType.IsZeroTerminated)
             return NullTerminatedArray(returnType);

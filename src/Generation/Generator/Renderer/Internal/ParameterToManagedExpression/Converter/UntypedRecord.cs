@@ -1,29 +1,28 @@
 using System;
 using System.Collections.Generic;
-using GirModel;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class UntypedRecord : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
         if (!parameterData.Parameter.IsPointer)
-            throw new NotImplementedException($"Unpointed untyped record parameter {parameterData.Parameter.Name} ({parameterData.Parameter.AnyTypeOrVarArgs}) can not yet be converted to managed");
+            throw new NotImplementedException($"Unpointed untyped record parameter {parameterData.Parameter.Name} ({parameterData.Parameter.AnyTypeReferenceOrVarArgs}) can not yet be converted to managed");
 
         switch (parameterData.Parameter.Direction)
         {
-            case Direction.In:
+            case GirModel.Direction.In:
                 InRecord(parameterData);
                 break;
-            case Direction.Out:
+            case GirModel.Direction.Out:
                 OutRecord(parameterData);
                 break;
             default:
-                throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: untyped record with direction {parameterData.Parameter.Direction} not yet supported");
+                throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: untyped record with direction {parameterData.Parameter.Direction} not yet supported");
         }
     }
 
@@ -62,7 +61,7 @@ internal class UntypedRecord : ToManagedParameterConverter
 
     private static void InRecord(ParameterToManagedData parameterData)
     {
-        var record = (GirModel.Record) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var ownedHandle = parameterData.Parameter.Transfer == GirModel.Transfer.Full;
         var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 

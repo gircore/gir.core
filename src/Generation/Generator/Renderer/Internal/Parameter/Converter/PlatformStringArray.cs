@@ -4,19 +4,19 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class PlatformStringArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.PlatformString>();
+        return anyTypeReference.ReferencesArray<GirModel.PlatformString>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
 
-        if (arrayType.IsZeroTerminated)
+        if (arrayTypeReference.IsZeroTerminated)
             return NullTerminatedArray(parameter);
 
-        if (arrayType.Length is not null)
+        if (arrayTypeReference.Length is not null)
             return SizeBasedArray(parameter);
 
         throw new Exception("Unknown kind of array");

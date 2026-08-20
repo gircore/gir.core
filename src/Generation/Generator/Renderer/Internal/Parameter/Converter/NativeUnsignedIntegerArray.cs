@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 public class NativeUnsignedIntegerArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.NativeUnsignedInteger>();
+        return anyTypeReference.ReferencesArray<GirModel.NativeUnsignedInteger>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -12,7 +12,7 @@ public class NativeUnsignedIntegerArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
-            NullableTypeName: Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1),
+            NullableTypeName: Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1),
             Name: Model.Parameter.GetName(parameter)
         );
     }

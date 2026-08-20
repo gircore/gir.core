@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class CLong : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.CLong>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.CLong>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
@@ -20,7 +20,7 @@ internal class CLong : ToNativeParameterConverter
                 Direct(parameter);
                 break;
             default:
-                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: This long value type can not yet be converted to native");
+                throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: This long value type can not yet be converted to native");
         }
     }
 

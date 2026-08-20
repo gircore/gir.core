@@ -4,8 +4,8 @@ namespace Generator.Renderer.Public;
 
 internal static class ReturnTypeRendererCallback
 {
-    private static readonly List<ReturnType.ReturnTypeConverter> converters = new()
-    {
+    private static readonly List<ReturnType.ReturnTypeConverter> converters =
+    [
         new ReturnType.Bitfield(),
         new ReturnType.Class(),
         new ReturnType.Enumeration(),
@@ -21,8 +21,8 @@ internal static class ReturnTypeRendererCallback
         new ReturnType.StringInCallback(),
         new ReturnType.TypedRecord(),
         new ReturnType.TypedRecordArray(),
-        new ReturnType.Void(),
-    };
+        new ReturnType.Void()
+    ];
 
     public static string Render(GirModel.ReturnType returnType)
     {
@@ -30,6 +30,6 @@ internal static class ReturnTypeRendererCallback
             if (converter.Supports(returnType))
                 return converter.Create(returnType).NullableTypeName;
 
-        throw new System.NotImplementedException($"Missing converter for public return type {returnType.AnyType}.");
+        throw new System.NotImplementedException($"Missing converter for public return type {returnType.AnyTypeReference}.");
     }
 }

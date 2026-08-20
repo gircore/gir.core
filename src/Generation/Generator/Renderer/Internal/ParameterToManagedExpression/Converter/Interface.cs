@@ -5,15 +5,15 @@ namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class Interface : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Interface>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Interface>();
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
         if (!parameterData.Parameter.IsPointer)
-            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: Unpointed interface parameter not yet supported");
+            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: Unpointed interface parameter not yet supported");
 
-        var iface = (GirModel.Interface) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var iface = (GirModel.Interface) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
 
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
         var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);

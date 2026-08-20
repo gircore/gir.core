@@ -4,17 +4,17 @@ internal class EnumerationArray : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.IsArray<GirModel.Enumeration>();
+        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.ReferencesArray<GirModel.Enumeration>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)
     {
-        var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
+        var arrayTypeReference = field.AnyTypeReferenceOrCallback.AsT0.AsT1;
 
         return [new RenderableField(
             Name: Model.Field.GetName(field),
-            TypeName: Model.ArrayType.GetTypeName(arrayType),
-            Array: new(arrayType.FixedSize, Model.ArrayType.GetDimensions(arrayType))
+            TypeName: Model.ArrayType.GetTypeName(arrayTypeReference),
+            Array: new(arrayTypeReference.FixedSize, Model.ArrayType.GetDimensions(arrayTypeReference))
         )];
     }
 }

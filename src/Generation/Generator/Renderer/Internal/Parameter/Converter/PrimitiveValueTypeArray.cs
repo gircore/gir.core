@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 public class PrimitiveValueTypeArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.PrimitiveValueType>();
+        return anyTypeReference.ReferencesArray<GirModel.PrimitiveValueType>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -24,7 +24,7 @@ public class PrimitiveValueTypeArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Ref(),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }
@@ -34,7 +34,7 @@ public class PrimitiveValueTypeArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Out(),
-            NullableTypeName: Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1),
+            NullableTypeName: Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1),
             Name: Model.Parameter.GetName(parameter)
         );
     }
@@ -44,7 +44,7 @@ public class PrimitiveValueTypeArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Ref(),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }
@@ -54,7 +54,7 @@ public class PrimitiveValueTypeArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Ref(),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }

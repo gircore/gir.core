@@ -2,9 +2,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class Enumeration : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Enumeration>();
+        return anyTypeReference.References<GirModel.Enumeration>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -17,7 +17,7 @@ internal class Enumeration : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var type = (GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         return Model.ComplexType.GetFullyQualified(type);
     }
 

@@ -39,7 +39,7 @@ internal static class ReturnTypeToManagedExpression
 
         foreach (var converter in Converter)
         {
-            if (!converter.Supports(returnType.AnyType))
+            if (!converter.Supports(returnType.AnyTypeReference))
                 continue;
 
             converter.Initialize(data, parameters);

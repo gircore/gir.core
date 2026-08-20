@@ -88,13 +88,13 @@ NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(c
 
         var call = new StringBuilder();
 
-        if (!callback.ReturnType.AnyType.Is<GirModel.Void>())
+        if (!callback.ReturnType.AnyTypeReference.References<GirModel.Void>())
             call.AppendLine($"{Public.ReturnTypeRendererCallback.Render(callback.ReturnType)} {resultVariableName} = default;");
 
         if (callback.Throws || parameterData.Any(x => x.IsGLibErrorParameter))
             call.AppendLine("try { ");
 
-        if (!callback.ReturnType.AnyType.Is<GirModel.Void>())
+        if (!callback.ReturnType.AnyTypeReference.References<GirModel.Void>())
             call.AppendLine($"{resultVariableName} = managedCallback({parameters.Join(", ")});");
         else
             call.AppendLine($"managedCallback({parameters.Join(", ")});");
@@ -133,7 +133,7 @@ NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(c
 
     private static string RenderReturnStatement(GirModel.Callback callback, string returnVariableName)
     {
-        return callback.ReturnType.AnyType.Is<GirModel.Void>()
+        return callback.ReturnType.AnyTypeReference.References<GirModel.Void>()
             ? string.Empty
             : $"return {ReturnTypeToNativeExpression.Render(callback.ReturnType, returnVariableName)};";
     }
@@ -143,7 +143,7 @@ NativeCallback = ({GetParameterDefinition(parameterData)}{Error.RenderCallback(c
         if (callback.ReturnType.Transfer is GirModel.Transfer.None or GirModel.Transfer.Container)
             return string.Empty;
 
-        if (!callback.ReturnType.AnyType.Is<GirModel.Class>() && !callback.ReturnType.AnyType.Is<GirModel.Interface>())
+        if (!callback.ReturnType.AnyTypeReference.References<GirModel.Class>() && !callback.ReturnType.AnyTypeReference.References<GirModel.Interface>())
             return string.Empty;
 
         //GObject with transfer full

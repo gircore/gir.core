@@ -4,12 +4,12 @@ internal class Enumeration : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Enumeration>();
+        return returnType.AnyTypeReference.References<GirModel.Enumeration>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var type = (GirModel.Enumeration) returnType.AnyType.AsT0;
+        var type = (GirModel.Enumeration) returnType.AnyTypeReference.AsT0.Type;
         return new RenderableReturnType(Model.ComplexType.GetFullyQualified(type));
     }
 }

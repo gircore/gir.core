@@ -4,7 +4,7 @@ internal class Enumeration : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.Is<GirModel.Enumeration>();
+        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.References<GirModel.Enumeration>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)
@@ -18,7 +18,7 @@ internal class Enumeration : FieldConverter
 
     private static string GetTypeName(GirModel.Field field)
     {
-        var type = (GirModel.Enumeration) field.AnyTypeOrCallback.AsT0.AsT0;
+        var type = (GirModel.Enumeration) field.AnyTypeReferenceOrCallback.AsT0.AsT0.Type;
         return field.IsPointer
             ? Model.Type.Pointer
             : Model.ComplexType.GetFullyQualified(type);

@@ -2,14 +2,14 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class UnionArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.Union>();
+        return anyTypeReference.ReferencesArray<GirModel.Union>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeOrVarArgs.AsT0.AsT1.IsPointer)
+        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.IsPointer)
             return PointerArray(parameter);
 
         return DataArray(parameter);
@@ -27,7 +27,7 @@ internal class UnionArray : ParameterConverter
 
     private static RenderableParameter DataArray(GirModel.Parameter parameter)
     {
-        var union = (GirModel.Union) parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0;
+        var union = (GirModel.Union) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
 
         return new RenderableParameter(
             Attribute: string.Empty,

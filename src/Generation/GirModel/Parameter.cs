@@ -12,6 +12,6 @@ public interface Parameter : Nullable
     bool IsPointer { get; }
     bool IsConst { get; }
     bool IsVolatile { get; }
-    OneOf.OneOf<AnyType, VarArgs> AnyTypeOrVarArgs { get; }
+    OneOf.OneOf<AnyTypeReference, VarArgs> AnyTypeReferenceOrVarArgs { get; }
     Scope? Scope { get; }
 }

@@ -1,12 +1,10 @@
-using Generator.Model;
-
 namespace Generator.Renderer.Public.ReturnType;
 
 internal class GLibPointerArray : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.IsGLibPtrArray();
+        return returnType.AnyTypeReference.ReferencesGLibPtrArray();
     }
 
     public RenderableReturnType Create(GirModel.ReturnType returnType)

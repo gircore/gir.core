@@ -2,21 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Generator.Renderer.Public;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class Callback : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Callback>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Callback>();
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
         if (parameterData.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: Callback with direction != in not yet supported");
+            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: Callback with direction != in not yet supported");
 
-        var callback = (GirModel.Callback) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var callback = (GirModel.Callback) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var ns = Model.Namespace.GetPublicName(callback.Namespace);
         var type = Model.Type.GetName(callback);
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
@@ -72,7 +71,7 @@ internal class Callback : ToManagedParameterConverter
         resultVariableName = $"result{callback.Name}";
         var call = new StringBuilder();
 
-        if (!callback.ReturnType.AnyType.Is<GirModel.Void>())
+        if (!callback.ReturnType.AnyTypeReference.References<GirModel.Void>())
             call.Append($"var {resultVariableName} = ");
 
         call.Append($"{signatureName}(");
@@ -91,9 +90,9 @@ internal class Callback : ToManagedParameterConverter
             : string.Empty;
     }
 
-    private static string RenderReturnStatement(ReturnTypeToManagedData data, string returnVariable)
+    private static string RenderReturnStatement(Public.ReturnTypeToManagedData data, string returnVariable)
     {
-        return data.ReturnType.AnyType.Is<GirModel.Void>()
+        return data.ReturnType.AnyTypeReference.References<GirModel.Void>()
             ? string.Empty
             : $"return {data.GetExpression(returnVariable)};";
     }

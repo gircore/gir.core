@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class Enumeration : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Enumeration>();
+        return anyTypeReference.References<GirModel.Enumeration>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -21,10 +21,10 @@ internal class Enumeration : ParameterConverter
     {
         return parameter switch
         {
-            { Direction: GirModel.Direction.Out, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0),
-            { Direction: GirModel.Direction.InOut, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0),
+            { Direction: GirModel.Direction.Out, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
+            { Direction: GirModel.Direction.InOut, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
             { IsPointer: true } => Model.Type.Pointer,
-            _ => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeOrVarArgs.AsT0.AsT0)
+            _ => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type)
         };
     }
 

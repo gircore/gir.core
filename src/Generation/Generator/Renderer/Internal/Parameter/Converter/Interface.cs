@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class Interface : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Interface>();
+        return anyTypeReference.References<GirModel.Interface>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

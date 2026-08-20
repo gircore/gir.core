@@ -6,14 +6,14 @@ namespace Generator.Renderer.Public.Signals;
 
 public class ClassArray : SignalArgsParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return type.IsArray<GirModel.Class>();
+        return anyTypeReference.ReferencesArray<GirModel.Class>();
     }
 
     public void Initialize(SignalArgsParameterData parameter, int index, IEnumerable<SignalArgsParameterData> parameters)
     {
-        if (parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null)
+        if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null)
             LengthBased(parameter, index, parameters);
         else
             throw new NotImplementedException("Class Arrays without a length are not supported as SignalArgs");
@@ -21,21 +21,21 @@ public class ClassArray : SignalArgsParameterConverter
 
     private static void LengthBased(SignalArgsParameterData parameter, int index, IEnumerable<SignalArgsParameterData> parameters)
     {
-        var arrayType = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
 
-        if (arrayType.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Pointed class array can not yet be converted to signal args.");
+        if (arrayTypeReference.IsPointer)
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: Pointed class array can not yet be converted to signal args.");
 
         var parameterName = Model.Parameter.GetName(parameter.Parameter).ToPascalCase();
-        var parameterClass = (GirModel.Class) arrayType.AnyType.AsT0;
+        var parameterClass = (GirModel.Class) arrayTypeReference.AnyTypeReference.AsT0.Type;
         var parameterTypeName = Model.Class.GetFullyQualifiedPublicName(parameterClass);
         var parameterHelperVariable = $"_{parameterName.ToCamelCase()}";
 
-        var lengthParameter = parameters.ElementAt(arrayType.Length ?? throw new Exception("Length missing)"));
+        var lengthParameter = parameters.ElementAt(arrayTypeReference.Length ?? throw new Exception("Length missing)"));
         lengthParameter.IsArrayLengthParameter = true;
 
         var lengthParameterTypeData = ParameterRenderer.Render(lengthParameter.Parameter);
-        var getLength = $"Extract<{lengthParameterTypeData.NullableTypeName}>(Args[{arrayType.Length + 1}])";
+        var getLength = $"Extract<{lengthParameterTypeData.NullableTypeName}>(Args[{arrayTypeReference.Length + 1}])";
 
         parameter.SetExpression(() => $"""
                                        private {parameterTypeName}[]? {parameterHelperVariable};

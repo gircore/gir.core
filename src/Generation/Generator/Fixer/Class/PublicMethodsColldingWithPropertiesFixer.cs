@@ -12,7 +12,7 @@ internal class PublicMethodsColldingWithPropertiesFixer : Fixer<GirModel.Class>
             {
                 if (Property.GetName(property) == Method.GetPublicName(method))
                 {
-                    if (method.ReturnType.AnyType.Is<GirModel.Void>())
+                    if (method.ReturnType.AnyTypeReference.References<GirModel.Void>())
                     {
                         Log.Warning($"{@class.Namespace.Name}.{@class.Name}: Property {Property.GetName(property)} is named like a method but returns no value. It makes no sense to prefix the method with 'Get'. Thus it will be ignored.");
                         Method.Disable(method);

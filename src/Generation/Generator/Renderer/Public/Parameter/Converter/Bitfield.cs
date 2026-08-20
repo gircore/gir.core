@@ -2,9 +2,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class Bitfield : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Bitfield>();
+        return anyTypeReference.References<GirModel.Bitfield>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -17,7 +17,7 @@ internal class Bitfield : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Bitfield) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var type = (GirModel.Bitfield) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         return Model.ComplexType.GetFullyQualified(type);
     }
 

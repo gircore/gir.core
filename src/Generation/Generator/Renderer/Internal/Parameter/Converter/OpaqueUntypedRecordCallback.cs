@@ -4,9 +4,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class OpaqueUntypedRecordCallback : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Record>(out var record) && Model.Record.IsOpaqueUntyped(record);
+        return anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueUntyped(record);
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

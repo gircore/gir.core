@@ -4,8 +4,8 @@ namespace Generator.Renderer.Internal.ReturnTypeToNativeExpressions;
 
 internal class OpaqueTypedRecord : ReturnTypeConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
 
     public string GetString(GirModel.ReturnType returnType, string fromVariableName)
     {

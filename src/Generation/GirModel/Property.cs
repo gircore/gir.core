@@ -3,7 +3,7 @@ namespace GirModel;
 public interface Property
 {
     string Name { get; }
-    AnyType AnyType { get; }
+    AnyTypeReference AnyTypeReference { get; }
     Transfer Transfer { get; }
     bool Readable { get; }
     bool Writeable { get; }

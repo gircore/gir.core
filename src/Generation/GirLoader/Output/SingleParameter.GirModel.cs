@@ -18,11 +18,8 @@ public partial class SingleParameter : GirModel.Parameter
         varargs => false
     );
 
-    OneOf.OneOf<GirModel.AnyType, GirModel.VarArgs> GirModel.Parameter.AnyTypeOrVarArgs => AnyTypeReferenceOrVarArgs.Match<OneOf.OneOf<GirModel.AnyType, GirModel.VarArgs>>(
-        anyTypeReference => anyTypeReference.Match(
-            typeReference => GirModel.AnyType.From(typeReference.GetResolvedType()),
-            arrayTypeReference => GirModel.AnyType.From(arrayTypeReference)
-        ),
+    OneOf.OneOf<GirModel.AnyTypeReference, GirModel.VarArgs> GirModel.Parameter.AnyTypeReferenceOrVarArgs => AnyTypeReferenceOrVarArgs.Match<OneOf.OneOf<GirModel.AnyTypeReference, GirModel.VarArgs>>(
+        anyTypeReference => anyTypeReference.Match(GirModel.AnyTypeReference.From, GirModel.AnyTypeReference.From),
         varargs => varargs
     );
     GirModel.Direction GirModel.Parameter.Direction => Direction.ToGirModel();

@@ -6,8 +6,8 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class Class : ReturnTypeConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Class>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Class>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {
@@ -18,7 +18,7 @@ internal class Class : ReturnTypeConverter
             if (!returnType.IsPointer)
                 throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
 
-            var cls = (GirModel.Class) returnType.AnyType.AsT0;
+            var cls = (GirModel.Class) returnType.AnyTypeReference.AsT0.Type;
             return cls.Fundamental
                 ? Fundamental(cls, returnType, fromVariableName)
                 : Standard(cls, returnType, fromVariableName);

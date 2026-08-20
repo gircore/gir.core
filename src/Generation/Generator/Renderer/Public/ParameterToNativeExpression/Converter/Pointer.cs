@@ -6,8 +6,8 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class Pointer : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Pointer>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Pointer>();
 
     public void Initialize(ParameterToNativeData parameterData, IEnumerable<ParameterToNativeData> parameterDatas)
     {

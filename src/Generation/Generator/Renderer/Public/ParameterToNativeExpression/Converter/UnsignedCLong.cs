@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class UnsignedCLong : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.UnsignedCLong>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.UnsignedCLong>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
@@ -20,7 +20,7 @@ internal class UnsignedCLong : ToNativeParameterConverter
                 Direct(parameter);
                 break;
             default:
-                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: This unsigned long value type can not yet be converted to native");
+                throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: This unsigned long value type can not yet be converted to native");
         }
     }
 

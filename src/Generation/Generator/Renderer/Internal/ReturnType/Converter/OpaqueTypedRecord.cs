@@ -1,21 +1,19 @@
-using GirModel;
-
 namespace Generator.Renderer.Internal.ReturnType;
 
 internal class OpaqueTypedRecord : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
+        return returnType.AnyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var type = (GirModel.Record) returnType.AnyType.AsT0;
+        var type = (GirModel.Record) returnType.AnyTypeReference.AsT0.Type;
 
         var typeName = returnType switch
         {
-            { Transfer: Transfer.Full } => Model.OpaqueTypedRecord.GetFullyQuallifiedOwnedHandle(type),
+            { Transfer: GirModel.Transfer.Full } => Model.OpaqueTypedRecord.GetFullyQuallifiedOwnedHandle(type),
             _ => Model.OpaqueTypedRecord.GetFullyQuallifiedUnownedHandle(type)
         };
 

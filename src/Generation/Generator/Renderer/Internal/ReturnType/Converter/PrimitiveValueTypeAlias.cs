@@ -4,14 +4,14 @@ internal class PrimitiveValueTypeAlias : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.IsAlias<GirModel.PrimitiveValueType>();
+        return returnType.AnyTypeReference.ReferencesAlias<GirModel.PrimitiveValueType>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
         var nullableTypeName = returnType.IsPointer
             ? Model.Type.Pointer
-            : Model.Type.GetName(((GirModel.Alias) returnType.AnyType.AsT0).Type);
+            : Model.Type.GetName(((GirModel.Alias) returnType.AnyTypeReference.AsT0.Type).Type);
 
         return new RenderableReturnType(nullableTypeName);
     }

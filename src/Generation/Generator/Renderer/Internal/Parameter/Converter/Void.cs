@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class Void : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Void>();
+        return anyTypeReference.References<GirModel.Void>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

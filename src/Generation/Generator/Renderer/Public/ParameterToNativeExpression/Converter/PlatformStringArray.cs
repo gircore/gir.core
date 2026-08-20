@@ -6,16 +6,16 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class PlatformStringArray : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.PlatformString>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesArray<GirModel.PlatformString>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
     {
-        var arrayType = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
 
-        if (arrayType.IsZeroTerminated)
+        if (arrayTypeReference.IsZeroTerminated)
             NullTerminatedArray(parameter);
-        else if (arrayType.Length is not null)
+        else if (arrayTypeReference.Length is not null)
             SizeBasedArray(parameter, allParameters);
         else
             throw new Exception("Unknown kind of array");
@@ -121,9 +121,9 @@ internal class PlatformStringArray : ToNativeParameterConverter
         parameter.SetCallName(() => nativeVariableName);
         parameter.SetExpression(() => $"var {nativeVariableName} = {createExpression};");
 
-        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
-        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0);
+        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type);
         lengthParameter.IsArrayLengthParameter = true;
         lengthParameter.SetCallName(() => $"({lengthParameterType}) {nativeVariableName}.Size");
     }
@@ -141,7 +141,7 @@ internal class PlatformStringArray : ToNativeParameterConverter
             false => $"""{signatureName} = {nativeVariableName}.ConvertToStringArray() ?? throw new NullReferenceException("Unexpected null value");"""
         });
 
-        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
 
         lengthParameter.IsArrayLengthParameter = true;
@@ -170,11 +170,11 @@ internal class PlatformStringArray : ToNativeParameterConverter
             true => $"""{signatureName} = {nativeVariableName}.ConvertToStringArray();"""
         });
 
-        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
 
         lengthParameter.IsArrayLengthParameter = true;
-        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0);
+        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type);
         lengthParameter.SetExpression(() => parameter.Parameter.Nullable switch
         {
             false => $"{lengthParameterType} counterNative = ({lengthParameterType}){signatureName}.Length;",

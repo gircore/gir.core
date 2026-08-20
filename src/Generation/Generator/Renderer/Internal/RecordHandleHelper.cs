@@ -43,7 +43,7 @@ internal class RecordHandleHelper
 
     private static string RenderFieldGetterFixedSizeArray(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
     {
-        var type = (field.AnyTypeOrCallback.IsT1, renderableField.Array?.FixedSize.HasValue) switch
+        var type = (field.AnyTypeReferenceOrCallback.IsT1, renderableField.Array?.FixedSize.HasValue) switch
         {
             (true, _) => $"{Model.TypedRecord.GetDataName(record)}.{renderableField.GetTypeName()}",
             (_, true) => $"{Model.TypedRecord.GetDataName(record)}.{renderableField.GetInlineArrayTypeName()}",
@@ -63,7 +63,7 @@ internal class RecordHandleHelper
 
     private static string RenderFieldGetterDefault(GirModel.Record record, GirModel.Field field, RenderableField renderableField)
     {
-        var typePrefix = field.AnyTypeOrCallback.IsT1 ? $"{Model.TypedRecord.GetDataName(record)}." : string.Empty;
+        var typePrefix = field.AnyTypeReferenceOrCallback.IsT1 ? $"{Model.TypedRecord.GetDataName(record)}." : string.Empty;
         var dataName = Model.TypedRecord.GetDataName(record);
 
         return @$"public {typePrefix}{renderableField.GetTypeName()} Get{renderableField.Name}()

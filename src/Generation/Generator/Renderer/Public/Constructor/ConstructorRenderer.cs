@@ -7,14 +7,14 @@ namespace Generator.Renderer.Public;
 
 internal static class ConstructorRenderer
 {
-    private static readonly List<Constructor.ConstructorConverter> Converters = new()
-    {
+    private static readonly List<Constructor.ConstructorConverter> Converters =
+    [
         new Constructor.Class(),
         new Constructor.ForeignTypedRecord(),
         new Constructor.OpaqueTypedRecord(),
         new Constructor.OpaqueUntypedRecord(),
-        new Constructor.TypedRecord(),
-    };
+        new Constructor.TypedRecord()
+    ];
 
     public static string Render(GirModel.Constructor constructor)
     {

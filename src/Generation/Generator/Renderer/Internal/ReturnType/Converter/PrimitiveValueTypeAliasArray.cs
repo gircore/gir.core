@@ -7,7 +7,7 @@ internal class PrimitiveValueTypeAliasArray : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.IsArrayAlias<GirModel.PrimitiveValueType>();
+        return returnType.AnyTypeReference.ReferencesArrayAlias<GirModel.PrimitiveValueType>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)

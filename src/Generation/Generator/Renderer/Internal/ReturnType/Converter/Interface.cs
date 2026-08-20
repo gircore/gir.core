@@ -6,14 +6,14 @@ internal class Interface : ReturnTypeConverter
 {
     public bool Supports(GirModel.ReturnType returnType)
     {
-        return returnType.AnyType.Is<GirModel.Interface>();
+        return returnType.AnyTypeReference.References<GirModel.Interface>();
     }
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
         var nullableTypeName = returnType.IsPointer
             ? Type.Pointer
-            : Type.GetName(returnType.AnyType.AsT0);
+            : Type.GetName(returnType.AnyTypeReference.AsT0.Type);
 
         return new RenderableReturnType(nullableTypeName);
     }

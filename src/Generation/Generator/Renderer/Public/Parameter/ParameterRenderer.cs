@@ -4,8 +4,8 @@ namespace Generator.Renderer.Public;
 
 internal static class ParameterRenderer
 {
-    private static readonly List<Parameter.ParameterConverter> converters = new()
-    {
+    private static readonly List<Parameter.ParameterConverter> converters =
+    [
         new Parameter.Bitfield(),
         new Parameter.Callback(),
         new Parameter.Class(),
@@ -34,18 +34,18 @@ internal static class ParameterRenderer
         new Parameter.Union(),
         new Parameter.UntypedRecord(),
         new Parameter.UntypedRecordArray(),
-        new Parameter.Void(),
-    };
+        new Parameter.Void()
+    ];
 
     public static ParameterTypeData Render(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeOrVarArgs.IsT1)
-            throw new System.Exception($"Public parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered as variadic parameters are not supported");
+        if (parameter.AnyTypeReferenceOrVarArgs.IsT1)
+            throw new System.Exception($"Public parameter \"{parameter.Name}\" of type {parameter.AnyTypeReferenceOrVarArgs} can not be rendered as variadic parameters are not supported");
 
         foreach (var converter in converters)
-            if (converter.Supports(parameter.AnyTypeOrVarArgs.AsT0))
+            if (converter.Supports(parameter.AnyTypeReferenceOrVarArgs.AsT0))
                 return converter.Create(parameter);
 
-        throw new System.Exception($"Public parameter \"{parameter.Name}\" of type {parameter.AnyTypeOrVarArgs} can not be rendered");
+        throw new System.Exception($"Public parameter \"{parameter.Name}\" of type {parameter.AnyTypeReferenceOrVarArgs} can not be rendered");
     }
 }

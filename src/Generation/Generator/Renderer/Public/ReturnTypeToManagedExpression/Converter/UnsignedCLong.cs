@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class UnsignedCLong : ReturnTypeConverter
 {
-    public bool Supports(AnyType type)
-        => type.Is<GirModel.UnsignedCLong>();
+    public bool Supports(AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.UnsignedCLong>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {

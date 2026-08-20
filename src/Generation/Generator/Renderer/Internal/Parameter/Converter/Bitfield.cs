@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class Bitfield : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Bitfield>();
+        return anyTypeReference.References<GirModel.Bitfield>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -13,7 +13,7 @@ internal class Bitfield : ParameterConverter
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
             //Internal does not define any bitfields. They are part of the Public API to avoid converting between them.
-            NullableTypeName: Model.ComplexType.GetFullyQualified((GirModel.Bitfield) parameter.AnyTypeOrVarArgs.AsT0.AsT0),
+            NullableTypeName: Model.ComplexType.GetFullyQualified((GirModel.Bitfield) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }

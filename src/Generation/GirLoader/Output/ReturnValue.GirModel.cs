@@ -2,9 +2,9 @@ namespace GirLoader.Output;
 
 public partial class ReturnValue : GirModel.ReturnType
 {
-    GirModel.AnyType GirModel.ReturnType.AnyType => AnyTypeReference.Match(
-        typeReference => GirModel.AnyType.From(typeReference.GetResolvedType()),
-        arrayTypeReference => GirModel.AnyType.From(arrayTypeReference)
+    GirModel.AnyTypeReference GirModel.ReturnType.AnyTypeReference => AnyTypeReference.Match(
+        GirModel.AnyTypeReference.From,
+        GirModel.AnyTypeReference.From
     );
 
     GirModel.Transfer GirModel.ReturnType.Transfer => Transfer.ToGirModel();

@@ -6,7 +6,7 @@ internal class PrimitiveValueTypeAlias : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        var alias = (GirModel.Alias) returnType.AnyType.AsT0;
+        var alias = (GirModel.Alias) returnType.AnyTypeReference.AsT0.Type;
 
         var nullableTypeName = returnType.IsPointer
             ? Type.Pointer
@@ -16,5 +16,5 @@ internal class PrimitiveValueTypeAlias : ReturnTypeConverter
     }
 
     public bool Supports(GirModel.ReturnType returnType)
-        => returnType.AnyType.IsAlias<GirModel.PrimitiveValueType>();
+        => returnType.AnyTypeReference.ReferencesAlias<GirModel.PrimitiveValueType>();
 }

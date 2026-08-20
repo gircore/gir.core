@@ -6,7 +6,7 @@ internal class String : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.Is<GirModel.String>();
+        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.References<GirModel.String>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)

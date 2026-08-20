@@ -4,8 +4,8 @@ namespace Generator.Renderer.Public;
 
 internal static class Fields
 {
-    private static readonly List<Field.FieldConverter> Converters = new()
-    {
+    private static readonly List<Field.FieldConverter> Converters =
+    [
         new Field.Bitfield(),
         new Field.Enumeration(),
         new Field.CLong(), //Must be before PrimitiveValueType
@@ -13,8 +13,8 @@ internal static class Fields
         new Field.UnsignedCLong(), //Must be before PrimitiveValueType
         new Field.UnsignedLong(), //Must be before PrimitiveValueType
         new Field.PrimitiveValueType(),
-        new Field.String(),
-    };
+        new Field.String()
+    ];
 
     public static Field.RenderableField GetRenderableField(GirModel.Field field)
     {
@@ -22,6 +22,6 @@ internal static class Fields
             if (converter.Supports(field))
                 return converter.Convert(field);
 
-        throw new System.Exception($"Public field \"{field.Name}\" of type {field.AnyTypeOrCallback} can not be rendered");
+        throw new System.Exception($"Public field \"{field.Name}\" of type {field.AnyTypeReferenceOrCallback} can not be rendered");
     }
 }

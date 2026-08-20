@@ -10,17 +10,18 @@ internal class TypeReferenceFactory
     {
         return new TypeReference(
             symbolNameReference: GetSymbolNameReference(name),
-            ctypeReference: GetCType(ctype)
+            ctypeReference: GetCType(ctype),
+            elementTypeReferences: []
         );
     }
 
     public AnyTypeReference CreateAnyTypeReference(Input.AnyType anyType)
     {
-        if (TryCreateTypeReference(anyType, out var typeRefernece))
-            return typeRefernece;
+        if (TryCreateTypeReference(anyType, out var typeReference))
+            return typeReference;
 
-        if (TryCreateArrayTypeReference(anyType, out var arrayTypeRefernece))
-            return arrayTypeRefernece;
+        if (TryCreateArrayTypeReference(anyType, out var arrayTypeReference))
+            return arrayTypeReference;
 
         return CreateTypeReference("void", "none");
     }
@@ -33,9 +34,7 @@ internal class TypeReferenceFactory
             return false;
         }
 
-        typeReference = new TypeReference(
-            symbolNameReference: GetSymbolNameReference(anyType.Type.Name),
-            ctypeReference: GetCType(anyType.Type.CType));
+        typeReference = CreateTypeReferenceFromInputType(anyType.Type);
 
         return true;
     }
@@ -48,32 +47,62 @@ internal class TypeReferenceFactory
             return false;
         }
 
-        var typeReference = CreateAnyTypeReference(anyType.Array);
+        arrayTypeReference = CreateArrayTypeReferenceFromInputType(anyType.Array);
 
-        int? length = int.TryParse(anyType.Array.Length, out var l) ? l : null;
-        int? fixedSize = int.TryParse(anyType.Array.FixedSize, out var f) ? f : null;
+        return true;
+    }
+
+    private TypeReference CreateTypeReferenceFromInputType(Input.Type type)
+    {
+        return new TypeReference(
+            symbolNameReference: GetSymbolNameReference(type.Name),
+            ctypeReference: GetCType(type.CType),
+            elementTypeReferences: CreateElementTypesFromInputType(type)
+        );
+    }
+
+    private ArrayTypeReference CreateArrayTypeReferenceFromInputType(Input.ArrayType arrayType)
+    {
+        var anyTypeReference = CreateAnyTypeReference(arrayType);
+
+        int? length = int.TryParse(arrayType.Length, out var l) ? l : null;
+        int? fixedSize = int.TryParse(arrayType.FixedSize, out var f) ? f : null;
 
         var reference = new ArrayTypeReference(
-            anyTypeReference: typeReference,
+            anyTypeReference: anyTypeReference,
             symbolNameReference: null,
-            ctype: GetCType(anyType.Array.CType))
+            ctype: GetCType(arrayType.CType))
         {
             Length = length,
             FixedSize = fixedSize,
             //The fallback is required as gobject-introspection expects an array to be zero terminated,
             //if neither length nor fixedSize are given.
-            IsZeroTerminated = anyType.Array.ZeroTerminated || (length is null && fixedSize is null)
+            IsZeroTerminated = arrayType.ZeroTerminated || (length is null && fixedSize is null)
         };
 
-        arrayTypeReference = anyType.Array.Name switch
+        return arrayType.Name switch
         {
             "GLib.Array" => new GLibArrayTypeReference(reference),
             "GLib.ByteArray" => new GLibByteArrayTypeReference(reference),
             "GLib.PtrArray" => new GLibPtrArrayTypeReference(reference),
             _ => new StandardArrayTypeReference(reference)
         };
+    }
 
-        return true;
+    private List<AnyTypeReference> CreateElementTypesFromInputType(Input.Type type)
+    {
+        var elementTypes = new List<AnyTypeReference>();
+
+        foreach (var elementType in type.ElementTypes)
+        {
+            if (elementType is Input.Type inputType)
+                elementTypes.Add(CreateTypeReferenceFromInputType(inputType));
+
+            if (elementType is Input.ArrayType inputArrayType)
+                elementTypes.Add(CreateArrayTypeReferenceFromInputType(inputArrayType));
+        }
+
+        return elementTypes;
     }
 
     public IEnumerable<TypeReference> Create(IEnumerable<Input.Implement> implements)
@@ -111,7 +140,7 @@ internal class TypeReferenceFactory
         if (name is null)
             return null;
 
-        if (!name.Contains("."))
+        if (!name.Contains('.'))
             return new SymbolNameReference(name, null);
 
         var parts = name.Split('.', 2);

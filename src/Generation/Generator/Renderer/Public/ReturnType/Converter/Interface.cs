@@ -6,11 +6,11 @@ internal class Interface : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Interface) returnType.AnyType.AsT0) + Nullable.Render(returnType);
+        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Interface) returnType.AnyTypeReference.AsT0.Type) + Nullable.Render(returnType);
 
         return new RenderableReturnType(nullableTypeName);
     }
 
     public bool Supports(GirModel.ReturnType returnType)
-        => returnType.AnyType.Is<GirModel.Interface>();
+        => returnType.AnyTypeReference.References<GirModel.Interface>();
 }

@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class PointerAlias : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsAlias<GirModel.Pointer>();
+        return anyTypeReference.ReferencesAlias<GirModel.Pointer>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)

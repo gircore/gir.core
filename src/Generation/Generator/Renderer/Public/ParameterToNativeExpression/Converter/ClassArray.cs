@@ -6,15 +6,15 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class ClassArray : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.Class>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesArray<GirModel.Class>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
-        var arrayType = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
 
-        if (arrayType.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: Pointed class array can not yet be converted to native.");
+        if (arrayTypeReference.IsPointer)
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: Pointed class array can not yet be converted to native.");
 
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";

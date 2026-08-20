@@ -5,15 +5,15 @@ namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class OpaqueTypedRecord : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
         if (parameterData.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: opaque record with direction != in not yet supported");
+            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: opaque record with direction != in not yet supported");
 
-        var record = (GirModel.Record) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);

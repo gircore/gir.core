@@ -4,9 +4,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class UntypedRecordArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
+        return anyTypeReference.ReferencesArray<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -19,8 +19,8 @@ internal class UntypedRecordArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var arrayType = parameter.AnyTypeOrVarArgs.AsT0.AsT1;
-        return $"{Model.UntypedRecord.GetFullyQualifiedPublicClassName((GirModel.Record) arrayType.AnyType.AsT0)}[]{Nullable.Render(parameter)}";
+        var arrayTypeReference = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        return $"{Model.UntypedRecord.GetFullyQualifiedPublicClassName((GirModel.Record) arrayTypeReference.AnyTypeReference.AsT0.Type)}[]{Nullable.Render(parameter)}";
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

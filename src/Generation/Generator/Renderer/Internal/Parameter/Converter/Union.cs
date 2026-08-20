@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class Union : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Union>();
+        return anyTypeReference.References<GirModel.Union>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -30,7 +30,7 @@ internal class Union : ParameterConverter
         return parameter.IsPointer switch
         {
             true => Model.Type.Pointer,
-            false => Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
+            false => Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type)
         };
     }
 }

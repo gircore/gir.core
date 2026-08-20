@@ -12,7 +12,7 @@ internal static class Constructor
         if (constructor.Parameters.Count() != constructor.Shadows.Parameters.Count())
             return constructor.Shadows.Name.ToPascalCase().EscapeIdentifier();
 
-        if (constructor.Parameters.Select(x => x.AnyTypeOrVarArgs).Except(constructor.Shadows.Parameters.Select(x => x.AnyTypeOrVarArgs)).Any())
+        if (constructor.Parameters.Select(x => x.AnyTypeReferenceOrVarArgs).Except(constructor.Shadows.Parameters.Select(x => x.AnyTypeReferenceOrVarArgs)).Any())
             return constructor.Shadows.Name.ToPascalCase().EscapeIdentifier();
 
         return constructor.Name.ToPascalCase().EscapeIdentifier();

@@ -11,12 +11,12 @@ internal class PublicMethodsWithCallbackParameterWithInvalidOutRecordParameterFi
     {
         foreach (var method in @class.Methods)
         {
-            var parameter = method.Parameters.FirstOrDefault(x => x.AnyTypeOrVarArgs.TryPickT0(out var anyType, out _)
-                                                                  && anyType.TryPickT0(out var type, out _)
-                                                                  && type is GirModel.Callback c
-                                                                  && c.Parameters.Any(y => y.Direction == GirModel.Direction.Out && y.AnyTypeOrVarArgs.TryPickT0(out var anyType2, out _)
-                                                                  && anyType2.TryPickT0(out var type2, out _)
-                                                                  && type2 is GirModel.Record));
+            var parameter = method.Parameters.FirstOrDefault(x => x.AnyTypeReferenceOrVarArgs.TryPickT0(out var anyTypeReference, out _)
+                                                                  && anyTypeReference.TryPickT0(out var typeReference, out _)
+                                                                  && typeReference.Type is GirModel.Callback c
+                                                                  && c.Parameters.Any(y => y.Direction == GirModel.Direction.Out && y.AnyTypeReferenceOrVarArgs.TryPickT0(out var anyTypeReference2, out _)
+                                                                  && anyTypeReference2.TryPickT0(out var typeReference2, out _)
+                                                                  && typeReference2.Type is GirModel.Record));
 
             if (parameter is null)
                 continue;

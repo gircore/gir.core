@@ -10,5 +10,5 @@ internal class Pointer : ReturnTypeConverter
     }
 
     public bool Supports(GirModel.ReturnType returnType)
-        => returnType.AnyType.Is<GirModel.Pointer>();
+        => returnType.AnyTypeReference.References<GirModel.Pointer>();
 }

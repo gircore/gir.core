@@ -4,9 +4,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class UnsignedCLong : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.UnsignedCLong>();
+        return anyTypeReference.References<GirModel.UnsignedCLong>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -14,7 +14,7 @@ internal class UnsignedCLong : ParameterConverter
         // If the parameter is both nullable and optional this implies a parameter type like 'int **' and possibly
         // ownership transfer (this combination does not currently occur for any functions).
         if (parameter is { Nullable: true, Optional: true })
-            throw new System.NotImplementedException($"{parameter.AnyTypeOrVarArgs} - Unsigned long value type with nullable=true and optional=true not yet supported");
+            throw new System.NotImplementedException($"{parameter.AnyTypeReferenceOrVarArgs} - Unsigned long value type with nullable=true and optional=true not yet supported");
 
         // Nullable-only parameters likely have incorrect annotations and should be marked optional instead.
         if (parameter.Nullable)

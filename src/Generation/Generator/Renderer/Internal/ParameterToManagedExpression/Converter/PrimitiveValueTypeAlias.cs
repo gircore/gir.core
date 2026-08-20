@@ -5,13 +5,13 @@ namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class PrimitiveValueTypeAlias : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsAlias<GirModel.PrimitiveValueType>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesAlias<GirModel.PrimitiveValueType>();
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
         if (parameterData.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: Primitive value type with direction != in not yet supported");
+            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: Primitive value type with direction != in not yet supported");
 
         switch (parameterData.Parameter)
         {

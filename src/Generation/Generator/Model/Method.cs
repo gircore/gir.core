@@ -22,7 +22,7 @@ internal static partial class Method
         if (method.Parameters.Count() != method.Shadows.Parameters.Count())
             return method.Shadows.Name.ToPascalCase().EscapeIdentifier();
 
-        if (method.Parameters.Select(x => x.AnyTypeOrVarArgs).Except(method.Shadows.Parameters.Select(x => x.AnyTypeOrVarArgs)).Any())
+        if (method.Parameters.Select(x => x.AnyTypeReferenceOrVarArgs).Except(method.Shadows.Parameters.Select(x => x.AnyTypeReferenceOrVarArgs)).Any())
             return method.Shadows.Name.ToPascalCase().EscapeIdentifier();
 
         return method.Name.ToPascalCase().EscapeIdentifier();
@@ -48,7 +48,7 @@ internal static partial class Method
         if (method.Parameters.Count() != method.Shadows.Parameters.Count())
             return method.Shadows.Name.ToPascalCase().EscapeIdentifier();
 
-        if (method.Parameters.Select(x => x.AnyTypeOrVarArgs).Except(method.Shadows.Parameters.Select(x => x.AnyTypeOrVarArgs)).Any())
+        if (method.Parameters.Select(x => x.AnyTypeReferenceOrVarArgs).Except(method.Shadows.Parameters.Select(x => x.AnyTypeReferenceOrVarArgs)).Any())
             return method.Shadows.Name.ToPascalCase().EscapeIdentifier();
 
         return method.Name.ToPascalCase().EscapeIdentifier();
@@ -83,7 +83,7 @@ internal static partial class Method
 
     public static bool IsValidFreeFunction(GirModel.Method method)
     {
-        return !method.Parameters.Any() && method.ReturnType.AnyType.TryPickT0(out var type, out _) && type is GirModel.Void;
+        return !method.Parameters.Any() && method.ReturnType.AnyTypeReference.TryPickT0(out var typeReference, out _) && typeReference.Type is GirModel.Void;
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ internal static partial class Method
 
         for (var i = 0; i < parameters.Length; i++)
         {
-            if (!parameters[i].AnyTypeOrVarArgs.Equals(foundParameters[i].AnyTypeOrVarArgs))
+            if (!parameters[i].AnyTypeReferenceOrVarArgs.Equals(foundParameters[i].AnyTypeReferenceOrVarArgs))
             {
                 return HidesMethod(cls.Parent, method, publicName);
             }

@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
-using Generator.Model;
 
 namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class Bitfield : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Bitfield>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Bitfield>();
 
     public void Initialize(ParameterToNativeData parameterData, IEnumerable<ParameterToNativeData> _)
     {
         if (parameterData.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: Bitfield with direction != in not yet supported");
+            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: Bitfield with direction != in not yet supported");
 
         switch (parameterData.Parameter)
         {

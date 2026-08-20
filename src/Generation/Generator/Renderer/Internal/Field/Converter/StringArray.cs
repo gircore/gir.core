@@ -6,17 +6,17 @@ internal class StringArray : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.IsArray<GirModel.String>();
+        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.ReferencesArray<GirModel.String>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)
     {
-        var arrayType = field.AnyTypeOrCallback.AsT0.AsT1;
+        var arrayTypeReference = field.AnyTypeReferenceOrCallback.AsT0.AsT1;
 
         return [new RenderableField(
             Name: Model.Field.GetName(field),
-            TypeName: ArrayType.GetTypeName(arrayType),
-            Array: new (arrayType.FixedSize, ArrayType.GetDimensions(arrayType))
+            TypeName: ArrayType.GetTypeName(arrayTypeReference),
+            Array: new (arrayTypeReference.FixedSize, ArrayType.GetDimensions(arrayTypeReference))
         )];
     }
 }

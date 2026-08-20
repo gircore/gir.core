@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using GirModel;
 
 namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class TypedRecord : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && Model.Record.IsTyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsTyped(record);
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
@@ -38,13 +37,13 @@ internal class TypedRecord : ToManagedParameterConverter
                 Out(parameterData);
                 break;
             default:
-                throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: typed record with direction {parameterData.Parameter.Direction} not yet supported");
+                throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: typed record with direction {parameterData.Parameter.Direction} not yet supported");
         }
     }
 
     private static void In(ParameterToManagedData parameterData)
     {
-        var record = (GirModel.Record) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
@@ -75,8 +74,8 @@ internal class TypedRecord : ToManagedParameterConverter
 
         var copy = parameterData.Parameter.Transfer switch
         {
-            Transfer.None => string.Empty,
-            Transfer.Full => "UnownedCopy().",
+            GirModel.Transfer.None => string.Empty,
+            GirModel.Transfer.Full => "UnownedCopy().",
             _ => throw new NotSupportedException()
         };
 

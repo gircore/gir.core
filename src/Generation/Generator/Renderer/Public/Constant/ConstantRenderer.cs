@@ -5,13 +5,13 @@ namespace Generator.Renderer.Public;
 
 internal static class ConstantRenderer
 {
-    private static readonly List<Constant.ConstantsConverter> converters = new()
-    {
+    private static readonly List<Constant.ConstantsConverter> converters =
+    [
         new Constant.Bitfield(),
         new Constant.PrimitiveValueType(),
         new Constant.PrimitiveValueTypeAlias(),
-        new Constant.String(),
-    };
+        new Constant.String()
+    ];
 
     public static Constant.RenderableConstant Render(GirModel.Constant constant)
     {

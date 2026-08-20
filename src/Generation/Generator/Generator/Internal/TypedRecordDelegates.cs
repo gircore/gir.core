@@ -10,7 +10,7 @@ internal class TypedRecordDelegates(Publisher publisher) : Generator<GirModel.Re
         if (!Record.IsTyped(record))
             return;
 
-        if (!record.Fields.Any(field => field.AnyTypeOrCallback.IsT1))
+        if (!record.Fields.Any(field => field.AnyTypeReferenceOrCallback.IsT1))
             return;
 
         if (!Type.IsEnabled(record))

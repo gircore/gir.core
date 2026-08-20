@@ -7,15 +7,15 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class OpaqueTypedRecordArray : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsArray<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesArray<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
 
     public void Initialize(ParameterToNativeData parameterData, IEnumerable<ParameterToNativeData> parameters)
     {
         switch (parameterData.Parameter)
         {
             case { Direction: GirModel.Direction.In }
-                when parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is not null:
+                when parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null:
                 Span(parameterData, parameters);
                 break;
             case { Direction: GirModel.Direction.In }:
@@ -51,9 +51,9 @@ internal class OpaqueTypedRecordArray : ToNativeParameterConverter
         parameter.SetExpression(() => $"var {nativeVariableName} = new Span<IntPtr>({nullable}{parameterName}" +
                                       $".Select(record => record.Handle.DangerousGetHandle()).ToArray());");
 
-        var lengthIndex = parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
-        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0);
+        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type);
 
         switch (lengthParameter.Parameter.Direction)
         {

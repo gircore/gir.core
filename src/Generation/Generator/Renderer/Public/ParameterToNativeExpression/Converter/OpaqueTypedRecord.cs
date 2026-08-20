@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class OpaqueTypedRecord : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueTyped(record);
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
@@ -19,13 +19,13 @@ internal class OpaqueTypedRecord : ToNativeParameterConverter
                 Out(parameter);
                 break;
             default:
-                throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: opaque record parameter '{parameter.Parameter.Name}' with direction = {parameter.Parameter.Direction} not yet supported");
+                throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: opaque record parameter '{parameter.Parameter.Name}' with direction = {parameter.Parameter.Direction} not yet supported");
         }
     }
 
     private static void In(ParameterToNativeData parameter)
     {
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var typeHandle = Model.OpaqueTypedRecord.GetFullyQuallifiedInternalHandle(record);
         var nullHandle = Model.OpaqueTypedRecord.GetFullyQuallifiedNullHandle(record);
         var signatureName = Model.Parameter.GetName(parameter.Parameter);
@@ -45,7 +45,7 @@ internal class OpaqueTypedRecord : ToNativeParameterConverter
 
     private static void Out(ParameterToNativeData parameter)
     {
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var className = Model.OpaqueTypedRecord.GetFullyQualifiedPublicClassName(record);
         var unownedTypeHandle = Model.OpaqueTypedRecord.GetFullyQuallifiedUnownedHandle(record);
         var ownedTypeHandle = Model.OpaqueTypedRecord.GetFullyQuallifiedOwnedHandle(record);

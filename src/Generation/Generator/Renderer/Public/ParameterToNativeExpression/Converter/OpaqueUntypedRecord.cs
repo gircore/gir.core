@@ -5,15 +5,15 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class OpaqueUntypedRecord : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Record>(out var record) && Model.Record.IsOpaqueUntyped(record);
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueUntyped(record);
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
         if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: opaque untyped record parameter '{parameter.Parameter.Name}' with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: opaque untyped record parameter '{parameter.Parameter.Name}' with direction != in not yet supported");
 
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var typeHandle = Model.OpaqueUntypedRecord.GetFullyQuallifiedInternalHandle(record);
         var nullHandle = Model.OpaqueUntypedRecord.GetFullyQuallifiedNullHandle(record);
         var signatureName = Model.Parameter.GetName(parameter.Parameter);

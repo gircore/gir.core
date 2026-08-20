@@ -2,9 +2,9 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class PrimitiveValueTypeArrayAlias : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArrayAlias<GirModel.PrimitiveValueType>();
+        return anyTypeReference.ReferencesArrayAlias<GirModel.PrimitiveValueType>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
@@ -17,8 +17,8 @@ internal class PrimitiveValueTypeArrayAlias : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var alias = (GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT1.AnyType.AsT0;
-        return $"{Model.Namespace.GetPublicName(alias.Namespace)}.{Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1)}";
+        var alias = (GirModel.Alias) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
+        return $"{Model.Namespace.GetPublicName(alias.Namespace)}.{Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1)}";
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

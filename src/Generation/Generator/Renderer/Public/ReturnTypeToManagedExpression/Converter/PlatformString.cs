@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class PlatformString : ReturnTypeConverter
 {
-    public bool Supports(AnyType type)
-        => type.Is<GirModel.PlatformString>();
+    public bool Supports(AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.PlatformString>();
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)
     {

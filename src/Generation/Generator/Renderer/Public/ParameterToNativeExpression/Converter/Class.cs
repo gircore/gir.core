@@ -6,12 +6,12 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class Class : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Class>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Class>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
-        var cls = (GirModel.Class) parameter.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var cls = (GirModel.Class) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
 
         if (cls.Fundamental)
             Fundamental(parameter);
@@ -22,10 +22,10 @@ internal class Class : ToNativeParameterConverter
     private static void Fundamental(ParameterToNativeData parameter)
     {
         if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: fundamental class parameter with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: fundamental class parameter with direction != in not yet supported");
 
         if (!parameter.Parameter.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: fundamental class parameter which is no pointer can not be converted to native");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: fundamental class parameter which is no pointer can not be converted to native");
 
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var callParameter = parameter.Parameter.Nullable
@@ -51,10 +51,10 @@ internal class Class : ToNativeParameterConverter
     private static void Default(ParameterToNativeData parameter)
     {
         if (parameter.Parameter.Direction != GirModel.Direction.In)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: class parameter with direction != in not yet supported");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: class parameter with direction != in not yet supported");
 
         if (!parameter.Parameter.IsPointer)
-            throw new NotImplementedException($"{parameter.Parameter.AnyTypeOrVarArgs}: class parameter which is no pointer can not be converted to native");
+            throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: class parameter which is no pointer can not be converted to native");
 
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var callParameter = parameter.Parameter.Nullable

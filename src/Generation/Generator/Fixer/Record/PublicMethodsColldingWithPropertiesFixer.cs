@@ -12,7 +12,7 @@ internal class PublicMethodsColldingWithFieldFixer : Fixer<GirModel.Record>
             {
                 if (Field.GetName(field) == Method.GetPublicName(method))
                 {
-                    if (method.ReturnType.AnyType.Is<GirModel.Void>())
+                    if (method.ReturnType.AnyTypeReference.References<GirModel.Void>())
                     {
                         Log.Warning($"{record.Namespace.Name}.{record.Name}: Method {Method.GetPublicName(method)} is named like a field but returns no value. It makes no sense to prefix the method with 'Get'. Thus it will be ignored.");
                         Method.Disable(method);

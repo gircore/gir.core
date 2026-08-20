@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 public class GLibByteArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsGLibByteArray();
+        return anyTypeReference.ReferencesGLibByteArray();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -19,7 +19,7 @@ public class GLibByteArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return Model.ArrayType.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT1);
+        return Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

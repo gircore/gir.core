@@ -4,9 +4,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class UntypedRecord : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
+        return anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -21,7 +21,7 @@ internal class UntypedRecord : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Record) parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var type = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         return parameter switch
         {
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.None } => Model.UntypedRecord.GetFullyQuallifiedHandle(type),

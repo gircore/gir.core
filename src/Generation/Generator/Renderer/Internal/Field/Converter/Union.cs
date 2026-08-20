@@ -4,7 +4,7 @@ internal class Union : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.Is<GirModel.Union>();
+        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.References<GirModel.Union>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)
@@ -18,7 +18,7 @@ internal class Union : FieldConverter
 
     private static string GetTypeName(GirModel.Field field)
     {
-        var type = (GirModel.Union) field.AnyTypeOrCallback.AsT0.AsT0;
+        var type = (GirModel.Union) field.AnyTypeReferenceOrCallback.AsT0.AsT0.Type;
         return field.IsPointer
             ? Model.Type.Pointer
             : Model.Union.GetFullyQualifiedInternalStructName(type);

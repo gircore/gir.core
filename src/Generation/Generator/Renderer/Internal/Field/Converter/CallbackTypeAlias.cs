@@ -4,7 +4,7 @@ internal class CallbackTypeAlias : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeOrCallback.TryPickT0(out var anyType, out _) && anyType.IsAlias<GirModel.Callback>();
+        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.ReferencesAlias<GirModel.Callback>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)
@@ -18,7 +18,7 @@ internal class CallbackTypeAlias : FieldConverter
 
     private static string GetTypeName(GirModel.Field field)
     {
-        var type = (GirModel.Callback) ((GirModel.Alias) field.AnyTypeOrCallback.AsT0.AsT0).Type;
+        var type = (GirModel.Callback) ((GirModel.Alias) field.AnyTypeReferenceOrCallback.AsT0.AsT0.Type).Type;
         return Model.Namespace.GetInternalName(type.Namespace) + "." + Model.Type.GetName(type);
     }
 }

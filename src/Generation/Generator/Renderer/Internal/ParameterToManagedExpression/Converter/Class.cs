@@ -5,15 +5,15 @@ namespace Generator.Renderer.Internal.ParameterToManagedExpressions;
 
 internal class Class : ToManagedParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.Is<GirModel.Class>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.References<GirModel.Class>();
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
         if (!parameterData.Parameter.IsPointer)
-            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeOrVarArgs}: Unpointed class parameter not yet supported");
+            throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: Unpointed class parameter not yet supported");
 
-        var cls = (GirModel.Class) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var cls = (GirModel.Class) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
 
         if (cls.Fundamental)
             Fundamental(parameterData);
@@ -23,7 +23,7 @@ internal class Class : ToManagedParameterConverter
 
     private static void Fundamental(ParameterToManagedData parameterData)
     {
-        var cls = (GirModel.Class) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var cls = (GirModel.Class) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var paramterName = Model.Parameter.GetName(parameterData.Parameter);
         var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
@@ -49,7 +49,7 @@ internal class Class : ToManagedParameterConverter
 
     private static void DefaultIn(ParameterToManagedData parameterData)
     {
-        var cls = (GirModel.Class) parameterData.Parameter.AnyTypeOrVarArgs.AsT0.AsT0;
+        var cls = (GirModel.Class) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
         var parameterName = Model.Parameter.GetName(parameterData.Parameter);
         var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 

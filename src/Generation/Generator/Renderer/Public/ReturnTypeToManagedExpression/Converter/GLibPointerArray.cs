@@ -6,9 +6,9 @@ namespace Generator.Renderer.Public.ReturnTypeToManagedExpressions;
 
 internal class GLibPointerArray : ReturnTypeConverter
 {
-    public bool Supports(AnyType type)
+    public bool Supports(AnyTypeReference anyTypeReference)
     {
-        return type.IsGLibPtrArray();
+        return anyTypeReference.ReferencesGLibPtrArray();
     }
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> _)

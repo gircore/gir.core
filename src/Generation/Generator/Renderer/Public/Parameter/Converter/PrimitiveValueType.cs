@@ -4,16 +4,16 @@ namespace Generator.Renderer.Public.Parameter;
 
 internal class PrimitiveValueType : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.Is<GirModel.PrimitiveValueType>();
+        return anyTypeReference.References<GirModel.PrimitiveValueType>();
     }
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
     {
         return new ParameterTypeData(
             Direction: GetDirection(parameter),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeOrVarArgs.AsT0.AsT0)
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type)
         );
     }
 

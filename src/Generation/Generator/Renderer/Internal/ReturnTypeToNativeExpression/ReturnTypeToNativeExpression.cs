@@ -4,8 +4,8 @@ namespace Generator.Renderer.Internal;
 
 internal static class ReturnTypeToNativeExpression
 {
-    private static readonly List<ReturnTypeToNativeExpressions.ReturnTypeConverter> Converter = new()
-    {
+    private static readonly List<ReturnTypeToNativeExpressions.ReturnTypeConverter> Converter =
+    [
         new ReturnTypeToNativeExpressions.Bitfield(),
         new ReturnTypeToNativeExpressions.Class(),
         new ReturnTypeToNativeExpressions.Enumeration(),
@@ -21,15 +21,15 @@ internal static class ReturnTypeToNativeExpression
         new ReturnTypeToNativeExpressions.PrimitiveValueType(),
         new ReturnTypeToNativeExpressions.PrimitiveValueTypeAlias(),
         new ReturnTypeToNativeExpressions.TypedRecord(),
-        new ReturnTypeToNativeExpressions.Utf8String(),
-    };
+        new ReturnTypeToNativeExpressions.Utf8String()
+    ];
 
     public static string Render(GirModel.ReturnType from, string fromVariableName)
     {
         foreach (var converter in Converter)
-            if (converter.Supports(from.AnyType))
+            if (converter.Supports(from.AnyTypeReference))
                 return converter.GetString(from, fromVariableName);
 
-        throw new System.NotImplementedException($"Missing converter to convert from internal return type {from.AnyType} to native.");
+        throw new System.NotImplementedException($"Missing converter to convert from internal return type {from.AnyTypeReference} to native.");
     }
 }

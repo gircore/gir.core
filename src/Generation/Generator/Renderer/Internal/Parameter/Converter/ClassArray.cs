@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class ClassArray : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsArray<GirModel.Class>();
+        return anyTypeReference.ReferencesArray<GirModel.Class>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -19,7 +19,7 @@ internal class ClassArray : ParameterConverter
 
     private static string GetAttribute(GirModel.Parameter parameter)
     {
-        return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length switch
+        return parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length switch
         {
             { } length => MarshalAs.UnmanagedLpArray(sizeParamIndex: length),
             _ => string.Empty,
@@ -28,7 +28,7 @@ internal class ClassArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return parameter.AnyTypeOrVarArgs.AsT0.AsT1.Length is null
+        return parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is null
             ? Model.Type.Pointer
             : Model.Type.PointerArray;
     }

@@ -2,9 +2,9 @@ namespace Generator.Renderer.Internal.Parameter;
 
 internal class CallbackAlias : ParameterConverter
 {
-    public bool Supports(GirModel.AnyType anyType)
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
     {
-        return anyType.IsAlias<GirModel.Callback>();
+        return anyTypeReference.ReferencesAlias<GirModel.Callback>();
     }
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
@@ -20,7 +20,7 @@ internal class CallbackAlias : ParameterConverter
     //Internal callbacks are not nullable
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Callback) ((GirModel.Alias) parameter.AnyTypeOrVarArgs.AsT0.AsT0).Type;
+        var type = (GirModel.Callback) ((GirModel.Alias) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type).Type;
         return Model.Namespace.GetInternalName(type.Namespace) + "." + Model.Type.GetName(type);
     }
 }

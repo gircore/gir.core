@@ -5,8 +5,8 @@ namespace Generator.Renderer.Public.ParameterToNativeExpressions;
 
 internal class PointerAlias : ToNativeParameterConverter
 {
-    public bool Supports(GirModel.AnyType type)
-        => type.IsAlias<GirModel.Pointer>();
+    public bool Supports(GirModel.AnyTypeReference anyTypeReference)
+        => anyTypeReference.ReferencesAlias<GirModel.Pointer>();
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {

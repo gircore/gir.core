@@ -48,7 +48,7 @@ public class ParameterToManagedData
     public string GetCallName()
     {
         _callName ??= _getCallName?.Invoke();
-        return _callName ?? throw new Exception($"Callname of parameter {Parameter.Name} ({Parameter.AnyTypeOrVarArgs} is not set while converting to managed");
+        return _callName ?? throw new Exception($"Callname of parameter {Parameter.Name} ({Parameter.AnyTypeReferenceOrVarArgs} is not set while converting to managed");
     }
 
     public void SetSignatureName(Func<string> getSignatureName)
@@ -59,6 +59,6 @@ public class ParameterToManagedData
     public string GetSignatureName()
     {
         _signatureName ??= _getSignature?.Invoke();
-        return _signatureName ?? throw new Exception($"Signaturename of parameter {Parameter.Name} ({Parameter.AnyTypeOrVarArgs} is not set while converting to managed");
+        return _signatureName ?? throw new Exception($"Signaturename of parameter {Parameter.Name} ({Parameter.AnyTypeReferenceOrVarArgs} is not set while converting to managed");
     }
 }
