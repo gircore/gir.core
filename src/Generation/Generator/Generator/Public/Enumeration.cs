@@ -13,7 +13,10 @@ internal class Enumeration : Generator<GirModel.Enumeration>
 
     public void Generate(GirModel.Enumeration obj)
     {
-        var source = Renderer.Public.Enumeration.Render(obj);
+        var source = obj.ErrorDomain is not null
+            ? Renderer.Public.EnumerationErrorDomain.Render(obj)
+            : Renderer.Public.Enumeration.Render(obj);
+
         var codeUnit = new CodeUnit(
             Project: Namespace.GetCanonicalName(obj.Namespace),
             Name: obj.Name,

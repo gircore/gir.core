@@ -25,7 +25,8 @@ internal class EnumerationFactory
             name: @enum.Name,
             members: @enum.Members.Select(_memberFactory.Create).ToList(),
             cType: @enum.Type,
-            introspectable: @enum.Introspectable
+            introspectable: @enum.Introspectable,
+            errorDomain: @enum.ErrorDomain
         );
     }
 }

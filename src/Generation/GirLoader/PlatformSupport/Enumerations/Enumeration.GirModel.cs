@@ -10,4 +10,5 @@ public partial class Enumeration : GirModel.Enumeration
     Method? GirModel.Enumeration.TypeFunction => _enumeration.TypeFunction;
     IEnumerable<Member> GirModel.Enumeration.Members => _enumeration.Members;
     bool GirModel.Enumeration.Introspectable => _enumeration.Introspectable;
+    string? GirModel.Enumeration.ErrorDomain => _enumeration.ErrorDomain;
 }
