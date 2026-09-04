@@ -7,4 +7,5 @@ public interface Enumeration : ComplexType
     Method? TypeFunction { get; }
     IEnumerable<Member> Members { get; }
     bool Introspectable { get; }
+    string? ErrorDomain { get; }
 }

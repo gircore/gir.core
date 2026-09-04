@@ -22,4 +22,7 @@ public class Enum
 
     [XmlAttribute("introspectable")]
     public bool Introspectable = true;
+
+    [XmlAttribute("error-domain", Namespace = "http://www.gtk.org/introspection/glib/1.0")]
+    public string? ErrorDomain { get; set; }
 }

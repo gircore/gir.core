@@ -150,3 +150,30 @@ The `GObject.Subclass` attribute is needed to define the base type of your custo
 > You can implement the `Gtk.TemplateLoader` interface to create custom template loaders. This allows to retrieve your UI definition file from any location.
 
 The `Gtk.Connect` attribute is used to connect a member to a certain member of the custom widgets UI file. If no name is specified the name of the member is used.
+
+## Exceptions
+GObject does not have a concept for exceptions. GObject based libraries raise `errors` instead. An error consists of an error-domain and an error-code. GirCore converts every error to an instance of `GException` which can be caught and handled by the application. 
+
+> [!TIP]
+> The `GException.ErrorCode` property contains information about the error-domain and the error-code of a `GException`.
+
+The following example shows how to catch errors:
+```csharp
+try
+{
+    //Raises a GException with a "RegexError.RangeOutOfOrder" error
+    GLib.Regex.New("[ab-.?!c", RegexCompileFlags.Default, RegexMatchFlags.Anchored);
+}
+catch (GException ex) when (ex.Matches(RegexError.RangeOutOfOrder))
+{
+    //Catches the "RangeOutOfOrder" error-code from the "RegexError" error-domain
+}
+catch (GException ex) when (ex.Matches(RegexError.Any))
+{
+    //Catches any error-code from "RegexError" error-domain
+}
+catch (GException ex)
+{
+    //Catches any GException regardless of the error-domain
+}
+```

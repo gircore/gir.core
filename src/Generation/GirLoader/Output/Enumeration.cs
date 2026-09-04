@@ -6,11 +6,13 @@ public partial class Enumeration : ComplexType
 {
     public IEnumerable<Member> Members { get; }
     public bool Introspectable { get; }
+    public string? ErrorDomain { get; }
 
-    public Enumeration(Repository repository, string? cType, string name, IEnumerable<Member> members, bool introspectable) : base(repository, cType, name)
+    public Enumeration(Repository repository, string? cType, string name, IEnumerable<Member> members, bool introspectable, string? errorDomain) : base(repository, cType, name)
     {
         Members = members;
         Introspectable = introspectable;
+        ErrorDomain = errorDomain;
     }
 
     internal override bool Matches(TypeReference typeReference)
