@@ -25,6 +25,7 @@
     <Project Path="Libs/GdkPixbuf-2.0/GdkPixbuf-2.0.csproj" />
     <Project Path="Libs/GdkWayland-4.0/GdkWayland-4.0.csproj" />
     <Project Path="Libs/GdkWin32-4.0/GdkWin32-4.0.csproj" />
+    <Project Path="Libs/Geoclue-2.0/Geoclue-2.0.csproj" />
     <Project Path="Libs/Gio-2.0/Gio-2.0.csproj" />
     <Project Path="Libs/GirTest-0.1/GirTest-0.1.csproj" />
     <Project Path="Libs/GLib-2.0/GLib-2.0.csproj" />
