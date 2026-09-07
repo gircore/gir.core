@@ -10,6 +10,13 @@ namespace GirTest.Tests;
 public class ClassTest : Test
 {
     [TestMethod]
+    public void SupportsNullableConstructor()
+    {
+        ClassTester.NewNullable(false).Should().NotBeNull();
+        ClassTester.NewNullable(true).Should().BeNull();
+    }
+
+    [TestMethod]
     public void CanDisposeInstanceAfterOwnershipIsTransferredAndUnrefed()
     {
         var obj = ClassTester.New();

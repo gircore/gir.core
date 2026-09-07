@@ -21,8 +21,12 @@ public class Class : ConstructorConverter
     {
         var cls = (GirModel.Class) constructor.Parent;
 
-        return cls.Fundamental
-            ? $"new {cls.Name}({fromVariableName})"
-            : $"CreateInstance({fromVariableName})";
+        return (cls.Fundamental, constructor.ReturnType.Nullable) switch
+        {
+            (true, true) => $"{fromVariableName} == global::System.IntPtr.Zero ? null : new {cls.Name}({fromVariableName})",
+            (true, false) => $"new {cls.Name}({fromVariableName})",
+            (false, true) => $"{fromVariableName} == global::System.IntPtr.Zero ? null : CreateInstance({fromVariableName})",
+            (false, false) => $"CreateInstance({fromVariableName})",
+        };
     }
 }

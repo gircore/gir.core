@@ -38,6 +38,23 @@ girtest_class_tester_new (void)
 }
 
 /**
+ * girtest_class_tester_new_nullable: (constructor)
+ * @returnNull: Wether the result should be null or not.
+ * 
+ * Creates a new `GirTestClassTester`.
+ *
+ * Returns: (nullable): The newly created `GirTestClassTester` or NULL.
+ */
+GirTestClassTester*
+girtest_class_tester_new_nullable (gboolean returnNull)
+{
+    if (returnNull)
+        return NULL;
+
+    return g_object_new (GIRTEST_TYPE_CLASS_TESTER, NULL);
+}
+
+/**
  * girtest_class_tester_transfer_ownership_full_and_unref:
  * @object: (transfer full): Any object
  *
