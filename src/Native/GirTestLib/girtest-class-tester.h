@@ -12,6 +12,9 @@ G_DECLARE_FINAL_TYPE(GirTestClassTester, girtest_class_tester, GIRTEST, CLASS_TE
 GirTestClassTester*
 girtest_class_tester_new (void);
 
+GirTestClassTester*
+girtest_class_tester_new_nullable (gboolean returnNull);
+
 void
 girtest_class_tester_transfer_ownership_full_and_unref(GObject *object);
 
