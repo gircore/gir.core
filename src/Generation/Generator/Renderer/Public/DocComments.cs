@@ -16,6 +16,13 @@ internal static class DocComments
             .Join(Environment.NewLine);
     }
 
+    public static string? RenderThrows(GirModel.Callable callable)
+    {
+        return callable.Throws
+            ? "/// <exception cref=\"GLib.GException\">Throws a GException in case of an error.</exception>"
+            : null;
+    }
+
     private static string? Render(GirModel.Parameter parameter)
     {
         return parameter switch

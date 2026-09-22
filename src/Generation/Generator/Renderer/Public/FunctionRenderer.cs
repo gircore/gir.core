@@ -20,6 +20,7 @@ internal static class FunctionRenderer
             return @$"
 
 {DocComments.Render(callableData.ParameterToNativeDatas)}
+{DocComments.RenderThrows(function)}
 {VersionAttribute.Render(function.Version)}
 public static {newModifier}{ReturnTypeRenderer.Render(function.ReturnType)} {Function.GetName(function)}({RenderParameters(callableData.ParameterToNativeDatas)})
 {{

@@ -28,6 +28,7 @@ internal static class MethodRenderer
             var callableData = CallableExpressions.Initialize(method);
             return @$"
 {DocComments.Render(callableData.ParameterToNativeDatas)}
+{DocComments.RenderThrows(method)}
 {VersionAttribute.Render(method.Version)}
 {modifier}{ReturnTypeRenderer.Render(method.ReturnType)} {explicitImplementation}{Method.GetPublicName(method)}({RenderParameters(callableData.ParameterToNativeDatas)})
 {{
