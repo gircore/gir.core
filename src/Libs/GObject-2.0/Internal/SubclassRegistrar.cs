@@ -10,9 +10,9 @@ namespace GObject.Internal;
 public static unsafe class SubclassRegistrar
 {
     [DllImport(ImportResolver.Library, EntryPoint = "g_type_register_static_simple")]
-    private static extern nuint TypeRegisterStaticSimple(Type parentType, GLib.Internal.NonNullableUtf8StringHandle typeName, uint classSize, delegate* unmanaged<IntPtr, IntPtr, void> classInit, uint instanceSize, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit, TypeFlags flags);
+    private static extern nuint TypeRegisterStaticSimple(Type parentType, GLib.Internal.NonNullableUtf8StringHandle typeName, uint classSize, delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> classInit, uint instanceSize, delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> instanceInit, TypeFlags flags);
 
-    public static Type Register<TSubclass, TParent>(delegate* unmanaged<IntPtr, IntPtr, void> classInit, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit, string? qualifiedName)
+    public static Type Register<TSubclass, TParent>(delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> classInit, delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> instanceInit, string? qualifiedName)
         where TSubclass : InstanceFactory
         where TParent : GTypeProvider
     {
@@ -22,11 +22,11 @@ public static unsafe class SubclassRegistrar
         return newType;
     }
 
-    public static Type RegisterAbstract<TSubclass, TParent>(delegate* unmanaged<IntPtr, IntPtr, void> classInit, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit, string? qualifiedName)
+    public static Type RegisterAbstract<TSubclass, TParent>(delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> classInit, delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> instanceInit, string? qualifiedName)
         where TParent : GTypeProvider
         => RegisterNewGType<TSubclass, TParent>(classInit, instanceInit, qualifiedName, TypeFlags.Abstract);
 
-    private static Type RegisterNewGType<TSubclass, TParent>(delegate* unmanaged<IntPtr, IntPtr, void> classInit, delegate* unmanaged<IntPtr, IntPtr, void> instanceInit, string? qualifiedName, TypeFlags flags)
+    private static Type RegisterNewGType<TSubclass, TParent>(delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> classInit, delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> instanceInit, string? qualifiedName, TypeFlags flags)
         where TParent : GTypeProvider
     {
         var parentType = TParent.GetGType();

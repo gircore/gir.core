@@ -63,7 +63,7 @@ public static class InstanceCache
         Debug.WriteLine($"Handle {handle}: Removed object from {nameof(InstanceCache)}.");
     }
 
-    [UnmanagedCallersOnly]
+    [UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
     private static void ToggleNotify(IntPtr data, IntPtr @object, int isLastRef)
     {
         try

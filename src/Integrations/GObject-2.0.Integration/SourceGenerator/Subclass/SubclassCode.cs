@@ -120,7 +120,7 @@ internal static class SubclassCode
                        }
                        
                        {{GeneratedCodeAttribute.Render()}}
-                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
                        private static void ClassInit(System.IntPtr cls, System.IntPtr clsData)
                        {
                            var classDefinition = (global::GObject.Internal.ObjectClassUnmanaged*) cls;
@@ -131,14 +131,14 @@ internal static class SubclassCode
                        }
                       
                        {{GeneratedCodeAttribute.Render()}}
-                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
                        private static void InstanceInit(System.IntPtr instance, System.IntPtr cls)
                        {
                            CompositeTemplateInstanceInit(instance, cls);
                        }
                       
                        {{GeneratedCodeAttribute.Render()}}
-                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
                        private static void Dispose(System.IntPtr instance)
                        {
                            CompositeTemplateDispose(instance);
@@ -146,7 +146,7 @@ internal static class SubclassCode
                        }
                        
                        {{GeneratedCodeAttribute.Render()}}
-                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
                        private static void Constructed(System.IntPtr instance)
                        {
                            if(!global::GObject.Internal.InstanceCache.TryGetObject(instance, out _))
@@ -251,7 +251,7 @@ internal static class SubclassCode
                        }
                        
                        {{GeneratedCodeAttribute.Render()}}
-                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
                        private static void ClassInit(System.IntPtr cls, System.IntPtr clsData)
                        {
                            var classDefinition = (global::GObject.Internal.ObjectClassUnmanaged*) cls;
@@ -261,14 +261,14 @@ internal static class SubclassCode
                        }
                       
                        {{GeneratedCodeAttribute.Render()}}
-                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
                        private static void InstanceInit(System.IntPtr instance, System.IntPtr cls)
                        {
                            CompositeTemplateInstanceInit(instance, cls);
                        }
                       
                        {{GeneratedCodeAttribute.Render()}}
-                       [System.Runtime.InteropServices.UnmanagedCallersOnly]
+                       [System.Runtime.InteropServices.UnmanagedCallersOnly(CallConvs = new[] { typeof(System.Runtime.CompilerServices.CallConvCdecl) })]
                        private static void Dispose(System.IntPtr instance)
                        {
                            CompositeTemplateDispose(instance);
