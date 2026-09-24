@@ -2,14 +2,18 @@ using System;
 
 namespace GObject.Internal;
 
-internal class ToggleRef
+internal class ToggleRef : IDisposable
 {
     private object _reference;
+    private bool _disposed;
 
     public GObject.Object? Object
     {
         get
         {
+            if (!_disposed)
+                return null;
+
             if (_reference is WeakReference weakRef)
                 return (GObject.Object?) weakRef.Target;
 
@@ -31,6 +35,9 @@ internal class ToggleRef
 
     internal void ToggleReference(bool isLastRef)
     {
+        if (_disposed)
+            return;
+        
         if (!isLastRef && _reference is WeakReference weakRef)
         {
             if (weakRef.Target is { } weakObj)
@@ -42,5 +49,10 @@ internal class ToggleRef
         {
             _reference = new WeakReference(_reference);
         }
+    }
+
+    public void Dispose()
+    {
+        _disposed = true;
     }
 }

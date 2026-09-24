@@ -56,8 +56,11 @@ public static class InstanceCache
     {
         lock (Cache)
         {
-            if (Cache.Remove(handle))
+            if (Cache.Remove(handle, out var toggleRef))
+            {
+                toggleRef.Dispose();
                 ToggleRegistration.RemoveToggleRef(handle, &ToggleNotify);
+            }
         }
 
         Debug.WriteLine($"Handle {handle}: Removed object from {nameof(InstanceCache)}.");
