@@ -14,14 +14,4 @@ application.OnActivate += (sender, args) =>
     window.Show();
 };
 
-using var stream = Assembly.GetExecutingAssembly()
-    .GetManifestResourceStream("CompositeTemplate.app.gresource");
-
-var buffer = new byte[stream!.Length];
-stream.ReadExactly(buffer);
-
-using var bytes = GLib.Bytes.New(buffer);
-using var resource = Gio.Resource.NewFromData(bytes);
-resource.Register();
-
 return application.RunWithSynchronizationContext(null);
