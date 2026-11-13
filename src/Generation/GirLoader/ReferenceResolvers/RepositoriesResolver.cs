@@ -24,7 +24,7 @@ internal static class RepositoriesResolver
             ShadowableResolver.Resolve(repository.Namespace.Classes);
             ShadowableResolver.Resolve(repository.Namespace.Interfaces);
             ShadowableResolver.Resolve(repository.Namespace.Records);
-            ShadowableResolver.Resolve(new[] { new ShadowableAdapter(repository.Namespace.Functions) });
+            ShadowableResolver.Resolve([new ShadowableAdapter(repository.Namespace.Functions)]);
 
         }
     }

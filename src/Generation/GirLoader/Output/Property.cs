@@ -9,8 +9,8 @@ public partial class Property
     public bool ConstructOnly { get; }
     public AnyTypeReference AnyTypeReference { get; }
     public bool Introspectable { get; }
-    public MethodReference? Getter { get; }
-    public MethodReference? Setter { get; }
+    public MethodReference? Getter { get; internal set; }
+    public MethodReference? Setter { get; internal set; }
 
     public Property(string name, AnyTypeReference anyTypeReference, bool writeable, bool readable, bool constructOnly, Transfer transfer, bool introspectable, MethodReference? getter, MethodReference? setter)
     {
