@@ -23,17 +23,47 @@ internal static class AccessorResolver
 
     private static void ResolveMethodReference(Property property, AccessorProvider accessorProvider)
     {
-        property.Getter?.ResolveMethod(accessorProvider.Methods.First(method => method.Name == property.Getter.Name));
+        try
+        {
+            property.Getter?.ResolveMethod(accessorProvider.Methods.First(method => method.Name == property.Getter.Name));
+        }
+        catch
+        {
+            property.Getter = null;
+            Log.Error($"Could not resolve getter method for property {property.Name}.");
+        }
 
-        // Workaround: Use "FirstOrDefault" because not all defined setters can be found e.g. if the
-        // refrenced method uses varargs arguments (GTK4.Actionable.action-target property). Restore
-        // ".First" and remove nullable argument from "ResolveMethod" if problem is fixed upstream
-        property.Setter?.ResolveMethod(accessorProvider.Methods.FirstOrDefault(method => method.Name == property.Setter.Name));
+        try
+        {
+            property.Setter?.ResolveMethod(accessorProvider.Methods.First(method => method.Name == property.Setter.Name));
+        }
+        catch
+        {
+            property.Setter = null;
+            Log.Error($"Could not resolve setter method for property {property.Name}.");
+        }
     }
 
     private static void ResolvePropertyReference(Method method, AccessorProvider accessorProvider)
     {
-        method.GetProperty?.ResolveProperty(accessorProvider.Properties.First(property => property.Name == method.GetProperty.Name));
-        method.SetProperty?.ResolveProperty(accessorProvider.Properties.First(property => property.Name == method.SetProperty.Name));
+        try
+        {
+            method.GetProperty?.ResolveProperty(accessorProvider.Properties.First(property => property.Name == method.GetProperty.Name));
+        }
+        catch
+        {
+            method.GetProperty = null;
+            Log.Error($"Could not resolve getter property for method {method.Name}.");
+        }
+
+        try
+        {
+            method.SetProperty?.ResolveProperty(accessorProvider.Properties.First(property => property.Name == method.SetProperty.Name));
+        }
+        catch
+        {
+            method.SetProperty = null;
+            Log.Error($"Could not resolve setter property for method {method.Name}.");
+        }
     }
 }

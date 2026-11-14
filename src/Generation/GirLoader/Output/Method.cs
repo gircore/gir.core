@@ -10,8 +10,8 @@ public partial class Method : Callable
     public string Name { get; }
     public bool Throws { get; }
     public bool Introspectable { get; }
-    public PropertyReference? GetProperty { get; }
-    public PropertyReference? SetProperty { get; }
+    public PropertyReference? GetProperty { get; internal set; }
+    public PropertyReference? SetProperty { get; internal set; }
     public string? Version { get; }
     public ShadowsReference? ShadowsReference { get; }
     public ShadowedByReference? ShadowedByReference { get; }
