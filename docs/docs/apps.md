@@ -2,10 +2,6 @@
 
 Applications using gir.core. To add a new application to the list [edit this page](https://github.com/gircore/gir.core/edit/main/docs/docs/apps.md).
 
-## Stocks
-[Stocks](https://github.com/taimila/Stocks) is a simple stocks tracking application.
-![Stocks screenshot](https://github.com/taimila/Stocks/blob/main/docs/stocks.png)
-
 ## Aria
 [Aria](https://github.com/mirthestam/aria) is a music player controller for players like MPD.
 ![Aria screenshot](https://github.com/mirthestam/aria/raw/main/screenshots/medium.png)
@@ -38,6 +34,10 @@ Applications using gir.core. To add a new application to the list [edit this pag
 ## Pinta
 [Pinta](https://www.pinta-project.com/) is a image editing, drawing and painting application with a simple yet powerful interface.
 ![Pinta screenshot](https://github.com/user-attachments/assets/05afe053-1105-4665-b285-6c769a70c1a1)
+
+## Stocks
+[Stocks](https://github.com/taimila/Stocks) is a simple stocks tracking application.
+![Stocks screenshot](https://github.com/taimila/Stocks/blob/main/docs/stocks.png)
 
 ## Tagger
 [Tagger](https://github.com/NickvisionApps/Tagger) is a music tag editor.
