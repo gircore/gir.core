@@ -2,6 +2,10 @@
 
 Applications using gir.core. To add a new application to the list [edit this page](https://github.com/gircore/gir.core/edit/main/docs/docs/apps.md).
 
+## Stocks
+[Stocks](https://github.com/taimila/Stocks) is a simple stocks tracking application.
+![Stocks screenshot](https://github.com/taimila/Stocks/blob/main/docs/stocks.png)
+
 ## Aria
 [Aria](https://github.com/mirthestam/aria) is a music player controller for players like MPD.
 ![Aria screenshot](https://github.com/mirthestam/aria/raw/main/screenshots/medium.png)
