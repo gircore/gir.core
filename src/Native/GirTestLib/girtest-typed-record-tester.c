@@ -376,3 +376,17 @@ gboolean girtest_typed_record_tester_equals(GirTestTypedRecordTester *self, GirT
         && g_strcmp0(self->custom_string, other->custom_string) == 0
         && self->custom_int_private == other->custom_int_private;
 }
+
+/**
+ * girtest_typed_record_tester_run_callback_parameter_callback_parameter_inout:
+ * @callback: (scope call): A callback
+ * @input: (transfer full): Passed to callback
+ * 
+ * Returns: (transfer full) (nullable): the GirTestTypedRecordTester from the out part of the callback
+ **/
+GirTestTypedRecordTester* girtest_typed_record_tester_run_callback_parameter_callback_parameter_inout(GirTestInOutTypedRecord callback, GirTestTypedRecordTester *input)
+{
+    callback(&input);
+    
+    return input;
+}
