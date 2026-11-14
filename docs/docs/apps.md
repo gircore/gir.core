@@ -35,6 +35,10 @@ Applications using gir.core. To add a new application to the list [edit this pag
 [Pinta](https://www.pinta-project.com/) is a image editing, drawing and painting application with a simple yet powerful interface.
 ![Pinta screenshot](https://github.com/user-attachments/assets/05afe053-1105-4665-b285-6c769a70c1a1)
 
+## Stocks
+[Stocks](https://github.com/taimila/Stocks) is a simple stocks tracking application.
+![Stocks screenshot](https://github.com/taimila/Stocks/blob/main/docs/stocks.png)
+
 ## Tagger
 [Tagger](https://github.com/NickvisionApps/Tagger) is a music tag editor.
 ![Tagger screenshot](https://raw.githubusercontent.com/NickvisionApps/Tagger/main/NickvisionTagger.GNOME/Screenshots/Editing.png)
