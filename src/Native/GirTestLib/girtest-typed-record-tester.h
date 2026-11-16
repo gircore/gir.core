@@ -106,6 +106,12 @@ typedef void (*GirTestGetTypedRecordTesterNoOwnershipTransferNullable) (GirTestT
  */
 typedef void (*GirTestCreateNullableTypedRecordTesterFullOwnershipTransferInCallback) (GirTestTypedRecordTester **data);
 
+/**
+ * GirTestInOutTypedRecord:
+ * @tester: (inout) (transfer full) (nullable): pointer to the buffer
+ */
+typedef void (*GirTestInOutTypedRecord) (GirTestTypedRecordTester **tester);
+
 GirTestTypedRecordTester * girtest_typed_record_tester_new ();
 GirTestTypedRecordTester * girtest_typed_record_tester_try_new (gboolean returnNull);
 GirTestTypedRecordTester * girtest_typed_record_tester_ref (GirTestTypedRecordTester *self);
@@ -131,4 +137,5 @@ void girtest_typed_record_tester_run_callback_parameter_no_ownership_transfer(Gi
 void girtest_typed_record_tester_run_callback_parameter_no_ownership_transfer_nullable(GirTestGetTypedRecordTesterNoOwnershipTransferNullable callback, GirTestTypedRecordTester *data);
 GirTestTypedRecordTester *  girtest_typed_record_tester_run_callback_create_nullable_full_ownership_transfer_out(GirTestCreateNullableTypedRecordTesterFullOwnershipTransferInCallback callback);
 gboolean girtest_typed_record_tester_equals(GirTestTypedRecordTester *self, GirTestTypedRecordTester *other);
+GirTestTypedRecordTester *  girtest_typed_record_tester_run_callback_parameter_callback_parameter_inout(GirTestInOutTypedRecord callback, GirTestTypedRecordTester *input);
 G_END_DECLS

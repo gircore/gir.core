@@ -424,4 +424,99 @@ public class TypedRecordTest : Test
 
         instance1.NativeEquals(instance2).Should().BeTrue();
     }
+
+    [TestMethod]
+    public void SupportsCallbackParameterInOutValueChange()
+    {
+        var instance1 = TypedRecordTester.New();
+        instance1.CustomEnum = TypedRecordTesterEnum.A;
+
+        instance1.RefCount.Should().Be(1);
+        instance1.CustomEnum.Should().Be(TypedRecordTesterEnum.A);
+
+        TypedRecordTester? instance2 = null;
+
+        void Callback(ref TypedRecordTester? tester)
+        {
+            tester!.CustomEnum = TypedRecordTesterEnum.B;
+            tester.RefCount.Should().Be(2);
+            instance2 = tester;
+        }
+
+        var instance3 = TypedRecordTester.RunCallbackParameterCallbackParameterInout(Callback, instance1);
+
+        instance3!.CustomEnum.Should().Be(TypedRecordTesterEnum.B);
+        instance3.RefCount.Should().Be(3);
+
+        instance1.Should().NotBeNull();
+        instance2.Should().NotBeNull();
+        instance3.Should().NotBeNull();
+
+        ReferenceEquals(instance1, instance2).Should().BeFalse();
+        ReferenceEquals(instance2, instance3).Should().BeFalse();
+        ReferenceEquals(instance3, instance1).Should().BeFalse();
+
+        instance1.Dispose();
+        instance3.RefCount.Should().Be(2);
+
+        instance2.Dispose();
+        instance3.RefCount.Should().Be(1);
+    }
+
+    [TestMethod]
+    public void SupportsCallbackParameterInOutValueNull()
+    {
+        var instance1 = TypedRecordTester.New();
+        instance1.CustomEnum = TypedRecordTesterEnum.A;
+
+        instance1.RefCount.Should().Be(1);
+        instance1.CustomEnum.Should().Be(TypedRecordTesterEnum.A);
+
+        void Callback(ref TypedRecordTester? tester)
+        {
+            tester!.Dispose();
+            tester = null;
+        }
+
+        var instance2 = TypedRecordTester.RunCallbackParameterCallbackParameterInout(Callback, instance1);
+
+        instance1.Should().NotBeNull();
+        instance2.Should().BeNull();
+
+        instance1.RefCount.Should().Be(1);
+    }
+
+    [TestMethod]
+    public void SupportsCallbackParameterInOutDifferentInstsance()
+    {
+        var instance1 = TypedRecordTester.New();
+        instance1.CustomEnum = TypedRecordTesterEnum.A;
+
+        instance1.RefCount.Should().Be(1);
+        instance1.CustomEnum.Should().Be(TypedRecordTesterEnum.A);
+
+        TypedRecordTester? instance2 = null;
+
+        void Callback(ref TypedRecordTester? tester)
+        {
+            tester!.Dispose();
+            instance2 = tester = TypedRecordTester.New();
+            tester.CustomEnum = TypedRecordTesterEnum.B;
+        }
+
+        var instance3 = TypedRecordTester.RunCallbackParameterCallbackParameterInout(Callback, instance1);
+
+        instance1.RefCount.Should().Be(1);
+        instance2!.RefCount.Should().Be(2);
+        instance3!.RefCount.Should().Be(2);
+
+        instance3!.CustomEnum.Should().Be(TypedRecordTesterEnum.B);
+
+        ReferenceEquals(instance1, instance2).Should().BeFalse();
+        ReferenceEquals(instance2, instance3).Should().BeFalse();
+        ReferenceEquals(instance3, instance1).Should().BeFalse();
+
+        instance2.Dispose();
+        instance3.RefCount.Should().Be(1);
+    }
 }
