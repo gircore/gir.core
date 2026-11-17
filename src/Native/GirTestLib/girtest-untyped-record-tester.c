@@ -172,3 +172,18 @@ gboolean girtest_untyped_record_tester_equals(GirTestUntypedRecordTester *self, 
 {
     return self->a == other->a;
 }
+
+/**
+ * girtest_untyped_record_tester_run_callback_parameter_callback_parameter_inout:
+ * @callback: (scope call): A callback
+ * 
+ * Returns: (transfer full) (nullable): the GirTestUntypedRecordTester from the out part of the callback
+ **/
+GirTestUntypedRecordTester* girtest_untyped_record_tester_run_callback_parameter_callback_parameter_inout(GirTestInOutUntypedRecord callback)
+{
+   	GirTestUntypedRecordTester* tester = girtest_untyped_record_tester_new_with_a(42);
+
+    callback(&tester);
+    
+    return tester;
+}

@@ -27,6 +27,7 @@ internal class UntypedRecord : ParameterConverter
     {
         { Direction: GirModel.Direction.In } => ParameterDirection.In(),
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
+        { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
         _ => throw new Exception($"untyped records with direction '{parameter.Direction}' not yet supported")
     };
 }

@@ -23,6 +23,12 @@ typedef void (*GirTestUntypedRecordCallbackOutParameterCallerAllocates) (GirTest
  **/
 typedef void (*GirTestUntypedRecordCallbackOutParameterCalleeAllocates) (GirTestUntypedRecordTester **record);
 
+/**
+ * GirTestInOutUntypedRecord:
+ * @tester: (inout) (transfer full) (nullable): pointer to the buffer
+ */
+typedef void (*GirTestInOutUntypedRecord) (GirTestUntypedRecordTester **tester);
+
 GirTestUntypedRecordTester* girtest_untyped_record_tester_new_with_a(int a);
 GirTestUntypedRecordTester * girtest_untyped_record_tester_try_new(gboolean returnNull);
 GirTestUntypedRecordTester* girtest_untyped_record_tester_mirror(GirTestUntypedRecordTester *data);
@@ -35,4 +41,5 @@ GirTestUntypedRecordTester* girtest_untyped_record_tester_callback_out_parameter
 int girtest_untyped_record_tester_get_a_from_last_element(GirTestUntypedRecordTester* array, int length);
 int girtest_untyped_record_tester_get_a_from_last_element_pointer(GirTestUntypedRecordTester** array, int length);
 gboolean girtest_untyped_record_tester_equals(GirTestUntypedRecordTester *self, GirTestUntypedRecordTester *other);
+GirTestUntypedRecordTester *  girtest_untyped_record_tester_run_callback_parameter_callback_parameter_inout(GirTestInOutUntypedRecord callback);
 G_END_DECLS

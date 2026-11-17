@@ -21,6 +21,9 @@ internal class UntypedRecord : ToManagedParameterConverter
             case GirModel.Direction.Out:
                 OutRecord(parameterData);
                 break;
+            case GirModel.Direction.InOut:
+                InOutRecord(parameterData);
+                break;
             default:
                 throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: untyped record with direction {parameterData.Parameter.Direction} not yet supported");
         }
@@ -74,5 +77,35 @@ internal class UntypedRecord : ToManagedParameterConverter
         parameterData.SetSignatureName(() => signatureName);
         parameterData.SetExpression(() => $"var {variableName} = new {Model.Record.GetFullyQualifiedPublicClassName(record)}(new {handleClass}({signatureName}).Copy());");
         parameterData.SetCallName(() => variableName);
+    }
+
+    private static void InOutRecord(ParameterToManagedData parameterData)
+    {
+        var managedName = Model.Parameter.GetName(parameterData.Parameter);
+        var nativeName = Model.Parameter.GetConvertedName(parameterData.Parameter);
+
+        parameterData.SetSignatureName(() => nativeName);
+        parameterData.SetCallName(() => $"ref {managedName}");
+
+        var copy = parameterData.Parameter.Transfer switch
+        {
+            GirModel.Transfer.Full => "UnownedCopy().", //Transfer full "in" and "out" direction
+            _ => throw new NotSupportedException()
+        };
+
+        parameterData.SetPostCallExpression(() => parameterData.Parameter.Nullable
+            ? $"{nativeName} = {managedName}?.Handle.{copy}DangerousGetHandle() ?? IntPtr.Zero;"
+            : $"{nativeName} = {managedName}.Handle.{copy}DangerousGetHandle();");
+
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var ownedHandle = parameterData.Parameter switch
+        {
+            { Transfer: GirModel.Transfer.Full } => $"new {Model.UntypedRecord.GetFullyQuallifiedOwnedHandle(record)}({nativeName})",
+            _ => throw new Exception($"Unknown transfer type for untyped record parameter {parameterData.Parameter.Name}")
+        };
+        var nullable = parameterData.Parameter.Nullable
+            ? $" {nativeName} == IntPtr.Zero ? null :"
+            : string.Empty;
+        parameterData.SetExpression(() => $"var {managedName} ={nullable} new {Model.UntypedRecord.GetFullyQualifiedPublicClassName(record)}({ownedHandle});");
     }
 }

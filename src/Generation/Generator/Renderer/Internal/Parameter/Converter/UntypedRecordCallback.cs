@@ -22,7 +22,7 @@ internal class UntypedRecordCallback : ParameterConverter
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch
     {
         { Direction: GirModel.Direction.In } => ParameterDirection.In(),
-        { Direction: GirModel.Direction.InOut } => ParameterDirection.In(),
+        { Direction: GirModel.Direction.InOut } => ParameterDirection.Ref(),
         { Direction: GirModel.Direction.Out, CallerAllocates: true } => ParameterDirection.In(),
         { Direction: GirModel.Direction.Out } => ParameterDirection.Out(),
         _ => throw new Exception("Unknown direction for untyped record parameter in callback")

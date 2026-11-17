@@ -133,4 +133,57 @@ public class UntypedRecordTest : Test
 
         instance1.NativeEquals(instance2).Should().BeTrue();
     }
+
+    [TestMethod]
+    public void SupportsCallbackParameterInOutValueChange()
+    {
+        IntPtr? handle1 = null;
+
+        void Callback(ref UntypedRecordTester? tester)
+        {
+            tester!.A.Should().Be(42);
+            tester.A = 24;
+            handle1 = tester.Handle.DangerousGetHandle();
+        }
+
+        var instance = UntypedRecordTester.RunCallbackParameterCallbackParameterInout(Callback);
+        instance!.A.Should().Be(24);
+
+        handle1.Should().NotBe(instance.Handle.DangerousGetHandle());
+    }
+
+    [TestMethod]
+    public void SupportsCallbackParameterInOutValueNull()
+    {
+        void Callback(ref UntypedRecordTester? tester)
+        {
+            tester.Should().NotBeNull();
+            tester = null;
+        }
+
+        var instance2 = UntypedRecordTester.RunCallbackParameterCallbackParameterInout(Callback);
+        instance2.Should().BeNull();
+    }
+
+    [TestMethod]
+    public void SupportsCallbackParameterInOutDifferentInstance()
+    {
+        UntypedRecordTester? instance1 = null;
+        UntypedRecordTester? instance2 = null;
+
+        void Callback(ref UntypedRecordTester? tester)
+        {
+            tester!.A.Should().Be(42);
+
+            instance1 = tester;
+            instance2 = tester = UntypedRecordTester.NewWithA(24);
+        }
+
+        var instance3 = UntypedRecordTester.RunCallbackParameterCallbackParameterInout(Callback);
+        instance3!.A.Should().Be(24);
+
+        ReferenceEquals(instance1, instance2).Should().BeFalse();
+        ReferenceEquals(instance2, instance3).Should().BeFalse();
+        ReferenceEquals(instance3, instance1).Should().BeFalse();
+    }
 }
