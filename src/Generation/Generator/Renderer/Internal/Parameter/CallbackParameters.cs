@@ -17,7 +17,6 @@ internal static class CallbackParameters
         new Parameter.GLibPointerArrayCallback(),
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
-        new Parameter.NativeUnsignedIntegerArray(),
         new Parameter.OpaqueTypedRecordCallback(),
         new Parameter.OpaqueUntypedRecordCallback(),
         new Parameter.PlatformStringArrayCallback(),

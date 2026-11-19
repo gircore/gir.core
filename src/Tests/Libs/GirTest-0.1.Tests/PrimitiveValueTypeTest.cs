@@ -40,4 +40,12 @@ public class PrimitiveValueTypeTest : Test
         PrimitiveValueTypeTester.IntOutOptional(out int result2);
         result2.Should().Be(42);
     }
+
+    [TestMethod]
+    public void InGSizeArrayShouldSucceed()
+    {
+        var data = new nuint[] { 0x1, 0x7 };
+        var result = PrimitiveValueTypeTester.GsizeArrayIn(data);
+        result.Should().Be(0x7);
+    }
 }
