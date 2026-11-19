@@ -19,7 +19,6 @@ internal static class Parameters
         new Parameter.GLibPointerArray(),
         new Parameter.Interface(),
         new Parameter.InterfaceArray(),
-        new Parameter.NativeUnsignedIntegerArray(),
         new Parameter.OpaqueTypedRecord(),
         new Parameter.OpaqueTypedRecordArray(),
         new Parameter.OpaqueUntypedRecord(),

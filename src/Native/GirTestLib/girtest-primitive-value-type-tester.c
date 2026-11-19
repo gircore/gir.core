@@ -99,3 +99,16 @@ girtest_primitive_value_type_tester_int_out_optional(int *result)
     if (result)
         *result = 42;
 }
+
+/**
+ * girtest_primitive_value_type_tester_gsize_array_in:
+ * @len: Length of array
+ * @data: (array length=len) (nullable): data buffer
+ * 
+ * Returns: The last element of the buffer.
+ */
+gsize
+girtest_primitive_value_type_tester_gsize_array_in(gsize len, gsize data[])
+{
+    return data[len-1];
+}
