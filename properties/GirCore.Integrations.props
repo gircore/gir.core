@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project>
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
 
     <AnalysisMode>Recommended</AnalysisMode>
     <Nullable>enable</Nullable>
     <TreatWarningsErrors>true</TreatWarningsErrors>
     <IsRoslynComponent>true</IsRoslynComponent>
+    
+    <NoWarn>RS1041</NoWarn><!--Do not warn about not targeting netstandard2.0-->
     
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
@@ -23,8 +25,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Reference 4.8 as it is the first version which supports net8.0 -->
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
+    <!-- Reference 5.0 as it is the first version which supports net10.0 -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0"/>
   </ItemGroup>
 
   <ItemGroup>
