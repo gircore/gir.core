@@ -166,8 +166,8 @@ internal class Utf8StringArray : ToNativeParameterConverter
         });
         parameter.SetPostCallExpression(() => parameter.Parameter.Nullable switch
         {
-            false => $"{signatureName} = {nativeVariableName}.ConvertToStringArray() ?? throw new NullReferenceException(\"Unexpected null value\");",
-            true => $"""{signatureName} = {nativeVariableName}.ConvertToStringArray();"""
+            false => $"{signatureName} = {nativeVariableName}.ConvertToStringArray() ?? global::System.Array.Empty<string>();",
+            true => $"{signatureName} = {nativeVariableName}.ConvertToStringArray();"
         });
 
         var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
