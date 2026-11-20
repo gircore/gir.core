@@ -18,8 +18,8 @@ public partial class VecDequeHandle
 
 public partial class VecDequeOwnedHandle
 {
-    [DllImport(ImportResolver.Library, EntryPoint = "gst_vec_deque_free")]
-    private static extern void Free(IntPtr handle);
+    [LibraryImport(ImportResolver.Library, EntryPoint = "gst_vec_deque_free")]
+    private static partial void Free(IntPtr handle);
 
     public static partial VecDequeOwnedHandle FromUnowned(IntPtr ptr)
     {

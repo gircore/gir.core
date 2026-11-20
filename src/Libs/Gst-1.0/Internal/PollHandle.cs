@@ -18,8 +18,8 @@ public partial class PollHandle
 
 public partial class PollOwnedHandle
 {
-    [DllImport(ImportResolver.Library, EntryPoint = "gst_poll_free")]
-    private static extern void Free(IntPtr set);
+    [LibraryImport(ImportResolver.Library, EntryPoint = "gst_poll_free")]
+    private static partial void Free(IntPtr set);
 
     public static partial PollOwnedHandle FromUnowned(IntPtr ptr)
     {
