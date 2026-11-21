@@ -4,12 +4,12 @@ internal class PrimitiveValueTypeArrayAlias : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.ReferencesArrayAlias<GirModel.PrimitiveValueType>();
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.ReferencesArrayAlias<GirModel.PrimitiveValueType>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)
     {
-        var arrayTypeReference = field.AnyTypeReferenceOrCallback.AsT0.AsT1;
+        var arrayTypeReference = field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsT1;
 
         return [new RenderableField(
             Name: Model.Field.GetName(field),

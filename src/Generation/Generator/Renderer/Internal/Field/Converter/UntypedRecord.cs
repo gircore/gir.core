@@ -4,7 +4,7 @@ internal class UntypedRecord : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsUntyped(record);
     }
 
     public RenderableField[] Convert(GirModel.Field field)
@@ -18,7 +18,7 @@ internal class UntypedRecord : FieldConverter
 
     private static string GetTypeName(GirModel.Field field)
     {
-        var type = (GirModel.Record) field.AnyTypeReferenceOrCallback.AsT0.AsT0.Type;
+        var type = (GirModel.Record) field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsT0.Type;
         return field.IsPointer
             ? Model.Type.Pointer
             : Model.Record.GetFullyQualifiedInternalStructName(type);

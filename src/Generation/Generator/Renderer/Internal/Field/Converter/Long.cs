@@ -4,7 +4,7 @@ internal class Long : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickT0(out var anyTypeReference, out _) && anyTypeReference.References<GirModel.Long>();
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.References<GirModel.Long>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)
@@ -20,6 +20,6 @@ internal class Long : FieldConverter
     {
         return field.IsPointer
             ? Model.Type.Pointer
-            : Model.Type.GetName(field.AnyTypeReferenceOrCallback.AsT0.AsT0.Type);
+            : Model.Type.GetName(field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsT0.Type);
     }
 }
