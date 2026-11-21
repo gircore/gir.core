@@ -7,7 +7,7 @@ internal static class CallbackDelegate
 {
     public static string Render(GirModel.Callback callback)
     {
-        return $"public delegate {ReturnTypeRendererCallback.Render(callback.ReturnType)} {callback.Name}({CallbackParameters.Render(callback.Parameters)}{Error.RenderCallback(callback)});";
+        return $"[System.Runtime.InteropServices.UnmanagedFunctionPointer(System.Runtime.InteropServices.CallingConvention.Cdecl)] public delegate {ReturnTypeRendererCallback.Render(callback.ReturnType)} {callback.Name}({CallbackParameters.Render(callback.Parameters)}{Error.RenderCallback(callback)});";
     }
 
     public static string RenderFile(GirModel.Callback callback)
