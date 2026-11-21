@@ -25,8 +25,8 @@ public partial struct {Model.UntypedRecord.GetDataName(record)}
 {{
     {record.Fields
         .Select(x => x.AnyTypeReferenceOrCallback)
-        .Where(x => x.IsT1)
-        .Select(x => x.AsT1)
+        .Where(x => x.IsCallback)
+        .Select(x => x.AsCallback)
         .Select(Callback.Render)
         .Join(Environment.NewLine)}
 

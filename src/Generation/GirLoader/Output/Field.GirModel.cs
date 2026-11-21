@@ -1,4 +1,4 @@
-using OneOf;
+using GirModel;
 
 namespace GirLoader.Output;
 
@@ -11,7 +11,7 @@ public partial class Field : GirModel.Field
     bool GirModel.Field.IsPointer => AnyTypeReference.CTypeReference?.IsPointer ?? false;
     bool GirModel.Field.Introspectable => Introspectable;
 
-    OneOf<GirModel.AnyTypeReference, GirModel.Callback> GirModel.Field.AnyTypeReferenceOrCallback
+    AnyTypeReferenceOrCallback GirModel.Field.AnyTypeReferenceOrCallback
     {
         get
         {
