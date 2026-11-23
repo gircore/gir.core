@@ -11,7 +11,7 @@ internal class Class : ToNativeParameterConverter
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
-        var cls = (GirModel.Class) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var cls = (GirModel.Class) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
 
         if (cls.Fundamental)
             Fundamental(parameter);

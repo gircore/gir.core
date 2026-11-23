@@ -6,12 +6,12 @@ internal class ClassArray : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.ReferencesArray<GirModel.Class>();
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.Value.ReferencesArray<GirModel.Class>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)
     {
-        var arrayType = field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsT1;
+        var arrayType = field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsArrayTypeReference;
 
         return [new RenderableField(
             Name: Model.Field.GetName(field),

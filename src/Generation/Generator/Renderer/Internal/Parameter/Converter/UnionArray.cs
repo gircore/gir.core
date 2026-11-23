@@ -9,7 +9,7 @@ internal class UnionArray : ParameterConverter
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.IsPointer)
+        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.IsPointer)
             return PointerArray(parameter);
 
         return DataArray(parameter);
@@ -27,7 +27,7 @@ internal class UnionArray : ParameterConverter
 
     private static RenderableParameter DataArray(GirModel.Parameter parameter)
     {
-        var union = (GirModel.Union) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
+        var union = (GirModel.Union) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type;
 
         return new RenderableParameter(
             Attribute: string.Empty,

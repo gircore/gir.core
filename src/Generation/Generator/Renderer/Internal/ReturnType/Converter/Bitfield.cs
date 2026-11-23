@@ -9,7 +9,7 @@ internal class Bitfield : ReturnTypeConverter
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var type = (GirModel.Bitfield) returnType.AnyTypeReference.AsT0.Type;
+        var type = (GirModel.Bitfield) returnType.AnyTypeReference.AsTypeReference.Type;
         return new RenderableReturnType(Model.ComplexType.GetFullyQualified(type));
     }
 }

@@ -83,7 +83,7 @@ internal static partial class Method
 
     public static bool IsValidFreeFunction(GirModel.Method method)
     {
-        return !method.Parameters.Any() && method.ReturnType.AnyTypeReference.TryPickT0(out var typeReference, out _) && typeReference.Type is GirModel.Void;
+        return !method.Parameters.Any() && method.ReturnType.AnyTypeReference.TryPickTypeReference(out var typeReference) && typeReference.Type is GirModel.Void;
     }
 
     /// <summary>

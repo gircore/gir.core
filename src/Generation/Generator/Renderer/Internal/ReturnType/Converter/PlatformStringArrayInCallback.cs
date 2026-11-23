@@ -9,7 +9,7 @@ internal class PlatformStringArrayInCallback : ReturnTypeConverter
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var arrayType = returnType.AnyTypeReference.AsT1;
+        var arrayType = returnType.AnyTypeReference.AsArrayTypeReference;
         var isMarshalAble = returnType.Transfer != GirModel.Transfer.None || arrayType.Length != null;
         var nullableTypeName = isMarshalAble
             ? Model.ArrayType.GetName(arrayType)

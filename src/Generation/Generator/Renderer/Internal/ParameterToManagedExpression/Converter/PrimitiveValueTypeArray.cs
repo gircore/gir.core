@@ -13,7 +13,7 @@ internal class PrimitiveValueTypeArray : ToManagedParameterConverter
     {
         if (parameter.Parameter is { Direction: GirModel.Direction.In })
         {
-            if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null)
+            if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length is not null)
                 Span(parameter, parameters);
             else
                 Ref(parameter);
@@ -31,7 +31,7 @@ internal class PrimitiveValueTypeArray : ToManagedParameterConverter
 
     private static void Span(ParameterToManagedData parameter, IEnumerable<ParameterToManagedData> allParameters)
     {
-        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
         var lengthSignatureName = Model.Parameter.GetName(lengthParameter.Parameter);
         lengthParameter.IsArrayLengthParameter = true;

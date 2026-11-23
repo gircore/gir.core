@@ -10,7 +10,7 @@ internal class Utf8StringArray : ToManagedParameterConverter
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
-        var arrayType = parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        var arrayType = parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
 
         if (arrayType.IsZeroTerminated)
             NullTerminatedArray(parameterData);

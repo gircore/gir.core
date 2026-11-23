@@ -11,7 +11,7 @@ internal class Utf8StringArray : ParameterConverter
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        var arrayType = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        var arrayType = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
 
         if (arrayType.IsZeroTerminated)
             return NullTerminatedArray(parameter);

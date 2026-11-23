@@ -14,11 +14,11 @@ internal class PrimitiveValueTypeArray : ToNativeParameterConverter
         switch (parameter.Parameter)
         {
             case { Direction: GirModel.Direction.Out, CallerAllocates: true }
-                when parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null:
+                when parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length is not null:
             case { Direction: GirModel.Direction.In }
-                when parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null:
+                when parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length is not null:
             case { Direction: GirModel.Direction.InOut }
-                when parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null:
+                when parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length is not null:
                 Span(parameter, allParameters);
                 break;
             case { Direction: GirModel.Direction.In }:
@@ -45,9 +45,9 @@ internal class PrimitiveValueTypeArray : ToNativeParameterConverter
         parameter.SetSignatureName(() => parameterName);
         parameter.SetCallName(() => $"ref MemoryMarshal.GetReference({parameterName})");
 
-        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
-        var type = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type);
+        var type = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type);
 
         switch (lengthParameter.Parameter.Direction)
         {

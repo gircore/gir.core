@@ -11,7 +11,7 @@ internal class PlatformStringArray : ReturnTypeConverter
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var arrayType = returnType.AnyTypeReference.AsT1;
+        var arrayType = returnType.AnyTypeReference.AsArrayTypeReference;
 
         if (arrayType.IsZeroTerminated)
             return NullTerminatedArray(returnType);

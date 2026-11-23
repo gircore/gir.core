@@ -27,8 +27,8 @@ internal class EnumerationArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var arrayTypeReference = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
-        var type = (GirModel.Enumeration) arrayTypeReference.AnyTypeReference.AsT0.Type;
+        var arrayTypeReference = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
+        var type = (GirModel.Enumeration) arrayTypeReference.AnyTypeReference.AsTypeReference.Type;
 
         return arrayTypeReference.Length is null
             ? Model.Type.Pointer

@@ -46,7 +46,7 @@ internal class TypedRecord : ToManagedParameterConverter
 
     private static void In(ParameterToManagedData parameterData)
     {
-        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
@@ -105,7 +105,7 @@ internal class TypedRecord : ToManagedParameterConverter
             ? $"{nativeName} = {managedName}?.Handle.{copy}DangerousGetHandle() ?? IntPtr.Zero;"
             : $"{nativeName} = {managedName}.Handle.{copy}DangerousGetHandle();");
 
-        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var ownedHandle = parameterData.Parameter switch
         {
             { Transfer: GirModel.Transfer.Full } => $"new {Model.TypedRecord.GetFullyQuallifiedOwnedHandle(record)}({nativeName})",

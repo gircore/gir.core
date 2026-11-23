@@ -4,7 +4,7 @@ internal class PrimitiveValueTypeAlias : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.ReferencesAlias<GirModel.PrimitiveValueType>();
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.Value.ReferencesAlias<GirModel.PrimitiveValueType>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)
@@ -20,6 +20,6 @@ internal class PrimitiveValueTypeAlias : FieldConverter
     {
         return field.IsPointer
             ? Model.Type.Pointer
-            : Model.Type.GetName(((GirModel.Alias) field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsT0.Type).Type);
+            : Model.Type.GetName(((GirModel.Alias) field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsTypeReference.Type).Type);
     }
 }

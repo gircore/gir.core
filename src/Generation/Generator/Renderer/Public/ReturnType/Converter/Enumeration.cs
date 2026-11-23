@@ -6,7 +6,7 @@ internal class Enumeration : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Enumeration) returnType.AnyTypeReference.AsT0.Type);
+        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Enumeration) returnType.AnyTypeReference.AsTypeReference.Type);
 
         return new RenderableReturnType(nullableTypeName);
     }

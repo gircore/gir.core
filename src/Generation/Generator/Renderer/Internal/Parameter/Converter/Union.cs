@@ -30,7 +30,7 @@ internal class Union : ParameterConverter
         return parameter.IsPointer switch
         {
             true => Model.Type.Pointer,
-            false => Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type)
+            false => Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type)
         };
     }
 }

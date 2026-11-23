@@ -9,7 +9,7 @@ internal class UntypedRecord : ReturnTypeConverter
         if (returnType.Transfer == GirModel.Transfer.Container)
             throw new NotSupportedException($"Can't return untyped record {returnType} with transfer mode container");
 
-        var typeName = Model.ComplexType.GetFullyQualified((GirModel.Record) returnType.AnyTypeReference.AsT0.Type);
+        var typeName = Model.ComplexType.GetFullyQualified((GirModel.Record) returnType.AnyTypeReference.AsTypeReference.Type);
 
         return new RenderableReturnType(typeName + Nullable.Render(returnType));
     }

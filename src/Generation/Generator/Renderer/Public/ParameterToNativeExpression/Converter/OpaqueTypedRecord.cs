@@ -25,7 +25,7 @@ internal class OpaqueTypedRecord : ToNativeParameterConverter
 
     private static void In(ParameterToNativeData parameter)
     {
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var typeHandle = Model.OpaqueTypedRecord.GetFullyQuallifiedInternalHandle(record);
         var nullHandle = Model.OpaqueTypedRecord.GetFullyQuallifiedNullHandle(record);
         var signatureName = Model.Parameter.GetName(parameter.Parameter);
@@ -45,7 +45,7 @@ internal class OpaqueTypedRecord : ToNativeParameterConverter
 
     private static void Out(ParameterToNativeData parameter)
     {
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var className = Model.OpaqueTypedRecord.GetFullyQualifiedPublicClassName(record);
         var unownedTypeHandle = Model.OpaqueTypedRecord.GetFullyQuallifiedUnownedHandle(record);
         var ownedTypeHandle = Model.OpaqueTypedRecord.GetFullyQuallifiedOwnedHandle(record);

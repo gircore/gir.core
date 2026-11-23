@@ -18,7 +18,7 @@ internal class Class : ReturnTypeConverter
             if (!returnType.IsPointer)
                 throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
 
-            var cls = (GirModel.Class) returnType.AnyTypeReference.AsT0.Type;
+            var cls = (GirModel.Class) returnType.AnyTypeReference.AsTypeReference.Type;
             return cls.Fundamental
                 ? Fundamental(cls, returnType, fromVariableName)
                 : Standard(cls, returnType, fromVariableName);

@@ -15,7 +15,7 @@ internal class Utf8StringArray : ReturnTypeConverter
         data.SetExpression(fromVariableName =>
         {
             var returnType = data.ReturnType;
-            var arrayTypeReference = returnType.AnyTypeReference.AsT1;
+            var arrayTypeReference = returnType.AnyTypeReference.AsArrayTypeReference;
 
             if (arrayTypeReference.IsZeroTerminated)
                 return NullTerminatedArray(returnType, fromVariableName);
@@ -28,7 +28,7 @@ internal class Utf8StringArray : ReturnTypeConverter
         data.SetPostReturnStatement(fromVariableName =>
         {
             var returnType = data.ReturnType;
-            var arrayTypeReference = returnType.AnyTypeReference.AsT1;
+            var arrayTypeReference = returnType.AnyTypeReference.AsArrayTypeReference;
 
             if (arrayTypeReference.IsZeroTerminated)
                 return null;

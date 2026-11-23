@@ -13,7 +13,7 @@ internal class Interface : ToManagedParameterConverter
         if (!parameterData.Parameter.IsPointer)
             throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: Unpointed interface parameter not yet supported");
 
-        var iface = (GirModel.Interface) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var iface = (GirModel.Interface) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
 
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);
         var callName = Model.Parameter.GetConvertedName(parameterData.Parameter);

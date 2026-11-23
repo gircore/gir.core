@@ -4,7 +4,7 @@ internal class UnsignedCLong : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.References<GirModel.UnsignedCLong>();
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.Value.References<GirModel.UnsignedCLong>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)

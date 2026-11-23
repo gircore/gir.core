@@ -22,14 +22,14 @@ internal class Utf8StringArrayCallback : ParameterConverter
         return parameter switch
         {
             // Arrays of string which do not transfer ownership and have no length index can not be marshalled automatically
-            { Transfer: GirModel.Transfer.None, AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length: null } => Model.Type.Pointer,
-            _ => Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1)
+            { Transfer: GirModel.Transfer.None, AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length: null } => Model.Type.Pointer,
+            _ => Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference)
         };
     }
 
     private static string GetAttribute(GirModel.Parameter parameter)
     {
-        return parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length switch
+        return parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length switch
         {
             null => string.Empty,
             { } l => MarshalAs.UnmanagedLpArray(sizeParamIndex: l)

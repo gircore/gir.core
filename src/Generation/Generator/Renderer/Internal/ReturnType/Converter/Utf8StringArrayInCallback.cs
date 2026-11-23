@@ -9,7 +9,7 @@ internal class Utf8StringArrayInCallback : ReturnTypeConverter
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var arrayTypeReference = returnType.AnyTypeReference.AsT1;
+        var arrayTypeReference = returnType.AnyTypeReference.AsArrayTypeReference;
         var isMarshalAble = returnType.Transfer != GirModel.Transfer.None || arrayTypeReference.Length != null;
         var nullableTypeName = isMarshalAble
             ? Model.ArrayType.GetName(arrayTypeReference)

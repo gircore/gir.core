@@ -17,7 +17,7 @@ internal class InterfaceArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var iface = (GirModel.Interface) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
+        var iface = (GirModel.Interface) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type;
         return Model.ComplexType.GetFullyQualified(iface) + "[]";
     }
 

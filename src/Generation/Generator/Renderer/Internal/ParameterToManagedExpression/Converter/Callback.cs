@@ -15,7 +15,7 @@ internal class Callback : ToManagedParameterConverter
         if (parameterData.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: Callback with direction != in not yet supported");
 
-        var callback = (GirModel.Callback) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var callback = (GirModel.Callback) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var ns = Model.Namespace.GetPublicName(callback.Namespace);
         var type = Model.Type.GetName(callback);
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);

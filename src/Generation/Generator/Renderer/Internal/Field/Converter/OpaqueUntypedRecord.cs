@@ -4,7 +4,7 @@ internal class OpaqueUntypedRecord : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueUntyped(record);
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.Value.References<GirModel.Record>(out var record) && Model.Record.IsOpaqueUntyped(record);
     }
 
     public RenderableField[] Convert(GirModel.Field field)

@@ -18,7 +18,7 @@ internal class Interface : ReturnTypeConverter
             if (!returnType.IsPointer)
                 throw new NotImplementedException($"Can't convert {returnType} to managed as it is a pointer");
 
-            var @interface = (GirModel.Interface) returnType.AnyTypeReference.AsT0.Type;
+            var @interface = (GirModel.Interface) returnType.AnyTypeReference.AsTypeReference.Type;
 
             return returnType.Nullable
                 ? $"({Model.Type.GetPublicNameFullyQuallified(@interface)}?) GObject.Internal.InstanceWrapper.WrapNullableHandle<{Model.Interface.GetFullyQualifiedImplementationName(@interface)}>({fromVariableName}, {Transfer.IsOwnedRef(returnType.Transfer).ToString().ToLower()})"

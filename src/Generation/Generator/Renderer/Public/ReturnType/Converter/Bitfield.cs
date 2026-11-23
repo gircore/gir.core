@@ -6,7 +6,7 @@ internal class Bitfield : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Bitfield) returnType.AnyTypeReference.AsT0.Type);
+        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Bitfield) returnType.AnyTypeReference.AsTypeReference.Type);
 
         return new RenderableReturnType(nullableTypeName);
     }

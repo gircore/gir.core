@@ -3,7 +3,13 @@ namespace GirLoader.Output;
 public partial class Property : GirModel.Property
 {
     string GirModel.Property.Name => Name;
-    GirModel.AnyTypeReference GirModel.Property.AnyTypeReference => AnyTypeReference.Match(GirModel.AnyTypeReference.From, GirModel.AnyTypeReference.From);
+
+    GirModel.AnyTypeReference GirModel.Property.AnyTypeReference => AnyTypeReference switch
+    {
+        TypeReference typeReference => GirModel.AnyTypeReference.From(typeReference),
+        ArrayTypeReference arrayTypeReference => GirModel.AnyTypeReference.From(arrayTypeReference),
+    };
+
     bool GirModel.Property.Readable => Readable;
     bool GirModel.Property.Writeable => Writeable;
     bool GirModel.Property.ConstructOnly => ConstructOnly;

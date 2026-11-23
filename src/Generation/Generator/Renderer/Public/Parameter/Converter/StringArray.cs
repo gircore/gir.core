@@ -17,7 +17,7 @@ internal class StringArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1) + Nullable.Render(parameter);
+        return Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference) + Nullable.Render(parameter);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

@@ -21,7 +21,7 @@ internal class UntypedRecord : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var type = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         return parameter switch
         {
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.None } => Model.UntypedRecord.GetFullyQuallifiedHandle(type),

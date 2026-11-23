@@ -19,7 +19,7 @@ public class PrimitiveValueTypeArrayAlias : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1, true);
+        return Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference, true);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

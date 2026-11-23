@@ -9,8 +9,8 @@ internal class PrimitiveValueTypeAliasArray : ReturnTypeConverter
         if (!returnType.IsPointer)
             throw new NotImplementedException("Only primitive value types alias arrays which are pointer based are supported.");
 
-        var alias = (GirModel.Alias) returnType.AnyTypeReference.AsT1.AnyTypeReference.AsT0.Type;
-        return new RenderableReturnType($"{Model.Namespace.GetPublicName(alias.Namespace)}.{Model.ArrayType.GetName(returnType.AnyTypeReference.AsT1)}");
+        var alias = (GirModel.Alias) returnType.AnyTypeReference.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type;
+        return new RenderableReturnType($"{Model.Namespace.GetPublicName(alias.Namespace)}.{Model.ArrayType.GetName(returnType.AnyTypeReference.AsArrayTypeReference)}");
     }
 
     public bool Supports(GirModel.ReturnType returnType)

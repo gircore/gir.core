@@ -10,7 +10,7 @@ internal class PlatformStringArray : ToManagedParameterConverter
 
     public void Initialize(ParameterToManagedData parameterData, IEnumerable<ParameterToManagedData> parameters)
     {
-        var arrayTypeReference = parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
 
         if (arrayTypeReference.IsZeroTerminated)
             NullTerminatedArray(parameterData);

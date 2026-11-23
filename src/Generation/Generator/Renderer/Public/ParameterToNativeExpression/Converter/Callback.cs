@@ -37,7 +37,7 @@ internal class Callback : ToNativeParameterConverter
 
     private static void FillNotifiedScope(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> parameters)
     {
-        var callback = (GirModel.Callback) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var callback = (GirModel.Callback) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var handlerNameVariable = parameterName + "Handler";
 
@@ -52,7 +52,7 @@ internal class Callback : ToNativeParameterConverter
 
         var destroyParameter = parameters.ElementAt(parameter.Parameter.Destroy.Value);
 
-        if (destroyParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type is not GirModel.Callback { Name: "DestroyNotify" })
+        if (destroyParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type is not GirModel.Callback { Name: "DestroyNotify" })
             throw new Exception("Destroyparameter is not of type DestroyNotify");
 
         destroyParameter.IsDestroyNotify = true;
@@ -64,7 +64,7 @@ internal class Callback : ToNativeParameterConverter
 
     private static void FillCallScope(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> parameters)
     {
-        var callback = (GirModel.Callback) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var callback = (GirModel.Callback) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var handlerNameVariable = parameterName + "Handler";
         var handlerReference = callback.Parent != null

@@ -11,7 +11,7 @@ internal class PrimitiveValueTypeAlias : ReturnTypeConverter
     {
         var nullableTypeName = returnType.IsPointer
             ? Model.Type.Pointer
-            : Model.Type.GetName(((GirModel.Alias) returnType.AnyTypeReference.AsT0.Type).Type);
+            : Model.Type.GetName(((GirModel.Alias) returnType.AnyTypeReference.AsTypeReference.Type).Type);
 
         return new RenderableReturnType(nullableTypeName);
     }

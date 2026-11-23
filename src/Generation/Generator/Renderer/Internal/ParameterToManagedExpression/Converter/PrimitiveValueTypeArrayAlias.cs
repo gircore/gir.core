@@ -16,7 +16,7 @@ internal class PrimitiveValueTypeArrayAlias : ToManagedParameterConverter
         var variableName = Model.Parameter.GetName(parameterData.Parameter);
         var callName = variableName + "Managed";
 
-        var type = (GirModel.Alias) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
+        var type = (GirModel.Alias) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type;
         var ns = Model.Namespace.GetPublicName(type.Namespace);
         var typeName = Model.Type.GetName(type);
 

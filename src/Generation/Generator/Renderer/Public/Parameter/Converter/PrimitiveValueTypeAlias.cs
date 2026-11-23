@@ -9,7 +9,7 @@ internal class PrimitiveValueTypeAlias : ParameterConverter
 
     public ParameterTypeData Create(GirModel.Parameter parameter)
     {
-        var alias = (GirModel.Alias) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var alias = (GirModel.Alias) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
 
         return new ParameterTypeData(
             Direction: GetDirection(parameter),

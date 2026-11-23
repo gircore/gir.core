@@ -25,7 +25,7 @@ internal class UntypedRecord : ToNativeParameterConverter
 
     private static void In(ParameterToNativeData parameter)
     {
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var typeHandle = Model.UntypedRecord.GetFullyQuallifiedHandle(record);
         var nullHandle = Model.UntypedRecord.GetFullyQuallifiedNullHandle(record);
         var signatureName = Model.Parameter.GetName(parameter.Parameter);
@@ -44,7 +44,7 @@ internal class UntypedRecord : ToNativeParameterConverter
 
     private static void Out(ParameterToNativeData parameter)
     {
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var signatureName = Model.Parameter.GetName(parameter.Parameter);
 
         var callName = parameter.Parameter switch

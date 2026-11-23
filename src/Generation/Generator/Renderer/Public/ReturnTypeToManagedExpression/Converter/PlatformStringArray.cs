@@ -14,7 +14,7 @@ internal class PlatformStringArray : ReturnTypeConverter
         data.SetExpression(fromVariableName =>
         {
             var returnType = data.ReturnType;
-            var arrayType = returnType.AnyTypeReference.AsT1;
+            var arrayType = returnType.AnyTypeReference.AsArrayTypeReference;
 
             if (arrayType.IsZeroTerminated)
                 return NullTerminatedArray(returnType, fromVariableName);
@@ -28,7 +28,7 @@ internal class PlatformStringArray : ReturnTypeConverter
         data.SetPostReturnStatement(fromVariableName =>
         {
             var returnType = data.ReturnType;
-            var arrayType = returnType.AnyTypeReference.AsT1;
+            var arrayType = returnType.AnyTypeReference.AsArrayTypeReference;
 
             if (arrayType.IsZeroTerminated)
                 return null;

@@ -4,7 +4,7 @@ internal class TypedRecord : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        var typeName = Model.ComplexType.GetFullyQualified((GirModel.Record) returnType.AnyTypeReference.AsT0.Type);
+        var typeName = Model.ComplexType.GetFullyQualified((GirModel.Record) returnType.AnyTypeReference.AsTypeReference.Type);
 
         return new RenderableReturnType(typeName + Nullable.Render(returnType));
     }

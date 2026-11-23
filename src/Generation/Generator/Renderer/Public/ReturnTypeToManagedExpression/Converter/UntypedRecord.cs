@@ -13,7 +13,7 @@ internal class UntypedRecord : ReturnTypeConverter
         data.SetExpression(fromVariableName =>
         {
             var returnType = data.ReturnType;
-            var record = (GirModel.Record) returnType.AnyTypeReference.AsT0.Type;
+            var record = (GirModel.Record) returnType.AnyTypeReference.AsTypeReference.Type;
 
             var handleExpression = returnType switch
             {

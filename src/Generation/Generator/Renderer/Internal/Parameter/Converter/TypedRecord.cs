@@ -23,7 +23,7 @@ internal class TypedRecord : ParameterConverter
     {
         //Native records are represented as SafeHandles and are not nullable
 
-        var type = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var type = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         return parameter switch
         {
             { Direction: GirModel.Direction.In, Transfer: GirModel.Transfer.None } => Model.TypedRecord.GetFullyQuallifiedHandle(type),

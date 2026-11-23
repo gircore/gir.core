@@ -11,7 +11,7 @@ internal class Utf8StringArray : ToNativeParameterConverter
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> allParameters)
     {
-        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
 
         if (arrayTypeReference.IsZeroTerminated)
             NullTerminatedArray(parameter);
@@ -121,9 +121,9 @@ internal class Utf8StringArray : ToNativeParameterConverter
         parameter.SetCallName(() => nativeVariableName);
         parameter.SetExpression(() => $"var {nativeVariableName} = {createExpression};");
 
-        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
-        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type);
+        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type);
         lengthParameter.IsArrayLengthParameter = true;
         lengthParameter.SetCallName(() => $"({lengthParameterType}) {nativeVariableName}.Size");
     }
@@ -141,7 +141,7 @@ internal class Utf8StringArray : ToNativeParameterConverter
             false => $"""{signatureName} = {nativeVariableName}.ConvertToStringArray() ?? throw new NullReferenceException("Unexpected null value");"""
         });
 
-        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
 
         lengthParameter.IsArrayLengthParameter = true;
@@ -170,11 +170,11 @@ internal class Utf8StringArray : ToNativeParameterConverter
             true => $"{signatureName} = {nativeVariableName}.ConvertToStringArray();"
         });
 
-        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
 
         lengthParameter.IsArrayLengthParameter = true;
-        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type);
+        var lengthParameterType = Model.Type.GetName(lengthParameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type);
         lengthParameter.SetExpression(() => parameter.Parameter.Nullable switch
         {
             false => $"{lengthParameterType} counterNative = ({lengthParameterType}){signatureName}.Length;",
