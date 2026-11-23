@@ -20,7 +20,7 @@ runs:
   using: "composite"
   steps:
     - name: Run unit tests
-      run: dotnet test --no-build -c ${{ inputs.configuration }} --filter "${{ inputs.test_categories }}" --logger trx
+      run: dotnet test --no-build -c ${{ inputs.configuration }} -- --filter "${{ inputs.test_categories }}" --report-trx
       working-directory: ${{ inputs.source_directory }}
       shell: ${{ inputs.shell }}
 

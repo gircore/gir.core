@@ -91,6 +91,7 @@
     <File Path="../.editorconfig" />
     <File Path="../.gitignore" />
     <File Path="../readme.md" />
+    <File Path="global.json" />
     <File Path="NugetReadme.md" />
   </Folder>
   <Folder Name="/SolutionItems/docs/">
