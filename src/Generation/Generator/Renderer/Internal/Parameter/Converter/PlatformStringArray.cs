@@ -11,7 +11,7 @@ internal class PlatformStringArray : ParameterConverter
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        var arrayTypeReference = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
 
         if (arrayTypeReference.IsZeroTerminated)
             return NullTerminatedArray(parameter);

@@ -13,7 +13,7 @@ internal class PrimitiveValueType : ParameterConverter
     {
         return new ParameterTypeData(
             Direction: GetDirection(parameter),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type)
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type)
         );
     }
 

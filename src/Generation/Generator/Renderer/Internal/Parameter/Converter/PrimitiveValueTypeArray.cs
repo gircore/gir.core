@@ -24,7 +24,7 @@ public class PrimitiveValueTypeArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Ref(),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }
@@ -34,7 +34,7 @@ public class PrimitiveValueTypeArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Out(),
-            NullableTypeName: Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1),
+            NullableTypeName: Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference),
             Name: Model.Parameter.GetName(parameter)
         );
     }
@@ -44,7 +44,7 @@ public class PrimitiveValueTypeArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Ref(),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }
@@ -54,7 +54,7 @@ public class PrimitiveValueTypeArray : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: ParameterDirection.Ref(),
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }

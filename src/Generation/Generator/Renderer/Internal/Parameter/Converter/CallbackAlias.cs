@@ -20,7 +20,7 @@ internal class CallbackAlias : ParameterConverter
     //Internal callbacks are not nullable
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Callback) ((GirModel.Alias) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type).Type;
+        var type = (GirModel.Callback) ((GirModel.Alias) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type).Type;
         return Model.Namespace.GetInternalName(type.Namespace) + "." + Model.Type.GetName(type);
     }
 }

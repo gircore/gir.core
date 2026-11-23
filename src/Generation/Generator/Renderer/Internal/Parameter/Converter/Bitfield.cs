@@ -13,7 +13,7 @@ internal class Bitfield : ParameterConverter
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
             //Internal does not define any bitfields. They are part of the Public API to avoid converting between them.
-            NullableTypeName: Model.ComplexType.GetFullyQualified((GirModel.Bitfield) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
+            NullableTypeName: Model.ComplexType.GetFullyQualified((GirModel.Bitfield) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }

@@ -17,7 +17,7 @@ internal class ClassArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var cls = (GirModel.Class) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
+        var cls = (GirModel.Class) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type;
         return Model.ComplexType.GetFullyQualified(cls) + "[]";
     }
 

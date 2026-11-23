@@ -24,7 +24,7 @@ internal static class Parameter
             return false;
 
         if (parameter.AnyTypeReferenceOrVarArgs.TryPickT0(out var anyTypeReference, out _)
-            && anyTypeReference.TryPickT0(out var typeReference, out _)
+            && anyTypeReference.TryPickTypeReference(out var typeReference)
             && typeReference.Type is GirModel.Record record)
         {
             return Record.IsGLibError(record);

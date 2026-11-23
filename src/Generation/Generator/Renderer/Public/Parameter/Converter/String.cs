@@ -17,7 +17,7 @@ internal class String : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type) + Nullable.Render(parameter);
+        return Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type) + Nullable.Render(parameter);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

@@ -13,7 +13,7 @@ internal class Interface : ReturnTypeConverter
     {
         var nullableTypeName = returnType.IsPointer
             ? Type.Pointer
-            : Type.GetName(returnType.AnyTypeReference.AsT0.Type);
+            : Type.GetName(returnType.AnyTypeReference.AsTypeReference.Type);
 
         return new RenderableReturnType(nullableTypeName);
     }

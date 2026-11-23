@@ -9,6 +9,6 @@ internal class PrimitiveValueTypeArray : ReturnTypeConverter
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        return new RenderableReturnType(Model.ArrayType.GetName(returnType.AnyTypeReference.AsT1));
+        return new RenderableReturnType(Model.ArrayType.GetName(returnType.AnyTypeReference.AsArrayTypeReference));
     }
 }

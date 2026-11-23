@@ -20,7 +20,7 @@ internal class PrimitiveValueTypeArray : ParameterConverter
 
     private static ParameterTypeData InOut(GirModel.Parameter parameter)
     {
-        var type = Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type);
+        var type = Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type);
 
         return new ParameterTypeData(
             Direction: ParameterDirection.In(),
@@ -30,7 +30,7 @@ internal class PrimitiveValueTypeArray : ParameterConverter
 
     private static ParameterTypeData OutCallerAllocates(GirModel.Parameter parameter)
     {
-        var type = Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type);
+        var type = Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type);
 
         return new ParameterTypeData(
             Direction: ParameterDirection.In(),
@@ -40,9 +40,9 @@ internal class PrimitiveValueTypeArray : ParameterConverter
 
     private static ParameterTypeData In(GirModel.Parameter parameter)
     {
-        var type = Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type);
+        var type = Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type);
 
-        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null)
+        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length is not null)
         {
             return new ParameterTypeData(
                 Direction: ParameterDirection.In(),

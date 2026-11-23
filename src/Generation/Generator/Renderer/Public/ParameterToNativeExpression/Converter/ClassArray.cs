@@ -11,7 +11,7 @@ internal class ClassArray : ToNativeParameterConverter
 
     public void Initialize(ParameterToNativeData parameter, IEnumerable<ParameterToNativeData> _)
     {
-        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
 
         if (arrayTypeReference.IsPointer)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: Pointed class array can not yet be converted to native.");

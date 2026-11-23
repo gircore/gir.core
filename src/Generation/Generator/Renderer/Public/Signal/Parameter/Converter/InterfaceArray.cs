@@ -13,7 +13,7 @@ public class InterfaceArray : SignalArgsParameterConverter
 
     public void Initialize(SignalArgsParameterData parameter, int index, IEnumerable<SignalArgsParameterData> parameters)
     {
-        if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null)
+        if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length is not null)
             LengthBased(parameter, index, parameters);
         else
             throw new NotImplementedException("Class Arrays without a length are not supported as SignalArgs");
@@ -21,13 +21,13 @@ public class InterfaceArray : SignalArgsParameterConverter
 
     private static void LengthBased(SignalArgsParameterData parameter, int index, IEnumerable<SignalArgsParameterData> parameters)
     {
-        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
 
         if (arrayTypeReference.IsPointer)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: Pointed class array can not yet be converted to signal args.");
 
         var parameterName = Model.Parameter.GetName(parameter.Parameter).ToPascalCase();
-        var parameterInterface = (GirModel.Interface) arrayTypeReference.AnyTypeReference.AsT0.Type;
+        var parameterInterface = (GirModel.Interface) arrayTypeReference.AnyTypeReference.AsTypeReference.Type;
         var parameterTypeName = Model.Interface.GetFullyQualifiedPublicName(parameterInterface);
         var parameterTypeFallbackName = Model.Interface.GetFullyQualifiedImplementationName(parameterInterface);
         var parameterHelperVariable = $"_{parameterName.ToCamelCase()}";

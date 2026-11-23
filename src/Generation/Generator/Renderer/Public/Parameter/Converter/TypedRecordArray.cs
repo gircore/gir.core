@@ -19,8 +19,8 @@ internal class TypedRecordArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var arrayTypeReference = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
-        return $"{Model.TypedRecord.GetFullyQualifiedPublicClassName((GirModel.Record) arrayTypeReference.AnyTypeReference.AsT0.Type)}[]{Nullable.Render(parameter)}";
+        var arrayTypeReference = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
+        return $"{Model.TypedRecord.GetFullyQualifiedPublicClassName((GirModel.Record) arrayTypeReference.AnyTypeReference.AsTypeReference.Type)}[]{Nullable.Render(parameter)}";
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

@@ -19,7 +19,7 @@ internal class TypedRecord : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var type = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         return Model.TypedRecord.GetFullyQualifiedPublicClassName(type) + Nullable.Render(parameter);
     }
 

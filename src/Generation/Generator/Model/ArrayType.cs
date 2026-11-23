@@ -11,7 +11,7 @@ internal static class ArrayType
 
         while (true)
         {
-            if (arrayTypeReference.AnyTypeReference.TryPickT1(out var array, out _))
+            if (arrayTypeReference.AnyTypeReference.TryPickArrayTypeReference(out var array))
                 dimensions++;
             else
                 break;
@@ -26,7 +26,7 @@ internal static class ArrayType
     {
         while (true)
         {
-            if (arrayTypeReference.AnyTypeReference.TryPickT0(out var typeReference, out var array))
+            if (arrayTypeReference.AnyTypeReference.TryPickTypeReference(out var typeReference, out var array))
             {
                 if (typeReference.Type is GirModel.Alias a)
                     return solveAlias ? Type.GetName(a.Type) : Type.GetName(a);
@@ -57,7 +57,7 @@ internal static class ArrayType
     {
         while (true)
         {
-            if (arrayTypeReference.AnyTypeReference.TryPickT0(out var typeReference, out var array))
+            if (arrayTypeReference.AnyTypeReference.TryPickTypeReference(out var typeReference, out var array))
             {
                 if (typeReference.Type is GirModel.Alias a)
                     nameParts.Add(solveAlias ? Type.GetName(a.Type) : Type.GetName(a));

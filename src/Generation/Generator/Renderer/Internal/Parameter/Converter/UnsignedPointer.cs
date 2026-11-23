@@ -13,7 +13,7 @@ internal class UnsignedPointer : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: string.Empty,
-            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
+            NullableTypeName: Model.Type.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }

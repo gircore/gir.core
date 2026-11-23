@@ -13,7 +13,7 @@ internal class OpaqueUntypedRecord : ToManagedParameterConverter
         if (parameterData.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameterData.Parameter.AnyTypeReferenceOrVarArgs}: opaque untyped record with direction != in not yet supported");
 
-        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
         var signatureName = Model.Parameter.GetName(parameterData.Parameter);

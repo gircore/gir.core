@@ -4,7 +4,7 @@ internal class PointerAlias : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.ReferencesAlias<GirModel.Pointer>();
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.Value.ReferencesAlias<GirModel.Pointer>();
     }
 
     public RenderableField[] Convert(GirModel.Field field)

@@ -6,7 +6,7 @@ internal class Class : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Class) returnType.AnyTypeReference.AsT0.Type) + Nullable.Render(returnType);
+        var nullableTypeName = ComplexType.GetFullyQualified((GirModel.Class) returnType.AnyTypeReference.AsTypeReference.Type) + Nullable.Render(returnType);
 
         return new RenderableReturnType(nullableTypeName);
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,20 +32,19 @@ internal class RepositoryTypeReferenceResolver
 
     public void ResolveTypeReference(Output.AnyTypeReference anyTypeReference, Output.Repository repository)
     {
-        anyTypeReference.Switch(
-            typeReference =>
-            {
+        switch (anyTypeReference)
+        {
+            case Output.TypeReference typeReference:
                 if (_typeReferenceResolver.Resolve(typeReference, repository, out var type))
                     typeReference.ResolveAs(type);
                 else
                     Log.Verbose($"Could not resolve type reference {anyTypeReference}");
-            },
-            arrayTypeReference =>
-            {
+                break;
+            case Output.ArrayTypeReference arrayTypeReference:
                 // Array type references are not resolved directly. Only their type get's resolved
                 // because arrays are no type themself. They only provide structure.
                 ResolveTypeReference(arrayTypeReference.AnyTypeReference, repository);
-            }
-        );
+                break;
+        }
     }
 }

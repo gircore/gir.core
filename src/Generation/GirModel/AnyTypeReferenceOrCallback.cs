@@ -14,12 +14,14 @@ public union AnyTypeReferenceOrCallback(AnyTypeReference, Callback)
 
     public bool TryPickAnyTypeReference([NotNullWhen(true)] out AnyTypeReference? anyTypeReference)
     {
-        anyTypeReference = this switch
+        if (IsAnyTypeReference)
         {
-            AnyTypeReference a => a,
-            _ => null
-        };
-        return IsAnyTypeReference;
+            anyTypeReference = (AnyTypeReference) Value;
+            return true;
+        }
+
+        anyTypeReference = null;
+        return false;
     }
 
     public bool TryPickCallback([NotNullWhen(true)] out Callback? callback)

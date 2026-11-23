@@ -11,7 +11,7 @@ internal class TypedRecordArray : ParameterConverter
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.IsPointer)
+        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.IsPointer)
             return PointerArray(parameter);
 
         return StructArray(parameter);
@@ -29,7 +29,7 @@ internal class TypedRecordArray : ParameterConverter
 
     private static RenderableParameter StructArray(GirModel.Parameter parameter)
     {
-        var record = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
+        var record = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type;
 
         return new RenderableParameter(
             Attribute: string.Empty,

@@ -11,9 +11,9 @@ internal class OpaqueUntypedRecordArray : ParameterConverter
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        if (!parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.IsPointer)
+        if (!parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.IsPointer)
         {
-            var record = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
+            var record = (GirModel.Record) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type;
             throw new Exception($"Unpointed opaque untyped record array of type {record.Name} not yet supported");
         }
 

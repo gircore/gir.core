@@ -14,7 +14,7 @@ internal class UntypedRecordArray : ToManagedParameterConverter
         switch (parameterData.Parameter)
         {
             case { Direction: GirModel.Direction.In }
-                when parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null:
+                when parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length is not null:
                 WithLength(parameterData, parameters);
                 break;
             case { Direction: GirModel.Direction.In }:
@@ -37,7 +37,7 @@ internal class UntypedRecordArray : ToManagedParameterConverter
 
     private static void WithLength(ParameterToManagedData parameter, IEnumerable<ParameterToManagedData> allParameters)
     {
-        if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.IsPointer)
+        if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.IsPointer)
             PointerArrayWithLength(parameter, allParameters);
         else
             StructArrayWithLength(parameter, allParameters);
@@ -53,11 +53,11 @@ internal class UntypedRecordArray : ToManagedParameterConverter
         if (parameter.Parameter.Transfer is GirModel.Transfer.Container or GirModel.Transfer.Full)
             throw new Exception("Can't transfer ownership to native code for untyped record");
 
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.AnyTypeReference.AsT0.Type;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type;
         var parameterName = Model.Parameter.GetName(parameter.Parameter);
         var nativeVariableName = parameterName + "Native";
 
-        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length ?? throw new Exception("Length missing");
+        var lengthIndex = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length ?? throw new Exception("Length missing");
         var lengthParameter = allParameters.ElementAt(lengthIndex);
         lengthParameter.IsArrayLengthParameter = true;
 

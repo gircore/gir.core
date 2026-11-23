@@ -6,7 +6,7 @@ internal class PointerAlias : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        var alias = (GirModel.Alias) returnType.AnyTypeReference.AsT0.Type;
+        var alias = (GirModel.Alias) returnType.AnyTypeReference.AsTypeReference.Type;
         var nullableTypeName = $"{Namespace.GetPublicName(alias.Namespace)}.{Type.GetName(alias)}";
 
         return new RenderableReturnType(nullableTypeName);

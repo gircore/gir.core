@@ -4,7 +4,7 @@ internal class Enumeration : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.References<GirModel.Enumeration>();
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.Value.References<GirModel.Enumeration>();
     }
 
     public RenderableField Convert(GirModel.Field field)
@@ -19,7 +19,7 @@ internal class Enumeration : FieldConverter
 
     private static string GetNullableTypeName(GirModel.Field field)
     {
-        var type = (GirModel.Enumeration) field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsT0.Type;
+        var type = (GirModel.Enumeration) field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsTypeReference.Type;
         return field.IsPointer
             ? Model.Type.Pointer
             : Model.ComplexType.GetFullyQualified(type);

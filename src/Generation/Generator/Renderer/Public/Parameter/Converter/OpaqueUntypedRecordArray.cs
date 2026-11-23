@@ -19,8 +19,8 @@ internal class OpaqueUntypedRecordArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var arrayType = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
-        return $"{Model.OpaqueTypedRecord.GetFullyQualifiedPublicClassName((GirModel.Record) arrayType.AnyTypeReference.AsT0.Type)}[]{Nullable.Render(parameter)}";
+        var arrayType = parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
+        return $"{Model.OpaqueTypedRecord.GetFullyQualifiedPublicClassName((GirModel.Record) arrayType.AnyTypeReference.AsTypeReference.Type)}[]{Nullable.Render(parameter)}";
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

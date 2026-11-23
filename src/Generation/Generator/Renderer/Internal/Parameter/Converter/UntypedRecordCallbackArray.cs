@@ -11,7 +11,7 @@ internal class UntypedRecordCallbackArray : ParameterConverter
 
     public RenderableParameter Convert(GirModel.Parameter parameter)
     {
-        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.IsPointer)
+        if (parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.IsPointer)
             return PointerArray(parameter);
 
         return StructArray(parameter);

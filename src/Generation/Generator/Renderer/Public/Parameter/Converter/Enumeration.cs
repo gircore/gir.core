@@ -17,7 +17,7 @@ internal class Enumeration : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        var type = (GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var type = (GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         return Model.ComplexType.GetFullyQualified(type);
     }
 

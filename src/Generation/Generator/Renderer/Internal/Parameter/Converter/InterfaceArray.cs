@@ -19,7 +19,7 @@ internal class InterfaceArray : ParameterConverter
 
     private static string GetAttribute(GirModel.Parameter parameter)
     {
-        return parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length switch
+        return parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length switch
         {
             { } length => MarshalAs.UnmanagedLpArray(sizeParamIndex: length),
             _ => string.Empty,
@@ -28,7 +28,7 @@ internal class InterfaceArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is null
+        return parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length is null
             ? Model.Type.Pointer
             : Model.Type.PointerArray;
     }

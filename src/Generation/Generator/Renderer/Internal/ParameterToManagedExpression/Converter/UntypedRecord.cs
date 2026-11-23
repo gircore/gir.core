@@ -64,7 +64,7 @@ internal class UntypedRecord : ToManagedParameterConverter
 
     private static void InRecord(ParameterToManagedData parameterData)
     {
-        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var ownedHandle = parameterData.Parameter.Transfer == GirModel.Transfer.Full;
         var variableName = Model.Parameter.GetConvertedName(parameterData.Parameter);
 
@@ -97,7 +97,7 @@ internal class UntypedRecord : ToManagedParameterConverter
             ? $"{nativeName} = {managedName}?.Handle.{copy}DangerousGetHandle() ?? IntPtr.Zero;"
             : $"{nativeName} = {managedName}.Handle.{copy}DangerousGetHandle();");
 
-        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameterData.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var ownedHandle = parameterData.Parameter switch
         {
             { Transfer: GirModel.Transfer.Full } => $"new {Model.UntypedRecord.GetFullyQuallifiedOwnedHandle(record)}({nativeName})",

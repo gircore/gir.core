@@ -12,16 +12,16 @@ internal class PrimitiveValueTypeAliasArray : ReturnTypeConverter
 
     public void Initialize(ReturnTypeToManagedData data, IEnumerable<ParameterToNativeData> parameters)
     {
-        if (data.ReturnType.AnyTypeReference.AsT1.IsZeroTerminated)
+        if (data.ReturnType.AnyTypeReference.AsArrayTypeReference.IsZeroTerminated)
             throw new NotImplementedException("Zero-terminated return type is not supported");
 
-        var lengthParameterIndex = data.ReturnType.AnyTypeReference.AsT1.Length ?? throw new Exception("Length Parameter not filled");
+        var lengthParameterIndex = data.ReturnType.AnyTypeReference.AsArrayTypeReference.Length ?? throw new Exception("Length Parameter not filled");
         var lengthParameter = parameters.ElementAt(lengthParameterIndex);
         lengthParameter.IsArrayLengthParameter = true;
 
         data.SetPostReturnStatement(returnVariable =>
         {
-            var typeName = Model.Type.GetPublicNameFullyQuallified(data.ReturnType.AnyTypeReference.AsT1.AnyTypeReference.AsT0.Type);
+            var typeName = Model.Type.GetPublicNameFullyQuallified(data.ReturnType.AnyTypeReference.AsArrayTypeReference.AnyTypeReference.AsTypeReference.Type);
 
             return $$"""
                     var resultArray = GLib.Internal.StructArray.Copy<{{typeName}}>({{returnVariable}}, (uint) {{lengthParameter.GetSignatureName()}});

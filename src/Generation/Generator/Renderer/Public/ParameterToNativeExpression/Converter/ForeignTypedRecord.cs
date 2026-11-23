@@ -13,7 +13,7 @@ internal class ForeignTypedRecord : ToNativeParameterConverter
         if (parameter.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: foreign typed record parameter '{parameter.Parameter.Name}' with direction != in not yet supported");
 
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var typeHandle = Model.ForeignTypedRecord.GetFullyQuallifiedInternalHandle(record);
         var nullHandle = Model.ForeignTypedRecord.GetFullyQuallifiedNullHandle(record);
         var signatureName = Model.Parameter.GetName(parameter.Parameter);

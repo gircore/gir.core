@@ -9,7 +9,7 @@ internal class Union : ReturnTypeConverter
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var type = (GirModel.Union) returnType.AnyTypeReference.AsT0.Type;
+        var type = (GirModel.Union) returnType.AnyTypeReference.AsTypeReference.Type;
 
         var nullableTypeName = returnType.IsPointer
             ? Model.Type.Pointer

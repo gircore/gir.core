@@ -6,7 +6,7 @@ internal class String : FieldConverter
 {
     public bool Supports(GirModel.Field field)
     {
-        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.References<GirModel.String>();
+        return field.AnyTypeReferenceOrCallback.TryPickAnyTypeReference(out var anyTypeReference) && anyTypeReference.Value.References<GirModel.String>();
     }
 
     public RenderableField Convert(GirModel.Field field)
@@ -15,7 +15,7 @@ internal class String : FieldConverter
 
         return new RenderableField(
             Name: Model.Field.GetName(field),
-            NullableTypeName: $"{Type.GetName(field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsT0.Type)}?",
+            NullableTypeName: $"{Type.GetName(field.AnyTypeReferenceOrCallback.AsAnyTypeReference.AsTypeReference.Type)}?",
             SetExpression: SetExpression,
             GetExpression: GetExpression
         );

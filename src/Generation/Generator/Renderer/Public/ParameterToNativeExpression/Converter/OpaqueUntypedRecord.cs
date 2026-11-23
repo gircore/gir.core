@@ -13,7 +13,7 @@ internal class OpaqueUntypedRecord : ToNativeParameterConverter
         if (parameter.Parameter.Direction != GirModel.Direction.In)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: opaque untyped record parameter '{parameter.Parameter.Name}' with direction != in not yet supported");
 
-        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type;
+        var record = (GirModel.Record) parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type;
         var typeHandle = Model.OpaqueUntypedRecord.GetFullyQuallifiedInternalHandle(record);
         var nullHandle = Model.OpaqueUntypedRecord.GetFullyQuallifiedNullHandle(record);
         var signatureName = Model.Parameter.GetName(parameter.Parameter);

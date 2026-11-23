@@ -25,7 +25,7 @@ internal class PrimitiveValueTypeAlias : ParameterConverter
         return new RenderableParameter(
             Attribute: string.Empty,
             Direction: GetDirection(parameter),
-            NullableTypeName: Model.Type.GetPublicNameFullyQuallified(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
+            NullableTypeName: Model.Type.GetPublicNameFullyQuallified(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type),
             Name: Model.Parameter.GetName(parameter)
         );
     }

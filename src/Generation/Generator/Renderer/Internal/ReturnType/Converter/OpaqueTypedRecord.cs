@@ -9,7 +9,7 @@ internal class OpaqueTypedRecord : ReturnTypeConverter
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var type = (GirModel.Record) returnType.AnyTypeReference.AsT0.Type;
+        var type = (GirModel.Record) returnType.AnyTypeReference.AsTypeReference.Type;
 
         var typeName = returnType switch
         {

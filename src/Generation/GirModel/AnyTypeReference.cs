@@ -1,82 +1,163 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
-using OneOf;
-
-public static class AnyTypeRefernceExtension
-{
-    public static bool References<T>(this GirModel.AnyTypeReference anyTypeReference) where T : GirModel.Type
-        => anyTypeReference.TryPickT0(out var typeReference, out _) && typeReference.Type is T;
-
-    public static bool References<T>(this GirModel.AnyTypeReference anyTypeReference, [NotNullWhen(true)] out T? type) where T : class, GirModel.Type
-    {
-        var result = anyTypeReference.TryPickT0(out var typeReference, out _) && typeReference.Type is T;
-        if (result)
-            type = (T) typeReference.Type;
-        else
-            type = null;
-
-        return result;
-    }
-
-    public static bool ReferencesArray<T>(this GirModel.AnyTypeReference anyTypeReference) where T : GirModel.Type
-        => anyTypeReference.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.StandardArrayTypeReference
-           && arrayType.AnyTypeReference.References<T>();
-
-    public static bool ReferencesArray<T>(this GirModel.AnyTypeReference anyTypeReference, [NotNullWhen(true)] out T? type) where T : class, GirModel.Type
-    {
-        type = null;
-        return anyTypeReference.TryPickT1(out var arrayType, out _)
-               && arrayType is GirModel.StandardArrayTypeReference
-               && arrayType.AnyTypeReference.References(out type);
-    }
-
-    public static bool ReferencesGLibPtrArray(this GirModel.AnyTypeReference anyTypeReference)
-        => anyTypeReference.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.GLibPtrArrayTypeReference;
-
-    public static bool ReferencesGLibByteArray(this GirModel.AnyTypeReference anyTypeReference)
-        => anyTypeReference.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.GLibByteArrayTypeReference;
-
-    public static bool ReferencesGLibArray<T>(this GirModel.AnyTypeReference anyTypeReference) where T : GirModel.Type
-        => anyTypeReference.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.GLibArrayTypeReference
-           && arrayType.AnyTypeReference.References<T>();
-
-    public static bool ReferencesAlias<T>(this GirModel.AnyTypeReference anyTypeReference) where T : GirModel.Type
-        => anyTypeReference.TryPickT0(out var typeReference, out _)
-           && typeReference.Type is GirModel.Alias { Type: T };
-
-    public static bool ReferencesAlias<T>(this GirModel.AnyTypeReference anyTypeReference, [NotNullWhen(true)] out T? type) where T : class, GirModel.Type
-    {
-        var result = anyTypeReference.TryPickT0(out var typeReference, out _) && typeReference.Type is GirModel.Alias { Type: T };
-
-        if (result)
-            type = (T) ((GirModel.Alias) typeReference.Type).Type;
-        else
-            type = null;
-
-        return result;
-    }
-
-    public static bool ReferencesArrayAlias<T>(this GirModel.AnyTypeReference anyTypeReference) where T : GirModel.Type
-        => anyTypeReference.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.StandardArrayTypeReference
-           && arrayType.AnyTypeReference.ReferencesAlias<T>();
-
-    public static bool ReferencesGLibArrayAlias<T>(this GirModel.AnyTypeReference anyTypeReference) where T : GirModel.Type
-        => anyTypeReference.TryPickT1(out var arrayType, out _)
-           && arrayType is GirModel.GLibArrayTypeReference
-           && arrayType.AnyTypeReference.ReferencesAlias<T>();
-}
 
 namespace GirModel
 {
-    public class AnyTypeReference : OneOfBase<TypeReference, ArrayTypeReference>
+    public union AnyTypeReference(TypeReference, ArrayTypeReference)
     {
-        private AnyTypeReference(OneOf<TypeReference, ArrayTypeReference> input) : base(input) { }
+        public TypeReference AsTypeReference => (TypeReference) Value;
+        public ArrayTypeReference AsArrayTypeReference => (ArrayTypeReference) Value;
+        
+        public bool IsArrayTypeReference => this is ArrayTypeReference;
 
-        public static AnyTypeReference From(TypeReference typeReference) => new(OneOf<TypeReference, ArrayTypeReference>.FromT0(typeReference));
-        public static AnyTypeReference From(ArrayTypeReference arrayTypeReference) => new(OneOf<TypeReference, ArrayTypeReference>.FromT1(arrayTypeReference));
+        public bool TryPickTypeReference([NotNullWhen(true)] out TypeReference? typeReference)
+        {
+            if(this is TypeReference reference)
+            {
+                typeReference = reference;
+                return true;
+            }
+
+            typeReference = null;
+            return false;
+        }
+        
+        public bool TryPickTypeReference([NotNullWhen(true)] out TypeReference? typeReference, [NotNullWhen(false)] out ArrayTypeReference? arrayTypeReference)
+        {
+            if(this is TypeReference reference)
+            {
+                typeReference = reference;
+                arrayTypeReference = null;
+                return true;
+            }
+
+            typeReference = null;
+            arrayTypeReference = (ArrayTypeReference) Value;
+            return false;
+        }
+        
+        public bool TryPickArrayTypeReference([NotNullWhen(true)] out ArrayTypeReference? arrayTypeReference)
+        {
+            if(this is ArrayTypeReference reference)
+            {
+                arrayTypeReference = reference;
+                return true;
+            }
+
+            arrayTypeReference = null;
+            return false;
+        }
+        
+        public bool References<T>() where T : GirModel.Type
+        {
+            return this switch
+            {
+                TypeReference typeReference => typeReference.Type is T,
+                ArrayTypeReference => false
+            };
+        }
+        
+        public bool References<T>([NotNullWhen(true)] out T? type) where T : class, GirModel.Type
+        {
+            if (this is ArrayTypeReference)
+            {
+                type = null;
+                return false;
+            }
+            
+            if(((TypeReference) Value).Type is T typeReference)
+            {
+                type = typeReference;
+                return true;
+            }
+
+            throw new Exception("Unknown Type");
+        }
+        
+        public bool ReferencesArray<T>() where T : GirModel.Type
+        {
+            return this switch
+            {
+                GirModel.StandardArrayTypeReference arrayTypeReference => arrayTypeReference.AnyTypeReference.References<T>(),
+                _ => false,
+            };
+        }
+        
+        public bool ReferencesArray<T>([NotNullWhen(true)] out T? type) where T : class, GirModel.Type
+        {
+            type = null;
+
+            return this switch
+            {
+                GirModel.StandardArrayTypeReference arrayTypeReference => arrayTypeReference.AnyTypeReference.References(out type),
+                _ => false,
+            };
+        }
+        
+        public bool ReferencesGLibPtrArray()
+        {
+            return this switch
+            {
+                GirModel.GLibPtrArrayTypeReference => true,
+                _ => false
+            };
+        }
+        
+        public bool ReferencesGLibByteArray()
+        {
+            return this switch
+            {
+                GirModel.GLibByteArrayTypeReference => true,
+                _ => false
+            };
+        }
+        
+        public bool ReferencesGLibArray<T>() where T : GirModel.Type
+        {
+            return this switch
+            {
+                GirModel.GLibArrayTypeReference arrayTypeReference => arrayTypeReference.AnyTypeReference.References<T>(),
+                _ => false
+            };
+        }
+        
+        public bool ReferencesAlias<T>() where T : GirModel.Type
+        {
+            return this switch
+            {
+                TypeReference typeReference => typeReference.Type is GirModel.Alias { Type: T },
+                _ => false
+            };
+        }
+        
+        public bool ReferencesAlias<T>([NotNullWhen(true)] out T? type) where T : class, GirModel.Type
+        {
+            if (!ReferencesAlias<T>())
+            {
+                type = null;
+                return false;
+            }
+
+            type = (T) ((GirModel.Alias) ((TypeReference) Value).Type).Type;
+            return true;
+        }
+        
+        public bool ReferencesArrayAlias<T>() where T : GirModel.Type
+        {
+            return this switch
+            {
+                GirModel.StandardArrayTypeReference arrayTypeReference => arrayTypeReference.AnyTypeReference.ReferencesAlias<T>(),
+                _ => false
+            };
+        }
+        
+        public bool ReferencesGLibArrayAlias<T>() where T : GirModel.Type
+        {
+            return this switch
+            {
+                GirModel.GLibArrayTypeReference arrayTypeReference => arrayTypeReference.AnyTypeReference.ReferencesAlias<T>(),
+                _ => false
+            };
+        }
     }
 }

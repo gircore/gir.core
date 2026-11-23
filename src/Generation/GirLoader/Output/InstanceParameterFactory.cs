@@ -21,7 +21,7 @@ internal class InstanceParameterFactory
 
         return new InstanceParameter(
             name: parameterInfo.Name,
-            typeReference: _typeReferenceFactory.CreateAnyTypeReference(parameterInfo).AsT0,
+            typeReference: _typeReferenceFactory.CreateAnyTypeReference(parameterInfo).AsTypeReference,
             direction: DirectionFactory.Create(parameterInfo.Direction),
             transfer: _transferFactory.FromText(parameterInfo.TransferOwnership),
             nullable: parameterInfo.Nullable,

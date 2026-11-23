@@ -11,7 +11,7 @@ internal class Utf8StringArray : ReturnTypeConverter
 
     public RenderableReturnType Convert(GirModel.ReturnType returnType)
     {
-        var arrayTypeReference = returnType.AnyTypeReference.AsT1;
+        var arrayTypeReference = returnType.AnyTypeReference.AsArrayTypeReference;
 
         if (arrayTypeReference.IsZeroTerminated)
             return NullTerminatedArray(returnType);

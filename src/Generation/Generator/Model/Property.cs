@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Generator.Renderer.Internal;
+using GirModel;
 
 namespace Generator.Model;
 
@@ -34,14 +35,15 @@ internal static partial class Property
 
     public static string GetNullableTypeName(GirModel.Property property)
     {
-        return property.AnyTypeReference.Match(
-            typeReference => typeReference.Type switch
+        return property.AnyTypeReference switch
+        {
+            TypeReference typeReference => typeReference.Type switch
             {
                 GirModel.ComplexType c => ComplexType.GetFullyQualified(c) + GetDefaultNullable(property),
                 _ => Type.GetName(typeReference.Type) + GetDefaultNullable(property)
             },
-            arrayType => ArrayType.GetName(arrayType)
-        );
+            ArrayTypeReference arrayTypeReference => ArrayType.GetName(arrayTypeReference),
+        };
     }
 
     // Properties need special nullable handling as each C value is implicitly nullable.
@@ -50,7 +52,7 @@ internal static partial class Property
     // is not present in the gir file
     private static string GetDefaultNullable(GirModel.Property property)
     {
-        if (!property.AnyTypeReference.TryPickT0(out var typeReference, out _))
+        if (!property.AnyTypeReference.TryPickTypeReference(out var typeReference))
             return string.Empty;
 
         switch (typeReference.Type)

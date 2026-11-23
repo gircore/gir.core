@@ -6,7 +6,7 @@ internal class StringArray : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        return new RenderableReturnType(ArrayType.GetName(returnType.AnyTypeReference.AsT1) + Nullable.Render(returnType));
+        return new RenderableReturnType(ArrayType.GetName(returnType.AnyTypeReference.AsArrayTypeReference) + Nullable.Render(returnType));
     }
 
     public bool Supports(GirModel.ReturnType returnType)

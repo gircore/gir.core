@@ -13,7 +13,7 @@ public class ClassArray : SignalArgsParameterConverter
 
     public void Initialize(SignalArgsParameterData parameter, int index, IEnumerable<SignalArgsParameterData> parameters)
     {
-        if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1.Length is not null)
+        if (parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference.Length is not null)
             LengthBased(parameter, index, parameters);
         else
             throw new NotImplementedException("Class Arrays without a length are not supported as SignalArgs");
@@ -21,13 +21,13 @@ public class ClassArray : SignalArgsParameterConverter
 
     private static void LengthBased(SignalArgsParameterData parameter, int index, IEnumerable<SignalArgsParameterData> parameters)
     {
-        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1;
+        var arrayTypeReference = parameter.Parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference;
 
         if (arrayTypeReference.IsPointer)
             throw new NotImplementedException($"{parameter.Parameter.AnyTypeReferenceOrVarArgs}: Pointed class array can not yet be converted to signal args.");
 
         var parameterName = Model.Parameter.GetName(parameter.Parameter).ToPascalCase();
-        var parameterClass = (GirModel.Class) arrayTypeReference.AnyTypeReference.AsT0.Type;
+        var parameterClass = (GirModel.Class) arrayTypeReference.AnyTypeReference.AsTypeReference.Type;
         var parameterTypeName = Model.Class.GetFullyQualifiedPublicName(parameterClass);
         var parameterHelperVariable = $"_{parameterName.ToCamelCase()}";
 

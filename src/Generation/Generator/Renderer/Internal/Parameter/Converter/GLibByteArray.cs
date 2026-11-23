@@ -19,7 +19,7 @@ public class GLibByteArray : ParameterConverter
 
     private static string GetNullableTypeName(GirModel.Parameter parameter)
     {
-        return Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT1);
+        return Model.ArrayType.GetName(parameter.AnyTypeReferenceOrVarArgs.AsT0.AsArrayTypeReference);
     }
 
     private static string GetDirection(GirModel.Parameter parameter) => parameter switch

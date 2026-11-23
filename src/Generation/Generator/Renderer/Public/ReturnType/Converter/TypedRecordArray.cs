@@ -4,7 +4,7 @@ internal class TypedRecordArray : ReturnTypeConverter
 {
     public RenderableReturnType Create(GirModel.ReturnType returnType)
     {
-        return new RenderableReturnType(Model.ArrayType.GetName(returnType.AnyTypeReference.AsT1));
+        return new RenderableReturnType(Model.ArrayType.GetName(returnType.AnyTypeReference.AsArrayTypeReference));
     }
 
     public bool Supports(GirModel.ReturnType returnType)

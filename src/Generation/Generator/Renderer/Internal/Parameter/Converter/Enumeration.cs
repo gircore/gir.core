@@ -21,10 +21,10 @@ internal class Enumeration : ParameterConverter
     {
         return parameter switch
         {
-            { Direction: GirModel.Direction.Out, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
-            { Direction: GirModel.Direction.InOut, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type),
+            { Direction: GirModel.Direction.Out, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type),
+            { Direction: GirModel.Direction.InOut, IsPointer: true } => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type),
             { IsPointer: true } => Model.Type.Pointer,
-            _ => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsT0.Type)
+            _ => Model.ComplexType.GetFullyQualified((GirModel.Enumeration) parameter.AnyTypeReferenceOrVarArgs.AsT0.AsTypeReference.Type)
         };
     }
 
