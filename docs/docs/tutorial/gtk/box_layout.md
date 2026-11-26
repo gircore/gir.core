@@ -9,7 +9,7 @@ We will begin by going to the `GtkTutorials` directory in the terminal. This dir
 Now run the following commands.
 
 ```
-dotnet new console -f net8.0 -o BoxLayout
+dotnet new console -f net10.0 -o BoxLayout
 dotnet sln add BoxLayout/
 cd BoxLayout
 dotnet add package GirCore.Gtk-4.0

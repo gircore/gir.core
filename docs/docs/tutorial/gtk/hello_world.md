@@ -7,13 +7,13 @@ We will begin by creating a `GtkTutorials` directory to contain the Gtk tutorial
 ```
 mkdir GtkTutorials
 cd GtkTutorials
-dotnet new console -f net8.0 -o HelloWorld
+dotnet new console -f net10.0 -o HelloWorld
 dotnet new gitignore
 dotnet new sln
 dotnet sln add HelloWorld/
 ```
 
-The above commands will create a new console project, a gitignore file and a solution file for the project with the HelloWorld project added to the solution file so that people using ide's can open the project easily. As you follow more Gtk tutorials you can create the projects in the `GtkTutorials` directory by using `dotnet new console -f net8.0 -o NewProject` and add the projects to the solution file by using `dotnet sln add NewProject` to have multiple projects in the same solution file.
+The above commands will create a new console project, a gitignore file and a solution file for the project with the HelloWorld project added to the solution file so that people using ide's can open the project easily. As you follow more Gtk tutorials you can create the projects in the `GtkTutorials` directory by using `dotnet new console -f net10.0 -o NewProject` and add the projects to the solution file by using `dotnet sln add NewProject` to have multiple projects in the same solution file.
 
 Next we will download the GirCore.Gtk-4.0 nuget package into the project.
 
