@@ -37,7 +37,7 @@ Applications using gir.core. To add a new application to the list [edit this pag
 
 ## Stocks
 [Stocks](https://github.com/taimila/Stocks) is a simple stocks tracking application.
-![Stocks screenshot](https://github.com/taimila/Stocks/blob/main/docs/stocks.png)
+![Stocks screenshot](https://raw.githubusercontent.com/taimila/Stocks/refs/heads/main/docs/stocks.png)
 
 ## Tagger
 [Tagger](https://github.com/NickvisionApps/Tagger) is a music tag editor.
